@@ -1,6 +1,23 @@
 .kef {
     text-align: center;
 }
+h {
+    background-color:#bdbdbd;
+	color: white;
+	padding: 8px 12px;
+	align: center;
+	text-decoration: none;
+	display: inline-block;
+	border-radius: 16px 8px;
+	margin-left:104px;
+	border-right:4px solid #61caac;
+}
+h1 {
+    text-align:left;
+    margin-right:4px;
+    margin-left:12px;
+}
+
 
 a:link, a:visited {
     background-color: #dedede;
@@ -61,7 +78,14 @@ table {
 }
 
 p {
-	writing-mode: bt-lr;
+	text-align:center;
+    background-color:#61caac;
+    border:0px solid #61caac;
+   	border-radius: 32px 16px;
+   	padding:16px;
+   	margin-vertical:24px;
+   	margin-left:176px;
+    color:white;
 }
 
 .vertical-center {
