@@ -1,3 +1,5 @@
+@font-face { font-family: CoEIi; src: ComfortaaEIikrhiaSakasai.ttf; }
+
 .kef {
     text-align: center;
 }
@@ -5,11 +7,11 @@ h {
     background-color: #d0d0d0;
 	color: black;
 	padding: 8px 12px;
-	align: center;
+	text-align: center;
 	text-decoration: none;
 	display: inline-block;
 	border-radius: 24px 4px;
-	border-right: 2px solid #c0c0c0;
+	border-right: 2px solid white;
 	margin-block: 4px;
 	width: 32px;
 }
@@ -17,6 +19,7 @@ h1 {
     text-align:left;
     margin-right:4px;
     margin-left:12px;
+    font-family: CoEIi
 }
 
 
