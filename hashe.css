@@ -11,9 +11,11 @@ h {
 	text-decoration: none;
 	display: inline-block;
 	border-radius: 24px 4px;
-	border-right: 2px solid white;
+	border-right: 4px solid white;
 	margin-block: 4px;
 	width: 32px;
+	margin-right: 4px;
+    margin-left: 4px;
 }
 h1 {
     text-align:left;
@@ -39,17 +41,17 @@ a:link, a:visited {
 }
 a:hover, a:active {
     background-color: #d8d8d8;
-    border-right:2px solid #424242;
+    border-right:4px solid #424242;
     width: 32px;
     font-family: ComfortaaEIikrhia;
 }
 
 form {
-    text-align:center;
-    margin:24px;
-    background-color:#f0f0f0;
+    text-align: center;
+    margin-block: 12px;
+    background-color: #f0f0f0;
     border-radius: 32px 16px;
-    padding:12px;
+    padding: 12px;
 }
 
 
