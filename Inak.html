@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html lang="aih">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1">
+
+<title>Iikrhiaceliif</title>
+
+<link rel="manifest"
+href="cakiiceliifai.webmanifest">
+
+<style>
+
+a:link, a:visited {
+background-color: #dedede;
+color: black;
+padding: 8px 12px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+border-radius: 16px 8px;
+margin-right:4px;
+margin-left:4px;
+}
+a:hover, a:active {
+background-color: #bdbdbd;
+border-right:4px solid #424242;
+}
+
+form {text-align:center; 
+margin:24px;
+background-color:#dedede;
+border-radius: 32px 16px;
+padding:12px;
+}
+
+input {
+background-color:#bdbdbd;
+border:0px solid black;
+border-radius: 24px 8px;
+padding:16px;
+color:black;
+placeholder:"Iixa kanooi";
+box-shadow: 0px 0px 0px 0px #bdbdbd3e;
+}
+input:hover {background-color:#a4a4a4;
+}
+input:focus {outline:none;
+border-bottom:4px solid #424242;
+}
+
+table, th, td {
+border: 1px solid #ecf8f2;
+border-collapse: collapse;
+background-color: #61caac;
+color: white;
+padding: 8px;
+text-align: center;
+border-radius: 32px 16px;
+width:50%;
+}
+table {
+border: 1px solid white;
+border-radius: 32px 16px;
+width:97%;
+margin:24px;
+}
+
+</style>
+</head>
+
+<body style="background-color:white;">
+
+<h1 style="text-align:center; 
+font-family:comfortaa; id="Smaa""> Inak Teuceliif </h1>
+
+<p style="text-align:center;">
+<a href="Iikrhiaceliif.html"> Chelesai </a>
+<h style="background-color: #bdbdbd;
+color: black;
+padding: 8px 12px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+border-radius: 16px 8px;
+margin-right:4px;
+margin-left:4px;
+border-right:4px solid #424242;"> Inak Teuceliif </h>
+<a href="Kootso.html"> Kootso </a> 
+<a href="Paaksiica.html"> Paaksicasai Teuceliif </a> </p>
+
+<p style="text-align:center; 
+background-color:#dedede; 
+border:0px solid #61caac; 
+border-radius: 32px 16px;
+padding:16px;
+margin:24px;
+color:black;"
+> 
+Inak teuceliif piise tiq. Nazu nenaqos qai teuceliif. </p>
+
+<form>
+<p style="margin:0px 0px 12px 0px;
+font-size:20px;">Iixa Kanooi</p>
+<input style="width:84%;">
+</form>
+</input>
+
+<form>
+<p style="margin:0px 0px 12px 0px;
+font-size:20px;">Iixa Kanooi</p>
+<p style="text-align:center; 
+background-color:#bdbdbd; 
+border-radius: 28px 12px;
+padding:16px;
+color:black;
+margin:0px 0px 0px 0px;"
+> 
+Oliimi piise tiq. </p>
+</form>
+
+<script>
+    window.addEventListener('load', () => {
+      registerSW();
+    });
+ 
+    // Register the Service Worker
+    async function registerSW() {
+      if ('serviceWorker' in navigator) {
+        try {
+          await navigator
+                .serviceWorker
+                .register('serviceworker.js');
+        }
+        catch (e) {
+          console.log('SW registration failed');
+        }
+      }
+    }
+ </script>
+
+</body>
+
+</html>
