@@ -37,7 +37,7 @@ a:hover, a:active {
 form {
     text-align:center;
     margin:24px;
-    background-color:#dedede;
+    background-color:#f0f0f0;
     border-radius: 32px 16px;
     padding:12px;
 }
@@ -81,12 +81,11 @@ table {
 
 p {
 	text-align:center;
-    background-color:#61caac;
-    border:0px solid #61caac;
-   	border-radius: 32px 16px;
-   	padding:16px;
+    background-color:#f0f0f0;
+    border:0px solid #f0f0f0;
+   	border-radius: 32px 8px;
+   	padding:12px;
    	margin-vertical:24px;
-   	margin-left:120px;
     color:white;
 }
 
