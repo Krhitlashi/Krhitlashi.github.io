@@ -2,14 +2,13 @@
     text-align: center;
 }
 h {
-    background-color:#bdbdbd;
+    background-color:#d0d0d0;
 	color: white;
 	padding: 8px 12px;
 	align: center;
 	text-decoration: none;
 	display: inline-block;
 	border-radius: 16px 8px;
-	margin-left:104px;
 	border-right:4px solid #61caac;
 }
 h1 {
@@ -20,7 +19,7 @@ h1 {
 
 
 a:link, a:visited {
-    background-color: #dedede;
+    background-color: #e0e0e0;
     color: black;
     padding: 8px 12px;
     text-align: center;
@@ -31,7 +30,7 @@ a:link, a:visited {
     margin-left:4px;
 }
 a:hover, a:active {
-    background-color: #bdbdbd;
+    background-color: #d8d8d8;
     border-right:4px solid #424242;
 }
 
@@ -84,7 +83,7 @@ p {
    	border-radius: 32px 16px;
    	padding:16px;
    	margin-vertical:24px;
-   	margin-left:176px;
+   	margin-left:120px;
     color:white;
 }
 
