@@ -3,6 +3,10 @@
     src: url("ComfortaaEIikrhiaSakasai.ttf");
 }
 
+body {
+    background-color: #ffffff;
+}
+
 .kef {
     text-align: center;
 }
@@ -59,13 +63,13 @@ form {
 
 
 input {
-    background-color:#bdbdbd;
+    background-color:#e0e0e0;
     border:0px solid black;
     border-radius: 24px 8px;
     padding:16px;
     color:black;
     placeholder:"Iixa kanooi";
-    box-shadow: 0px 0px 0px 0px #bdbdbd3e;
+    box-shadow: 0px 0px 0px 0px #e0e0e03e;
 }
 input:hover {
     background-color:#a4a4a4;
@@ -112,4 +116,62 @@ p {
 	top: 50%;
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%);
+}
+
+
+
+@media (prefers-color-scheme: dark) {
+body {
+    background-color: #000000;
+}
+h {
+    background-color: #383838;
+	color: white;
+	border-right: 4px solid black;
+}
+
+
+a:link, a:visited {
+    background-color: #282828;
+    color: white;
+}
+a:hover, a:active {
+    background-color: #303030;
+    border-right:4px solid #bdbdbd;
+}
+
+form {
+    background-color: #181818;
+}
+
+
+input {
+    background-color:#282828;
+    border:0px solid white;
+    box-shadow: 0px 0px 0px 0px #2828283e;
+}
+input:hover {
+    background-color:#a4a4a4;
+}
+input:focus {
+    border-bottom:4px solid #bdbdbd;
+}
+
+
+table, th, td {
+    border: 1px solid #ecf8f2;
+    background-color: #61caac;
+    color: black;
+}
+table {
+    border: 1px solid black;
+}
+
+
+p {
+    background-color: #181818;
+    border: 0px solid #181818;
+    color: white;
+}
+
 }
