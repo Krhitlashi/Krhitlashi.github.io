@@ -2,14 +2,16 @@
     text-align: center;
 }
 h {
-    background-color:#d0d0d0;
-	color: white;
+    background-color: #d0d0d0;
+	color: black;
 	padding: 8px 12px;
 	align: center;
 	text-decoration: none;
 	display: inline-block;
-	border-radius: 16px 8px;
-	border-right:4px solid #61caac;
+	border-radius: 24px 4px;
+	border-right: 2px solid #d0d0d0;
+	margin-block: 4px;
+	width: 32px;
 }
 h1 {
     text-align:left;
@@ -25,13 +27,15 @@ a:link, a:visited {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    border-radius: 16px 8px;
-    margin-right:4px;
-    margin-left:4px;
+    border-radius: 24px 4px;
+    margin-right: 4px;
+    margin-left: 4px;
+    margin-block: 4px;
+    width: 32px;
 }
 a:hover, a:active {
     background-color: #d8d8d8;
-    border-right:4px solid #424242;
+    border-right:2px solid #424242;
 }
 
 form {
@@ -84,8 +88,9 @@ p {
     background-color: #f0f0f0;
     border: 0px solid #f0f0f0;
    	border-radius: 32px 8px;
-   	padding: 12px;
-   	margin-vertical: 24px;
+   	padding: 8px;
+   	margin-inline: 0;
+    margin-block: 12px;
     color: black;
 }
 
