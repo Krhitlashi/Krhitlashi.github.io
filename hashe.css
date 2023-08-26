@@ -1,4 +1,7 @@
-@font-face { font-family: ComfortaaEIikrhia; src: ComfortaaEIikrhiaSakasai.ttf; }
+@font-face {
+    font-family: "ComfortaaEIikrhia";
+    src: url("ComfortaaEIikrhiaSakasai.ttf");
+}
 
 .kef {
     text-align: center;
