@@ -1,4 +1,4 @@
-@font-face { font-family: CoEIi; src: ComfortaaEIikrhiaSakasai.ttf; }
+@font-face { font-family: ComfortaaEIikrhia; src: ComfortaaEIikrhiaSakasai.ttf; }
 
 .kef {
     text-align: center;
@@ -19,7 +19,7 @@ h1 {
     text-align:left;
     margin-right:4px;
     margin-left:12px;
-    font-family: CoEIi
+    font-family: ComfortaaEIikrhia;
 }
 
 
@@ -35,11 +35,13 @@ a:link, a:visited {
     margin-left: 4px;
     margin-block: 4px;
     width: 32px;
+    font-family: ComfortaaEIikrhia;
 }
 a:hover, a:active {
     background-color: #d8d8d8;
     border-right:2px solid #424242;
     width: 32px;
+    font-family: ComfortaaEIikrhia;
 }
 
 form {
@@ -96,6 +98,7 @@ p {
    	margin-inline: 0;
     margin-block: 12px;
     color: black;
+    font-family: ComfortaaEIikrhia;
 }
 
 .vertical-center {
