@@ -9,7 +9,7 @@ h {
 	text-decoration: none;
 	display: inline-block;
 	border-radius: 24px 4px;
-	border-right: 2px solid #d0d0d0;
+	border-right: 2px solid #c0c0c0;
 	margin-block: 4px;
 	width: 32px;
 }
@@ -36,6 +36,7 @@ a:link, a:visited {
 a:hover, a:active {
     background-color: #d8d8d8;
     border-right:2px solid #424242;
+    width: 32px;
 }
 
 form {
