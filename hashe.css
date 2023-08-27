@@ -172,7 +172,7 @@ input {
     box-shadow: 0px 0px 0px 0px #2828283e;
 }
 input:hover {
-    background-color:#a4a4a4;
+    background-color: #303030;
 }
 input:focus {
     border-bottom:4px solid #bdbdbd;
