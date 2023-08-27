@@ -120,7 +120,7 @@ p {
 	color: black;
 	font-family: ComfortaaEIikrhia;
 }
-ciihii {
+.ciihii {
 	background-color: #e0e0e0;
 }
 
@@ -139,9 +139,6 @@ body {
     background-color: #000000;
 }
 
-title {
-    color: white;
-}
 h {
     background-color: #383838;
 	color: white;
@@ -193,6 +190,9 @@ p {
     background-color: #181818;
     border: 0px solid #181818;
     color: white;
+}
+.ciihii {
+	background-color: #282828;
 }
 
 }
