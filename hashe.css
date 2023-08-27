@@ -15,7 +15,7 @@ h {
 	text-decoration: none;
 	display: inline-block;
 	border-radius: 24px 4px;
-	border-right: 4px solid white;
+	border-right: 4px solid black;
 	margin-block: 4px;
 	width: 32px;
 	margin-right: 4px;
@@ -133,7 +133,7 @@ title {
 h {
     background-color: #383838;
 	color: white;
-	border-right: 4px solid black;
+	border-right: 4px solid white;
 }
 h1 {
     color: white;
