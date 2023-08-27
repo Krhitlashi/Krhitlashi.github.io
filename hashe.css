@@ -5,6 +5,8 @@
 
 body {
     background-color: #ffffff;
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 h {
@@ -195,4 +197,13 @@ p {
     color: white;
 }
 
+}
+
+
+@media only screen and (max-width: 960px) {
+sacatama {
+    display: flex;
+    flex-direction: column;
+	align-items: center;
+  }
 }
