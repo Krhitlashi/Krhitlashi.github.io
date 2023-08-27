@@ -27,13 +27,13 @@ h1 {
     margin-left:12px;
     font-family: ComfortaaEIikrhia;
 }
-miikef {
+.miikef {
 	width: -webkit-fill-available;
 	text-align: center;
 	background-color: transparent;
 	padding: 8px;
 	margin-inline: 0;
-	margin-block: 12px;
+	margin-block: 4px;
 	color: black;
 	font-family: ComfortaaEIikrhia;
 }
