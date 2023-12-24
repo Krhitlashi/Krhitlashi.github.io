@@ -3,6 +3,8 @@
     src: url("ComfortaaEIikrhiaSakasai.ttf");
 }
 
+@media print {@page {size: landscape}}
+
 body {
     background-color: #ffffff;
 	margin: 24px;
