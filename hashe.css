@@ -3,6 +3,16 @@
     src: url("ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ.ttf");
 }
 
+body, html {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+.content {
+  transform: scaleY(-1);
+  transform-origin: top;
+}
+
 body {
     background-color: #ffffff;
 	margin: 24px;
