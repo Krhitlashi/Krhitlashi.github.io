@@ -90,7 +90,7 @@ input:hover {
 }
 input:focus {
 	outline:none;
-	border-bottom:4px solid #424242;
+	border-top:4px solid #424242;
 }
 
 
