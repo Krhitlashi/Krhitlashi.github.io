@@ -8,6 +8,10 @@ body {
 	margin: 24px;
 	font-family: ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ;
 }
+main {
+	display: table-cell;
+	vertical-align: bottom;
+}
 
 h {
 	background-color: #d0d0d0;
