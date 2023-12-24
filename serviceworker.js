@@ -17,3 +17,16 @@ self.addEventListener("fetch", function (event) {
     })
   );
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+  var content = document.querySelector('.content');
+
+  content.scrollTop = content.scrollHeight; // Scroll to the bottom initially
+
+  content.addEventListener('wheel', function(event) {
+    if (event.deltaY !== 0) {
+      event.preventDefault();
+      content.scrollTop -= event.deltaY;
+    }
+  });
+});
