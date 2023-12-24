@@ -1,16 +1,17 @@
 @font-face {
-    font-family: "ComfortaaEIikrhia";
+    font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
     src: url("ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ.ttf");
 }
 
 body, html {
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
+	height: device-height;
+	margin: 0;
+	overflow: hidden;
+	font-family: ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ;
 }
 .content {
-  transform: scaleY(-1);
-  transform-origin: top;
+	transform: scaleY(-1);
+	transform-origin: top;
 }
 
 body {
@@ -35,7 +36,7 @@ h1 {
     text-align:left;
     margin-right:4px;
     margin-left:12px;
-    font-family: ComfortaaEIikrhia;
+    font-family: ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ;
 }
 .miikef {
 	width: -webkit-fill-available;
@@ -45,7 +46,7 @@ h1 {
 	margin-inline: 0;
 	margin-block: 4px;
 	color: black;
-	font-family: ComfortaaEIikrhia;
+	font-family: ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ;
 }
 
 
@@ -61,13 +62,13 @@ a:link, a:visited {
     margin-left: 4px;
     margin-block: 4px;
     width: 32px;
-    font-family: ComfortaaEIikrhia;
+    font-family: ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ;
 }
 a:hover, a:active {
     background-color: #d8d8d8;
     border-right:4px solid #424242;
     width: 32px;
-    font-family: ComfortaaEIikrhia;
+    font-family: ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ;
 }
 
 form {
@@ -88,7 +89,7 @@ input {
     color:black;
     placeholder:"ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜꞇ";
     box-shadow: 0px 0px 0px 0px #e0e0e03e;
-    font-family: ComfortaaEIikrhia;
+    font-family: ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ;
 }
 input:hover {
     background-color:#a4a4a4;
@@ -108,7 +109,7 @@ table, th, td {
     text-align: center;
     border-radius: 32px 16px;
     width:50%;
-    font-family: ComfortaaEIikrhia;
+    font-family: ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ;
 }
 table {
     border: 1px solid white;
@@ -128,7 +129,7 @@ p {
 	margin-inline: 0;
 	margin-block: 12px;
 	color: black;
-	font-family: ComfortaaEIikrhia;
+	font-family: ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ;
 }
 .ciihii {
 	background-color: #e0e0e0;
