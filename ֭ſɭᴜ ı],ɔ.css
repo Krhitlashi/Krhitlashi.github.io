@@ -83,7 +83,7 @@ form {
 
 
 input {
-	width: 97%;
+	width: 96%;
 	background-color:#e0e0e0;
 	border:0px solid black;
 	border-radius: 24px 8px;
@@ -148,77 +148,79 @@ p {
 }
 
 
-
 @media (prefers-color-scheme: dark) {
-body {
-	background-color: #000000;
-}
+	body {
+		background-color: #000000;
+	}
 
-h {
-    background-color: #383838;
-	color: white;
-	border-right: 4px solid white;
-}
-h1 {
-	color: white;
-}
-.miikef {
-	color: white;
-}
-
-
-a:link, a:visited {
-	background-color: #282828;
-	color: white;
-}
-a:hover, a:active {
-	background-color: #303030;
-	border-right:4px solid #bdbdbd;
-}
-
-form {
-	background-color: #181818;
-}
+	h {   
+		background-color: #383838;
+		color: white;
+		border-right: 4px solid white;
+	}
+	h1 {
+		color: white;
+	}
+	.miikef {
+		color: white;
+	}
 
 
-input {
-	color: white;
-	background-color:#282828;
-	border:0px solid white;
-	box-shadow: 0px 0px 0px 0px #2828283e;
-}
-input:hover {
-	background-color: #303030;
-}
-input:focus {
-	border-top:4px solid #bdbdbd;
-}
+	a:link, a:visited {
+		background-color: #282828;
+		color: white;
+	}
+	a:hover, a:active {
+		background-color: #303030;
+		border-right:4px solid #bdbdbd;
+	}
+
+	form {
+		background-color: #181818;
+	}
 
 
-table, th, td {
-	border: 1px solid #ecf8f2;
-	background-color: #61caac;
-	color: black;
-}
-table {
-	border: 1px solid black;
-}
+	input {
+		color: white;
+		background-color:#282828;
+		border:0px solid white;
+		box-shadow: 0px 0px 0px 0px #2828283e;
+	}
+	input:hover {
+		background-color: #303030;
+	}
+	input:focus {
+		border-top:4px solid #bdbdbd;
+	}
 
 
-p {
-	background-color: #181818;
-	border: 0px solid #181818;
-	color: white;
-}
-.ciihii {
-	background-color: #282828;
-}
+	table, th, td {
+		border: 1px solid #ecf8f2;
+		background-color: #61caac;
+		color: black;
+	}
+	table {
+		border: 1px solid black;
+	}
+
+
+	p {
+		background-color: #181818;
+		border: 0px solid #181818;
+		color: white;
+	}
+	.ciihii {
+		background-color: #282828;
+	}
 
 }
 
 
 @media only screen and (max-width: 500px) {
-sacatama {
-	align-items: center;
-  }
+	sacatama {
+		align-items: center;
+	}
+	input {
+		width: 90%;
+	}
 }
