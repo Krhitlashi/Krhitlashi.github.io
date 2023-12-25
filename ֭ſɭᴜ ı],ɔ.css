@@ -7,12 +7,12 @@ body {
 	background-color: #ffffff;
 	margin: 24px;
 	font-family: ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ;
+	display: flex;
+	flex-direction: column-reverse;
 }
 main {
 	display: table-cell;
 	vertical-align: bottom;
-	display: flex;
-	flex-direction: column-reverse;
 }
 
 h {
