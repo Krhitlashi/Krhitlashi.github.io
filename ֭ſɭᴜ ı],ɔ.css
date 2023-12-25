@@ -8,6 +8,9 @@ body {
 	margin: 24px;
 	font-family: ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ;
 	text-align: bottom;
+	display: flex;
+	justify-content: flex-end;
+	flex-direction: column;
 }
 main {
 	display: table-cell;
