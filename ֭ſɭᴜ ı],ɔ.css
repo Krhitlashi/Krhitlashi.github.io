@@ -208,8 +208,6 @@ p {
 
 @media only screen and (max-width: 500px) {
 sacatama {
-	display: flex;
-	flex-direction: column-reverse;
 	align-items: center;
   }
 }
