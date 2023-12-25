@@ -28,7 +28,7 @@ h {
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
-	border-radius: 28px 4px;
+	border-radius: 28px 12px;
 	border-right: 4px solid black;
 	margin-block: 4px;
 	width: 32px;
@@ -76,7 +76,7 @@ form {
 	text-align: center;
 	margin-block: 4px;
 	background-color: #f0f0f0;
-	border-radius: 32px 8px;
+	border-radius: 32px 16px;
 	padding: 12px 12px 4px 12px;
 }
 
@@ -85,7 +85,7 @@ p {
 	text-align: center;
 	background-color: #f0f0f0;
 	border: 0px solid #f0f0f0;
-	border-radius: 32px 8px;
+	border-radius: 32px 16px;
 	padding: 8px;
 	margin-inline: 0;
 	margin-block: 4px;
@@ -94,7 +94,7 @@ p {
 }
 .ciihii {
 	background-color: #e0e0e0;
-	border-radius: 28px 4px;
+	border-radius: 28px 12px;
 	margin-block: 0px;
 }
 
