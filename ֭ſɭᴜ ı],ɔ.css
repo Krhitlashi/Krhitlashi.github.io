@@ -13,7 +13,7 @@ main {
 	vertical-align: bottom;
 	display: flex;
 	justify-content: flex-end;
-	flex-direction: column;
+	flex-direction: column-reverse;
 }
 
 h {
