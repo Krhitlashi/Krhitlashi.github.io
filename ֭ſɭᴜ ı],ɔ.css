@@ -5,10 +5,16 @@
 
 body {
 	background-color: #ffffff;
-	margin: 16px 24px;
+	margin: 24px;
+	margin-top: 20px;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	display: flex;
 	flex-direction: column;
+	justify-content: flex-end;
+	min-height: 100%;
+}
+html {
+	height: 100%;
 }
 main {
 	display: table-cell;
@@ -69,7 +75,7 @@ a:hover, a:active {
 
 form {
 	text-align: center;
-	margin-block: 12px;
+	margin-block: 4px;
 	background-color: #f0f0f0;
 	border-radius: 32px 16px;
 	padding: 12px;
@@ -123,7 +129,7 @@ p {
 	border-radius: 32px 8px;
 	padding: 8px;
 	margin-inline: 0;
-	margin-block: 12px;
+	margin-block: 4px;
 	color: black;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
