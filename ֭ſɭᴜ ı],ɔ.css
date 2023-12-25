@@ -129,6 +129,8 @@ p {
 }
 .ciihii {
 	background-color: #e0e0e0;
+	border-radius: 28px 8px;
+	margin-block: 0px;
 }
 
 .vertical-center {
