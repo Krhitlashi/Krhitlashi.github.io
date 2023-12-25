@@ -28,7 +28,7 @@ h {
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
-	border-radius: 28px 12px;
+	border-radius: 28px 4px;
 	border-right: 4px solid black;
 	margin-block: 4px;
 	width: 32px;
@@ -58,7 +58,7 @@ a:link, a:visited {
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
-	border-radius: 28px 12px;
+	border-radius: 28px 4px;
 	margin-right: 4px;
 	margin-left: 4px;
 	margin-block: 4px;
@@ -76,7 +76,7 @@ form {
 	text-align: center;
 	margin-block: 4px;
 	background-color: #f0f0f0;
-	border-radius: 32px 16px;
+	border-radius: 32px 8px;
 	padding: 12px 12px 4px 12px;
 }
 
@@ -85,7 +85,7 @@ p {
 	text-align: center;
 	background-color: #f0f0f0;
 	border: 0px solid #f0f0f0;
-	border-radius: 32px 16px;
+	border-radius: 32px 8px;
 	padding: 8px;
 	margin-inline: 0;
 	margin-block: 4px;
@@ -94,7 +94,7 @@ p {
 }
 .ciihii {
 	background-color: #e0e0e0;
-	border-radius: 28px 12px;
+	border-radius: 28px 4px;
 	margin-block: 0px;
 }
 
@@ -111,7 +111,7 @@ input {
 	width: 95%;
 	background-color:#e0e0e0;
 	border:0px solid black;
-	border-radius: 24px 8px;
+	border-radius: 28px 4px;
 	padding:16px;
 	color:black;
 	placeholder:"ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜꞇ";
@@ -128,7 +128,7 @@ input:focus {
 
 table {
 	border: 0px solid white;
-	border-radius: 32px 16px;
+	border-radius: 32px 8px;
 	width: -webkit-fill-available;
 	margin: 4px 0px;
 	background-color: #f0f0f0;
@@ -143,7 +143,7 @@ th, td {
 	color: black;
 	padding: 8px;
 	text-align: center;
-	border-radius: 28px 12px;
+	border-radius: 28px 4px;
 	width: 50%;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
