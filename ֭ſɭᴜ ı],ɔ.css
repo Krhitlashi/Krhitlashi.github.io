@@ -76,6 +76,7 @@ form {
 	text-align: center;
 	margin-block: 4px;
 	background-color: #f0f0f0;
+	color: black;
 	border-radius: 32px 16px;
 	padding: 12px 12px 4px 12px;
 }
@@ -178,6 +179,7 @@ th, td {
 
 	form {
 		background-color: #181818;
+		color: white;
 	}
 
 
