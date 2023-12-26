@@ -194,17 +194,6 @@ th, td {
 		border-top:4px solid #bdbdbd;
 	}
 
-
-	table, th, td {
-		border: 1px solid #ecf8f2;
-		background-color: #61caac;
-		color: black;
-	}
-	table {
-		border: 1px solid black;
-	}
-
-
 	p {
 		background-color: #181818;
 		border: 0px solid #181818;
@@ -214,6 +203,16 @@ th, td {
 		background-color: #282828;
 	}
 
+
+	table {
+		background-color: #181818;
+	}
+	tr {
+		background-color: #282828;
+	}
+	th, td {
+		color: white;
+	}
 }
 
 
