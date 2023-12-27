@@ -100,11 +100,6 @@ p {
 	background-color: #e0e0e0;
 	border-radius: 28px 12px;
 	margin-block: 0px;
-}
-ciihii {
-	background-color: #e0e0e0;
-	border-radius: 28px 12px;
-	margin-block: 0px;
 	text-align: left;
 	display: flex;
 	flex-direction: column-reverse;
@@ -213,7 +208,7 @@ th, td {
 		border: 0px solid #181818;
 		color: white;
 	}
-	.ciihii, ciihii {
+	.ciihii {
 		background-color: #282828;
 	}
 
