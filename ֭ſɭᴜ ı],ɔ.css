@@ -112,7 +112,7 @@ p {
 
 
 input {
-	width: 95%;
+	idth: -webkit-fill-available;
 	background-color:#e0e0e0;
 	border:0px solid black;
 	border-radius: 28px 12px;
@@ -224,8 +224,5 @@ th, td {
 @media only screen and (max-width: 500px) {
 	sacatama {
 		align-items: center;
-	}
-	input {
-		width: 90%;
 	}
 }
