@@ -1,5 +1,7 @@
-# Krhitlashi.github.io
+# ꞁȷ̀ɹ ſɭˬꞇᴜ ſɟɔ j͐ʃɹʞ |Krhitlashi.github.io|
 
+គេហទំព័រជាភាសាដែលបានបង្កើតរបស់ខ្ញុំហៅថា ខ្យាវេអេអិក្រៀ (ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ) ។
+čiłixʷ ʔə tə dqʷibucid ʔə ʔuklia (x̌yawi ʔi ʔuklia) (ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ).
 A website in my conlang Chawe E Iikrhia (ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ).
 
 ⟅  
