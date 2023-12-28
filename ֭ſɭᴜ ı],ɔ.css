@@ -232,10 +232,7 @@ th, td {
 	sacatama {
 		align-items: center;
 	}
-	table, th, td {
+	table, td {
 		display: flex;
-	}
-	td {
-		flex-direction: row;
 	}
 }
