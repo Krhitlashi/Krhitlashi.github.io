@@ -238,4 +238,7 @@ td {
 		overflow-x: auto;
 		display: flex;
 	}
+	th {
+		max-width: 50%;
+	}
 }
