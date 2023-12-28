@@ -140,6 +140,7 @@ table {
 	margin: 4px 0px;
 	background-color: #f0f0f0;
 	border-spacing: 8px;
+	table-layout: fixed;
 }
 tr {
 	background-color: #e0e0e0e0;
@@ -153,6 +154,10 @@ th, td {
 	border-radius: 28px 12px;
 	width: 50%;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
+}
+td {
+	overflow: hidden;
+	word-wrap: break-word;
 }
 
 
