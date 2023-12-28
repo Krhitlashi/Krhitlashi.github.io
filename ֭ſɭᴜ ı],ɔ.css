@@ -136,7 +136,7 @@ input:focus {
 table {
 	border: 0px solid white;
 	border-radius: 32px 16px;
-	width: -webkit-fill-available;
+	width: 100%;
 	margin: 4px 0px;
 	background-color: #f0f0f0;
 	border-spacing: 8px;
@@ -231,8 +231,5 @@ th, td {
 @media only screen and (max-width: 500px) {
 	sacatama {
 		align-items: center;
-	}
-	table, td {
-		display: flex;
 	}
 }
