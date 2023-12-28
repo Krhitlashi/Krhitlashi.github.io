@@ -40,7 +40,7 @@ h1 {
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 .miikef {
-	width: -webkit-fill-available;
+	width: 100%;
 	text-align: center;
 	background-color: transparent;
 	padding: 8px;
@@ -86,7 +86,7 @@ form {
 }
 
 p {
-	width: -webkit-fill-available;
+	width: 100%;
 	text-align: center;
 	background-color: #f0f0f0;
 	border: 0px solid #f0f0f0;
@@ -116,7 +116,7 @@ p {
 
 
 input {
-	width: -webkit-fill-available;
+	width: 100%;
 	background-color:#e0e0e0;
 	border:0px solid black;
 	border-radius: 28px 12px;
