@@ -239,6 +239,7 @@ th, td {
 	body {
 		flex-direction: row-reverse;
 		overflow-y: hidden;
+		align-items: center;
 	}
 	p, form {
 		margin-inline: 4px;
@@ -247,6 +248,7 @@ th, td {
 	form {
 		display: flex;
 		align-items: center;
+		flex-direction: row-reverse;
 	}
 	h1 {
 		align-self: center;
