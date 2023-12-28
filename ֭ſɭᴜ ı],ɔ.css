@@ -236,6 +236,6 @@ td {
 	}
 	table {
 		overflow-x: auto;
-		display: block;
+		display: flex;
 	}
 }
