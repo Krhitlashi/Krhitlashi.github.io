@@ -236,6 +236,6 @@ td {
 	}
 	table {
 		display: flex;
-		max-width: 50%;
+		width: 50%;
 	}
 }
