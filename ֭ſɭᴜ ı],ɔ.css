@@ -235,7 +235,7 @@ th, td {
 }
 
 
-@media only screen and (min-width: 600px) {
+@media only screen and (width: 600px) {
 	body {
 		flex-direction: row-reverse;
 		overflow-y: hidden;
@@ -245,6 +245,7 @@ th, td {
 		margin-inline: 4px;
 		display: flex;
 		flex-direction: column-reverse;
+		width: min-content;
 	}
 	form {
 		display: flex;
