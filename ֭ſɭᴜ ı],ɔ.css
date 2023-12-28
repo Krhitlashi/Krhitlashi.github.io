@@ -234,10 +234,7 @@ td {
 	sacatama {
 		align-items: center;
 	}
-	table {
+	table, th, td {
 		display: flex;
-	}
-	th, td {
-		width: 50%;
 	}
 }
