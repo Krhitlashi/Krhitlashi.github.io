@@ -235,7 +235,6 @@ td {
 		align-items: center;
 	}
 	table {
-		overflow-x: auto;
 		display: flex;
 	}
 	th {
