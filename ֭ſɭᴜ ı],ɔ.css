@@ -233,4 +233,8 @@ td {
 	sacatama {
 		align-items: center;
 	}
+	table {
+		overflow-x: auto;
+		display: block;
+	}
 }
