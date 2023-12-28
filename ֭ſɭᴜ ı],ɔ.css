@@ -236,6 +236,8 @@ td {
 	}
 	table {
 		display: flex;
-		width: 100%;
+	}
+	th, td {
+		width: 50%;
 	}
 }
