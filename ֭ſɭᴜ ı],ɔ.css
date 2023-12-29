@@ -228,7 +228,7 @@ th, td {
 }
 
 
-@media only screen and (min-width: 800px) {
+@media only screen and (width: 801px) {
 	body {
 		flex-direction: row-reverse;
 		overflow-y: hidden;
