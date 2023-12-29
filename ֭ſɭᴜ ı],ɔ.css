@@ -228,14 +228,7 @@ th, td {
 }
 
 
-@media only screen and (max-width: 500px) {
-	sacatama {
-		align-items: center;
-	}
-}
-
-
-@media only screen and (width: 600px) {
+@media only screen and (mib-width: 500px) {
 	body {
 		flex-direction: row-reverse;
 		overflow-y: hidden;
