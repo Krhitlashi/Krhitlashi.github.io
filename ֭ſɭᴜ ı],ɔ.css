@@ -19,6 +19,9 @@ main {
 	display: table-cell;
 	vertical-align: bottom;
 }
+div {
+	scrollbar-width: none;
+}
 
 h {
 	background-color: #d0d0d0;
