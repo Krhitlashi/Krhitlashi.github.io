@@ -92,6 +92,7 @@ form {
 	flex-direction: row-reverse;
 	align-items: center;
 	margin-right: 8px;
+	height: 95%;
 	height: -moz-available;
 	height: -webkit-fill-available;
 }
