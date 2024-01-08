@@ -87,6 +87,14 @@ form {
 	border-radius: 32px 16px;
 	padding: 12px 12px 4px 12px;
 }
+.tapairaq {
+	display: flex;
+	flex-direction: row-reverse;
+	align-items: center;
+	margin-right: 8px;
+	height: -moz-available;
+	height: -webkit-fill-available;
+}
 
 p {
 	width: -moz-available;
