@@ -42,6 +42,7 @@ h1 {
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 .miikef {
+	width: -moz-available;
 	width: -webkit-fill-available;
 	text-align: center;
 	background-color: transparent;
@@ -88,6 +89,7 @@ form {
 }
 
 p {
+	width: -moz-available;
 	width: -webkit-fill-available;
 	text-align: center;
 	background-color: #f0f0f0;
@@ -107,6 +109,15 @@ p {
 	flex-direction: column-reverse;
 	justify-content: center;
 }
+.ciihiitapai {
+	align-self: center;
+	width: 100%;
+	height: -moz-available;
+	height: -webkit-fill-available;
+	margin: 0 8px 8px 0;
+	display: flex;
+	align-items: center;
+}
 
 .vertical-center {
 	margin: 0;
@@ -118,6 +129,7 @@ p {
 
 
 input {
+	width: -moz-available;
 	width: -webkit-fill-available;
 	background-color:#e0e0e0;
 	border:0px solid black;
@@ -232,34 +244,4 @@ th, td {
 
 
 @media only screen and (width: 801px) {
-	body {
-		flex-direction: row-reverse;
-		overflow-y: hidden;
-		align-items: center;
-	}
-	p, form {
-		margin-inline: 4px;
-		display: flex;
-		flex-direction: column-reverse;
-		width: min-content;
-	}
-	form {
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-	}
-	h1 {
-		align-self: center;
-	}
-	a:link, a:visited {
-		margin-inline: 4px !important;
-	}
-	embed {
-		height: 92vh;
-		margin-block: 0;
-		margin-inline: 4px;
-	}
-	div {
-		width: 100%;
-	}
 }
