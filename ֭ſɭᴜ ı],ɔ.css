@@ -93,7 +93,6 @@ form {
 	align-items: center;
 	margin-right: 8px;
 	height: 95%;
-	height: -moz-available;
 	height: -webkit-fill-available;
 }
 
@@ -121,7 +120,7 @@ p {
 .ciihiitapai {
 	align-self: center;
 	width: 100%;
-	height: -moz-available;
+	height: 97%;
 	height: -webkit-fill-available;
 	margin: 0 8px 8px 0 !important;
 	display: flex !important;
