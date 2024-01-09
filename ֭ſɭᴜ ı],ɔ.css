@@ -81,7 +81,7 @@ a:hover, a:active {
 
 form {
 	text-align: center;
-	margin-block: 8px;
+	margin-block: 4px;
 	background-color: #f0f0f0;
 	color: black;
 	border-radius: 32px 16px;
@@ -91,7 +91,15 @@ form {
 	display: flex;
 	flex-direction: row-reverse;
 	align-items: center;
-	margin-inline: 8px;
+	margin-right: 8px;
+	height: 95%;
+	height: -webkit-fill-available;
+}
+.tapaisaq {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-left: 8px;
 	height: 95%;
 	height: -webkit-fill-available;
 }
