@@ -80,6 +80,7 @@ a:hover, a:active {
 }
 
 form {
+	display: flex;
 	text-align: center;
 	margin-block: 4px;
 	background-color: #f0f0f0;
@@ -88,7 +89,6 @@ form {
 	padding: 12px 12px 4px 12px;
 }
 .tapairaq {
-	display: flex;
 	flex-direction: row-reverse;
 	align-items: center;
 	margin-right: 8px;
@@ -96,12 +96,16 @@ form {
 	height: -webkit-fill-available;
 }
 .tapaisaq {
-	display: flex;
 	flex-direction: row;
 	align-items: center;
-	margin-left: 8px;
+	margin-right: 8px;
 	height: 95%;
 	height: -webkit-fill-available;
+}
+.cepai {
+	flex-direction: column-reverse;
+	align-items: center;
+	margin-block: 4px;
 }
 
 p {
