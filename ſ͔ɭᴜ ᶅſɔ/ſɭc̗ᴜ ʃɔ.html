@@ -1,6 +1,26 @@
+<?php Header("Cache-Control: max-age=3000, must-revalidate"); ?>
+<!DOCTYPE html>
+<html lang="aih">
+ 
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+ <title> ſɭc̗ᴜ ʃɔ </title>
+ 
+ <link rel="manifest" href="ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.webmanifest">
+ <link rel="stylesheet" href="/֭ſɭᴜ ı],ɔ.css">
+</head>
+
+<body style="justify-content: center; margin-bottom: 24px;">
+
+<h1 style="text-align:center; margin-top: 16px;">ſɭc̗ᴜ ʃɔ (EN)</h1>
+
+<form style="padding: 12px;">
+
 Phonology / Orthography (ʃɔ ſ͔ɭᴜ ı]ɹƽ ꞁȷ̀ᴜꞇ / ſ͔ɭᴜ ı]ɹ ſɭɹʞ)
 
-
+<p class="ciihii" style="margin-bottom: 8px;">
 
 ᶅſ п́  ſן ɘ  ſȷ ʞ  ʃ ɀ  ŋᷠ c̭
 
@@ -385,4 +405,28 @@ In the past it restricted words to three consonant areas only. Similarly, the cl
 
 
 The loss of some final consonants led to Iikrhian to develop a more polysyllabic structure which led to the decline of classifiers as they made words too long. The classifiers themselves likely led to the creation of the Iikrhian adjectival order which has influenced other aspects of Iikrhian grammar including the ſɭᴜͷ̗. As many adjectival compounds in Iikrhian became long, many roots were shortened. Similarly, this resulted in many affixes being created by what used to be the classifiers as well as particles. As words shortened, many words needed to be distinguished from sound, so more clusters became permitted. As final consonants became less important, they merged which caused more clusters and affixes to be created to create more words. At that time, affixes were favored over adjectival compounding. However, as Iikrhian vocabulary and affixation increased, the need for long adjectival compounds decreased leading to where Iikrhian is now.
+</p>
+</form>
 
+<script>
+    window.addEventListener('load', () => {
+      registerSW();
+    });
+ 
+    async function registerSW() {
+      if ('serviceWorker' in navigator) {
+        try {
+          await navigator
+                .serviceWorker
+                .register('j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js');
+        }
+        catch (e) {
+          console.log('SW registration failed');
+        }
+      }
+    }
+ </script>
+
+</body>
+
+</html>
