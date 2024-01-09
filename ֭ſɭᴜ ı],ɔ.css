@@ -91,7 +91,7 @@ form {
 	display: flex;
 	flex-direction: row-reverse;
 	align-items: center;
-	margin-right: 8px;
+	margin-inline: 8px;
 	height: 95%;
 	height: -webkit-fill-available;
 }
