@@ -205,6 +205,13 @@ th, td {
 	word-wrap: break-word;
 }
 
+img {
+	height: 600px;
+	align-self: center;
+	border-radius: 32px 16px;
+	margin: 8px;
+}
+
 
 @media (prefers-color-scheme: dark) {
 	body {
