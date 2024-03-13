@@ -42,8 +42,7 @@ h1 {
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 .miikef {
-	width: -moz-available;
-	width: -webkit-fill-available;
+	width: max-width;
 	text-align: center;
 	background-color: transparent;
 	padding: 8px;
@@ -53,8 +52,7 @@ h1 {
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 .oshiipewa {
-	width: -moz-available;
-	width: -webkit-fill-available;
+	width: max-width;
 	text-align: left;
 	align-self: end;
 	background-color: transparent;
