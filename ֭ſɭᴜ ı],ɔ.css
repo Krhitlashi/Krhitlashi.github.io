@@ -205,7 +205,7 @@ th, td {
 .cashiil {
 	writing-mode: vertical-lr; 
 	width: min-content;
-	height: 628px;
+	height: 612px;
 	background-color: #e0e0e0;
 	margin-block: 8px;
 	margin-inline: 0px;
@@ -215,7 +215,7 @@ th, td {
 }
 
 img {
-	height: 600px;
+	height: 584px;
 	align-self: center;
 	border-radius: 32px 16px;
 	margin: 8px;
