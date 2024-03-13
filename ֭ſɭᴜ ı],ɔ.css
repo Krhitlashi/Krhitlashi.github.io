@@ -204,6 +204,17 @@ th, td {
 	overflow: hidden;
 	word-wrap: break-word;
 }
+.cashiil {
+	writing-mode: vertical-lr; 
+	width: min-content;
+	height: 628px;
+	background-color: #e0e0e0;
+	margin-block: 8px;
+	margin-inline: 0px;
+}
+.cashiilciihii {
+	background-color: #d0d0d0;
+}
 
 img {
 	height: 600px;
@@ -280,6 +291,12 @@ img {
 	}
 	th, td {
 		color: white;
+	}
+	.cashiil {
+		background-color: #282828;
+	}
+	.cashiilciihii {
+		background-color: #383838;
 	}
 }
 
