@@ -78,7 +78,7 @@ a:link, a:visited {
 	display: inline-block;
 	justify-content: center;
 	border-radius: 24px 8px;
-	border: 1px solid #d0d0d0;
+	border: 0px solid #d0d0d0;
 	margin-right: 4px;
 	margin-left: 4px;
 	margin-block: 4px;
@@ -87,7 +87,7 @@ a:link, a:visited {
 }
 a:hover, a:active {
 	background-color: #d8d8d8;
-	border: 1px solid #c8c8c8;
+	border: 0px solid #c8c8c8;
 	border-right:4px solid #424242;
 	width: 32px;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
@@ -99,7 +99,7 @@ form {
 	background-color: #f0f0f0;
 	color: black;
 	border-radius: 32px 16px;
-	border: 1px solid #e0e0e0;
+	border: 0px solid #e0e0e0;
 	padding: 12px 12px 4px 12px;
 }
 .tapairaq {
@@ -127,7 +127,7 @@ p {
 	width: -webkit-fill-available;
 	text-align: center;
 	background-color: #f0f0f0;
-	border: 1px solid #e0e0e0;
+	border: 0px solid #e0e0e0;
 	border-radius: 32px 16px;
 	padding: 8px;
 	margin-inline: 0;
@@ -138,7 +138,7 @@ p {
 .ciihii {
 	background-color: #e0e0e0;
 	border-radius: 28px 12px;
-        border: 1px solid #d0d0d0;
+        border: 0px solid #d0d0d0;
 	margin-block: 0px;
 	display: flex;
 	flex-direction: column-reverse;
@@ -167,7 +167,7 @@ input {
 	width: -moz-available;
 	width: -webkit-fill-available;
 	background-color:#e0e0e0;
-	border: 1px solid #d0d0d0;
+	border: 0px solid #d0d0d0;
 	border-radius: 28px 12px;
 	padding:16px;
 	color:black;
@@ -184,7 +184,7 @@ input:focus {
 }
 
 table {
-	border: 1px solid #e0e0e0;
+	border: 0px solid #e0e0e0;
 	border-radius: 32px 16px;
 	width: 100%;
 	margin: 4px 0px;
@@ -194,7 +194,7 @@ table {
 }
 tr {
 	background-color: #e0e0e0;
-	border: 1px solid #d0d0d0;
+	border: 0px solid #d0d0d0;
 }
 th, td {
 	border: 0px solid white;
@@ -214,14 +214,14 @@ th, td {
 	width: min-content;
 	height: 640px;
 	background-color: #e0e0e0;
-	border: 1px solid #d0d0d0;
+	border: 0px solid #d0d0d0;
 	margin-block: 8px;
 	margin-inline: 0px;
 	align-self: start;
 }
 .cashiilciihii {
 	background-color: #d0d0d0;
-	border: 1px solid #c0c0c0;
+	border: 0px solid #c0c0c0;
 }
 
 img {
@@ -240,7 +240,7 @@ img {
 	h {   
 		background-color: #383838;
 		color: white;
-		border: 1px solid #484848;
+		border: 0px solid #484848;
 		border-right: 4px solid white;
 	}
 	h1 {
@@ -257,30 +257,30 @@ img {
 	a:link, a:visited {
 		background-color: #282828;
 		color: white;
-		border: 1px solid #383838;
+		border: 0px solid #383838;
 	}
 	a:hover, a:active {
 		background-color: #303030;
-		border: 1px solid #404040;
+		border: 0px solid #404040;
 		border-right:4px solid #bdbdbd;
 	}
 
 	form {
 		background-color: #181818;
 		color: white;
-		border: 1px solid #282828;
+		border: 0px solid #282828;
 	}
 
 
 	input {
 		color: white;
 		background-color: #282828;
-		border:1px solid #383838;
+		border:0px solid #383838;
 		box-shadow: 0px 0px 0px 0px #2828283e;
 	}
 	input:hover {
 		background-color: #303030;
-		border: 1px solid #404040;
+		border: 0px solid #404040;
 	}
 	input:focus {
 		border-top:4px solid #bdbdbd;
@@ -288,33 +288,33 @@ img {
 
 	p {
 		background-color: #181818;
-		border: 1px solid #282828;
+		border: 0px solid #282828;
 		color: white;
 	}
 	.ciihii {
 		background-color: #282828;
-		border: 1px solid #383838;
+		border: 0px solid #383838;
 	}
 
 
 	table {
 		background-color: #181818;
-		border: 1px solid #282828;
+		border: 0px solid #282828;
 	}
 	tr {
 		background-color: #282828;
-		border: 1px solid #383838;
+		border: 0px solid #383838;
 	}
 	th, td {
 		color: white;
 	}
 	.cashiil {
 		background-color: #282828;
-		border: 1px solid #383838;
+		border: 0px solid #383838;
 	}
 	.cashiilciihii {
 		background-color: #383838;
-		border: 1px solid #484848;
+		border: 0px solid #484848;
 	}
 }
 
