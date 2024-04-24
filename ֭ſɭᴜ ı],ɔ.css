@@ -78,7 +78,7 @@ a:link, a:visited {
 	display: inline-block;
 	justify-content: center;
 	border-radius: 24px 8px;
-	border: 0px solid #d0d0d0;
+	border: 1px solid #d0d0d0;
 	margin-right: 4px;
 	margin-left: 4px;
 	margin-block: 4px;
@@ -99,7 +99,7 @@ form {
 	background-color: #f0f0f0;
 	color: black;
 	border-radius: 32px 16px;
-	border: 0px solid #e0e0e0;
+	border: 1px solid #e0e0e0;
 	padding: 12px 12px 4px 12px;
 }
 .tapairaq {
@@ -127,7 +127,6 @@ p {
 	width: -webkit-fill-available;
 	text-align: center;
 	background-color: #f0f0f0;
-	border: 0px solid #e0e0e0;
 	border-radius: 32px 16px;
 	padding: 8px;
 	margin-inline: 0;
@@ -257,18 +256,18 @@ img {
 	a:link, a:visited {
 		background-color: #282828;
 		color: white;
-		border: 0px solid #383838;
+		border: 1px solid #383838;
 	}
 	a:hover, a:active {
 		background-color: #303030;
-		border: 0px solid #404040;
+		border: 1px solid #404040;
 		border-right:4px solid #bdbdbd;
 	}
 
 	form {
 		background-color: #181818;
 		color: white;
-		border: 0px solid #282828;
+		border: 1px solid #282828;
 	}
 
 
@@ -288,7 +287,6 @@ img {
 
 	p {
 		background-color: #181818;
-		border: 0px solid #282828;
 		color: white;
 	}
 	.ciihii {
