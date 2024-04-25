@@ -3,8 +3,25 @@
 	src: url("ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ.ttf");
 }
 
+:root {
+	ខេលេសៃ: #fff;
+	
+	ជាងាធី: #f0f0f0;
+	ពិសាធី: #e0e0e0;
+	តិជាធី: #d0d0d0;
+	តាវាធី: #c0c0c0;
+	ព៏ធី: #b0b0b0;
+
+	តិជាធី២អុមា: #d8d8d8;
+	តាវាធី២អុមា: #c8c8c8;
+
+	កាន្តុនី: #424242;
+
+	កេភ: #000;
+}
+
 body {
-	background-color: #ffffff;
+	background-color: var(ខេលេសៃ);
 	margin: 20px 24px 24px 24px;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	display: flex;
@@ -24,15 +41,15 @@ div {
 }
 
 h {
-	background-color: #d0d0d0;
-	color: black;
+	background-color: var(តិជាធី);
+	color: var(កេភ);
 	padding: 8px 12px;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
 	border-radius: 24px 8px;
-	border: 0px solid #c0c0c0;
-	border-right: 4px solid black;
+	border: 0px solid var(តាវាធី);
+	border-right: 4px solid var(កេភ);
 	margin-block: 4px;
 	width: 32px;
 }
@@ -49,7 +66,7 @@ h1 {
 	padding: 8px;
 	margin-inline: 0;
 	margin-block: 4px;
-	color: black;
+	color: var(កេភ);
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 .oshiipewa {
@@ -60,7 +77,7 @@ h1 {
 	padding: 8px;
 	margin-inline: 0;
 	margin-block: 4px;
-	color: black;
+	color: var(កេភ);
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 embed {
@@ -70,15 +87,15 @@ embed {
 
 
 a:link, a:visited {
-	background-color: #e0e0e0;
-	color: black;
+	background-color: var(ពិសាធី);
+	color: var(កេភ);
 	padding: 8px 12px;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
 	justify-content: center;
 	border-radius: 24px 8px;
-	border: 1px solid #d0d0d0;
+	border: 1px solid var(តិជាធី);
 	margin-right: 4px;
 	margin-left: 4px;
 	margin-block: 4px;
@@ -86,9 +103,9 @@ a:link, a:visited {
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 a:hover, a:active {
-	background-color: #d8d8d8;
-	border: 0px solid #c8c8c8;
-	border-right:4px solid #424242;
+	background-color: var(តិជាធី២អុមា);
+	border: 0px solid var(តាវាធី២អុមា);
+	border-right: 4px solid var(កាន្តុនី);
 	width: 32px;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
@@ -96,10 +113,10 @@ a:hover, a:active {
 form {
 	display: flex;
 	text-align: center;
-	background-color: #f0f0f0;
-	color: black;
+	background-color: var(ជាងាធី);
+	color: var(កេភ);
 	border-radius: 32px 16px;
-	border: 1px solid #e0e0e0;
+	border: 1px solid var(ពិសាធី);
 	padding: 12px 12px 4px 12px;
 }
 .tapairaq {
@@ -126,18 +143,18 @@ p {
 	width: -moz-available;
 	width: -webkit-fill-available;
 	text-align: center;
-	background-color: #f0f0f0;
+	background-color: var(ជាងាធី);
 	border-radius: 32px 16px;
 	padding: 8px;
 	margin-inline: 0;
 	margin-block: 4px;
-	color: black;
+	color: var(កេភ);
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 .ciihii {
-	background-color: #e0e0e0;
+	background-color: var(ពិសាធី);
 	border-radius: 28px 12px;
-        border: 0px solid #d0d0d0;
+        border: 0px solid var(តិជាធី);
 	margin-block: 0px;
 	display: flex;
 	flex-direction: column-reverse;
@@ -165,38 +182,38 @@ p {
 input {
 	width: -moz-available;
 	width: -webkit-fill-available;
-	background-color:#e0e0e0;
-	border: 0px solid #d0d0d0;
+	background-color: var(ពិសាធី);
+	border: 0px solid var(តិជាធី);
 	border-radius: 28px 12px;
-	padding:16px;
-	color:black;
-	placeholder:"ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜꞇ";
+	padding: 16px;
+	color: var(កេភ);
+	placeholder: "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜꞇ";
 	box-shadow: 0px 0px 0px 0px #e0e0e03e;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 input:hover {
-	background-color:#a4a4a4;
+	background-color: var(តិជាធី);
 }
 input:focus {
 	outline:none;
-	border-top:4px solid #424242;
+	border-top: 4px solid var(កាន្តុនី);
 }
 
 table {
-	border: 0px solid #e0e0e0;
+	border: 0px solid var(ពិសាធី);
 	border-radius: 32px 16px;
 	width: 100%;
 	margin: 4px 0px;
-	background-color: #f0f0f0;
+	background-color: var(ជាងាធី);
 	border-spacing: 8px;
 	table-layout: fixed;
 }
 tr {
-	background-color: #e0e0e0;
-	border: 0px solid #d0d0d0;
+	background-color: var(ពិសាធី);
+	border: 0px solid var(តិជាធី);
 }
 th, td {
-	border: 0px solid white;
+	border: 0px solid var(ខេលេសៃ);
 	border-collapse: collapse;
 	color: black;
 	padding: 8px;
@@ -212,14 +229,14 @@ th, td {
 	writing-mode: vertical-lr; 
 	width: min-content;
 	height: 640px;
-	background-color: #e0e0e0;
-	border: 0px solid #d0d0d0;
+	background-color: var(ពិសាធី);
+	border: 0px solid var(តិជាធី);
 	margin-block: 8px;
 	margin-inline: 0px;
 	align-self: start;
 }
 .cashiilciihii {
-	background-color: #d0d0d0;
+	background-color: var(តិជាធី);
 	border: 0px solid #c0c0c0;
 }
 
@@ -232,87 +249,21 @@ img {
 
 
 @media (prefers-color-scheme: dark) {
-	body {
-		background-color: #000000;
-	}
+	:root {
+		ខេលេសៃ: #000;
+	
+		ជាងាធី: #181818;
+		ពិសាធី: #282828;
+		តិជាធី: #383838;
+		តាវាធី: #484848;
+		ព៏ធី: #585858;
 
-	h {   
-		background-color: #383838;
-		color: white;
-		border: 0px solid #484848;
-		border-right: 4px solid white;
-	}
-	h1 {
-		color: white;
-	}
-	.miikef {
-		color: white;
-	}
-	.oshiipewa {
-		color: white;
-	}
+		តិជាធី២អុមា: #404040;
+		តាវាធី២អុមា: #505050;
 
+		កាន្តុនី: #bdbdbd;
 
-	a:link, a:visited {
-		background-color: #282828;
-		color: white;
-		border: 1px solid #383838;
-	}
-	a:hover, a:active {
-		background-color: #303030;
-		border: 1px solid #404040;
-		border-right:4px solid #bdbdbd;
-	}
-
-	form {
-		background-color: #181818;
-		color: white;
-		border: 1px solid #282828;
-	}
-
-
-	input {
-		color: white;
-		background-color: #282828;
-		border:0px solid #383838;
-		box-shadow: 0px 0px 0px 0px #2828283e;
-	}
-	input:hover {
-		background-color: #303030;
-		border: 0px solid #404040;
-	}
-	input:focus {
-		border-top:4px solid #bdbdbd;
-	}
-
-	p {
-		background-color: #181818;
-		color: white;
-	}
-	.ciihii {
-		background-color: #282828;
-		border: 0px solid #383838;
-	}
-
-
-	table {
-		background-color: #181818;
-		border: 0px solid #282828;
-	}
-	tr {
-		background-color: #282828;
-		border: 0px solid #383838;
-	}
-	th, td {
-		color: white;
-	}
-	.cashiil {
-		background-color: #282828;
-		border: 0px solid #383838;
-	}
-	.cashiilciihii {
-		background-color: #383838;
-		border: 0px solid #484848;
+		កេភ: #fff;
 	}
 }
 
