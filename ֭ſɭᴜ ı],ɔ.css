@@ -23,6 +23,7 @@
 body {
 	background-color: var(--ខេលេសៃ);
 	margin: 20px 24px 24px 24px;
+	color: var(--កេភ);
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	display: flex;
 	flex-direction: column;
@@ -54,7 +55,7 @@ h {
 	width: 32px;
 }
 h1 {
-	color: black;
+	color: var(--កេភ);
 	text-align:left;
 	margin:16px;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
@@ -219,7 +220,7 @@ th, td {
 	border-radius: 28px 12px;
 	border: 1px solid var(--ខេលេសៃ);
 	border-collapse: collapse;
-	color: black;
+	color: var(--កេភ);
 	padding: 8px;
 	text-align: center;
 	width: 50%;
