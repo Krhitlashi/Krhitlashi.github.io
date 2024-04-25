@@ -171,7 +171,8 @@ p {
 	align-items: center;
 }
 .paaksiica {
-	background-color: var(--ជាងាធី);
+	border-radius: 32px 16px;
+	border: 1px solid var(--ពិសាធី);
 }
 
 .vertical-center {
