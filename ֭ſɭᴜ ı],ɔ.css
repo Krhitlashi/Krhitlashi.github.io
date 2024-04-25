@@ -4,24 +4,24 @@
 }
 
 :root {
-	ខេលេសៃ: #fff;
+	--ខេលេសៃ: #fff;
 	
-	ជាងាធី: #f0f0f0;
-	ពិសាធី: #e0e0e0;
-	តិជាធី: #d0d0d0;
-	តាវាធី: #c0c0c0;
-	ព៏ធី: #b0b0b0;
+	--ជាងាធី: #f0f0f0;
+	--ពិសាធី: #e0e0e0;
+	--តិជាធី: #d0d0d0;
+	--តាវាធី: #c0c0c0;
+	--ព៏ធី: #b0b0b0;
 
-	តិជាធី២អុមា: #d8d8d8;
-	តាវាធី២អុមា: #c8c8c8;
+	--តិជាធី២អុមា: #d8d8d8;
+	--តាវាធី២អុមា: #c8c8c8;
 
-	កាន្តុនី: #424242;
+	--កាន្តុនី: #424242;
 
-	កេភ: #000;
+	--កេភ: #000;
 }
 
 body {
-	background-color: var(ខេលេសៃ);
+	background-color: var(--ខេលេសៃ);
 	margin: 20px 24px 24px 24px;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	display: flex;
@@ -41,15 +41,15 @@ div {
 }
 
 h {
-	background-color: var(តិជាធី);
-	color: var(កេភ);
+	background-color: var(--តិជាធី);
+	color: var(--កេភ);
 	padding: 8px 12px;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
 	border-radius: 24px 8px;
-	border: 0px solid var(តាវាធី);
-	border-right: 4px solid var(កេភ);
+	border: 0px solid var(--តាវាធី);
+	border-right: 4px solid var(--កេភ);
 	margin-block: 4px;
 	width: 32px;
 }
@@ -66,7 +66,7 @@ h1 {
 	padding: 8px;
 	margin-inline: 0;
 	margin-block: 4px;
-	color: var(កេភ);
+	color: var(--កេភ);
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 .oshiipewa {
@@ -77,7 +77,7 @@ h1 {
 	padding: 8px;
 	margin-inline: 0;
 	margin-block: 4px;
-	color: var(កេភ);
+	color: var(--កេភ);
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 embed {
@@ -87,15 +87,15 @@ embed {
 
 
 a:link, a:visited {
-	background-color: var(ពិសាធី);
-	color: var(កេភ);
+	background-color: var(--ពិសាធី);
+	color: var(--កេភ);
 	padding: 8px 12px;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
 	justify-content: center;
 	border-radius: 24px 8px;
-	border: 1px solid var(តិជាធី);
+	border: 1px solid var(--តិជាធី);
 	margin-right: 4px;
 	margin-left: 4px;
 	margin-block: 4px;
@@ -103,9 +103,9 @@ a:link, a:visited {
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 a:hover, a:active {
-	background-color: var(តិជាធី២អុមា);
-	border: 1px solid var(តាវាធី២អុមា);
-	border-right: 4px solid var(កាន្តុនី);
+	background-color: var(--តិជាធី២អុមា);
+	border: 1px solid var(--តាវាធី២អុមា);
+	border-right: 4px solid var(--កាន្តុនី);
 	width: 32px;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
@@ -113,10 +113,10 @@ a:hover, a:active {
 form {
 	display: flex;
 	text-align: center;
-	background-color: var(ជាងាធី);
-	color: var(កេភ);
+	background-color: var(--ជាងាធី);
+	color: var(--កេភ);
 	border-radius: 32px 16px;
-	border: 1px solid var(ពិសាធី);
+	border: 1px solid var(--ពិសាធី);
 	padding: 12px 12px 4px 12px;
 }
 .tapairaq {
@@ -143,18 +143,18 @@ p {
 	width: -moz-available;
 	width: -webkit-fill-available;
 	text-align: center;
-	background-color: var(ជាងាធី);
+	background-color: var(--ជាងាធី);
 	border-radius: 32px 16px;
 	padding: 8px;
 	margin-inline: 0;
 	margin-block: 4px;
-	color: var(កេភ);
+	color: var(--កេភ);
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 .ciihii {
-	background-color: var(ពិសាធី);
+	background-color: var(--ពិសាធី);
 	border-radius: 28px 12px;
-        border: 0px solid var(តិជាធី);
+        border: 0px solid var(--តិជាធី);
 	margin-block: 0px;
 	display: flex;
 	flex-direction: column-reverse;
@@ -170,7 +170,7 @@ p {
 	align-items: center;
 }
 .paaksiica {
-	background-color: var(ជាងាធី);
+	background-color: var(--ជាងាធី);
 }
 
 .vertical-center {
@@ -185,39 +185,39 @@ p {
 input {
 	width: -moz-available;
 	width: -webkit-fill-available;
-	background-color: var(ពិសាធី);
-	border: 1px solid var(តិជាធី);
+	background-color: var(--ពិសាធី);
+	border: 1px solid var(--តិជាធី);
 	border-radius: 28px 12px;
 	padding: 16px;
-	color: var(កេភ);
+	color: var(--កេភ);
 	placeholder: "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜꞇ";
 	box-shadow: 0 0 0 0 #e0e0e03e;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 input:hover {
-	background-color: var(តិជាធី);
+	background-color: var(--តិជាធី);
 }
 input:focus {
 	outline:none;
-	border-top: 4px solid var(កាន្តុនី);
+	border-top: 4px solid var(--កាន្តុនី);
 }
 
 table {
-	background-color: var(ជាងាធី);
+	background-color: var(--ជាងាធី);
 	border-radius: 32px 16px;
-	border: 1px solid var(ពិសាធី);
+	border: 1px solid var(--ពិសាធី);
 	width: 100%;
 	margin: 4px 0px;
 	border-spacing: 8px;
 	table-layout: fixed;
 }
 tr {
-	background-color: var(ពិសាធី);
-	border: 0 solid var(តិជាធី);
+	background-color: var(--ពិសាធី);
+	border: 0 solid var(--តិជាធី);
 }
 th, td {
 	border-radius: 28px 12px;
-	border: 1px solid var(ខេលេសៃ);
+	border: 1px solid var(--ខេលេសៃ);
 	border-collapse: collapse;
 	color: black;
 	padding: 8px;
@@ -229,8 +229,8 @@ th, td {
 	word-wrap: break-word;
 }
 .cashiil {
-	background-color: var(ពិសាធី);
-	border: 1px solid var(តិជាធី);
+	background-color: var(--ពិសាធី);
+	border: 1px solid var(--តិជាធី);
 	writing-mode: vertical-lr; 
 	width: min-content;
 	height: 640px;
@@ -239,8 +239,8 @@ th, td {
 	align-self: start;
 }
 .cashiilciihii {
-	background-color: var(តិជាធី);
-	border: 1px solid var(តាវាធី);
+	background-color: var(--តិជាធី);
+	border: 1px solid var(--តាវាធី);
 }
 
 img {
@@ -253,20 +253,20 @@ img {
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		ខេលេសៃ: #000;
+		--ខេលេសៃ: #000;
 	
-		ជាងាធី: #181818;
-		ពិសាធី: #282828;
-		តិជាធី: #383838;
-		តាវាធី: #484848;
-		ព៏ធី: #585858;
+		--ជាងាធី: #181818;
+		--ពិសាធី: #282828;
+		--តិជាធី: #383838;
+		--តាវាធី: #484848;
+		--ព៏ធី: #585858;
 
-		តិជាធី២អុមា: #404040;
-		តាវាធី២អុមា: #505050;
+		--តិជាធី២អុមា: #404040;
+		--តាវាធី២អុមា: #505050;
 
-		កាន្តុនី: #bdbdbd;
+		--កាន្តុនី: #bdbdbd;
 
-		កេភ: #fff;
+		--កេភ: #fff;
 	}
 }
 
