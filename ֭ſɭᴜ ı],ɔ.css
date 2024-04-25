@@ -104,7 +104,7 @@ a:link, a:visited {
 }
 a:hover, a:active {
 	background-color: var(តិជាធី២អុមា);
-	border: 0px solid var(តាវាធី២អុមា);
+	border: 1px solid var(តាវាធី២អុមា);
 	border-right: 4px solid var(កាន្តុនី);
 	width: 32px;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
@@ -169,6 +169,9 @@ p {
 	display: flex !important;
 	align-items: center;
 }
+.paaksiica {
+	background-color: var(ជាងាធី);
+}
 
 .vertical-center {
 	margin: 0;
@@ -183,12 +186,12 @@ input {
 	width: -moz-available;
 	width: -webkit-fill-available;
 	background-color: var(ពិសាធី);
-	border: 0px solid var(តិជាធី);
+	border: 1px solid var(តិជាធី);
 	border-radius: 28px 12px;
 	padding: 16px;
 	color: var(កេភ);
 	placeholder: "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜꞇ";
-	box-shadow: 0px 0px 0px 0px #e0e0e03e;
+	box-shadow: 0 0 0 0 #e0e0e03e;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 input:hover {
@@ -200,25 +203,25 @@ input:focus {
 }
 
 table {
-	border: 0px solid var(ពិសាធី);
+	background-color: var(ជាងាធី);
 	border-radius: 32px 16px;
+	border: 1px solid var(ពិសាធី);
 	width: 100%;
 	margin: 4px 0px;
-	background-color: var(ជាងាធី);
 	border-spacing: 8px;
 	table-layout: fixed;
 }
 tr {
 	background-color: var(ពិសាធី);
-	border: 0px solid var(តិជាធី);
+	border: 0 solid var(តិជាធី);
 }
 th, td {
-	border: 0px solid var(ខេលេសៃ);
+	border-radius: 28px 12px;
+	border: 1px solid var(ខេលេសៃ);
 	border-collapse: collapse;
 	color: black;
 	padding: 8px;
 	text-align: center;
-	border-radius: 28px 12px;
 	width: 50%;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	max-height: 1000em;
@@ -226,18 +229,18 @@ th, td {
 	word-wrap: break-word;
 }
 .cashiil {
+	background-color: var(ពិសាធី);
+	border: 1px solid var(តិជាធី);
 	writing-mode: vertical-lr; 
 	width: min-content;
 	height: 640px;
-	background-color: var(ពិសាធី);
-	border: 0px solid var(តិជាធី);
 	margin-block: 8px;
 	margin-inline: 0px;
 	align-self: start;
 }
 .cashiilciihii {
 	background-color: var(តិជាធី);
-	border: 0px solid #c0c0c0;
+	border: 1px solid var(តាវាធី);
 }
 
 img {
