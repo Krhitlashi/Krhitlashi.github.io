@@ -171,7 +171,6 @@ p {
 	align-items: center;
 }
 .paaksiica {
-	border-radius: 32px 16px;
 	border: 1px solid var(--ពិសាធី);
 }
 
@@ -215,11 +214,11 @@ table {
 }
 tr {
 	background-color: var(--ពិសាធី);
-	border: 0 solid var(--តិជាធី);
+	border: 1px solid var(--តិជាធី);
 }
 th, td {
 	border-radius: 28px 12px;
-	border: 1px solid var(--ខេលេសៃ);
+	border: 0 solid var(--តិជាធី);;
 	border-collapse: collapse;
 	color: var(--កេភ);
 	padding: 8px;
