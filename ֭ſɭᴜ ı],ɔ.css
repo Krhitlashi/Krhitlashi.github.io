@@ -54,7 +54,7 @@ div {
 
 h {
 	background-color: var(--តិជាធី);
-	border-radius: var(--អិត្ផ);
+	border-radius: var(--អិត្ផេ);
 	border-right: 4px solid var(--កេភ);
 	color: var(--កេភ);
 	padding: 8px 12px;
@@ -99,7 +99,7 @@ embed {
 
 a:link, a:visited {
 	background-color: var(--ពិសាធី);
-	border-radius: var(--អិត្ផ);
+	border-radius: var(--អិត្ផេ);
 	border: 1px solid var(--តិជាធី);
 	color: var(--កេភ);
 	padding: 8px 12px;
