@@ -1,0 +1,48 @@
+<?php Header("Cache-Control: max-age=3000, must-revalidate"); ?>
+<!DOCTYPE html>
+<html lang="aih">
+ 
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+ <title> Shumekayne </title>
+ 
+ <link rel="manifest" href="ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.webmanifest">
+ <link rel="stylesheet" href="/֭ſɭᴜ ı],ɔ.css">
+</head>
+
+<body style="justify-content: center; margin-bottom: 24px;">
+
+<h1 style="text-align:center; margin-top: 16px;">Shumekayne (EN)</h1>
+
+<form class="cepai" style="padding: 12px; flex-direction: column;">
+  <p class="miikef">Lore Information</p>
+  <a class="ciihii" href="sweshumekayne.html" style="height: 95%; height: -webkit-fill-available; margin-bottom: 8px; writing-mode: vertical-lr; rotate: 180deg;">Shumekayne</a>
+</form>
+<form class="cepai" style="padding: 12px; flex-direction: column;">
+  <p class="miikef">Images</p>
+</form>
+
+<script>
+    window.addEventListener('load', () => {
+      registerSW();
+    });
+ 
+    async function registerSW() {
+      if ('serviceWorker' in navigator) {
+        try {
+          await navigator
+                .serviceWorker
+                .register('j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js');
+        }
+        catch (e) {
+          console.log('SW registration failed');
+        }
+      }
+    }
+ </script>
+
+</body>
+
+</html>
