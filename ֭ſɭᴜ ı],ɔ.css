@@ -285,6 +285,12 @@ img {
 	}
 }
 
+@media (prefers-color-scheme: dark) {
+	.ciihii {
+		background-color: var(--ខេលេសៃច្ហិ);
+	}
+}
+
 
 @media only screen and (width: 801px) {
 }
