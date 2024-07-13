@@ -124,7 +124,7 @@ a:hover, a:active {
 
 form {
 	background-color: var(--ជាងាធី);
-	border-radius: var(--អិត្ផេពឺ);
+	border-radius: var(--អិត្ផេ);
 	border: 1px solid var(--ពិសាធី);
 	color: var(--កេភ);
 	display: flex;
@@ -153,7 +153,7 @@ form {
 
 p {
 	background-color: var(--ជាងាធី);
-	border-radius: var(--អិត្ផេពឺ);
+	border-radius: var(--អិត្ផេ);
 	width: -moz-available;
 	width: -webkit-fill-available;
 	text-align: center;
@@ -165,7 +165,7 @@ p {
 }
 .ciihii {
 	background-color: var(--ពិសាធី);
-	border-radius: var(--អិត្ផេពឺចិ);
+	border-radius: var(--អិត្ផេចិ);
 	margin-block: 0px;
 	display: flex;
 	flex-direction: column-reverse;
@@ -195,7 +195,7 @@ p {
 
 input {
 	background-color: var(--ពិសាធី);
-	border-radius: var(--អិត្ផេពឺចិ);
+	border-radius: var(--អិត្ផេចិ);
 	border: 1px solid var(--តិជាធី);
 	width: -moz-available;
 	width: -webkit-fill-available;
@@ -215,7 +215,7 @@ input:focus {
 
 table {
 	background-color: var(--ជាងាធី);
-	border-radius: 	var(--អិត្ផេពឺ);
+	border-radius: 	var(--អិត្ផេ);
 	border: 1px solid var(--ពិសាធី);
 	width: 100%;
 	margin: 4px 0px;
@@ -227,7 +227,7 @@ td {
 	border: 1px solid var(--តិជាធី);
 }
 th, td {
-	border-radius: var(--អិត្ផេពឺចិ);
+	border-radius: var(--អិត្ផេចិ);
 	border-collapse: collapse;
 	color: var(--កេភ);
 	padding: 8px;
@@ -254,7 +254,7 @@ th, td {
 }
 
 img {
-	border-radius: var(--អិត្ផេពឺ);
+	border-radius: var(--អិត្ផេ);
 	height: 600px;
 	align-self: center;
 	margin: 8px;
