@@ -122,7 +122,7 @@ a:hover, a:active {
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 
-thala, form {
+thala {
 	background-color: var(--ជាងាធី);
 	border-radius: var(--អិត្ផេ);
 	border: 1px solid var(--ពិសាធី);
@@ -163,13 +163,18 @@ p {
 	color: var(--កេភ);
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
-ciihii, .ciihii {
+ciihii {
 	background-color: var(--ពិសាធី);
 	border-radius: var(--អិត្ផេចិ);
 	border: 1px solid var(--តិជាធី);
 	margin-block: 0px;
 	display: flex;
 	flex-direction: column-reverse;
+	justify-content: center;
+}
+ciihii2 {
+	display: flex; 
+	flex-direction: row; 
 	justify-content: center;
 }
 .ciihiitapai {
@@ -287,7 +292,7 @@ img {
 }
 
 @media (prefers-color-scheme: light) {
-	.ciihii {
+	ciihii {
 		background-color: var(--ខេលេសៃច្ហិ);
 		border-color: var(--ជាងាធី);
 	}
