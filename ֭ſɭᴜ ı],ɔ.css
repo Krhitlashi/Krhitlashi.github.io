@@ -135,15 +135,13 @@ thala {
 	flex-direction: row-reverse;
 	align-items: center;
 	margin-right: 8px;
-	height: 95%;
-	height: -webkit-fill-available;
+	height: 100%;
 }
 .tapaisaq {
 	flex-direction: row;
 	align-items: center;
 	margin-right: 8px;
-	height: 95%;
-	height: -webkit-fill-available;
+	height: 100%;
 }
 .cepai {
 	flex-direction: column-reverse;
