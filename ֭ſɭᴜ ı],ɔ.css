@@ -167,6 +167,7 @@ ciihii {
 	background-color: var(--ពិសាធី);
 	border-radius: var(--អិត្ផេចិ);
 	border: 1px solid var(--តិជាធី);
+	padding: 8px;
 	margin-block: 0px;
 	display: flex;
 	flex-direction: column-reverse;
