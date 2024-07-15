@@ -166,6 +166,7 @@ p {
 .ciihii {
 	background-color: var(--ពិសាធី);
 	border-radius: var(--អិត្ផេចិ);
+	border: 1px solid var(--តិជាធី);
 	margin-block: 0px;
 	display: flex;
 	flex-direction: column-reverse;
@@ -288,6 +289,7 @@ img {
 @media (prefers-color-scheme: light) {
 	.ciihii {
 		background-color: var(--ខេលេសៃច្ហិ);
+		border-color: var(--ជាងាធី);
 	}
 }
 
