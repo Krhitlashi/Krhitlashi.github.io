@@ -189,11 +189,6 @@ ciihii {
 	flex-direction: row;
 	justify-content: center;
 }
-ciihii2 {
-	display: flex; 
-	flex-direction: row; 
-	justify-content: center;
-}
 .ciihiitapai {
 	align-self: center;
 	width: 100%;
