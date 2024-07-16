@@ -124,13 +124,9 @@ a:link, a:visited {
 	width: 32px;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
-a:hover {
+a:hover, a:active {
 	background-color: var(--តិជាធី២អុមា);
 	border: 1px solid var(--តាវាធី២អុមា);
-}
-a:active {
-	background-color: var(--តិជាធី២អុមា);
-	border: 1px solid var(--កេភ២);
 }
 
 thala {
