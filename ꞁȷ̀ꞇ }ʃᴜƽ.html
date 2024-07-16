@@ -39,10 +39,17 @@
 	<a class="ciihiitapai" href="https://1drv.ms/f/s!AiEDucWW0Eqrk79Vy148RfSAIyPUcw?e=9UNMBw" style="height: 95%; height: -webkit-fill-available; margin-bottom: 8px; writing-mode: vertical-lr; rotate: 180deg;">Keyboards (KeysCafe)</a>
 </thala>
 	
-<thala class="tapaisaq" style="padding-left: 0; height: 95%; height: -webkit-fill-available;">
+<thala class="tapaisaq flak" style="padding-left: 0; height: 95%; height: -webkit-fill-available;">
 	<p class="miikef" style="margin-inline: 8px;">j͐ʃɹʞ <br> ſɟɔ</p>
-	<a class="ciihiitapai" href="https://github.com/Krhitlashi/Krhitlashi.github.io/tree/main" style="height: 95%; height: -webkit-fill-available; margin-bottom: 8px;">ſɭɜ <br> }ʃᴜc̗ <br> ʃƽɹɘ</a>
+	<div class="ciihiiflak">
+		<a class="ciihiitapai" href="https://github.com/Krhitlashi/Krhitlashi.github.io/tree/main" style="height: 95%; height: -webkit-fill-available; margin-bottom: 8px;">ſɭɜ <br> }ʃᴜc̗ <br> ʃƽɹɘ</a>
+	</div>
 </thala>
+
+
+</div>
+ 
+</body>
 
 <script>
     window.addEventListener('load', () => {
@@ -61,10 +68,21 @@
         }
       }
     }
- </script>
 
-</div>
- 
-</body>
+	var flak = document.getElementsByClassName("flak");
+	var i;
+
+	for (i = 0; i < flak.length; i++) {
+		flak[i].addEventListener("click", function() {
+			var ciihiiflak = this.querySelector(".ciihiiflak");
+			this.classList.toggle("atleflak")
+    		if (ciihiiflak.style.display === "flex") {
+    			ciihiiflak.style.display = "none";
+    		} else {
+    			ciihiiflak.style.display = "flex";
+    		}
+		});
+	}
+</script>
 
 </html>
