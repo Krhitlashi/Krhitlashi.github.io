@@ -232,7 +232,7 @@ input {
 	width: 94%;
 	width: -moz-available;
 	width: -webkit-fill-available;
-	padding: 24px;
+	padding: 16px;
 	color: var(--កេភ);
 	placeholder: "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜꞇ";
 	box-shadow: 0 0 0 0 #e0e0e03e;
@@ -242,7 +242,7 @@ input:hover {
 	background-color: var(--តិជាធី);
 }
 input:focus {
-	border-top: 4px solid var(--កាន្តុនី);
+	border-right: 4px solid var(--កាន្តុនី);
 	outline:none;
 }
 
