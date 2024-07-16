@@ -192,6 +192,10 @@ ciihii2 {
 .flak {
 	transition: 0.4s;
 }
+.flak:hover {
+	background-color: var(--តិជាធី២អុមា);
+	border: 1px solid var(--តាវាធី២អុមា);
+}
 .ciihiiflak {
 	display: none;
 	overflow: hidden;
