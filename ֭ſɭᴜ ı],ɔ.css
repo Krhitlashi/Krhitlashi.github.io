@@ -81,6 +81,15 @@ h1 {
 	text-align: left;
 	margin: 16px;
 }
+.sashesaikef {
+	background-color: transparent;
+	color: var(--កេភ);
+	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
+	width: max-content;
+	font-size: x-large;
+	text-align: left;
+	padding: 8px;
+}
 .miikef {
 	background-color: transparent;
 	color: var(--កេភ);
