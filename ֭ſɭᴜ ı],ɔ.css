@@ -189,6 +189,14 @@ ciihii2 {
 	border: 1px solid var(--ពិសាធី);
 }
 
+.flak {
+	transition: 0.4s;
+}
+.ciihiiflak {
+	display: none;
+	overflow: hidden;
+}
+
 .vertical-center {
 	margin: 0;
 	position: sticky;

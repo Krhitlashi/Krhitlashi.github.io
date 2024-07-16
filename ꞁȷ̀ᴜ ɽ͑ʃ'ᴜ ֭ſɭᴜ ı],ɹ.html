@@ -31,10 +31,12 @@
 	</p>
 </div>
 
-<thala class="tapairaq">
+<thala class="tapairaq flak">
 	<p class="miikef">ſןɹ <br> j͑ʃ'ɜ <br> ſɟᴜ</p>
-	<a class="ciihiitapai" href="https://1drv.ms/f/s!AiEDucWW0EqrgRFd2wlzsDMximmc?e=rk2Mr4">ŋᷠꞇ <br> j͐ʃɔ <br> ꞁȷ̀ɜ <br> ſןwʞ</a>
-	<a class="ciihiitapai" href="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ/ſɭɹ ſᶘɔ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ.html">ᶅſᴜ <br> ſןɔ <br> ı],ɹ <br> ꞁȷ̀ɜ <br> ſᶘɔ <br> ſɭɹ</a>
+	<div class="ciihiiflak">
+		<a class="ciihiitapai" href="https://1drv.ms/f/s!AiEDucWW0EqrgRFd2wlzsDMximmc?e=rk2Mr4">ŋᷠꞇ <br> j͐ʃɔ <br> ꞁȷ̀ɜ <br> ſןwʞ</a>
+		<a class="ciihiitapai" href="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ/ſɭɹ ſᶘɔ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ.html">ᶅſᴜ <br> ſןɔ <br> ı],ɹ <br> ꞁȷ̀ɜ <br> ſᶘɔ <br> ſɭɹ</a>
+	</div>
 </thala>
 
 <thala class="tapairaq">
@@ -66,6 +68,10 @@
 	<p class="miikef" style="padding-right: 4px;">ŋᷠᴜƴ</p>
 </thala>
 
+</div>
+ 
+</body>
+
 <script>
     window.addEventListener('load', () => {
       registerSW();
@@ -83,10 +89,25 @@
         }
       }
     }
- </script>
 
-</div>
- 
-</body>
+	var acc = document.getElementsByClassName("flak");
+	var i;
+
+	for (i = 0; i < acc.length; i++) {
+		acc[i].addEventListener("click", function() {
+		/* Toggle between adding and removing the "active" class,
+		to highlight the button that controls the panel */
+		this.classList.toggle("active");
+		/* Toggle between hiding and showing the active panel */
+    	var panel = this.nextElementSibling;
+    	if (panel.style.display === "block") {
+    		panel.style.display = "none";
+    	} else {
+    		panel.style.display = "block";
+    	}
+		});
+	}
+
+ </script>
 
 </html>
