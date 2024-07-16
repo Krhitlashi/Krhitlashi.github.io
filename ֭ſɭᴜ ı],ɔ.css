@@ -193,18 +193,15 @@ ciihii2 {
 	transition: 0.4s;
 }
 .flak:hover {
-	background-color: var(--តិជាធី២អុមា);
 	border: 1px solid var(--តាវាធី២អុមា);
 }
-.flak:after {
-	content: "-"
-}
-.atleflak:after {
-	content: "/"
+.atleflak:before {
+	content: "|"
 }
 .ciihiiflak {
 	display: none;
 	overflow: hidden;
+    height: 100%;
 }
 
 .vertical-center {
