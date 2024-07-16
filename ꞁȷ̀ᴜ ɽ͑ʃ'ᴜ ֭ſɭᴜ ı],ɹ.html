@@ -90,12 +90,12 @@
       }
     }
 
-	var acc = document.getElementsByClassName("flak");
+	var flak = document.getElementsByClassName("flak");
 	var i;
 
-	for (i = 0; i < acc.length; i++) {
-		acc[i].addEventListener("click", function() {
-			var ciihiiflak = this.querySelector("ciihiiflak");
+	for (i = 0; i < flak.length; i++) {
+		flak[i].addEventListener("click", function() {
+			var ciihiiflak = this.querySelector(".ciihiiflak");
 			this.classList.toggle("atleflak")
     		if (ciihiiflak.style.display === "block") {
     			ciihiiflak.style.display = "none";
