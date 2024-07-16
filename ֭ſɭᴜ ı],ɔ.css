@@ -142,6 +142,7 @@ thala {
 	align-items: center;
 	margin-right: 8px;
 	height: 100%;
+	padding-inline: 4px;
 }
 .cepai {
 	flex-direction: column-reverse;
