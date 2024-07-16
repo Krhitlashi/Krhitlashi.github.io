@@ -128,7 +128,7 @@ a:hover {
 	background-color: var(--តិជាធី២អុមា);
 	border: 1px solid var(--តាវាធី២អុមា);
 }
-a:hover, a:active {
+a:active {
 	background-color: var(--តិជាធី២អុមា);
 	border: 1px solid var(--តាវាធី២អុមា);
 	border-right: 4px solid var(--កាន្តុនី);
