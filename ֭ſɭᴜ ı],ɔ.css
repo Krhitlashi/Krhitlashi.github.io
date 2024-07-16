@@ -175,9 +175,9 @@ ciihii {
 	border-radius: var(--អិត្ផេចិ);
 	border: 1px solid var(--តិជាធី);
 	padding: 8px;
-	margin-block: 0px;
+	margin-bottom: 8px;
 	display: flex;
-	flex-direction: column-reverse;
+	flex-direction: row;
 	justify-content: center;
 }
 ciihii2 {
@@ -194,8 +194,9 @@ ciihii2 {
 	display: flex !important;
 	align-items: center;
 }
-.paaksiica {
-	border: 1px solid var(--ពិសាធី);
+.ciihiicepai {
+	margin-block: 0px;
+	flex-direction: column-reverse;
 }
 
 .flak {
