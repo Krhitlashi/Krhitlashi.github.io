@@ -226,9 +226,13 @@ input {
 	background-color: var(--ពិសាធី);
 	border-radius: var(--អិត្ផេចិ);
 	border: 1px solid var(--តិជាធី);
+	height: 94%;
+	height: -moz-available;
+	height: -webkit-fill-available;
+	width: 94%;
 	width: -moz-available;
 	width: -webkit-fill-available;
-	padding: 16px;
+	padding: 24px;
 	color: var(--កេភ);
 	placeholder: "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜꞇ";
 	box-shadow: 0 0 0 0 #e0e0e03e;
