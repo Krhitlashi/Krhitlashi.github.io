@@ -52,6 +52,15 @@ main {
 div {
 	scrollbar-width: none;
 }
+sak {
+	background-color: var(--ព៏ធី);
+    border-radius: 1024px;
+    color: var(--កេភ);
+    display: flex;
+    text-align: center;
+    padding: 2px;
+    height: 3.125%;
+}
 
 h {
 	background-color: var(--តិជាធី);
@@ -114,12 +123,14 @@ a:link, a:visited {
 	width: 32px;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
+a:hover {
+	background-color: var(--តិជាធី២អុមា);
+	border: 1px solid var(--តាវាធី២អុមា);
+}
 a:hover, a:active {
 	background-color: var(--តិជាធី២អុមា);
 	border: 1px solid var(--តាវាធី២អុមា);
 	border-right: 4px solid var(--កាន្តុនី);
-	width: 32px;
-	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 
 thala {
