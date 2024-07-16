@@ -59,7 +59,8 @@ sak {
     display: flex;
     text-align: center;
     padding: 2px;
-    height: 3.125%;
+    height: 32px;
+	margin-right: 8px;
 }
 
 h {
