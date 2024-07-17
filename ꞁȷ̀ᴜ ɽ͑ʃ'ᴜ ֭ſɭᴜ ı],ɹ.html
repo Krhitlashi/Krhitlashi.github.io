@@ -117,17 +117,18 @@
       }
     }
 
-	let flak = document.getElementsByClassName("flak");
-	for (let i = 0; i < flak.length; i++) {
-    	flak[i].addEventListener("click", function() {
-    	    let ciihiiflak = this.querySelector(".ciihiiflak");
-    	    this.classList.toggle("atleflak");
-    		if (this.classList.contains("atleflak")) {
-    		    ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
+	var flak = document.getElementsByClassName("flak");
+	var i;
+	for (i = 0; i < flak.length; i++) {
+		flak[i].addEventListener("click", function() {
+			var ciihiiflak = this.querySelector(".ciihiiflak");
+			this.classList.toggle("atleflak")
+    		if (ciihiiflak.style.display === "flex") {
+    			ciihiiflak.style.display = "none";
     		} else {
-     	    	ciihiiflak.style.maxWidth = 0;
-        	}
-    	});
+    			ciihiiflak.style.display = "flex";
+    		}
+		});
 	}
  </script>
 
