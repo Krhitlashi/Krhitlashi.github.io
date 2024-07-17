@@ -82,20 +82,6 @@
         }
       }
     }
-
-    var flak = document.getElementsByClassName("flak");
-	  var i;
-	  for (i = 0; i < flak.length; i++) {
-		  flak[i].addEventListener("click", function() {
-		  	var ciihiiflak = this.querySelector(".ciihiiflak");
-		  	this.classList.toggle("atleflak")
-      		if (ciihiiflak.style.display === "flex") {
-      			ciihiiflak.style.display = "none";
-      		} else {
-      			ciihiiflak.style.display = "flex";
-      		}
-		  });
-	  }
 </script>
 
 </html>
