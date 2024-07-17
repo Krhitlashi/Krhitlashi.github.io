@@ -41,7 +41,7 @@
   
   <thala class="cepai flak alteflak" style="padding: 12px; flex-direction: column;">
     <p class="miikef">Images</p>
-    <div class="ciihiiflak" style="flex-direction: column;">
+    <div class="ciihiiflaktapai">
       <p class="miikef">Aisiakrhi</p>
       <img src="https://onedrive.live.com/embed?resid=AB4AD096C5B90321%21317148&authkey=%21AJTIjztOIHRQ_SA&width=1440&height=3120" width="100%" style="height: auto;" />
       <img src="https://onedrive.live.com/embed?resid=AB4AD096C5B90321%21240504&authkey=%21AF5JGMTigMDtIvQ&width=2195&height=1080" width="100%" style="height: auto;" />
@@ -84,18 +84,18 @@
     }
 
     var flak = document.getElementsByClassName("flak");
-	var i;
-	for (i = 0; i < flak.length; i++) {
-		flak[i].addEventListener("click", function() {
-			this.classList.toggle("atleflak")
-			var ciihiiflak = this.querySelector(".ciihiiflak");
+	  var i;
+  	for (i = 0; i < flak.length; i++) {
+	  	flak[i].addEventListener("click", function() {
+		  	this.classList.toggle("atleflak")
+			  var ciihiiflak = this.querySelector(".ciihiiflakcepai");
     		if (ciihiiflak.style.maxHeight) {
     			ciihiiflak.style.maxHeight= null;
       	} else {
           ciihiiflak.style.maxHeight = ciihiiflak.scrollHeight + "px";
     		}
-		});
-	}
+		  });
+	  }
 </script>
 
 </html>

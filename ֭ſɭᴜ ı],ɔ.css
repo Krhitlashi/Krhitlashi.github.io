@@ -210,7 +210,7 @@ ciihii {
 }
 
 .flak {
-	transition: 0.4s;
+	transition: 0.2s;
 }
 .flak:hover {
 	border: 1px solid var(--តាវាធី២អុមា);
@@ -224,7 +224,16 @@ ciihii {
     height: 100%;
 	align-items: center;
 	max-width: 0;
-	transition: 0.4s ease-out;
+	transition: 0.2s ease-out;
+}
+.ciihiiflakcepai {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	width: 100%;
+	align-items: center;
+	max-height: 0;
+	transition: 0.2s ease-out;
 }
 
 .vertical-center {
