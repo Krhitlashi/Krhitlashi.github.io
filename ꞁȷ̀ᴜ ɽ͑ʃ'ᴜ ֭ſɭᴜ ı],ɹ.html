@@ -119,17 +119,16 @@
 
 	let flak = document.getElementsByClassName("flak");
 	for (let i = 0; i < flak.length; i++) {
-    flak[i].addEventListener("click", function() {
-        let ciihiiflak = this.querySelector(".ciihiiflak");
-        this.classList.toggle("atleflak");
-        if (this.classList.contains("atleflak")) {
-            ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
-        } else {
-            ciihiiflak.style.maxWidth = 0;
-        }
-    });
-}
-
+    	flak[i].addEventListener("click", function() {
+    	    let ciihiiflak = this.querySelector(".ciihiiflak");
+    	    this.classList.toggle("atleflak");
+    		if (this.classList.contains("atleflak")) {
+    		    ciihiiflak.style.maxHeight = ciihiiflak.scrollHeight + "px";
+    		} else {
+     	    	ciihiiflak.style.maxHeight = 0;
+        	}
+    	});
+	}
  </script>
 
 </html>

@@ -219,7 +219,8 @@ ciihii {
 	content: "|"
 }
 .ciihiiflak {
-	display: flex;
+	max-width: 0;
+	display: none;
 	overflow: hidden;
     height: 100%;
 	align-items: center;
