@@ -118,18 +118,18 @@
     }
 
 	var flak = document.getElementsByClassName("flak");
-	var i;
-	for (i = 0; i < flak.length; i++) {
-		flak[i].addEventListener("click", function() {
-			var ciihiiflak = this.querySelector(".ciihiiflak");
-			this.classList.toggle("atleflak")
-    		if (ciihiiflak.style.display === "flex") {
-    			ciihiiflak.style.display = "none";
-    		} else {
-    			ciihiiflak.style.display = "flex";
-    		}
-		});
-	}
+	  var i;
+	  for (i = 0; i < flak.length; i++) {
+		  flak[i].addEventListener("click", function() {
+        this.classList.toggle("atleflak")
+		  	var ciihiiflak = this.querySelector(".ciihiiflak");
+      	if (ciihiiflak.style.maxWidth) {
+      		ciihiiflak.style.maxWidth = null;
+      	} else {
+      		ciihiiflak.maxWidth = ciihiiflak.scrollWidth + "px";
+      	}
+		  });
+	  }
  </script>
 
 </html>

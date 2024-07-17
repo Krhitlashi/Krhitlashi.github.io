@@ -87,13 +87,13 @@
 	  var i;
 	  for (i = 0; i < flak.length; i++) {
 		  flak[i].addEventListener("click", function() {
+        this.classList.toggle("atleflak")
 		  	var ciihiiflak = this.querySelector(".ciihiiflak");
-		  	this.classList.toggle("atleflak")
-      		if (ciihiiflak.style.maxWidth) {
-      			ciihiiflak.style.maxWidth = null;
-      		} else {
-      			ciihiiflak.maxWidth = ciihiiflak.scrollWidth + "px";
-      		}
+      	if (ciihiiflak.style.maxWidth) {
+      		ciihiiflak.style.maxWidth = null;
+      	} else {
+      		ciihiiflak.maxWidth = ciihiiflak.scrollWidth + "px";
+      	}
 		  });
 	  }
 </script>
