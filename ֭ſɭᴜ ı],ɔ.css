@@ -122,7 +122,6 @@ embed {
 	margin-block: 4px;
 }
 
-
 a:link, a:visited {
 	background-color: var(--ពិសាធី);
 	border-radius: var(--អិត្ផេចិ);
@@ -236,15 +235,6 @@ ciihii {
 	transition: 0.2s ease-out;
 }
 
-.vertical-center {
-	margin: 0;
-	position: sticky;
-	top: 50%;
-	-ms-transform: translateY(-50%);
-	transform: translateY(-50%);
-}
-
-
 input {
 	background-color: var(--ពិសាធី);
 	border-radius: var(--អិត្ផេចិ);
@@ -255,7 +245,6 @@ input {
 	width: 94%;
 	padding: 16px;
 	color: var(--កេភ);
-	placeholder: "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜꞇ";
 	box-shadow: 0 0 0 0 #e0e0e03e;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
