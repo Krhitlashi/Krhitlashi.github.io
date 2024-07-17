@@ -219,7 +219,7 @@ ciihii {
 	content: "|"
 }
 .ciihiiflak {
-	display: none;
+	display: flex;
 	overflow: hidden;
     height: 100%;
 	align-items: center;
