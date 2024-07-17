@@ -215,11 +215,6 @@ ciihii {
 .flak:hover {
 	border: 1px solid var(--តាវាធី២អុមា);
 }
-.flak:checked {
-	~.ciihiiflak {
-		max-width: 100%;
-	}
-}
 .atleflak:before {
 	content: "|"
 }
@@ -229,7 +224,7 @@ ciihii {
     height: 100%;
 	align-items: center;
 	max-width: 0;
-	transition: max-width 0.4s ease-out;
+	transition: 0.4s ease-out;
 }
 
 .vertical-center {
