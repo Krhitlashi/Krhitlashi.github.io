@@ -123,8 +123,8 @@
 		  flak[i].addEventListener("click", function() {
         this.classList.toggle("atleflak")
 		  	var ciihiiflak = this.querySelector(".ciihiiflak");
-      	if (ciihiiflak.style.maxWidth) {
-      		ciihiiflak.style.maxWidth = null;
+      	if (ciihiiflak.style.maxWidth != "0") {
+      		ciihiiflak.style.maxWidth = "0";
       	} else {
       		ciihiiflak.maxWidth = ciihiiflak.scrollWidth + "px";
       	}
