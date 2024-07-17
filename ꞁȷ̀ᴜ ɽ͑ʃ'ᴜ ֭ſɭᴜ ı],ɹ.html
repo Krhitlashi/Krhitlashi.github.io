@@ -120,13 +120,15 @@
 	var flak = document.getElementsByClassName("flak");
 	var i;
 	for (i = 0; i < flak.length; i++) {
-		flak[i].addEventListener("click", function() {
+		flak[i].addEventListener("click", () => {
 			var ciihiiflak = this.querySelector(".ciihiiflak");
 			this.classList.toggle("atleflak")
-    		if (ciihiiflak.style.display === "flex") {
-    			ciihiiflak.style.display = "none";
+    		if (this.classList.contains("atleflak")) {
+				ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
+				ciihiiflak.style.display = "flex";
     		} else {
-    			ciihiiflak.style.display = "flex";
+				ciihiiflak.style.maxWidth = 0;
+    			ciihiiflak.style.display = "none";
     		}
 		});
 	}
