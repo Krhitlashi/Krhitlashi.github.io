@@ -82,6 +82,20 @@
         }
       }
     }
+
+    var flak = document.getElementsByClassName("flak");
+	  var i;
+	  for (i = 0; i < flak.length; i++) {
+		  flak[i].addEventListener("click", function() {
+		  	var ciihiiflak = this.querySelector(".ciihiiflak");
+		  	this.classList.toggle("atleflak")
+      		if (ciihiiflak.style.maxWidth) {
+      			ciihiiflak.style.maxWidth = null;
+      		} else {
+      			ciihiiflak.maxWidth = ciihiiflak.scrollWidth + "px";
+      		}
+		  });
+	  }
 </script>
 
 </html>
