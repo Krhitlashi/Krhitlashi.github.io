@@ -173,8 +173,6 @@ thala {
 }
 
 p {
-	background-color: var(--ជាងាធី);
-	border-radius: var(--អិត្ផេ);
 	width: -moz-available;
 	width: -webkit-fill-available;
 	text-align: center;
