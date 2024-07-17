@@ -173,12 +173,7 @@ thala {
 }
 
 p {
-	width: -moz-available;
-	width: -webkit-fill-available;
 	text-align: center;
-	padding: 8px;
-	margin-inline: 0;
-	margin-block: 4px;
 	color: var(--កេភ);
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
