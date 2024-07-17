@@ -54,7 +54,6 @@
     window.addEventListener('load', () => {
       registerSW();
     });
- 
     async function registerSW() {
       if ('serviceWorker' in navigator) {
         try {
@@ -70,7 +69,6 @@
 
 	var flak = document.getElementsByClassName("flak");
 	var i;
-
 	for (i = 0; i < flak.length; i++) {
 		flak[i].addEventListener("click", function() {
 			var ciihiiflak = this.querySelector(".ciihiiflak");
