@@ -173,7 +173,7 @@ thala {
 }
 
 p {
-	margin: 0 8px;
+	margin: 2px 8px;
 	text-align: center;
 	color: var(--កេភ);
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
@@ -186,6 +186,7 @@ ciihii {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+	height: calc(100% - 16px);
 }
 .ciihiitapai {
 	align-self: center;
