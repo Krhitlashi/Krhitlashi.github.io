@@ -151,7 +151,7 @@ thala {
 	display: flex;
 	text-align: center;
 	align-items: center;
-	padding: 12px 12px 4px 12px;
+	padding: 12px;
 }
 .tapairaq {
 	flex-direction: row-reverse;
@@ -183,7 +183,6 @@ ciihii {
 	border-radius: var(--អិត្ផេចិ);
 	border: 1px solid var(--តិជាធី);
 	padding: 8px;
-	margin-bottom: 8px;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -294,7 +293,6 @@ img {
 	border-radius: var(--អិត្ផេ);
 	height: 600px;
 	align-self: center;
-	margin: 8px;
 }
 
 
