@@ -131,13 +131,13 @@
     }
 
 	var flak = document.getElementsByClassName("flak");
-	  var i;
-	  for (i = 0; i < flak.length; i++) {
-		  flak[i].addEventListener("click", function() {
-			  this.classList.toggle("atleflak")
-			  this.classList.querySelector(".ciihiiflak").toggle("atleciihiiflak")
-		  });
-	  }
+	var i;
+	for (i = 0; i < flak.length; i++) {
+		flak[i].addEventListener("click", function() {
+			this.classList.toggle("atleflak")
+			this.querySelector(".ciihiiflak").classList.toggle("atleciihiiflak")
+		});
+	}
 </script>
 
 </html>
