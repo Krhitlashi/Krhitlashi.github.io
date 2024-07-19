@@ -116,6 +116,8 @@ h1 {
 	margin-inline: 0;
 }
 embed {
+	display: flex;
+	border-radius: var(--អិត្ផេ);
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 
@@ -221,7 +223,7 @@ ciihii {
 	display: flex;
 	width: 100%;
 	border-radius: var(--អិត្ផេចិ);
-	border: 1px solid var(--ពិសាធី);
+	border: 1px solid var(--តិជាធី);
 	flex-direction: column-reverse;
 	align-items: center;
 	padding-block: 8px;
