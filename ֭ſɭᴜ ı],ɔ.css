@@ -192,7 +192,7 @@ ciihii {
 	align-items: center;
 	max-width: 0;
 	transition: 0.2s ease-out;
-	padding: 1px;
+	padding-block: 1px;
 }
 .ciihiiflakcepai {
 	display: flex;
