@@ -232,6 +232,7 @@ ciihii {
 	display: flex;
 	width: 100%;
 	border-radius: var(--អិត្ផេចិ);
+	border: 1px solid var(--ពិសាធី);
 	flex-direction: column-reverse;
 	align-items: center;
 	padding-block: 8px;
