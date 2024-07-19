@@ -121,18 +121,12 @@
     }
 
     var flak = document.getElementsByClassName("flak");
-	  var i;
-  	for (i = 0; i < flak.length; i++) {
-	  	flak[i].addEventListener("click", function() {
-		  	this.classList.toggle("atleflak")
-			  var ciihiiflak = this.querySelector(".ciihiiflakcepai");
-    		if (ciihiiflak.style.maxHeight) {
-    			ciihiiflak.style.maxHeight= null;
-      	} else {
-          ciihiiflak.style.maxHeight = ciihiiflak.scrollHeight + "px";
-    		}
-		  });
-	  }
+	var i;
+	for (i = 0; i < flak.length; i++) {
+		flak[i].addEventListener("click", function() {
+			this.classList.toggle("atleflak")
+		});
+	}
 </script>
 
 </html>

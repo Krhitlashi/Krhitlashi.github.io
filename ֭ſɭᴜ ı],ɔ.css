@@ -176,11 +176,11 @@ ciihii {
 	padding: 16px !important;
 }
 
-.flak {
-	transition: 0.2s;
-}
 .flak:hover {
 	border: 1px solid var(--តាវាធី២អុមា);
+}
+.atleflak {
+	max-width: unset;
 }
 .atleflak:before {
 	content: "|"
@@ -192,6 +192,7 @@ ciihii {
 	align-items: center;
 	max-width: 0;
 	transition: 0.2s ease-out;
+	padding: 1px;
 }
 .ciihiiflakcepai {
 	display: flex;
