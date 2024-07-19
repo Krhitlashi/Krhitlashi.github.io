@@ -131,18 +131,13 @@
     }
 
 	var flak = document.getElementsByClassName("flak");
-	var i;
-	for (i = 0; i < flak.length; i++) {
-		flak[i].addEventListener("click", function() {
-			this.classList.toggle("atleflak")
-			var ciihiiflak = this.querySelector(".ciihiiflak");
-    		if (ciihiiflak.style.maxWidth) {
-    			ciihiiflak.style.maxWidth = null;
-      	} else {
-      		ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
-    		}
-		});
-	}
- </script>
+	  var i;
+	  for (i = 0; i < flak.length; i++) {
+		  flak[i].addEventListener("click", function() {
+			  this.classList.toggle("atleflak")
+			  this.querySelector(".ciihiiflak").toggle("atleciihiiflak")
+		  });
+	  }
+</script>
 
 </html>

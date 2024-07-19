@@ -71,13 +71,14 @@
         }
       }
 
-      var flak = document.getElementsByClassName("flak");
-	var i;
-	for (i = 0; i < flak.length; i++) {
-		flak[i].addEventListener("click", function() {
-			this.classList.toggle("atleflak")
-		});
-	}
+    var flak = document.getElementsByClassName("flak");
+	  var i;
+	  for (i = 0; i < flak.length; i++) {
+		  flak[i].addEventListener("click", function() {
+			  this.classList.toggle("atleflak")
+			  this.querySelector(".ciihiiflak").toggle("atleciihiiflak")
+		  });
+	  }
 </script>
 
 </html>

@@ -179,9 +179,6 @@ ciihii {
 .flak:hover {
 	border: 1px solid var(--តាវាធី២អុមា);
 }
-.atleflak {
-	max-width: unset;
-}
 .atleflak:before {
 	content: "|"
 }
@@ -202,6 +199,9 @@ ciihii {
 	align-items: center;
 	max-height: 0;
 	transition: 0.2s ease-out;
+}
+.atleciihiiflak {
+	max-width: unset;
 }
 .flakciihiicepai {
 	display: flex;
