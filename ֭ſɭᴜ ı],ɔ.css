@@ -183,14 +183,13 @@ ciihii {
 .ciihiitapai {
 	align-self: center;
 	width: 100%;
-	height: 97%;
-	height: -webkit-fill-available;
+	height: calc(100% - 16px);
 	display: flex !important;
 	align-items: center;
 }
 .ciihiicepai {
-	margin-block: 0px;
-	flex-direction: column-reverse;
+	width: calc(100% - 32px) !important;
+	padding: 16px !important;
 }
 
 .flak {
