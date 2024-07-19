@@ -33,13 +33,15 @@
 	--អិត្ផេមិចិ: 12px 4px;
 }
 
+* {
+	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
+	color: var(--កេភ);
+}
 *:not(.flak) {
-	gap: 8px
+	gap: 8px;
 }
 body {
 	background-color: var(--ខេលេសៃ);
-	color: var(--កេភ);
-	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	margin: 12px 16px 16px 16px;
 	display: flex;
 	flex-direction: column;
@@ -59,7 +61,6 @@ div {
 sak {
 	background-color: var(--កេភ២);
     border-radius: 1024px;
-    color: var(--កេភ);
     display: flex;
     text-align: center;
     padding: 2px;
@@ -74,7 +75,6 @@ sak {
 h {
 	background-color: var(--តិជាធី);
 	border-radius: var(--អិត្ផេចិ);
-	color: var(--កេភ);
 	padding: 8px 12px;
 	text-align: center;
 	text-decoration: none;
@@ -82,15 +82,11 @@ h {
 	width: 32px;
 }
 h1 {
-	color: var(--កេភ);
-	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	text-align: left;
 	margin: 16px;
 }
 .sashesaikef {
 	background-color: transparent;
-	color: var(--កេភ);
-	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	width: max-content;
 	font-size: x-large;
 	text-align: left;
@@ -98,8 +94,6 @@ h1 {
 }
 .miikef {
 	background-color: transparent;
-	color: var(--កេភ);
-	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	width: max-content;
 	text-align: center;
 	padding: 8px;
@@ -107,8 +101,6 @@ h1 {
 }
 .oshiipewa {
 	background-color: transparent;
-	color: var(--កេភ);
-	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	width: max-content;
 	text-align: left;
 	align-self: end;
@@ -118,21 +110,18 @@ h1 {
 embed, iframe {
 	display: flex;
 	border-radius: var(--អិត្ផេ);
-	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 
 a:link, a:visited {
 	background-color: var(--ពិសាធី);
 	border-radius: var(--អិត្ផេចិ);
 	border: 1px solid var(--តិជាធី);
-	color: var(--កេភ);
 	padding: 8px 12px;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
 	justify-content: center;
 	width: 32px;
-	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 a:hover, a:active {
 	background-color: var(--ពិសាធី២អុមា);
@@ -143,7 +132,6 @@ thala {
 	background-color: var(--ជាងាធី);
 	border-radius: var(--អិត្ផេ);
 	border: 1px solid var(--ពិសាធី);
-	color: var(--កេភ);
 	display: flex;
 	text-align: center;
 	align-items: center;
@@ -167,8 +155,6 @@ thala {
 p {
 	margin: 2px 8px;
 	text-align: center;
-	color: var(--កេភ);
-	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 ciihii {
 	background-color: var(--ពិសាធី);
@@ -237,9 +223,6 @@ input {
 	height: -webkit-fill-available;
 	width: 94%;
 	padding: 16px;
-	color: var(--កេភ);
-	box-shadow: 0 0 0 0 #e0e0e03e;
-	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 input:hover {
 	background-color: var(--តិជាធី);
@@ -265,11 +248,9 @@ td {
 th, td {
 	border-radius: var(--អិត្ផេចិ);
 	border-collapse: collapse;
-	color: var(--កេភ);
 	padding: 8px;
 	text-align: center;
 	width: 50%;
-	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	max-height: 1000em;
 	overflow: hidden;
 	word-wrap: break-word;
@@ -291,7 +272,6 @@ th, td {
 
 img {
 	border-radius: var(--អិត្ផេ);
-	height: 600px;
 	align-self: center;
 }
 
