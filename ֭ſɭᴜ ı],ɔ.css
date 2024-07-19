@@ -234,7 +234,7 @@ ciihii {
 	border-radius: var(--អិត្ផេចិ);
 	flex-direction: column-reverse;
 	align-items: center;
-	padding-bottom: 8px;
+	padding-block: 8px;
 }
 
 input {
