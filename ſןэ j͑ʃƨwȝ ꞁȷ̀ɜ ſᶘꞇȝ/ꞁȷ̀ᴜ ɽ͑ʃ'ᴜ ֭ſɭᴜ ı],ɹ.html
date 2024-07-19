@@ -122,12 +122,18 @@
 
     var flak = document.getElementsByClassName("flak");
 	  var i;
-	  for (i = 0; i < flak.length; i++) {
-		  flak[i].addEventListener("click", function() {
-			  this.classList.toggle("atleflak")
-			  this.querySelector(".ciihiiflak").classList.toggle("atleciihiiflak")
+  	for (i = 0; i < flak.length; i++) {
+	  	flak[i].addEventListener("click", function() {
+		  	this.classList.toggle("atleflak")
+			  var ciihiiflak = this.querySelector(".ciihiiflakcepai");
+    		if (ciihiiflak.style.maxHeight) {
+    			ciihiiflak.style.maxHeight= null;
+      	} else {
+          ciihiiflak.style.maxHeight = ciihiiflak.scrollHeight + "px";
+    		}
 		  });
 	  }
+    this.querySelector(".ciihiiflak").classList.toggle("atleciihiiflak")
 </script>
 
 </html>

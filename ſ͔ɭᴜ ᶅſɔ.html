@@ -54,31 +54,37 @@
 </body>
 
 <script>
-      window.addEventListener('load', () => {
-        registerSW();
-      });
+    window.addEventListener('load', () => {
+      registerSW();
+    });
    
-      async function registerSW() {
-        if ('serviceWorker' in navigator) {
-          try {
-            await navigator
-                  .serviceWorker
-                  .register('j͑ʃᴜ ſɭɔ j͑ʃ\'ɔ.js');
-          }
-          catch (e) {
-            console.log('SW registration failed');
-          }
+    async function registerSW() {
+      if ('serviceWorker' in navigator) {
+        try {
+          await navigator
+                .serviceWorker
+                .register('j͑ʃᴜ ſɭɔ j͑ʃ\'ɔ.js');
+        }
+        catch (e) {
+          console.log('SW registration failed');
         }
       }
+    }
 
-    var flak = document.getElementsByClassName("flak");
-	  var i;
-	  for (i = 0; i < flak.length; i++) {
-		  flak[i].addEventListener("click", function() {
-			  this.classList.toggle("atleflak")
-			  this.querySelector(".ciihiiflak").classList.toggle("atleciihiiflak")
-		  });
-	  }
+  var flak = document.getElementsByClassName("flak");
+	var i;
+	for (i = 0; i < flak.length; i++) {
+		flak[i].addEventListener("click", function() {
+			this.classList.toggle("atleflak")
+			var ciihiiflak = this.querySelector(".ciihiiflak");
+    		if (ciihiiflak.style.maxWidth) {
+    			ciihiiflak.style.maxWidth = null;
+      	} else {
+      		ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
+    		}
+		});
+	}
+  this.querySelector(".ciihiiflak").classList.toggle("atleciihiiflak")
 </script>
 
 </html>
