@@ -115,7 +115,7 @@ h1 {
 	padding: 8px;
 	margin-inline: 0;
 }
-embed {
+embed, iframe {
 	display: flex;
 	border-radius: var(--អិត្ផេ);
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
