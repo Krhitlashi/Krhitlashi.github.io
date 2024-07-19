@@ -154,13 +154,11 @@ thala {
 .tapairaq {
 	flex-direction: row-reverse;
 	align-items: center;
-	margin-right: 8px;
 	height: calc(100% - 16px);
 }
 .tapaisaq {
 	flex-direction: row;
 	align-items: center;
-	margin-right: 8px;
 	height: calc(100% - 16px);
 	padding-inline: 4px;
 }
