@@ -33,6 +33,9 @@
 	--អិត្ផេមិចិ: 12px 4px;
 }
 
+* {
+	gap: 8px
+}
 body {
 	background-color: var(--ខេលេសៃ);
 	color: var(--កេភ);
@@ -78,7 +81,6 @@ h {
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
-	margin-block: 4px;
 	width: 32px;
 }
 h1 {
@@ -104,7 +106,6 @@ h1 {
 	text-align: center;
 	padding: 8px;
 	margin-inline: 0;
-	margin-block: 4px;
 }
 .oshiipewa {
 	background-color: transparent;
@@ -115,11 +116,9 @@ h1 {
 	align-self: end;
 	padding: 8px;
 	margin-inline: 0;
-	margin-block: 4px;
 }
 embed {
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
-	margin-block: 4px;
 }
 
 a:link, a:visited {
@@ -134,7 +133,6 @@ a:link, a:visited {
 	justify-content: center;
 	margin-right: 4px;
 	margin-left: 4px;
-	margin-block: 4px;
 	width: 32px;
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
@@ -169,7 +167,6 @@ thala {
 .cepai {
 	flex-direction: column-reverse;
 	align-items: center;
-	margin-block: 4px;
 }
 
 p {
