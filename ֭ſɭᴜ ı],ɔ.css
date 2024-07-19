@@ -64,13 +64,11 @@ sak {
     text-align: center;
     padding: 2px;
     height: 32px;
-	margin-right: 8px;
 }
 .saktapai {
 	width: 32px;
     height: auto;
     align-self: center;
-	margin-right: 0;
 }
 
 h {
@@ -294,7 +292,6 @@ img {
 	border-radius: var(--អិត្ផេ);
 	height: 600px;
 	align-self: center;
-	margin: 8px;
 }
 
 
