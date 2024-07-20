@@ -1,0 +1,65 @@
+<?php Header("Cache-Control: max-age=3000, must-revalidate"); ?>
+<!DOCTYPE html>
+<html lang="aih" style="overflow-y: hidden;">
+ 
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ 
+ <title> j͐ʃᴜ ſ͔ɭᴜ </title>
+ <link rel="icon" type="image/x-icon" href="j͑ʃɹ ɭʃᴜɔ˞ ɭl̀ɔ j͑ʃᴜꞇ.ico">
+ 
+ <link rel="manifest" href="ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.webmanifest">
+ <link rel="stylesheet" href="/֭ſɭᴜ ı],ɔ.css">
+</head>
+
+<body onLoad="window.scroll(0, 16777216)" style="display: flex; flex-flow: row; align-items: center; justify-content: flex-start; overflow-y: hidden; height: 100%; margin: 0;">
+
+	<div style="display: flex; flex-direction: row; overflow-y: hidden; height: 100%; align-items: center; padding: 12px 16px 16px 16px;">
+
+		<div style="width: min-content;">
+			<h1 style="margin-left: 0px;">ſ͔ɭᴜ <br> j͐ʃᴜ</h1>
+		</div>
+		
+		<thala style="float: left; width: min-content; flex-direction: column; padding: 8px;">
+			<a href="/ꞁȷ̀ꞇ }ʃᴜƽ.html">}ʃᴜƽ <br> ꞁȷ̀ꞇ</a>
+			<a href="/ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ.html">ı],ɹ <br> ſɭᴜ <br> ɽ͑ʃ'ᴜ <br> ꞁȷ̀ᴜ</a>
+			<a href="/ſ͔ɭᴜ ᶅſɔ.html">ſɭˬꞇᴜ <br> ꞁȷ̀ɹ <br> ꞁȷ̀ɔ <br> ᶅſɔ <br> ſ͔ɭᴜ</a>
+			<a href="/index.html">j͑ʃᴜꞇ <br> j͐ʃɔ <br> ſ͔ɭɔ</a>
+		</thala>
+		
+		<thala class="tapairaq">
+            <p class="miikef">ı],ɔ <br> ʃɹ</p>
+            <input style="text-align: center; width: 56px;" placeholder="j͑ʃɹ ʃᴜ }ʃᴜ"></input>
+        </thala>
+
+        <thala class="tapairaq">
+            <p class="miikef" font-family="ꞁȷ̀ɹ ſɭˬꞇᴜ j͑ʃɔ ֭ſɭɔ">֭ſɭɔ <br> j͑ʃɔ</p>
+            <input style="text-align: center; width: 56px;" placeholder="j͑ʃɹ ʃᴜ }ʃᴜ" font-family="ꞁȷ̀ɹ ſɭˬꞇᴜ j͑ʃɔ ֭ſɭɔ"></input>
+        </thala>
+		
+	</div>
+
+</body>
+
+<script>
+    window.addEventListener('load', () => {
+      registerSW();
+    });
+ 
+    async function registerSW() {
+      if ('serviceWorker' in navigator) {
+        try {
+          await navigator
+                .serviceWorker
+                .register('j͑ʃᴜ ſɭɔ j͑ʃ\'ɔ.js');
+        }
+        catch (e) {
+          console.log('SW registration failed');
+        }
+      }
+    }
+ </script>
+
+</html>
