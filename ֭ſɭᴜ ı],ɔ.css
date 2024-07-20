@@ -220,7 +220,7 @@ ciihii {
 	padding-block: 8px;
 }
 
-input {
+input, textarea {
 	background-color: var(--ពិសាធី);
 	border-radius: var(--អិត្ផេចិ);
 	border: 1px solid var(--តិជាធី);
