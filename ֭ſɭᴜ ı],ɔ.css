@@ -92,6 +92,9 @@ sak {
 	flex-direction: column;
 	justify-content: center;
 	margin: 16px;
+	min-height: unset;
+	height: unset;
+	align-items: unset;
 }
 
 h {
