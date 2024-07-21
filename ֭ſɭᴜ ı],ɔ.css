@@ -300,8 +300,8 @@ img {
 	border-radius: var(--អិត្ផេ);
 	align-self: center;
 	height: 87.5vh;
+	pointer-events: none;
 }
-
 
 
 @media (prefers-color-scheme: dark) {
