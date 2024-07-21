@@ -303,6 +303,7 @@ img {
 }
 
 
+
 @media (prefers-color-scheme: dark) {
 	:root {
 		--ខេលេសៃ: #000;
@@ -333,7 +334,8 @@ img {
 		background-color: var(--ខេលេសៃច្ហិ);
 		border-color: var(--ពិសាធី);
 	}
-}
 
-@media only screen and (width: 801px) {
+	.tahaqkef {
+		filter: invert();
+	}
 }
