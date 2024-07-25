@@ -235,12 +235,11 @@ ciihii {
 }
 .flakciihii {
 	display: flex;
-	height: 100%;
+	height: calc(100% - 16px);
 	border-radius: var(--អិត្ផេចិ);
 	border: 1px solid var(--តិជាធី);
 	flex-direction: row;
 	align-items: center;
-	padding-inline: 8px;
 }
 .flakciihiicepai {
 	display: flex;
