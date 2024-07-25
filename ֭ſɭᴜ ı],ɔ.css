@@ -238,20 +238,15 @@ ciihii {
 	max-width: unset;
 }
 .flakciihii {
-	display: flex;
 	height: calc(100% - 16px);
-	border-radius: var(--អិត្ផេចិ);
 	border: 1px solid var(--តិជាធី);
 	flex-direction: row;
-	align-items: center;
 }
 .flakciihiicepai {
-	display: flex;
+	height: unset;
 	width: 100%;
-	border-radius: var(--អិត្ផេចិ);
 	border: 1px solid var(--តិជាធី);
 	flex-direction: column-reverse;
-	align-items: center;
 	padding-block: 8px;
 }
 

@@ -54,7 +54,7 @@
 			<ciihii>
 				<p class="miikef" style="writing-mode: vertical-lr; rotate: 180deg; font-family: system-ui;">MSM Friend Code > 26841851FL</p>
 			</ciihii>
-			<p class="miikef flakciihii">j͐ʃɹʞ <br> ſɟɔ</p>
+			<p class="miikef flak flakciihii">j͐ʃɹʞ <br> ſɟɔ</p>
 			<div class="ciihiiflak">
 				<a class="ciihiitapai" href="https://github.com/Krhitlashi/Krhitlashi.github.io/tree/main" style="height: 95%; height: -webkit-fill-available;">ſɭɜ <br> }ʃᴜc̗ <br> ʃƽɹɘ</a>
 			</div>
@@ -81,12 +81,12 @@
       }
     }
 
-	var flak = document.getElementsByClassName("flakciihii");
+	var flak = document.getElementsByClassName("flak");
 	var i;
 	for (i = 0; i < flak.length; i++) {
 		flak[i].addEventListener("click", function() {
-			this.classList.toggle("atleflak")
-			var ciihiiflak = this.querySelector(".ciihiiflak");
+			this.classList.toggle("atleflak");
+			var ciihiiflak = this.nextElementSibling;
     		if (ciihiiflak.style.maxWidth) {
     			ciihiiflak.style.maxWidth = null;
       	} else {
