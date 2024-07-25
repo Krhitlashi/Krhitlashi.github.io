@@ -41,7 +41,7 @@
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	color: var(--កេភ);
 }
-*:not(.flak) {
+*:not(.tapairaq:has(.flak:not(.atleflak))) {
 	gap: 8px;
 }
 
@@ -204,7 +204,11 @@ ciihii {
 }
 
 .flak {
+	display: flex;
+	height: calc(100% - 16px);
 	border-radius: var(--អិត្ផេចិ);
+	flex-direction: row;
+	align-items: center;
 }
 .flak:hover {
 	border: 1px solid var(--តាវាធី២អុមា);
