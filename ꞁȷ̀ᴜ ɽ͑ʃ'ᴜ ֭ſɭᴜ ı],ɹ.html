@@ -32,8 +32,8 @@
 		<a href="index.html">j͑ʃᴜꞇ <br> j͐ʃɔ <br> ſ͔ɭɔ</a>
 </thala>
 
-<thala class="tapairaq flak">
-	<p class="miikef">ſןɹ <br> j͑ʃ'ɜ <br> ſɟᴜ</p>
+<thala class="tapairaq">
+	<p class="miikef flak">ſןɹ <br> j͑ʃ'ɜ <br> ſɟᴜ</p>
 	<div class="ciihiiflak">
 		<a class="ciihiitapai" href="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ/ſɭɹ ſᶘɔ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ.html">ᶅſᴜ <br> ſןɔ <br> ı],ɹ <br> ꞁȷ̀ɜ <br> ſᶘɔ <br> ſɭɹ</a>
 	</div>
@@ -45,8 +45,8 @@
 
 <sak></sak>
 
-<thala class="tapairaq flak">
-	<p class="miikef">ſɭˬꞇᴜ <br> ꞁȷ̀ɹ</p>
+<thala class="tapairaq">
+	<p class="miikef flak">ſɭˬꞇᴜ <br> ꞁȷ̀ɹ</p>
 	<div class="ciihiiflak" style="flex-direction: row-reverse;">
 		<a href="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ/ꞁȷ̀ᴜꞇ j͑ʃꞇᴜ ſɭˬꞇ.html" class="ciihiitapai">ſɭˬꞇ <br> j͑ʃꞇᴜ <br> ꞁȷ̀ᴜꞇ</a>
 		<p class="miikef">ſȷw <br> ꞁȷ̀ᴜ</p>
@@ -61,8 +61,8 @@
 	</div>
 </thala>
 
-<thala class="tapairaq flak">
-	<p class="miikef">ſȷɜⅎ <br> ſɭɔ</p>
+<thala class="tapairaq">
+	<p class="miikef flak">ſȷɜⅎ <br> ſɭɔ</p>
 	<div class="ciihiiflak" style="flex-direction: row-reverse;">
 		<a href="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ/ſɭɔ ſɭɹ ſȷɔ.html" class="ciihiitapai">ſȷɔ <br> ſɭɹ <br> ſɭɔ</a>
 		<a href="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ/ſɭɔ ſɭп́ɔ }ʃꞇ.html" class="ciihiitapai">}ʃꞇ <br> ſɭп́ɔ <br> ſɭɔ</a>
@@ -139,7 +139,7 @@
 	for (i = 0; i < flak.length; i++) {
 		flak[i].addEventListener("click", function() {
 			this.classList.toggle("atleflak")
-			var ciihiiflak = this.querySelector(".ciihiiflak");
+			var ciihiiflak = this.nextElementSibling
     		if (ciihiiflak.style.maxWidth) {
     			ciihiiflak.style.maxWidth = null;
       	} else {

@@ -203,6 +203,9 @@ ciihii {
 	padding: 16px !important;
 }
 
+.flak {
+	border-radius: var(--អិត្ផេចិ);
+}
 .flak:hover {
 	border: 1px solid var(--តាវាធី២អុមា);
 }
