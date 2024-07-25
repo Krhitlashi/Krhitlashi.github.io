@@ -76,10 +76,10 @@
 		flak[i].addEventListener("click", function() {
 			this.classList.toggle("atleflak");
 			var ciihiiflak = this.nextElementSibling;
-    		if (ciihiiflak.style.maxWidth) {
-    			ciihiiflak.style.maxWidth = null;
+    		if (ciihiiflak.style.maxHeight) {
+    			ciihiiflak.style.maxHeight = null;
       	} else {
-      		ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
+      		ciihiiflak.style.maxHeight = ciihiiflak.scrollWidth + "px";
     		}
 		});
 	}
