@@ -244,7 +244,7 @@ ciihii {
 }
 .flakciihiicepai {
 	height: unset;
-	width: calc(100% - 16px);
+	width: 100%;
 	border: 1px solid var(--តិជាធី);
 	flex-direction: column-reverse;
 }
