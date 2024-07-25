@@ -41,7 +41,7 @@
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	color: var(--កេភ);
 }
-*:not(.tapairaq:has(.flak:not(.atleflak))):not(.tapaisaq:has(.flak:not(.atleflak))):not(.flakciihiicepai:not(.atleflak)) {
+*:not(.tapairaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.tapaisaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.flakciihiicepai:not(.atleflak)) {
 	gap: 8px;
 }
 
