@@ -72,7 +72,7 @@ shematapai {
     overflow-y: hidden;
     height: calc(100% - 48px);
     align-items: center;
-    padding-inline: 16px;
+    padding: 16px;
 	scrollbar-width: none;
 }
 sak {
