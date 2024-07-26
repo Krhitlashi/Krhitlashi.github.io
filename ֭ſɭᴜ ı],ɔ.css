@@ -247,7 +247,7 @@ ciihii {
 	width: 100%;
 	border: 1px solid var(--តិជាធី);
 	flex-direction: column-reverse;
-	padding-block: 16px;
+	padding-block: 8px;
 }
 
 input, textarea {
