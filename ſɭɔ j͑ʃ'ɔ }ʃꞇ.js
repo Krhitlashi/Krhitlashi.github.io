@@ -16,21 +16,19 @@ async function registerSW() {
 }
 
 var flak = document.getElementsByClassName("flak");
-	var i;
+var i;
 for (i = 0; i < flak.length; i++) {
-  	flak[i].addEventListener("click", function() {
-	  	this.classList.toggle("atleflak");
-		  var ciihiiflak = this.querySelector(".ciihiiflakcepai");
-   		if (ciihiiflak.style.maxHeight) {
-   			ciihiiflak.style.maxHeight= null;
-        } else {
-            ciihiiflak.style.maxHeight = ciihiiflak.scrollHeight + "px";
-        }
+	flak[i].addEventListener("click", function() {
+		this.classList.toggle("atleflak");
+		var ciihiiflak = this.nextElementSibling;
+    	if (ciihiiflak.style.maxWidth) {
+			ciihiiflak.style.maxWidth = null;
+      	} else {
+     		ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
+   		}
 	});
 }
 this.querySelector(".ciihiiflak").classList.toggle("atleciihiiflak");
-
-
 
 document.addEventListener("DOMContentLoaded", function() {
 var links = document.querySelectorAll('a');
