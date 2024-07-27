@@ -48,7 +48,7 @@ for (i = 0; i < flak.length; i++) {
             if (ciihiiflakcepai.style.maxHeight) {
                 ciihiiflakcepai.style.maxHeight = null;
             } else {
-                ciihiiflakcepai.style.maxHeight = ciihiiflakcepai.scrollWidth * 8 + "px";
+                ciihiiflakcepai.style.maxHeight = ciihiiflakcepai.scrollHeight + "px";
             }
         }
         else {
