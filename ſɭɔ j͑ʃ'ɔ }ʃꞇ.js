@@ -28,17 +28,15 @@ document.addEventListener("DOMContentLoaded", function() {
   
         setTimeout(function() {
           window.location.href = href;
-        }, 500); // Match the duration of the CSS transition
+        }, 200);
       });
     });
   
     // Remove the initial animation class after the animation completes
     setTimeout(function() {
       document.body.classList.remove('atletla');
-    }, 500); // Match the duration of the CSS animation
+    }, 200);
   });
-  
-
 
 var flak = document.getElementsByClassName("flak");
 var i;
