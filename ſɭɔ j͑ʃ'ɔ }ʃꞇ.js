@@ -29,7 +29,9 @@ document.addEventListener("DOMContentLoaded", function() {
         setTimeout(function() {
           window.location.href = href;
         }, 200);
-        document.body.classList.remove('sakatla')
+        setTimeout(function() {
+          document.body.classList.remove('sakatla');
+        }, 64);
       });
     });
   
