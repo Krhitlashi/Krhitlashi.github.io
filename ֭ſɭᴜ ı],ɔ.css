@@ -101,6 +101,19 @@ sak {
 	opacity: 0.875;
 	transform: scale(0.875);
 }
+.atletla {
+	animation: sashe;
+}
+@keyframes sashe {
+	from {
+		opacity: 0.875;
+		transform: scale(0.875);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
 
 h {
 	background-color: var(--តិជាធី);

@@ -15,22 +15,29 @@ async function registerSW() {
 	}
 }
 
+document.body.classList.add('atletla');
 document.addEventListener("DOMContentLoaded", function() {
     var links = document.querySelectorAll('a');
-
+  
     links.forEach(function(link) {
-        link.addEventListener('click', function(event) {
+      link.addEventListener('click', function(event) {
         event.preventDefault();
         var href = this.href;
-
+  
         document.body.classList.add('sakatla');
-
+  
         setTimeout(function() {
-            window.location.href = href;
+          window.location.href = href;
         }, 500); // Match the duration of the CSS transition
-        });
+      });
     });
-});
+  
+    // Remove the initial animation class after the animation completes
+    setTimeout(function() {
+      document.body.classList.remove('atletla');
+    }, 500); // Match the duration of the CSS animation
+  });
+  
 
 
 var flak = document.getElementsByClassName("flak");
