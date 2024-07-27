@@ -15,6 +15,24 @@ async function registerSW() {
 	}
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    var links = document.querySelectorAll('a');
+
+    links.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+        event.preventDefault();
+        var href = this.href;
+
+        document.body.classList.add('sakatla');
+
+        setTimeout(function() {
+            window.location.href = href;
+        }, 500); // Match the duration of the CSS transition
+        });
+    });
+});
+
+
 var flak = document.getElementsByClassName("flak");
 var i;
 for (i = 0; i < flak.length; i++) {
@@ -29,20 +47,3 @@ for (i = 0; i < flak.length; i++) {
 	});
 }
 this.querySelector(".ciihiiflak").classList.toggle("atleciihiiflak");
-
-document.addEventListener("DOMContentLoaded", function() {
-var links = document.querySelectorAll('a');
-
-	links.forEach(function(link) {
-    	link.addEventListener('click', function(event) {
-     	event.preventDefault();
-      	var href = this.href;
-
-      	document.body.classList.add('sakatla');
-
-    	setTimeout(function() {
-    		window.location.href = href;
-    	}, 500); // Match the duration of the CSS transition
-    	});
-	});
-});
