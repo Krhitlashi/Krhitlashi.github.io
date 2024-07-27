@@ -28,14 +28,14 @@ document.addEventListener("DOMContentLoaded", function() {
   
         setTimeout(function() {
           window.location.href = href;
-        }, 400);
+        }, 200);
       });
     });
   
     // Remove the initial animation class after the animation completes
     setTimeout(function() {
       document.body.classList.remove('atletla');
-    }, 400);
+    }, 200);
   });
 
 var flak = document.getElementsByClassName("flak");
