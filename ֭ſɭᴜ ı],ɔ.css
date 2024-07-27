@@ -102,7 +102,7 @@ sak {
 	transform: scale(0.875);
 }
 .atletla {
-	animation: sashe;
+	animation: sashe 0.2s ease;
 }
 @keyframes sashe {
 	from {
