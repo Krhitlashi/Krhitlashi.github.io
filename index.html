@@ -77,6 +77,24 @@
 			}
 		}
 	}
+
+	document.addEventListener("DOMContentLoaded", function() {
+  	var links = document.querySelectorAll('a');
+
+  		links.forEach(function(link) {
+    		link.addEventListener('click', function(event) {
+    	 	event.preventDefault();
+    	  	var href = this.href;
+
+    	  	document.body.classList.add('sakatla');
+
+      		setTimeout(function() {
+        		window.location.href = href;
+      		}, 500); // Match the duration of the CSS transition
+    		});
+  		});
+	});
+
 </script>
 
 </html>
