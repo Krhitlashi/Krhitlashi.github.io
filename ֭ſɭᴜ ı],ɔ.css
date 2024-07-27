@@ -99,7 +99,7 @@ sak {
 }
 .sakatla {
 	opacity: 0.875;
-	transform: scale(0.9375);
+	transform: scale(0.875);
 }
 .atletla {
 	animation: sashe 0.2s ease-out;
@@ -107,7 +107,7 @@ sak {
 @keyframes sashe {
 	from {
 		opacity: 0.875;
-		transform: scale(0.9375);
+		transform: scale(0.875);
 	}
 	to {
 		opacity: 1;
