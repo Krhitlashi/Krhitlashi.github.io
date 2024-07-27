@@ -38,17 +38,21 @@ var i;
 for (i = 0; i < flak.length; i++) {
 	flak[i].addEventListener("click", function() {
 		this.classList.toggle("atleflak");
-		var ciihiiflak = this.nextElementSibling;
-        var ciihiiflakcepai = this.querySelector(".ciihiiflakcepai");
-    	if (ciihiiflak.style.maxWidth) {
-			ciihiiflak.style.maxWidth = null;
-      	} else {
-     		ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
-   		}
-        if (ciihiiflakcepai.style.maxHeight) {
-            ciihiiflakcepai.style.maxHeight = null;
-        } else {
-          ciihiiflakcepai.style.maxHeight = ciihiiflakcepai.scrollWidth * 8 + "px";
+        if (this.querySelector(".ciihiiflakcepai") != null) {
+            var ciihiiflakcepai = this.querySelector(".ciihiiflakcepai");
+            if (ciihiiflakcepai.style.maxHeight) {
+                ciihiiflakcepai.style.maxHeight = null;
+            } else {
+                ciihiiflakcepai.style.maxHeight = ciihiiflakcepai.scrollWidth * 8 + "px";
+            }
+        }
+        else {
+            var ciihiiflak = this.nextElementSibling;
+            if (ciihiiflak.style.maxWidth) {
+			    ciihiiflak.style.maxWidth = null;
+      	    } else {
+     		    ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
+   		    }
         }
 	});
 }
