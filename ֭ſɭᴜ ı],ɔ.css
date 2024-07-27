@@ -99,8 +99,8 @@ sak {
 }
 .sakatla {
 	opacity: 0;
-	width: 50%;
-	height: 50%;
+	max-width: 50%;
+	max-height: 50%;
 }
 
 h {
