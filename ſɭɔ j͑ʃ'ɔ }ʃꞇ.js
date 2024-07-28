@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 200);
         setTimeout(function() {
           document.body.classList.remove('sakatla');
-        }, 1);
+        }, 200);
       });
     });
   
