@@ -5,14 +5,17 @@
 @font-face {
 	font-family: "ꞁȷ̀ɹ ſɭˬꞇᴜ ſ͔ɭɹ";
 	src: url("j͐ʃᴜ ſ͔ɭᴜ/ꞁȷ̀ɹ ſɭˬꞇᴜ ſ͔ɭɹ.ttf");
+	font-size-adjust: 0.5;
 }
 @font-face {
 	font-family: "ı],ᴜ }ʃᴜ";
 	src: url("j͐ʃᴜ ſ͔ɭᴜ/ı],ᴜ }ʃᴜ.ttf");
+	font-size-adjust: 0.5;
 }
 @font-face {
 	font-family: "ɭʃⲝ ɭʃᴜ oͮſɭᴜ";
 	src: url("j͐ʃᴜ ſ͔ɭᴜ/ɭʃⲝ ɭʃᴜ oͮſɭᴜ.ttf");
+	font-size-adjust: 0.5;
 }
 
 :root {
