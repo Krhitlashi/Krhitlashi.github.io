@@ -72,10 +72,10 @@ this.querySelector(".ciihiiflakcepai").classList.toggle("atleciihiiflak");
 // j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ
 function atlesorha() {
   var sorha = document.getElementById("sorha");
-  if (sorha.style.scale = unset) {
-    sorha.style.scale = 0;
+  if (sorha.style.scale != 1) {
+    sorha.style.scale = 1;
   }
   else {
-    sorha.style.scale = unset;
+    sorha.style.scale = 0;
   }
 }
