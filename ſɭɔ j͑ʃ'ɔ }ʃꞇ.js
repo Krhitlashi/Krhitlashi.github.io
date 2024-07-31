@@ -48,22 +48,22 @@ var i;
 for (i = 0; i < flak.length; i++) {
 	flak[i].addEventListener("click", function() {
 		this.classList.toggle("atleflak");
-        if (this.querySelector(".ciihiiflakcepai") != null) {
-            var ciihiiflakcepai = this.querySelector(".ciihiiflakcepai");
-            if (ciihiiflakcepai.style.maxHeight) {
-                ciihiiflakcepai.style.maxHeight = null;
-            } else {
-                ciihiiflakcepai.style.maxHeight = ciihiiflakcepai.scrollHeight + "px";
-            }
-        }
-        else {
-            var ciihiiflak = this.nextElementSibling;
-            if (ciihiiflak.style.maxWidth) {
-			    ciihiiflak.style.maxWidth = null;
-      	    } else {
-     		    ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
-   		    }
-        }
+    if (this.querySelector(".ciihiiflakcepai") != null) {
+      var ciihiiflakcepai = this.querySelector(".ciihiiflakcepai");
+      if (ciihiiflakcepai.style.maxHeight) {
+        ciihiiflakcepai.style.maxHeight = null;
+      } else {
+        ciihiiflakcepai.style.maxHeight = ciihiiflakcepai.scrollHeight + "px";
+      }
+    }
+    else {
+      var ciihiiflak = this.nextElementSibling;
+      if (ciihiiflak.style.maxWidth) {
+			  ciihiiflak.style.maxWidth = null;
+      } else {
+     		ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
+   		}
+    }
 	});
 }
 this.querySelector(".ciihiiflak").classList.toggle("atleciihiiflak");
@@ -71,7 +71,7 @@ this.querySelector(".ciihiiflakcepai").classList.toggle("atleciihiiflak");
 
 // j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ
 function atlesorha() {
-  var sorha = document.getElementById("sorha");
+  var sorha = this.nextElementSibling;
   if (sorha.style.scale != 1) {
     sorha.style.scale = 1;
   }
