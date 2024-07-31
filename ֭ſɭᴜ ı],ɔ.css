@@ -246,6 +246,7 @@ ciihii {
 	justify-content: center;
 	background-color: var(--ជាងាធីច្ហិ);
 	backdrop-filter: blur(32px);
+	flex-direction: row;
 }
 
 .flak {
