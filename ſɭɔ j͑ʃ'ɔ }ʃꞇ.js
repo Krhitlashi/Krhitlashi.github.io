@@ -1,7 +1,7 @@
+// j͐ʃᴜƣ̋ ꞁȷ̀ɜ ʃэ ſɟᴜ ſɭɹ
 window.addEventListener('load', () => {
 	registerSW();
 });
-// Register the Service Worker
 async function registerSW() {
 	if ('serviceWorker' in navigator) {
 		try {
@@ -15,6 +15,7 @@ async function registerSW() {
 	}
 }
 
+// j͐ʃᴜɔ˞ ꞁȷ̀ᴜ }ʃꞇ
 document.body.classList.add('atletla');
 document.addEventListener("DOMContentLoaded", function() {
     var links = document.querySelectorAll('a');
@@ -35,12 +36,13 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
   
-    // Remove the initial animation class after the animation completes
     setTimeout(function() {
       document.body.classList.remove('atletla');
     }, 200);
-  });
+});
 
+
+// ꞁȷ̀ᴜ ſ̀ȷɔ ɭʃᴜ̩ᴜ j͐ʃᴜ
 var flak = document.getElementsByClassName("flak");
 var i;
 for (i = 0; i < flak.length; i++) {
@@ -66,3 +68,14 @@ for (i = 0; i < flak.length; i++) {
 }
 this.querySelector(".ciihiiflak").classList.toggle("atleciihiiflak");
 this.querySelector(".ciihiiflakcepai").classList.toggle("atleciihiiflak");
+
+// j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ
+function atlesorha() {
+  var sorha = document.getElementById("sorha");
+  if (sorha.style.scale = 0) {
+    sorha.style.scale = 1;
+  }
+  else {
+    sorha.style.scale = 0;
+  }
+}
