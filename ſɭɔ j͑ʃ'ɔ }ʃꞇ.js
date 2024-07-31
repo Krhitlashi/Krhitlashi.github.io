@@ -70,8 +70,8 @@ this.querySelector(".ciihiiflak").classList.toggle("atleciihiiflak");
 this.querySelector(".ciihiiflakcepai").classList.toggle("atleciihiiflak");
 
 // j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ
-function atlesorha() {
-  var sorha = this.nextElementSibling;
+function atlesorha(thala) {
+  var sorha = document.getElementById(thala);
   if (sorha.style.scale != 1) {
     sorha.style.scale = 1;
   }

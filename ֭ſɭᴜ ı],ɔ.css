@@ -182,7 +182,7 @@ button, a:link, a:visited {
 	width: 32px;
 }
 button {
-	width: 48px;
+	width: 64px;
 	height: 100%;
 }
 button:hover, a:hover, a:active {
