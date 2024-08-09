@@ -233,6 +233,7 @@ ciihii {
 	align-items: center;
 }
 .ciihiicepai {
+	flex-direction: column;
 	width: calc(100% - 32px) !important;
 	padding: 16px !important;
 }
