@@ -144,6 +144,9 @@ p {
 	margin: 0;
 	text-align: center;
 }
+pre {
+	margin-block: 0;
+}
 .sashesaikef {
 	background-color: transparent;
 	width: max-content;
