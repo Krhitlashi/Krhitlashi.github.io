@@ -46,7 +46,7 @@
 }
 
 * {
-	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ", "ı],ᴜ }ʃᴜ";
+	font-family: "ı],ᴜ }ʃᴜ", "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	font-size-adjust: 0.5;
 	color: var(--កេភ);
 	scrollbar-width: thin;
@@ -133,7 +133,6 @@ h {
 	text-decoration: none;
 	display: inline-block;
 	width: 32px;
-	font-family: "ı],ᴜ }ʃᴜ", "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 h1 {
 	text-align: left;
@@ -163,7 +162,6 @@ pre {
 	margin-inline: 0;
 }
 .oshiipewa {
-	font-family: "ı],ᴜ }ʃᴜ", "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	background-color: transparent;
 	width: max-content;
 	text-align: left;
@@ -209,13 +207,11 @@ thala {
 	flex-direction: row-reverse;
 	align-items: center;
 	height: calc(100% - 16px);
-	font-family: "ı],ᴜ }ʃᴜ", "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 .tapaisaq {
 	flex-direction: row;
 	align-items: center;
 	height: calc(100% - 16px);
-	font-family: "ı],ᴜ }ʃᴜ", "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 .cepai {
 	flex-direction: column-reverse;
@@ -238,7 +234,6 @@ ciihii {
 	height: calc(100% - 16px);
 	display: flex !important;
 	align-items: center;
-	font-family: "ı],ᴜ }ʃᴜ", "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 }
 .ciihiicepai {
 	flex-direction: column;
@@ -336,6 +331,7 @@ table {
 td {
 	background-color: var(--ពិសាធី);
 	border: 1px solid var(--តិជាធី);
+	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ", "ı],ᴜ }ʃᴜ";
 }
 th, td {
 	border-radius: var(--អិត្ផេចិ);
