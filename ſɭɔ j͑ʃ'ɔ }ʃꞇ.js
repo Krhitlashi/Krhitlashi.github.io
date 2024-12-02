@@ -1,28 +1,24 @@
-function cepaiKef() {
-  const container = document.querySelectorAll('cepaiKef');
-  
-  const words = container.textContent.split(' ');
-    let currentLine = document.createElement('div');
-    currentLine.className = 'line';
-    container.appendChild(currentLine);
+const container = document.querySelectorAll('cepaiKef');
 
-    words.forEach(word => {
-      const wordElement = document.createElement('div');
-      wordElement.className = 'word';
-      wordElement.textContent = word;
+const words = container.textContent.split(' ');
+  let currentLine = document.createElement('div');
+  currentLine.className = 'line';
+  container.appendChild(currentLine);
 
-      // Check if adding this word exceeds the container's height
+  words.forEach(word => {
+    const wordElement = document.createElement('div');
+    wordElement.textContent = word;
+
+    // Check if adding this word exceeds the container's height
+    currentLine.appendChild(wordElement);
+    if (currentLine.scrollHeight + 20 > container.clientHeight) { // Add 20px for the top space
+      // Remove the last word and start a new line
+      currentLine.removeChild(wordElement);
+      currentLine = document.createElement('div');
+      container.appendChild(currentLine);
       currentLine.appendChild(wordElement);
-      if (currentLine.scrollHeight + 20 > container.clientHeight) { // Add 20px for the top space
-        // Remove the last word and start a new line
-        currentLine.removeChild(wordElement);
-        currentLine = document.createElement('div');
-        currentLine.className = 'line';
-        container.appendChild(currentLine);
-        currentLine.appendChild(wordElement);
-      }
-  });
-}
+    }
+});
 
 // j͐ʃᴜƣ̋ ꞁȷ̀ɜ ʃэ ſɟᴜ ſɭɹ
 window.addEventListener('load', () => {
