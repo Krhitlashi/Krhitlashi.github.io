@@ -169,6 +169,9 @@ pre {
 	padding: 8px;
 	margin-inline: 0;
 }
+.zatseuxani {
+	background-color: var(--តិជាធី);
+}
 embed, iframe {
 	display: flex;
 	border-radius: var(--អិត្ផេ);

@@ -13,9 +13,9 @@
  <link rel="stylesheet" href="/֭ſɭᴜ ı],ɔ.css">
 </head>
 
-<body class="tlacepai" onLoad="window.scroll(0, 281474976710656)" style="margin: 0; flex-direction: column-reverse;">
- 
-  <table style="margin: 0;">
+<body class="tlacepai" onLoad="window.scroll(0, 281474976710656)" style="margin: 0; flex-direction: column-reverse; padding: 16px;">
+
+  <table style="margin: 0;" id="kef">
     <tbody>
       <tr>
         <td>-ı],ꞇ |-Ši|</td>
@@ -23439,10 +23439,48 @@
       <th>ſɭɔʞ <br> j͑ʃƽᴜ</th>
     </tr>
   </table>
+
+  <input type="text" id="ixaakanoi" placeholder="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜꞇ">
  
 </body>
 
-<script src="/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
+<script src="/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js">
+document.getElementById('iixakanoi').addEventListener('input', function() {
+    const query = this.value.toLowerCase();
+    const table = document.getElementById('kef');
+    const rows = table.getElementsByTagName('tr');
+    let found = false;
+
+    for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName('td');
+        rows[i].style.display = 'none';
+
+        for (let j = 0; j < cells.length; j++) {
+            const cell = cells[j];
+            const text = cell.textContent.toLowerCase();
+
+            if (text.includes(query)) {
+                const regex = new RegExp(`(${query})`, 'gi');
+                cell.innerHTML = text.replace(regex, '<span class="zatseuxani">$1</span>');
+                rows[i].style.display = '';
+                found = true;
+
+                if (!this.scrollIntoViewFlag) {
+                    rows[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    this.scrollIntoViewFlag = true;
+                }
+                break;
+            }
+        }
+    }
+
+    if (!found) {
+        alert('֭ſɭɹ ſɭɔʞ');
+    } else {
+        this.scrollIntoViewFlag = false;
+    }
+});
+</script>
 
 </html>
  
