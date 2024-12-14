@@ -23444,7 +23444,7 @@
  
 </body>
 
-<script src="/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js">
+<script>
 document.getElementById('iixakanoi').addEventListener('input', function() {
     const query = this.value.toLowerCase();
     const table = document.getElementById('kef');
@@ -23453,31 +23453,28 @@ document.getElementById('iixakanoi').addEventListener('input', function() {
 
     for (let i = 0; i < rows.length; i++) {
         const cells = rows[i].getElementsByTagName('td');
-        rows[i].style.display = 'none';
+        let match = false;
 
         for (let j = 0; j < cells.length; j++) {
             const cell = cells[j];
             const text = cell.textContent.toLowerCase();
 
             if (text.includes(query)) {
-                const regex = new RegExp(`(${query})`, 'gi');
-                cell.innerHTML = text.replace(regex, '<span class="zatseuxani">$1</span>');
-                rows[i].style.display = '';
-                found = true;
-
-                if (!this.scrollIntoViewFlag) {
-                    rows[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    this.scrollIntoViewFlag = true;
-                }
+                match = true;
                 break;
             }
+        }
+
+        if (match) {
+            rows[i].style.display = '';
+            found = true;
+        } else {
+            rows[i].style.display = 'none';
         }
     }
 
     if (!found) {
         alert('֭ſɭɹ ſɭɔʞ');
-    } else {
-        this.scrollIntoViewFlag = false;
     }
 });
 </script>
