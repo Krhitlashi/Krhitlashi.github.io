@@ -102,7 +102,7 @@ sak {
 .tlacepai {
 	flex-direction: column;
 	justify-content: center;
-	margin: 36px 16px;
+	padding: 36px 16px;
 	min-height: unset;
 	height: unset;
 	align-items: unset;
