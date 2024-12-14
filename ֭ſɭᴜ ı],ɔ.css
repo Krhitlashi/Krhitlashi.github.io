@@ -81,7 +81,7 @@ shematapai {
 	display: flex;
     flex-direction: row;
     overflow-y: hidden;
-    height: calc(100% - 80px);
+    height: calc(100% - 72px);
     align-items: center;
     padding: 16px;
 	scrollbar-width: none;
@@ -102,7 +102,7 @@ sak {
 .tlacepai {
 	flex-direction: column;
 	justify-content: center;
-	margin: 40px 16px;
+	margin: 36px 16px;
 	min-height: unset;
 	height: unset;
 	align-items: unset;
