@@ -15,6 +15,8 @@
 
 <body class="tlacepai" onLoad="window.scroll(0, 281474976710656)" style="flex-direction: column-reverse; margin: 0; padding: 16px;">
  
+  <input type="text" id="iixakanoi" placeholder="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜꞇ" style="width: calc(100% - 32px); text-align: center; position: sticky; bottom: 16px;">
+  
 <table style="margin: 0;">
   <tbody>
     <tr>
@@ -1228,7 +1230,36 @@
  
 </body>
 
-<script src="/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
+<script>
+  document.getElementById('iixakanoi').addEventListener('input', function() {
+      const query = this.value.toLowerCase();
+      const table = document.getElementById('kef');
+      const rows = table.getElementsByTagName('tr');
+      let found = false;
+  
+      for (let i = 0; i < rows.length; i++) {
+          const cells = rows[i].getElementsByTagName('td');
+          let match = false;
+  
+          for (let j = 0; j < cells.length; j++) {
+              const cell = cells[j];
+              const text = cell.textContent.toLowerCase();
+  
+              if (text.includes(query)) {
+                  match = true;
+                  break;
+              }
+          }
+  
+          if (match) {
+              rows[i].style.display = '';
+              found = true;
+          } else {
+              rows[i].style.display = 'none';
+          }
+      }
+  });
+  </script>
  
 </html>
  
