@@ -19,13 +19,13 @@
 	--ខេលេសៃ: #fff;
 	--ខេលេសៃច្ហិ: #ffffffc0;
 	
-	--ជាងាធី: #f4f4f4;
+	--ឆាងាធី: #f4f4f4;
 	--ពិសាធី: #e4e4e4;
 	--តិជាធី: #d4d4d4;
 	--តាវាធី: #c4c4c4;
 	--ព៏ធី: #b4b4b4;
 
-	--ជាងាធីច្ហិ: #f4f4f4c0;
+	--ឆាងាធីច្ហិ: #f4f4f4c0;
 	--ពិសាធីច្ហិ: #e4e4e4c0;
 
 	--ពិសាធី២អុមា: #dcdcdc;
@@ -51,7 +51,7 @@
 	color: var(--កេភ);
 	scrollbar-width: thin;
 }
-*:not(.tapairaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.tapaisaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.flakciihiicepai:not(.atleflak)) {
+*:not(.cepaifal):not(.tapairaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.tapaisaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.flakciihiicepai:not(.atleflak)) {
 	gap: 8px;
 }
 
@@ -149,6 +149,11 @@ pre {
 }
 .cepaifal {
 	font-family: "ı],ᴜ }ʃᴜ";
+	display: flex;
+	flex-direction: column-reverse;
+	flex-wrap: wrap;
+	width: max-content;
+	max-height: 87.5vh;
 }
 .sashesaikef {
 	background-color: transparent;
@@ -201,7 +206,7 @@ button:hover, a:hover, a:active {
 }
 
 thala {
-	background-color: var(--ជាងាធី);
+	background-color: var(--ឆាងាធី);
 	border-radius: var(--អិត្ផេ);
 	border: 1px solid var(--ពិសាធី);
 	display: flex;
@@ -255,7 +260,7 @@ ciihii {
 	right: 16px;
 	display: flex;
 	justify-content: center;
-	background-color: var(--ជាងាធីច្ហិ);
+	background-color: var(--ឆាងាធីច្ហិ);
 	backdrop-filter: blur(32px);
 	flex-direction: row;
 }
@@ -326,7 +331,7 @@ input:focus {
 }
 
 table {
-	background-color: var(--ជាងាធី);
+	background-color: var(--ឆាងាធី);
 	border-radius: 	var(--អិត្ផេ);
 	border: 1px solid var(--ពិសាធី);
 	width: 100%;
@@ -377,13 +382,13 @@ img {
 		--ខេលេសៃ: #000;
 		--ខេលេសៃច្ហិ: #000000c0;
 	
-		--ជាងាធី: #181818;
+		--ឆាងាធី: #181818;
 		--ពិសាធី: #282828;
 		--តិជាធី: #383838;
 		--តាវាធី: #484848;
 		--ព៏ធី: #585858;
 
-		--ជាងាធីច្ហិ: #181818c0;
+		--ឆាងាធីច្ហិ: #181818c0;
 		--ពិសាធីច្ហិ: #282828c0;
 
 		--ពិសាធី២អុមា: #303030;
