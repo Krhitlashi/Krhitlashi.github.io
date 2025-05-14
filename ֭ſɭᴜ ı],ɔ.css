@@ -153,7 +153,7 @@ pre {
 	flex-direction: column-reverse;
 	flex-wrap: wrap;
 	width: max-content;
-	max-height: 87.5vh;
+	max-height: 81.25vh;
 }
 .cepaifal div {
 	margin-inline: 4px;
