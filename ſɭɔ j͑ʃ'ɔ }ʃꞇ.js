@@ -35,6 +35,10 @@ function vacepai(s2haxe) {
   });
 }
 
+window.onload = function() {
+  vacepai(".cepaifal");
+};
+
 // j͐ʃᴜɔ˞ ꞁȷ̀ᴜ }ʃꞇ
 document.body.classList.add('atletla');
 document.addEventListener("DOMContentLoaded", function() {
@@ -98,6 +102,3 @@ function atlesorha(sorha) {
   }
 }
 
-window.onload = function() {
-  vacepai(".cepaifal");
-};
