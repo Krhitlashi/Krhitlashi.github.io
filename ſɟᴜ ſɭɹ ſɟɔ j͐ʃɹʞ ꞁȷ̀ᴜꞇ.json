@@ -1,0 +1,15 @@
+{
+    "name":"ꞁȷ̀ɹ ſɭˬꞇᴜ ſɟɔ j͐ʃɹʞ",
+    "short_name":"ꞁȷ̀ɹ ſɭˬꞇᴜ ſɟɔ j͐ʃɹʞ",
+    "start_url":"index.html",
+    "display":"standalone",
+    "scope":".",
+    "description":"ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ",
+    "icons": [
+        {
+        "src": "ꞁȷ̀ɹ ſɭˬꞇᴜ.png",
+        "sizes": "1080x1080",
+        "type": "image/png"
+        }
+    ]
+}

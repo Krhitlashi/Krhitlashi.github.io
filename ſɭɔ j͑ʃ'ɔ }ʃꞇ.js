@@ -101,4 +101,3 @@ function atlesorha(sorha) {
     sorha.style.scale = 0;
   }
 }
-
