@@ -15,6 +15,26 @@ async function registerSW() {
 	}
 }
 
+function vacepai(s2haxe) {
+  const hatarakef = document.querySelectorAll(s2haxe);
+  if (hatarakef.length === 0) { return; }
+
+  hatarakef.forEach(arakef => {
+    const originalText = arakef.textContent.trim();
+    arakef.innerHTML = '';
+    
+    const xezCa1ara = originalText.split(' ');
+
+    xezCa1ara.forEach(xez => {
+      if (xez) {
+        const xezKek = document.createElement('div');
+        xezKek.textContent = xez;
+        arakef.appendChild(xezKek);
+      }
+    });
+  });
+}
+
 // j͐ʃᴜɔ˞ ꞁȷ̀ᴜ }ʃꞇ
 document.body.classList.add('atletla');
 document.addEventListener("DOMContentLoaded", function() {
@@ -77,3 +97,7 @@ function atlesorha(sorha) {
     sorha.style.scale = 0;
   }
 }
+
+window.onload = function() {
+  vacepai(".cepaifal");
+};
