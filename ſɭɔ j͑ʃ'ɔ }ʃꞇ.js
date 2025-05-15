@@ -89,8 +89,8 @@ for (i = 0; i < flak.length; i++) {
     }
 	});
 }
-var ciihiiflakKek = this.querySelector(".ciihiiflak")
-var ciihiiflakcepaiKek = this.querySelector(".ciihiiflakcepai")
+var ciihiiflakKek = flak.querySelector(".ciihiiflak")
+var ciihiiflakcepaiKek = flak.querySelector(".ciihiiflakcepai")
 if (ciihiiflakKek) {
   ciihiiflakKek.classList.toggle("atleciihiiflak");
 }
