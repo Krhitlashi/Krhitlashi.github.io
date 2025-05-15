@@ -89,8 +89,13 @@ for (i = 0; i < flak.length; i++) {
     }
 	});
 }
-this.querySelector(".ciihiiflak").classList.toggle("atleciihiiflak");
-this.querySelector(".ciihiiflakcepai").classList.toggle("atleciihiiflak");
+if (this.body.classList.contains(".ciihiiflak")) {
+  this.querySelector(".ciihiiflak").classList.toggle("atleciihiiflak");
+  if (this.body.classList.contains(".ciihiiflakcepai")) {
+    this.querySelector(".ciihiiflakcepai").classList.toggle("atleciihiiflak");
+  }
+}
+
 
 // j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ
 function atlesorha(sorha) {

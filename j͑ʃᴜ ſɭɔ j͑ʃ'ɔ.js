@@ -2,6 +2,7 @@ var staticCacheName = "pwa-v1";
 var assetsToCache = [
   "/",
   "/֭ſɭᴜ ı],ɔ.css",
+  "/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js",
   "/index.html",
   "/ſ͔ɭᴜ ᶅſɔ.html",
   "/ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ.html",
@@ -49,7 +50,7 @@ self.addEventListener("activate", function (event) {
 document.addEventListener("DOMContentLoaded", function() {
   var content = document.querySelector('.content');
 
-  content.scrollTop = content.scrollHeight; // Scroll to the bottom initially
+  content.scrollTop = content.scrollHeight;
 
   content.addEventListener('wheel', function(event) {
     if (event.deltaY !== 0) {
