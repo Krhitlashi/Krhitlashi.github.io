@@ -23693,34 +23693,34 @@
 </body>
 
 <script>
-document.getElementById('iixakanoi').addEventListener('input', function() {
-    const query = this.value.toLowerCase();
-    const table = document.getElementById('kef');
-    const rows = table.getElementsByTagName('tr');
-    let found = false;
+  document.getElementById('iixakanoi').addEventListener('input', function() {
+      const query = this.value.toLowerCase();
+      const table = document.getElementById('kef');
+      const rows = table.getElementsByTagName('tr');
+      let found = false;
 
-    for (let i = 0; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName('td');
-        let match = false;
+      for (let i = 0; i < rows.length; i++) {
+          const cells = rows[i].getElementsByTagName('td');
+          let match = false;
 
-        for (let j = 0; j < cells.length; j++) {
-            const cell = cells[j];
-            const text = cell.textContent.toLowerCase();
+          for (let j = 0; j < cells.length; j++) {
+              const cell = cells[j];
+              const text = cell.textContent.toLowerCase();
 
-            if (text.includes(query)) {
-                match = true;
-                break;
-            }
-        }
+              if (text.includes(query)) {
+                  match = true;
+                  break;
+              }
+          }
 
-        if (match) {
-            rows[i].style.display = '';
-            found = true;
-        } else {
-            rows[i].style.display = 'none';
-        }
-    }
-});
+          if (match) {
+              rows[i].style.display = '';
+              found = true;
+          } else {
+              rows[i].style.display = 'none';
+          }
+      }
+  });
 </script>
 
 </html>

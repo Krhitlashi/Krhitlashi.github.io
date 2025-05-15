@@ -40,7 +40,7 @@
 </thala>
 
 <thala class="tapairaq">
-	<input style="text-align: center; writing-mode: vertical-lr; rotate: 180deg; " placeholder="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜꞇ"></input>
+	<input id="iixakanoi" style="text-align: center; writing-mode: vertical-lr; rotate: 180deg;" placeholder="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜꞇ"></input>
 </thala>
 
 <sak></sak>
@@ -154,6 +154,37 @@
  
 </body>
 
-<script src="ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
+<script src="ſɭɔ j͑ʃ'ɔ }ʃꞇ.js">
+	document.getElementById('iixakanoi').addEventListener('input', function() {
+		const query = this.value.trim().toLowerCase();
+		if (!query) {
+			document.querySelectorAll('body *').forEach(el => {
+				if (el.nodeType === 1 && el.style) el.style.display = '';
+			});
+			return;
+		}
+		function filterNodes(node) {
+			let found = false;
+			if (node.nodeType === 3) {
+				if (node.textContent.toLowerCase().includes(query) && node.textContent.trim() !== '') {
+					found = true;
+				}
+			} else if (node.nodeType === 1 && node.childNodes && !['SCRIPT', 'STYLE'].includes(node.tagName)) {
+				let childHas = false;
+				for (let i = 0; i < node.childNodes.length; i++) {
+					if (filterNodes(node.childNodes[i])) childHas = true;
+				}
+				if (!childHas && node.textContent.toLowerCase().includes(query) === false && node.tagName !== 'INPUT') {
+					node.style.display = 'none';
+				} else if (node.style) {
+					node.style.display = '';
+				}
+				found = childHas || node.textContent.toLowerCase().includes(query);
+			}
+			return found;
+		}
+		filterNodes(document.body);
+	});
+</script>
 
 </html>
