@@ -89,11 +89,13 @@ for (i = 0; i < flak.length; i++) {
     }
 	});
 }
-if (this.body.classList.contains(".ciihiiflak")) {
-  this.querySelector(".ciihiiflak").classList.toggle("atleciihiiflak");
-  if (this.body.classList.contains(".ciihiiflakcepai")) {
-    this.querySelector(".ciihiiflakcepai").classList.toggle("atleciihiiflak");
-  }
+var ciihiiflakKek = this.querySelector(".ciihiiflak")
+var ciihiiflakcepaiKek = this.querySelector(".ciihiiflakcepai")
+if (ciihiiflakKek) {
+  ciihiiflakKek.classList.toggle("atleciihiiflak");
+}
+if (ciihiiflakcepaiKek) {
+  ciihiiflakcepaiKek.classList.toggle("atleciihiiflak"); 
 }
 
 
