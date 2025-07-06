@@ -51,6 +51,41 @@ window.onload = function() {
   vacepai(".cepaifal");
 };
 
+// j͑ʃᴜ ſɭᴜ ſɟꞇ ʃɔ
+function sakaIitbe(s2haxe) {
+  const haxe = window.getComputedStyle(s2haxe);
+  const cibe = haxe.borderRadius;
+
+  if (cibe === "none" || cibe === "0px") return;
+
+  const sefwini = element.offsetWidth;
+  const l6da = element.offsetHeight;
+  const pal6 = Math.min(sefwini, l6da) * 0.25;
+
+  s2haxe.style.borderRadius = `${pal6}px`;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const k21eni = document.body.querySelectorAll("*");
+
+  const k2cibeni = Array.from(k21eni).filter(el => {
+    const style = window.getComputedStyle(el);
+    return style.borderRadius && style.borderRadius !== "0px";
+  });
+
+  const mar2ba = new ResizeObserver(hakek => {
+    hakek.forEach(kek => {
+      const s2haxe = kek.target;
+      updateRadius(s2haxe);
+    });
+  });
+
+  k2cibeni.forEach(s2haxe => {
+    updateRadius(s2haxe);
+    mar2ba.observe(s2haxe);
+  });
+});
+
 // j͐ʃᴜɔ˞ ꞁȷ̀ᴜ }ʃꞇ
 document.body.classList.add("atletla");
 document.addEventListener("DOMContentLoaded", function() {

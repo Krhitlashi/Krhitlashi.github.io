@@ -291,22 +291,6 @@ ciihii {
 	backdrop-filter: blur(32px);
 	flex-direction: row;
 }
-@container (min-width: 80) {
-	thala.tapairaq, thala.tapaisaq {
-		border-radius: var(--អិត្ភេពឺ);
-	}
-	.tapairaq ciihii, .tapaisaq ciihii {
-		border-radius: var(--អិត្ភេ);
-	}
-}
-@container (min-height: 128) {
-	thala.cepai {
-		border-radius: var(--អិត្ភេពឺ);
-	}
-	.cepai ciihii {
-		border-radius: var(--អិត្ភេ);
-	}
-}
 
 .flak {
 	display: flex;
