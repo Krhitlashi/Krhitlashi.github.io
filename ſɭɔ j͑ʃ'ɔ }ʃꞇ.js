@@ -22,13 +22,15 @@ function vacepai(s2haxe) {
 
   hatarakef.forEach(arakef => {
     const tsiqaiOx2 = arakef.textContent.trim();
-    arakef.innerHTML = '';
+    arakef.innerHTML = "";
     
-    const xezCa1ara = tsiqaiOx2.split(/(\s+|\n)/);
+    const xezCa1ara = tsiqaiOx2.split(/([| \n])/);
 
     xezCa1ara.forEach(xez => {
-      if (xez === "\n" || xez.match(/^\s*$/)) {
+      if (xez === "\n") {
         arakef.appendChild(document.createElement("br"));
+      } else if (xez === " ") {
+        arakef.appendChild(document.createTextNode(" "));
       } else if (xez) {
         const xezKek = document.createElement("div");
         xezKek.textContent = xez;
