@@ -150,16 +150,16 @@ pre {
 .cepaifal {
 	font-family: "ı],ᴜ }ʃᴜ";
 	display: flex;
-	flex-direction: column-reverse;
+	flex-direction: row;
 	flex-wrap: wrap;
 	width: max-content;
 	max-height: 81.25vh;
 }
-.cepaifaltapaini {
-	display: flex;
-	flex-direction: row;
-}
 .cepaifalkek {
+	display: flex;
+	flex-direction: column-reverse;
+}
+.cepaifalkef {
 	margin-inline: 4px;
 }
 .sashesaikef {

@@ -27,21 +27,21 @@ function vacepai(s2haxe) {
     const xezCa1ara = tsiqaiOx2.split(/([| \n])/);
 
     let kaltokani = document.createElement("div");
-    kaltokani.className = "cepaifaltapaini";
+    kaltokani.className = "cepaifalkek";
     arakef.appendChild(kaltokani);
 
     xezCa1ara.forEach(xez => {
       if (xez === "\n") {
         kaltokani = document.createElement("div");
-        kaltokani.className = "cepaifaltapaini";
+        kaltokani.className = "cepaifalkek";
         arakef.appendChild(kaltokani);
       } else if (xez === " ") {
         kaltokani.appendChild(document.createTextNode(" "));
       } else if (xez) {
         const xezKek = document.createElement("div");
-        xezKek.className = "cepaifalkek";
+        xezKek.className = "cepaifalkef";
         xezKek.textContent = xez;
-        arakef.appendChild(xezKek);
+        kaltokani.appendChild(xezKek);
       }
     });
   });
