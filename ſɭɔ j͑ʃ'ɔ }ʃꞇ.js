@@ -28,10 +28,10 @@ function vacepai(s2haxe) {
 
     let kaltokani = document.createElement("div");
     kaltokani.className = "cepaifalkek";
+    arakef.appendChild(kaltokani);
 
     xezCa1ara.forEach(xez => {
       if (xez === "\n") {
-        arakef.prepend(kaltokani)
         kaltokani = document.createElement("div");
         kaltokani.className = "cepaifalkek";
         arakef.appendChild(kaltokani);
@@ -44,9 +44,6 @@ function vacepai(s2haxe) {
         kaltokani.appendChild(xezKek);
       }
     });
-    if (kaltokani.childElementCount > 0) {
-      arakef.prepend(kaltokani);
-    }
   });
 }
 
