@@ -21,6 +21,7 @@
 	--អិត្ភេចិ: 20px 8px;
 	--អិត្ភេមិ: 16px 4px;
 
+	--តានេកខេលេ: #ffffff10;
 	--តានេក: #ffffff10;
 	--តានេក២: #ffffff20;
 	--តានេក៣: #ffffff30;
@@ -39,9 +40,10 @@
 }
 @media (prefers-color-scheme: light) {
 	:root {
-		--តានេក: #00000008;
-		--តានេក២: #00000018;
-		--តានេក៣: #00000028;
+		--តានេកខេលេ: #00000008;
+		--តានេក: #00000010;
+		--តានេក២: #00000020;
+		--តានេក៣: #00000030;
 
 		--ខេលេសៃ: #fff;
 		
@@ -233,7 +235,7 @@ button:hover, a:hover, a:active {
 }
 
 thala {
-	background-color: var(--តានេក);
+	background-color: var(--តានេកខេលេ);
 	border-radius: var(--អិត្ភេ);
 	border: 1px solid var(--តានេក);
 	display: flex;
@@ -358,7 +360,7 @@ input:focus {
 }
 
 table {
-	background-color: var(--តានេក);
+	background-color: var(--តានេកខេលេ);
 	border-radius: 	var(--អិត្ភេ);
 	border: 1px solid var(--តានេក);
 	width: 100%;
@@ -382,7 +384,7 @@ th, td {
 	word-wrap: break-word;
 }
 .cashiil {
-	background-color: var(--តានេក);
+	background-color: var(--តានេកខេលេ);
 	border: 1px solid var(--តានេក);
 	writing-mode: vertical-lr; 
 	width: min-content;
