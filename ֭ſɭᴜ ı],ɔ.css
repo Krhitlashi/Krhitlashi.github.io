@@ -16,34 +16,61 @@
 }
 
 :root {
-	--ខេលេសៃ: #fff;
-	--ខេលេសៃច្ហិ: #ffffffc0;
+	--អិត្ភេពឺ: 32px 12px;
+	--អិត្ភេ: 24px 8px;
+	--អិត្ភេចិ: 20px 8px;
+	--អិត្ភេមិ: 16px 4px;
+
+	--តានេក: #ffffff10;
+	--តានេក២: #ffffff20;
+
+	--ខេលេសៃ: #000;
 	
-	--ឆាងាធី: #f4f4f4;
-	--ពិសាធី: #e4e4e4;
-	--តិជាធី: #d4d4d4;
-	--តាវាធី: #c4c4c4;
-	--ព៏ធី: #b4b4b4;
+	--ឆាងាធី: #181818;
+	--ពិសាធី: #282828;
+	--តិជាធី: #383838;
+	--តាវាធី: #484848;
 
-	--ឆាងាធីច្ហិ: #f4f4f4c0;
-	--ពិសាធីច្ហិ: #e4e4e4c0;
+	--ខេលេសៃច្ហិ: #000000c0;
+	--ឆាងាធីច្ហិ: #181818c0;
+	--ពិសាធីច្ហិ: #282828c0;
 
-	--ពិសាធី២អុមា: #dcdcdc;
-	--តិជាធី២អុមា: #cccccc;
-	--តាវាធី២អុមា: #bcbcbc;
+	--កាន្តុនី: #bdbdbd;
 
-	--កាន្តុនី: #424242;
-
-	--កេភ: #000;
-	--កេភ២: #484848;
-
-	--អិត្ផេពឺ: 32px 16px;
-	--អិត្ផេពឺចិ: 28px 12px;
-	--អិត្ផេ: 24px 8px;
-	--អិត្ផេចិ: 20px 4px;
-	--អិត្ផេមិ: 16px 8px;
-	--អិត្ផេមិចិ: 12px 4px;
+	--កេភ: #fff;
+	--កេភ២: #c4c4c4;
 }
+@media (prefers-color-scheme: light) {
+	:root {
+		--តានេក: #00000008;
+		--តានេក២: #00000018;
+
+		--ខេលេសៃ: #fff;
+		
+		--ឆាងាធី: #f4f4f4;
+		--ពិសាធី: #e4e4e4;
+		--តិជាធី: #d4d4d4;
+		--តាវាធី: #c4c4c4;
+
+		--ខេលេសៃច្ហិ: #ffffffc0;
+		--ឆាងាធីច្ហិ: #f4f4f4c0;
+		--ពិសាធីច្ហិ: #e4e4e4c0;
+
+		--កាន្តុនី: #424242;
+
+		--កេភ: #000;
+		--កេភ២: #484848;
+	}
+	ciihii {
+		background-color: var(--ខេលេសៃច្ហិ);
+		border-color: var(--តានេក២);
+	}
+
+	.tahaqkef {
+		filter: invert();
+	}
+}
+
 
 * {
 	font-family: "ı],ᴜ }ʃᴜ", "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
@@ -127,7 +154,7 @@ sak {
 
 h {
 	background-color: var(--តិជាធី);
-	border-radius: var(--អិត្ផេចិ);
+	border-radius: var(--អិត្ភេចិ);
 	padding: 8px 12px;
 	text-align: center;
 	text-decoration: none;
@@ -189,13 +216,13 @@ pre {
 }
 embed, iframe {
 	display: flex;
-	border-radius: var(--អិត្ផេ);
+	border-radius: var(--អិត្ភេ);
 }
 
 button, a:link, a:visited {
-	background-color: var(--ពិសាធី);
-	border-radius: var(--អិត្ផេចិ);
-	border: 1px solid var(--តិជាធី);
+	background-color: var(--តានេក);
+	border-radius: var(--អិត្ភេចិ);
+	border: 1px solid var(--តានេក២);
 	padding: 8px 12px;
 	text-align: center;
 	text-decoration: none;
@@ -208,14 +235,14 @@ button {
 	height: 100%;
 }
 button:hover, a:hover, a:active {
-	background-color: var(--ពិសាធី២អុមា);
-	border: 1px solid var(--តិជាធី២អុមា);
+	background-color: var(--តានេក២);
+	border: 1px solid var(--តានេក២);
 }
 
 thala {
-	background-color: var(--ឆាងាធី);
-	border-radius: var(--អិត្ផេ);
-	border: 1px solid var(--ពិសាធី);
+	background-color: var(--តានេក);
+	border-radius: var(--អិត្ភេ);
+	border: 1px solid var(--តានេក២);
 	display: flex;
 	text-align: center;
 	align-items: center;
@@ -237,9 +264,9 @@ thala {
 }
 
 ciihii {
-	background-color: var(--ពិសាធី);
-	border-radius: var(--អិត្ផេចិ);
-	border: 1px solid var(--តិជាធី);
+	background-color: var(--តានេក);
+	border-radius: var(--អិត្ភេចិ);
+	border: 1px solid var(--តានេកៗ);
 	padding: 8px;
 	display: flex;
 	flex-direction: row;
@@ -275,12 +302,12 @@ ciihii {
 .flak {
 	display: flex;
 	height: calc(100% - 16px);
-	border-radius: var(--អិត្ផេចិ);
+	border-radius: var(--អិត្ភេចិ);
 	flex-direction: row;
 	align-items: center;
 }
 .flak:hover {
-	border: 1px solid var(--តាវាធី២អុមា);
+	border: 1px solid var(--តាវាធី);
 }
 .atleflak:before {
 	content: "|"
@@ -320,9 +347,9 @@ ciihii {
 }
 
 input, textarea {
-	background-color: var(--ពិសាធី);
-	border-radius: var(--អិត្ផេចិ);
-	border: 1px solid var(--តិជាធី);
+	background-color: var(--តានេក);
+	border-radius: var(--អិត្ភេចិ);
+	border: 1px solid var(--តានេក២);
 	height: 94%;
 	height: -moz-available;
 	height: -webkit-fill-available;
@@ -338,21 +365,21 @@ input:focus {
 }
 
 table {
-	background-color: var(--ឆាងាធី);
-	border-radius: 	var(--អិត្ផេ);
-	border: 1px solid var(--ពិសាធី);
+	background-color: var(--តានេក);
+	border-radius: 	var(--អិត្ភេ);
+	border: 1px solid var(--តានេក២);
 	width: 100%;
 	margin: 4px 0px;
 	border-spacing: 8px;
 	table-layout: fixed;
 }
 td {
-	background-color: var(--ពិសាធី);
-	border: 1px solid var(--តិជាធី);
+	background-color: var(--តានេក);
+	border: 1px solid var(--តានេក២);
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ", "ı],ᴜ }ʃᴜ";
 }
 th, td {
-	border-radius: var(--អិត្ផេចិ);
+	border-radius: var(--អិត្ភេចិ);
 	border-collapse: collapse;
 	padding: 8px;
 	text-align: center;
@@ -362,8 +389,8 @@ th, td {
 	word-wrap: break-word;
 }
 .cashiil {
-	background-color: var(--ពិសាធី);
-	border: 1px solid var(--តិជាធី);
+	background-color: var(--តានេក);
+	border: 1px solid var(--តានេក២);
 	writing-mode: vertical-lr; 
 	width: min-content;
 	height: 640px;
@@ -372,50 +399,14 @@ th, td {
 	align-self: start;
 }
 .cashiilciihii {
-	background-color: var(--តិជាធី);
-	border: 1px solid var(--តាវាធី);
+	background-color: var(--តានេក);
+	border: 1px solid var(--តានេក២);
 }
 
 img {
-	border-radius: var(--អិត្ផេ);
+	border-radius: var(--អិត្ភេ);
 	align-self: center;
 	height: 75vh;
 	pointer-events: none;
 }
 
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--ខេលេសៃ: #000;
-		--ខេលេសៃច្ហិ: #000000c0;
-	
-		--ឆាងាធី: #181818;
-		--ពិសាធី: #282828;
-		--តិជាធី: #383838;
-		--តាវាធី: #484848;
-		--ព៏ធី: #585858;
-
-		--ឆាងាធីច្ហិ: #181818c0;
-		--ពិសាធីច្ហិ: #282828c0;
-
-		--ពិសាធី២អុមា: #303030;
-		--តិជាធី២អុមា: #404040;
-		--តាវាធី២អុមា: #505050;
-
-		--កាន្តុនី: #bdbdbd;
-
-		--កេភ: #fff;
-		--កេភ២: #c4c4c4;
-	}
-}
-
-@media (prefers-color-scheme: light) {
-	ciihii {
-		background-color: var(--ខេលេសៃច្ហិ);
-		border-color: var(--ពិសាធី);
-	}
-
-	.tahaqkef {
-		filter: invert();
-	}
-}
