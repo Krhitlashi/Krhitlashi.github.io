@@ -26,13 +26,20 @@ function vacepai(s2haxe) {
     
     const xezCa1ara = tsiqaiOx2.split(/([| \n])/);
 
+    let kaltokani = document.createElement("div");
+    kaltokani.className = "cepaifaltapaini";
+    arakef.appendChild(kaltokani);
+
     xezCa1ara.forEach(xez => {
       if (xez === "\n") {
-        arakef.appendChild(document.createElement("br"));
+        kaltokani = document.createElement("div");
+        kaltokani.className = "cepaifaltapaini";
+        arakef.appendChild(kaltokani);
       } else if (xez === " ") {
-        arakef.appendChild(document.createTextNode(" "));
+        kaltokani.appendChild(document.createTextNode(" "));
       } else if (xez) {
         const xezKek = document.createElement("div");
+        xezKek.className = "cepaifalkek";
         xezKek.textContent = xez;
         arakef.appendChild(xezKek);
       }

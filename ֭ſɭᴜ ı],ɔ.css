@@ -155,7 +155,11 @@ pre {
 	width: max-content;
 	max-height: 81.25vh;
 }
-.cepaifal div {
+.cepaifaltapaini {
+	display: flex;
+	flex-direction: row;
+}
+.cepaifalkek {
 	margin-inline: 4px;
 }
 .sashesaikef {
