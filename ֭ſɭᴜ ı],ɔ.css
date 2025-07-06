@@ -34,8 +34,6 @@
 	--ខេលេសៃច្ហិ: #000000c0;
 	--ឆាងាធីច្ហិ: #181818c0;
 
-	--កាន្តុនី: #b8b8b8;
-
 	--កេភ: #fff;
 	--កេភ២: #c4c4c4;
 }
@@ -53,8 +51,6 @@
 
 		--ខេលេសៃច្ហិ: #ffffffc0;
 		--ឆាងាធីច្ហិ: #f4f4f4c0;
-
-		--កាន្តុនី: #585858;
 
 		--កេភ: #000;
 		--កេភ២: #484848;
@@ -218,7 +214,7 @@ embed, iframe {
 }
 
 button, a:link, a:visited {
-	background-color: var(--តានេក២);
+	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេចិ);
 	border: 1px solid var(--តានេក);
 	padding: 8px 12px;
@@ -234,7 +230,6 @@ button {
 }
 button:hover, a:hover, a:active {
 	background-color: var(--តានេក២);
-	border: 1px solid var(--តានេក៣);
 }
 
 thala {
@@ -296,6 +291,22 @@ ciihii {
 	backdrop-filter: blur(32px);
 	flex-direction: row;
 }
+@container (min-width: 80) {
+	thala.tapairaq, thala.tapaisaq {
+		border-radius: var(--អិត្ភេពឺ);
+	}
+	.tapairaq ciihii, .tapaisaq ciihii {
+		border-radius: var(--អិត្ភេ);
+	}
+}
+@container (min-height: 128) {
+	thala.cepai {
+		border-radius: var(--អិត្ភេពឺ);
+	}
+	.cepai ciihii {
+		border-radius: var(--អិត្ភេ);
+	}
+}
 
 .flak {
 	display: flex;
@@ -345,7 +356,7 @@ ciihii {
 }
 
 input, textarea {
-	background-color: var(--តានេក២);
+	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេចិ);
 	border: 1px solid var(--តានេក);
 	height: 94%;
@@ -355,10 +366,10 @@ input, textarea {
 	padding: 16px;
 }
 input:hover {
-	background-color: var(--តានេក៣);
+	background-color: var(--តានេក២);
 }
 input:focus {
-	border-right: 4px solid var(--កាន្តុនី);
+	border-right: 4px solid var(--កេភ២);
 	outline:none;
 }
 
