@@ -1,5 +1,5 @@
 // j͐ʃᴜƣ̋ ꞁȷ̀ɜ ʃэ ſɟᴜ ſɭɹ
-window.addEventListener('load', () => {
+window.addEventListener("load", () => {
 	registerSW();
 });
 async function registerSW() {
@@ -7,27 +7,30 @@ async function registerSW() {
 		try {
 			await navigator
 			.serviceWorker
-			.register('j͑ʃᴜ ſɭɔ j͑ʃ\'ɔ.js');
+			.register("j͑ʃᴜ ſɭɔ j͑ʃ\'ɔ.js");
 		}
 		catch (e) {
-			console.log('SW registration failed');
+			console.log("SW registration failed");
 		}
 	}
 }
 
+// j͑ʃ'ᴜ ſɟɔ ſןᴜꞇ
 function vacepai(s2haxe) {
   const hatarakef = document.querySelectorAll(s2haxe);
   if (hatarakef.length === 0) { return; }
 
   hatarakef.forEach(arakef => {
-    const originalText = arakef.textContent.trim();
+    const tsiqaiOx2 = arakef.textContent.trim();
     arakef.innerHTML = '';
     
-    const xezCa1ara = originalText.split(' ');
+    const xezCa1ara = tsiqaiOx2.split(/(\s+|\n)/);
 
     xezCa1ara.forEach(xez => {
-      if (xez) {
-        const xezKek = document.createElement('div');
+      if (xez === "\n" || xez.match(/^\s*$/)) {
+        arakef.appendChild(document.createElement("br"));
+      } else if (xez) {
+        const xezKek = document.createElement("div");
         xezKek.textContent = xez;
         arakef.appendChild(xezKek);
       }
@@ -40,28 +43,28 @@ window.onload = function() {
 };
 
 // j͐ʃᴜɔ˞ ꞁȷ̀ᴜ }ʃꞇ
-document.body.classList.add('atletla');
+document.body.classList.add("atletla");
 document.addEventListener("DOMContentLoaded", function() {
-    var links = document.querySelectorAll('a');
+    var links = document.querySelectorAll("a");
   
     links.forEach(function(link) {
-      link.addEventListener('click', function(event) {
+      link.addEventListener("click", function(event) {
         event.preventDefault();
         var href = this.href;
   
-        document.body.classList.add('sakatla');
+        document.body.classList.add("sakatla");
   
         setTimeout(function() {
           window.location.href = href;
         }, 200);
         setTimeout(function() {
-          document.body.classList.remove('sakatla');
+          document.body.classList.remove("sakatla");
         }, 200);
       });
     });
   
     setTimeout(function() {
-      document.body.classList.remove('atletla');
+      document.body.classList.remove("atletla");
     }, 200);
 });
 
