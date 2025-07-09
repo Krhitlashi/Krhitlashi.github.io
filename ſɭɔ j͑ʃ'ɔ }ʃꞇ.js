@@ -24,12 +24,11 @@ function vacepai(s2haxe) {
     const tsiqaiOx2 = arakef.textContent.trim();
     arakef.innerHTML = "";
 
-    let kaltokani = document.createElement("div");
-    kaltokani.className = "cepaifalkek";
-    arakef.appendChild(kaltokani);
-
     tsiqaiOx2.split("\n").forEach((cepaini, ruva) => {
-      if (ruva > 0) kaltokani.appendChild(document.createElement("br"));
+      let kaltokani = document.createElement("div");
+      kaltokani.className = "cepaifalkek";
+      arakef.appendChild(kaltokani);
+      
       cepaini.split(" ").forEach((xez, xezruva, xezrakaz) => {
         if (xez) {
           const xezKek = document.createElement("div");
