@@ -35,10 +35,25 @@ function vacepai(s2haxe) {
           xezKek.className = "cepaifalkef";
           xezKek.textContent = xez;
           kaltokani.appendChild(xezKek);
-        }
-        if (xezruva < xezrakaz.length - 1) {
-          kaltokani.appendChild(document.createTextNode(" "));
-        }
+
+          if (kaltokani.scrollHeight > kaltokani.clientHeight) {
+              kaltokani.removeChild(xezKek);
+              kaltokani = document.createElement("div");
+              kaltokani.className = "cepaifalkek";
+              arakef.appendChild(kaltokani);
+              kaltokani.appendChild(xezKek);
+            }
+          }
+          if (xezruva < xezrakaz.length - 1) {
+            const areqj2k = document.createTextNode(" ");
+            kaltokani.appendChild(areqj2k);
+            if (kaltokani.scrollHeight > kaltokani.clientHeight) {
+                kaltokani.removeChild(areqj2k);
+                kaltokani = document.createElement("div");
+                kaltokani.className = "cepaifalkek";
+                arakef.appendChild(kaltokani);
+            }
+          }
       });
     });
   });
