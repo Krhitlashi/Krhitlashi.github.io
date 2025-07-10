@@ -1,0 +1,409 @@
+@font-face {
+	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
+	src: url("j͐ʃᴜ ſ͔ɭᴜ/ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ.ttf");
+}
+@font-face {
+	font-family: "ꞁȷ̀ɹ ſɭˬꞇᴜ ſ͔ɭɹ";
+	src: url("j͐ʃᴜ ſ͔ɭᴜ/ꞁȷ̀ɹ ſɭˬꞇᴜ ſ͔ɭɹ.ttf");
+}
+@font-face {
+	font-family: "ı],ᴜ }ʃᴜ";
+	src: url("j͐ʃᴜ ſ͔ɭᴜ/ı],ᴜ }ʃᴜ.ttf");
+}
+@font-face {
+	font-family: "ɭʃⲝ ɭʃᴜ oͮſɭᴜ";
+	src: url("j͐ʃᴜ ſ͔ɭᴜ/ɭʃⲝ ɭʃᴜ oͮſɭᴜ.ttf");
+}
+
+:root {
+	--អិត្ភេពឺ: 32px 12px;
+	--អិត្ភេ: 24px 8px;
+	--អិត្ភេចិ: 20px 8px;
+	--អិត្ភេមិ: 16px 4px;
+
+	--តានេកខេលេ: #ffffff10;
+	--តានេក: #ffffff10;
+	--តានេក២: #ffffff20;
+	--តានេក៣: #ffffff30;
+
+	--ខេលេសៃ: #000;
+	
+	--ឆាងាធី: #181818;
+	--ពិសាធី: #282828;
+	--តិជាធី: #383838;
+
+	--ខេលេសៃច្ហិ: #000000a0;
+	--ឆាងាធីច្ហិ: #181818c0;
+
+	--កេភ: #fff;
+	--កេភ២: #c4c4c4;
+}
+@media (prefers-color-scheme: light) {
+	:root {
+		--តានេកខេលេ: #00000008;
+		--តានេក: #00000010;
+		--តានេក២: #00000020;
+		--តានេក៣: #00000030;
+
+		--ខេលេសៃ: #fff;
+		
+		--ឆាងាធី: #f4f4f4;
+		--ពិសាធី: #e4e4e4;
+		--តិជាធី: #d4d4d4;
+
+		--ខេលេសៃច្ហិ: #ffffffa0;
+		--ឆាងាធីច្ហិ: #f4f4f4c0;
+
+		--កេភ: #000;
+		--កេភ២: #484848;
+	}
+}
+
+* {
+	font-family: "ı],ᴜ }ʃᴜ", "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
+	font-size-adjust: 0.5;
+	color: var(--កេភ);
+	scrollbar-width: thin;
+}
+*:not(.cepaifal):not(.tapairaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.tapaisaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.flakciihiicepai:not(.atleflak)) {
+	gap: 8px;
+}
+
+body {
+	background-color: var(--ខេលេសៃ);
+	display: flex;
+	flex-direction: row; 
+	flex-wrap: nowrap; 
+	align-items: center; 
+	justify-content: flex-start; 
+	min-height: 100%;
+	height: 100%;
+	margin: 0;
+	transition: all 0.2s ease;
+}
+html {
+	height: 100%;
+}
+main {
+	display: table-cell;
+	vertical-align: bottom;
+}
+div {
+	scrollbar-width: none;
+}
+shematapai {
+	display: flex;
+    flex-direction: row;
+    overflow-y: hidden;
+    height: calc(100% - 80px);
+    align-items: center;
+    padding: 16px;
+	scrollbar-width: none;
+}
+sak {
+	background-color: var(--កេភ២);
+    border-radius: 1024px;
+    display: flex;
+    text-align: center;
+    padding: 2px;
+    height: 32px;
+}
+.saktapai {
+	width: 32px;
+    height: auto;
+    align-self: center;
+}
+.tlacepai {
+	flex-direction: column;
+	justify-content: center;
+	padding: 36px 16px;
+	min-height: unset;
+	height: unset;
+	align-items: unset;
+}
+.sakatla {
+	opacity: 0.875;
+	transform: scale(0.875);
+}
+.atletla {
+	animation: sashe 0.2s ease-out;
+}
+@keyframes sashe {
+	from {
+		opacity: 0.875;
+		transform: scale(0.875);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+h {
+	background-color: var(--តានេក២);
+	border-radius: var(--អិត្ភេចិ);
+	padding: 8px 12px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	width: 32px;
+}
+h1 {
+	text-align: left;
+	margin: 16px;
+	font-weight: unset;
+	font-family: "ı],ᴜ }ʃᴜ";
+}
+p {
+	margin: 0;
+	text-align: center;
+}
+pre {
+	margin-block: 0;
+}
+.cepaifal {
+	font-family: "ı],ᴜ }ʃᴜ";
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: max-content;
+	max-height: 81.25vh;
+}
+.cepaifalkek {
+	display: flex;
+	flex-direction: column-reverse;
+	max-height: 81.25vh;
+	overflow-y: auto;
+}
+.cepaifalkef {
+	margin-inline: 4px;
+}
+.sashesaikef {
+	background-color: transparent;
+	width: max-content;
+	font-size: x-large;
+	text-align: left;
+	padding: 8px;
+}
+.miikef {
+	background-color: transparent;
+	width: max-content;
+	text-align: center;
+	padding: 8px;
+	margin-inline: 0;
+}
+.oshiipewa {
+	background-color: transparent;
+	width: max-content;
+	text-align: left;
+	align-self: end;
+	padding: 8px;
+	margin-inline: 0;
+}
+.zatseuxani {
+	background-color: var(--តិជាធី);
+}
+embed, iframe {
+	display: flex;
+	border-radius: var(--អិត្ភេ);
+}
+
+button, a:link, a:visited {
+	background-color: var(--តានេក);
+	border-radius: var(--អិត្ភេចិ);
+	border: 1px solid var(--តានេក);
+	padding: 8px 12px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	justify-content: center;
+	width: 32px;
+}
+button {
+	width: 64px;
+	height: 100%;
+}
+button:hover, a:hover, a:active {
+	background-color: var(--តានេក២);
+}
+
+thala {
+	background-color: var(--តានេកខេលេ);
+	border-radius: var(--អិត្ភេ);
+	border: 1px solid var(--តានេក);
+	display: flex;
+	text-align: center;
+	align-items: center;
+	padding: 12px;
+}
+.tapairaq {
+	flex-direction: row-reverse;
+	align-items: center;
+	height: calc(100% - 16px);
+}
+.tapaisaq {
+	flex-direction: row;
+	align-items: center;
+	height: calc(100% - 16px);
+}
+.cepai {
+	flex-direction: column-reverse;
+	align-items: center;
+}
+
+ciihii {
+	background-color: var(--តានេក);
+	border-radius: var(--អិត្ភេចិ);
+	border: 1px solid var(--តានេក);
+	padding: 8px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	height: calc(100% - 16px);
+}
+.ciihiitapai {
+	align-self: center;
+	width: 100%;
+	height: calc(100% - 16px);
+	display: flex !important;
+	align-items: center;
+}
+.ciihiicepai {
+	flex-direction: column;
+	width: calc(100% - 32px) !important;
+	padding: 16px !important;
+}
+.sorha {
+	transition: all 0.2s ease;
+	scale: 0;
+	position: fixed;
+	bottom: 16px;
+	left: 16px;
+	right: 16px;
+	display: flex;
+	justify-content: center;
+	background-color: var(--ឆាងាធីច្ហិ);
+	backdrop-filter: blur(32px);
+	flex-direction: row;
+}
+
+.flak {
+	display: flex;
+	height: calc(100% - 16px);
+	border-radius: var(--អិត្ភេចិ);
+	flex-direction: row;
+	align-items: center;
+}
+.flak:hover {
+	border: 1px solid var(--តានេក៣);
+}
+.atleflak:before {
+	content: "|"
+}
+.ciihiiflak {
+	display: flex;
+	overflow: hidden;
+    height: 100%;
+	align-items: center;
+	max-width: 0;
+	transition: 0.2s ease-out;
+	padding-block: 1px;
+}
+.ciihiiflakcepai {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	width: 100%;
+	align-items: center;
+	max-height: 0;
+	transition: 0.2s ease-out;
+}
+.atleciihiiflak {
+	max-width: unset;
+}
+.flakciihii {
+	height: calc(100% - 16px);
+	border: 1px solid var(--តានេក២);
+	flex-direction: row;
+}
+.flakciihiicepai {
+	height: unset;
+	width: 100%;
+	border: 1px solid var(--តានេក២);
+	flex-direction: column-reverse;
+	padding-block: 8px;
+}
+
+input, textarea {
+	background-color: var(--តានេក);
+	border-radius: var(--អិត្ភេចិ);
+	border: 1px solid var(--តានេក);
+	height: 94%;
+	height: -moz-available;
+	height: -webkit-fill-available;
+	width: 94%;
+	padding: 16px;
+}
+input:hover {
+	background-color: var(--តានេក២);
+}
+input:focus {
+	border-right: 4px solid var(--កេភ២);
+	outline:none;
+}
+
+table {
+	background-color: var(--តានេកខេលេ);
+	border-radius: 	var(--អិត្ភេ);
+	border: 1px solid var(--តានេក);
+	width: 100%;
+	margin: 4px 0px;
+	border-spacing: 8px;
+	table-layout: fixed;
+}
+td {
+	background-color: var(--តានេក);
+	border: 1px solid var(--តានេក);
+	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ", "ı],ᴜ }ʃᴜ";
+}
+th, td {
+	border-radius: var(--អិត្ភេចិ);
+	border-collapse: collapse;
+	padding: 8px;
+	text-align: center;
+	width: 50%;
+	max-height: 1000em;
+	overflow: hidden;
+	word-wrap: break-word;
+}
+.cashiil {
+	background-color: var(--តានេកខេលេ);
+	border: 1px solid var(--តានេក);
+	writing-mode: vertical-lr; 
+	width: min-content;
+	height: 640px;
+	margin-block: 8px;
+	margin-inline: 0px;
+	align-self: start;
+}
+.cashiilciihii {
+	background-color: var(--តានេក);
+	border: 1px solid var(--តានេក);
+}
+
+img {
+	border-radius: var(--អិត្ភេ);
+	align-self: center;
+	height: 75vh;
+	pointer-events: none;
+}
+
+@media (prefers-color-scheme: light) {
+	ciihii {
+		background-color: var(--ខេលេសៃច្ហិ);
+	}
+
+	.tahaqkef {
+		filter: invert();
+	}
+}
