@@ -167,12 +167,10 @@ pre {
 	flex-direction: row;
 	flex-wrap: wrap;
 	width: max-content;
-	max-height: 81.25vh;
 }
 .cepaifalkek {
 	display: flex;
 	flex-direction: column-reverse;
-	max-height: 81.25vh;
 	overflow-y: auto;
 }
 .cepaifalkef {
