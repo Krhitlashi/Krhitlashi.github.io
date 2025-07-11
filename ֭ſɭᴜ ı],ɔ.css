@@ -342,13 +342,12 @@ input, textarea {
 	height: -webkit-fill-available;
 	width: 94%;
 	padding: 16px;
-	backdrop-filter: blur(32px)
+	backdrop-filter: blur(32px);
 }
 input:hover {
 	background-color: var(--តានេក២);
 }
 input:focus {
-	border-right: 4px solid var(--កេភ២);
 	outline:none;
 }
 
