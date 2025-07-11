@@ -342,6 +342,7 @@ input, textarea {
 	height: -webkit-fill-available;
 	width: 94%;
 	padding: 16px;
+	backdrop-filter: blur(32px)
 }
 input:hover {
 	background-color: var(--តានេក២);
