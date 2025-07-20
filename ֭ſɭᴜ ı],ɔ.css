@@ -153,7 +153,7 @@ sak {
 h {
 	background-color: var(--តានេក២);
 	border-radius: var(--អិត្ភេចិ);
-	padding: 8px 12px;
+	padding: var(--អារេង) var(--អារេងចិ);
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
@@ -222,7 +222,7 @@ button, a:link, a:visited {
 	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេចិ);
 	border: var(--សាកព៏);
-	padding: var(--អារេងចិ);
+	padding: var(--អារេង) var(--អារេងចិ);
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
