@@ -26,6 +26,10 @@
 	--តានេក២: #ffffff20;
 	--តានេក៣: #ffffff30;
 
+	--សាកព៏: 1px solid var(--តានេក);
+	--សាកព៏២: 1px solid var(--តានេក២);
+	--សាកព៏៣: 1px solid var(--តានេក៣);
+
 	--ខេលេសៃ: #000;
 	
 	--ឆាងាធី: #181818;
@@ -37,6 +41,13 @@
 
 	--កេភ: #fff;
 	--កេភ២: #c4c4c4;
+
+	--អារេងព៏: 16px;
+	--អារេងចិ: 12px;
+	--អារេង: 8px;
+	--អារេងមិ: 4px;
+
+	--ច្ហិនី: blur(32px);
 }
 @media (prefers-color-scheme: light) {
 	:root {
@@ -66,7 +77,7 @@
 	scrollbar-width: thin;
 }
 *:not(.cepaifal):not(.tapairaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.tapaisaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.flakciihiicepai:not(.atleflak)) {
-	gap: 8px;
+	gap: var(--អារេង);
 }
 
 body {
@@ -79,7 +90,7 @@ body {
 	min-height: 100%;
 	height: 100%;
 	margin: 0;
-	transition: all 0.2s ease;
+	transition: all 0.25s ease;
 }
 html {
 	height: 100%;
@@ -97,7 +108,7 @@ shematapai {
     overflow-y: hidden;
     height: calc(100% - 80px);
     align-items: center;
-    padding: 16px;
+    padding: var(--អារេងព៏);
 	scrollbar-width: none;
 }
 sak {
@@ -116,7 +127,7 @@ sak {
 .tlacepai {
 	flex-direction: column;
 	justify-content: center;
-	padding: 36px 16px;
+	padding: var(--អារេងព៏);
 	min-height: unset;
 	height: unset;
 	align-items: unset;
@@ -126,7 +137,7 @@ sak {
 	transform: scale(0.875);
 }
 .atletla {
-	animation: sashe 0.2s ease-out;
+	animation: sashe 0.25s ease-out;
 }
 @keyframes sashe {
 	from {
@@ -150,7 +161,7 @@ h {
 }
 h1 {
 	text-align: left;
-	margin: 16px;
+	margin: var(--អារេងព៏);
 	font-weight: unset;
 	font-family: "ı],ᴜ }ʃᴜ";
 }
@@ -171,24 +182,24 @@ pre {
 .cepaifalkek {
 	display: flex;
 	flex-direction: column-reverse;
-	max-height: calc(100% - 16px);
+	max-height: calc(100% - var(--អារេងព៏));
 	overflow-y: auto;
 }
 .cepaifalkef {
-	margin-inline: 4px;
+	margin-inline: var(--អារេងមិ);
 }
 .sashesaikef {
 	background-color: transparent;
 	width: max-content;
 	font-size: x-large;
 	text-align: left;
-	padding: 8px;
+	padding: var(--អារេង);
 }
 .miikef {
 	background-color: transparent;
 	width: max-content;
 	text-align: center;
-	padding: 8px;
+	padding: var(--អារេង);
 	margin-inline: 0;
 }
 .oshiipewa {
@@ -196,7 +207,7 @@ pre {
 	width: max-content;
 	text-align: left;
 	align-self: end;
-	padding: 8px;
+	padding: var(--អារេង);
 	margin-inline: 0;
 }
 .zatseuxani {
@@ -210,8 +221,8 @@ embed, iframe {
 button, a:link, a:visited {
 	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេចិ);
-	border: 1px solid var(--តានេក);
-	padding: 8px 12px;
+	border: var(--សាកព៏);
+	padding: var(--អារេងចិ);
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
@@ -229,21 +240,21 @@ button:hover, a:hover, a:active {
 thala {
 	background-color: var(--តានេកខេលេ);
 	border-radius: var(--អិត្ភេ);
-	border: 1px solid var(--តានេក);
+	border: var(--សាកព៏);
 	display: flex;
 	text-align: center;
 	align-items: center;
-	padding: 12px;
+	padding: var(--អារេងចិ);
 }
 .tapairaq {
 	flex-direction: row-reverse;
 	align-items: center;
-	height: calc(100% - 16px);
+	height: calc(100% - var(--អារេងព៏));
 }
 .tapaisaq {
 	flex-direction: row;
 	align-items: center;
-	height: calc(100% - 16px);
+	height: calc(100% - var(--អារេងព៏));
 }
 .cepai {
 	flex-direction: column-reverse;
@@ -253,48 +264,48 @@ thala {
 ciihii {
 	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេចិ);
-	border: 1px solid var(--តានេក);
-	padding: 8px;
+	border: var(--សាកព៏);
+	padding: var(--អារេង);
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	height: calc(100% - 16px);
+	height: calc(100% - var(--អារេងព៏));
 }
 .ciihiitapai {
 	align-self: center;
 	width: 100%;
-	height: calc(100% - 16px);
+	height: calc(100% - var(--អារេងព៏));
 	display: flex !important;
 	align-items: center;
 }
 .ciihiicepai {
 	flex-direction: column;
 	width: calc(100% - 32px) !important;
-	padding: 16px !important;
+	padding: var(--អារេងព៏) !important;
 }
 .sorha {
-	transition: all 0.2s ease;
+	transition: all 0.25s ease;
 	scale: 0;
 	position: fixed;
-	bottom: 16px;
-	left: 16px;
-	right: 16px;
+	bottom: var(--អារេងព៏);
+	left: var(--អារេងព៏);
+	right: var(--អារេងព៏);
 	display: flex;
 	justify-content: center;
 	background-color: var(--ឆាងាធីច្ហិ);
-	backdrop-filter: blur(32px);
+	backdrop-filter: var(--ច្ហិនី);
 	flex-direction: row;
 }
 
 .flak {
 	display: flex;
-	height: calc(100% - 16px);
+	height: calc(100% - var(--អារេងព៏));
 	border-radius: var(--អិត្ភេចិ);
 	flex-direction: row;
 	align-items: center;
 }
 .flak:hover {
-	border: 1px solid var(--តានេក៣);
+	border: var(--សាកព៏៣);
 }
 .atleflak:before {
 	content: "|"
@@ -305,7 +316,7 @@ ciihii {
     height: 100%;
 	align-items: center;
 	max-width: 0;
-	transition: 0.2s ease-out;
+	transition: 0.25s ease-out;
 	padding-block: 1px;
 }
 .ciihiiflakcepai {
@@ -315,34 +326,34 @@ ciihii {
 	width: 100%;
 	align-items: center;
 	max-height: 0;
-	transition: 0.2s ease-out;
+	transition: 0.25s ease-out;
 }
 .atleciihiiflak {
 	max-width: unset;
 }
 .flakciihii {
-	height: calc(100% - 16px);
-	border: 1px solid var(--តានេក២);
+	height: calc(100% - var(--អារេងព៏));
+	border: var(--សាកព៏២);
 	flex-direction: row;
 }
 .flakciihiicepai {
 	height: unset;
 	width: 100%;
-	border: 1px solid var(--តានេក២);
+	border: var(--សាកព៏២);
 	flex-direction: column-reverse;
-	padding-block: 8px;
+	padding-block: var(--អារេង);
 }
 
 input, textarea {
 	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេចិ);
-	border: 1px solid var(--តានេក);
+	border: var(--សាកព៏);
 	height: 94%;
 	height: -moz-available;
 	height: -webkit-fill-available;
 	width: 94%;
-	padding: 16px;
-	backdrop-filter: blur(32px);
+	padding: var(--អារេងព៏);
+	backdrop-filter: var(--ច្ហិនី);
 }
 input:hover {
 	background-color: var(--តានេក២);
@@ -354,21 +365,21 @@ input:focus {
 table {
 	background-color: var(--តានេកខេលេ);
 	border-radius: 	var(--អិត្ភេ);
-	border: 1px solid var(--តានេក);
+	border: var(--សាកព៏);
 	width: 100%;
-	margin: 4px 0px;
-	border-spacing: 8px;
+	margin: 0;
+	border-spacing: var(--អារេង);
 	table-layout: fixed;
 }
 td {
 	background-color: var(--តានេក);
-	border: 1px solid var(--តានេក);
+	border: var(--សាកព៏);
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ", "ı],ᴜ }ʃᴜ";
 }
 th, td {
 	border-radius: var(--អិត្ភេចិ);
 	border-collapse: collapse;
-	padding: 8px;
+	padding: var(--អារេង);
 	text-align: center;
 	width: 50%;
 	max-height: 1000em;
@@ -377,17 +388,17 @@ th, td {
 }
 .cashiil {
 	background-color: var(--តានេកខេលេ);
-	border: 1px solid var(--តានេក);
+	border: var(--សាកព៏);
 	writing-mode: vertical-lr; 
 	width: min-content;
 	height: 640px;
-	margin-block: 8px;
-	margin-inline: 0px;
+	margin-block: var(--អារេង);
+	margin-inline: 0;
 	align-self: start;
 }
 .cashiilciihii {
 	background-color: var(--តានេក);
-	border: 1px solid var(--តានេក);
+	border: var(--សាកព៏);
 }
 
 img {
