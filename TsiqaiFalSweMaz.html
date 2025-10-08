@@ -17,7 +17,7 @@
 
   <h1 style="text-align:center; margin-top: 16px; font-family: 'ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ';">Tsiqai Fal SweMaz</h1>
 
-  <p class="sashesaikef" style="align-self: center; font-family: system-ui; font-size: 12;">
+  <p class="sashesaikef" style="text-align: center; align-self: center; font-family: system-ui; font-size: small; width: 100%">
     <i style="font-family: system-ui;">/tsiŋae ɸaɬ sⱱɛmaʂ/ ( 20.2 / 2025.1 )</i>
     <br><br>
     This is used as a record for friends and acts somewhat like a census. Some of the information that is used will be used for future planning as well as personalization (If applicable).
@@ -26,19 +26,18 @@
   <form method="POST" style="display: flex; flex-direction: column;" netlify>
   <thala class="cepai" style="padding: 12px; flex-direction: column;">
     <p class="miikef" style="font-family: system-ui;">Name</p>
-    <input type="text" name="name" id="name" placeholder="Any Name" style="text-align: center; width: 100%;" required>
+    <input type="text" name="name" id="name" placeholder="Any Name" style="text-align: center;" required>
     <p class="miikef" style="font-family: system-ui;">Birthday</p>
-    <input type="date" name="birthday" id="birthday" style="text-align: center; width: 100%;" required>
+    <input type="date" name="birthday" id="birthday" style="text-align: center;" required>
     <p class="miikef" style="font-family: system-ui;">Emoji that represents you</p>
-    <input type="text" name="emoji" id="emoji" placeholder="😀" style="text-align: center; width: 100%;" required>
+    <input type="text" name="emoji" id="emoji" placeholder="😀" style="text-align: center;" required>
   </thala>
   
   <thala class="cepai" style="padding: 12px; flex-direction: column;">
     <p class="miikef" style="font-family: system-ui;">Draw a new or upload an existing image that represents you</p>
-    <textarea name="drawing" id="drawing" placeholder="Use the space below to draw or upload an image that represents you" style="height: 256px; text-align: center; width: 100%;" required></textarea>
+    <input type="file" name="image" id="image" accept="image/*" style="text-align: center;" required>
     <p class="miikef" style="font-family: system-ui;">Draw an image that represents you or describes you around this time</p>
-    <textarea name="drawing2" id="drawing2" placeholder="Use the space below to draw an image that represents you or describes you around this time" style="height: 256px; text-align: center; width: 100%;" required></textarea>
-    <small style="opacity:0.75;">Files are saved to uploads/ and submissions recorded in uploads/submissions.json</small>
+    <input type="file" name="image2" id="image2" accept="image/*" style="text-align: center;" required>
   </thala>
 
   <button type="submit" style="width: 100%; height: fit-content;">Submit</>
