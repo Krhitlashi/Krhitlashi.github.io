@@ -1,0 +1,118 @@
+<?php Header("Cache-Control: max-age=3000, must-revalidate");
+
+$uploadDir = __DIR__ . '/uploads';
+if (!is_dir($uploadDir)) {
+    mkdir($uploadDir, 0777, true);
+}
+$submissionsFile = $uploadDir . '/submissions.json';
+$errors = [];
+$success = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = trim($_POST['name'] ?? '');
+    $birthday = $_POST['birthday'] ?? '';
+    $emoji = $_POST['emoji'] ?? '';
+    $drawingText = $_POST['drawing'] ?? '';
+    $drawing2Text = $_POST['drawing2'] ?? '';
+
+    $savedFiles = [];
+
+    if (!empty($_FILES['files'])) {
+        $files = $_FILES['files'];
+        for ($i = 0; $i < count($files['name']); $i++) {
+            if ($files['error'][$i] === UPLOAD_ERR_OK) {
+                $tmp = $files['tmp_name'][$i];
+                $orig = basename($files['name'][$i]);
+                $ext = pathinfo($orig, PATHINFO_EXTENSION);
+                $safeName = preg_replace('/[^a-zA-Z0-9._-]/', '_', pathinfo($orig, PATHINFO_FILENAME));
+                $targetName = time() . '_' . bin2hex(random_bytes(4)) . '_' . $safeName . ($ext ? '.' . $ext : '');
+                $target = $uploadDir . '/' . $targetName;
+                if (move_uploaded_file($tmp, $target)) {
+                    $savedFiles[] = $targetName;
+                } else {
+                    $errors[] = "Failed to move uploaded file: $orig";
+                }
+            } elseif ($files['error'][$i] !== UPLOAD_ERR_NO_FILE) {
+                $errors[] = "Upload error for {$files['name'][$i]}: " . $files['error'][$i];
+            }
+        }
+    }
+    
+    $entry = [
+        'time' => date('c'),
+        'name' => $name,
+        'birthday' => $birthday,
+        'emoji' => $emoji,
+        'drawing' => $drawingText,
+        'drawing2' => $drawing2Text,
+        'files' => $savedFiles
+    ];
+
+    $all = [];
+    if (file_exists($submissionsFile)) {
+        $json = file_get_contents($submissionsFile);
+        $all = json_decode($json, true) ?: [];
+    }
+    $all[] = $entry;
+    file_put_contents($submissionsFile, json_encode($all, JSON_PRETTY_PRINT));
+    $success = true;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+ <title>Tsiqai Fal SweMaz</title>
+ <link rel="icon" type="image/x-icon" href="/j͑ʃɹ ɭʃᴜɔ˞ ɭl̀ɔ j͑ʃᴜꞇ.ico">
+ 
+ <link rel="manifest" href="/ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.json">
+ <link rel="stylesheet" href="/֭ſɭᴜ ı],ɔ.css">
+</head>
+
+<body class="tlacepai">
+
+  <h1 style="text-align:center; margin-top: 16px; font-family: 'ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ';">Tsiqai Fal SweMaz</h1>
+
+  <?php if ($success): ?>
+    <p style="color:#40c040; text-align:center;">Submission received.</p>
+  <?php endif; ?>
+
+  <?php if (!empty($errors)): ?>
+    <div style="color: #c04040; text-align:center;">
+      <?php foreach ($errors as $e) echo htmlspecialchars($e) . "<br>"; ?>
+    </div>
+  <?php endif; ?>
+
+  <p class="sashesaikef" style="align-self: center; font-family: system-ui; font-size: 12sp;">
+    <i>/tsiŋae ɸaɬ sⱱɛmaʂ/ ( 20.2 / 2025.1 )</i>
+    <br><br>
+    This is used as a record for friends and acts somewhat like a census. Some of the information that is used will be used for future planning as well as personalization (If applicable).
+  </p>
+  
+  <thala class="cepai" style="padding: 12px; flex-direction: column;">
+    <p class="miikef">Name</p>
+    <input type="text" name="name" id="name" class="ciihiicepai" placeholder="Any Name" style="text-align: center;" required>
+    <p class="miikef">Birthday</p>
+    <input type="date" name="birthday" id="birthday" class="ciihiicepai" style="text-align: center;" required>
+    <p class="miikef">Emoji that represents you</p>
+    <input type="text" name="emoji" id="emoji" class="ciihiicepai" placeholder="😀" style="text-align: center;" required>
+  </thala>
+  
+  <thala class="cepai" style="padding: 12px; flex-direction: column;">
+    <p class="miikef">Draw a new or upload an existing image that represents you</p>
+    <textarea name="drawing" id="drawing" class="ciihiicepai" placeholder="Use the space below to draw or upload an image that represents you" style="height: 256px; text-align: center;" required></textarea>
+    <p class="miikef">Draw an image that represents you or describes you around this time</p>
+    <textarea name="drawing2" id="drawing2" class="ciihiicepai" placeholder="Use the space below to draw an image that represents you or describes you around this time" style="height: 256px; text-align: center;" required></textarea>
+    <small style="opacity:0.75;">Files are saved to uploads/ and submissions recorded in uploads/submissions.json</small>
+  </thala>
+
+  <button type="submit" class="ciihiicepai">Submit</>
+
+  </body>
+
+  <script src="/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
+
+</html>
