@@ -53,7 +53,7 @@ function sakaArakef(kek, yots2nani) {
     maxema.appendChild(kekKaltok);
   } else {
     Array.from(kek.childNodes).forEach(mal6xema => {
-      processTextNodes(mal6xema, yots2nani);
+      sakaArakef(mal6xema, yots2nani);
     });
   }
 }
