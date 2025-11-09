@@ -175,6 +175,7 @@ pre {
 .cepaifal {
 	font-family: "ı],ᴜ }ʃᴜ";
 	writing-mode: sideways-lr;
+	flex-direction: column;
 }
 .cepaifalkek {
 	display: flex;

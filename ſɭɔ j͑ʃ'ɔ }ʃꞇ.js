@@ -58,7 +58,7 @@ function sakaArakef(kek, yots2nani) {
   }
 }
 window.onload = function() {
-  vacepai(".cepaifal");
+  vacepai("cepaifal");
 };
 
 // j͑ʃᴜ ſɭᴜ ſɟꞇ ʃɔ
