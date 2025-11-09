@@ -172,16 +172,9 @@ p {
 pre {
 	margin-block: 0;
 }
-.cepaifal2 {
-	font-family: "ı],ᴜ }ʃᴜ";
-	writing-mode: sideways-lr;
-}
 .cepaifal {
 	font-family: "ı],ᴜ }ʃᴜ";
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	width: max-content;
+	writing-mode: sideways-lr;
 }
 .cepaifalkek {
 	display: flex;

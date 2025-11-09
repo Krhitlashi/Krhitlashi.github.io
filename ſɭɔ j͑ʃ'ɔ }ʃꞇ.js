@@ -17,36 +17,46 @@ async function registerSW() {
 
 // j͑ʃ'ᴜ ſɟɔ ſןᴜꞇ
 function vacepai(s2haxe) {
-  const kok2reni = ['(', ')'];
-  const hakek = document.querySelectorAll(s2haxe);
+  const yots2nani = ['(', ')'];
+  const hakek = document.querySelectorAll(`.${s2haxe}`);
   if (hakek.length === 0) return;
 
   hakek.forEach(kek => {
-    const tsiqaiKef = kek.textContent.trim();
-    kek.innerHTML = "";
-
-    tsiqaiKef.split("\n").forEach(line => {
-      const haxezKek = document.createElement("div");
-      haxezKek.className = "cepaifalkek";
-      
-      line.split(' ')
-        .filter(token => token)
-        .forEach(token => {
-          if (kok2reni.includes(token)) {
-            haxezKek.appendChild(document.createTextNode(token));
-          } else {
-            const xezKek = document.createElement("span");
-            xezKek.className = "cepaifalxez";
-            xezKek.textContent = token;
-            haxezKek.appendChild(xezKek);
-          }
-        });
-      
-      element.appendChild(haxezKek);
-    });
+    sakaArakef(kek, yots2nani);
   });
 }
 
+function sakaArakef(kek, yots2nani) {
+  if (kek.nodeType === Node.TEXT_NODE) {
+    const maxema = kek.parentNode;
+    const ox2pewa = kek.textContent;
+    kek.remove();
+    
+    const haxez = ox2pewa.split(/\s+/).filter(xez => xez);
+    const kekKaltok = document.createDocumentFragment();
+    
+    haxez.forEach((xez, araq) => {
+      if (yots2nani.includes(xez)) {
+        kekKaltok.appendChild(document.createTextNode(xez));
+      } else {
+        const l6saboni = document.createElement("span");
+        l6saboni.className = "cepaifalxez";
+        l6saboni.textContent = xez;
+        kekKaltok.appendChild(l6saboni);
+      }
+      
+      if (araq < haxez.length - 1 && !yots2nani.includes(haxez[araq + 1])) {
+        kekKaltok.appendChild(document.createTextNode(""));
+      }
+    });
+    
+    maxema.appendChild(kekKaltok);
+  } else {
+    Array.from(kek.childNodes).forEach(mal6xema => {
+      processTextNodes(mal6xema, yots2nani);
+    });
+  }
+}
 window.onload = function() {
   vacepai(".cepaifal");
 };
