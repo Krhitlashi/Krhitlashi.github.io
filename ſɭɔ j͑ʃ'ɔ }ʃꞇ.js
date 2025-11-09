@@ -17,44 +17,32 @@ async function registerSW() {
 
 // j͑ʃ'ᴜ ſɟɔ ſןᴜꞇ
 function vacepai(s2haxe) {
-  const hatarakef = document.querySelectorAll(s2haxe);
-  if (hatarakef.length === 0) { return; }
+  const kok2reni = ['(', ')'];
+  const hakek = document.querySelectorAll(s2haxe);
+  if (hakek.length === 0) return;
 
-  hatarakef.forEach(arakef => {
-    const tsiqaiOx2 = arakef.textContent.trim();
-    arakef.innerHTML = "";
+  hakek.forEach(kek => {
+    const tsiqaiKef = kek.textContent.trim();
+    kek.innerHTML = "";
 
-    tsiqaiOx2.split("\n").forEach((cepaini, ruva) => {
-      let kaltokani = document.createElement("div");
-      kaltokani.className = "cepaifalkek";
-      arakef.appendChild(kaltokani);
+    tsiqaiKef.split("\n").forEach(line => {
+      const haxezKek = document.createElement("div");
+      haxezKek.className = "cepaifalkek";
       
-      cepaini.split(" ").forEach((xez, xezruva, xezrakaz) => {
-        if (xez) {
-          const xezKek = document.createElement("div");
-          xezKek.className = "cepaifalkef";
-          xezKek.textContent = xez;
-          kaltokani.appendChild(xezKek);
-
-          if (kaltokani.scrollHeight > kaltokani.clientHeight) {
-              kaltokani.removeChild(xezKek);
-              kaltokani = document.createElement("div");
-              kaltokani.className = "cepaifalkek";
-              arakef.appendChild(kaltokani);
-              kaltokani.appendChild(xezKek);
-            }
+      line.split(' ')
+        .filter(token => token)
+        .forEach(token => {
+          if (kok2reni.includes(token)) {
+            haxezKek.appendChild(document.createTextNode(token));
+          } else {
+            const xezKek = document.createElement("span");
+            xezKek.className = "cepaifalxez";
+            xezKek.textContent = token;
+            haxezKek.appendChild(xezKek);
           }
-          if (xezruva < xezrakaz.length - 1) {
-            const areqj2k = document.createTextNode(" ");
-            kaltokani.appendChild(areqj2k);
-            if (kaltokani.scrollHeight > kaltokani.clientHeight) {
-                kaltokani.removeChild(areqj2k);
-                kaltokani = document.createElement("div");
-                kaltokani.className = "cepaifalkek";
-                arakef.appendChild(kaltokani);
-            }
-          }
-      });
+        });
+      
+      element.appendChild(haxezKek);
     });
   });
 }
