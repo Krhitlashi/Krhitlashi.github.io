@@ -45,7 +45,7 @@ function sakaArakef(kek, yots2nani) {
         return;
       }
 
-      const haxez = hakef.split(/\s+/).filter(Boolean);
+      const haxez = kef.split(/\s+/).filter(Boolean);
       const hakefKekKaltok = document.createDocumentFragment();
 
       haxez.forEach((xez, xezAraq) => {
