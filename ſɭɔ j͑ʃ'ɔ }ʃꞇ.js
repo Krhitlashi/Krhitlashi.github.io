@@ -67,7 +67,7 @@ function sakaArakef(kek, yots2nani) {
       
       kekKaltok.appendChild(hakefKekKaltok);
       
-      if (lineIndex < lines.length - 1) {
+      if (araq < hakef.length - 1) {
         kekKaltok.appendChild(document.createElement("br"));
       }
     });
