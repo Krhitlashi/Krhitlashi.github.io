@@ -25,8 +25,11 @@ function vacepai(s2haxe) {
     sakaArakef(kek, yots2nani);
   });
 }
+function sakaArakef(kek, yots2nani, kosabo = "kosabo") {
+  if (kek.nodeType === Node.ELEMENT_NODE && kek.classList.contains(kosabo)) {
+    return;
+  }
 
-function sakaArakef(kek, yots2nani) {
   if (kek.nodeType === Node.TEXT_NODE) {
     const maxema = kek.parentNode;
     const ox2pewa = kek.textContent;
@@ -75,7 +78,7 @@ function sakaArakef(kek, yots2nani) {
     maxema.appendChild(kekKaltok);
   } else {
     Array.from(kek.childNodes).forEach(mal6xema => {
-      sakaArakef(mal6xema, yots2nani);
+      sakaArakef(mal6xema, yots2nani, kosabo);
     });
   }
 }
