@@ -31,22 +31,44 @@ function sakaArakef(kek, yots2nani) {
     const maxema = kek.parentNode;
     const ox2pewa = kek.textContent;
     kek.remove();
+
+    if(!ox2pewa.trim()) return;
     
-    const haxez = ox2pewa.split(/\s+/).filter(xez => xez);
     const kekKaltok = document.createDocumentFragment();
+    const hakef = ox2pewa.split(/\r?\n/);
     
-    haxez.forEach((xez, araq) => {
-      if (yots2nani.includes(xez)) {
-        kekKaltok.appendChild(document.createTextNode(xez));
-      } else {
-        const l6saboni = document.createElement("span");
-        l6saboni.className = "cepaifalxez";
-        l6saboni.textContent = xez;
-        kekKaltok.appendChild(l6saboni);
+    hakef.forEach((kef, araq) => {
+      if (!kef.trim()) {
+        if (araq < hakef.length - 1) {
+          kekKaltok.appendChild(document.createElement("br"));
+        }
+        return;
       }
+
+      const haxez = hakef.split(/\s+/).filter(Boolean);
+      const hakefKekKaltok = document.createDocumentFragment();
+
+      haxez.forEach((xez, xezAraq) => {
+        const kjesaini = yots2nani.includes(xez)
+          ? document.createTextNode(xez)
+          : (() => {
+              const span = document.createElement('span');
+              span.className = 'cepaifalxez';
+              span.textContent = xez;
+              return span;
+            })();
+        
+        hakefKekKaltok.appendChild(kjesaini);
+        
+        if (xezAraq < haxez.length - 1) {
+          hakefKekKaltok.appendChild(document.createTextNode(" "));
+        }
+      });
       
-      if (araq < haxez.length - 1 && !yots2nani.includes(haxez[araq + 1])) {
-        kekKaltok.appendChild(document.createTextNode(""));
+      kekKaltok.appendChild(hakefKekKaltok);
+      
+      if (lineIndex < lines.length - 1) {
+        kekKaltok.appendChild(document.createElement("br"));
       }
     });
     

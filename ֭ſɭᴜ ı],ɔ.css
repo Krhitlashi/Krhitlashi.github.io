@@ -76,7 +76,7 @@
 	color: var(--កេភ);
 	scrollbar-width: thin;
 }
-*:not(.cepaifal):not(.tapairaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.tapaisaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.flakciihiicepai:not(.atleflak)) {
+*:not(.tapairaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.tapaisaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.flakciihiicepai:not(.atleflak)) {
 	gap: var(--អារេង);
 }
 
@@ -177,12 +177,6 @@ pre {
 	writing-mode: sideways-lr;
 	flex-direction: column;
 }
-.cepaifalkek {
-	display: flex;
-	flex-direction: column-reverse;
-	max-height: calc(100% - var(--អារេងព៏));
-	overflow-y: auto;
-}
 .cepaifalxez {
 	display: inline-block;
 	transform: rotate(90deg);
@@ -259,7 +253,7 @@ thala {
 	align-items: center;
 	height: calc(100% - var(--អារេងព៏));
 }
-.cepai {
+.cepai, .cepaifal thala {
 	flex-direction: column-reverse;
 	align-items: center;
 }
@@ -281,7 +275,7 @@ ciihii {
 	display: flex !important;
 	align-items: center;
 }
-.ciihiicepai {
+.ciihiicepai, .cepaifal ciihii {
 	flex-direction: column;
 	width: calc(100% - 32px) !important;
 	padding: var(--អារេងព៏) !important;
