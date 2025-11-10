@@ -177,7 +177,7 @@ pre {
 	writing-mode: sideways-lr;
 	flex-direction: column;
 }
-.cepaifalxez {
+.cepaifalxez:not(.kosabo span) {
 	display: inline-block;
 	transform: rotate(90deg);
 	white-space: nowrap;
