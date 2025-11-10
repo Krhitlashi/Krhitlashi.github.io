@@ -190,6 +190,9 @@ pre {
 .cepaifal ciihii {
 	flex-direction: column;
 }
+.cepaifal ciihii .oshiipewa {
+	align-self: start;
+}
 .sashesaikef {
 	background-color: transparent;
 	width: max-content;
