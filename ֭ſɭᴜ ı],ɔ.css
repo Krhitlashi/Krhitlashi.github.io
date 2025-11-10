@@ -180,10 +180,15 @@ pre {
 .cepaifalxez {
 	display: inline-block;
 	transform: rotate(90deg);
-	transform-origin: left bottom;
 	white-space: nowrap;
-	line-height: 1;
 	margin-block: var(--អារេង);
+}
+.cepaifal thala {
+	flex-direction: column;
+	margin-inline: var(--អារេងព៏)
+}
+.cepaifal ciihii {
+	flex-direction: column;
 }
 .sashesaikef {
 	background-color: transparent;
@@ -253,7 +258,7 @@ thala {
 	align-items: center;
 	height: calc(100% - var(--អារេងព៏));
 }
-.cepai, .cepaifal thala {
+.cepai {
 	flex-direction: column-reverse;
 	align-items: center;
 }
@@ -275,7 +280,7 @@ ciihii {
 	display: flex !important;
 	align-items: center;
 }
-.ciihiicepai, .cepaifal ciihii {
+.ciihiicepai {
 	flex-direction: column;
 	width: calc(100% - 32px) !important;
 	padding: var(--អារេងព៏) !important;
