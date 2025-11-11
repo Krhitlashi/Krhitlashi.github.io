@@ -346,6 +346,24 @@ ciihii {
 	max-height: 0;
 	transition: 0.25s ease-out;
 }
+.cepaifal .flak {
+	flex-direction: column;
+	height: auto;
+	width: 100%;
+	align-items: stretch;
+}
+.cepaifal .ciihiiflak {
+	max-width: none;
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.25s ease-out;
+	width: 100%;
+	align-items: stretch;
+	padding-block: 0;
+}
+.cepaifal .ciihiiflak > * {
+	width: 100%;
+}
 .atleciihiiflak {
 	max-width: unset;
 }
