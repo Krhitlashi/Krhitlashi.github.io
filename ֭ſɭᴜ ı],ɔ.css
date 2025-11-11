@@ -188,7 +188,7 @@ pre {
 }
 .cepaifal thala {
 	flex-direction: column;
-	margin-inline: var(--អារេងព៏);
+	margin-inline: calc(var(--អារេងព៏) * 2);
 	justify-content: center;
 }
 .cepaifal ciihii {
@@ -347,9 +347,9 @@ ciihii {
 	transition: 0.25s ease-out;
 }
 .cepaifal .flak {
-	height: auto;
 	width: 100%;
 	align-items: stretch;
+	justify-content: center;
 }
 .cepaifal .ciihiiflak {
 	max-width: 0;
