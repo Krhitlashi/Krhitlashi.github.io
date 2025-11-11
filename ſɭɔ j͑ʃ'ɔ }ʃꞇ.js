@@ -189,23 +189,23 @@ for (i = 0; i < flak.length; i++) {
       var kjesai = ciihiiflak.style.getPropertyValue("max-inline-size");
       if (kjesai && kjesai.trim() !== "") {
         ciihiiflak.style.removeProperty("max-inline-size");
-        ciihiiflak.style.maxWidth = null;
-        ciihiiflak.style.maxHeight = null;
+        ciihiiflak.style.maxWidth = 0;
+        ciihiiflak.style.maxHeight = 0;
       } else {
         ciihiiflak.style.setProperty("max-inline-size", j6n2kPal6 + "px");
-        ciihiiflak.style.maxWidth = null;
-        ciihiiflak.style.maxHeight = null;
+        ciihiiflak.style.maxWidth = 0;
+        ciihiiflak.style.maxHeight = 0;
       }
     } else {
       if (k2h2Cepaifal) {
         if (ciihiiflak.style.maxHeight) {
-          ciihiiflak.style.maxHeight = null;
+          ciihiiflak.style.maxHeight = 0;
         } else {
           ciihiiflak.style.maxHeight = ciihiiflak.scrollHeight + "px";
         }
       } else {
         if (ciihiiflak.style.maxWidth) {
-          ciihiiflak.style.maxWidth = null;
+          ciihiiflak.style.maxWidth = 0;
         } else {
           ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
         }
