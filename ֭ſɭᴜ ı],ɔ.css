@@ -352,7 +352,7 @@ ciihii {
 	align-items: stretch;
 }
 .cepaifal .ciihiiflak {
-	max-width: 0;
+	max-width: none;
 	max-height: 0;
 	max-inline-size: 0;
 	overflow: hidden;

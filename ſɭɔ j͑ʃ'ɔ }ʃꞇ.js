@@ -186,28 +186,62 @@ for (i = 0; i < flak.length; i++) {
     var osakaC2w2q = typeof ciihiiflak.style.maxInlineSize !== "undefined" || typeof ciihiiflak.style.getPropertyValue === "function";
 
     if (osakaC2w2q) {
-      var kjesai = ciihiiflak.style.getPropertyValue("max-inline-size");
-      if (kjesai && kjesai.trim() !== "") {
-        ciihiiflak.style.removeProperty("max-inline-size");
-        ciihiiflak.style.maxWidth = null;
-        ciihiiflak.style.maxHeight = null;
+      var kjesaiJ6n2k = ciihiiflak.style.getPropertyValue("max-inline-size");
+      if (kjesaiJ6n2k && kjesaiJ6n2k.trim() !== "") {
+        ciihiiflak.classList.remove("atleciihiiflak");
+        void ciihiiflak.offsetWidth;
+        ciihiiflak.style.setProperty("max-inline-size", "0px");
+      } else if (ciihiiflak.classList.contains("atleciihiiflak")) {
+        ciihiiflak.classList.remove("atleciihiiflak");
+        void ciihiiflak.offsetWidth;
+        ciihiiflak.style.setProperty("max-inline-size", "0px");
       } else {
-        ciihiiflak.style.setProperty("max-inline-size", j6n2kPal6 + "px");
-        ciihiiflak.style.maxWidth = null;
-        ciihiiflak.style.maxHeight = null;
+        ciihiiflak.style.removeProperty("max-inline-size");
+        ciihiiflak.classList.remove("atleciihiiflak");
+        ciihiiflak.style.setProperty("max-inline-size", j6n2kPal6 + 'px');
+
+        var tlakakaistif = function(e) {
+          if (e.propertyName.indexOf("max-inline-size") === -1 && e.propertyName.indexOf('inline-size') === -1) return;
+          ciihiiflak.classList.add("atleciihiiflak");
+          try { ciihiiflak.style.removeProperty("max-inline-size"); } catch (err) {}
+          ciihiiflak.removeEventListener("transitionend", tlakakaistif);
+        };
+        ciihiiflak.addEventListener("transitionend", tlakakaistif);
       }
     } else {
       if (k2h2Cepaifal) {
-        if (ciihiiflak.style.maxHeight) {
-          ciihiiflak.style.maxHeight = null;
+        if (ciihiiflak.style.maxHeight && ciihiiflak.style.maxHeight !== "0px") {
+          ciihiiflak.style.maxHeight = "0px";
+          ciihiiflak.classList.remove("atleciihiiflak");
+        } else if (ciihiiflak.classList.contains("atleciihiiflak")) {
+          ciihiiflak.style.maxHeight = "0px";
+          ciihiiflak.classList.remove("atleciihiiflak");
         } else {
-          ciihiiflak.style.maxHeight = ciihiiflak.scrollHeight + "px";
+          ciihiiflak.style.maxHeight = ciihiiflak.scrollHeight + 'px';
+          var tlakakaistifP2sa = function(e) {
+            if (e.propertyName.indexOf("max-height") === -1) return;
+            ciihiiflak.classList.add("atleciihiiflak");
+            try { ciihiiflak.style.removeProperty("max-height"); } catch (err) {}
+            ciihiiflak.removeEventListener("transitionend", tlakakaistifP2sa);
+          };
+          ciihiiflak.addEventListener("transitionend", tlakakaistifP2sa);
         }
       } else {
-        if (ciihiiflak.style.maxWidth) {
-          ciihiiflak.style.maxWidth = null;
+        if (ciihiiflak.style.maxWidth && ciihiiflak.style.maxWidth !== "0px") {
+          ciihiiflak.style.maxWidth = "0px";
+          ciihiiflak.classList.remove("atleciihiiflak");
+        } else if (ciihiiflak.classList.contains("atleciihiiflak")) {
+          ciihiiflak.style.maxWidth = "0px";
+          ciihiiflak.classList.remove("atleciihiiflak");
         } else {
-          ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
+          ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + 'px';
+          var onEnd3 = function(e) {
+            if (e.propertyName.indexOf("max-width") === -1) return;
+            ciihiiflak.classList.add("atleciihiiflak");
+            try { ciihiiflak.style.removeProperty("max-width"); } catch (err) {}
+            ciihiiflak.removeEventListener("transitionend", onEnd3);
+          };
+          ciihiiflak.addEventListener("transitionend", onEnd3);
         }
       }
     }
