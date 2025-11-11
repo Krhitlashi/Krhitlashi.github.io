@@ -168,10 +168,8 @@ for (i = 0; i < flak.length; i++) {
       if (cepaifalCez) {
         if (ciihiiflak.style.maxInlineSize) {
           ciihiiflak.style.maxInlineSize = null;
-          ciihiiflak.style.maxHeight = null;
         } else {
           ciihiiflak.style.maxInlineSize = ciihiiflak.scrollWidth + "px";
-          ciihiiflak.style.maxHeight = ciihiiflak.scrollHeight + "px";
         }
       } else {
         if (ciihiiflak.style.maxWidth) {
