@@ -169,7 +169,7 @@ for (i = 0; i < flak.length; i++) {
         if (ciihiiflak.style.maxInlineSize) {
           ciihiiflak.style.maxInlineSize = null;
         } else {
-          ciihiiflak.style.maxInlineSize = ciihiiflak.scrollWidth + "px";
+          ciihiiflak.style.maxInlineSize = ciihiiflak.scrollHeight + "px";
         }
       } else {
         if (ciihiiflak.style.maxWidth) {
