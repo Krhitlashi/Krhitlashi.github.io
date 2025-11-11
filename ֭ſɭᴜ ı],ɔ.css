@@ -193,6 +193,9 @@ pre {
 .cepaifal ciihii .oshiipewa {
 	align-self: start;
 }
+.powukfal p {
+	transform: scale(-1, 1);
+}
 .sashesaikef {
 	background-color: transparent;
 	width: max-content;
