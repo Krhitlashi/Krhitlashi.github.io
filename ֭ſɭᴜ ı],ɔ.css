@@ -75,6 +75,8 @@
 	font-size-adjust: 0.5;
 	color: var(--កេភ);
 	scrollbar-width: thin;
+	text-align: center;
+	justify-content: center;
 }
 *:not(.tapairaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.tapaisaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.flakciihiicepai:not(.atleflak)) {
 	gap: var(--អារេង);
@@ -175,7 +177,9 @@ pre {
 .cepaifal {
 	font-family: "ı],ᴜ }ʃᴜ";
 	writing-mode: sideways-lr;
+	display: flex;
 	flex-direction: column;
+	align-items: stretch;
 }
 .cepaifalxez:not(.kosabo span) {
 	display: inline-block;
@@ -192,6 +196,9 @@ pre {
 }
 .cepaifal ciihii .oshiipewa {
 	align-self: start;
+}
+.cepaifal h1 {
+	text-align: center;
 }
 .powukfal p, .powukfal a, .powukfal h1 {
 	transform: scale(-1, 1);
