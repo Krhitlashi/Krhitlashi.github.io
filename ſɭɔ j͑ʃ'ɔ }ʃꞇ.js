@@ -88,9 +88,9 @@ function vacepai(s2haxe) {
     maxema.replaceChild(kekKaltok, araXez);
   }
 }
-window.onload = function() {
+document.addEventListener("DOMContentLoaded", function() {
   vacepai("cepaifal");
-};
+});
 
 // j͑ʃᴜ ſɭᴜ ſɟꞇ ʃɔ
 function sakaIitbe(s2haxe) {
