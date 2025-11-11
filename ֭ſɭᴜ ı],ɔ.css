@@ -200,7 +200,7 @@ pre {
 .cepaifal h1 {
 	text-align: center;
 }
-.powukfal p, .powukfal a, .powukfal h1 {
+.powukfal p, .powukfal h, .powukfal a, .powukfal h1 {
 	transform: scale(-1, 1);
 }
 .sashesaikef {

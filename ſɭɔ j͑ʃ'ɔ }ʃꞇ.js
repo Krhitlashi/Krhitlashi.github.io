@@ -178,28 +178,13 @@ for (i = 0; i < flak.length; i++) {
     }
 
     var ciihiiflak = this.nextElementSibling;
+
     if (!ciihiiflak) return;
 
-    var osakaC2w2q = typeof ciihiiflak.style.maxInlineSize !== "undefined" || typeof ciihiiflak.style.getPropertyValue === "function";
-
-    if (osakaC2w2q) {
-      var kjesai = ciihiiflak.style.getPropertyValue("max-inline-size");
-      if (kjesai && kjesai.trim() !== "") {
-        ciihiiflak.style.removeProperty("max-inline-size");
-        ciihiiflak.style.maxWidth = null;
-        ciihiiflak.style.maxHeight = null;
-      } else {
-        ciihiiflak.style.setProperty("max-inline-size", ciihiiflak.scrollWidth + "px");
-        ciihiiflak.style.maxWidth = null;
-        ciihiiflak.style.maxHeight = null;
-      }
+    if (ciihiiflak.style.maxWidth) {
+      ciihiiflak.style.maxWidth = null;
     } else {
-      if (ciihiiflak.style.maxWidth) {
-        ciihiiflak.style.maxWidth = null;
-      } else {
-        ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
-        ciihiiflak.style.maxHeight = null;
-      }
+      ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
     }
   });
 }
