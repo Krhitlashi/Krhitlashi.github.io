@@ -331,7 +331,7 @@ ciihii {
 .ciihiiflak {
 	display: flex;
 	overflow: hidden;
-    height: 100%;
+    height: auto;
 	align-items: center;
 	max-width: 0;
 	transition: 0.25s ease-out;
@@ -367,6 +367,8 @@ ciihii {
 }
 .atleciihiiflak {
 	max-width: unset;
+	max-height: unset;
+	max-inline-size: unset;
 }
 .flakciihii {
 	height: calc(100% - var(--អារេងព៏));
