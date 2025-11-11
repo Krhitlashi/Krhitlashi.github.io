@@ -151,22 +151,9 @@ document.addEventListener("DOMContentLoaded", function() {
 // ꞁȷ̀ᴜ ſ̀ȷɔ ɭʃᴜ̩ᴜ j͐ʃᴜ
 var flak = document.getElementsByClassName("flak");
 var i;
-
-function cepaifalCez(kek) {
-  try {
-    var maxema = kek.closest ? kek.closest(".cepaifal") : null;
-    var tiq = maxema || kek;
-    var knagawe = window.getComputedStyle(tiq).writingMode || window.getComputedStyle(tiq).getPropertyValue("writing-mode");
-    return typeof knagawe === "string" && knagawe.indexOf("sideways") !== -1;
-  } catch (e) {
-    return false;
-  }
-}
-
 for (i = 0; i < flak.length; i++) {
-  flak[i].addEventListener("click", function() {
-    this.classList.toggle("atleflak");
-
+	flak[i].addEventListener("click", function() {
+		this.classList.toggle("atleflak");
     if (this.querySelector(".ciihiiflakcepai") != null) {
       var ciihiiflakcepai = this.querySelector(".ciihiiflakcepai");
       if (ciihiiflakcepai.style.maxHeight) {
@@ -174,19 +161,27 @@ for (i = 0; i < flak.length; i++) {
       } else {
         ciihiiflakcepai.style.maxHeight = ciihiiflakcepai.scrollHeight + "px";
       }
-      return;
     }
-
-    var ciihiiflak = this.nextElementSibling;
-
-    if (!ciihiiflak) return;
-
-    if (ciihiiflak.style.maxWidth) {
-      ciihiiflak.style.maxWidth = null;
-    } else {
-      ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
+    else {
+      var ciihiiflak = this.nextElementSibling;
+      var cepaifalCez = ciihiiflak.classList.contains("cepaifal") || this.closest(".cepaifal");
+      if (cepaifalCez) {
+        if (ciihiiflak.style.maxInlineSize) {
+          ciihiiflak.style.maxInlineSize = null;
+          ciihiiflak.style.maxHeight = null;
+        } else {
+          ciihiiflak.style.maxInlineSize = ciihiiflak.scrollWidth + "px";
+          ciihiiflak.style.maxHeight = ciihiiflak.scrollHeight + "px";
+        }
+      } else {
+        if (ciihiiflak.style.maxWidth) {
+          ciihiiflak.style.maxWidth = null;
+        } else {
+          ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
+        }
+      }
     }
-  });
+	});
 }
 
 // j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ
