@@ -17,72 +17,78 @@ async function registerSW() {
 
 // j͑ʃ'ᴜ ſɟɔ ſןᴜꞇ
 function vacepai(s2haxe) {
-  const yots2nani = ['(', ')'];
+  const yots2nani = ["(", ")", "[", "]"];
   const hakek = document.querySelectorAll(`.${s2haxe}`);
-  if (hakek.length === 0) return;
+  if (!hakek.length) return;
 
-  hakek.forEach(kek => {
-    sakaArakef(kek, yots2nani);
-  });
-}
-function sakaArakef(kek, yots2nani, kosabo = "kosabo") {
-  if (kek.nodeType === Node.ELEMENT_NODE && kek.classList.contains(kosabo)) {
-    return;
+  haxez = [];
+
+  function kakHaxez(xez) {
+    if (xez.nodeType === Node.ELEMENT_NODE && xez.classList.contains("kosabo")) {
+      return;
+    }
+    
+    if (xez.nodeType === Node.TEXT_NODE) {
+      if (xez.textContent.trim()) haxez.push(xez);
+    } else {
+      const mal6xema = xez.childNodes;
+      for (let i = 0; i < mal6xema.length; i++) {
+        kakHaxez(mal6xema[i]);
+      }
+    }
   }
 
-  if (kek.nodeType === Node.TEXT_NODE) {
-    const maxema = kek.parentNode;
-    const ox2pewa = kek.textContent;
-    kek.remove();
+  for (const kek of hakek) {
+    kakHaxez(kek);
+  }
 
-    if(!ox2pewa.trim()) return;
-    
+  for (let i = haxez.length - 1; i >= 0; i--) {
+    sakaHaxez(haxez[i]);
+  }
+
+  function sakaHaxez(araXez) {
+    const maxema = araXez.parentNode;
+    const okef = araXez.textContent;
     const kekKaltok = document.createDocumentFragment();
-    const hakef = ox2pewa.split(/\r?\n/);
+    const han2k = okef.split(/\r?\n/);
     
-    hakef.forEach((kef, araq) => {
-      if (!kef.trim()) {
-        if (araq < hakef.length - 1) {
-          kekKaltok.appendChild(document.createElement("br"));
-        }
-        return;
+    for (let i = 0; i < han2k.length; i++) {
+      const n2k = han2k[i];
+      if (!n2k.trim()) {
+        if (i < han2k.length - 1) kekKaltok.appendChild(document.createElement("br"));
+        continue;
       }
 
-      const haxez = kef.split(/\s+/).filter(Boolean);
-      const hakefKekKaltok = document.createDocumentFragment();
-
-      haxez.forEach((xez, xezAraq) => {
-        const kjesaini = yots2nani.includes(xez)
-          ? document.createTextNode(xez)
-          : (() => {
-              const span = document.createElement('span');
-              span.className = 'cepaifalxez';
-              span.textContent = xez;
-              return span;
-            })();
+      const haxez = n2k.split(/\s+/);
+      let kjesaiMaxema = kekKaltok;
+      
+      for (let j = 0; j < haxez.length; j++) {
+        const xez = haxez[j];
+        if (!xez) continue;
         
-        hakefKekKaltok.appendChild(kjesaini);
-        
-        if (xezAraq < haxez.length - 1) {
-          hakefKekKaltok.appendChild(document.createTextNode(" "));
+        if (yots2nani.includes(xez)) {
+          kjesaiMaxema.appendChild(document.createTextNode(xez));
+        } else {
+          const caxemaXez = document.createElement("span");
+          caxemaXez.className = "cepaifalxez";
+          caxemaXez.textContent = xez;
+          kjesaiMaxema.appendChild(caxemaXez);
         }
-      });
+        
+        if (j < haxez.length - 1) {
+          kjesaiMaxema.appendChild(document.createTextNode(" "));
+        }
+      }
       
-      kekKaltok.appendChild(hakefKekKaltok);
-      
-      if (araq < hakef.length - 1) {
+      if (i < han2k.length - 1) {
         kekKaltok.appendChild(document.createElement("br"));
       }
-    });
+    }
     
-    maxema.appendChild(kekKaltok);
-  } else {
-    Array.from(kek.childNodes).forEach(mal6xema => {
-      sakaArakef(mal6xema, yots2nani, kosabo);
-    });
+    maxema.replaceChild(kekKaltok, araXez);
   }
 }
-window.onload = function() {
+window.addEventListener("DOMContentLoaded"), () => {
   vacepai("cepaifal");
 };
 
