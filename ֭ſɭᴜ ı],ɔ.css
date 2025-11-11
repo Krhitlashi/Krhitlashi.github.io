@@ -193,7 +193,7 @@ pre {
 .cepaifal ciihii .oshiipewa {
 	align-self: start;
 }
-.powukfal p, .powukfal a, .powukfal a {
+.powukfal p, .powukfal a, .powukfal h1 {
 	transform: scale(-1, 1);
 }
 .sashesaikef {
@@ -285,6 +285,9 @@ ciihii {
 	height: calc(100% - var(--អារេងព៏));
 	display: flex !important;
 	align-items: center;
+}
+.powukfal a, .powukfal h, .powukfal .flak {
+	border-radius: 8px 20px;
 }
 .ciihiicepai {
 	flex-direction: column;
