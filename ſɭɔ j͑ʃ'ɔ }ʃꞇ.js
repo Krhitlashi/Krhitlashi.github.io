@@ -182,17 +182,33 @@ for (i = 0; i < flak.length; i++) {
 
     if (!ciihiiflak) return;
 
-    if (k2h2Cepaifal) {
-      if (ciihiiflak.style.maxHeight) {
+    var j6n2kPal6 = k2h2Cepaifal ? ciihiiflak.scrollHeight : ciihiiflak.scrollWidth;
+    var osakaC2w2q = typeof ciihiiflak.style.maxInlineSize !== "undefined" || typeof ciihiiflak.style.getPropertyValue === "function";
+
+    if (osakaC2w2q) {
+      var kjesai = ciihiiflak.style.getPropertyValue("max-inline-size");
+      if (kjesai && kjesai.trim() !== "") {
+        ciihiiflak.style.removeProperty("max-inline-size");
+        ciihiiflak.style.maxWidth = null;
         ciihiiflak.style.maxHeight = null;
       } else {
-        ciihiiflak.style.maxHeight = ciihiiflak.scrollHeight + "px";
+        ciihiiflak.style.setProperty("max-inline-size", j6n2kPal6 + "px");
+        ciihiiflak.style.maxWidth = null;
+        ciihiiflak.style.maxHeight = null;
       }
     } else {
-      if (ciihiiflak.style.maxWidth) {
-        ciihiiflak.style.maxWidth = null;
+      if (k2h2Cepaifal) {
+        if (ciihiiflak.style.maxHeight) {
+          ciihiiflak.style.maxHeight = null;
+        } else {
+          ciihiiflak.style.maxHeight = ciihiiflak.scrollHeight + "px";
+        }
       } else {
-        ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
+        if (ciihiiflak.style.maxWidth) {
+          ciihiiflak.style.maxWidth = null;
+        } else {
+          ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
+        }
       }
     }
   });

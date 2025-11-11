@@ -76,7 +76,6 @@
 	color: var(--កេភ);
 	scrollbar-width: thin;
 	text-align: center;
-	justify-content: center;
 }
 *:not(.tapairaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.tapaisaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.flakciihiicepai:not(.atleflak)) {
 	gap: var(--អារេង);
@@ -189,7 +188,8 @@ pre {
 }
 .cepaifal thala {
 	flex-direction: column;
-	margin-inline: var(--អារេងព៏)
+	margin-inline: var(--អារេងព៏);
+	justify-content: center;
 }
 .cepaifal ciihii {
 	flex-direction: column;
@@ -355,8 +355,9 @@ ciihii {
 .cepaifal .ciihiiflak {
 	max-width: none;
 	max-height: 0;
+	max-inline-size: 0;
 	overflow: hidden;
-	transition: max-height 0.25s ease-out;
+	transition: max-inline-size 0.25s ease-out, max-height 0.25s ease-out, max-width 0.25s ease-out;
 	width: 100%;
 	align-items: stretch;
 	padding-block: 0;
