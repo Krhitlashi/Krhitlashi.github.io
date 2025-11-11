@@ -88,7 +88,7 @@ function vacepai(s2haxe) {
     maxema.replaceChild(kekKaltok, araXez);
   }
 }
-window.addEventListener("DOMContentLoaded"), () => {
+window.onload = function() {
   vacepai("cepaifal");
 };
 
