@@ -339,7 +339,7 @@ ciihii {
 .ciihiiflak {
 	display: flex;
 	overflow: hidden;
-    height: auto;
+    height: 100%;
 	align-items: center;
 	max-width: 0;
 	transition: 0.25s ease-out;
