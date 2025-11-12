@@ -154,20 +154,26 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 200);
 });
 
-// ꞁȷ̀ᴜ ſ̀ȷɔ ɭʃᴜ̩ᴜ j͐ʃᴜ
-var flak = document.getElementsByClassName("flak");
-for (var i = 0; i < flak.length; i++) {
-  flak[i].addEventListener("click", function() {
-    this.classList.toggle("atleflak");
-    if (this.querySelector(".ciihiiflakcepai") != null) {
+// ꞁȷ̀ᴜ ſ̀ȷɔ ɭʃᴜ̩ᴜ j͐ʃᴜ — bind after DOM ready and add safety checks
+document.addEventListener("DOMContentLoaded", function() {
+  var haFlak = document.getElementsByClassName("flak");
+  Array.prototype.forEach.call(haFlak, function(el) {
+    el.addEventListener("click", function() {
+      this.classList.toggle("atleflak");
+
       var ciihiiflakcepai = this.querySelector(".ciihiiflakcepai");
-      if (ciihiiflakcepai.style.maxHeight) {
-        ciihiiflakcepai.style.maxHeight = null;
-      } else {
-        ciihiiflakcepai.style.maxHeight = ciihiiflakcepai.scrollHeight + "px";
+      if (ciihiiflakcepai) {
+        if (ciihiiflakcepai.style.maxHeight) {
+          ciihiiflakcepai.style.maxHeight = null;
+        } else {
+          ciihiiflakcepai.style.maxHeight = ciihiiflakcepai.scrollHeight + "px";
+        }
+        return;
       }
-    } else {
+
       var ciihiiflak = this.nextElementSibling;
+      if (!ciihiiflak) return;
+
       var k2h2Cepaifal = this.closest(".cepaifal") !== null;
       if (k2h2Cepaifal) {
         if (ciihiiflak.style.maxWidth) {
@@ -182,9 +188,9 @@ for (var i = 0; i < flak.length; i++) {
           ciihiiflak.style.maxHeight = ciihiiflak.scrollHeight + "px";
         }
       }
-    }
+    });
   });
-}
+});
 
 // j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ
 function atlesorha(sorha) {

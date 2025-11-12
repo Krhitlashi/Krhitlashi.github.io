@@ -153,7 +153,7 @@ sak {
 
 h {
 	background-color: var(--តានេក២);
-	border-radius: var(--អិត្ភេចិ);
+	border-radius: var(--អិត្ភេ);
 	padding: var(--អារេង) var(--អារេងចិ);
 	text-align: center;
 	text-decoration: none;
@@ -241,7 +241,7 @@ embed, iframe {
 
 button, a:link, a:visited {
 	background-color: var(--តានេក);
-	border-radius: var(--អិត្ភេចិ);
+	border-radius: var(--អិត្ភេ);
 	border: var(--សាកព៏);
 	padding: var(--អារេង) var(--អារេងចិ);
 	text-align: center;
@@ -260,12 +260,17 @@ button:hover, a:hover, a:active {
 
 thala {
 	background-color: var(--តានេកខេលេ);
-	border-radius: var(--អិត្ភេ);
+	border-radius: var(--អិត្ភេពឺ);
 	border: var(--សាកព៏);
 	display: flex;
 	text-align: center;
 	align-items: center;
 	padding: var(--អារេងចិ);
+}
+.cakaxa {
+	align-self: center;
+	padding: var(--អារេង);
+	flex-direction: row;
 }
 .tapairaq {
 	flex-direction: row-reverse;
@@ -284,7 +289,7 @@ thala {
 
 ciihii {
 	background-color: var(--តានេក);
-	border-radius: var(--អិត្ភេចិ);
+	border-radius: var(--អិត្ភេ);
 	border: var(--សាកព៏);
 	padding: var(--អារេង);
 	display: flex;
