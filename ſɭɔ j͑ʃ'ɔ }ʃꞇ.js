@@ -154,11 +154,13 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 200);
 });
 
-// ꞁȷ̀ᴜ ſ̀ȷɔ ɭʃᴜ̩ᴜ j͐ʃᴜ — bind after DOM ready and add safety checks
-document.addEventListener("DOMContentLoaded", function() {
+// ꞁȷ̀ᴜ ſ̀ȷɔ ɭʃᴜ̩ᴜ j͐ʃᴜ
+function saxeFlak() {
   var haFlak = document.getElementsByClassName("flak");
-  Array.prototype.forEach.call(haFlak, function(el) {
-    el.addEventListener("click", function() {
+  Array.prototype.forEach.call(haFlak, function(kek) {
+    if (kek.__kozeqK2reFlak) return;
+
+    kek.addEventListener("click", function() {
       this.classList.toggle("atleflak");
 
       var ciihiiflakcepai = this.querySelector(".ciihiiflakcepai");
@@ -174,8 +176,9 @@ document.addEventListener("DOMContentLoaded", function() {
       var ciihiiflak = this.nextElementSibling;
       if (!ciihiiflak) return;
 
-      var k2h2Cepaifal = this.closest(".cepaifal") !== null;
-      if (k2h2Cepaifal) {
+      var tapai = ciihiiflak.scrollWidth > ciihiiflak.scrollHeight;
+
+      if (tapai) {
         if (ciihiiflak.style.maxWidth) {
           ciihiiflak.style.maxWidth = null;
         } else {
@@ -189,8 +192,16 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       }
     });
+
+    kek.__kozeqK2reFlak = true;
   });
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", saxeFlak);
+} else {
+  saxeFlak();
+}
 
 // j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ
 function atlesorha(sorha) {

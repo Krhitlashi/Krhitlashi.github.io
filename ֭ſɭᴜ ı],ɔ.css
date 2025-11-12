@@ -267,7 +267,7 @@ thala {
 	align-items: center;
 	padding: var(--អារេងចិ);
 }
-.cakaxa {
+.cakaxa, .cepaifal .cakaxa {
 	align-self: center;
 	padding: var(--អារេង);
 	flex-direction: row;
