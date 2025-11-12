@@ -128,32 +128,6 @@ function sakaIitbe(s2haxe) {
   });
 }
 
-// j͐ʃᴜɔ˞ ꞁȷ̀ᴜ }ʃꞇ
-document.body.classList.add("atletla");
-document.addEventListener("DOMContentLoaded", function() {
-    var links = document.querySelectorAll("a");
-  
-    links.forEach(function(link) {
-      link.addEventListener("click", function(event) {
-        event.preventDefault();
-        var href = this.href;
-  
-        document.body.classList.add("sakatla");
-  
-        setTimeout(function() {
-          window.location.href = href;
-        }, 200);
-        setTimeout(function() {
-          document.body.classList.remove("sakatla");
-        }, 200);
-      });
-    });
-  
-    setTimeout(function() {
-      document.body.classList.remove("atletla");
-    }, 200);
-});
-
 // j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ
 function atlesorha(sorha) {
   if (sorha.style.scale != 1) {

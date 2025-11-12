@@ -70,6 +70,41 @@
 	}
 }
 
+:root::view-transition {
+	animation-direction: 0.5s;
+	animation-timing-function: cubic-bezier(0.25, 1, 0.375, 1);
+}
+::view-transition-old(root) {
+	animation-name: vesefe;
+	z-index: 1;
+}
+::view-transition-new(root) {
+  	animation-name: nevesefe; 
+	z-index: 2;
+}
+@keyframes vesefe {
+  0% { transform: scale(1); opacity: 1; }
+  75% { transform: scale(0.9375); opacity: 0.875; }
+  100% { transform: scale(0.875); opacity: 0; }
+}
+@keyframes nevesefe {
+  0% { transform: scale(0.876); opacity: 0.75; }
+  25% { transform: scale(0.9375); opacity: 0.875; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root::view-transition,
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+::view-transition-group(root) {
+  	contain: layout paint style;
+}
+
 * {
 	font-family: "ı],ᴜ }ʃᴜ", "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	font-size-adjust: 0.5;
@@ -77,7 +112,7 @@
 	scrollbar-width: thin;
 	text-align: center;
 }
-*:not(.tapairaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.tapaisaq:has(.flak:not(.atleflak):not(.flakciihii))):not(.flakciihiicepai:not(.atleflak)) {
+*:not(.flak:not(.flak[open])) {
 	gap: var(--អារេង);
 }
 
@@ -326,6 +361,7 @@ ciihii {
 .flak {
 	display: flex;
 	border-radius: var(--អិត្ភេចិ);
+	border: var(--សាកព៏);
 	flex-direction: row;
 	align-items: stretch;
 	align-self: stretch;
@@ -337,9 +373,6 @@ ciihii {
 .flak[open]::before {
 	content: "|";
 	align-self: center;
-}
-.flak:not(.flak[open]) {
-	gap: 0 !important;
 }
 .ciihiiflak {
 	display: flex;
