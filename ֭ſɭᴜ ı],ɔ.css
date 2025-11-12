@@ -356,6 +356,7 @@ ciihii {
   animation: a3etapai 0.25s forwards;
 }
 .flakcepai {
+	height: unset;
 	flex-direction: column;
 }
 .ciihiiflakcepai {
