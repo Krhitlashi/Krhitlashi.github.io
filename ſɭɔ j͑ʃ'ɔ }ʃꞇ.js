@@ -176,21 +176,25 @@ function saxeFlak() {
       var ciihiiflak = this.nextElementSibling;
       if (!ciihiiflak) return;
 
-      var sefwi = ciihiiflak.scrollWidth;
-      var l6da = ciihiiflak.scrollHeight;
-      var tapai = sefwi > l6da;
+      var k2h2A3e = ciihiiflak.style.maxHeight || ciihiiflak.style.maxWidth;
 
-      if (tapai) {
-        if (ciihiiflak.style.maxWidth) {
-          ciihiiflak.style.maxWidth = null;
-        } else {
-          ciihiiflak.style.maxWidth = sefwi + "px";
-        }
+      if (k2h2A3e) {
+        ciihiiflak.style.maxHeight = "none";
+        ciihiiflak.style.maxWidth = "none";
+        
+        var sefwi = ciihiiflak.scrollWidth;
+        var l6da = ciihiiflak.scrollHeight;
+        var tapai = sefwi > l6da;
+
       } else {
-        if (ciihiiflak.style.maxHeight) {
-          ciihiiflak.style.maxHeight = null;
+        var sefwi = ciihiiflak.scrollWidth;
+        var l6da = ciihiiflak.scrollHeight;
+        var tapai = sefwi > l6da;
+
+        if (tapai) {
+          ciihiiflak.style.maxWidth = "0px";
         } else {
-          ciihiiflak.style.maxHeight = l6da + "px";
+          ciihiiflak.style.maxHeight = "0px";
         }
       }
     });
