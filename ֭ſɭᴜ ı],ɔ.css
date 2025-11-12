@@ -182,9 +182,9 @@ pre {
 }
 .cepaifalxez:not(.kosabo span) {
 	display: inline-block;
-	transform: rotate(90deg);
+	writing-mode: lr;
 	white-space: nowrap;
-	margin-block: var(--អារេង);
+	line-height: 1;
 }
 .cepaifal thala {
 	flex-direction: column;
@@ -199,6 +199,12 @@ pre {
 }
 .cepaifal h1 {
 	text-align: center;
+}
+:has(> .cepaifalxez), a:has(> .cepaifalxez) {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	flex-wrap: wrap;
 }
 .powukfal.cepaifal {
 	flex-direction: column-reverse;
