@@ -329,6 +329,7 @@ ciihii {
 	border-radius: var(--អិត្ភេចិ);
 	flex-direction: row;
 	align-items: center;
+	padding: var(--អារេង);
 }
 .flak:hover {
 	border: var(--សាកព៏៣);
@@ -343,7 +344,6 @@ ciihii {
 	align-items: center;
 	max-width: 0;
 	transition: 0.25s ease-out;
-	padding-block: 1px;
 }
 .flak[open]:not(.flakcepai) .ciihiiflak {
 	max-width: max-content;
@@ -353,13 +353,18 @@ ciihii {
 	width: 100%;
 }
 .ciihiiflakcepai {
-	display: column;
+	display: flex;
+	flex-direction: column;
 	height: unset;
 	width: 100%;
 	max-height: max-content;
+	transition: 0.25s ease-out;
 }
 .flak[open].flakcepai .ciihiiflak {
 	max-height: max-content;
+}
+summary {
+	list-style: none;
 }
 
 input, textarea {
