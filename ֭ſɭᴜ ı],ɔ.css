@@ -200,8 +200,14 @@ pre {
 .cepaifal h1 {
 	text-align: center;
 }
+.powukfal.cepaifal {
+	flex-direction: column-reverse;
+}
 .powukfal p, .powukfal h, .powukfal a, .powukfal h1 {
 	transform: scale(-1, 1);
+}
+.powukfal a, .powukfal h, .powukfal .flak {
+	border-radius: 8px 20px;
 }
 .sashesaikef {
 	background-color: transparent;
@@ -292,9 +298,6 @@ ciihii {
 	height: calc(100% - var(--អារេងព៏));
 	display: flex !important;
 	align-items: center;
-}
-.powukfal a, .powukfal h, .powukfal .flak {
-	border-radius: 8px 20px;
 }
 .ciihiicepai {
 	flex-direction: column;
