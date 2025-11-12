@@ -55,10 +55,9 @@ function vacepai(s2haxe) {
     
     for (let i = 0; i < han2k.length; i++) {
       const n2k = han2k[i];
-      
       if (!n2k.trim()) {
         if (i < han2k.length - 1) {
-          kekKaltok.appendChild(document.createElement("div").className("caxeman2k"));
+          kekKaltok.appendChild(document.createElement("br"));
         }
         continue;
       }
@@ -85,7 +84,7 @@ function vacepai(s2haxe) {
       }
       
       if (i < han2k.length - 1) {
-        kekKaltok.appendChild(document.createElement("div").className("caxeman2k"));
+        kekKaltok.appendChild(document.createElement("br"));
       }
     }
     
