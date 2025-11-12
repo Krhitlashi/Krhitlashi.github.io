@@ -55,36 +55,38 @@ function vacepai(s2haxe) {
     
     for (let i = 0; i < han2k.length; i++) {
       const n2k = han2k[i];
-
-      const caxemaN2k = document.createElement("div");
-      caxemaN2k.className = "caxeman2k";
-
+      
       if (!n2k.trim()) {
-        kekKaltok.appendChild(caxemaN2k);
+        if (i < han2k.length - 1) {
+          kekKaltok.appendChild(document.createElement("div").className("caxeman2k"));
+        }
         continue;
       }
 
       const haxez = n2k.split(/\s+/);
+      let kjesaiMaxema = kekKaltok;
       
       for (let j = 0; j < haxez.length; j++) {
         const xez = haxez[j];
         if (!xez) continue;
         
         if (yots2nani.includes(xez)) {
-          caxemaN2k.appendChild(document.createTextNode(xez));
+          kjesaiMaxema.appendChild(document.createTextNode(xez));
         } else {
           const caxemaXez = document.createElement("span");
           caxemaXez.className = "cepaifalxez";
           caxemaXez.textContent = xez;
-          caxemaN2k.appendChild(caxemaXez);
+          kjesaiMaxema.appendChild(caxemaXez);
         }
         
         if (j < haxez.length - 1) {
-          caxemaN2k.appendChild(document.createTextNode(" "));
+          kjesaiMaxema.appendChild(document.createTextNode(" "));
         }
       }
       
-      kekKaltok.appendChild(document.createElement(caxemaN2k));
+      if (i < han2k.length - 1) {
+        kekKaltok.appendChild(document.createElement("div").className("caxeman2k"));
+      }
     }
     
     maxema.replaceChild(kekKaltok, araXez);
