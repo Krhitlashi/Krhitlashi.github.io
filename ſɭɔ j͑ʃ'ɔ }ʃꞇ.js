@@ -50,12 +50,15 @@ function vacepai(s2haxe) {
     const maxema = araXez.parentNode;
     const okef = araXez.textContent;
     const kekKaltok = document.createDocumentFragment();
-    const han2k = okef.split(/\r?\n/);
+    
+    const han2k = okef.split(/\r?\n|[\r\n]/);
     
     for (let i = 0; i < han2k.length; i++) {
       const n2k = han2k[i];
       if (!n2k.trim()) {
-        if (i < han2k.length - 1) kekKaltok.appendChild(document.createElement("br"));
+        if (i < han2k.length - 1) {
+          kekKaltok.appendChild(document.createElement("br"));
+        }
         continue;
       }
 
