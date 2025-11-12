@@ -154,67 +154,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 200);
 });
 
-// ꞁȷ̀ᴜ ſ̀ȷɔ ɭʃᴜ̩ᴜ j͐ʃᴜ
-function saxeFlak() {
-  var haFlak = document.getElementsByClassName("flak");
-  Array.prototype.forEach.call(haFlak, function(kek) {
-    if (kek.__kozeqK2reFlak) return;
-
-    kek.addEventListener("click", function() {
-      this.classList.toggle("atleflak");
-
-      var ciihiiflakcepai = this.querySelector(".ciihiiflakcepai");
-      if (ciihiiflakcepai) {
-        if (ciihiiflakcepai.style.maxHeight) {
-          ciihiiflakcepai.style.maxHeight = null;
-        } else {
-          ciihiiflakcepai.style.maxHeight = ciihiiflakcepai.scrollHeight + "px";
-        }
-        return;
-      }
-
-      var ciihiiflak = this.nextElementSibling;
-      if (!ciihiiflak) return;
-
-      var k2h2A3e = ciihiiflak.style.maxHeight || ciihiiflak.style.maxWidth;
-
-      if (k2h2A3e) {
-        ciihiiflak.style.maxHeight = "none";
-        ciihiiflak.style.maxWidth = "none";
-        
-        var sefwi = ciihiiflak.scrollWidth;
-        var l6da = ciihiiflak.scrollHeight;
-        var tapai = sefwi > l6da;
-        ciihiiflak.__flakS2saboni = tapai ? "tapai" : "cepai";
-
-      } else {
-        var S2saboni = ciihiiflak.__flakS2saboni;
-        
-        if (!S2saboni) {
-          var sefwi = ciihiiflak.scrollWidth;
-          var l6da = ciihiiflak.scrollHeight;
-          S2saboni = (sefwi > l6da) ? "tapai" : "cepai";
-          ciihiiflak.__flakS2saboni = S2saboni;
-        }
-
-        if (S2saboni === "tapai") {
-          ciihiiflak.style.maxWidth = "0px";
-        } else {
-          ciihiiflak.style.maxHeight = "0px";
-        }
-      }
-    });
-
-    kek.__kozeqK2reFlak = true;
-  });
-}
-
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", saxeFlak);
-} else {
-  saxeFlak();
-}
-
 // j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ
 function atlesorha(sorha) {
   if (sorha.style.scale != 1) {

@@ -325,7 +325,7 @@ ciihii {
 
 .flak {
 	display: flex;
-	height: calc(100% - var(--អារេងព៏));
+	height: 100%;
 	border-radius: var(--អិត្ភេចិ);
 	flex-direction: row;
 	align-items: center;
@@ -333,7 +333,7 @@ ciihii {
 .flak:hover {
 	border: var(--សាកព៏៣);
 }
-.atleflak:before {
+.flak[open]::before {
 	content: "|"
 }
 .ciihiiflak {
@@ -345,46 +345,21 @@ ciihii {
 	transition: 0.25s ease-out;
 	padding-block: 1px;
 }
-.ciihiiflakcepai {
-	display: flex;
-	flex-direction: column;
-	overflow: hidden;
-	width: 100%;
-	align-items: center;
-	max-height: 0;
-	transition: 0.25s ease-out;
+.flak[open]:not(.flakcepai) .ciihiiflak {
+	max-width: max-content;
 }
-.cepaifal .flak {
-	align-items: stretch;
-	justify-content: center;
-}
-.cepaifal .ciihiiflak {
-	max-width: 0;
-	overflow: hidden;
-	transition: max-width 0.25s ease-out;
-	width: auto;
-	align-items: stretch;
-	padding-block: 0;
-}
-.cepaifal .ciihiiflak > * {
-	width: 100%;
-}
-.atleciihiiflak {
-	max-width: unset;
-	max-height: unset;
-	max-inline-size: unset;
-}
-.flakciihii {
-	height: calc(100% - var(--អារេងព៏));
-	border: var(--សាកព៏២);
-	flex-direction: row;
-}
-.flakciihiicepai {
+.flakcepai {
 	height: unset;
 	width: 100%;
-	border: var(--សាកព៏២);
-	flex-direction: column-reverse;
-	padding-block: var(--អារេង);
+}
+.ciihiiflakcepai {
+	display: column;
+	height: unset;
+	width: 100%;
+	max-height: max-content;
+}
+.flak[open].flakcepai .ciihiiflak {
+	max-height: max-content;
 }
 
 input, textarea {
