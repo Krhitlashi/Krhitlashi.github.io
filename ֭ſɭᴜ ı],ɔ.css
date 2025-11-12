@@ -200,13 +200,6 @@ pre {
 .cepaifal h1 {
 	text-align: center;
 }
-.cepaifal br {
-	display: block;
-	flex-basis: 100%;
-	width: 100%;
-	height: 0;
-	margin-block: var(--អារេង);
-}
 p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 	display: flex;
 	align-items: flex-start;
