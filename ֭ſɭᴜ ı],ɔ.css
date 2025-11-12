@@ -200,6 +200,11 @@ pre {
 .cepaifal h1 {
 	text-align: center;
 }
+.cazeman2k {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
 p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 	display: flex;
 	align-items: flex-start;
