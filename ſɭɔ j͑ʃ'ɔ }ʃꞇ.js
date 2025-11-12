@@ -176,19 +176,21 @@ function saxeFlak() {
       var ciihiiflak = this.nextElementSibling;
       if (!ciihiiflak) return;
 
-      var tapai = ciihiiflak.scrollWidth > ciihiiflak.scrollHeight;
+      var sefwi = ciihiiflak.scrollWidth;
+      var l6da = ciihiiflak.scrollHeight;
+      var tapai = sefwi > l6da;
 
       if (tapai) {
         if (ciihiiflak.style.maxWidth) {
           ciihiiflak.style.maxWidth = null;
         } else {
-          ciihiiflak.style.maxWidth = ciihiiflak.scrollWidth + "px";
+          ciihiiflak.style.maxWidth = sefwi + "px";
         }
       } else {
         if (ciihiiflak.style.maxHeight) {
           ciihiiflak.style.maxHeight = null;
         } else {
-          ciihiiflak.style.maxHeight = ciihiiflak.scrollHeight + "px";
+          ciihiiflak.style.maxHeight = l6da + "px";
         }
       }
     });
