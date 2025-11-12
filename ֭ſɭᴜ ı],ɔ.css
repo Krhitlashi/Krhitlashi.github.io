@@ -325,7 +325,6 @@ ciihii {
 
 .flak {
 	display: flex;
-	height: 100%;
 	border-radius: var(--អិត្ភេចិ);
 	flex-direction: row;
 	align-items: stretch;
@@ -339,6 +338,9 @@ ciihii {
 	content: "|";
 	align-self: center;
 }
+.flak:not(.flak[open]) {
+	gap: 0 !important;
+}
 .ciihiiflak {
 	display: flex;
 	overflow: hidden;
@@ -349,14 +351,13 @@ ciihii {
 	will-change: max-width;
 }
 @keyframes a3etapai {
-  from { max-width: 0; }
-  to { max-width: 4096px; }
+  	from { max-width: 0; }
+  	to { max-width: 4096px; }
 }
 .flak[open]:not(.flakcepai) .ciihiiflak {
-  animation: a3etapai 0.25s forwards;
+	animation: a3etapai 0.25s forwards;
 }
 .flakcepai {
-	height: unset;
 	flex-direction: column;
 }
 .ciihiiflakcepai {
@@ -368,15 +369,18 @@ ciihii {
 	will-change: max-height;
 }
 @keyframes a3ecepai {
-  from { max-height: 0 }
-  to { max-height: 4096px }
+  	from { max-height: 0 }
+  	to { max-height: 4096px }
 }
 .flak[open] .ciihiiflakcepai {
-  animation: a3ecepai 0.25s forwards;
+  	animation: a3ecepai 0.25s forwards;
 }
 summary {
 	list-style: none;
-	align-self: center;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: center;
 }
 
 input, textarea {
