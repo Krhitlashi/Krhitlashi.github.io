@@ -200,7 +200,7 @@ pre {
 .cepaifal h1 {
 	text-align: center;
 }
-:has(> .cepaifalxez), a:has(> .cepaifalxez) {
+p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 	display: flex;
 	align-items: flex-start;
 	justify-content: center;
@@ -277,6 +277,9 @@ thala {
 	align-self: center;
 	padding: var(--អារេង);
 	flex-direction: row;
+}
+.cakaxa *:has(> .cepaifalxez) {
+	display: flex;
 }
 .tapairaq {
 	flex-direction: row-reverse;
@@ -385,6 +388,7 @@ summary {
 	width: 100%;
 	display: flex;
 	align-items: center;
+	justify-content: center;
 }
 
 input, textarea {
