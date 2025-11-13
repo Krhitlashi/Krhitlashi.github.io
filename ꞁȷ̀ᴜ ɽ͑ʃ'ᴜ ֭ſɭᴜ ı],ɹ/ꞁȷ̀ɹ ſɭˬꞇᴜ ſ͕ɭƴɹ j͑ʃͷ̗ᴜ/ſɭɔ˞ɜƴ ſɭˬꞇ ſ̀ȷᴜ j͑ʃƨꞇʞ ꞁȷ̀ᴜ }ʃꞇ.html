@@ -15,7 +15,7 @@
 </head>
 
 <body class="cepaifal">
-  <h1 style="margin-left: 0px;" data-i18n="ſɭɔ˞ɜƴ ſɭˬꞇ ſ̀ȷᴜ j͑ʃƨꞇʞ ꞁȷ̀ᴜ }ʃꞇ"></h1>
+  <h1 data-i18n="ſɭɔ˞ɜƴ ſɭˬꞇ ſ̀ȷᴜ j͑ʃƨꞇʞ ꞁȷ̀ᴜ }ʃꞇ"></h1>
     
     <thala class="cakaxa">
       <a href="/index.html">ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ</a>
@@ -62,7 +62,8 @@
 
   const oskakefani = document.querySelectorAll("[data-i18n]");
 
-  let kjesaiGawe = "aih";
+  const ruvaS2karani = new URLSearchParams(window.location.search);
+  let kjesaiGawe = ruvaS2karani.get("lang") || "aih";
   k2regawe(kjesaiGawe);
 
   function k2regawe(gawe) {
