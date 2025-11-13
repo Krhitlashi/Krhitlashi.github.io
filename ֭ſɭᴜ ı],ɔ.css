@@ -215,6 +215,9 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 .powukfal a, .powukfal h, .powukfal .flak {
 	border-radius: 8px 20px;
 }
+.tapaifal {
+	flex-direction: column;
+}
 .sashesaikef {
 	background-color: transparent;
 	width: max-content;
@@ -231,7 +234,6 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 }
 .oshiipewa {
 	background-color: transparent;
-	width: max-content;
 	text-align: left;
 	align-self: end;
 	padding: var(--អារេង);
