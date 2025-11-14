@@ -311,11 +311,6 @@ thala {
 .cakaxa *:has(> .cepaifalxez) {
 	display: flex;
 }
-.tapairaq {
-	flex-direction: row-reverse;
-	align-items: center;
-	height: calc(100% - var(--អារេងព៏));
-}
 .tapaisaq {
 	flex-direction: row;
 	align-items: center;
@@ -481,7 +476,6 @@ th, td {
 img {
 	border-radius: var(--អិត្ភេ);
 	align-self: center;
-	height: 75vh;
 	pointer-events: none;
 }
 
