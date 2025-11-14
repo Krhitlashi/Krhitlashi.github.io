@@ -220,6 +220,7 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 }
 .tapaifal {
 	flex-direction: column;
+	align-items: stretch;
 	padding: var(--អារេងព៏);
 }
 .tapaifal * {
@@ -227,6 +228,7 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 }
 .tapaifal thala, .tapaifal ciihii {
 	flex-direction: column;
+	align-items: stretch;
 }
 .tapaifal .cakaxa {
 	flex-direction: row;
@@ -237,7 +239,7 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 	text-align: center;
 }
 .tapaifal a {
-	width: 100%;
+	width: auto;
 	height: 32px;
 	display: flex;
 	align-items: center;
@@ -255,6 +257,8 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 	text-align: center;
 	padding: var(--អារេង);
 	margin-inline: 0;
+	font-size-adjust: 0.625;
+	align-self: center;
 }
 .oshiipewa {
 	background-color: transparent;
@@ -392,6 +396,7 @@ ciihii {
 }
 .flakcepai {
 	flex-direction: column;
+	min-height: 32px;
 }
 .ciihiiflakcepai {
 	display: flex;
