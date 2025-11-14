@@ -77,7 +77,7 @@
 	scrollbar-width: thin;
 	text-align: center;
 }
-*:not(.flak:not(.flak[open])) {
+*:not(.flak:not(.flak[open])):not(body) {
 	gap: var(--អារេង);
 }
 
@@ -250,6 +250,7 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 	font-size: x-large;
 	text-align: left;
 	padding: var(--អារេង);
+	align-self: center;
 }
 .miikef {
 	background-color: transparent;
