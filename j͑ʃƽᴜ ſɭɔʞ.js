@@ -11,7 +11,7 @@ function k2regawe(gawe) {
         const kef = kek.dataset.oskakefani;
         kek.textContent = skakefani[gawe][kef] || skakefani["aih"][kef] || kef;
     });
-    document.querySelectorAlla=("a[href]").forEach(cel2f => {
+    document.querySelectorAll=("a").forEach(cel2f => {
         const ruva = new URL(cel2f.href, window.location.href);
         ruva.searchParams.set("lang", gawe);
         cel2f.href = ruva.toString();

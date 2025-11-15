@@ -348,7 +348,7 @@ ciihii {
 	justify-content: center;
 	height: calc(100% - var(--អារេងព៏));
 }
-.ciihiitapai, .cepfaifal a {
+.ciihiitapai, .cepaifal a {
 	align-self: center;
 	height: calc(100% - var(--អារេងព៏));
 	display: flex !important;
