@@ -11,11 +11,14 @@ function k2regawe(gawe) {
         const kef = kek.dataset.oskakefani;
         kek.textContent = skakefani[gawe][kef] || skakefani["aih"][kef] || kef;
     });
-    document.querySelectorAll=("a").forEach(cel2f => {
-        const ruva = new URL(cel2f.href, window.location.href);
-        ruva.searchParams.set("lang", gawe);
-        cel2f.href = ruva.toString();
-    });
+    if (gawe != "aih") {
+        document.querySelectorAll("a").forEach(cel2f => {
+            if (!cel2f.href || cel2f.href.startsWith("#")) return;
+            const ruva = new URL(cel2f.href, window.location.href);
+            ruva.searchParams.set("lang", gawe);
+            cel2f.href = ruva.toString();
+        });
+    }
 }
 function kocepaifal(gawe) {
     if (gawe != "aih") {
