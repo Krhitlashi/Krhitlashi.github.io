@@ -252,24 +252,37 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 	padding: var(--អារេង);
 	align-self: center;
 }
-.miikef {
+.ksakapiisa, .ksakatiixa {
 	background-color: transparent;
 	text-align: center;
 	padding: var(--អារេង);
 	margin-inline: 0;
-	font-size-adjust: 0.625;
+	font-size-adjust: 0.6875;
 	align-self: center;
 }
-.miikef .cepaifalxez {
+.ksakapiisa .cepaifalxez {
+	font-size-adjust: 0.6875;
+	line-height: 1.3125 !important;
+	align-self: center;
+}
+.ksakatiixa {
+	font-size-adjust: 0.625;
+	line-height: 1.25;
+}
+.ksakatiixa .cepaifalxez {
 	font-size-adjust: 0.625;
 	line-height: 1.25 !important;
+	align-self: center;
 }
-.oshiipewa {
+.oshiipewa, .kefhuruq {
 	background-color: transparent;
 	text-align: left;
 	align-self: center;
 	padding: var(--អារេង);
 	margin-inline: 0;
+}
+.kefhuruq {
+	font-style: italic;
 }
 .zatseuxani {
 	background-color: var(--តិជាធី);
