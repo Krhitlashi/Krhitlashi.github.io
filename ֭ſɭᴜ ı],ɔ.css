@@ -197,8 +197,8 @@ pre {
 .cepaifal ciihii {
 	flex-direction: column;
 }
-.cepaifal ciihii .oshiipewa {
-	align-self: start;
+.cepaifal .oshiipewa {
+	align-self: center;
 }
 .cepaifal h1 {
 	text-align: center;
