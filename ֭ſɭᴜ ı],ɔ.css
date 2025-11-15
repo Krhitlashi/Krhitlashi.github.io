@@ -262,7 +262,7 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 }
 .miikef .cepaifalxez {
 	font-size-adjust: 0.625;
-	line-height: 1.25;
+	line-height: 1.25 !important;
 }
 .oshiipewa {
 	background-color: transparent;
