@@ -17,7 +17,7 @@ async function registerSW() {
 
 // j͑ʃ'ᴜ ſɟɔ ſןᴜꞇ
 function vacepai(s2haxe) {
-  const yots2nani = ["(", ")", "[", "]", "<", ">", "-", "≺⧼", "⧽≻", "⟪", "⟫", "⧼", "⧽", "  "];
+  const yots2nani = ["(", ")", "[", "]", "<", ">", "-", "≺⧼", "⧽≻", "⟪", "⟫", "⧼", "⧽"];
   const hakek = document.querySelectorAll(`.${s2haxe}`);
   if (!hakek.length) return;
 
@@ -62,12 +62,17 @@ function vacepai(s2haxe) {
         continue;
       }
 
-      const haxez = n2k.split(/\s+/);
+      const haxez = n2k.match(/\S+|\s+/g) || [];;
       let kjesaiMaxema = kekKaltok;
       
       for (let j = 0; j < haxez.length; j++) {
         const xez = haxez[j];
         if (!xez) continue;
+
+        if (/^\s+$/.test(xez)) {
+          kjesaiMaxema.appendChild(document.createTextNode(" "));
+          continue;
+        }
         
         if (yots2nani.includes(xez)) {
           kjesaiMaxema.appendChild(document.createTextNode(xez));
@@ -76,10 +81,6 @@ function vacepai(s2haxe) {
           caxemaXez.className = "cepaifalxez";
           caxemaXez.textContent = xez;
           kjesaiMaxema.appendChild(caxemaXez);
-        }
-        
-        if (j < haxez.length - 1) {
-          kjesaiMaxema.appendChild(document.createTextNode(" "));
         }
       }
       
