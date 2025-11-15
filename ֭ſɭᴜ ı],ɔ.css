@@ -121,6 +121,7 @@ sak {
     text-align: center;
     padding: 2px;
     height: 32px;
+	align-self: center;
 }
 .saktapai, .tapaifal sak {
 	width: 32px;
