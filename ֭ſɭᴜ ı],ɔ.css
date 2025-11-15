@@ -247,7 +247,7 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 .sashesaikef {
 	background-color: transparent;
 	width: max-content;
-	font-size: x-large;
+	font-size-adjust: 0.875;
 	text-align: left;
 	padding: var(--អារេង);
 	align-self: center;
@@ -257,12 +257,12 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 	text-align: center;
 	padding: var(--អារេង);
 	margin-inline: 0;
-	font-size-adjust: 0.6875;
+	font-size-adjust: 0.625;
 	align-self: center;
 }
 .ksakapiisa .cepaifalxez {
-	font-size-adjust: 0.6875;
-	line-height: 1.3125 !important;
+	font-size-adjust: 0.625;
+	line-height: 1.25 !important;
 	align-self: center;
 }
 .ksakatiixa {
@@ -348,7 +348,7 @@ ciihii {
 	justify-content: center;
 	height: calc(100% - var(--អារេងព៏));
 }
-.ciihiitapai {
+.ciihiitapai, .cepfaifal a {
 	align-self: center;
 	height: calc(100% - var(--អារេងព៏));
 	display: flex !important;

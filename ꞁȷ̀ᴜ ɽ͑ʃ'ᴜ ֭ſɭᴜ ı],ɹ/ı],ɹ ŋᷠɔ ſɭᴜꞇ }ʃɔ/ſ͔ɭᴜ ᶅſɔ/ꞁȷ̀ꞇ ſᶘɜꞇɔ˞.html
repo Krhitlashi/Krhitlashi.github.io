@@ -16,7 +16,7 @@
 <body class="cepaifal">
 	  <h1 data-oskakefani="ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ꞇ ſᶘɜꞇɔ˞"></h1>
 
-    <thala class="cakaxa" id="cakaxa">
+    <thala class="cakaxa">
       <a href="/index.html" data-oskakefani="ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ"></a>
       <a href="/ſ͔ɭᴜ ᶅſɔ.html" data-oskakefani="ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ"></a>
       <a href="/ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ.html" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ"></a>
@@ -445,28 +445,8 @@
       "j͐ʃэƣ̋ ꞁȷ̀ɔ ꞁȷ̀ɜ ŋᷠɜ ſɭᴜ ɭʄᴜʌ ц": "naleg gago yesa bhay-bhay dorno",
     }
   };
-
-  const oskakefani = document.querySelectorAll("[data-oskakefani]");
-
-  const ruvaS2karani = new URLSearchParams(window.location.search);
-  let kjesaiGawe = ruvaS2karani.get("lang") || "aih";
-  k2regawe(kjesaiGawe);
-
-  function k2regawe(gawe) {
-    kocepaifal(gawe)
-    document.documentElement.setAttribute("lang", gawe)
-    oskakefani.forEach(kek => {
-      const kef = kek.dataset.oskakefani;
-      kek.textContent = skakefani[gawe][kef] || skakefani["aih"][kef] || kef;
-    });
-  }
-  function kocepaifal(gawe) {
-    if (gawe != "aih") {
-      document.body.classList.remove("cepaifal")
-      document.body.classList.add("tapaifal")
-    }
-  }
 </script>
+<script src="/j͑ʃƽᴜ ſɭɔʞ.js"></script>
 <script src="/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
 
 </html>
