@@ -17,7 +17,7 @@ async function registerSW() {
 
 // j͑ʃ'ᴜ ſɟɔ ſןᴜꞇ
 function vacepai(s2haxe) {
-  const yots2nani = ["(", ")", "[", "]", "<", ">", "-", "≺⧼", "⧽≻", "⟪", "⟫", "⧼", "⧽"];
+  const yots2nani = ["(", ")", "[", "]", "<", ">", "-", "≺⧼", "⧽≻", "⟪", "⟫", "≺", "≻", "⧼", "⧽"];
   const hakek = document.querySelectorAll(`.${s2haxe}`);
   if (!hakek.length) return;
 
@@ -62,14 +62,13 @@ function vacepai(s2haxe) {
         continue;
       }
 
-      const haxez = n2k.split(" ");
+      const esxq = n2k.split(" ");
       let kjesaiMaxema = kekKaltok;
       
-      for (let j = 0; j < haxez.length; j++) {
-        const xez = haxez[j];
-        if (!xez) continue;
+      for (let j = 0; j < esxq.length; j++) {
+        const xez = esxq[j];
         
-        if (yots2nani.includes(xez)) {
+        if (xez && yots2nani.includes(xez)) {
           kjesaiMaxema.appendChild(document.createTextNode(xez));
         } else {
           const caxemaXez = document.createElement("span");
