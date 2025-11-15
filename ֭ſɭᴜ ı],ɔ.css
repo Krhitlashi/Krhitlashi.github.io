@@ -203,6 +203,10 @@ pre {
 .cepaifal h1 {
 	text-align: center;
 }
+.cepaifal a {
+	display: flex;
+	align-self: stretch;
+}
 p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 	display: flex;
 	align-items: flex-start;
@@ -348,7 +352,7 @@ ciihii {
 	justify-content: center;
 	height: calc(100% - var(--អារេងព៏));
 }
-.ciihiitapai, .cepaifal a {
+.ciihiitapai {
 	align-self: center;
 	height: calc(100% - var(--អារេងព៏));
 	display: flex !important;
