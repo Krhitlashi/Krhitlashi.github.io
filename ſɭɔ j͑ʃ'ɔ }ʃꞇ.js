@@ -17,7 +17,7 @@ async function registerSW() {
 
 // j͑ʃ'ᴜ ſɟɔ ſןᴜꞇ
 function vacepai(s2haxe) {
-  const yots2nani = ["(", ")", "[", "]"];
+  const yots2nani = ["(", ")", "[", "]", "<", ">", "-", "≺⧼", "⧽≻", "⟪", "⟫", "⧼", "⧽"];
   const hakek = document.querySelectorAll(`.${s2haxe}`);
   if (!hakek.length) return;
 
