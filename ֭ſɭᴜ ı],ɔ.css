@@ -381,6 +381,7 @@ ciihii {
 	align-items: stretch;
 	align-self: stretch;
 	padding: var(--អារេង);
+	min-width: 32px;
 }
 .flak:hover {
 	border: var(--សាកព៏៣);
