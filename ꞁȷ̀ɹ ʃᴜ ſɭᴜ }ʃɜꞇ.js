@@ -1,66 +1,28 @@
-const filterInput = document.getElementById("iixakanoi");
-const table = document.getElementById("kef");
-const tbody = table.tBodies[0] || table;
-const allRows = Array.from(table.getElementsByTagName("tr"));
-const headerRow = allRows[0];
-const bodyRows = allRows.slice(1);
+document.getElementById("iixakanoi").addEventListener("input", function() {
+    const bana2bakanoi = this.value.toLowerCase();
+    const cax2l = document.getElementById("kef");
+    const hap2sabacax2l = cax2l.getElementsByTagName("tr");
+    let l6r2ba = false;
 
-const initialOrder = new Map();
-bodyRows.forEach((row, index) => {
-  initialOrder.set(row, index);
-});
+    for (let i = 0; i < hap2sabacax2l.length; i++) {
+        const habacax2l = hap2sabacax2l[i].getElementsByTagName("td");
+        let or2bato = false;
 
-filterInput.addEventListener("input", function() {
-  const query = this.value.toLowerCase().trim();
-  
-  if (query === "") {
-    bodyRows.sort((a, b) => initialOrder.get(a) - initialOrder.get(b));
-    
-    const fragment = document.createDocumentFragment();
-    bodyRows.forEach(row => fragment.appendChild(row));
-    tbody.appendChild(fragment);
-    
-    allRows.forEach(row => row.style.display = "");
-    return;
-  }
+        for (let j = 0; j < habacax2l.length; j++) {
+            const bacax2l = habacax2l[j];
+            const kp6 = bacax2l.textContent.toLowerCase();
 
-  const matches = { fullWord: [], partial: [] };
-  const nonMatches = [];
-
-  bodyRows.forEach(row => {
-    let hasMatch = false;
-    let hasFullWordMatch = false;
-    const cells = row.getElementsByTagName("td");
-
-    for (const cell of cells) {
-      const text = cell.textContent.toLowerCase();
-      if (text.includes(query)) {
-        hasMatch = true;
-        if (query.test(text)) {
-          hasFullWordMatch = true;
+            if (kp6.includes(bana2bakanoi)) {
+                or2bato = true;
+                break;
+            }
         }
-      }
-    }
 
-    if (hasMatch) {
-      if (hasFullWordMatch) matches.fullWord.push(row);
-      else matches.partial.push(row);
-    } else {
-      nonMatches.push(row);
+        if (or2bato) {
+            hap2sabacax2l[i].style.display = "";
+            l6r2ba = true;
+        } else {
+            hap2sabacax2l[i].style.display = "none";
+        }
     }
-  });
-
-  matches.fullWord.sort((a, b) => initialOrder.get(a) - initialOrder.get(b));
-  matches.partial.sort((a, b) => initialOrder.get(a) - initialOrder.get(b));
-  
-  const fragment = document.createDocumentFragment();
-  [...matches.fullWord, ...matches.partial, ...nonMatches].forEach(row => {
-    fragment.appendChild(row);
-  });
-  
-  tbody.insertBefore(fragment, headerRow.nextSibling);
-  
-  matches.fullWord.forEach(row => row.style.display = "");
-  matches.partial.forEach(row => row.style.display = "");
-  nonMatches.forEach(row => row.style.display = "none");
 });
