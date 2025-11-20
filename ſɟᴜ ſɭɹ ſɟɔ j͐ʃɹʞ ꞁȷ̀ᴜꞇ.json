@@ -1,15 +1,39 @@
 {
-    "name":"ꞁȷ̀ɹ ſɭˬꞇᴜ ſɟɔ j͐ʃɹʞ",
-    "short_name":"ꞁȷ̀ɹ ſɭˬꞇᴜ ſɟɔ j͐ʃɹʞ",
-    "start_url":"index.html",
-    "display":"standalone",
-    "scope":".",
-    "description":"ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ",
+    "name": "ꞁȷ̀ɹ ſɭˬꞇᴜ ſɟɔ j͐ʃɹʞ",
+    "short_name": "ꞁȷ̀ɹ ſɭˬꞇᴜ ſɟɔ j͐ʃɹʞ",
+    "start_url": "index.html",
+    "display": "standalone",
+    "scope": ".",
+    "description": "ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ",
     "icons": [
         {
-        "src": "ꞁȷ̀ɹ ſɭˬꞇᴜ.png",
-        "sizes": "1080x1080",
-        "type": "image/png"
+            "src": "ꞁȷ̀ɹ ſɭˬꞇᴜ.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "ꞁȷ̀ɹ ſɭˬꞇᴜ.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "ꞁȷ̀ɹ ſɭˬꞇᴜ.png",
+            "sizes": "1080x1080",
+            "type": "image/png"
         }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "user_preferences": {
+        "color_scheme_dark": {
+            "theme_color": "#000000",
+            "background_color": "#000000"
+        }
+    },
+    "orientation": "any",
+    "categories": [
+        "education",
+        "books",
+        "reference"
     ]
 }

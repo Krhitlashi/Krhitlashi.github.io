@@ -1,4 +1,4 @@
-var staticCacheName = "pwa-v1";
+var staticCacheName = "pwa-v2";
 var assetsToCache = [
   "/",
   "/֭ſɭᴜ ı],ɔ.css",
@@ -45,17 +45,4 @@ self.addEventListener("activate", function (event) {
       );
     })
   );
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-  var content = document.querySelector('.content');
-
-  content.scrollTop = content.scrollHeight;
-
-  content.addEventListener('wheel', function(event) {
-    if (event.deltaY !== 0) {
-      event.preventDefault();
-      content.scrollTop -= event.deltaY;
-    }
-  });
 });
