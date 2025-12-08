@@ -256,7 +256,7 @@
             "j͑ʃ'", "ⰱ", "ɭʃ", "ƨ", "ɽ͑ʃ'", "ƣ̋", "ɭ(", "ԏ͕", "j͑ʃ", "ɔ˞", "j͐ʃ", "ͷ̗", "}ʃ", "c̗",
             "ſɭ,", "ƴ", "ɭl̀", "ᴎ", "ſɟ", "ᴜ̭", "ı],", "ᶗ‹", "ſ͕ȷ", "ⱷ̮̀",
             "ſ͔ɭ", "ɴ", "ſɭ", "ƽ", "֭ſɭ", "ᴜ̩", "ſ͕ɭ", "ȝ", "ſᶘ", "ꝛ̗", "ſ̀ȷ", "ŋ", "ſɭˬ", "ɯ",
-            "ꞁȷ̀", "ⅎ", "ꞇ", "ɹ", "ɔ", "ᴜ", "w", "ɜ", "э"
+            "ꞁȷ̀", "ⅎ", "ꞇ", "ɹ", "ɔ", "ᴜ", "w", "ɜ", "э",
         ].sort((a, b) => b.length - a.length);
 
         function iibaKanoiKmasahak(kp6, kp6Ca1ara) {
@@ -319,7 +319,7 @@
                         saxesai_kp6 = fusai_fal[0];
                         fusai_fal = fusai_fal.substring(1);
                     } else {
-                        console.warn(`|| ʃэ ɭʃɔ }ʃᴜ }ʃꞇ || ſ͕ȷɜ ſɭɹ ɽ͑ʃ'ɔ ı],ɔⰱ ꞁȷ̀ɔ '${xezai_kp6}' ⟅`);
+                        console.warn(`( ʃэ ɭʃɔ }ʃᴜ }ʃꞇ ) ſ͕ȷɜ ſɭɹ ɽ͑ʃ'ɔ ı],ɔⰱ ꞁȷ̀ɔ '${xezai_kp6}' ⟅`);
                         continue;
                     }
 
@@ -574,8 +574,8 @@
             tlakakaiTahaq.src = arak2f.toDataURL();
 
         }).catch(tlohk2ni => {
-            console.error('|| ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ||', tlohk2ni);
-            tlohk2niKek.textContent = `|| ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ || ${tlohk2ni.message} ⟅ ſ͕ȷɜ ſɭɹ j͐ʃᴜ ſ͔ɭᴜ ſɭɹʞ ⟅`;
+            console.error('( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )', tlohk2ni);
+            tlohk2niKek.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${tlohk2ni.message} ⟅ ſ͕ȷɜ ſɭɹ j͐ʃᴜ ſ͔ɭᴜ ſɭɹʞ ⟅`;
             tlohk2niKek.style.display = 'kucaq';
             tlakakaiTahaq.src = '';
         });
