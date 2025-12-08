@@ -456,6 +456,38 @@ input:hover {
 input:focus {
 	outline:none;
 }
+.sabosaicatsiina {
+	position: relative;
+    width: 24px;
+    height: 24px;
+    background-color: var(--tanek);
+    border-radius: var(--areqm2);
+    transition: .4s;
+    border: var(--sakp6);
+    flex-shrink: 0;
+    transform: rotate(45deg);
+    margin: 4px;
+}
+.sabosaicatsiina:before {
+	position: absolute;
+    content: "";
+    height: 2px;
+    width: 14px;
+    left: 50%;
+    top: 50%;
+    background-color: var(--kp6p2sa);
+    border-radius: 2px;
+    transition: .4s;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+input:checked + .sabosaicatsiina {
+    background-color: var(--tanekt2xa);
+    border-color: var(--kp6);
+}
+input:checked + .sabosaicatsiina:before {
+    transform: translate(-50%, -50%) rotate(45deg);
+    background-color: var(--kp6);
+}
 
 table {
 	background-color: var(--តានេកខេលេ);
