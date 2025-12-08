@@ -467,11 +467,10 @@ input[type="file"]::file-selector-button {
 	font-weight: bold;
 	color: var(--កេភ);
 	background-color: var(--តានេក២);
-	padding: var(--អារេង) var(--អារេងចិ);
+	padding: var(--អារេងចិ);
 	border: var(--សាកព៏);
 	border-radius: var(--អិត្ភេមិ);
-	cursor: pointer;
-	margin-right: var(--អារេងចិ);
+	margin-inline-end: var(--អារេងចិ);
 	transition: all 0.25s ease-in-out;
 }
 input[type="file"]::file-selector-button:hover {
