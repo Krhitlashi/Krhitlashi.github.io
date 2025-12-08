@@ -315,6 +315,13 @@ button {
 button:hover, a:hover, a:active {
 	background-color: var(--តានេក២);
 }
+select {
+	height: 100%;
+	background-color: var(--តានេក);
+	border-radius: var(--អិត្ភេ);
+	border: var(--សាកព៏);
+	padding: var(--អារេង) var(--អារេងចិ);
+}
 
 thala {
 	background-color: var(--តានេកខេលេ);
@@ -460,10 +467,10 @@ input:focus {
 	position: relative;
     width: 24px;
     height: 24px;
-    background-color: var(--tanek);
-    border-radius: var(--areqm2);
+    background-color: var(--តានេក);
+    border-radius: var(--អារេងមិ);
     transition: .4s;
-    border: var(--sakp6);
+    border: var(--សាកព៏);
     flex-shrink: 0;
     transform: rotate(45deg);
     margin: 4px;
@@ -475,18 +482,18 @@ input:focus {
     width: 14px;
     left: 50%;
     top: 50%;
-    background-color: var(--kp6p2sa);
+    background-color: var(--កេភ២);
     border-radius: 2px;
     transition: .4s;
     transform: translate(-50%, -50%) rotate(-45deg);
 }
 input.sabosaicatsiina:checked {
-    background-color: var(--tanekt2xa);
-    border-color: var(--kp6);
+    background-color: var(--តានេក៣);
+    border-color: var(--កេភ);
 }
 input.sabosaicatsiina:checked:before {
     transform: translate(-50%, -50%) rotate(45deg);
-    background-color: var(--kp6);
+    background-color: var(--កេភ);
 }
 
 table {
