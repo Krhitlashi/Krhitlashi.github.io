@@ -45,6 +45,12 @@
     </thala>
 
     <thala>
+        <label for="inakLaga">ꞁȷ̀ꞇ }ʃᴜƽ j͐ʃᴜ ſ͔ɭᴜ ( ſɭɹ ɽ͑ʃ'ɔ ⸙ , ⸙ )</label>
+        <input type="text" id="inakLaga" value="Arial, sans-serif"
+            style="writing-mode: sideways-lr; text-align: center;" placeholder="Arial, serif, sans-serif">
+    </thala>
+
+    <thala>
         <label for="cepaiAreqj2k">ſɟɔ ſןᴜꞇ ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɔ ſ͕ɭᴎɹƽ</label>
         <input type="number" id="cepaiAreqj2k" value="0" min="-8"
             style="writing-mode: sideways-lr; text-align: center;">
@@ -108,6 +114,7 @@
 
     <thala>
         <button id="kf2Sweca12na" style="width: min-content">ſɭʞɹ ɭʃᴜ ֭ſɭᴜȝ</button>
+        <button id="kf2B6m6qK2p2Ca12na" style="width: min-content">ſɭʞɹ ʃэ ŋᷠэȝ ſɭɹ ſןɹ</button>
         <p id="tlohk2ni" style="display: none;"></p>
         <h2>ŋᷠᴜꞇ ɭʃᴜ ֭ſɭᴜȝ</h2>
         <img id="tlakakaiTahaq" src="" alt="ſ͔ɭᴜ ᶅſɔ ſɭɹʞ">
@@ -132,10 +139,13 @@
     const vafasCasukw2q = document.getElementById('vafas');
 
     const kf2Sweca12na = document.getElementById('kf2Sweca12na');
+    const kf2B6m6qK2p2Ca12na = document.getElementById('kf2B6m6qK2p2Ca12na');
     const tlohk2niKek = document.getElementById('tlohk2ni');
     const lagaCvp3ohk2niKek = document.getElementById('lagaCvp3ohk2ni');
+    const inakLagaKek = document.getElementById('inakLaga');
 
     let kjesaiLaga = null;
+    let tz2saiTahaq = null;
 
     function kemaLagaKsaka(ksaka) {
         const araN2k = ksaka.lastIndexOf('.');
@@ -201,6 +211,7 @@
     kf2Sweca12na.addEventListener('click', function () {
         const fal = document.getElementById('banasaiFal').value;
         const aralaga = document.getElementById('lagaKsaka').value;
+        const inakLaga = inakLagaKek ? inakLagaKek.value : 'Arial, sans-serif';
         const lagaPal6 = parseInt(document.getElementById('lagaPal6').value, 8);
         const cepaiAreqj2k = parseInt(cepaiAreqj2kKek.value, 8);
         const sozasaiAreqj2k = parseInt(sozasaiAregj2kKek.value, 8);
@@ -211,6 +222,8 @@
         const sefakTapaini = sefakTapainiKek.checked;
         const xezSwekmavem2 = parseInt(xezSwekmavem2Kek.value, 8);
         const tapaiAreqj2k = parseInt(tapaiAreqj2kKek.value, 10);
+
+        const lagalInakLaga = `"${aralaga}"${inakLaga ? ', ' + inakLaga : ''}`;
 
         const knahtaka = document.querySelector('input[name="arrangement"]:checked').value;
 
@@ -269,7 +282,7 @@
         }
 
         document.fonts.ready.then(() => {
-            ctx.font = `${lagaPal6}px "${aralaga}"`;
+            ctx.font = `${lagaPal6}px ${lagalInakLaga}`;
 
             function measureTextDims(text, ctx) {
                 const metrics = ctx.measureText(text);
@@ -497,7 +510,7 @@
             ctx.fillStyle = arak21okoWeh2;
             ctx.fillRect(0, 0, arak2f.width, arak2f.height);
 
-            ctx.font = `${lagaPal6}px "${aralaga}"`;
+            ctx.font = `${lagaPal6}px ${lagalInakLaga}`;
             ctx.fillStyle = lagaWeh2;
             ctx.textBaseline = 'alphabetic';
 
@@ -571,6 +584,18 @@
                 }
                 kjesaiKucaqX += kucaq.kucaqEr2haSefwini + tapaiAreqj2k;
             }
+
+            tz2saiTahaq = {
+                tlakakaiKucaq: tlakakaiKucaq,
+                tapaiAreqj2k: tapaiAreqj2k,
+                height: arak2f.height,
+                sozasaiAreqj2k: sozasaiAreqj2k,
+                psazaiAreqj2k: psazaiAreqj2k,
+                saqaiAreqj2k: saqaiAreqj2k,
+                raqaiAreqj2k: raqaiAreqj2k,
+                arak21okoWeh2: arak21okoWeh2
+            };
+
             tlakakaiTahaq.src = arak2f.toDataURL();
 
         }).catch(tlohk2ni => {
@@ -579,6 +604,170 @@
             tlohk2niKek.style.display = 'kucaq';
             tlakakaiTahaq.src = '';
         });
+    });
+
+    kf2B6m6qK2p2Ca12na.addEventListener('click', function () {
+        const arak2f = document.getElementById('arak2f');
+        const tlakakaiTahaq = document.getElementById('tlakakaiTahaq');
+
+        if (!tlakakaiTahaq.src || tlakakaiTahaq.src === '' || arak2f.width === 0) {
+            tlohk2niKek.textContent = "ſ͕ȷɜ ſɭʞɹ ɭʃᴜ ֭ſɭᴜȝ ⟅";
+            tlohk2niKek.style.display = 'kucaq';
+            return;
+        }
+
+        if (!tz2saiTahaq || !tz2saiTahaq.tlakakaiKucaq) {
+            const imgData = arak2f.toDataURL('image/png');
+            const printWindow = window.open('', '_blank');
+            if (printWindow) {
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>j͑ʃ'ᴜ ɭʃᴜ ֭ſɭᴜȝ ʃэ ŋᷠэȝ ſɭɹ ſןɹ</title>
+                        <style>
+                            @page { size: portrait; margin: 0; }
+                            body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: white; }
+                            img { display: block; max-width: 100vw; max-height: 100vh; object-fit: contain; }
+                        </style>
+                    </head>
+                    <body>
+                        <img src="${imgData}">
+                        <script>window.onload = function() { window.print(); };<\/script>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+            }
+            return;
+        }
+
+        const { tlakakaiKucaq, tapaiAreqj2k, height, sozasaiAreqj2k, psazaiAreqj2k, saqaiAreqj2k, raqaiAreqj2k, arak21okoWeh2 } = tz2saiTahaq;
+
+        const portraitPageWidth = 794;
+        const landscapePageWidth = 1123;
+
+        const totalWidth = arak2f.width;
+        const numBlocks = tlakakaiKucaq.length;
+
+        const useLandscape = totalWidth > portraitPageWidth;
+        const pageWidth = useLandscape ? landscapePageWidth : portraitPageWidth;
+        const orientation = useLandscape ? 'landscape' : 'portrait';
+
+        if (totalWidth <= pageWidth) {
+            const imgData = arak2f.toDataURL('image/png');
+            const printWindow = window.open('', '_blank');
+            if (printWindow) {
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>j͑ʃ'ᴜ ɭʃᴜ ֭ſɭᴜȝ ʃэ ŋᷠэȝ ſɭɹ ſןɹ</title>
+                        <style>
+                            @page { size: ${orientation}; margin: 0; }
+                            body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: white; }
+                            img { display: block; max-width: 100vw; max-height: 100vh; object-fit: contain; }
+                        </style>
+                    </head>
+                    <body>
+                        <img src="${imgData}">
+                        <script>window.onload = function() { window.print(); };<\/script>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+            }
+            return;
+        }
+
+        const pages = [];
+        let currentPageBlocks = [];
+        let currentPageWidth = saqaiAreqj2k + raqaiAreqj2k;
+
+        for (let i = 0; i < tlakakaiKucaq.length; i++) {
+            const block = tlakakaiKucaq[i];
+            const blockWidth = block.kucaqEr2haSefwini + (currentPageBlocks.length > 0 ? tapaiAreqj2k : 0);
+
+            if (currentPageWidth + blockWidth > pageWidth && currentPageBlocks.length > 0) {
+                pages.push({ blocks: currentPageBlocks, startIndex: i - currentPageBlocks.length });
+                currentPageBlocks = [block];
+                currentPageWidth = saqaiAreqj2k + raqaiAreqj2k + block.kucaqEr2haSefwini;
+            } else {
+                currentPageBlocks.push(block);
+                currentPageWidth += blockWidth;
+            }
+        }
+        if (currentPageBlocks.length > 0) {
+            pages.push({ blocks: currentPageBlocks, startIndex: tlakakaiKucaq.length - currentPageBlocks.length });
+        }
+
+        const pageImages = [];
+        let sourceX = 0;
+
+        for (const page of pages) {
+            let pageContentWidth = saqaiAreqj2k + raqaiAreqj2k;
+            for (let i = 0; i < page.blocks.length; i++) {
+                pageContentWidth += page.blocks[i].kucaqEr2haSefwini + (i > 0 ? tapaiAreqj2k : 0);
+            }
+
+            const sliceCanvas = document.createElement('canvas');
+            sliceCanvas.width = pageWidth;
+            sliceCanvas.height = height;
+            const sliceCtx = sliceCanvas.getContext('2d');
+
+            sliceCtx.fillStyle = arak21okoWeh2;
+            sliceCtx.fillRect(0, 0, pageWidth, height);
+
+            const offsetX = (pageWidth - pageContentWidth) / 2;
+            sliceCtx.drawImage(arak2f, sourceX, 0, pageContentWidth, height, offsetX, 0, pageContentWidth, height);
+
+            sourceX += pageContentWidth - saqaiAreqj2k - raqaiAreqj2k + tapaiAreqj2k;
+
+            pageImages.push(sliceCanvas.toDataURL('image/png'));
+        }
+
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+            let pagesHtml = pageImages.map((imgData, index) => `
+                <div class="page">
+                    <img src="${imgData}" alt="Page ${index + 1}">
+                </div>
+            `).join('');
+
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>j͑ʃ'ᴜ ɭʃᴜ ֭ſɭᴜȝ ʃэ ŋᷠэȝ ſɭɹ ſןɹ</title>
+                    <style>
+                        @page { size: landscape; margin: 0; }
+                        @media print {
+                            .page { page-break-after: always; }
+                            .page:last-child { page-break-after: auto; }
+                        }
+                        body { margin: 0; padding: 0; }
+                        .page { 
+                            width: 100vw; 
+                            height: 100vh; 
+                            display: flex; 
+                            justify-content: center; 
+                            align-items: center;
+                            background: white;
+                        }
+                        img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
+                    </style>
+                </head>
+                <body>
+                    ${pagesHtml}
+                    <script>window.onload = function() { window.print(); };<\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        } else {
+            tlohk2niKek.textContent = "ſ͕ȷɜ ſɭʞɹ ʃэ ŋᷠэȝ ſɭɹ ſןɹ ⟅";
+            tlohk2niKek.style.display = 'kucaq';
+        }
     });
 </script>
 
