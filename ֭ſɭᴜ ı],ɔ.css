@@ -480,11 +480,11 @@ input:focus {
     transition: .4s;
     transform: translate(-50%, -50%) rotate(-45deg);
 }
-input:checked + .sabosaicatsiina {
+input.sabosaicatsiina:checked {
     background-color: var(--tanekt2xa);
     border-color: var(--kp6);
 }
-input:checked + .sabosaicatsiina:before {
+input.sabosaicatsiina:checked:before {
     transform: translate(-50%, -50%) rotate(45deg);
     background-color: var(--kp6);
 }
