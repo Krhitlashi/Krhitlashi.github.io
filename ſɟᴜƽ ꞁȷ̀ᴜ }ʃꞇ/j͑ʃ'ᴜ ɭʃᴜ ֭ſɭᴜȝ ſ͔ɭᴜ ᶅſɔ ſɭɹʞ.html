@@ -54,22 +54,22 @@
         <label for="cepaiAreqj2k">ſɟɔ ſןᴜꞇ ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɔ ſ͕ɭᴎɹƽ</label>
         <input type="number" id="cepaiAreqj2k" value="0" min="-8"
             style="writing-mode: sideways-lr; text-align: center;">
-        <div style="display: flex; flex-direction: column; height: 100;">
+        <div style="display: flex; flex-direction: row-reverse; flex-wrap: wrap; justify-content: center;">
             <div>
                 <label for="sozasaiAreqj2k">j͐ʃᴜȝ ꞁȷ̀ᴜꞇ ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɔ ſ͕ɭᴎɹƽ</label>
-                <input type="number" id="sozasaiAreqj2k" value="24" min="0">
+                <input style="width: auto;" type="number" id="sozasaiAreqj2k" value="24" min="0">
             </div>
             <div>
                 <label for="raqaiAreqj2k">ɽ͑ʃ'ᴜȝ ꞁȷ̀ᴜ ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɔ ſ͕ɭᴎɹƽ</label>
-                <input type="number" id="raqaiAreqj2k" value="24" min="0">
+                <input style="width: auto;" type="number" id="raqaiAreqj2k" value="24" min="0">
             </div>
             <div>
                 <label for="psazaiAreqj2k">ſɭᴜȝ ꞁȷ̀ᴜꞇ ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɔ ſ͕ɭᴎɹƽ</label>
-                <input type="number" id="psazaiAreqj2k" value="24" min="0">
+                <input style="width: auto;" type="number" id="psazaiAreqj2k" value="24" min="0">
             </div>
             <div>
                 <label for="saqaiAreqj2k">j͑ʃᴜȝ ꞁȷ̀ᴜꞇ ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɔ ſ͕ɭᴎɹƽ</label>
-                <input type="number" id="saqaiAreqj2k" value="24" min="0">
+                <input style="width: auto;" type="number" id="saqaiAreqj2k" value="24" min="0">
             </div>
         </div>
     </thala>
@@ -88,11 +88,11 @@
 
     <thala>
         <label>ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɔ ſ͕ɭᴎɹƽ</label>
-        <div style="display: flex; flex-direction: row; justify-content: center; height: 100%;">
+        <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
             <label for="vakucaq">ſɭw ſɟᴜȝ</label>
-            <input type="radio" id="vakucaq" class="catsiinasukwiiqai" name="arrangement" value="kucaqai">
+            <input type="radio" id="vakucaq" class="catsiinasabosai" name="arrangement" value="kucaqai">
             <label for="vafas">ſȷᴜɔ˞</label>
-            <input type="radio" id="vafas" class="catsiinasukwiiqai" checked name="arrangement" value="fasai">
+            <input type="radio" id="vafas" class="catsiinasabosai" checked name="arrangement" value="fasai">
         </div>
 
         <label for="tapaiAreqj2k">ɭʃᴜ ſןᴜꞇ ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɔ ſ͕ɭᴎɹƽ ( px )</label>
@@ -178,16 +178,16 @@
                         console.log(`ſɭɹ ֭ſɭɹ ꞁȷ̀ɜ ſɭɹ ɽ͑ʃ'ɔ j͐ʃᴜ ſ͔ɭᴜ ꞁȷ̀ɔ '${kemasailagaKsaka}' ⟅`);
                         kjesaiLaga = laga;
                     }).catch(tlohk2ni => {
-                        console.error('|| ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ||', tlohk2ni);
-                        lagaCvp3ohk2niKek.textContent = `|| ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ || ${tlohk2ni.message} ⟅ j͑ʃɹƣ̋ ꞁȷ̀ɜ j͐ʃɹ ŋᷠꞇ ſɟᴜ j͑ʃ'ɜ ſןɹ ſɭᴜ j͑ʃᴜ }ʃᴜ ŋᷠᴜ ꞁȷ̀ɜ ſɭɹ ɽ͑ʃ'ɔ TTF ｡ OTF ⟅`;
+                        console.error('( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )', tlohk2ni);
+                        lagaCvp3ohk2niKek.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${tlohk2ni.message} ⟅ j͑ʃɹƣ̋ ꞁȷ̀ɜ j͐ʃɹ ŋᷠꞇ ſɟᴜ j͑ʃ'ɜ ſןɹ ſɭᴜ j͑ʃᴜ }ʃᴜ ŋᷠᴜ ꞁȷ̀ɜ ſɭɹ ɽ͑ʃ'ɔ TTF ｡ OTF ⟅`;
                         lagaCvp3ohk2niKek.style.display = 'kucaq';
                         kjesaiLaga = null;
                         lagaKsakaKek.value = 'Arial';
                     });
 
                 } catch (tlohk2ni) {
-                    console.error('|| ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ||', tlohk2ni);
-                    lagaCvp3ohk2niKek.textContent = `|| ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ || ${tlohk2ni.message} ⟅ ſ͕ȷɜ j͑ʃ'ɔ ſɭɜ ֭ſɭᴜ ⟅`;
+                    console.error('( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )', tlohk2ni);
+                    lagaCvp3ohk2niKek.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${tlohk2ni.message} ⟅ ſ͕ȷɜ j͑ʃ'ɔ ſɭɜ ֭ſɭᴜ ⟅`;
                     lagaCvp3ohk2niKek.style.display = 'kucaq';
                     kjesaiLaga = null;
                     lagaKsakaKek.value = 'Arial';
@@ -195,8 +195,8 @@
             };
 
             cavefal.onerror = function (e) {
-                console.error('|| ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ||', e);
-                lagaCvp3ohk2niKek.textContent = `|| ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ || ${cavefal.error} ⟅ ſ͕ȷɜ j͑ʃ'ɔ ſȷᴜͷ̗ ⟅`;
+                console.error('( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )', e);
+                lagaCvp3ohk2niKek.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${cavefal.error} ⟅ ſ͕ȷɜ j͑ʃ'ɔ ſȷᴜͷ̗ ⟅`;
                 lagaCvp3ohk2niKek.style.display = 'kucaq';
                 kjesaiLaga = null;
                 lagaKsakaKek.value = 'Arial';

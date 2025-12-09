@@ -514,8 +514,8 @@ input.catsiinasabosai:checked:before {
 input.catsiinasukwiiqai:checked:before {
 	position: absolute;
     content: "";
-    height: 4px;
-    width: 4px;
+    height: 8px;
+    width: 8px;
     right: 31.25%;
     bottom: 31.25%;
     background-color: var(--កេភ២);
