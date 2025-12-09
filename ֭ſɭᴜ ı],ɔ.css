@@ -497,7 +497,7 @@ input[type="file"]::file-selector-button:hover {
     height: 2px;
     width: 14px;
     left: 50%;
-    bottom: 50%;
+    top: 50%;
     background-color: var(--កេភ២);
     border-radius: 2px;
     transition: .4s;
@@ -516,8 +516,8 @@ input.catsiinasukwiiqai:checked:before {
     content: "";
     height: 4px;
     width: 4px;
-    left: 50%;
-    bottom: 50%;
+    right: 31.25%;
+    bottom: 31.25%;
     background-color: var(--កេភ២);
     border-radius: 64px;
     transition: .4s;
