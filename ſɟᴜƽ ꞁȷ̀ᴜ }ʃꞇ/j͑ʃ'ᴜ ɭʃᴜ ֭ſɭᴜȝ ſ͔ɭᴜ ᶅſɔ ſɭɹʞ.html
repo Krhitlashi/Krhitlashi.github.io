@@ -83,16 +83,16 @@
         </select>
 
         <label for="sefakTapaini">j͑ʃɔ ſȷᴜƽ ɭʃᴜ ſןᴜꞇ }ʃꞇ ( ſɭɹ ɽ͑ʃ'ɔ ſɭc̭ᴜ ᶅſw ſɭɹ )</label>
-        <input type="checkbox" id="sefakTapaini" class="sabosaicatsiina" checked>
+        <input type="checkbox" id="sefakTapaini" class="catsiinasabosai" checked>
     </thala>
 
     <thala>
         <label>ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɔ ſ͕ɭᴎɹƽ</label>
         <div style="display: flex; flex-direction: row; justify-content: center; height: 100%;">
             <label for="vakucaq">ſɭw ſɟᴜȝ</label>
-            <input type="radio" id="vakucaq" class="sabosaicatsiina" name="arrangement" value="kucaqai">
+            <input type="radio" id="vakucaq" class="catsiinasukwiiqai" name="arrangement" value="kucaqai">
             <label for="vafas">ſȷᴜɔ˞</label>
-            <input type="radio" id="vafas" class="sabosaicatsiina" checked name="arrangement" value="fasai">
+            <input type="radio" id="vafas" class="catsiinasukwiiqai" checked name="arrangement" value="fasai">
         </div>
 
         <label for="tapaiAreqj2k">ɭʃᴜ ſןᴜꞇ ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɔ ſ͕ɭᴎɹƽ ( px )</label>
@@ -288,8 +288,8 @@
                 const metrics = ctx.measureText(text);
                 const width = metrics.width;
                 const actualHeight = (metrics.actualBoundingBoxAscent || 0) + (metrics.actualBoundingBoxDescent || 0);
-                const ascent = metrics.actualBoundingBoxAscent || lagaPal6 * 0.8; // Fallback ascent
-                const descent = metrics.actualBoundingBoxDescent || lagaPal6 * 0.2; // Fallback descent
+                const ascent = metrics.actualBoundingBoxAscent || lagaPal6 * 0.75; // Fallback ascent
+                const descent = metrics.actualBoundingBoxDescent || lagaPal6 * 0.25; // Fallback descent
                 const height = actualHeight || ascent + descent; // Fallback height
 
                 return {
@@ -504,8 +504,8 @@
             const tlakakaiSefwini = sefwini + saqaiAreqj2k + raqaiAreqj2k;
             const tlakakaiL6da = l6da + sozasaiAreqj2k + psazaiAreqj2k;
 
-            arak2f.width = tlakakaiSefwini || 10;
-            arak2f.height = tlakakaiL6da || 10;
+            arak2f.width = tlakakaiSefwini || 8;
+            arak2f.height = tlakakaiL6da || 8;
 
             ctx.fillStyle = arak21okoWeh2;
             ctx.fillRect(0, 0, arak2f.width, arak2f.height);
