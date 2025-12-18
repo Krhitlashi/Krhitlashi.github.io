@@ -243,11 +243,14 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 .tapaifal h1 {
 	text-align: center;
 }
-.tapaifal a, .tapaifal h {
+.tapaifal a, .tapaifal h, .tapaifal button {
 	width: auto;
 	height: 32px;
 	display: flex;
 	align-items: center;
+}
+.tapaifal button {
+	height: 56px;
 }
 .sashesaikef {
 	background-color: transparent;
@@ -309,7 +312,7 @@ button, a {
 	width: 32px;
 }
 button {
-	width: 64px;
+	width: 56px;
 	height: 100%;
 }
 button:hover, a:hover, a:active {

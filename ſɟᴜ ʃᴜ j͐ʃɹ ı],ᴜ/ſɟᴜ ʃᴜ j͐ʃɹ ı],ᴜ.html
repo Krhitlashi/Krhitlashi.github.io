@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="aih">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-oskakefani="Ktaç Grid System">Ktaç Grid System</title>
+    <link rel="manifest" href="../ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.json">
+    <link rel="icon" type="image/x-icon" href="../j͑ʃɹ ɭʃᴜɔ˞ ɭl̀ɔ j͑ʃᴜꞇ.ico">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="../֭ſɭᴜ ı],ɔ.css">
+    <style>
+        .map-section {
+            width: 100%;
+            height: 512px;
+            position: relative;
+            border-radius: var(--អិត្ភេ);
+            overflow: hidden;
+            border: var(--សាកព៏);
+        }
+
+        #map,
+        #gridCanvas {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #gridCanvas {
+            z-index: 64;
+            pointer-events: none;
+        }
+
+        .map-controls {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 64;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .controls-row {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            flex-wrap: wrap;
+            height: 100%;
+            width: 100%;
+        }
+
+        .dms-container {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .cepaifal .map-section {
+            min-width: 512px;
+            width: 100%;
+            height: 100%;
+            min-height: 512px;
+        }
+    </style>
+</head>
+
+<body class="cepaifal">
+    <h1 data-oskakefani="ſɭc̗ᴜ ʃᴜ j͐ʃɹᶗ‹ ꞁȷ̀ɔ ſɭƨᴜᶗ‹"></h1>
+
+    <thala class="cakaxa">
+        <div class="controls-row" style="flex-wrap: nowrap;">
+            <button id="tabDecimal" class="active" data-oskakefani="ı],ᴜ ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ }ʃꞇ"></button>
+            <button id="tabDMS" data-oskakefani="j͑ʃɔ ſȷꞇ }ʃꞇ"></button>
+        </div>
+
+        <div class="controls-row" style="flex-wrap: nowrap;">
+            <input type="text" id="searchInput" placeholder="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ı"
+                style="flex: 1;">
+            <button id="searchBtn" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ"></button>
+        </div>
+    </thala>
+
+    <thala class="hidden">
+        <div id="searchResults"></div>
+    </thala>
+
+    <thala id="decimalControls">
+        <div class="controls-row"">
+            <div>
+                <label data-oskakefani=" ſɟɔ ſןw }ʃꞇ"></label>
+            <input type="number" id="latInput" value="47.48" step="0.00001" min="-90" max="90">
+        </div>
+        <div>
+            <label data-oskakefani="ɭʃᴜ ſןw }ʃꞇ"></label>
+            <input type="number" id="lonInput" value="-122.21" step="0.00001" min="-180" max="180">
+        </div>
+        </div>
+    </thala>
+
+    <thala id="dmsControls" class="hidden">
+        <div class="controls-row">
+            <div>
+                <label data-oskakefani="ſɟɔ ſןw }ʃꞇ"></label>
+                <div class="dms-container">
+                    <input type="number" id="latDeg" class="dms-input" placeholder="Deg">
+                    <span>°</span>
+                    <input type="number" id="latMin" class="dms-input" placeholder="Min">
+                    <span>'</span>
+                    <input type="number" id="latSec" class="dms-input" placeholder="Sec">
+                    <span>"</span>
+                    <select id="latHem">
+                        <option value="N" data-oskakefani="j͐ʃᴜȝ"></option>
+                        <option value="S" data-oskakefani="ſɭᴜȝ"></option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label data-oskakefani="ɭʃᴜ ſןw }ʃꞇ"></label>
+                <div class="dms-container">
+                    <input type="number" id="lonDeg" class="dms-input" placeholder="Deg">
+                    <span>°</span>
+                    <input type="number" id="lonMin" class="dms-input" placeholder="Min">
+                    <span>'</span>
+                    <input type="number" id="lonSec" class="dms-input" placeholder="Sec">
+                    <span>"</span>
+                    <select id="lonHem">
+                        <option value="E" data-oskakefani="j͑ʃᴜȝ"></option>
+                        <option value="W" data-oskakefani="ɽ͑ʃ'ᴜȝ"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </thala>
+
+    <thala>
+        <div class="controls-row">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="checkbox" id="showGridCheck" class="catsiinasabosai" checked>
+                <span data-oskakefani="ſɟɔ ŋᷠɔ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ"></span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="checkbox" id="useBase10Check" class="catsiinasabosai">
+                <span data-oskakefani="ſɭc̗ᴜ ſɭɹ ſȷɔ ı],ᴜ ſןɹ j͑ʃᴜꞇ"></span>
+            </label>
+        </div>
+
+        <p class="ksakapiisa" data-oskakefani="ꞁȷ̀ɔ ɽ͑ʃ'ɹ ֭ſɭᴜ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ }ʃɹƽ"></p>
+        <ciihii class="result-card">
+            <div id="outputCoords">-- -- - -- -- - -- --</div>
+            <div id="kefAraq">-- -- -- --</div>
+            <div id="outputName">-- -- -- --</div>
+            <div id="piak">-- -- -- --</div>
+        </ciihii>
+
+        <div class="map-section" id="mapContainer">
+            <div id="map"></div>
+            <canvas id="gridCanvas"></canvas>
+            <div class="map-controls">
+                <button id="satelliteToggle" class="active" data-oskakefani="ſɟᴜ ֭ſɭɹ j͑ʃɔ"></button>
+                <button id="gridOnlyToggle" data-oskakefani="j͑ʃ'ɔ }ʃᴜ ŋᷠᴜ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ"></button>
+            </div>
+        </div>
+    </thala>
+
+    <thala>
+        <p class="ksakapiisa" data-oskakefani="֭ſɭᴜ ſȷɔ ſ͕ɭwc̭ ſɭɹ }ʃꞇ"></p>
+        <div class="controls-row">
+            <span id="cacheStatus"></span>
+            <span id="cacheSize"></span>
+        </div>
+        <div class="controls-row">
+            <select id="zoomSelect">
+                <option value="3" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ı"></option>
+                <option value="5" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ɿ"></option>
+                <option value="7" selected data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ц"></option>
+                <option value="9" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ э"></option>
+                <option value="11" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ꞟ"></option>
+            </select>
+            <button id="downloadBtn" data-oskakefani="ſ͕ɭwc̭ ſɭɹ ſɭɹ ɭl̀ɔ }ʃꞇ"></button>
+            <button id="clearCacheBtn" data-oskakefani="j͑ʃ'ᴜ ֭ſɭɹ ſןᴜ ʃɜƽ"></button>
+        </div>
+        <div id="progressBar" style="width: 100%; height: 4px; background: #333; margin-top: 8px; display: none;">
+            <div id="progressFill" style="height: 100%; width: 0%; background: #dca54e; transition: width 0.3s;"></div>
+        </div>
+        <small id="downloadStatus"></small>
+    </thala>
+
+    <thala>
+        <button id="resetBtn" data-oskakefani="ɭʃɜ j͑ʃᴜᶗ‹"></button>
+    </thala>
+
+    <thala>
+        <p class="ksakapiisa" data-oskakefani="j͑ʃɹ ᶅſɔ }ʃꞇ"></p>
+        <ciihii>
+            <p class="oshiipewa" data-oskakefani="j͑ʃɹ ᶅſɔ }ʃꞇ ı"></p>
+        </ciihii>
+        <p class="ksakapiisa" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ"></p>
+        <ciihii>
+            <p class="oshiipewa" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ı ı"></p>
+            <p class="oshiipewa" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ı ɿ"></p>
+            <p class="oshiipewa" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ı ц"></p>
+        </ciihii>
+        <ciihii>
+            <p class="oshiipewa" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ı"></p>
+            <p class="oshiipewa" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ɿ"></p>
+            <p class="oshiipewa" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ц"></p>
+            <p class="oshiipewa" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ э"></p>
+            <p class="oshiipewa" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ꞟ"></p>
+            <p class="oshiipewa" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ɩ"></p>
+        </ciihii>
+    </thala>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script>
+        const skakefani = {
+            aih: {
+                "ſɭc̗ᴜ ʃᴜ j͐ʃɹᶗ‹ ꞁȷ̀ɔ ſɭƨᴜᶗ‹": "ſɭc̗ᴜ ʃᴜ j͐ʃɹᶗ‹ ꞁȷ̀ɔ ſɭƨᴜᶗ‹",
+                "ı],ᴜ ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ }ʃꞇ": "ı],ᴜ ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ }ʃꞇ",
+                "j͑ʃɔ ſȷꞇ }ʃꞇ": "j͑ʃɔ ſȷꞇ }ʃꞇ",
+                "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ı": "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ",
+                "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ": "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ",
+                "ſɟɔ ſןw }ʃꞇ": "ſɟɔ ſןw }ʃꞇ",
+                "ɭʃᴜ ſןw }ʃꞇ": "ɭʃᴜ ſןw }ʃꞇ",
+                "ſɟɔ ŋᷠɔ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ": "ſɟɔ ŋᷠɔ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ",
+                "ſɭc̗ᴜ ſɭɹ ſȷɔ ı],ᴜ ſןɹ j͑ʃᴜꞇ": "ſɭc̗ᴜ ſɭɹ ſȷɔ ı],ᴜ ſןɹ j͑ʃᴜꞇ",
+                "ꞁȷ̀ɔ ɽ͑ʃ'ɹ ֭ſɭᴜ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ }ʃɹƽ": "ꞁȷ̀ɔ ɽ͑ʃ'ɹ ֭ſɭᴜ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ }ʃɹƽ",
+                "ſɟᴜ ֭ſɭɹ j͑ʃɔ": "ſɟᴜ ֭ſɭɹ j͑ʃɔ",
+                "j͑ʃ'ɔ }ʃᴜ ŋᷠᴜ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ": "j͑ʃ'ɔ }ʃᴜ ŋᷠᴜ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ",
+                "֭ſɭᴜ ſȷɔ ſ͕ɭwc̭ ſɭɹ }ʃꞇ": "֭ſɭᴜ ſȷɔ ſ͕ɭwc̭ ſɭɹ }ʃꞇ",
+                "ſ͕ɭwc̭ ſɭɹ ſɭɹ ɭl̀ɔ }ʃꞇ": "ſ͕ɭwc̭ ſɭɹ ſɭɹ ɭl̀ɔ }ʃꞇ",
+                "j͑ʃ'ᴜ ֭ſɭɹ ſןᴜ ʃɜƽ": "j͑ʃ'ᴜ ֭ſɭɹ ſןᴜ ʃɜƽ",
+                "ɭʃɜ j͑ʃᴜᶗ‹": "ɭʃɜ j͑ʃᴜᶗ‹",
+                "j͑ʃɹ ᶅſɔ }ʃꞇ": "j͑ʃɹ ᶅſɔ }ʃꞇ",
+                "j͑ʃɹ ᶅſɔ }ʃꞇ ı": "j͑ʃ'ɔ ſɟɔ ſןw ʌ ꞙɭıɔɔ ʌ j͑ʃ'ɔ ɭʃᴜ ſןw ʌ ꞙɭэɔ ʌ ſɭɹ ɽ͑ʃ'ɔ ɿ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ ʌ ſɭᴜͷ̗ ɭʃɜƽ ʌ ʃᴜ j͐ʃɹ ı],ᴜ ⟅ }ʃwɔ˞ ʌ ꞁȷ̀ɜ ſɭɹ ɽ͑ʃ'ɔ j͐ʃ ʌ ɭʃɹ ı],ᴜ j͑ʃᴜꞇ ʌ ɭʃᴜ }ʃɔƽ ⟅",
+                "j͐ʃᴜȝ": "j͐ʃᴜȝ",
+                "ſɭᴜȝ": "ſɭᴜȝ",
+                "j͑ʃᴜȝ": "j͑ʃᴜȝ",
+                "ɽ͑ʃ'ᴜȝ": "ɽ͑ʃ'ᴜȝ",
+                "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ı": "ц - ɭʃw ɭʃwͷ̗",
+                "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ɿ": "ꞟ - ſɭэ ſᶘɹ",
+                "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ц": "ƨ - j͑ʃɹ ſɭэ ſᶘɹ",
+                "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ э": "ıı - ſɭᴜꞇ ɭʃɔ",
+                "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ꞟ": "ıц - ſɭэ ֭ſɭэ",
+
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ♨️",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ı ı": "ſɟɔ ſןᴜꞇ эɔ • ɭʃᴜ ſןᴜꞇ ıɔɔ",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ı ɿ": "ɭ(ɜ ŋᷠᴜ ꞁȷ̀ɜ ſɟᴜ ɭʃᴜ ſɭᴜ j͑ʃᴜ",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ı ц": "эɔ.эɔ • ıɔɔ.эɔ",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ı": "ſɟɔ ſןᴜꞇ",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ɿ ": "ᶅſ ſן ſȷ ŋᷠ ʃ ɽ͑ʃ' j͑ʃ' ſᶘ ɭ( ɭʃ j͑ʃ }ʃ j͐ʃ ſ̀ȷ ſɭ, ſɭˬ ɭl̀ ſɟ ı], ſ͕ȷ ſ͔ɭ ſɭ ֭ſɭ ſ͕ɭ j͑ʃɘ j͑ʃƨ j͑ʃᴜ̭ j͑ʃƽ ſןᴜ̭ ɭʃƽ ſɟɘ ſɭƨ",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ц": "ɭʃᴜ ſןᴜꞇ",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ э": "ꞇ ɹ ɔ ᴜ w ɜ э эⅎ / ʞ ⰱ ɔ˞ ͷ̗ ƴ ᶗ‹ ƽ ȝ",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ꞟ": "֭ſɭᴜ ɭʃɔ",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ɩ": "ꞁȷ̀ꞇ ꞁȷ̀ɔ ꞁȷ̀ɜ ꞁȷ̀э / ꞁȷ̀w = ſɭᴜͷ̗",
+            },
+            en: {
+                "ſɭc̗ᴜ ʃᴜ j͐ʃɹᶗ‹ ꞁȷ̀ɔ ſɭƨᴜᶗ‹": "Ktash ( Ktax ) Coordinate System",
+                "ı],ᴜ ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ }ʃꞇ": "Decimal",
+                "j͑ʃɔ ſȷꞇ }ʃꞇ": "DMS",
+                "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ı": "Search ( Address or Coord )",
+                "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ": "Search",
+                "ſɟɔ ſןw }ʃꞇ": "Latitude",
+                "ɭʃᴜ ſןw }ʃꞇ": "Longitude",
+                "ſɟɔ ŋᷠɔ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ": "Show Grid Lines",
+                "ſɭc̗ᴜ ſɭɹ ſȷɔ ı],ᴜ ſןɹ j͑ʃᴜꞇ": "Use Base 10",
+                "ꞁȷ̀ɔ ɽ͑ʃ'ɹ ֭ſɭᴜ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ }ʃɹƽ": "Full Coordinate",
+                "ſɟᴜ ֭ſɭɹ j͑ʃɔ": "Satellite",
+                "j͑ʃ'ɔ }ʃᴜ ŋᷠᴜ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ": "Grid Only",
+                "֭ſɭᴜ ſȷɔ ſ͕ɭwc̭ ſɭɹ }ʃꞇ": "Offline Map Downloads",
+                "ſ͕ɭwc̭ ſɭɹ ſɭɹ ɭl̀ɔ }ʃꞇ": "Download Current View",
+                "j͑ʃ'ᴜ ֭ſɭɹ ſןᴜ ʃɜƽ": "Clear Cache",
+                "ɭʃɜ j͑ʃᴜᶗ‹": "Reset View",
+                "j͑ʃɹ ᶅſɔ }ʃꞇ": "System Details",
+                "j͑ʃɹ ᶅſɔ }ʃꞇ ı": "Divides the world into a 64x32 primary grid. Includes a tertiary level for high precision.",
+                "j͐ʃᴜȝ": "N",
+                "ſɭᴜȝ": "S",
+                "j͑ʃᴜȝ": "E",
+                "ɽ͑ʃ'ᴜȝ": "W",
+                "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ı": "3 - Continent",
+                "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ɿ": "5 - Country",
+                "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ц": "7 - Region",
+                "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ э": "9 - City",
+                "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ꞟ": "11 - District",
+
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "Coordinate System ♨️",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ı ı": "Vertical by 32 • Horizontal by 64",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ı ɿ": "Smaller units divided by 32x32",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ı ц": "32.32 • 64.32",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ı": "Vertical",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ɿ ": "w p f m b r v ts d t s n l tl z kz j c x y g k h q sp st sc sk pc tk cp kt",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ц": "Horizontal",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ э": "i ii e a u o aa au / -f -v -s -l -z -x -k -q",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ꞟ": "Connect group area",
+                "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ɩ": "i e o aa / u = separator",
+            }
+        };
+    </script>
+
+    <script src="../j͑ʃƽᴜ ſɭɔʞ.js"></script>
+    <script src="../ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

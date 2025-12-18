@@ -1,0 +1,23 @@
+{
+  "name": "ſɭc̗ᴜ ʃᴜ j͐ʃɹᶗ‹ ꞁȷ̀ɔ ſɭƨᴜᶗ‹",
+  "short_name": "ſɭƨᴜᶗ‹",
+  "description": "j͑ʃ'ɔ ſɟɔ ſןw ʌ ꞙɭıɔɔ ʌ j͑ʃ'ɔ ɭʃᴜ ſןw ʌ ꞙɭэɔ ʌ ſɭɹ ɽ͑ʃ'ɔ ɿ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ ʌ ſɭᴜͷ̗ ɭʃɜƽ ʌ ʃᴜ j͐ʃɹ ı],ᴜ ⟅ }ʃwɔ˞ ʌ ꞁȷ̀ɜ ſɭɹ ɽ͑ʃ'ɔ j͐ʃ ʌ ɭʃɹ ı],ᴜ j͑ʃᴜꞇ ʌ ɭʃᴜ }ʃɔƽ ⟅",
+  "start_url": "./ſɟᴜʃᴜj͐ʃɹı],ᴜ.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%23000'/><text x='50%' y='50%' text-anchor='middle' dominant-baseline='middle' fill='%23dca54e' font-size='256' font-family='Arial'>🗺️</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "navigation",
+    "utilities"
+  ],
+  "screenshots": []
+}
