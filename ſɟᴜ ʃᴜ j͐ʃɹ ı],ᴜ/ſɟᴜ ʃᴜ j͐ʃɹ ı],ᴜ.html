@@ -19,7 +19,6 @@
             overflow: hidden;
             border: var(--សាកព៏);
         }
-
         #map,
         #gridCanvas {
             width: 100%;
@@ -28,12 +27,10 @@
             top: 0;
             left: 0;
         }
-
         #gridCanvas {
             z-index: 64;
             pointer-events: none;
         }
-
         .map-controls {
             position: absolute;
             top: 8px;
@@ -41,26 +38,25 @@
             z-index: 64;
             display: flex;
             flex-direction: column;
-            gap: 8px;
         }
-
         .hidden {
             display: none !important;
         }
-
         .controls-row {
             display: flex;
-            justify-content: space-evenly;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            height: 100%;
-            width: 100%;
         }
-
+        .decimal-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         .dms-container {
             display: flex;
             align-items: center;
-            gap: 4px;
         }
 
         .cepaifal .map-section {
@@ -69,6 +65,9 @@
             height: 100%;
             min-height: 512px;
         }
+        .cepaifal .controls-row {
+            height: 100%;
+        }
     </style>
 </head>
 
@@ -76,12 +75,12 @@
     <h1 data-oskakefani="ſɭc̗ᴜ ʃᴜ j͐ʃɹᶗ‹ ꞁȷ̀ɔ ſɭƨᴜᶗ‹"></h1>
 
     <thala class="cakaxa">
-        <div class="controls-row" style="flex-wrap: nowrap;">
+        <div class="controls-row" style="flex-wrap: nowrap; flex-direction: row;">
             <button id="tabDecimal" class="active" data-oskakefani="ı],ᴜ ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ }ʃꞇ"></button>
             <button id="tabDMS" data-oskakefani="j͑ʃɔ ſȷꞇ }ʃꞇ"></button>
         </div>
 
-        <div class="controls-row" style="flex-wrap: nowrap;">
+        <div class="controls-row" style="flex-wrap: nowrap; flex-direction: row;">
             <input type="text" id="searchInput" placeholder="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ı"
                 style="flex: 1;">
             <button id="searchBtn" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ"></button>
@@ -94,11 +93,11 @@
 
     <thala id="decimalControls">
         <div class="controls-row"">
-            <div>
+            <div class="decimal-container">
                 <label data-oskakefani=" ſɟɔ ſןw }ʃꞇ"></label>
             <input type="number" id="latInput" value="47.48" step="0.00001" min="-90" max="90">
         </div>
-        <div>
+        <div class="decimal-container">
             <label data-oskakefani="ɭʃᴜ ſןw }ʃꞇ"></label>
             <input type="number" id="lonInput" value="-122.21" step="0.00001" min="-180" max="180">
         </div>
@@ -176,18 +175,16 @@
             <span id="cacheStatus"></span>
             <span id="cacheSize"></span>
         </div>
-        <div class="controls-row">
-            <select id="zoomSelect">
-                <option value="3" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ı"></option>
-                <option value="5" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ɿ"></option>
-                <option value="7" selected data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ц"></option>
-                <option value="9" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ э"></option>
-                <option value="11" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ꞟ"></option>
-            </select>
-            <button id="downloadBtn" data-oskakefani="ſ͕ɭwc̭ ſɭɹ ſɭɹ ɭl̀ɔ }ʃꞇ"></button>
-            <button id="clearCacheBtn" data-oskakefani="j͑ʃ'ᴜ ֭ſɭɹ ſןᴜ ʃɜƽ"></button>
-        </div>
-        <div id="progressBar" style="width: 100%; height: 4px; background: #333; margin-top: 8px; display: none;">
+        <select id="zoomSelect">
+            <option value="3" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ı"></option>
+            <option value="5" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ɿ"></option>
+            <option value="7" selected data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ц"></option>
+            <option value="9" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ э"></option>
+            <option value="11" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ꞟ"></option>
+        </select>
+        <button id="downloadBtn" data-oskakefani="ſ͕ɭwc̭ ſɭɹ ſɭɹ ɭl̀ɔ }ʃꞇ"></button>
+        <button id="clearCacheBtn" data-oskakefani="j͑ʃ'ᴜ ֭ſɭɹ ſןᴜ ʃɜƽ"></button>
+        <div id="progressBar" style="width: 100%; height: 4px; background: #333; margin-block-start: 8px; display: none;">
             <div id="progressFill" style="height: 100%; width: 0%; background: #dca54e; transition: width 0.3s;"></div>
         </div>
         <small id="downloadStatus"></small>

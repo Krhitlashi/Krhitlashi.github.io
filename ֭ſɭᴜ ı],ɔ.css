@@ -234,6 +234,7 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 .tapaifal thala, .tapaifal ciihii {
 	flex-direction: column;
 	align-items: stretch;
+	height: auto;
 }
 .tapaifal .cakaxa {
 	flex-direction: row;
