@@ -24,7 +24,8 @@ function vacepai(s2haxe) {
   haxez = [];
 
   function kakHaxez(xez) {
-    if (xez.nodeType === Node.ELEMENT_NODE && xez.classList.contains("kosabo")) {
+    const s2kar2ba = ["SCRIPT", "STYLE", "OPTION", "TITLE", "TEXTAREA"];
+    if (xez.nodeType === Node.ELEMENT_NODE && (xez.classList.contains("kosabo") || xez.classList.contains("cepaifalxez") || s2kar2ba.includes(xez.tagName))) {
       return;
     }
     
@@ -49,40 +50,46 @@ function vacepai(s2haxe) {
   function sakaHaxez(araXez) {
     const maxema = araXez.parentNode;
     const okef = araXez.textContent;
-    const kekKaltok = document.createDocumentFragment();
-    
-    const han2k = okef.split(/\r?\n|[\r\n]/);
-    
-    for (let i = 0; i < han2k.length; i++) {
-      const n2k = han2k[i];
-      if (!n2k.trim()) {
-        if (i < han2k.length - 1) {
-          kekKaltok.appendChild(document.createElement("br"));
-        }
-        continue;
-      }
+    if (!okef.trim()) return;
 
-      const esxq = n2k.split(" ");
-      let kjesaiMaxema = kekKaltok;
+    const kekKaltok = document.createDocumentFragment();
+    const han2k = okef.split(/\r?\n|[\r\n]/);
+
+    // Find first and last non-empty line indices
+    let kjek = -1;
+    let tsat = -1;
+    for (let i = 0; i < han2k.length; i++) {
+        if (han2k[i].trim()) {
+            if (kjek === -1) kjek = i;
+            tsat = i;
+        }
+    }
+
+    if (kjek === -1) return;
+
+    for (let i = kjek; i <= tsat; i++) {
+      const n2k = han2k[i];
+      const esxq = n2k.trim().split(/\s+/);
       
       for (let j = 0; j < esxq.length; j++) {
         const xez = esxq[j];
+        if (!xez) continue;
         
-        if (xez && yots2nani.includes(xez)) {
-          kjesaiMaxema.appendChild(document.createTextNode(xez));
+        if (yots2nani.includes(xez)) {
+          kekKaltok.appendChild(document.createTextNode(xez));
         } else {
           const caxemaXez = document.createElement("span");
           caxemaXez.className = "cepaifalxez";
           caxemaXez.textContent = xez;
-          kjesaiMaxema.appendChild(caxemaXez);
+          kekKaltok.appendChild(caxemaXez);
         }
         
-        if (j < haxez.length - 1) {
-          kjesaiMaxema.appendChild(document.createTextNode(" "));
+        if (j < esxq.length - 1) {
+          kekKaltok.appendChild(document.createTextNode(" "));
         }
       }
       
-      if (i < han2k.length - 1) {
+      if (i < tsat) {
         kekKaltok.appendChild(document.createElement("br"));
       }
     }
