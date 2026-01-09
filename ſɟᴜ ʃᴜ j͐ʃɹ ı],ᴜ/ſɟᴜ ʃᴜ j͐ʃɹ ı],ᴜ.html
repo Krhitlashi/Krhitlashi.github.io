@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="inline-size=device-inline-size, initial-scale=1.0">
     <title data-oskakefani="ſɭc̗ᴜ ʃᴜ j͐ʃɹᶗ‹ ꞁȷ̀ɔ ſɭƨᴜᶗ‹"></title>
     <link rel="manifest" href="../ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.json">
     <link rel="icon" type="image/x-icon" href="../j͑ʃɹ ɭʃᴜɔ˞ ɭl̀ɔ j͑ʃᴜꞇ.ico">
@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="../֭ſɭᴜ ı],ɔ.css">
     <style>
         .map-section {
-            width: 100%;
-            height: 512px;
+            inline-size: 100%;
+            block-size: 512px;
             position: relative;
             border-radius: var(--អិត្ភេ);
             overflow: hidden;
@@ -21,8 +21,8 @@
         }
         #map,
         #gridCanvas {
-            width: 100%;
-            height: 100%;
+            inline-size: 100%;
+            block-size: 100%;
             position: absolute;
             top: 0;
             left: 0;
@@ -53,25 +53,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
+            inline-size: 100%;
         }
         .dms-container {
             display: flex;
             align-items: center;
-        }
-
-        .cepaifal .map-section {
-            min-width: 512px;
-            width: 100%;
-            height: 100%;
-            min-height: 512px;
-        }
-        .cepaifal .controls-row {
-            height: 100%;
-        }
-        .cepaifal .decimal-container {
-            width: auto;
-            height: 100%;
         }
     </style>
 </head>
@@ -189,8 +175,8 @@
         </select>
         <button id="downloadBtn" data-oskakefani="ſ͕ɭwc̭ ſɭɹ ſɭɹ ɭl̀ɔ }ʃꞇ"></button>
         <button id="clearCacheBtn" data-oskakefani="j͑ʃ'ᴜ ֭ſɭɹ ſןᴜ ʃɜƽ"></button>
-        <div id="progressBar" style="width: 100%; height: 4px; background: #333; margin-block-start: 8px; display: none;">
-            <div id="progressFill" style="height: 100%; width: 0%; background: #dca54e; transition: width 0.3s;"></div>
+        <div id="progressBar" style="inline-size: 100%; block-size: 4px; background: #333; margin-block-start: 8px; display: none;">
+            <div id="progressFill" style="block-size: 100%; inline-size: 0%; background: #dca54e; transition: inline-size 0.3s;"></div>
         </div>
         <small id="downloadStatus"></small>
     </thala>

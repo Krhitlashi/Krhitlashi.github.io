@@ -88,14 +88,14 @@ body {
 	flex-wrap: nowrap; 
 	align-items: center; 
 	justify-content: flex-start; 
-	min-height: 100%;
-	height: 100%;
+	min-block-size: 100%;
+	block-size: 100%;
 	margin: 0;
 	transition: all 0.25s ease;
 	gap: var(--អារេងចិ);
 }
 html {
-	height: 100%;
+	block-size: 100%;
 }
 main {
 	display: table-cell;
@@ -108,11 +108,15 @@ shematapai {
 	display: flex;
     flex-direction: row;
     overflow-y: hidden;
-    height: calc(100% - 80px);
+    block-size: calc(100% - 80px);
     align-items: center;
     padding: var(--អារេងព៏);
 	scrollbar-width: none;
 	gap: var(--អារេងចិ);
+}
+shematapai a {
+	block-size: auto;
+  	inline-size: 32px;
 }
 sak {
 	background-color: var(--កេភ២);
@@ -120,20 +124,15 @@ sak {
     display: flex;
     text-align: center;
     padding: 2px;
-    height: 32px;
+    inline-size: 32px;
 	align-self: center;
-}
-.saktapai, .tapaifal sak {
-	width: 32px;
-    height: auto;
-    align-self: center;
 }
 .tlacepai {
 	flex-direction: column;
 	justify-content: center;
 	padding: var(--អារេងព៏);
-	min-height: unset;
-	height: unset;
+	min-block-size: unset;
+	block-size: unset;
 	align-items: unset;
 }
 .sakatla {
@@ -161,7 +160,7 @@ h {
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
-	width: 32px;
+	block-size: 32px;
 }
 h1 {
 	text-align: left;
@@ -183,7 +182,7 @@ pre {
 	flex-direction: column;
 	align-items: stretch;
 	overflow-y: hidden;
-	height: 100%;
+	block-size: 100%;
 }
 .cepaifalxez:not(.kosabo span) {
 	display: inline-block;
@@ -235,7 +234,7 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 .tapaifal thala, .tapaifal ciihii {
 	flex-direction: column;
 	align-items: stretch;
-	height: auto;
+	block-size: auto;
 }
 .tapaifal .cakaxa {
 	flex-direction: row;
@@ -246,21 +245,13 @@ p:has(> .cepaifalxez), h1:has(> .cepaifalxez) {
 	text-align: center;
 }
 .tapaifal a, .tapaifal h, .tapaifal button {
-	width: auto;
-	height: 32px;
 	display: flex;
 	align-items: center;
-}
-.tapaifal button {
-	height: 56px;
-}
-.tapaifal select {
-	height: auto;
 }
 
 .sashesaikef {
 	background-color: transparent;
-	width: max-content;
+	inline-size: max-content;
 	font-size-adjust: 0.875;
 	text-align: left;
 	padding: var(--អារេង);
@@ -315,17 +306,17 @@ button, a {
 	text-decoration: none;
 	display: inline-block;
 	justify-content: center;
-	width: 32px;
+	block-size: 32px;
 }
 button {
-	width: 56px;
-	height: 100%;
+	block-size: 56px;
+	inline-size: 100%;
 }
 button:hover, a:hover, a:active {
 	background-color: var(--តានេក២);
 }
 select {
-	height: 100%;
+	block-size: 100%;
 	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេ);
 	border: var(--សាកព៏);
@@ -352,7 +343,7 @@ thala {
 .tapaisaq {
 	flex-direction: row;
 	align-items: center;
-	height: calc(100% - var(--អារេងព៏));
+	block-size: calc(100% - var(--អារេងព៏));
 }
 .cepai {
 	flex-direction: column-reverse;
@@ -367,17 +358,17 @@ ciihii {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	height: calc(100% - var(--អារេងព៏));
+	block-size: calc(100% - var(--អារេងព៏));
 }
 .ciihiitapai {
 	align-self: center;
-	height: calc(100% - var(--អារេងព៏));
+	block-size: calc(100% - var(--អារេងព៏));
 	display: flex !important;
 	align-items: center;
 }
 .ciihiicepai {
 	flex-direction: column;
-	width: calc(100% - 32px) !important;
+	inline-size: calc(100% - 32px) !important;
 	padding: var(--អារេងព៏) !important;
 }
 .sorha {
@@ -402,7 +393,7 @@ ciihii {
 	align-items: stretch;
 	align-self: stretch;
 	padding: var(--អារេង);
-	min-width: 32px;
+	min-inline-size: 32px;
 }
 .flak:hover {
 	border: var(--សាកព៏៣);
@@ -415,41 +406,41 @@ ciihii {
 	display: flex;
 	overflow: hidden;
 	align-items: center;
-	height: 100%;
-	max-width: 0;
-	transition: max-width 0.25s ease-out;
-	will-change: max-width;
+	block-size: 100%;
+	max-inline-size: 0;
+	transition: max-inline-size 0.25s ease-out;
+	will-change: max-inline-size;
 }
 @keyframes a3etapai {
-  	from { max-width: 0; }
-  	to { max-width: 4096px; }
+  	from { max-inline-size: 0; }
+  	to { max-inline-size: 4096px; }
 }
 .flak[open]:not(.flakcepai) .ciihiiflak {
 	animation: a3etapai 0.25s forwards;
 }
 .flakcepai {
 	flex-direction: column;
-	min-height: 32px;
+	min-block-size: 32px;
 }
 .ciihiiflakcepai {
 	display: flex;
 	flex-direction: column;
-	width: 100%;
-	max-height: max-content;
-	transition: max-height 0.25s ease-out;
-	will-change: max-height;
+	inline-size: 100%;
+	max-block-size: max-content;
+	transition: max-block-size 0.25s ease-out;
+	will-change: max-block-size;
 }
 @keyframes a3ecepai {
-  	from { max-height: 0 }
-  	to { max-height: 4096px }
+  	from { max-block-size: 0 }
+  	to { max-block-size: 4096px }
 }
 .flak[open] .ciihiiflakcepai {
   	animation: a3ecepai 0.25s forwards;
 }
 summary {
 	list-style: none;
-	height: 100%;
-	width: 100%;
+	block-size: 100%;
+	inline-size: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -485,8 +476,8 @@ input[type="file"]::file-selector-button:hover {
 }
 .catsiinasabosai, .catsiinasukwiiqai {
 	position: relative;
-    width: 24px;
-    height: 24px;
+    inline-size: 24px;
+    block-size: 24px;
     background-color: var(--តានេក);
     border-radius: var(--អារេងមិ);
     transition: .4s;
@@ -533,7 +524,7 @@ table {
 	background-color: var(--តានេកខេលេ);
 	border-radius: 	var(--អិត្ភេ);
 	border: var(--សាកព៏);
-	width: 100%;
+	inline-size: 100%;
 	margin: 0;
 	border-spacing: var(--អារេង);
 	table-layout: fixed;
@@ -548,8 +539,8 @@ th, td {
 	border-collapse: collapse;
 	padding: var(--អារេង);
 	text-align: center;
-	width: 50%;
-	max-height: 1000em;
+	inline-size: 50%;
+	max-block-size: 1000em;
 	overflow: hidden;
 	word-wrap: break-word;
 }
@@ -557,8 +548,8 @@ th, td {
 	background-color: var(--តានេកខេលេ);
 	border: var(--សាកព៏);
 	writing-mode: vertical-lr; 
-	width: min-content;
-	height: 640px;
+	inline-size: min-content;
+	block-size: 640px;
 	margin-block: var(--អារេង);
 	margin-inline: 0;
 	align-self: start;
