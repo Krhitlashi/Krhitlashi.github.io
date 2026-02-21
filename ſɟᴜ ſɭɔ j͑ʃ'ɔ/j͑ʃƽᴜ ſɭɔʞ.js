@@ -1,7 +1,7 @@
 const oskakefani = document.querySelectorAll("[data-oskakefani]");
 
 const ruvaS2karani = new URLSearchParams(window.location.search);
-let kjesaiGawe = ruvaS2karani.get("lang") || "aih";
+let kjesaiGawe = ruvaS2karani.get("lang") || document.documentElement.lang || "aih";
 k2regawe(kjesaiGawe);
 
 function k2regawe(gawe) {
