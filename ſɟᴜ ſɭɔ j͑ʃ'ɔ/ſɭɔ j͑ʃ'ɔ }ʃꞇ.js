@@ -16,7 +16,7 @@ async function registerSW() {
 }
 
 // j͑ʃ'ᴜ ſɟɔ ſןᴜꞇ
-function vacepai(s2haxe) {
+function vacepu(s2haxe) {
   const yots2nani = ["(", ")", "[", "]", "<", ">", "-", "≺⧼", "⧽≻", "⟪", "⟫", "≺", "≻", "⧼", "⧽"];
   const hakek = document.querySelectorAll(`.${s2haxe}`);
   if (!hakek.length) return;
@@ -25,7 +25,7 @@ function vacepai(s2haxe) {
 
   function kakHaxez(xez) {
     const s2kar2ba = ["SCRIPT", "STYLE", "OPTION", "TITLE", "TEXTAREA"];
-    if (xez.nodeType === Node.ELEMENT_NODE && (xez.classList.contains("kosabo") || xez.classList.contains("cepaifalxez") || s2kar2ba.includes(xez.tagName))) {
+    if (xez.nodeType === Node.ELEMENT_NODE && (xez.classList.contains("kosabo") || xez.classList.contains("cepufalxez") || s2kar2ba.includes(xez.tagName))) {
       return;
     }
     
@@ -79,7 +79,7 @@ function vacepai(s2haxe) {
           kekKaltok.appendChild(document.createTextNode(xez));
         } else {
           const caxemaXez = document.createElement("span");
-          caxemaXez.className = "cepaifalxez";
+          caxemaXez.className = "cepufalxez";
           caxemaXez.textContent = xez;
           kekKaltok.appendChild(caxemaXez);
         }
@@ -98,7 +98,7 @@ function vacepai(s2haxe) {
   }
 }
 document.addEventListener("DOMContentLoaded", function() {
-  vacepai("cepaifal");
+  vacepu("cepufal");
 });
 
 // j͑ʃᴜ ſɭᴜ ſɟꞇ ʃɔ
@@ -138,7 +138,7 @@ function sakaIitbe(s2haxe) {
 }
 
 // j͐ʃᴜɔ˞ ꞁȷ̀ᴜ }ʃꞇ
-document.body.classList.add("atletla");
+document.body.classList.add("a3e3a");
 document.addEventListener("DOMContentLoaded", function() {
     var links = document.querySelectorAll("a");
   
@@ -147,28 +147,28 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         var href = this.href;
   
-        document.body.classList.add("sakatla");
+        document.body.classList.add("saka3a");
   
         setTimeout(function() {
           window.location.href = href;
         }, 0o300);
         setTimeout(function() {
-          document.body.classList.remove("sakatla");
+          document.body.classList.remove("saka3a");
         }, 0o300);
       });
     });
   
     setTimeout(function() {
-      document.body.classList.remove("atletla");
+      document.body.classList.remove("a3e3a");
     }, 0o300);
 });
 
 // j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ
-function atlesorha(sorha) {
-  if (sorha.style.scale != 1) {
-    sorha.style.scale = 1;
+function atlesoza(soza) {
+  if (soza.style.scale != 1) {
+    soza.style.scale = 1;
   }
   else {
-    sorha.style.scale = 0;
+    soza.style.scale = 0;
   }
 }

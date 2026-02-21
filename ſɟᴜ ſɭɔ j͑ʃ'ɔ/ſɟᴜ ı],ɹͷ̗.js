@@ -142,7 +142,7 @@ function tlak2Stifeh2() {
         const hakp6 = kp6Cax2l.split(" ");
         hakp6.forEach((kp6, i) => {
             const kek = document.createElement("span");
-            kek.className = "cepaifalxez";
+            kek.className = "cepufalxez";
             kek.textContent = kp6;
             kaltokani.appendChild(kek);
             if (i < hakp6.length - 1) {
@@ -159,7 +159,7 @@ function tlak2Stifeh2() {
         const hakp6 = castifeh2Text.split(" ");
         hakp6.forEach((kp6, i) => {
             const kek = document.createElement("span");
-            kek.className = "cepaifalxez";
+            kek.className = "cepufalxez";
             kek.textContent = kp6;
             kaltokani.appendChild(kek);
             if (i < hakp6.length - 1) {

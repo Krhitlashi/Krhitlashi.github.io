@@ -5,7 +5,7 @@ let kjesaiGawe = ruvaS2karani.get("lang") || document.documentElement.lang || "a
 k2regawe(kjesaiGawe);
 
 function k2regawe(gawe) {
-    kocepaifal(gawe)
+    kocepufal(gawe)
     document.documentElement.setAttribute("lang", gawe)
     oskakefani.forEach(kek => {
         const kef = kek.dataset.oskakefani;
@@ -20,9 +20,9 @@ function k2regawe(gawe) {
         });
     }
 }
-function kocepaifal(gawe) {
+function kocepufal(gawe) {
     if (gawe != "aih") {
-        document.body.classList.remove("cepaifal")
-        document.body.classList.add("tapaifal")
+        document.body.classList.remove("cepufal")
+        document.body.classList.add("tapufal")
     }
 }
