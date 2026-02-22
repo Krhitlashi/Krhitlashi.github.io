@@ -5,12 +5,13 @@ window.addEventListener("load", () => {
 async function registerSW() {
 	if ('serviceWorker' in navigator) {
 		try {
-			await navigator
+			const registration = await navigator
 			.serviceWorker
-			.register("j͑ʃᴜ ſɭɔ j͑ʃ\'ɔ.js");
+			.register("./ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js");
+			console.log("SW registered:", registration.scope);
 		}
 		catch (e) {
-			console.log("SW registration failed");
+			console.log("SW registration failed:", e);
 		}
 	}
 }

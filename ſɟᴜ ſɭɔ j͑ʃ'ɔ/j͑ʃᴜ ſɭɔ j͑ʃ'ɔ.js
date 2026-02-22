@@ -10,6 +10,7 @@ var assetsToCache = [
 ];
 
 self.addEventListener("install", function (e) {
+  self.skipWaiting();
   e.waitUntil(
     caches.open(staticCacheName).then(function (cache) {
       return cache.addAll(assetsToCache);
@@ -33,16 +34,18 @@ self.addEventListener("fetch", function (event) {
 });
 
 self.addEventListener("activate", function (event) {
-  var cacheWhitelist = [staticCacheName];
   event.waitUntil(
     caches.keys().then(function (cacheNames) {
       return Promise.all(
         cacheNames.map(function (cacheName) {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
+          return caches.delete(cacheName);
         })
       );
+    }).then(function () {
+      return caches.open(staticCacheName).then(function (cache) {
+        return cache.addAll(assetsToCache);
+      });
     })
   );
+  return self.clients.claim();
 });

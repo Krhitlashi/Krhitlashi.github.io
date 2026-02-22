@@ -407,6 +407,26 @@ summary {
 	justify-content: center;
 }
 
+/* ⟪ j͑ʃᴜ ʃɜ j͑ʃw j͑ʃп́ɔ ſɟɹ ᶅſɹȝ ſɭw ʃᴜ ⤴️ ⟫ */
+
+.c2w2qkuba {
+	display: flex;
+	flex-direction: row;
+	inline-size: 100%;
+	overflow-x: auto;
+	gap: var(--អារេង);
+	padding: var(--អារេង);
+	scrollbar-width: auto;
+}
+.c2w2qkuba img,
+.c2w2qkuba iframe {
+	flex: 0 0 auto;
+	max-block-size: 512px;
+	inline-size: auto;
+	scroll-snap-align: center;
+	display: inline-block;
+}
+
 /* ⟪ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭэ ſᶘɔ 📝 ⟫ */
 
 input, textarea {
@@ -528,6 +548,8 @@ img {
 	block-size: auto;
 	inline-size: 100%;
 }
+
+
 
 /* ⟪ ſ͕ɭэ ſɭɹ ᶅſɔ ֭ſɭɹ ⚪ ⟫ */
 

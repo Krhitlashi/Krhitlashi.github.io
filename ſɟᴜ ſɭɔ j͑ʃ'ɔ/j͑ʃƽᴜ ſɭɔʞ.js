@@ -14,7 +14,11 @@ function k2regawe(gawe) {
     if (gawe != "aih") {
         document.querySelectorAll("a").forEach(cel2f => {
             if (!cel2f.href || cel2f.href.startsWith("#")) return;
-            const ruva = new URL(cel2f.href, window.location.href);
+            let ruvaOkef = decodeURIComponent(cel2f.href);
+            if (ruvaOkef.includes("ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ.html")) {
+                ruvaOkef = ruvaOkef.replace("ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ.html", "ſɭᴜ ɭl̀ɹ ɭʃɔ ı],ᴜͷ̗ ꞁȷ̀w/arahashii.html");
+            }
+            const ruva = new URL(ruvaOkef, window.location.href);
             ruva.searchParams.set("lang", gawe);
             cel2f.href = ruva.toString();
         });
