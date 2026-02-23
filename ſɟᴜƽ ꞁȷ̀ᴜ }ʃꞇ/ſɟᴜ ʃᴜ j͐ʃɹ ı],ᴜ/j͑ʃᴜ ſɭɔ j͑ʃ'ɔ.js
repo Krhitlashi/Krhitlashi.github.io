@@ -98,7 +98,7 @@ async function manageCacheSize(cache) {
     const keys = await cache.keys();
     if (keys.length > MAX_TILES) {
         // Delete oldest 10% of tiles
-        const deleteCount = Math.floor(MAX_TILES * 0.1);
+        const deleteCount = Math.floor(MAX_TILES * 0.125);
         for (let i = 0; i < deleteCount; i++) {
             await cache.delete(keys[i]);
         }

@@ -95,7 +95,7 @@ body {
 	align-items: center; 
 	justify-content: flex-start;
 	margin: 0;
-	padding: calc(var(--អារេង) * 3);
+	padding: calc(var(--អារេងព៏) * 2);
 	box-sizing: border-box;
 	transition: all 0.25s ease;
 	gap: var(--អារេងចិ);
@@ -348,7 +348,6 @@ ciihii {
 	flex-direction: row;
 	justify-content: center;
 	align-self: stretch;
-	block-size: calc(100% - var(--អារេងព៏));
 }
 .soza {
 	transition: all 0.25s ease;
@@ -408,9 +407,8 @@ summary {
 	flex-direction: row;
 	inline-size: 100%;
 	overflow-block: auto;
-	gap: var(--អារេង);
-	padding: var(--អារេង);
 	scrollbar-width: auto;
+	border-radius: var(--អិត្ភេ);
 }
 .c2w2qkuba img,
 .c2w2qkuba iframe {

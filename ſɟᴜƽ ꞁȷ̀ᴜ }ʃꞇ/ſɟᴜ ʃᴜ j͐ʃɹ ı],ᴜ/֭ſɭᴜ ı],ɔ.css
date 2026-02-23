@@ -1,0 +1,138 @@
+.map-section {
+    inline-size: 100%;
+    block-size: 512px;
+    position: relative;
+    border-radius: var(--អិត្ភេ);
+    overflow: hidden;
+    border: var(--សាកព៏);
+}
+#map,
+#gridCanvas {
+    inline-size: 100%;
+    block-size: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#gridCanvas {
+    z-index: 512;
+    pointer-events: none;
+}
+.hidden {
+    display: none !important;
+}
+.controls-row {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+/* Leaflet */
+.leaflet-control-zoom {
+    border: var(--សាកព៏) !important;
+    border-radius: var(--អិត្ភេ) !important;
+    overflow: hidden;
+}
+.leaflet-control-zoom a {
+    background-color: var(--ឆាងាធីច្ហិ) !important;
+    backdrop-filter: var(--ច្ហិនី) !important;
+    color: var(--កេភ) !important;
+    border: none !important;
+    inline-size: 32px !important;
+    block-size: 32px !important;
+    line-height: 32px !important;
+    font-size: 16px !important;
+}
+.leaflet-control-zoom a:hover {
+    position: relative;
+}
+.leaflet-control-zoom a:hover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--តានេក២);
+    border-radius: inherit;
+}
+.leaflet-control-zoom-in {
+    border-radius: var(--អិត្ភេ) var(--អិត្ភេ) 0 0 !important;
+}
+.leaflet-control-zoom-out {
+    border-radius: 0 0 var(--អិត្ភេ) var(--អិត្ភេ) !important;
+}
+.leaflet-control-attribution {
+    background-color: var(--ឆាងាធីច្ហិ) !important;
+    backdrop-filter: var(--ច្ហិនី) !important;
+    color: var(--កេភ២) !important;
+    border-radius: var(--អិត្ភេមិ) !important;
+    font-size: 12px !important;
+}
+.leaflet-control-attribution a {
+    color: var(--កេភ២) !important;
+}
+
+/* Map container buttons */
+.map-section > div:last-child {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 1024;
+    display: flex;
+    flex-direction: column;
+    gap: var(--អារេងមិ);
+}
+.map-section button {
+    position: relative;
+    background-color: var(--ឆាងាធីច្ហិ);
+    backdrop-filter: var(--ច្ហិនី);
+    border: var(--សាកព៏);
+    border-radius: var(--អិត្ភេ);
+    color: var(--កេភ);
+    padding: var(--អារេង) var(--អារេងចិ);
+    block-size: auto;
+    inline-size: auto;
+    min-inline-size: 80px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    overflow: hidden;
+}
+.map-section button::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: transparent;
+    transition: background-color 0.25s ease;
+    pointer-events: none;
+}
+.map-section button:hover::after {
+    background-color: var(--តានេក២);
+}
+.map-section button.active::after {
+    background-color: var(--តានេក៣);
+}
+.map-section button.active {
+    border-color: var(--កេភ);
+}
+
+/* Search results dropdown */
+.search-loading,
+.search-no-results,
+.search-error {
+    padding: var(--អារេងចិ);
+    text-align: center;
+    color: var(--កេភ២);
+}
+.search-result-item {
+    padding: var(--អារេង) var(--អារេងចិ);
+    cursor: pointer;
+    border-radius: var(--អិត្ភេមិ);
+    transition: background-color 0.25s ease;
+}
+.search-result-item:hover {
+    background-color: var(--តានេក២);
+}
+.search-result-name {
+    font-size: 12px;
+    text-align: left;
+    color: var(--កេភ);
+}

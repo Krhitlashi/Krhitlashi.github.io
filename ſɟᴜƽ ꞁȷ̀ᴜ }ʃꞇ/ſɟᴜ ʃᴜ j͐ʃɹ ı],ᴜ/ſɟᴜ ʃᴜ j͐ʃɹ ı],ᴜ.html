@@ -10,39 +10,9 @@
 
     <link rel="manifest" href="../../ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.json">
     <link rel="stylesheet" href="../../֭ſɭᴜ ı],ɔ.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <style>
-        .map-section {
-            inline-size: 100%;
-            block-size: 512px;
-            position: relative;
-            border-radius: var(--អិត្ភេ);
-            overflow: hidden;
-            border: var(--សាកព៏);
-        }
-        #map,
-        #gridCanvas {
-            inline-size: 100%;
-            block-size: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        #gridCanvas {
-            z-index: 512;
-            pointer-events: none;
-        }
-        .hidden {
-            display: none !important;
-        }
-        .controls-row {
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-            flex-wrap: nowrap;
-        }
-    </style>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <link rel="stylesheet" href="֭ſɭᴜ ı],ɔ.css">
 </head>
 
 <body class="cepufal">
@@ -73,7 +43,7 @@
     </thala>
 
     <thala id="decimalControls">
-        <div class="controls-row"">
+        <div class="controls-row">
             <div>
                 <label data-oskakefani="ſɟɔ ſןw }ʃꞇ"></label>
             <input type="number" id="latInput" value="47.48" step="0.00001" min="-90" max="90">
@@ -86,7 +56,7 @@
     </thala>
 
     <thala id="dmsControls" class="hidden">
-        <div class="controls-row">
+        <div>
             <div>
                 <label data-oskakefani="ſɟɔ ſןw }ʃꞇ"></label>
                 <div>
