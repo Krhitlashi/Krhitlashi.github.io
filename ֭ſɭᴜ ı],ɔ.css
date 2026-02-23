@@ -213,7 +213,7 @@ p:has(> .cepufalxez), h1:has(> .cepufalxez) {
 .tapufal {
 	flex-direction: column;
 	align-items: stretch;
-	padding: calc(var(--អារេង) * 3);
+	padding: var(--អារេងព៏);
 }
 .tapufal * {
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, "ı],ᴜ }ʃᴜ";

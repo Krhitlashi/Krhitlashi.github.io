@@ -13,6 +13,10 @@
     position: absolute;
     top: 0;
     left: 0;
+    border-radius: inherit;
+}
+#map .leaflet-tile {
+    border-radius: 0;
 }
 #gridCanvas {
     z-index: 512;
