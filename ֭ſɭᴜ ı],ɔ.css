@@ -169,7 +169,7 @@ pre {
 	flex-direction: column;
 	align-items: stretch;
 	overflow-inline: hidden;
-	padding: calc(var(--អារេងព៏) * 2);
+	padding: calc(var(--អារេងព៏) * 2) var(--អារេងព៏);
 	block-size: 100%;
 }
 .cepufalxez:not(.kosabo span) {
@@ -185,13 +185,10 @@ pre {
 .cepufal ciihii {
 	flex-direction: column;
 }
-.cepufal .ox2pewa {
-	align-self: center;
-}
 .cepufal h1 {
 	text-align: center;
 }
-.cepufal a {
+.cepufal a, .cepufal button {
 	display: flex;
 	align-self: stretch;
 }
@@ -204,10 +201,10 @@ p:has(> .cepufalxez), h1:has(> .cepufalxez) {
 .powukfal.cepufal {
 	flex-direction: column-reverse;
 }
-.powukfal p, .powukfal h, .powukfal a, .powukfal h1 {
+.powukfal p, .powukfal h, .powukfal a, .powukfal h1, .powukfal button {
 	transform: scale(-1, 1);
 }
-.powukfal a, .powukfal h, .powukfal .flak {
+.powukfal a, .powukfal h, .powukfal .flak, .powukfal button {
 	border-radius: 8px 20px;
 }
 .tapufal {
@@ -273,19 +270,13 @@ p:has(> .cepufalxez), h1:has(> .cepufalxez) {
 	line-height: 1.25 !important;
 	align-self: center;
 }
-.ox2pewa, .kefhuruq {
+.kefhuruq {
 	background-color: transparent;
 	text-align: left;
 	align-self: center;
 	padding: var(--អារេង);
 	margin-inline: 0;
-}
-.kefhuruq {
 	font-style: italic;
-}
-embed, iframe {
-	display: flex;
-	border-radius: var(--អិត្ភេ);
 }
 
 /* ⟪ ſɟᴜ ſᶘɹ }ʃᴜ 🔘 ⟫ */
@@ -300,6 +291,7 @@ button, a {
 	display: inline-block;
 	justify-content: center;
 	block-size: 32px;
+	transition: all 0.125s ease;
 }
 button {
 	block-size: 56px;
@@ -307,6 +299,10 @@ button {
 }
 button:hover, a:hover, a:active {
 	background-color: var(--តានេក២);
+}
+button:active, a:active {
+	border-radius: 64px;
+	transform: scale(0.96875);
 }
 select {
 	block-size: 100%;
@@ -368,6 +364,7 @@ ciihii {
 
 .flak {
 	display: flex;
+	flex-direction: column;
 	border-radius: var(--អិត្ភេចិ);
 	border: var(--សាកព៏២);
 	align-items: stretch;
@@ -375,22 +372,26 @@ ciihii {
 	padding: var(--អារេង);
 	min-inline-size: 32px;
 	min-block-size: 32px;
-	flex-direction: column;
 }
 .flak:hover {
 	border: var(--សាកព៏៣);
 }
 .flak[open]::before {
-	content: "|";
+	content: "—";
 	align-self: center;
 }
 .c2h2flak {
 	display: flex;
 	flex-direction: column;
 	inline-size: 100%;
-	max-block-size: max-content;
-	transition: max-block-size 0.25s ease-out;
-	will-change: max-block-size;
+	max-block-size: 0;
+	opacity: 0;
+	transition: max-block-size 0.25s ease, opacity 0.25s ease;
+}
+.flak[open] .c2h2flak {
+	max-block-size: 4096px;
+	opacity: 1;
+	transition: max-block-size 0.25s ease, opacity 0.25s ease;
 }
 summary {
 	list-style: none;
@@ -399,6 +400,11 @@ summary {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	cursor: pointer;
+	transition: transform 0.25s ease;
+}
+summary:active {
+	transform: scale(0.9375);
 }
 
 /* ⟪ j͑ʃᴜ ʃɜ j͑ʃw j͑ʃп́ɔ ſɟɹ ᶅſɹȝ ſɭw ʃᴜ ⤴️ ⟫ */
@@ -540,15 +546,15 @@ pre, tanek {
 
 /* ⟪ ɭʃᴜ ֭ſɭᴜȝ 🖼️ ⟫ */
 
-img {
+img, iframe, embed  {
 	border-radius: var(--អិត្ភេ);
 	align-self: center;
-	pointer-events: none;
 	block-size: auto;
 	inline-size: 100%;
 }
-
-
+img {
+	pointer-events: none;
+}
 
 /* ⟪ ſ͕ɭэ ſɭɹ ᶅſɔ ֭ſɭɹ ⚪ ⟫ */
 

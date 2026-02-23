@@ -8,10 +8,10 @@ async function registerSW() {
 			const registration = await navigator
 			.serviceWorker
 			.register("./ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js");
-			console.log("SW registered:", registration.scope);
+			console.log("( SW registered )", registration.scope);
 		}
 		catch (e) {
-			console.log("SW registration failed:", e);
+			console.log("( SW registration failed )", e);
 		}
 	}
 }
