@@ -1,5 +1,55 @@
 const GRID_W = 0o100;
 const GRID_H = 0o40;
+const GRID_OFFSET = 11.62354;
+
+// ≺⧼ Constants 🔢 ⧽≻
+
+// ⟨ Zoom Levels ⟩
+const ZOOM_INITIAL = 0o7;
+const ZOOM_MAX = 0o22;
+const ZOOM_SEARCH_DEFAULT = 0o3;
+const ZOOM_LEVEL_2 = 0o10;
+const ZOOM_LEVEL_3 = 0o14;
+const ZOOM_LEVEL_4 = 0o20;
+const ZOOM_RESET = 0o3;
+
+// ≺⧼ Helper Functions 🛠️ ⧽≻
+
+// ⟨ Get multiple DOM elements by IDs ⟩
+function getElements(...ids) {
+    const elements = {};
+    for (const id of ids) {
+        elements[id] = document.getElementById(id);
+    }
+    return elements;
+}
+
+// ⟨ Add event listeners to multiple elements ⟩
+function addEventListeners(elements, event, handler) {
+    for (const el of elements) {
+        el.addEventListener(event, handler);
+    }
+}
+
+// ⟨ Calculate 4 levels of grid subdivision ⟩
+function calcGridLevels(value, totalRange, divisions, isLongitude = false) {
+    let raw1 = (value / totalRange) * divisions[0];
+    if (raw1 >= divisions[0]) raw1 = divisions[0] - 0.000001;
+    if (raw1 < 0) raw1 = 0;
+    let level1 = Math.floor(raw1);
+    let remainder = raw1 - level1;
+
+    const levels = [level1];
+    for (let i = 1; i < 4; i++) {
+        let raw = remainder * divisions[i];
+        let level = Math.floor(raw);
+        remainder = raw - level;
+        levels.push(level);
+    }
+    return levels;
+}
+
+// ≺⧼ Data Arrays 📚 ⧽≻
 
 const CP_KSAKA = [
     "ᶅſ", "ſן", "ſȷ", "ŋᷠ", "ʃ", "ɽ͑ʃ'", "j͑ʃ'", "ſᶘ",
@@ -31,87 +81,102 @@ const TP_CHMUAH_MON = ["ី", "ិ", "េ", "ា", "ើ", "ុ", "ូ", ""];
 
 // ≺⧼ DOM Elements 🔧 ⧽≻
 
-const latInput = document.getElementById("latInput");
-const lonInput = document.getElementById("lonInput");
-
-const latDeg = document.getElementById("latDeg");
-const latMin = document.getElementById("latMin");
-const latSec = document.getElementById("latSec");
-const latHem = document.getElementById("latHem");
-const lonDeg = document.getElementById("lonDeg");
-const lonMin = document.getElementById("lonMin");
-const lonSec = document.getElementById("lonSec");
-const lonHem = document.getElementById("lonHem");
-const dmsInputs = [latDeg, latMin, latSec, latHem, lonDeg, lonMin, lonSec, lonHem];
-
-const tabDecimal = document.getElementById("tabDecimal");
-const tabDMS = document.getElementById("tabDMS");
-const decimalControls = document.getElementById("decimalControls");
-const dmsControls = document.getElementById("dmsControls");
-
-const outputCoords = document.getElementById("outputCoords");
-const kefAraq = document.getElementById("kefAraq");
-const outputName = document.getElementById("outputName");
-const piak = document.getElementById("piak");
-const canvas = document.getElementById("gridCanvas");
-const ctx = canvas.getContext("2d");
-const mapContainer = document.getElementById("mapContainer");
-const showGridCheck = document.getElementById("showGridCheck");
-const useBase10Check = document.getElementById("useBase10Check");
-const resetBtn = document.getElementById("resetBtn");
-
-const satelliteToggle = document.getElementById("satelliteToggle");
-const gridOnlyToggle = document.getElementById("gridOnlyToggle");
-
-const zoomSelect = document.getElementById("zoomSelect");
-const downloadBtn = document.getElementById("downloadBtn");
-const clearCacheBtn = document.getElementById("clearCacheBtn");
-const cacheStatus = document.getElementById("cacheStatus");
-const cacheSize = document.getElementById("cacheSize");
-const progressBar = document.getElementById("progressBar");
-const progressFill = document.getElementById("progressFill");
-const downloadStatus = document.getElementById("downloadStatus");
-
-const searchInput = document.getElementById("searchInput");
-const searchBtn = document.getElementById("searchBtn");
-const searchResults = document.getElementById("searchResults");
+let latInput, lonInput, latDeg, latMin, latSec, latHem, lonDeg, lonMin, lonSec, lonHem, dmsInputs;
+let tabDecimal, tabDMS, decimalControls, dmsControls;
+let outputCoords, kefAraq, outputName, piak, canvas, ctx, mapContainer, showGridCheck, useBase10Check, resetBtn;
+let zoomSelect, downloadBtn, clearCacheBtn, cacheStatus, cacheSize, progressBar, progressFill, downloadStatus;
+let searchInput, searchBtn, searchResults;
 
 let currentLat = 47.48;
 let currentLon = -122.21;
 let showGrid = true;
 let useBase10 = false;
-let showSatellite = true;
 let map = null;
-let satelliteLayer = null;
 let marker = null;
 
+// ⟨ Initialize DOM elements ⟩
+function initElements() {
+    const elements = getElements(
+        "latInput", "lonInput", "latDeg", "latMin", "latSec", "latHem",
+        "lonDeg", "lonMin", "lonSec", "lonHem", "tabDecimal", "tabDMS",
+        "decimalControls", "dmsControls", "outputCoords", "kefAraq",
+        "outputName", "piak", "gridCanvas", "mapContainer", "showGridCheck",
+        "useBase10Check", "resetBtn", "zoomSelect", "downloadBtn",
+        "clearCacheBtn", "cacheStatus", "cacheSize", "progressBar",
+        "progressFill", "downloadStatus", "searchInput", "searchBtn", "searchResults"
+    );
+
+    latInput = elements.latInput;
+    lonInput = elements.lonInput;
+    latDeg = elements.latDeg;
+    latMin = elements.latMin;
+    latSec = elements.latSec;
+    latHem = elements.latHem;
+    lonDeg = elements.lonDeg;
+    lonMin = elements.lonMin;
+    lonSec = elements.lonSec;
+    lonHem = elements.lonHem;
+    dmsInputs = [latDeg, latMin, latSec, latHem, lonDeg, lonMin, lonSec, lonHem];
+
+    tabDecimal = elements.tabDecimal;
+    tabDMS = elements.tabDMS;
+    decimalControls = elements.decimalControls;
+    dmsControls = elements.dmsControls;
+
+    outputCoords = elements.outputCoords;
+    kefAraq = elements.kefAraq;
+    outputName = elements.outputName;
+    piak = elements.piak;
+    canvas = elements.gridCanvas;
+    ctx = canvas.getContext("2d");
+    mapContainer = elements.mapContainer;
+    showGridCheck = elements.showGridCheck;
+    useBase10Check = elements.useBase10Check;
+    resetBtn = elements.resetBtn;
+
+    zoomSelect = elements.zoomSelect;
+    downloadBtn = elements.downloadBtn;
+    clearCacheBtn = elements.clearCacheBtn;
+    cacheStatus = elements.cacheStatus;
+    cacheSize = elements.cacheSize;
+    progressBar = elements.progressBar;
+    progressFill = elements.progressFill;
+    downloadStatus = elements.downloadStatus;
+
+    searchInput = elements.searchInput;
+    searchBtn = elements.searchBtn;
+    searchResults = elements.searchResults;
+}
+
 function init() {
+    initElements();
+
     map = L.map("map", {
         center: [currentLat, currentLon],
-        zoom: 0o7,
+        zoom: ZOOM_INITIAL,
         zoomControl: false
     });
 
-    // ⟪ Add zoom control to bottom right ⟫
+    // ⟨ Add zoom control to bottom right ⟩
     L.control.zoom({ position: "bottomright" }).addTo(map);
 
-    // ⟪ Add satellite tile layer ⟫
-    satelliteLayer = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-        attribution: "Tiles © Esri",
-        maxZoom: 0o22
+    // ⟨ Add OpenStreetMap base layer ( open-source ) ⟩
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
+        maxZoom: ZOOM_MAX
     }).addTo(map);
 
-    // ⟪ Add marker ⟫
+    // ⟨ Add marker ⟩
     marker = L.marker([currentLat, currentLon], {
         icon: L.divIcon({
             className: "custom-marker",
-            html: "<div style=\"width:12px;height:12px;background:#fff;border:2px solid #dca54e;border-radius:50%;box-shadow:0 0 10px rgba(220,165,78,0.8);\"></div>",
+            html: "<div style=\"width:12px;height:12px;background:#fff;border:2px solid #d0a040;border-radius:50%;\"></div>",
             iconSize: [12, 12],
             iconAnchor: [6, 6]
         })
     }).addTo(map);
 
-    // ⟪ Map event listeners ⟫
+    // ⟨ Map event listeners ⟩
     map.on("click", handleMapClickLeaflet);
     map.on("move", updateMapSync);
     map.on("zoom", updateMapSync);
@@ -119,17 +184,16 @@ function init() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // ⟪ Listeners for Decimal ⟫
-    latInput.addEventListener("input", handleDecimalInput);
-    lonInput.addEventListener("input", handleDecimalInput);
+    // ⟨ Listeners for Decimal ⟩
+    addEventListeners([latInput, lonInput], "input", handleDecimalInput);
 
-    // ⟪ Listeners for DMS ⟫
+    // ⟨ Listeners for DMS ⟩
     dmsInputs.forEach(el => {
         el.addEventListener("input", handleDMSInput);
         el.addEventListener("change", handleDMSInput);
     });
 
-    // ⟪ Tabs ⟫
+    // ⟨ Tabs ⟩
     tabDecimal.addEventListener("click", () => switchMode("decimal"));
     tabDMS.addEventListener("click", () => switchMode("dms"));
 
@@ -146,31 +210,16 @@ function init() {
     resetBtn.addEventListener("click", () => {
         currentLat = 0;
         currentLon = 0;
-        map.setView([currentLat, currentLon], 0o3);
+        map.setView([currentLat, currentLon], ZOOM_RESET);
         updateAllInputs();
         update();
     });
 
-    // ⟪ Map view toggles ⟫
-    satelliteToggle.addEventListener("click", () => {
-        showSatellite = true;
-        if (satelliteLayer) satelliteLayer.addTo(map);
-        satelliteToggle.classList.add("active");
-        gridOnlyToggle.classList.remove("active");
-    });
-
-    gridOnlyToggle.addEventListener("click", () => {
-        showSatellite = false;
-        if (satelliteLayer) map.removeLayer(satelliteLayer);
-        gridOnlyToggle.classList.add("active");
-        satelliteToggle.classList.remove("active");
-    });
-
-    // ⟪ Offline controls ⟫
+    // ⟨ Offline controls ⟩
     downloadBtn.addEventListener("click", downloadCurrentView);
     clearCacheBtn.addEventListener("click", clearCache);
 
-    // ⟪ Search controls ⟫
+    // ⟨ Search controls ⟩
     searchBtn.addEventListener("click", searchAddress);
     searchInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
@@ -178,12 +227,12 @@ function init() {
         }
     });
 
-    // ⟪ Initial populate ⟫
+    // ⟨ Initial populate ⟩
     updateAllInputs();
     update();
     updateCacheInfo();
 
-    // ⟪ Register service worker ⟫
+    // ⟨ Register service worker ⟩
     if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("./j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js")
             .then(reg => console.log("Service Worker registered.", reg))
@@ -210,13 +259,13 @@ function updateMapSync() {
 
 function switchMode(mode) {
     if (mode === "decimal") {
-        tabDecimal.classList.add("active");
-        tabDMS.classList.remove("active");
+        tabDecimal.setAttribute("aria-pressed", "true");
+        tabDMS.setAttribute("aria-pressed", "false");
         decimalControls.classList.remove("hidden");
         dmsControls.classList.add("hidden");
     } else {
-        tabDMS.classList.add("active");
-        tabDecimal.classList.remove("active");
+        tabDMS.setAttribute("aria-pressed", "true");
+        tabDecimal.setAttribute("aria-pressed", "false");
         dmsControls.classList.remove("hidden");
         decimalControls.classList.add("hidden");
     }
@@ -255,13 +304,13 @@ function handleDecimalInput() {
 }
 
 function handleDMSInput() {
-    // ⟨ Parse Lat ⟩
+    // ⟨ Parse Latitude ⟩
     let lDeg = parseFloat(latDeg.value) || 0;
     let lMin = parseFloat(latMin.value) || 0;
     let lSec = parseFloat(latSec.value) || 0;
     let lHem = latHem.value;
 
-    // ⟨ Parse Lon ⟩
+    // ⟨ Parse Longitude ⟩
     let loDeg = parseFloat(lonDeg.value) || 0;
     let loMin = parseFloat(lonMin.value) || 0;
     let loSec = parseFloat(lonSec.value) || 0;
@@ -327,57 +376,28 @@ function toBase8(num) {
 
 // ≺⧼ Grid Logic 📍 ⧽≻
 
+// ⟨ Coordinate system - Longitude is converted to "degrees West" ( 0-360 )
+//   then shifted by GRID_OFFSET. Grid lines are drawn by reversing this. ⟩
+//   lon ⟶ baseDegWest ⟶ degWest ( +offset ) ⟶ grid index
+//   grid index ⟶ degWestOffset ⟶ baseDegWest ( -offset ) ⟶ lon
+
 function getGridCoords(lat, lon) {
     // ⟨ Horizontal ( H ) Calculation ⟩
     let baseDegWest = (lon <= 0) ? -lon : (360 - lon);
     if (lon === 0) baseDegWest = 0;
 
-    const offset = 11.62354;
-    let degWest = (baseDegWest + offset) % 360;
-
-    // ⟨ Level 1 H ( 0-64 ) ⟩
-    let rawH1 = (degWest / 360) * 0o100;
-    if (rawH1 >= 0o100) rawH1 = 63.999999;
-    if (rawH1 < 0) rawH1 = 0;
-    let h1 = Math.floor(rawH1);
-    let remH1 = rawH1 - h1;
-
-    // ⟨ Level 2 H ( 0-32 ) ⟩
-    let rawH2 = remH1 * 0o40;
-    let h2 = Math.floor(rawH2);
-    let remH2 = rawH2 - h2;
-
-    // ⟨ Level 3 H ( 0-32 ) ⟩
-    let rawH3 = remH2 * 0o40;
-    let h3 = Math.floor(rawH3);
-    let remH3 = rawH3 - h3;
-
-    // ⟨ Level 4 H ( 0-32 ) ⟩
-    let rawH4 = remH3 * 0o40;
-    let h4 = Math.floor(rawH4);
+    let degWest = (baseDegWest + GRID_OFFSET) % 360;
+    const hLevels = calcGridLevels(degWest, 360, [0o100, 0o40, 0o40, 0o40]);
 
     // ⟨ Vertical ( V ) Calculation ⟩
-    let rawV1 = ((90 - lat) / 180) * 0o40;
-    if (rawV1 >= 0o40) rawV1 = 31.999999;
-    if (rawV1 < 0) rawV1 = 0;
-    let v1 = Math.floor(rawV1);
-    let remV1 = rawV1 - v1;
+    const vLevels = calcGridLevels(90 - lat, 180, [0o40, 0o40, 0o40, 0o40]);
 
-    // ⟨ Level 2 V ( 0-32 ) ⟩
-    let rawV2 = remV1 * 0o40;
-    let v2 = Math.floor(rawV2);
-    let remV2 = rawV2 - v2;
-
-    // ⟨ Level 3 V ( 0-32 ) ⟩
-    let rawV3 = remV2 * 0o40;
-    let v3 = Math.floor(rawV3);
-    let remV3 = rawV3 - v3;
-
-    // ⟨ Level 4 V ( 0-32 ) ⟩
-    let rawV4 = remV3 * 0o40;
-    let v4 = Math.floor(rawV4);
-
-    return { v1, h1, v2, h2, v3, h3, v4, h4 };
+    return {
+        v1: vLevels[0], h1: hLevels[0],
+        v2: vLevels[1], h2: hLevels[1],
+        v3: vLevels[2], h3: hLevels[2],
+        v4: vLevels[3], h4: hLevels[3]
+    };
 }
 
 function getName(v, h, cp = CP_KSAKA, tp_kz = TP_KSAKA_KZ, tp_ks = TP_KSAKA_KS) {
@@ -412,9 +432,6 @@ function draw() {
     const east = bounds.getEast();
     const west = bounds.getWest();
 
-    // ⟨ Same offset used in getGridCoords for consistency ⟩
-    const OFFSET = 11.62354;
-
     // ⟨ Helper to draw grid lines for a specific level with proper offset ⟩
     function drawGridLinesForLevel(vDivisions, hDivisions, color, width) {
         ctx.beginPath();
@@ -430,37 +447,59 @@ function draw() {
             const p1 = map.latLngToContainerPoint([lat, west]);
             const p2 = map.latLngToContainerPoint([lat, east]);
 
-            ctx.moveTo(0, p1.y);
-            ctx.lineTo(w, p2.y);
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
         }
 
         // ⟨ Draw vertical lines ( longitude lines ) with offset applied ⟩
         for (let hIdx = 0; hIdx <= hDivisions; hIdx++) {
-            // ⟨ Calculate position in the offset coordinate system ⟩
+            // ⟨ Calculate degWest in the OFFSET coordinate system ⟩
             let ratio = hIdx / hDivisions;
             let degWestOffset = ratio * 360;
 
-            // ⟨ Apply reverse offset to get actual longitude ⟩
-            let degWest = (degWestOffset - OFFSET + 360) % 360;
+            // ⟨ Reverse the offset to get baseDegWest ( same as getGridCoords but reversed ) ⟩
+            let baseDegWest = (degWestOffset - GRID_OFFSET + 360) % 360;
 
-            // ⟨ Convert to standard longitude ⟩
-            let lon = (degWest <= 180) ? -degWest : (360 - degWest);
+            // ⟨ Convert baseDegWest to standard longitude ⟩
+            let lon = (baseDegWest <= 180) ? -baseDegWest : (360 - baseDegWest);
 
             // ⟨ Handle longitude wrapping for map display ⟩
+            const centerLon = (west + east) / 2;
             let displayLon = lon;
-            if (displayLon < west - 1 && displayLon + 360 >= west) {
-                displayLon += 360;
-            } else if (displayLon > east + 1 && displayLon - 360 <= east) {
-                displayLon -= 360;
+
+            // ⟨ Adjust longitude to be near the map center for proper rendering ⟩
+            while (displayLon < centerLon - 180) displayLon += 360;
+            while (displayLon > centerLon + 180) displayLon -= 360;
+
+            // ⟨ Check if line is within visible bounds ( including map wrap ) ⟩
+            let isInView = false;
+            
+            // ⟨ Check direct visibility ⟩
+            if (displayLon >= west - 1 && displayLon <= east + 1) {
+                isInView = true;
+            }
+            // ⟨ Check wrapped visibility ( for maps crossing antimeridian ) ⟩
+            else if (east - west > 180) {
+                // ⟨ Map spans more than 180°, show all lines ⟩
+                isInView = true;
+            }
+            else {
+                // ⟨ Check if line wraps into view from either side ⟩
+                let wrappedLon1 = displayLon + 360;
+                let wrappedLon2 = displayLon - 360;
+                if ((wrappedLon1 >= west - 1 && wrappedLon1 <= east + 1) ||
+                    (wrappedLon2 >= west - 1 && wrappedLon2 <= east + 1)) {
+                    isInView = true;
+                }
             }
 
-            if (displayLon < west - 1 || displayLon > east + 1) continue;
+            if (!isInView) continue;
 
             const p1 = map.latLngToContainerPoint([north, displayLon]);
             const p2 = map.latLngToContainerPoint([south, displayLon]);
 
-            ctx.moveTo(p1.x, 0);
-            ctx.lineTo(p2.x, h);
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
         }
         ctx.stroke();
     }
@@ -469,17 +508,17 @@ function draw() {
     drawGridLinesForLevel(0o40, 0o100, "rgba(224, 160, 72, 0.5)", 3);
 
     // ⟨ Draw Level 2 ( if zoomed in enough ) - each L1 cell divided into 32x32 ⟩
-    if (zoom >= 0o10) {
+    if (zoom >= ZOOM_LEVEL_2) {
         drawGridLinesForLevel(0o40 * 0o40, 0o100 * 0o40, "rgba(224, 160, 72, 0.5)", 2);
     }
 
     // ⟨ Draw Level 3 ( if zoomed in enough ) - each L2 cell divided into 32x32 ⟩
-    if (zoom >= 0o14) {
+    if (zoom >= ZOOM_LEVEL_3) {
         drawGridLinesForLevel(0o40 * 0o40 * 0o40, 0o100 * 0o40 * 0o40, "rgba(224, 160, 72, 0.75)", 1);
     }
 
     // ⟨ Draw Level 4 ( if zoomed in enough ) - each L3 cell divided into 32x32 ⟩
-    if (zoom >= 0o20) {
+    if (zoom >= ZOOM_LEVEL_4) {
         drawGridLinesForLevel(0o40 * 0o40 * 0o40 * 0o40, 0o100 * 0o40 * 0o40 * 0o40, "rgba(224, 160, 72, 1)", 0.5);
     }
 }
@@ -503,23 +542,17 @@ function update() {
 
     outputCoords.textContent = coords;
 
-    const ksakaXaqa = getName(c.v1, c.h1);
-    const ksakaP2sa = getName(c.v2, c.h2);
-    const ksakaT2xa = getName(c.v3, c.h3);
-    const ksakaTawa = getName(c.v4, c.h4);
-    kefAraq.innerHTML = `${ksakaXaqa} ${ksakaP2sa} ${ksakaT2xa} ${ksakaTawa}`;
+    // ⟨ Generate names for all 4 levels ⟩
+    const coords4 = [[c.v1, c.h1], [c.v2, c.h2], [c.v3, c.h3], [c.v4, c.h4]];
 
-    const name1 = getNameLatin(c.v1, c.h1);
-    const name2 = getNameLatin(c.v2, c.h2);
-    const name3 = getNameLatin(c.v3, c.h3);
-    const name4 = getNameLatin(c.v4, c.h4);
-    outputName.innerHTML = `${name1} ${name2} ${name3} ${name4}`;
+    const ksakaNames = coords4.map(([v, h]) => getName(v, h));
+    kefAraq.innerHTML = ksakaNames.join(" ");
 
-    const ឈ្មោះ១ = getName(c.v1, c.h1, CP_CHMUAH, TP_CHMUAH_MON, TP_CHMUAH_KRAOY);
-    const ឈ្មោះ២ = getName(c.v2, c.h2, CP_CHMUAH, TP_CHMUAH_MON, TP_CHMUAH_KRAOY);
-    const ឈ្មោះ៣ = getName(c.v3, c.h3, CP_CHMUAH, TP_CHMUAH_MON, TP_CHMUAH_KRAOY);
-    const ឈ្មោះ៤ = getName(c.v4, c.h4, CP_CHMUAH, TP_CHMUAH_MON, TP_CHMUAH_KRAOY);
-    piak.innerHTML = `${ឈ្មោះ១} ${ឈ្មោះ២} ${ឈ្មោះ៣} ${ឈ្មោះ៤}`;
+    const latinNames = coords4.map(([v, h]) => getNameLatin(v, h));
+    outputName.innerHTML = latinNames.join(" ");
+
+    const chmuahNames = coords4.map(([v, h]) => getName(v, h, CP_CHMUAH, TP_CHMUAH_MON, TP_CHMUAH_KRAOY));
+    piak.innerHTML = chmuahNames.join(" ");
 
     draw();
 }
@@ -534,7 +567,7 @@ async function searchAddress() {
         return;
     }
 
-    // ⟨ Check for coordinate pattern ( e.g., "12 34 - 5 6" or "12 34" ) ⟩
+    // ⟨ Check for coordinate pattern - e.g. "12 34 - 5 6" or "12 34" ⟩
     // ⟨ "v1 h1", "v1 h1 - v2 h2", etc. ⟩
     // ⟨ Allow spaces, dashes, and optional parts. ⟩
     const coordRegex = /^(\d+)\s+(\d+)(?:\s*[-–—]\s*(\d+)\s+(\d+))?(?:\s*[-–—]\s*(\d+)\s+(\d+))?(?:\s*[-–—]\s*(\d+)\s+(\d+))?$/;
@@ -562,10 +595,10 @@ async function searchAddress() {
         currentLon = coords.lon;
 
         // ⟨ Determine zoom level based on precision ⟩
-        let zoom = 0o3;
-        if (match[3]) zoom = 0o10;
-        if (match[5]) zoom = 0o14;
-        if (match[7]) zoom = 0o20;
+        let zoom = ZOOM_SEARCH_DEFAULT;
+        if (match[3]) zoom = ZOOM_LEVEL_2;
+        if (match[5]) zoom = ZOOM_LEVEL_3;
+        if (match[7]) zoom = ZOOM_LEVEL_4;
 
         map.setView([currentLat, currentLon], zoom);
         marker.setLatLng([currentLat, currentLon]);
@@ -622,45 +655,43 @@ async function searchAddress() {
         });
 
     } catch (error) {
-        console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ", error);
+        console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", error);
         searchResults.innerHTML = "<div class=\"search-error\">ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⟅</div>";
     }
 }
 
+// ⟨ Convert grid levels to normalized position ( 0.0 to 1.0 ) ⟩
+function levelsToNormalized(levels, divisors) {
+    let total = 0;
+    for (let i = 0; i < levels.length; i++) {
+        let divisor = 1;
+        for (let j = 0; j <= i; j++) {
+            divisor *= divisors[j];
+        }
+        total += levels[i] / divisor;
+    }
+    return total;
+}
+
 function gridToLatLon(v1, h1, v2, h2, v3, h3, v4, h4) {
-    const v1_0 = Math.max(0, v1 - 1);
-    const h1_0 = Math.max(0, h1 - 1);
-    const v2_0 = Math.max(0, v2 - 1);
-    const h2_0 = Math.max(0, h2 - 1);
-    const v3_0 = Math.max(0, v3 - 1);
-    const h3_0 = Math.max(0, h3 - 1);
-    const v4_0 = Math.max(0, v4 - 1);
-    const h4_0 = Math.max(0, h4 - 1);
+    // ⟨ Convert to 0-based indexing ⟩
+    const vLevels = [v1, v2, v3, v4].map(v => Math.max(0, v - 1));
+    const hLevels = [h1, h2, h3, h4].map(h => Math.max(0, h - 1));
 
-    // ⟨ ( 0.0 to 1.0 ) ⟩
+    // ⟨ Calculate normalized positions ⟩
+    const vTotal = levelsToNormalized(vLevels, [0o40, 0o40, 0o40, 0o40]);
+    const hTotal = levelsToNormalized(hLevels, [0o100, 0o40, 0o40, 0o40]);
 
-    // ⟨ Vertical - 32 * 32 * 32 * 32 ⟩
-    const vTotal = v1_0 / 0o40 + v2_0 / (0o40 * 0o40) + v3_0 / (0o40 * 0o40 * 0o40) + v4_0 / (0o40 * 0o40 * 0o40 * 0o40);
-
-    // ⟨ Horizontal - 64 * 32 * 32 * 32 ⟩
-    const hTotal = h1_0 / 0o100 + h2_0 / (0o100 * 0o40) + h3_0 / (0o100 * 0o40 * 0o40) + h4_0 / (0o100 * 0o40 * 0o40 * 0o40);
-
+    // ⟨ Calculate latitude ⟩
     let lat = 90 - (vTotal * 180);
 
-    // ⟨ Calculate Lon ⟩
-
+    // ⟨ Calculate longitude ⟩
     let degWest = hTotal * 360;
-    const OFFSET = 11.62354;
-    let baseDegWest = (degWest - OFFSET);
+    let baseDegWest = (degWest - GRID_OFFSET);
     while (baseDegWest < 0) baseDegWest += 360;
     baseDegWest = baseDegWest % 360;
 
-    let lon;
-    if (baseDegWest <= 180) {
-        lon = -baseDegWest;
-    } else {
-        lon = 360 - baseDegWest;
-    }
+    let lon = (baseDegWest <= 180) ? -baseDegWest : (360 - baseDegWest);
 
     return { lat, lon };
 }
@@ -707,6 +738,20 @@ async function downloadCurrentView() {
     downloadBtn.disabled = false;
 }
 
+// ⟨ Get tile URL from coordinates ⟩
+function getTileUrl(x, y, z) {
+    return `https://tile.openstreetmap.org/${z}/${x}/${y}.png`;
+}
+
+// ⟨ Convert lat/lon to tile coordinates ⟩
+function latLonToTile(lat, lon, zoom) {
+    const scale = Math.pow(2, zoom);
+    const x = Math.floor((lon + 180) / 360 * scale);
+    const y = Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * scale);
+    return { x, y };
+}
+
+// ⟨ Get list of tiles for bounds ⟩
 function getTileList(bounds, zoom) {
     const tiles = [];
     const nw = bounds.getNorthWest();
@@ -722,16 +767,6 @@ function getTileList(bounds, zoom) {
     }
 
     return tiles;
-}
-
-function latLonToTile(lat, lon, zoom) {
-    const x = Math.floor((lon + 180) / 360 * Math.pow(2, zoom));
-    const y = Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, zoom));
-    return { x, y };
-}
-
-function getTileUrl(x, y, z) {
-    return `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`;
 }
 
 async function clearCache() {

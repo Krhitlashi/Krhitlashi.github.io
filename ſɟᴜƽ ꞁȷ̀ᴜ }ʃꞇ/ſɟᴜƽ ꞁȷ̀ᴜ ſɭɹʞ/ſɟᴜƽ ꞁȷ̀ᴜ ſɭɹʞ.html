@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="aih">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="inline-size=device-inline-size, initial-scale=1">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+
+    <title data-oskakefani="ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ"></title>
+    <link rel="icon" type="image/x-icon" href="../../j͑ʃɹ ɭʃᴜɔ˞ ɭl̀ɔ j͑ʃᴜꞇ.ico">
+
+    <link rel="manifest" href="../../ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.json">
+    <link rel="stylesheet" href="../../֭ſɭᴜ ı],ɔ.css">
+    <link rel="stylesheet" href="֭ſɭᴜ ı],ɔ.css">
+</head>
+
+<body class="cepufal whiteboard-page" style="padding: 0;">
+    <div class="whiteboard-container" id="whiteboardContainer">
+        <div class="whiteboard-canvas-wrapper">
+            <canvas class="whiteboard-canvas" id="whiteboardCanvas"></canvas>
+        </div>
+    </div>
+
+    <div class="soza scace" id="toolbarContainer">
+        <thala class="n2tase" id="toolsPanel">
+            <p class="ksakap2sa"><span data-oskakefani="ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ"></span> 🔧</p>
+            <button data-tool="select">
+                <span data-oskakefani="ſɭᴜƽ"></span> 🖱️
+            </button>
+            <button data-tool="pen">
+                <span data-oskakefani="ſɭɹ ſᶘᴜ"></span> ✏️
+            </button>
+            <button data-tool="smooth">
+                <span data-oskakefani="j͑ʃ'ᴜ ı],ᴜ ֭ſɭᴜ"></span> 〰️
+            </button>
+            <button data-tool="eraser">
+                <span data-oskakefani="ſɟᴜ ֭ſɭɹͷ̗"></span> 🧹
+            </button>
+            <button data-tool="text" id="textToolBtn">
+                <span data-oskakefani="ſɭɘэ"></span> 📝
+                <input type="checkbox" class="ca12nasabosu" id="htmlTextCheckbox" checked title="HTML ſɭɘэ">
+            </button>
+        </thala>
+        
+        <thala class="n2tase" id="colorsPanel">
+            <p class="ksakap2sa"><span data-oskakefani="ᶅſɔ ֭ſɭɹ"></span> 🎨</p>
+            <div class="qox2n2kucaxema" id="colorGrid"></div>
+            <div class="custom-color">
+                <input type="color" id="customColor" value="#000000">
+                <input type="text" id="hexColor" placeholder="#000000" maxlength="7">
+            </div>
+        </thala>
+        
+        <thala class="n2tase" id="sizePanel">
+            <p class="ksakap2sa"><span data-oskakefani="ſɟᴜ ſɭɹʞ j͑ʃп́ɔ ſןᴜ j͐ʃэ"></span> 📏</p>
+            <input type="range" class="k6tani" id="brushSize" min="1" max="64" value="4">
+            <p><span id="brushSizeValue">4</span>px</p>
+        </thala>
+        
+        <thala class="n2tase" id="shapesPanel">
+            <p class="ksakap2sa"><span data-oskakefani="}ʃᴜ ſɭɜ ı],ᴜ"></span> ◆</p>
+            <div class="qox2n2kucaxema" id="shapeGrid">
+                <button data-shape="line" title="Line">╱</button>
+                <button data-shape="circle" title="Circle">○</button>
+                <button data-shape="triangle" title="Triangle">△</button>
+                <button data-shape="square" title="Square (asymmetrical corners)">▢</button>
+            </div>
+        </thala>
+        
+        <thala class="n2tase" id="actionsPanel">
+            <p class="ksakap2sa"><span data-oskakefani="ſɭ,ɔ }ʃꞇ"></span> 📋</p>
+            <button id="undoBtn">
+                <span data-oskakefani="}ʃɔ ſɭᴜ j͐ʃᴜ"></span> ↩️
+            </button>
+            <button id="redoBtn">
+                <span data-oskakefani="}ʃɔ }ʃɔ ſɭᴜ j͐ʃᴜ"></span> ↪️
+            </button>
+            <button id="clearBtn">
+                <span data-oskakefani="j͑ʃ'ᴜ ᶅſɔ"></span> 🗑️
+            </button>
+        </thala>
+        
+        <thala class="n2tase" id="layersPanel">
+            <p class="ksakap2sa"><span data-oskakefani="ɭʃᴜ }ʃɔƽ"></span> 📚</p>
+            <ciihii style="flex-direction: row;">
+                <button id="addLayerBtn" title="Add Layer">➕</button>
+                <button id="deleteLayerBtn" title="Delete Layer">➖</button>
+                <button id="moveLayerUpBtn" title="Move Up">⬆️</button>
+                <button id="moveLayerDownBtn" title="Move Down">⬇️</button>
+            </ciihii>
+            <maxema id="layerList"></maxema>
+        </thala>
+        
+        <thala class="n2tase" id="filePanel">
+            <p class="ksakap2sa"><span data-oskakefani="ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ"></span> 💾</p>
+            <button id="saveBtn">
+                <span data-oskakefani="j͑ʃ'ɔ ſ̀ȷᴜȝ"></span> 💾
+            </button>
+            <button id="loadBtn">
+                <span data-oskakefani="j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ"></span> 📂
+            </button>
+            <input type="file" id="fileInput" accept=".png,.jpg,.jpeg" style="display: none;">
+        </thala>
+        
+        <thala class="n2tase" id="navPanel">
+            <p class="ksakap2sa"><span data-oskakefani="j͑ʃɹ ſɟɔ j͐ʃɹʞ"></span> 🔗</p>
+            <a href="../../index.html">
+                <span data-oskakefani="ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ"></span> 🏠
+            </a>
+            <a href="../../ſ͔ɭᴜ ᶅſɔ.html">
+                <span data-oskakefani="ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ"></span> 📖
+            </a>
+            <a href="../../ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ.html">
+                <span data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ"></span> 📁
+            </a>
+            <a href="../../ꞁȷ̀ꞇ }ʃᴜƽ.html">
+                <span data-oskakefani="ꞁȷ̀ꞇ }ʃᴜƽ"></span> ⚙️
+            </a>
+        </thala>
+    </div>
+
+    <button class="n2tase toolbar-toggle" id="toolbarToggle" title="Toggle Toolbar"></button>
+    
+    <thala class="cakaxa n2tase quick-actions">
+        <button id="quickUndo">↩️</button>
+        <button id="quickRedo">↪️</button>
+        <button id="quickClear">🗑️</button>
+        <button id="quickSave">💾</button>
+    </thala>
+    
+    <thala class="cakaxa n2tase zoom-controls">
+        <button id="zoomOut">−</button>
+        <p id="zoomLevel">1/1x</p>
+        <button id="zoomIn">+</button>
+        <button id="zoomReset">⟲</button>
+    </thala>
+    
+    <thala class="cakaxa n2tase status-bar">
+        <p>
+            <span data-oskakefani="ſןᴜ j͐ʃэ"></span>
+            <span id="canvasSize">1920 × 1080</span>
+        </p>
+        <p>
+            <span data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ"></span>
+            <span id="cursorPos">0, 0</span>
+        </p>
+    </thala>
+    
+    <thala class="cakaxa n2tase" id="transformControls">
+        <button id="editSelected" title="Edit Text">✏️</button>
+        <button id="deleteSelected" title="Delete">🗑️</button>
+        <button id="clearSelected" title="Clear">✕</button>
+        <button id="rotateLeft" title="Rotate Left">↺</button>
+        <button id="rotateRight" title="Rotate Right">↻</button>
+        <button id="moveLayerUp" title="Move Up">↑</button>
+        <button id="moveLayerDown" title="Move Down">↓</button>
+        <button id="flipH" title="Flip Horizontal">⇿</button>
+        <button id="flipV" title="Flip Vertical">⇅</button>
+        <button id="bringFront" title="Bring to Front">⤒</button>
+        <button id="sendBack" title="Send to Back">⤓</button>
+    </thala>
+</body>
+
+<script>
+    const skakefani = {
+        aih: {
+            "ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ": "ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ",
+            "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ": "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ",
+            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ",
+            "ꞁȷ̀ꞇ }ʃᴜƽ": "ꞁȷ̀ꞇ }ʃᴜƽ",
+
+            "ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ": "ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ",
+
+            "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ",
+            "ſɭᴜƽ": "ſɭᴜƽ",
+            "ſɭɹ ſᶘᴜ": "ſɭɹ ſᶘᴜ",
+            "j͑ʃ'ᴜ ı],ᴜ ֭ſɭᴜ": "j͑ʃ'ᴜ ı],ᴜ ֭ſɭᴜ",
+            "ſɟᴜ ֭ſɭɹͷ̗": "ſɟᴜ ֭ſɭɹͷ̗",
+            "ſɭɘэ": "ſɭɘэ",
+            "ᶅſɔ ֭ſɭɹ": "ᶅſɔ ֭ſɭɹ",
+            "ſɟᴜ ſɭɹʞ j͑ʃп́ɔ ſןᴜ j͐ʃэ": "ſɟᴜ ſɭɹʞ j͑ʃп́ɔ ſןᴜ j͐ʃэ",
+            "}ʃᴜ ſɭɜ ı],ᴜ": "}ʃᴜ ſɭɜ ı],ᴜ",
+            "ſɭ,ɔ }ʃꞇ": "ſɭ,ɔ }ʃꞇ",
+            "}ʃɔ ſɭᴜ j͐ʃᴜ": "}ʃɔ ſɭᴜ j͐ʃᴜ",
+            "}ʃɔ }ʃɔ ſɭᴜ j͐ʃᴜ": "}ʃɔ }ʃɔ ſɭᴜ j͐ʃᴜ",
+            "j͑ʃ'ᴜ ᶅſɔ": "j͑ʃ'ᴜ ᶅſɔ",
+            "ɭʃᴜ }ʃɔƽ": "ɭʃᴜ }ʃɔƽ",
+            "ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ": "ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ",
+            "j͑ʃ'ɔ ſ̀ȷᴜȝ": "j͑ʃ'ɔ ſ̀ȷᴜȝ",
+            "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ": "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ",
+            "j͑ʃɹ ſɟɔ j͐ʃɹʞ": "j͑ʃɹ ſɟɔ j͐ʃɹʞ",
+            "ſןᴜ j͐ʃэ": "ſןᴜ j͐ʃэ",
+            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ"
+        },
+        en: {
+            "ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ": "Main",
+            "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ": "Iikrhia Language",
+            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ": "Arahashii",
+            "ꞁȷ̀ꞇ }ʃᴜƽ": "Other",
+
+            "ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ": "Whiteboard",
+
+            "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "Tools",
+            "ſɭᴜƽ": "Select",
+            "ſɭɹ ſᶘᴜ": "Pen",
+            "j͑ʃ'ᴜ ı],ᴜ ֭ſɭᴜ": "Curve",
+            "ſɟᴜ ֭ſɭɹͷ̗": "Eraser",
+            "ſɭɘэ": "Text",
+            "ᶅſɔ ֭ſɭɹ": "Colors",
+            "ſɟᴜ ſɭɹʞ j͑ʃп́ɔ ſןᴜ j͐ʃэ": "Brush Size",
+            "}ʃᴜ ſɭɜ ı],ᴜ": "Shapes",
+            "ſɭ,ɔ }ʃꞇ": "Actions",
+            "}ʃɔ ſɭᴜ j͐ʃᴜ": "Undo",
+            "}ʃɔ }ʃɔ ſɭᴜ j͐ʃᴜ": "Redo",
+            "j͑ʃ'ᴜ ᶅſɔ": "Clear",
+            "ɭʃᴜ }ʃɔƽ": "Layers",
+            "ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ": "File",
+            "j͑ʃ'ɔ ſ̀ȷᴜȝ": "Save",
+            "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ": "Load",
+            "j͑ʃɹ ſɟɔ j͐ʃɹʞ": "Navigation",
+            "ſןᴜ j͐ʃэ": "Size",
+            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "Position"
+        }
+    };
+</script>
+
+<script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃƽᴜ ſɭɔʞ.js"></script>
+<script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
+<script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɟᴜ ı],ɹͷ̗.js"></script>
+
+<script src="ſɟᴜ ſɭɔ j͑ʃ'ɔ.js"></script>
+
+</html>

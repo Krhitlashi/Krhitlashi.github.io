@@ -1,0 +1,175 @@
+/* ≺⧼ ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ 🎨 ⧽≻ */
+
+:root {
+    --toolbar-size: 256px;
+    --color-grid-size: 32px;
+    --zoom: 1;
+    --pan-x: 0px;
+    --pan-y: 0px;
+}
+
+/* ⟪ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ ⬜ ⟫ */
+
+html, body {
+    overflow: visible;
+}
+body.whiteboard-page {
+    overflow: visible;
+    align-items: flex-start;
+}
+.whiteboard-container {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    overflow: visible;
+    pointer-events: auto;
+    transform: translate(var(--pan-x), var(--pan-y));
+}
+.whiteboard-canvas-wrapper {
+    transform-origin: center center;
+    transform: scale(var(--zoom));
+    display: flex;
+    flex: 1;
+}
+.whiteboard-canvas {
+    background-color: #fff;
+    border-radius: var(--អិត្ភេពឺ);
+    border: 4px solid #000;
+    touch-action: none;
+    flex-shrink: 0;
+    pointer-events: auto;
+}
+
+.whiteboard-canvas[data-tool="select"] { cursor: default; }
+.whiteboard-canvas[data-tool="pen"],
+.whiteboard-canvas[data-tool="smooth"],
+.whiteboard-canvas[data-tool="shape"] { cursor: crosshair; }
+.whiteboard-canvas[data-tool="eraser"] { cursor: cell; }
+.whiteboard-canvas[data-tool="text"] { cursor: text; }
+.whiteboard-canvas.selected-object {
+    outline: 2px dashed var(--កេភ);
+    outline-offset: 4px;
+}
+
+/* ⟪ }ʃɹ ɭʃᴜ j͑ʃɔ j͑ʃᴜꞇ ſɟᴜ ſɭᴜ ŋᷠᴜ 🧱 ⟫ */
+
+.zoom-controls, .quick-actions, .status-bar, .toolbar-toggle, #transformControls {
+    position: fixed;
+    z-index: 128;
+}
+.zoom-controls {
+    inset-block-end: var(--អារេងព៏);
+    inset-inline-end: var(--អារេងព៏);
+}
+.quick-actions {
+    inset-block-start: var(--អារេងព៏);
+    inset-inline-end: var(--អារេងព៏);
+}
+.status-bar {
+    inset-block-end: var(--អារេងព៏);
+    inset-inline-start: 50%;
+    font-size: 0.75em;
+}
+.toolbar-toggle {
+    inset-block-start: var(--អារេងព៏);
+    inset-inline-start: var(--អារេងព៏);
+    inline-size: 48px;
+    block-size: 48px;
+    transition: inset-inline-start 0.25s ease;
+    z-index: 128;
+}
+.toolbar-toggle::after {
+    content: "<";
+    transition: transform 0.25s ease;
+}
+#toolbarContainer[style*="scale: 0"] ~ .toolbar-toggle {
+    inset-inline-start: var(--អារេងព៏);
+}
+#toolbarContainer[style*="scale: 0"] ~ .toolbar-toggle::after {
+    transform: rotate(180deg);
+}
+#toolbarContainer:not([style*="scale: 0"]) ~ .toolbar-toggle {
+    inset-inline-start: calc(var(--toolbar-size) + var(--អារេងព៏) * 2);
+}
+
+#transformControls {
+    position: fixed;
+    inset-inline-end: var(--អារេងព៏);
+    inset-block: 50%;
+    opacity: 0;
+    pointer-events: none;
+    flex-direction: column;
+}
+#transformControls.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ⟪ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ 🧰 ⟫ */
+
+#toolbarContainer {
+    inline-size: var(--toolbar-size);
+    z-index: 64;
+    transition: all 0.25s ease;
+    scale: 1;
+}
+.custom-color {
+    display: flex;
+    inline-size: 100%;
+}
+.custom-color input[type="color"] {
+    inline-size: 32px;
+    block-size: 100%;
+    padding: 0;
+    background: none;
+}
+.custom-color input[type="text"] {
+    text-transform: uppercase;
+}
+
+/* ⟪ ɭʃᴜ }ʃɔƽ 📚 ⟫ */
+
+#layerList button .layer-visibility::before {
+    content: "👁️";
+}
+#layerList button .layer-visibility[style*="hidden"]::before {
+    content: "🚫";
+}
+
+/* ⟪ ſɭɘэ 📝 ⟫ */
+
+.text-edit-input {
+    position: absolute;
+    inset-inline-start: var(--text-x, 0);
+    inset-block-start: var(--text-y, 0);
+    color: var(--text-color, #000);
+    caret-color: var(--text-color, #000);
+    z-index: 512;
+    display: none;
+    line-height: 1;
+    outline: none;
+    white-space: pre;
+}
+.text-edit-input.visible {
+    display: block;
+}
+
+.cepufal-html-text-measure {
+    position: absolute;
+    visibility: hidden;
+    white-space: pre;
+    line-height: 1;
+    display: inline-block;
+}
+
+/* ⟪ ſɟᴜ }ʃɹƽ 🖱️ ⟫ */
+
+.canvas-cursor-grab { cursor: grab; }
+.canvas-cursor-grabbing { cursor: grabbing; }
+.canvas-cursor-pointer { cursor: pointer; }
+.canvas-cursor-move { cursor: move; }
+.canvas-cursor-default { cursor: default; }
+.canvas-cursor-crosshair { cursor: crosshair; }
+.canvas-cursor-cell { cursor: cell; }
+.canvas-cursor-text { cursor: text; }

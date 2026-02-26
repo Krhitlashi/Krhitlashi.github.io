@@ -24,6 +24,7 @@
 	--អិត្ភេ: 24px 8px;
 	--អិត្ភេចិ: 20px 8px;
 	--អិត្ភេមិ: 16px 4px;
+	--ចិង: 64px;
 
 	--តានេកខេលេ: #ffffff10;
 	--តានេក: #ffffff10;
@@ -83,7 +84,7 @@
 	scrollbar-width: thin;
 	text-align: center;
 }
-*:not(.flak:not(.flak[open])):not(body):not(ariiba) {
+*:not(.flak:not(.flak[open])):not(body):not(ariiba):not(.soza) {
 	gap: var(--អារេង);
 }
 
@@ -113,7 +114,7 @@ div {
 }
 sak {
 	background-color: var(--កេភ២);
-    border-radius: 1024px;
+    border-radius: var(--ចិង);
     display: flex;
     text-align: center;
     padding: 2px;
@@ -295,17 +296,23 @@ button, a {
 }
 button {
 	block-size: 56px;
-	inline-size: 100%;
+	font-size: inherit;
+	font-weight: inherit;
 }
 button:hover, a:hover, a:active {
 	background-color: var(--តានេក២);
 }
 button:active, a:active {
-	border-radius: 64px;
+	border-radius: var(--ចិង);
 	transform: scale(0.96875);
 }
+button[aria-pressed="true"] {
+	background-color: var(--តានេក២);
+    border: var(--សាកព៏២);
+    border-radius: var(--ចិង);
+}
 select {
-	block-size: 100%;
+	inline-size: 100%;
 	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេ);
 	border: var(--សាកព៏);
@@ -331,10 +338,6 @@ thala {
 .cakaxa *:has(> .cepufalxez) {
 	display: flex;
 }
-.cepu {
-	flex-direction: column-reverse;
-	align-items: center;
-}
 
 ciihii {
 	background-color: var(--តានេក);
@@ -346,18 +349,68 @@ ciihii {
 	justify-content: center;
 	align-self: stretch;
 }
+
+/* j͑ʃɜ ſɭ,ᴜ 🪷 */
+
+.n2tase, .n2taseca12na, ksaka {
+	background-color: var(--ឆាងាធីច្ហិ);
+	backdrop-filter: var(--ច្ហិនី);
+}
+.n2taseca12na:hover::after {
+	background-color: var(--តានេក);
+}
 .soza {
-	transition: all 0.25s ease;
-	scale: 0;
 	position: fixed;
+	border-radius: var(--អិត្ភេ);
+	display: flex;
+	flex-direction: column;
+	gap: var(--អារេងចិ);
+	scale: 0;
+	transition: all 0.25s ease;
+}
+.soza.er2ha {
+	inset: var(--អារេងព៏);
+}
+.soza.scace {
+	inset-inline-start: var(--អារេងព៏);
+	inset-block: var(--អារេងព៏);
+	overflow: auto;
+}
+.soza.psaz {
 	bottom: var(--អារេងព៏);
 	left: var(--អារេងព៏);
 	right: var(--អារេងព៏);
+}
+.soza.ctama {
+	top: var(--អារេងព៏);
+	bottom: var(--អារេងព៏);
+	left: var(--អារេងព៏);
+}
+.soza.er2ha thala {
+	block-size: 100%;
+}
+maxema {
+	inline-size: 100%;
+	block-size: 100%;
 	display: flex;
-	justify-content: center;
-	background-color: var(--ឆាងាធីច្ហិ);
-	backdrop-filter: var(--ច្ហិនី);
+	flex-direction: column;
+	justify-content: end;
+}
+ksaka {
+	border-radius: var(--ចិង);
+	border: var(--សាកព៏);
+	padding-block: var(--អារេង);
+	padding-inline: calc(var(--អារេង) * 2);
+	display: flex;
 	flex-direction: row;
+}
+ksaka p {
+	inline-size: 100%;
+}
+ksaka button {
+	block-size: auto;
+	inline-size: 56px;
+	border-radius: var(--អិត្ភេចិ);
 }
 
 /* ⟪ ſȷͷ̗ᴜƽ 🪗 ⟫ */
@@ -409,7 +462,7 @@ summary:active {
 
 /* ⟪ j͑ʃᴜ ʃɜ j͑ʃw j͑ʃп́ɔ ſɟɹ ᶅſɹȝ ſɭw ʃᴜ ⤴️ ⟫ */
 
-.c2w2qkuba {
+.c2w2qkuba, .sabosuc2w2q {
 	display: flex;
 	flex-direction: row;
 	inline-size: 100%;
@@ -424,6 +477,15 @@ summary:active {
 	inline-size: auto;
 	scroll-snap-align: center;
 	display: inline-block;
+}
+.sabosuc2w2q {
+	align-items: center;
+	justify-content: center;
+}
+.qox2n2kucaxema {
+	display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    inline-size: 100%;
 }
 
 /* ⟪ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭэ ſᶘɔ 📝 ⟫ */
@@ -456,25 +518,22 @@ input[type="file"]::file-selector-button {
 	border: var(--សាកព៏);
 	border-radius: var(--អិត្ភេមិ);
 	margin-inline-end: var(--អារេងចិ);
-	transition: all 0.25s ease-in-out;
+	transition: all 0.25s ease;
 }
 input[type="file"]::file-selector-button:hover {
 	background-color: var(--តានេក៣);
-	border: var(--សាកព៏);
 }
 .ca12nasabosu, .ca12nasukf2qu {
-	position: relative;
     inline-size: 24px;
     block-size: 24px;
     background-color: var(--តានេក);
     border-radius: var(--អារេងមិ);
-    transition: .4s;
     border: var(--សាកព៏);
-    flex-shrink: 0;
     transform: rotate(45deg);
-    margin: 4px;
 	appearance: none;
+	cursor: pointer;
 	padding: 0;
+	margin: var(--អារេងមិ);
 }
 .ca12nasabosu:before {
 	position: absolute;
@@ -485,18 +544,18 @@ input[type="file"]::file-selector-button:hover {
     top: 50%;
     background-color: var(--កេភ២);
     border-radius: 2px;
-    transition: .4s;
+    transition: 0.5s ease;
     transform: translate(-50%, -50%) rotate(-45deg);
 }
-input.ca12nasabosu:checked, input.ca12nasukf2qu:checked {
+.ca12nasabosu:checked, .ca12nasukf2qu:checked {
     background-color: var(--តានេក៣);
     border-color: var(--កេភ);
 }
-input.ca12nasabosu:checked:before {
+.ca12nasabosu:checked:before {
     transform: translate(-50%, -50%) rotate(45deg);
     background-color: var(--កេភ);
 }
-input.ca12nasukf2qu:checked:before {
+.ca12nasukf2qu:checked:before {
 	position: absolute;
     content: "";
     height: 8px;
@@ -504,8 +563,28 @@ input.ca12nasukf2qu:checked:before {
     right: 31.25%;
     bottom: 31.25%;
     background-color: var(--កេភ២);
-    border-radius: 64px;
-    transition: .4s;
+    border-radius: var(--ចិង);
+    transition: 0.5s;
+}
+.k6tani {
+	appearance: none;
+    cursor: pointer;
+	background-color: var(--តានេក);
+	border: var(--សាកព៏);
+    border-radius: 512px;
+	padding: var(--អារេងមិ);
+}
+.k6tani::-webkit-slider-thumb, .k6tani::-moz-range-thumb {
+	appearance: none;
+	inline-size: 16px;
+	block-size: 16px;
+	background-color: var(--កេភ);
+	border-radius: var(--ចិង);
+	border: 2px solid var(--ខេលេសៃ);
+	transition: 0.25s;
+}
+.k6tani::-webkit-slider-thumb:hover, .k6tani::-moz-range-thumb:hover {
+	transform: scale(1.25);
 }
 
 /* ⟪ ſɟᴜ ı],ɹͷ̗ 🗃️ ⟫ */
@@ -562,8 +641,31 @@ img {
 	ciihii {
 		background-color: var(--ខេលេសៃច្ហិ);
 	}
-
 	.tahaqkef {
 		filter: invert();
+	}
+}
+
+/* ⟪ ʃэ ŋᷠэȝ ſɭɹ ſןɹ 🖨️ ⟫ */
+
+@media print {
+	.cakaxa {
+		display: none;
+	}
+	thala, ciihii {
+		padding: 0;
+		margin: 0;
+	}
+	* {
+		color: #000 !important;
+		background-color: transparent !important;
+		border: none !important;
+	}
+	body {
+		background-color: #fff !important;
+	}
+	p {
+		orphans: 3;
+		widows: 3;
 	}
 }

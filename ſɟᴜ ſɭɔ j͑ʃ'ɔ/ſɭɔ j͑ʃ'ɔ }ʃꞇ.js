@@ -102,42 +102,6 @@ document.addEventListener("DOMContentLoaded", function() {
   vacepu("cepufal");
 });
 
-// j͑ʃᴜ ſɭᴜ ſɟꞇ ʃɔ
-function sakaIitbe(s2haxe) {
-  const haxe = window.getComputedStyle(s2haxe);
-  const cibe = haxe.borderRadius;
-
-  if (!cibe || cibe === "none" || cibe === "0px") return;
-
-  const sefwini = element.offsetWidth;
-  const l6da = element.offsetHeight;
-  const pal6 = Math.min(sefwini, l6da) * ( 1 / 0o4 );
-
-  if (s2haxe.style.borderRadius !== pal6) {
-    s2haxe.style.borderRadius = `${pal6}px`;
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const k21eni = document.body.querySelectorAll("*");
-
-    const k2cibeni = Array.from(k21eni).filter(el => {
-      const style = window.getComputedStyle(el);
-      return style.borderRadius && style.borderRadius !== "0px" && style.borderRadius !== "none";
-    });
-
-    const mar2ba = new ResizeObserver(hakek => {
-      hakek.forEach(kek => {
-        updateRadius(kek.target);
-      });
-    });
-
-    k2cibeni.forEach(shx => {
-      updateRadius(shx);
-      mar2ba.observe(shx);
-    });
-  });
-}
-
 // j͐ʃᴜɔ˞ ꞁȷ̀ᴜ }ʃꞇ
 document.body.classList.add("a3e3a");
 document.addEventListener("DOMContentLoaded", function() {

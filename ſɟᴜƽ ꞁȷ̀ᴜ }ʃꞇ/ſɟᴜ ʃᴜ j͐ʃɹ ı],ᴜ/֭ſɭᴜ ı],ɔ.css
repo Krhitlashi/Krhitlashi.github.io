@@ -25,14 +25,9 @@
 .hidden {
     display: none !important;
 }
-.controls-row {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-wrap: nowrap;
-}
 
-/* Leaflet */
+/* ≺⧼ Leaflet 🥬 ⧽≻ */
+
 .leaflet-control-zoom {
     border: var(--សាកព៏) !important;
     border-radius: var(--អិត្ភេ) !important;
@@ -75,7 +70,6 @@
     color: var(--កេភ២) !important;
 }
 
-/* Map container buttons */
 .map-section > div:last-child {
     position: absolute;
     top: 8px;
@@ -118,7 +112,6 @@
     border-color: var(--កេភ);
 }
 
-/* Search results dropdown */
 .search-loading,
 .search-no-results,
 .search-error {
