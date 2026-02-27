@@ -207,6 +207,20 @@ function init() {
         update();
     });
 
+    // Grid Only toggle button - hides map tiles, shows only grid
+    const gridOnlyToggle = document.getElementById("gridOnlyToggle");
+    let gridOnlyMode = false;
+    gridOnlyToggle.addEventListener("click", () => {
+        gridOnlyMode = !gridOnlyMode;
+        gridOnlyToggle.setAttribute("aria-pressed", gridOnlyMode);
+        // Hide/show map tiles (not the container, just the tiles)
+        const mapTiles = document.querySelectorAll("#map .leaflet-tile-pane, #map .leaflet-layer");
+        mapTiles.forEach(tile => {
+            tile.style.opacity = gridOnlyMode ? "0" : "1";
+        });
+        draw();
+    });
+
     resetBtn.addEventListener("click", () => {
         currentLat = 0;
         currentLon = 0;
@@ -610,7 +624,7 @@ async function searchAddress() {
         return;
     }
 
-    searchResults.innerHTML = "<div class=\"search-loading\">ſɭᴎɔ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ</div>";
+    searchResults.innerHTML = "<p>ſɭᴎɔ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ</p>";
     searchResults.classList.remove("hidden");
 
     try {
@@ -625,17 +639,17 @@ async function searchAddress() {
         const results = await response.json();
 
         if (results.length === 0) {
-            searchResults.innerHTML = "<div class=\"search-no-results\">֭ſɭɹ ſɟɔ j͐ʃɹʞ ⟅</div>";
+            searchResults.innerHTML = "<p>֭ſɭɹ ſɟɔ j͐ʃɹʞ ⟅</p>";
             return;
         }
 
         searchResults.innerHTML = results.map((result, index) => `
-            <div class="search-result-item" data-lat="${result.lat}" data-lon="${result.lon}">
-                <div class="search-result-name">${result.display_name}</div>
-            </div>
+            <button data-lat="${result.lat}" data-lon="${result.lon}">
+                <p>${result.display_name}</p>
+            </button>
         `).join("");
 
-        document.querySelectorAll(".search-result-item").forEach(item => {
+        document.querySelectorAll("#searchResults button").forEach(item => {
             item.addEventListener("click", () => {
                 const lat = parseFloat(item.dataset.lat);
                 const lon = parseFloat(item.dataset.lon);
@@ -656,7 +670,7 @@ async function searchAddress() {
 
     } catch (error) {
         console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", error);
-        searchResults.innerHTML = "<div class=\"search-error\">ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⟅</div>";
+        searchResults.innerHTML = "<p>ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⟅</p>";
     }
 }
 

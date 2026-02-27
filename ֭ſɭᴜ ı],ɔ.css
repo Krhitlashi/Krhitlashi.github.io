@@ -81,8 +81,8 @@
 	font-family: "ı],ᴜ }ʃᴜ", "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	font-size-adjust: 0.5;
 	color: var(--កេភ);
-	scrollbar-width: thin;
 	text-align: center;
+	scrollbar-width: thin;
 }
 *:not(.flak:not(.flak[open])):not(body):not(ariiba):not(.soza) {
 	gap: var(--អារេង);
@@ -90,19 +90,19 @@
 
 body {
 	background-color: var(--ខេលេសៃ);
+	margin: 0;
 	display: flex;
 	flex-direction: row; 
 	flex-wrap: nowrap; 
 	align-items: center; 
 	justify-content: flex-start;
-	margin: 0;
 	box-sizing: border-box;
-	transition: all 0.25s ease;
 	gap: var(--អារេងចិ);
+	transition: all 0.25s ease;
 }
 html {
-	block-size: 100%;
 	inline-size: 100%;
+	block-size: 100%;
 	overflow-inline: hidden;
 }
 main {
@@ -141,18 +141,9 @@ sak {
 
 /* ⟪ ſɭɘэ 📄 ⟫ */
 
-h {
-	background-color: var(--តានេក២);
-	border-radius: var(--អិត្ភេ);
-	padding: var(--អារេង) var(--អារេងចិ);
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	block-size: 32px;
-}
 h1 {
-	text-align: left;
 	margin: var(--អារេងព៏);
+	text-align: center;
 	font-weight: unset;
 	font-family: "ı],ᴜ }ʃᴜ";
 }
@@ -164,34 +155,20 @@ pre {
 	margin-block: 0;
 }
 .cepufal {
-	font-family: "ı],ᴜ }ʃᴜ";
+	block-size: 100%;
+	padding: calc(var(--អារេងព៏) * 2) var(--អារេងព៏);
 	writing-mode: sideways-lr;
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
 	overflow-inline: hidden;
-	padding: calc(var(--អារេងព៏) * 2) var(--អារេងព៏);
-	block-size: 100%;
+	font-family: "ı],ᴜ }ʃᴜ";
 }
 .cepufalxez:not(.kosabo span) {
 	display: inline-block;
 	writing-mode: lr;
 	white-space: nowrap;
 	line-height: 1;
-}
-.cepufal thala {
-	flex-direction: column;
-	justify-content: center;
-}
-.cepufal ciihii {
-	flex-direction: column;
-}
-.cepufal h1 {
-	text-align: center;
-}
-.cepufal a, .cepufal button {
-	display: flex;
-	align-self: stretch;
 }
 p:has(> .cepufalxez), h1:has(> .cepufalxez) {
 	display: flex;
@@ -216,82 +193,71 @@ p:has(> .cepufalxez), h1:has(> .cepufalxez) {
 .tapufal * {
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, "ı],ᴜ }ʃᴜ";
 }
-.tapufal thala, .tapufal ciihii {
-	flex-direction: column;
-	align-items: stretch;
-	block-size: auto;
-}
 .tapufal .cakaxa {
 	flex-direction: row;
 	align-self: stretch;
 	justify-content: center;
 }
-.tapufal h1 {
-	text-align: center;
-}
-.tapufal a, .tapufal h, .tapufal button {
-	display: flex;
-	align-items: center;
-}
 
 /* ⟪ ſɭɔ˞ᴜ ſɭᴜ 🎩 ⟫ */
 
 .saxesukef {
-	background-color: transparent;
 	inline-size: max-content;
-	font-size-adjust: 0.75;
-	text-align: left;
-	padding: var(--អារេង);
+	background-color: transparent;
 	align-self: center;
+	padding: var(--អារេង);
+	text-align: left;
+	font-size-adjust: 0.75;
 }
 .ksakap2sa, .ksakat2xa {
 	background-color: transparent;
-	text-align: center;
 	padding: var(--អារេង);
 	margin-inline: 0;
-	font-size-adjust: 0.625;
 	align-self: center;
+	text-align: center;
+	font-size-adjust: 0.625;
 }
 .saxesukef .cepufalxez {
+	align-self: center;
 	font-size-adjust: 0.75;
 	line-height: 1.5 !important;
-	align-self: center;
 }
 .ksakap2sa .cepufalxez {
+	align-self: center;
 	font-size-adjust: 0.625;
 	line-height: 1.25 !important;
-	align-self: center;
 }
 .ksakat2xa {
 	font-size-adjust: 0.625;
 	line-height: 1.25;
 }
 .ksakat2xa .cepufalxez {
+	align-self: center;
 	font-size-adjust: 0.625;
 	line-height: 1.25 !important;
-	align-self: center;
 }
 .kefhuruq {
 	background-color: transparent;
-	text-align: left;
-	align-self: center;
 	padding: var(--អារេង);
 	margin-inline: 0;
+	text-align: left;
+	align-self: center;
 	font-style: italic;
 }
 
 /* ⟪ ſɟᴜ ſᶘɹ }ʃᴜ 🔘 ⟫ */
 
 button, a {
+	block-size: 32px;
 	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេ);
 	border: var(--សាកព៏);
-	padding: var(--អារេង) var(--អារេងចិ);
+	padding: var(--អារេងចិ);
 	text-align: center;
 	text-decoration: none;
-	display: inline-block;
+	display: flex;
+	align-items: center;
 	justify-content: center;
-	block-size: 32px;
 	transition: all 0.125s ease;
 }
 button {
@@ -299,7 +265,17 @@ button {
 	font-size: inherit;
 	font-weight: inherit;
 }
-button:hover, a:hover, a:active {
+h {
+	block-size: 32px;
+	background-color: var(--តានេក២);
+	border-radius: var(--អិត្ភេ);
+	padding: var(--អារេងចិ);
+	text-align: center;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+}
+button:hover:not(.n2tase), a:hover, a:active, button[aria-pressed="true"]:not(.n2tase) {
 	background-color: var(--តានេក២);
 }
 button:active, a:active {
@@ -307,7 +283,6 @@ button:active, a:active {
 	transform: scale(0.96875);
 }
 button[aria-pressed="true"] {
-	background-color: var(--តានេក២);
     border: var(--សាកព៏២);
     border-radius: var(--ចិង);
 }
@@ -316,7 +291,13 @@ select {
 	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេ);
 	border: var(--សាកព៏);
-	padding: var(--អារេង) var(--អារេងចិ);
+	padding: var(--អារេងចិ);
+}
+.tahak2f p {
+	inline-size: 100%;
+	display: flex;
+	align-content: center;
+	justify-content: center;
 }
 
 /* ⟪ ɭʃᴜ̩ᴜ j͐ʃᴜ 🗂️ ⟫ */
@@ -325,15 +306,16 @@ thala {
 	background-color: var(--តានេកខេលេ);
 	border-radius: var(--អិត្ភេពឺ);
 	border: var(--សាកព៏);
-	display: flex;
-	text-align: center;
-	align-items: center;
 	padding: var(--អារេងចិ);
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
 }
 .cakaxa, .cepufal .cakaxa {
 	align-self: center;
-	padding: var(--អារេង);
 	flex-direction: row;
+	padding: var(--អារេង);
 }
 .cakaxa *:has(> .cepufalxez) {
 	display: flex;
@@ -344,28 +326,29 @@ ciihii {
 	border-radius: var(--អិត្ភេ);
 	border: var(--សាកព៏);
 	padding: var(--អារេង);
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
 	align-self: stretch;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
 }
 
 /* j͑ʃɜ ſɭ,ᴜ 🪷 */
 
-.n2tase, .n2taseca12na, ksaka {
+.n2tase, ksaka {
 	background-color: var(--ឆាងាធីច្ហិ);
 	backdrop-filter: var(--ច្ហិនី);
 }
-.n2taseca12na:hover::after {
+button.n2tase:hover::after, button.n2tase[aria-pressed="true"]::after {
 	background-color: var(--តានេក);
 }
 .soza {
-	position: fixed;
 	border-radius: var(--អិត្ភេ);
+	scale: 0;
+	position: fixed;
 	display: flex;
 	flex-direction: column;
 	gap: var(--អារេងចិ);
-	scale: 0;
 	transition: all 0.25s ease;
 }
 .soza.er2ha {
@@ -382,8 +365,8 @@ ciihii {
 	right: var(--អារេងព៏);
 }
 .soza.ctama {
-	top: var(--អារេងព៏);
 	bottom: var(--អារេងព៏);
+	top: var(--អារេងព៏);
 	left: var(--អារេងព៏);
 }
 .soza.er2ha thala {
@@ -399,8 +382,8 @@ maxema {
 ksaka {
 	border-radius: var(--ចិង);
 	border: var(--សាកព៏);
-	padding-block: var(--អារេង);
 	padding-inline: calc(var(--អារេង) * 2);
+	padding-block: var(--អារេង);
 	display: flex;
 	flex-direction: row;
 }
@@ -408,8 +391,8 @@ ksaka p {
 	inline-size: 100%;
 }
 ksaka button {
-	block-size: auto;
 	inline-size: 56px;
+	block-size: auto;
 	border-radius: var(--អិត្ភេចិ);
 }
 
@@ -420,11 +403,11 @@ ksaka button {
 	flex-direction: column;
 	border-radius: var(--អិត្ភេចិ);
 	border: var(--សាកព៏២);
+	min-inline-size: 32px;
+	min-block-size: 32px;
 	align-items: stretch;
 	align-self: stretch;
 	padding: var(--អារេង);
-	min-inline-size: 32px;
-	min-block-size: 32px;
 }
 .flak:hover {
 	border: var(--សាកព៏៣);
@@ -434,10 +417,10 @@ ksaka button {
 	align-self: center;
 }
 .c2h2flak {
-	display: flex;
-	flex-direction: column;
 	inline-size: 100%;
 	max-block-size: 0;
+	display: flex;
+	flex-direction: column;
 	opacity: 0;
 	transition: max-block-size 0.25s ease, opacity 0.25s ease;
 }
@@ -447,9 +430,9 @@ ksaka button {
 	transition: max-block-size 0.25s ease, opacity 0.25s ease;
 }
 summary {
-	list-style: none;
 	block-size: 100%;
 	inline-size: 100%;
+	list-style: none;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -463,29 +446,29 @@ summary:active {
 /* ⟪ j͑ʃᴜ ʃɜ j͑ʃw j͑ʃп́ɔ ſɟɹ ᶅſɹȝ ſɭw ʃᴜ ⤴️ ⟫ */
 
 .c2w2qkuba, .sabosuc2w2q {
+	inline-size: 100%;
+	border-radius: var(--អិត្ភេ);
 	display: flex;
 	flex-direction: row;
-	inline-size: 100%;
 	overflow-block: auto;
 	scrollbar-width: auto;
-	border-radius: var(--អិត្ភេ);
 }
 .c2w2qkuba img,
 .c2w2qkuba iframe {
-	flex: 0 0 auto;
-	max-block-size: 512px;
 	inline-size: auto;
-	scroll-snap-align: center;
+	max-block-size: 512px;
+	flex: 0 0 auto;
 	display: inline-block;
+	scroll-snap-align: center;
 }
 .sabosuc2w2q {
 	align-items: center;
 	justify-content: center;
 }
 .qox2n2kucaxema {
+	inline-size: 100%;
 	display: grid;
     grid-template-columns: repeat(4, 1fr);
-    inline-size: 100%;
 }
 
 /* ⟪ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭэ ſᶘɔ 📝 ⟫ */
@@ -500,8 +483,8 @@ input, textarea {
 	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេចិ);
 	border: var(--សាកព៏);
-	align-self: stretch;
 	padding: var(--អារេងព៏);
+	align-self: stretch;
 	backdrop-filter: var(--ច្ហិនី);
 }
 input:hover {
@@ -510,14 +493,17 @@ input:hover {
 input:focus {
 	outline:none;
 }
+input[type="file"] {
+	padding: var(--អារេង);
+}
 input[type="file"]::file-selector-button {
-	font-weight: bold;
-	color: var(--កេភ);
-	background-color: var(--តានេក២);
-	padding: var(--អារេងចិ);
-	border: var(--សាកព៏);
-	border-radius: var(--អិត្ភេមិ);
 	margin-inline-end: var(--អារេងចិ);
+	background-color: var(--តានេក២);
+	border-radius: var(--អិត្ភេមិ);
+	border: var(--សាកព៏);
+	padding: var(--អារេងចិ);
+	color: var(--កេភ);
+	font-weight: bold;
 	transition: all 0.25s ease;
 }
 input[type="file"]::file-selector-button:hover {
@@ -529,22 +515,23 @@ input[type="file"]::file-selector-button:hover {
     background-color: var(--តានេក);
     border-radius: var(--អារេងមិ);
     border: var(--សាកព៏);
+	margin: var(--អារេងមិ);
+	padding: 0;
     transform: rotate(45deg);
 	appearance: none;
 	cursor: pointer;
-	padding: 0;
-	margin: var(--អារេងមិ);
+	transition: all 0.25s ease;
 }
 .ca12nasabosu:before {
-	position: absolute;
-    content: "";
-    height: 2px;
+	height: 2px;
     width: 14px;
-    left: 50%;
-    top: 50%;
-    background-color: var(--កេភ២);
+	background-color: var(--កេភ២);
     border-radius: 2px;
-    transition: 0.5s ease;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+    content: "";
+    transition: all 0.5s ease;
     transform: translate(-50%, -50%) rotate(-45deg);
 }
 .ca12nasabosu:checked, .ca12nasukf2qu:checked {
@@ -552,27 +539,27 @@ input[type="file"]::file-selector-button:hover {
     border-color: var(--កេភ);
 }
 .ca12nasabosu:checked:before {
+	background-color: var(--កេភ);
     transform: translate(-50%, -50%) rotate(45deg);
-    background-color: var(--កេភ);
 }
 .ca12nasukf2qu:checked:before {
-	position: absolute;
-    content: "";
-    height: 8px;
+	height: 8px;
     width: 8px;
-    right: 31.25%;
-    bottom: 31.25%;
-    background-color: var(--កេភ២);
+	background-color: var(--កេភ២);
     border-radius: var(--ចិង);
-    transition: 0.5s;
+	position: absolute;
+	right: 31.25%;
+    bottom: 31.25%;
+    content: "";
+    transition: all 0.5s ease;
 }
 .k6tani {
 	appearance: none;
-    cursor: pointer;
 	background-color: var(--តានេក);
+	border-radius: var(--ចិង);
 	border: var(--សាកព៏);
-    border-radius: 512px;
 	padding: var(--អារេងមិ);
+    cursor: pointer;
 }
 .k6tani::-webkit-slider-thumb, .k6tani::-moz-range-thumb {
 	appearance: none;
@@ -590,12 +577,12 @@ input[type="file"]::file-selector-button:hover {
 /* ⟪ ſɟᴜ ı],ɹͷ̗ 🗃️ ⟫ */
 
 table {
+	inline-size: 100%;
 	background-color: var(--តានេកខេលេ);
 	border-radius: 	var(--អិត្ភេ);
 	border: var(--សាកព៏);
-	inline-size: 100%;
-	margin: 0;
 	border-spacing: var(--អារេង);
+	margin: 0;
 	table-layout: fixed;
 }
 thead, tfoot {
@@ -610,10 +597,8 @@ th, td {
 	border-radius: var(--អិត្ភេចិ);
 	border-collapse: collapse;
 	padding: var(--អារេង);
-	text-align: center;
-	inline-size: 50%;
-	max-block-size: 1000em;
 	overflow: hidden;
+	text-align: center;
 	word-wrap: break-word;
 }
 pre, tanek {
@@ -626,9 +611,9 @@ pre, tanek {
 /* ⟪ ɭʃᴜ ֭ſɭᴜȝ 🖼️ ⟫ */
 
 img, iframe, embed  {
+	block-size: auto;
 	border-radius: var(--អិត្ភេ);
 	align-self: center;
-	block-size: auto;
 	inline-size: 100%;
 }
 img {
@@ -645,6 +630,15 @@ img {
 		filter: invert();
 	}
 }
+@media (prefers-color-scheme: dark) {
+	
+	body > button {
+		background-color: var(--តានេក២);
+	}
+	body > button:hover {
+		background-color: var(--តានេក៣) !important;
+	}
+}
 
 /* ⟪ ʃэ ŋᷠэȝ ſɭɹ ſןɹ 🖨️ ⟫ */
 
@@ -653,13 +647,13 @@ img {
 		display: none;
 	}
 	thala, ciihii {
-		padding: 0;
 		margin: 0;
+		padding: 0;
 	}
 	* {
-		color: #000 !important;
 		background-color: transparent !important;
 		border: none !important;
+		color: #000 !important;
 	}
 	body {
 		background-color: #fff !important;

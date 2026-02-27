@@ -173,8 +173,6 @@ function init() {
 }
 
 function initCanvas() {
-    const container = document.getElementById("whiteboardContainer");
-
     canvas.width = 0o3000;
     canvas.height = 0o2100;
 
@@ -1079,7 +1077,7 @@ function drawShapePath(x, y, width, height, shape) {
             // Dynamic corner calculation: TL and BR have large radius, TR and BL have small radius
             const minDimension = Math.min(width, height);
             const largeRadius = minDimension / 0o3;  // 1/3 of min dimension
-            const smallRadius = minDimension / 0o6;  // 1/6 of min dimension
+            const smallRadius = minDimension / 0o14;  // 1/12 of min dimension
             drawAsymmetricalSquarePath(x, y, width, height, largeRadius, smallRadius);
             break;
     }
@@ -1957,7 +1955,7 @@ function drawSelectionBox(obj) {
     drawRoundedRectPath(bounds.x, bounds.y, bounds.width, bounds.height, radius, true);
 
     // Draw resize handles with rounded corners
-    const handleSize = 0o30;
+    const handleSize = 0o20;
     const handleRadius = 0o6;
     ctx.fillStyle = handleFill;
     ctx.strokeStyle = colors.strokeColor;
@@ -1980,7 +1978,7 @@ function drawSelectionBox(obj) {
 
     // Draw rotate handle (circle above the selection box)
     const rotateHandleX = bounds.x + bounds.width / 2;
-    const rotateHandleY = bounds.y - 0o30;
+    const rotateHandleY = bounds.y - 0o20;
     const rotateHandleRadius = 0o20;
 
     ctx.beginPath();
