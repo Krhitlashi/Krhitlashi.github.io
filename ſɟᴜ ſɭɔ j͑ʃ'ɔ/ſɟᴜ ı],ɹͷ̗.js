@@ -1,4 +1,92 @@
+// ≺⧼ ſɭɹ ſȷɔ 🔢 ⧽≻
+
 const K2FE = ["ɔ", "ı", "ɿ", "ц", "э", "ꞟ", "ɩ", "ƨ"];
+
+knak2fe = 0o10;
+
+function vab6caja(xap2suK2fe) {
+    if (xap2suK2fe < 0) {
+        return "›" + vab6caja(-xap2suK2fe);
+    }
+    if (xap2suK2fe === 0) {
+        return K2FE[0];
+    }
+
+    let tlakakani = "";
+    let cajasuK2fe = Math.floor(xap2suK2fe);
+
+    while (cajasuK2fe > 0) {
+        tlakakani = K2FE[cajasuK2fe % 0o10] + tlakakani;
+        cajasuK2fe = Math.floor(cajasuK2fe / 0o10);
+    }
+
+    return tlakakani;
+}
+
+function nenllakKp6EKfo(okef) {
+    if ( !okef || okef === "" ) return { kfosu: false, eq2kOkef: "" };
+    if ( okef.startsWith("›") ) {
+        return { kfosu: true, eq2kOkef: okef.slice(1) };
+    }
+    return { kfosu: false, eq2kOkef: okef };
+}
+
+function neq2qKp6EKfo(okef, a1akfo) {
+    return a1akfo ? "›" + okef : okef;
+}
+
+function quqEskekK2fe(okef) {
+    if ( !okef || okef === "" ) return 0;
+    let ok2fe = 0;
+    for ( let kp6 of okef ) {
+        const ruva = K2FE.indexOf(kp6);
+        if ( ruva !== -1 ) {
+            ok2fe = ok2fe * knak2fe + ruva;
+        }
+    }
+    return ok2fe;
+}
+
+function vab6k2fekp6( okef ) {
+    const { kfosu, eq2kOkef } = nenllakKp6EKfo( okef );
+    return quqEskekK2fe( eq2kOkef ) * ( kfosu ? -1 : 1 );
+}
+
+
+function k2h2Ok2fe(ok2fe) {
+    return ok2fe !== null && ok2fe !== undefined && !isNaN(ok2fe);
+}
+
+function vab6kp6k2fe(ok2fe) {
+    if ( !k2h2Ok2fe(ok2fe) ) return "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )";
+    return vab6caja(ok2fe);
+}
+
+function quqDomani(hatok2fe, knak2fesuK2fe = knak2fe) {
+    if ( !hatok2fe || hatok2fe.length === 0 ) return 0;
+    let domaniSweskek = 0;
+    for ( let i = 0; i < hatok2fe.length; i++ ) {
+        const ruva = K2FE.indexOf(hatok2fe[ i ]);
+        if ( ruva !== -1 ) {
+            domaniSweskek += ruva / Math.pow(knak2fesuK2fe, i + 1);
+        }
+    }
+    return domaniSweskek;
+}
+
+function quqalDomanisuOk2fe(domani, aahukani = 6, knak2fesuK2fe = knak2fe) {
+    let ts0ni = "";
+    let bakaweDomani = domani;
+    for ( let i = 0; i < aahukani && bakaweDomani > 0.0001; i++ ) {
+        bakaweDomani *= knak2fesuK2fe;
+        let ok2fe = Math.floor(bakaweDomani);
+        ts0ni += K2FE[ok2fe];
+        bakaweDomani -= ok2fe;
+    }
+    return ts0ni;
+}
+
+// ≺⧼ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ 📅 ⧽≻
 
 const SAXENICAX2L = new Date(Date.UTC(2010, 8, 6, 14, 3, 0, 0));
 
@@ -8,25 +96,6 @@ const HAQE_L6HEINAK = QE_L6HEINAK * 0o100;
 const SHE_L6HEINAK = HAQE_L6HEINAK * 0o100;
 const SQE_L6HEINAK = SHE_L6HEINAK * 0o100;
 const SHAQE_L6HEINAK = SQE_L6HEINAK * 0o100;
-
-function vab6caja(xap2suK2fe) {
-    if (xap2suK2fe < 0) {
-        return "›" + vab6caja(-xap2suK2fe);
-    }
-    if (xap2suK2fe === 0) {
-        return K2FE[0];
-    }
-    
-    let tlakakani = "";
-    let cajasuK2fe = Math.floor(xap2suK2fe);
-    
-    while (cajasuK2fe > 0) {
-        tlakakani = K2FE[cajasuK2fe % 0o10] + tlakakani;
-        cajasuK2fe = Math.floor(cajasuK2fe / 0o10);
-    }
-    
-    return tlakakani;
-}
 
 function nlakStafl2(stibix) {
     return stibix % 4 === 0;

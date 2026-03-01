@@ -41,12 +41,21 @@ body.whiteboard-page {
     pointer-events: auto;
 }
 
-.whiteboard-canvas[data-tool="select"] { cursor: default; }
+.whiteboard-canvas[data-tool="select"] { --cursor: default; }
 .whiteboard-canvas[data-tool="pen"],
 .whiteboard-canvas[data-tool="smooth"],
-.whiteboard-canvas[data-tool="shape"] { cursor: crosshair; }
-.whiteboard-canvas[data-tool="eraser"] { cursor: cell; }
-.whiteboard-canvas[data-tool="text"] { cursor: text; }
+.whiteboard-canvas[data-tool="shape"] { --cursor: crosshair; }
+.whiteboard-canvas[data-tool="eraser"] { --cursor: cell; }
+.whiteboard-canvas[data-tool="text"] { --cursor: text; }
+.whiteboard-canvas[data-cursor] { cursor: var(--cursor); }
+.whiteboard-canvas[data-cursor="grab"] { cursor: grab; }
+.whiteboard-canvas[data-cursor="grabbing"] { cursor: grabbing; }
+.whiteboard-canvas[data-cursor="pointer"] { cursor: pointer; }
+.whiteboard-canvas[data-cursor="move"] { cursor: move; }
+.whiteboard-canvas[data-cursor="default"] { cursor: default; }
+.whiteboard-canvas[data-cursor="crosshair"] { cursor: crosshair; }
+.whiteboard-canvas[data-cursor="cell"] { cursor: cell; }
+.whiteboard-canvas[data-cursor="text"] { cursor: text; }
 .whiteboard-canvas.selected-object {
     outline: 2px dashed var(--កេភ);
     outline-offset: 4px;
@@ -105,6 +114,9 @@ body.whiteboard-page {
     opacity: 1;
     pointer-events: auto;
 }
+#transformControls:not(.has-text) #editSelected {
+    display: none;
+}
 
 /* ⟪ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ 🧰 ⟫ */
 
@@ -133,7 +145,7 @@ body.whiteboard-page {
 #layerList button .layer-visibility::before {
     content: "👁️";
 }
-#layerList button .layer-visibility[style*="hidden"]::before {
+#layerList button .layer-visibility[data-visible="false"]::before {
     content: "🚫";
 }
 
@@ -145,11 +157,13 @@ body.whiteboard-page {
     inset-block-start: var(--text-y, 0);
     color: var(--text-color, #000);
     caret-color: var(--text-color, #000);
-    z-index: 512;
+    z-index: 10;
     display: none;
     line-height: 1;
     outline: none;
     white-space: pre;
+    background: transparent;
+    border: none;
 }
 .text-edit-input.visible {
     display: block;
@@ -165,11 +179,15 @@ body.whiteboard-page {
 
 /* ⟪ ſɟᴜ }ʃɹƽ 🖱️ ⟫ */
 
-.canvas-cursor-grab { cursor: grab; }
-.canvas-cursor-grabbing { cursor: grabbing; }
-.canvas-cursor-pointer { cursor: pointer; }
-.canvas-cursor-move { cursor: move; }
-.canvas-cursor-default { cursor: default; }
-.canvas-cursor-crosshair { cursor: crosshair; }
-.canvas-cursor-cell { cursor: cell; }
-.canvas-cursor-text { cursor: text; }
+.whiteboard-canvas[data-cursor="grab"] { cursor: grab; }
+.whiteboard-canvas[data-cursor="grabbing"] { cursor: grabbing; }
+.whiteboard-canvas[data-cursor="pointer"] { cursor: pointer; }
+.whiteboard-canvas[data-cursor="move"] { cursor: move; }
+.whiteboard-canvas[data-cursor="default"] { cursor: default; }
+.whiteboard-canvas[data-cursor="crosshair"] { cursor: crosshair; }
+.whiteboard-canvas[data-cursor="cell"] { cursor: cell; }
+.whiteboard-canvas[data-cursor="text"] { cursor: text; }
+
+#fileInput {
+    display: none;
+}

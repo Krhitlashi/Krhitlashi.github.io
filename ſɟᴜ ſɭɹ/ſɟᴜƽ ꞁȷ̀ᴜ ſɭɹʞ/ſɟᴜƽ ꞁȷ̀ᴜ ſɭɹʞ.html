@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="֭ſɭᴜ ı],ɔ.css">
 </head>
 
-<body class="cepufal whiteboard-page" style="padding: 0;">
+<body class="cepufal whiteboard-page">
     <div class="whiteboard-container" id="whiteboardContainer">
         <div class="whiteboard-canvas-wrapper">
             <canvas class="whiteboard-canvas" id="whiteboardCanvas"></canvas>
@@ -36,10 +36,11 @@
             </button>
             <button data-tool="eraser">
                 <span data-oskakefani="ſɟᴜ ֭ſɭɹͷ̗"></span> 🧹
+                <input type="checkbox" class="ca12nasabosu" id="eraserModeCheckbox">
             </button>
             <button data-tool="text" id="textToolBtn">
                 <span data-oskakefani="ſɭɘэ"></span> 📝
-                <input type="checkbox" class="ca12nasabosu" id="htmlTextCheckbox" checked title="HTML ſɭɘэ">
+                <input type="checkbox" class="ca12nasabosu" id="htmlTextCheckbox" checked>
             </button>
         </thala>
         
@@ -61,10 +62,10 @@
         <thala class="n2tase" id="shapesPanel">
             <p class="ksakap2sa"><span data-oskakefani="}ʃᴜ ſɭɜ ı],ᴜ"></span> ◆</p>
             <div class="qox2n2kucaxema" id="shapeGrid">
-                <button data-shape="line" title="Line">╱</button>
-                <button data-shape="circle" title="Circle">○</button>
-                <button data-shape="triangle" title="Triangle">△</button>
-                <button data-shape="square" title="Square (asymmetrical corners)">▢</button>
+                <button data-shape="line">╱</button>
+                <button data-shape="circle">○</button>
+                <button data-shape="triangle">△</button>
+                <button data-shape="square">▢</button>
             </div>
         </thala>
         
@@ -83,15 +84,15 @@
         
         <thala class="n2tase" id="layersPanel">
             <p class="ksakap2sa"><span data-oskakefani="ɭʃᴜ }ʃɔƽ"></span> 📚</p>
-            <ciihii style="flex-direction: row;">
-                <button id="addLayerBtn" title="Add Layer">➕</button>
-                <button id="deleteLayerBtn" title="Delete Layer">➖</button>
-                <button id="moveLayerUpBtn" title="Move Up">⬆️</button>
-                <button id="moveLayerDownBtn" title="Move Down">⬇️</button>
+            <ciihii>
+                <button id="addLayerBtn">➕</button>
+                <button id="deleteLayerBtn">➖</button>
+                <button id="moveLayerUpBtn">⬆️</button>
+                <button id="moveLayerDownBtn">⬇️</button>
             </ciihii>
             <maxema id="layerList"></maxema>
         </thala>
-        
+
         <thala class="n2tase" id="filePanel">
             <p class="ksakap2sa"><span data-oskakefani="ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ"></span> 💾</p>
             <button id="saveBtn">
@@ -100,7 +101,7 @@
             <button id="loadBtn">
                 <span data-oskakefani="j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ"></span> 📂
             </button>
-            <input type="file" id="fileInput" accept=".png,.jpg,.jpeg" style="display: none;">
+            <input type="file" id="fileInput" accept=".png,.jpg,.jpeg">
         </thala>
         
         <thala class="n2tase" id="navPanel">
@@ -120,7 +121,7 @@
         </thala>
     </div>
 
-    <button class="n2tase toolbar-toggle" id="toolbarToggle" title="Toggle Toolbar"></button>
+    <button class="n2tase toolbar-toggle" id="toolbarToggle"></button>
     
     <thala class="cakaxa n2tase quick-actions">
         <button id="quickUndo">↩️</button>
@@ -148,17 +149,17 @@
     </thala>
     
     <thala class="cakaxa n2tase" id="transformControls">
-        <button id="editSelected" title="Edit Text">✏️</button>
-        <button id="deleteSelected" title="Delete">🗑️</button>
-        <button id="clearSelected" title="Clear">✕</button>
-        <button id="rotateLeft" title="Rotate Left">↺</button>
-        <button id="rotateRight" title="Rotate Right">↻</button>
-        <button id="moveLayerUp" title="Move Up">↑</button>
-        <button id="moveLayerDown" title="Move Down">↓</button>
-        <button id="flipH" title="Flip Horizontal">⇿</button>
-        <button id="flipV" title="Flip Vertical">⇅</button>
-        <button id="bringFront" title="Bring to Front">⤒</button>
-        <button id="sendBack" title="Send to Back">⤓</button>
+        <button id="editSelected">✏️</button>
+        <button id="deleteSelected">🗑️</button>
+        <button id="clearSelected">✕</button>
+        <button id="rotateLeft">↺</button>
+        <button id="rotateRight">↻</button>
+        <button id="moveLayerUp">↑</button>
+        <button id="moveLayerDown">↓</button>
+        <button id="flipH">⇿</button>
+        <button id="flipV">⇅</button>
+        <button id="bringFront">⤒</button>
+        <button id="sendBack">⤓</button>
     </thala>
 </body>
 
@@ -224,11 +225,12 @@
         }
     };
 </script>
-
 <script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃƽᴜ ſɭɔʞ.js"></script>
 <script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
 <script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɟᴜ ı],ɹͷ̗.js"></script>
 
-<script src="ſɟᴜ ſɭɔ j͑ʃ'ɔ.js"></script>
+<script src="ꞁȷ̀ɔ j͑ʃƽɔƽ.js"></script>
+<script src="ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js"></script>
+<script src="ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
 
 </html>

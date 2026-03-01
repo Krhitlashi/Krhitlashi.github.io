@@ -383,9 +383,7 @@ function decimalToDMS(decimal) {
     return { deg, min, sec };
 }
 
-function toBase8(num) {
-    return num.toString(8);
-}
+// ⟨ toBase8 - using shared ſɟᴜ ı],ɹͷ̗.js vab6caja() ⟩
 
 
 // ≺⧼ Grid Logic 📍 ⧽≻
@@ -551,10 +549,10 @@ function update() {
     if (useBase10) {
         coords = `${v1} ${h1} - ${v2} ${h2} - ${v3} ${h3} - ${v4} ${h4}`;
     } else {
-        coords = `${toBase8(v1)} ${toBase8(h1)} - ${toBase8(v2)} ${toBase8(h2)} - ${toBase8(v3)} ${toBase8(h3)} - ${toBase8(v4)} ${toBase8(h4)}`;
+        coords = `${vab6caja(v1)} ${vab6caja(h1)} - ${vab6caja(v2)} ${vab6caja(h2)} - ${vab6caja(v3)} ${vab6caja(h3)} - ${vab6caja(v4)} ${vab6caja(h4)}`;
     }
 
-    outputCoords.textContent = coords;
+    outputCoords.textContent = skakefK2fe( coords );
 
     // ⟨ Generate names for all 4 levels ⟩
     const coords4 = [[c.v1, c.h1], [c.v2, c.h2], [c.v3, c.h3], [c.v4, c.h4]];
@@ -590,7 +588,7 @@ async function searchAddress() {
     if (match) {
         const parseVal = (val) => {
             if (!val) return 0;
-            return useBase10 ? parseInt(val, 10) : parseInt(val, 8);
+            return useBase10 ? parseInt(val, 10) : l6Cacaja(val);
         };
 
         // ⟨ 1=v1, 2=h1, 3=v2, 4=h2, 5=v3, 6=h3, 7=v4, 8=h4 ⟩

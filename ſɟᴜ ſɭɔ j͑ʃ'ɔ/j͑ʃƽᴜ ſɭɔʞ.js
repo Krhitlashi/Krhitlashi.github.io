@@ -1,8 +1,8 @@
 const oskakefani = document.querySelectorAll("[data-oskakefani]");
 
 const ruvaS2karani = new URLSearchParams(window.location.search);
-let kjesaiGawe = ruvaS2karani.get("lang") || document.documentElement.lang || "aih";
-k2regawe(kjesaiGawe);
+let kxesuGawe = ruvaS2karani.get("lang") || document.documentElement.lang || "aih";
+k2regawe(kxesuGawe);
 
 function k2regawe(gawe) {
     kocepufal(gawe)
@@ -29,4 +29,24 @@ function kocepufal(gawe) {
         document.body.classList.remove("cepufal")
         document.body.classList.add("tapufal")
     }
+}
+
+function skakefK2fe(k2fe) {
+    if ( kxesuGawe === "en" ) {
+        return sakaKp6EK2feKalSwehaxe(k2fe);
+    }
+    return k2fe;
+}
+function sakaKp6EK2feKalSwehaxe(okef) {
+    if (!okef) return "";
+    let ts0ni = "";
+    for ( let kp6 of okef ) {
+        const ruva = K2FE.indexOf( kp6 );
+        if ( ruva !== -1 ) {
+            ts0ni += ruva.toString();
+        } else {
+            ts0ni += kp6;
+        }
+    }
+    return ts0ni;
 }

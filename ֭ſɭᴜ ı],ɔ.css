@@ -105,13 +105,6 @@ html {
 	block-size: 100%;
 	overflow-inline: hidden;
 }
-main {
-	display: table-cell;
-	vertical-align: bottom;
-}
-div {
-	scrollbar-width: none;
-}
 sak {
 	background-color: var(--កេភ២);
     border-radius: var(--ចិង);
@@ -151,9 +144,6 @@ p {
 	margin: 0;
 	text-align: center;
 }
-pre {
-	margin-block: 0;
-}
 .cepufal {
 	block-size: 100%;
 	padding: calc(var(--អារេងព៏) * 2) var(--អារេងព៏);
@@ -189,12 +179,12 @@ p:has(> .cepufalxez), h1:has(> .cepufalxez) {
 	flex-direction: column;
 	align-items: stretch;
 	padding: var(--អារេងព៏);
+	writing-mode: horizontal-tb;
 }
 .tapufal * {
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, "ı],ᴜ }ʃᴜ";
 }
 .tapufal .cakaxa {
-	flex-direction: row;
 	align-self: stretch;
 	justify-content: center;
 }
@@ -389,11 +379,13 @@ ksaka {
 }
 ksaka p {
 	inline-size: 100%;
+	align-content: center;
 }
 ksaka button {
 	inline-size: 56px;
 	block-size: auto;
 	border-radius: var(--អិត្ភេចិ);
+	padding: 0;
 }
 
 /* ⟪ ſȷͷ̗ᴜƽ 🪗 ⟫ */
@@ -509,6 +501,10 @@ input[type="file"]::file-selector-button {
 input[type="file"]::file-selector-button:hover {
 	background-color: var(--តានេក៣);
 }
+input[type="color"] {
+	min-inline-size: 24px; 
+	padding: 0;
+}
 .ca12nasabosu, .ca12nasukf2qu {
     inline-size: 24px;
     block-size: 24px;
@@ -613,6 +609,7 @@ pre, tanek {
 img, iframe, embed  {
 	block-size: auto;
 	border-radius: var(--អិត្ភេ);
+	border: var(--តានេក);
 	align-self: center;
 	inline-size: 100%;
 }

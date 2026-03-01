@@ -2,10 +2,6 @@
 
 // ≺⧼ Symbol Mappings 🔣 ⧽≻
 
-// ⟨ Base 8 digits - 0 to 7 ⟩
-const digitSymbols = [ "ɔ", "ı", "ɿ", "ц", "э", "ꞟ", "ɩ", "ƨ" ];
-const base = 8;
-
 // ⟨ Operator symbols ⟩
 const opSymbols = {
     add: "x",
@@ -73,70 +69,11 @@ function resetInputState() {
     fractionalDigits = "";
 }
 
-// ≺⧼ Conversion Functions 🔄 ⧽≻
-
-// ⟨ Strip negative sign from symbol string ⟩
-function stripNegativeSign( str ) {
-    if ( !str || str === "" ) return { negative: false, cleanStr: "" };
-    if ( str.startsWith( opSymbols.negative ) ) {
-        return { negative: true, cleanStr: str.slice( 1 ) };
-    }
-    return { negative: false, cleanStr: str };
-}
-
-// ⟨ Convert number to base 8 symbol string ⟩
-function convertToBase( num ) {
-    if ( num === 0 ) return digitSymbols[ 0 ];
-    let absNum = Math.abs( Math.floor( num ) );
-    let str = "";
-    do {
-        const remainder = absNum % base;
-        str = digitSymbols[ remainder ] + str;
-        absNum = Math.floor( absNum / base );
-    } while ( absNum > 0 );
-    return applyNegativeSign( str, num < 0 );
-}
-
-// ⟨ Apply negative sign if needed ⟩
-function applyNegativeSign( str, isNegative ) {
-    return isNegative ? opSymbols.negative + str : str;
-}
-
-// ⟨ Parse symbol string to number ⟩
-function fromSymbolString( str ) {
-    const { negative, cleanStr } = stripNegativeSign( str );
-    return parseBase8String( cleanStr ) * ( negative ? -1 : 1 );
-}
-
-// ⟨ Parse base 8 string to number ⟩
-function parseBase8String( str ) {
-    if ( !str || str === "" ) return 0;
-    let num = 0;
-    for ( let char of str ) {
-        const index = digitSymbols.indexOf( char );
-        if ( index !== -1 ) {
-            num = num * base + index;
-        }
-    }
-    return num;
-}
+// ≺⧼ Conversion Functions 🔄 ( using shared ſɟᴜ ı],ɹͷ̗.js )
 
 // ⟨ Convert number to display format ⟩
 function convertToDisplay( num ) {
-    return octalDecimalMode ? toOctalDecimalString( num ) : toSymbolString( num );
-}
-
-// ⟨ Calculate fractional value from digit string ⟩
-function calculateFractionalValue( digits ) {
-    if ( !digits || digits.length === 0 ) return 0;
-    let fracValue = 0;
-    for ( let i = 0; i < digits.length; i++ ) {
-        const index = digitSymbols.indexOf( digits[ i ] );
-        if ( index !== -1 ) {
-            fracValue += index / Math.pow( base, i + 1 );
-        }
-    }
-    return fracValue;
+    return octalDecimalMode ? toOctalDecimalString( num ) : vab6caja( num );
 }
 
 // ⟨ Get current value as number with fractional part ⟩
@@ -144,7 +81,7 @@ function getCurrentValueAsNumber() {
     if ( !octalDecimalMode || !isFractional || fractionalDigits.length === 0 ) {
         return currentValue;
     }
-    const fracValue = calculateFractionalValue( fractionalDigits );
+    const fracValue = quqDomani( fractionalDigits );
     const result = Math.abs( currentValue ) + fracValue;
     return currentValue < 0 ? -result : result;
 }
@@ -154,7 +91,7 @@ function getValueAsNumber( intVal, fracDigits ) {
     if ( !octalDecimalMode || !fracDigits || fracDigits.length === 0 ) {
         return intVal;
     }
-    const fracValue = calculateFractionalValue( fracDigits );
+    const fracValue = quqDomani( fracDigits );
     const result = Math.abs( intVal ) + fracValue;
     return intVal < 0 ? -result : result;
 }
@@ -164,9 +101,9 @@ function extractFractionalDigits( fracPart, precision = 6 ) {
     let result = "";
     let tempFrac = fracPart;
     for ( let i = 0; i < precision && tempFrac > 0.0001; i++ ) {
-        tempFrac *= base;
+        tempFrac *= knak2fe;
         let digit = Math.floor( tempFrac );
-        result += digitSymbols[ digit ];
+        result += K2FE[ digit ];
         tempFrac -= digit;
     }
     return result;
@@ -199,31 +136,20 @@ function performBackspace() {
     handleBackspace();
 }
 
-// ⟨ Check if number is valid for conversion ⟩
-function isValidNumber( num ) {
-    return num !== null && num !== undefined && !isNaN( num );
-}
-
-// ⟨ Convert number to symbol string ⟩
-function toSymbolString( num ) {
-    if ( !isValidNumber( num ) ) return "Error";
-    return convertToBase( num );
-}
-
 // ⟨ Convert number to octal decimal string ⟩
 function toOctalDecimalString( num ) {
-    if ( !isValidNumber( num ) ) return "Error";
+    if ( !k2h2Ok2fe( num ) ) return "Error";
     let negative = num < 0;
     num = Math.abs( num );
     let intPart = Math.floor( num );
     let fracPart = num - intPart;
 
-    let intStr = convertToBase( intPart );
+    let intStr = vab6caja( intPart );
 
-    let fracStr = extractFractionalDigits( fracPart );
+    let fracStr = quqalDomanisuOk2fe( fracPart );
 
     if ( fracStr.length > 0 ) {
-        let lastDigit = digitSymbols.indexOf( fracStr[ fracStr.length - 1 ] );
+        let lastDigit = K2FE.indexOf( fracStr[ fracStr.length - 1 ] );
         if ( lastDigit === 4 && fracStr.length === 6 ) {
             fracStr = fracStr.slice( 0, -1 );
         }
@@ -234,23 +160,23 @@ function toOctalDecimalString( num ) {
         result += " " + fracStr;
     }
 
-    return applyNegativeSign( result, negative );
+    return neq2qKp6EKfo( result, negative );
 }
 
 // ⟨ Parse octal decimal string to number ⟩
 function fromOctalDecimalString( str ) {
-    const { negative, cleanStr } = stripNegativeSign( str );
+    const { kfosu, eq2kOkef } = nenllakKp6EKfo( str );
 
-    let parts = cleanStr.split( " " );
-    let intPart = parseBase8String( parts[ 0 ] || "" );
+    let parts = eq2kOkef.split( " " );
+    let intPart = quqEskekK2fe( parts[ 0 ] || "" );
     let fracPart = 0;
 
     if ( parts.length > 1 ) {
-        fracPart = calculateFractionalValue( parts[ 1 ] );
+        fracPart = quqDomani( parts[ 1 ] );
     }
 
     let result = intPart + fracPart;
-    return negative ? -result : result;
+    return kfosu ? -result : result;
 }
 
 // ≺⧼ Display Functions 🖥️ ⧽≻
@@ -258,14 +184,16 @@ function fromOctalDecimalString( str ) {
 // ⟨ Get display value for current state ⟩
 function getDisplayValue() {
     if ( octalDecimalMode ) {
-        let intStr = convertToBase( Math.abs( currentValue ) );
+        let intStr = vab6caja( Math.abs( currentValue ) );
         let result = intStr;
         if ( isFractional ) {
             result += " " + fractionalDigits;
         }
-        return applyNegativeSign( result, currentValue < 0 );
+        result = skakefK2fe( result );
+        return neq2qKp6EKfo( result, currentValue < 0 );
     } else {
-        return toSymbolString( currentValue );
+        let result = vab6caja( currentValue );
+        return skakefK2fe( result );
     }
 }
 
@@ -274,7 +202,8 @@ function getCurrentValueForDisplay() {
     if ( octalDecimalMode && isFractional ) {
         return getDisplayValue();
     }
-    return convertToDisplay( currentValue );
+    let result = convertToDisplay( currentValue );
+    return skakefK2fe( result );
 }
 
 // ⟨ Get operator symbol ⟩
@@ -326,12 +255,12 @@ function handleDigit( symbol ) {
         inputStarted = true;
     }
 
-    const digitIndex = digitSymbols.indexOf( symbol );
+    const digitIndex = K2FE.indexOf( symbol );
     if ( digitIndex !== -1 ) {
         if ( octalDecimalMode && isFractional ) {
             fractionalDigits += symbol;
         } else {
-            currentValue = currentValue * base + digitIndex;
+            currentValue = currentValue * knak2fe + digitIndex;
         }
         updateDisplay();
     }
@@ -437,7 +366,7 @@ function calculate() {
 function clearAll() {
     resetState();
     expressionEl.textContent = "";
-    resultEl.textContent = digitSymbols[ 0 ];
+    resultEl.textContent = K2FE[ 0 ];
     historyContainerEl.innerHTML = "";
 }
 
@@ -473,7 +402,7 @@ function handleBackspace() {
     } else if ( octalDecimalMode && isFractional ) {
         isFractional = false;
     } else {
-        currentValue = Math.floor( currentValue / base );
+        currentValue = Math.floor( currentValue / knak2fe );
         if ( currentValue === 0 ) inputStarted = false;
     }
     updateDisplay();
@@ -500,7 +429,7 @@ keypadEl.querySelectorAll( ".number-buttons button, .function-buttons button, .c
 
 // ⟨ Keyboard event handlers ⟩
 document.addEventListener( "keydown", ( e ) => {
-    if ( digitSymbols.includes( e.key ) ) {
+    if ( K2FE.includes( e.key ) ) {
         handleDigit( e.key );
     } else if ( e.key === "." || e.key === "," ) {
         handleDecimalPoint();
