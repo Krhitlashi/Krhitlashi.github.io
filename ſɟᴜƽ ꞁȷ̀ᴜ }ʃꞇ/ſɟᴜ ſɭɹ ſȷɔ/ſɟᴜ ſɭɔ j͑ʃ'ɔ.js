@@ -1,6 +1,6 @@
 // ≺⧼ Base 8 Calculator - ſɟᴜ ſɭɔ j͑ʃ'ɔ ⧽≻
 
-// ≺⧼ Symbol Mappings 🔣 ⧽≻
+// ⟪ Symbol Mappings 🔣 ⟫
 
 // ⟨ Operator symbols ⟩
 const opSymbols = {
@@ -25,7 +25,7 @@ const operatorLabelMap = {
     "ꭎꭎ": "root"
 };
 
-// ≺⧼ State Variables 💾 ⧽≻
+// ⟪ State Variables 💾 ⟫
 
 // ⟨ Current calculation state ⟩
 let currentValue = 0;
@@ -41,14 +41,14 @@ let isFractional = false;
 let fractionalDigits = "";
 let historyStack = "";
 
-// ≺⧼ DOM Elements 🔧 ⧽≻
+// ⟪ DOM Elements 🔧 ⟫
 
 const expressionEl = document.getElementById( "expression" );
 const resultEl = document.getElementById( "result" );
 const keypadEl = document.getElementById( "keypad" );
 const historyContainerEl = document.getElementById( "history-container" );
 
-// ≺⧼ Helper Functions 🛠️ ⧽≻
+// ⟪ Helper Functions 🛠️ ⟫
 
 // ⟨ Reset all calculator state ⟩
 function resetState() {
@@ -69,11 +69,11 @@ function resetInputState() {
     fractionalDigits = "";
 }
 
-// ≺⧼ Conversion Functions 🔄 ( using shared ſɟᴜ ı],ɹͷ̗.js )
+// ⟪ Conversion Functions 🔄 ⟫ ( using shared ſɟᴜ ı],ɹͷ̗.js )
 
 // ⟨ Convert number to display format ⟩
 function convertToDisplay( num ) {
-    return octalDecimalMode ? toOctalDecimalString( num ) : vab6caja( num );
+    return octalDecimalMode ? vab6cajaDomani( num ) : vab6caja( num );
 }
 
 // ⟨ Get current value as number with fractional part ⟩
@@ -96,19 +96,6 @@ function getValueAsNumber( intVal, fracDigits ) {
     return intVal < 0 ? -result : result;
 }
 
-// ⟨ Extract fractional digits from a decimal fraction ⟩
-function extractFractionalDigits( fracPart, precision = 6 ) {
-    let result = "";
-    let tempFrac = fracPart;
-    for ( let i = 0; i < precision && tempFrac > 0.0001; i++ ) {
-        tempFrac *= knak2fe;
-        let digit = Math.floor( tempFrac );
-        result += K2FE[ digit ];
-        tempFrac -= digit;
-    }
-    return result;
-}
-
 // ⟨ Set current value from number ⟩
 function setCurrentValueFromNumber( num ) {
     if ( !octalDecimalMode ) {
@@ -127,7 +114,7 @@ function setCurrentValueFromNumber( num ) {
 
     if ( fracPart > 0.0001 ) {
         isFractional = true;
-        fractionalDigits = extractFractionalDigits( fracPart );
+        fractionalDigits = quqalDomanisuOk2fe( fracPart );
     }
 }
 
@@ -136,58 +123,14 @@ function performBackspace() {
     handleBackspace();
 }
 
-// ⟨ Convert number to octal decimal string ⟩
-function toOctalDecimalString( num ) {
-    if ( !k2h2Ok2fe( num ) ) return "Error";
-    let negative = num < 0;
-    num = Math.abs( num );
-    let intPart = Math.floor( num );
-    let fracPart = num - intPart;
-
-    let intStr = vab6caja( intPart );
-
-    let fracStr = quqalDomanisuOk2fe( fracPart );
-
-    if ( fracStr.length > 0 ) {
-        let lastDigit = K2FE.indexOf( fracStr[ fracStr.length - 1 ] );
-        if ( lastDigit === 4 && fracStr.length === 6 ) {
-            fracStr = fracStr.slice( 0, -1 );
-        }
-    }
-
-    let result = intStr;
-    if ( fracStr ) {
-        result += " " + fracStr;
-    }
-
-    return neq2qKp6EKfo( result, negative );
-}
-
-// ⟨ Parse octal decimal string to number ⟩
-function fromOctalDecimalString( str ) {
-    const { kfosu, eq2kOkef } = nenllakKp6EKfo( str );
-
-    let parts = eq2kOkef.split( " " );
-    let intPart = quqEskekK2fe( parts[ 0 ] || "" );
-    let fracPart = 0;
-
-    if ( parts.length > 1 ) {
-        fracPart = quqDomani( parts[ 1 ] );
-    }
-
-    let result = intPart + fracPart;
-    return kfosu ? -result : result;
-}
-
-// ≺⧼ Display Functions 🖥️ ⧽≻
+// ⟪ Display Functions 🖥️ ⟫
 
 // ⟨ Get display value for current state ⟩
 function getDisplayValue() {
     if ( octalDecimalMode ) {
-        let intStr = vab6caja( Math.abs( currentValue ) );
-        let result = intStr;
+        let result = vab6cajaDomani( Math.abs( currentValue ) );
         if ( isFractional ) {
-            result += " " + fractionalDigits;
+            result = vab6caja( Math.abs( currentValue ) ) + " " + fractionalDigits;
         }
         result = skakefK2fe( result );
         return neq2qKp6EKfo( result, currentValue < 0 );
@@ -260,7 +203,7 @@ function handleDigit( symbol ) {
         if ( octalDecimalMode && isFractional ) {
             fractionalDigits += symbol;
         } else {
-            currentValue = currentValue * knak2fe + digitIndex;
+            currentValue = currentValue * KNAK2FE + digitIndex;
         }
         updateDisplay();
     }
@@ -306,7 +249,7 @@ function handleOperator( op ) {
     updateDisplay();
 }
 
-// ≺⧼ Calculation Functions 🧮 ⧽≻
+// ⟪ Calculation Functions 🧮 ⟫
 
 // ⟨ Perform calculation ⟩
 function calculate() {
@@ -360,7 +303,7 @@ function calculate() {
     resultEl.textContent = getCurrentValueForDisplay();
 }
 
-// ≺⧼ Control Functions 🎛️ ⧽≻
+// ⟪ Control Functions 🎛️ ⟫
 
 // ⟨ Clear all state and display ⟩
 function clearAll() {
@@ -402,13 +345,13 @@ function handleBackspace() {
     } else if ( octalDecimalMode && isFractional ) {
         isFractional = false;
     } else {
-        currentValue = Math.floor( currentValue / knak2fe );
+        currentValue = Math.floor( currentValue / KNAK2FE );
         if ( currentValue === 0 ) inputStarted = false;
     }
     updateDisplay();
 }
 
-// ≺⧼ Event Listeners 📡 ⧽≻
+// ⟪ Event Listeners 📡 ⟫
 
 // ⟨ Keypad button click handlers ⟩
 keypadEl.querySelectorAll( ".number-buttons button, .function-buttons button, .control-buttons button" ).forEach( button => {

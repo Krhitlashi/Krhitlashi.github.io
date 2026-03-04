@@ -1,4 +1,4 @@
-// ≺⧼ ſɟᴜ - Whiteboard Application ⧽≻
+// ≺⧼ ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ - Whiteboard Application ⧽≻
 
 // ⟪ Initialization 🚀 ⟫
 
@@ -381,7 +381,7 @@ function initSizeSlider() {
 function initToolbar() {
     const toolbar = document.getElementById("toolbarContainer");
     initButton("toolbarToggle", () => {
-        if (toolbar) atlesoza(toolbar);
+        if (toolbar) a3esoza(toolbar);
     });
 }
 

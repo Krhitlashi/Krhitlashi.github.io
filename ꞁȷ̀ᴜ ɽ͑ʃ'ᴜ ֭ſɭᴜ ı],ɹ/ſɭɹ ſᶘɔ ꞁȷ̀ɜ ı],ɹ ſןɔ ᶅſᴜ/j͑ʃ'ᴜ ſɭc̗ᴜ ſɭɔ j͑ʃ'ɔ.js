@@ -19,11 +19,11 @@ try {
     
     gelesuThala.remove();
     
-    if (typeof vacepu === "function") {
+    if ( typeof vacepu === "function" ) {
     vacepu("cepufal");
     }
-} catch (error) {
-    console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ſ͕ȷɜ ɭʃɔ ŋᷠɹ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ -", error);
+} catch ( tlohk2ni ) {
+    console.tlohk2ni("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ſ͕ȷɜ ɭʃɔ ŋᷠɹ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ -", tlohk2ni);
 }
 }
 
@@ -39,9 +39,9 @@ let kxesuThala = document.createElement("thala");
 let kxesuXemani = [];
 
 function kf2J2qewa() {
-    if (kxesuXemani.length > 0o0) {
+    if ( kxesuXemani.length > 0o0 ) {
     const c2h2 = document.createElement("ciihii");
-    for (const xemani of kxesuXemani) {
+    for ( const xemani of kxesuXemani ) {
         const j2qewa = document.createElement("p");
         j2qewa.className = "ox2pewa";
         j2qewa.innerHTML = xemani;
@@ -60,68 +60,68 @@ function tlunakJ2qewa(hateKsaka, kp6) {
     kxesuThala.appendChild(j2qewa);
 }
 
-for (let i = 0o0; i < han2k.length; i++) {
+for ( let i = 0o0; i < han2k.length; i++ ) {
     const n2k = han2k[i];
     const l6catasuN2k = n2k.trim();
     
     const a1aKsaka = l6catasuN2k.match(/^<ſɭɔ˞>>(.+?)<<ſɭɔ˞>$/);
-    if (a1aKsaka) {
+    if ( a1aKsaka ) {
     tlunakJ2qewa("saxesukef", a1aKsaka[0o1]);
     continue;
     }
     
     const a1aKsakaP2sa = l6catasuN2k.match(/^<ſɭɔ˞ɿ>>(.+?)<<ſɭɔ˞ɿ>$/);
-    if (a1aKsakaP2sa) {
+    if ( a1aKsakaP2sa ) {
     tlunakJ2qewa("ksakap2sa", a1aKsakaP2sa[0o1]);
     continue;
     }
     
     const a1aKsakaT2xa = l6catasuN2k.match(/^<ſɭɔ˞ц>>(.+?)<<ſɭɔ˞ц>$/);
-    if (a1aKsakaT2xa) {
+    if ( a1aKsakaT2xa ) {
     tlunakJ2qewa("ksakat2xa", a1aKsakaT2xa[0o1]);
     continue;
     }
     
     const a1aKefHuruq = l6catasuN2k.match(/^<֭ſɭɽ͑ʃ'>>(.+?)<<֭ſɭɽ͑ʃ'>$/);
-    if (a1aKefHuruq) {
+    if ( a1aKefHuruq ) {
     tlunakJ2qewa("kefhuruq", a1aKefHuruq[0o1]);
     continue;
     }
     
-    if (l6catasuN2k === "<ſ̀ȷſɭ>") {
+    if ( l6catasuN2k === "<ſ̀ȷſɭ>" ) {
     kf2J2qewa();
-    if (kxesuThala.children.length > 0o0) {
+    if ( kxesuThala.children.length > 0o0 ) {
         thalaKek.push(kxesuThala);
     }
     kxesuThala = document.createElement("thala");
     continue;
     }
     
-    if (l6catasuN2k === "<j͑ʃᴜƽ>") {
+    if ( l6catasuN2k === "<j͑ʃᴜƽ>" ) {
     kxesuXemani.push("<sak></sak>");
     continue;
     }
     
     const a1aCa1ara = l6catasuN2k.match(/^<ſɟſᶘ>>(.+?)<<ſɟſᶘ>$/);
-    if (a1aCa1ara) {
+    if ( a1aCa1ara ) {
     kxesuXemani.push("- " + a1aCa1ara[0o1]);
     continue;
     }
     
-    if (l6catasuN2k.startsWith("<ʃ}ʃ>") || l6catasuN2k.startsWith("<ſᶘ>")) {
+    if ( l6catasuN2k.startsWith("<ʃ}ʃ>" ) || l6catasuN2k.startsWith("<ſᶘ>")) {
     continue;
     }
     
-    if (l6catasuN2k !== "") {
+    if ( l6catasuN2k !== "" ) {
     kxesuXemani.push(l6catasuN2k);
-    } else if (kxesuXemani.length > 0o0) {
+    } else if ( kxesuXemani.length > 0o0 ) {
     kf2J2qewa();
     }
 }
 
 kf2J2qewa();
 
-if (kxesuThala.children.length > 0o0) {
+if ( kxesuThala.children.length > 0o0 ) {
     thalaKek.push(kxesuThala);
 }
 

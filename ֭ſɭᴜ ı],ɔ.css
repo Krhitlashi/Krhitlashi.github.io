@@ -188,6 +188,18 @@ p:has(> .cepufalxez), h1:has(> .cepufalxez) {
 	align-self: stretch;
 	justify-content: center;
 }
+.tapufal .soza.ctama {
+	bottom: var(--អារេងព៏);
+	top: unset;
+	left: var(--អារេងព៏);
+	right: var(--អារេងព៏);
+}
+.tapufal .soza.psaz {
+	bottom: var(--អារេងព៏);
+	top: var(--អារេងព៏);
+	left: var(--អារេងព៏);
+	right: unset;
+}
 
 /* ⟪ ſɭɔ˞ᴜ ſɭᴜ 🎩 ⟫ */
 
@@ -505,7 +517,7 @@ input[type="color"] {
 	min-inline-size: 24px; 
 	padding: 0;
 }
-.ca12nasabosu, .ca12nasukf2qu {
+input[type="checkbox"], .ca12nasabosu, .ca12nasukf2qu {
     inline-size: 24px;
     block-size: 24px;
     background-color: var(--តានេក);
@@ -518,7 +530,7 @@ input[type="color"] {
 	cursor: pointer;
 	transition: all 0.25s ease;
 }
-.ca12nasabosu:before {
+input[type="checkbox"]:before, .ca12nasabosu:before {
 	height: 2px;
     width: 14px;
 	background-color: var(--កេភ២);
@@ -530,11 +542,11 @@ input[type="color"] {
     transition: all 0.5s ease;
     transform: translate(-50%, -50%) rotate(-45deg);
 }
-.ca12nasabosu:checked, .ca12nasukf2qu:checked {
+input[type="checkbox"]:checked, .ca12nasabosu:checked, .ca12nasukf2qu:checked {
     background-color: var(--តានេក៣);
     border-color: var(--កេភ);
 }
-.ca12nasabosu:checked:before {
+input[type="checkbox"]:checked:before, .ca12nasabosu:checked:before {
 	background-color: var(--កេភ);
     transform: translate(-50%, -50%) rotate(45deg);
 }
