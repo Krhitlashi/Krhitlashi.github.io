@@ -14,7 +14,6 @@ const ZOOM_RESET = 0o3;
 
 // ⟪ Helper Functions 🛠️ ⟫
 
-// ⟨ Update map position and refresh UI ⟩
 function updateMapPosition(lat, lon, zoom = null) {
     currentLat = lat;
     currentLon = lon;
@@ -26,7 +25,6 @@ function updateMapPosition(lat, lon, zoom = null) {
     update();
 }
 
-// ⟨ Get multiple DOM elements by IDs ⟩
 function getElements(...ids) {
     const elements = {};
     for ( const id of ids ) {
@@ -35,14 +33,64 @@ function getElements(...ids) {
     return elements;
 }
 
-// ⟨ Add event listeners to multiple elements ⟩
 function addEventListeners(elements, event, handler) {
     for ( const el of elements ) {
         el.addEventListener(event, handler);
     }
 }
 
-// ⟨ Calculate 4 levels of grid subdivision ⟩
+function clampCoordinate(value, min, max) {
+    if ( value < min ) return min;
+    if ( value > max ) return max;
+    return value;
+}
+
+function updateMarkerPosition() {
+    map.setView([currentLat, currentLon]);
+    marker.setLatLng([currentLat, currentLon]);
+}
+
+function parseCoordinatePairs(pairs) {
+    const fullV = [0, 0, 0, 0];
+    const fullH = [0, 0, 0, 0];
+    const v = [], h = [];
+
+    for ( const pair of pairs ) {
+        const mid = Math.ceil(pair.length / 2);
+        const vStr = pair.slice(0, mid);
+        const hStr = pair.slice(mid);
+        const vVal = parseInt(vStr, 8);
+        const hVal = parseInt(hStr, 8);
+        if ( isNaN(vVal) || isNaN(hVal) ) return null;
+        v.push(vVal - 1);
+        h.push(hVal - 1);
+    }
+
+    const startLevel = 4 - pairs.length;
+    for ( let i = 0; i < pairs.length; i++ ) {
+        fullV[startLevel + i] = v[i];
+        fullH[startLevel + i] = h[i];
+    }
+
+    return { fullV, fullH };
+}
+
+function createResultButtons(containerSelector, results, zoom, onSelect) {
+    const displayResults = results.slice(0, 0o40);
+    document.querySelector(containerSelector).innerHTML = displayResults.map(r => `
+        <button data-lat="${r.lat}" data-lon="${r.lon}">
+            <p><strong>${r.ksakaName}</strong> ( ${r.latinName} )</p>
+            <small>${r.v + 1} ${r.h + 1}</small>
+        </button>
+    `).join("");
+
+    document.querySelectorAll(`${containerSelector} button`).forEach(item => {
+        item.addEventListener("click", () => {
+            onSelect(parseFloat(item.dataset.lat), parseFloat(item.dataset.lon), zoom);
+        });
+    });
+}
+
 function calcGridLevels(value, totalRange, divisions, isLongitude = false) {
     let raw1 = ( value / totalRange ) * divisions[0];
     if ( raw1 >= divisions[0] ) raw1 = divisions[0] - 0.000001;
@@ -62,26 +110,20 @@ function calcGridLevels(value, totalRange, divisions, isLongitude = false) {
 
 // ⟪ Data Arrays 📚 ⟫
 
-// ⟨ Grid Name Systems - Merged Arrays 📚 ⟩
-// Each index contains { v, hPrefix, hSuffix } for that grid position
-
 const GRID_SYSTEMS = [];
 
 for ( let i = 0; i < 0o40; i++ ) {
     GRID_SYSTEMS.push({
-        // Ksaka ( Iikrhia Script )
         ksaka: {
             v: ["ᶅſ", "ſן", "ſȷ", "ŋᷠ", "ʃ", "ɽ͑ʃ'", "j͑ʃ'", "ſᶘ", "ɭ(", "ɭʃ", "j͑ʃ", "}ʃ", "j͐ʃ", "ſ̀ȷ", "ſɭ,", "ſɭˬ", "ɭl̀", "ſɟ", "ı],", "ſ͕ȷ", "ſ͔ɭ", "ſɭ", "֭ſɭ", "ſ͕ɭ", "j͑ʃɘ", "j͑ʃƨ", "j͑ʃᴜ̭", "j͑ʃƽ", "ſןᴜ̭", "ɭʃƽ", "ſɟɘ", "ſɭƨ"][i] || "?",
             hPrefix: ["ꞇ", "ɹ", "ɔ", "ᴜ", "w", "ɜ", "э", "эⅎ"],
             hSuffix: ["ʞ", "ⰱ", "ɔ˞", "ͷ̗", "ƴ", "ᶗ‹", "ƽ", "ȝ"]
         },
-        // Latin
         latin: {
             v: ["w", "p", "f", "m", "b", "r", "v", "ts", "d", "t", "s", "n", "l", "tl", "z", "kz", "j", "c", "x", "y", "g", "k", "h", "q", "sp", "st", "sc", "sk", "pc", "tk", "cp", "kt"][i] || "?",
             hPrefix: ["i", "ii", "e", "a", "u", "o", "aa", "au"],
             hSuffix: ["f", "v", "s", "l", "z", "x", "k", "q"]
         },
-        // Chmuah ( Khmer )
         chmuah: {
             v: ["វ", "ព", "ប", "ម", "រ", "ត", "ដ", "ន", "យ", "ច", "ឆ", "ញ", "ហ", "ក", "ខ", "ង", "អ", "ផ", "ថ", "ល", "ប្រ", "ត្រ", "ច្រ", "ក្រ", "ផ្ល", "ថ្ល", "ឆ្ល", "ខ្ល", "ផ្ច", "ថ្ក", "ឆ្ប", "ខ្ត"][i] || "?",
             hPrefix: ["ី", "ិ", "េ", "ា", "ើ", "ុ", "ូ", ""],
@@ -89,7 +131,6 @@ for ( let i = 0; i < 0o40; i++ ) {
         }
     });
 }
-
 
 // ⟪ DOM Elements 🔧 ⟫
 
@@ -106,7 +147,8 @@ let useBase10 = false;
 let map = null;
 let marker = null;
 
-// ⟨ Initialize DOM elements ⟩
+// ⟪ Initialization 🚀 ⟫
+
 function initElements() {
     const elements = getElements(
         "latInput", "lonInput", "latDeg", "latMin", "latSec", "latHem",
@@ -163,22 +205,25 @@ function initElements() {
 function init() {
     initElements();
 
+    const urlCoords = parseURLCoords();
+    if ( urlCoords ) {
+        currentLat = urlCoords.lat;
+        currentLon = urlCoords.lon;
+    }
+
     map = L.map("map", {
         center: [currentLat, currentLon],
         zoom: ZOOM_INITIAL,
         zoomControl: false
     });
 
-    // ⟨ Add zoom control to bottom right ⟩
     L.control.zoom({ position: "bottomright" }).addTo(map);
 
-    // ⟨ Add OpenStreetMap base layer ( open-source ) ⟩
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "© OpenStreetMap contributors",
         maxZoom: ZOOM_MAX
     }).addTo(map);
 
-    // ⟨ Add marker ⟩
     marker = L.marker([currentLat, currentLon], {
         icon: L.divIcon({
             className: "custom-marker",
@@ -188,7 +233,6 @@ function init() {
         })
     }).addTo(map);
 
-    // ⟨ Map event listeners ⟩
     map.on("click", handleMapClickLeaflet);
     map.on("move", updateMapSync);
     map.on("zoom", updateMapSync);
@@ -196,20 +240,16 @@ function init() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // ⟨ Listeners for Decimal ⟩
     addEventListeners([ latInput, lonInput ], "input", handleDecimalInput);
 
-    // ⟨ Listeners for DMS ⟩
     dmsInputs.forEach(el => {
         el.addEventListener("input", handleDMSInput);
         el.addEventListener("change", handleDMSInput);
     });
 
-    // ⟨ Tabs ⟩
     tabDecimal.addEventListener("click", () => switchMode("decimal"));
     tabDMS.addEventListener("click", () => switchMode("dms"));
 
-    // ⟨ Checkbox toggles ⟩
     showGridCheck.addEventListener("change", ( e ) => {
         showGrid = e.target.checked;
         draw();
@@ -220,7 +260,6 @@ function init() {
         update();
     });
 
-    // ⟨ Grid Only toggle - hides map tiles, shows only grid ⟩
     const gridOnlyToggle = document.getElementById("gridOnlyToggle");
     let gridOnlyMode = false;
     gridOnlyToggle.addEventListener("click", () => {
@@ -237,24 +276,29 @@ function init() {
         updateMapPosition( 0, 0, ZOOM_RESET );
     });
 
-    // ⟨ Offline controls ⟩
     downloadBtn.addEventListener( "click", downloadCurrentView );
     clearCacheBtn.addEventListener( "click", clearCache );
 
-    // ⟨ Search controls ⟩
     searchBtn.addEventListener( "click", searchAddress );
     searchInput.addEventListener( "keypress", ( e ) => {
         if ( e.key === "Enter" ) {
             searchAddress();
         }
     } );
+    searchInput.addEventListener( "paste", handlePaste );
 
-    // ⟨ Initial populate ⟩
+    let urlUpdateTimeout = null;
+    function updateURLDebounced() {
+        if ( urlUpdateTimeout ) clearTimeout( urlUpdateTimeout );
+        urlUpdateTimeout = setTimeout( updateURL, 500 );
+    }
+    map.on( "moveend", updateURLDebounced );
+    map.on( "zoomend", updateURLDebounced );
+
     updateAllInputs();
     update();
     updateCacheInfo();
 
-    // ⟨ Register service worker ⟩
     if ( "serviceWorker" in navigator ) {
         navigator.serviceWorker.register( "./j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js" )
             .then( reg => console.log( "Service Worker registered.", reg ) )
@@ -292,39 +336,32 @@ function resizeCanvas() {
     update();
 }
 
-
 // ⟪ Data Handling 📊 ⟫
 
 function handleDecimalInput() {
     let lat = parseFloat( latInput.value );
     let lon = parseFloat( lonInput.value );
 
-    // ⟨ Validation ⟩
     if ( isNaN( lat ) ) lat = 0;
     if ( isNaN( lon ) ) lon = 0;
-    if ( lat < -90 ) lat = -90;
-    if ( lat > 90 ) lat = 90;
-    if ( lon < -180 ) lon = -180;
-    if ( lon > 180 ) lon = 180;
+    lat = clampCoordinate(lat, -90, 90);
+    lon = clampCoordinate(lon, -180, 180);
 
     currentLat = lat;
     currentLon = lon;
 
-    map.setView( [ currentLat, currentLon ] );
-    marker.setLatLng( [ currentLat, currentLon ] );
+    updateMarkerPosition();
 
     updateDMSInputs();
     update();
 }
 
 function handleDMSInput() {
-    // ⟨ Parse Latitude ⟩
     let lDeg = parseFloat( latDeg.value ) || 0;
     let lMin = parseFloat( latMin.value ) || 0;
     let lSec = parseFloat( latSec.value ) || 0;
     let lHem = latHem.value;
 
-    // ⟨ Parse Longitude ⟩
     let loDeg = parseFloat( lonDeg.value ) || 0;
     let loMin = parseFloat( lonMin.value ) || 0;
     let loSec = parseFloat( lonSec.value ) || 0;
@@ -336,17 +373,13 @@ function handleDMSInput() {
     let decLon = loDeg + ( loMin / 60 ) + ( loSec / 3600 );
     if ( loHem === "W" ) decLon = -decLon;
 
-    // ⟨ Validation bounds ⟩
-    if ( decLat > 90 ) decLat = 90;
-    if ( decLat < -90 ) decLat = -90;
-    if ( decLon > 180 ) decLon = 180;
-    if ( decLon < -180 ) decLon = -180;
+    decLat = clampCoordinate(decLat, -90, 90);
+    decLon = clampCoordinate(decLon, -180, 180);
 
     currentLat = decLat;
     currentLon = decLon;
 
-    map.setView( [ currentLat, currentLon ] );
-    marker.setLatLng( [ currentLat, currentLon ] );
+    updateMarkerPosition();
 
     latInput.value = currentLat.toFixed( 5 );
     lonInput.value = currentLon.toFixed( 5 );
@@ -385,20 +418,13 @@ function decimalToDMS( decimal ) {
 
 // ⟪ Coordinate & Grid Logic 📍 ⟫
 
-// ⟨ Coordinate system - Longitude is converted to "degrees West" ( 0-360 )
-//   then shifted by GRID_OFFSET. Grid lines are drawn by reversing this. ⟩
-//   lon ⟶ baseDegWest ⟶ degWest ( +offset ) ⟶ grid index
-//   grid index ⟶ degWestOffset ⟶ baseDegWest ( -offset ) ⟶ lon
-
 function getGridCoords( lat, lon ) {
-    // ⟨ Horizontal ( H ) Calculation ⟩
     let baseDegWest = ( lon <= 0 ) ? -lon : ( 360 - lon );
     if ( lon === 0 ) baseDegWest = 0;
 
     let degWest = ( baseDegWest + GRID_OFFSET ) % 360;
     const hLevels = calcGridLevels( degWest, 360, [ 0o100, 0o40, 0o40, 0o40 ] );
 
-    // ⟨ Vertical ( V ) Calculation ⟩
     const vLevels = calcGridLevels( 90 - lat, 180, [ 0o40, 0o40, 0o40, 0o40 ] );
 
     return {
@@ -422,18 +448,14 @@ function levelsToNormalized( levels, divisors ) {
 }
 
 function gridToLatLon( v1, h1, v2, h2, v3, h3, v4, h4 ) {
-    // ⟨ Convert to 0-based indexing ⟩
     const vLevels = [ v1, v2, v3, v4 ].map( v => Math.max( 0, v - 1 ) );
     const hLevels = [ h1, h2, h3, h4 ].map( h => Math.max( 0, h - 1 ) );
 
-    // ⟨ Calculate normalized positions ⟩
     const vTotal = levelsToNormalized( vLevels, [ 0o40, 0o40, 0o40, 0o40 ] );
     const hTotal = levelsToNormalized( hLevels, [ 0o100, 0o40, 0o40, 0o40 ] );
 
-    // ⟨ Calculate latitude ⟩
     let lat = 90 - ( vTotal * 180 );
 
-    // ⟨ Calculate longitude ⟩
     let degWest = hTotal * 360;
     let baseDegWest = ( degWest - GRID_OFFSET );
     while ( baseDegWest < 0 ) baseDegWest += 360;
@@ -464,6 +486,14 @@ function getNameChmuah( v, h ) {
     return getName( v, h, "chmuah" );
 }
 
+function getNamesForCoords( vArr, hArr ) {
+    return {
+        ksakaName: vArr.map( ( v, i ) => getName( v - 1, hArr[ i ] - 1, "ksaka" ) ).join( " " ),
+        latinName: vArr.map( ( v, i ) => getNameLatin( v - 1, hArr[ i ] - 1 ) ).join( " " ),
+        chmuahName: vArr.map( ( v, i ) => getNameChmuah( v - 1, hArr[ i ] - 1 ) ).join( " " )
+    };
+}
+
 function draw() {
     const w = canvas.width;
     const h = canvas.height;
@@ -478,16 +508,13 @@ function draw() {
     const east = bounds.getEast();
     const west = bounds.getWest();
 
-    // ⟨ Helper to draw grid lines for a specific level with proper offset ⟩
     function drawGridLinesForLevel( vDivisions, hDivisions, color, width ) {
         ctx.beginPath();
         ctx.strokeStyle = color;
         ctx.lineWidth = width;
 
-        // ⟨ Draw horizontal lines ( latitude lines ) ⟩
         for ( let vIdx = 0; vIdx <= vDivisions; vIdx++ ) {
             let lat = 90 - ( vIdx / vDivisions ) * 180;
-
             if ( lat < south - 1 || lat > north + 1 ) continue;
 
             const p1 = map.latLngToContainerPoint( [ lat, west ] );
@@ -497,40 +524,27 @@ function draw() {
             ctx.lineTo( p2.x, p2.y );
         }
 
-        // ⟨ Draw vertical lines ( longitude lines ) with offset applied ⟩
         for ( let hIdx = 0; hIdx <= hDivisions; hIdx++ ) {
-            // ⟨ Calculate degWest in the OFFSET coordinate system ⟩
             let ratio = hIdx / hDivisions;
             let degWestOffset = ratio * 360;
-
-            // ⟨ Reverse the offset to get baseDegWest ( same as getGridCoords but reversed ) ⟩
             let baseDegWest = ( degWestOffset - GRID_OFFSET + 360 ) % 360;
-
-            // ⟨ Convert baseDegWest to standard longitude ⟩
             let lon = ( baseDegWest <= 180 ) ? -baseDegWest : ( 360 - baseDegWest );
 
-            // ⟨ Handle longitude wrapping for map display ⟩
             const centerLon = ( west + east ) / 2;
             let displayLon = lon;
 
-            // ⟨ Adjust longitude to be near the map center for proper rendering ⟩
             while ( displayLon < centerLon - 180 ) displayLon += 360;
             while ( displayLon > centerLon + 180 ) displayLon -= 360;
 
-            // ⟨ Check if line is within visible bounds ( including map wrap ) ⟩
             let isInView = false;
 
-            // ⟨ Check direct visibility ⟩
             if ( displayLon >= west - 1 && displayLon <= east + 1 ) {
                 isInView = true;
             }
-            // ⟨ Check wrapped visibility ( for maps crossing antimeridian ) ⟩
             else if ( east - west > 180 ) {
-                // ⟨ Map spans more than 180°, show all lines ⟩
                 isInView = true;
             }
             else {
-                // ⟨ Check if line wraps into view from either side ⟩
                 let wrappedLon1 = displayLon + 360;
                 let wrappedLon2 = displayLon - 360;
                 if ( ( wrappedLon1 >= west - 1 && wrappedLon1 <= east + 1 ) ||
@@ -550,35 +564,29 @@ function draw() {
         ctx.stroke();
     }
 
-    // ⟨ Draw Level 1 grid ( 32 vertical x 64 horizontal ) ⟩
     drawGridLinesForLevel( 0o40, 0o100, "rgba(224, 160, 72, 0.5)", 3 );
 
-    // ⟨ Draw Level 2 ( if zoomed in enough ) - each L1 cell divided into 32x32 ⟩
     if ( zoom >= ZOOM_LEVEL_2 ) {
         drawGridLinesForLevel( 0o40 * 0o40, 0o100 * 0o40, "rgba(224, 160, 72, 0.5)", 2 );
     }
 
-    // ⟨ Draw Level 3 ( if zoomed in enough ) - each L2 cell divided into 32x32 ⟩
     if ( zoom >= ZOOM_LEVEL_3 ) {
         drawGridLinesForLevel( 0o40 * 0o40 * 0o40, 0o100 * 0o40 * 0o40, "rgba(224, 160, 72, 0.75)", 1 );
     }
 
-    // ⟨ Draw Level 4 ( if zoomed in enough ) - each L3 cell divided into 32x32 ⟩
     if ( zoom >= ZOOM_LEVEL_4 ) {
         drawGridLinesForLevel( 0o40 * 0o40 * 0o40 * 0o40, 0o100 * 0o40 * 0o40 * 0o40, "rgba(224, 160, 72, 1)", 1 / 2 );
     }
 }
 
 function update() {
-    const c = getGridCoords( currentLat, currentLon );
+    const n2k = getGridCoords( currentLat, currentLon );
 
-    // ⟨ Display 1-based indexing ⟩
-    const v1 = c.v1 + 1; const h1 = c.h1 + 1;
-    const v2 = c.v2 + 1; const h2 = c.h2 + 1;
-    const v3 = c.v3 + 1; const h3 = c.h3 + 1;
-    const v4 = c.v4 + 1; const h4 = c.h4 + 1;
+    const v1 = n2k.v1 + 1; const h1 = n2k.h1 + 1;
+    const v2 = n2k.v2 + 1; const h2 = n2k.h2 + 1;
+    const v3 = n2k.v3 + 1; const h3 = n2k.h3 + 1;
+    const v4 = n2k.v4 + 1; const h4 = n2k.h4 + 1;
 
-    // ⟨ Format coordinates based on base selection ⟩
     let coords;
     if ( useBase10 ) {
         coords = `${v1} ${h1} - ${v2} ${h2} - ${v3} ${h3} - ${v4} ${h4}`;
@@ -588,71 +596,253 @@ function update() {
 
     outputCoords.textContent = skakefK2fe( coords );
 
-    // ⟨ Generate names for all 4 levels ⟩
-    const coords4 = [ [ c.v1, c.h1 ], [ c.v2, c.h2 ], [ c.v3, c.h3 ], [ c.v4, c.h4 ] ];
-
-    const ksakaNames = coords4.map( ( [ v, h ] ) => getName( v, h, "ksaka" ) );
-    kefAraq.innerHTML = ksakaNames.join( " " );
-
-    const latinNames = coords4.map( ( [ v, h ] ) => getNameLatin( v, h ) );
-    outputName.innerHTML = latinNames.join( " " );
-
-    const chmuahNames = coords4.map( ( [ v, h ] ) => getNameChmuah( v, h ) );
-    piak.innerHTML = chmuahNames.join( " " );
+    const names = getNamesForCoords( [ v1, v2, v3, v4 ], [ h1, h2, h3, h4 ] );
+    kefAraq.innerHTML = names.ksakaName;
+    outputName.innerHTML = names.latinName;
+    piak.innerHTML = names.chmuahName;
 
     draw();
 }
 
-
 // ⟪ Search 🔍 ⟫
 
-async function searchAddress() {
-    const query = searchInput.value.trim();
+function parseCoordValue( val ) {
+    if ( !val ) return 0;
+    if ( [ ...val ].some( c => K2FE.includes( c ) ) ) {
+        return vab6k2fekp6( val );
+    }
+    return useBase10 ? parseInt( val, 0o12 ) : parseInt( val, 0o10 );
+}
 
-    if ( !query ) {
+function isCoordinatePattern( query ) {
+    const parts = query.trim().split( /[\s\-–—]+/ ).filter( p => p.length > 0 );
+    if ( parts.length < 2 ) return false;
+    const numPattern = new RegExp( `^[\\d${K2FE}]+$` );
+    return parts.every( p => numPattern.test( p ) );
+}
+
+// ⟪ URL Coordinate Handling 🔗 ⟫
+
+function parseURLCoords() {
+    const params = new URLSearchParams( window.location.search );
+    const coords = params.get( "n2k" );
+    if ( !coords ) return null;
+
+    const pairs = coords.split( "-" ).filter( p => p.length > 0 );
+    if ( pairs.length === 0 || pairs.length > 4 ) return null;
+
+    const result = parseCoordinatePairs(pairs);
+    if ( !result ) return null;
+
+    const { fullV, fullH } = result;
+    const gridResult = gridToLatLon(
+        fullV[ 0 ] + 1, fullH[ 0 ] + 1,
+        fullV[ 1 ] + 1, fullH[ 1 ] + 1,
+        fullV[ 2 ] + 1, fullH[ 2 ] + 1,
+        fullV[ 3 ] + 1, fullH[ 3 ] + 1
+    );
+
+    return { lat: gridResult.lat, lon: gridResult.lon };
+}
+
+function updateURL() {
+    const n2k = getGridCoords( currentLat, currentLon );
+    const v = [ n2k.v1 + 1, n2k.v2 + 1, n2k.v3 + 1, n2k.v4 + 1 ];
+    const h = [ n2k.h1 + 1, n2k.h2 + 1, n2k.h3 + 1, n2k.h4 + 1 ];
+
+    const pairs = [];
+    for ( let i = 0; i < 4; i++ ) {
+        const vStr = v[ i ].toString( 0o10 ).padStart( 2, "0" );
+        const hStr = h[ i ].toString( 0o10 ).padStart( 2, "0" );
+        pairs.push( vStr + hStr );
+    }
+
+    const url = new URL( window.location );
+    url.searchParams.set( "n2k", pairs.join( "-" ) );
+    window.history.replaceState( {}, "", url );
+}
+
+function handlePaste( e ) {
+    const paste = e.clipboardData.getData( "text" );
+    if ( !paste ) return;
+
+    try {
+        const url = new URL( paste );
+        const params = new URLSearchParams( url.search );
+        const coords = params.get( "n2k" );
+
+        if ( coords ) {
+            e.preventDefault();
+            const pairs = coords.split( "-" ).filter( p => p.length > 0 );
+            const result = parseCoordinatePairs(pairs);
+            if ( !result ) return;
+
+            const { fullV, fullH } = result;
+            const gridResult = gridToLatLon(
+                fullV[ 0 ] + 1, fullH[ 0 ] + 1,
+                fullV[ 1 ] + 1, fullH[ 1 ] + 1,
+                fullV[ 2 ] + 1, fullH[ 2 ] + 1,
+                fullV[ 3 ] + 1, fullH[ 3 ] + 1
+            );
+
+            let zoom = ZOOM_SEARCH_DEFAULT;
+            if ( pairs.length >= 2 ) zoom = ZOOM_LEVEL_2;
+            if ( pairs.length >= 3 ) zoom = ZOOM_LEVEL_3;
+            if ( pairs.length >= 4 ) zoom = ZOOM_LEVEL_4;
+
+            updateMapPosition( gridResult.lat, gridResult.lon, zoom );
+            return;
+        }
+    } catch ( err ) {
+    }
+}
+
+function buildNames( vArr, hArr ) {
+    return getNamesForCoords( vArr, hArr );
+}
+
+function search( query ) {
+    if ( !query ) return null;
+
+    if ( isCoordinatePattern( query ) ) {
+        const pairs = query.trim().split( /[\s]*[\-–—][\s]*/ ).filter( p => p.length > 0 );
+        const parseVal = ( val ) => parseCoordValue( val ) || 0;
+
+        const v = [], h = [];
+        for ( const pair of pairs ) {
+            const nums = pair.trim().split( /\s+/ ).filter( p => p.length > 0 );
+            if ( nums.length >= 2 ) {
+                v.push( parseVal( nums[ 0 ] ) );
+                h.push( parseVal( nums[ 1 ] ) );
+            } else if ( nums.length === 1 ) {
+                if ( v.length === h.length ) {
+                    v.push( parseVal( nums[ 0 ] ) );
+                } else {
+                    h.push( parseVal( nums[ 0 ] ) );
+                }
+            }
+        }
+
+        while ( v.length < 4 ) v.push( 0 );
+        while ( h.length < 4 ) h.push( 0 );
+
+        const result = gridToLatLon( v[ 0 ], h[ 0 ], v[ 1 ], h[ 1 ], v[ 2 ], h[ 2 ], v[ 3 ], h[ 3 ] );
+        const numLevels = Math.max( 1, pairs.length );
+        const names = buildNames( v.slice( 0, numLevels ), h.slice( 0, numLevels ) );
+
+        return {
+            results: [{
+                lat: result.lat,
+                lon: result.lon,
+                v: v[ 0 ],
+                h: h[ 0 ],
+                ...names
+            }],
+            zoom: [ ZOOM_SEARCH_DEFAULT, ZOOM_LEVEL_2, ZOOM_LEVEL_3, ZOOM_LEVEL_4 ][ Math.min( numLevels - 1, 3 ) ] || ZOOM_SEARCH_DEFAULT
+        };
+    }
+
+    const queryParts = query.trim().toLowerCase().split( /\s+/ ).filter( p => p.length > 0 );
+    const numParts = queryParts.length;
+    if ( numParts === 0 || numParts > 4 ) return null;
+
+    const currentCoords = getGridCoords( currentLat, currentLon );
+    const currentV = [ currentCoords.v1, currentCoords.v2, currentCoords.v3, currentCoords.v4 ];
+    const currentH = [ currentCoords.h1, currentCoords.h2, currentCoords.h3, currentCoords.h4 ];
+
+    const results = [];
+
+    function searchLevel( level, startLevel, vArr, hArr, system ) {
+        const hLimit = level === 0 ? 0o100 : 0o40;
+        const vLimit = 0o40;
+
+        for ( let v = 0; v < vLimit; v++ ) {
+            for ( let h = 0; h < hLimit; h++ ) {
+                const name = system === "k" ? getName( v, h, "ksaka" )
+                    : system === "l" ? getNameLatin( v, h )
+                    : getNameChmuah( v, h );
+
+                if ( !name.toLowerCase().startsWith( queryParts[ level - startLevel ] ) ) continue;
+
+                const newV = [ ...vArr, v ];
+                const newH = [ ...hArr, h ];
+                const queryIndex = level - startLevel;
+
+                if ( queryIndex === numParts - 1 ) {
+                    const fullV = [ ...currentV.slice( 0, startLevel ), ...newV ];
+                    const fullH = [ ...currentH.slice( 0, startLevel ), ...newH ];
+
+                    while ( fullV.length < 4 ) { fullV.push( 0 ); fullH.push( 0 ); }
+
+                    const coords = gridToLatLon(
+                        fullV[ 0 ] + 1, fullH[ 0 ] + 1,
+                        fullV[ 1 ] + 1, fullH[ 1 ] + 1,
+                        fullV[ 2 ] + 1, fullH[ 2 ] + 1,
+                        fullV[ 3 ] + 1, fullH[ 3 ] + 1
+                    );
+                    const names = getNamesForCoords( fullV.map( x => x + 1 ), fullH.map( x => x + 1 ) );
+                    results.push({
+                        lat: coords.lat,
+                        lon: coords.lon,
+                        v: fullV[ 0 ],
+                        h: fullH[ 0 ],
+                        startLevel: startLevel,
+                        ...names
+                    });
+                } else if ( level < 3 ) {
+                    searchLevel( level + 1, startLevel, newV, newH, system );
+                }
+            }
+        }
+    }
+
+    for ( let startLevel = 0; startLevel <= 4 - numParts; startLevel++ ) {
+        [ "k", "l", "c" ].forEach( sys => searchLevel( startLevel, startLevel, [], [], sys ) );
+    }
+
+    results.sort( ( a, b ) => {
+        const distA = Math.abs( a.lat - currentLat ) + Math.abs( a.lon - currentLon );
+        const distB = Math.abs( b.lat - currentLat ) + Math.abs( b.lon - currentLon );
+        return distA - distB;
+    });
+
+    return results.length > 0 ? { results } : null;
+}
+
+function displaySearchResults( result ) {
+    if ( !result ) {
+        searchResults.innerHTML = "<p>֭ſɭɹ ſɟɔ j͐ʃɹʞ ⟅</p>";
+        searchResults.classList.remove( "hidden" );
         return;
     }
 
-    // ⟨ Check for coordinate pattern - e.g. "12 34 - 5 6" or "12 34" ⟩
-    // ⟨ "v1 h1", "v1 h1 - v2 h2", etc. ⟩
-    // ⟨ Allow spaces, dashes, and optional parts. ⟩
-    const coordRegex = /^(\d+)\s+(\d+)(?:\s*[-–—]\s*(\d+)\s+(\d+))?(?:\s*[-–—]\s*(\d+)\s+(\d+))?(?:\s*[-–—]\s*(\d+)\s+(\d+))?$/;
-    const match = query.match( coordRegex );
+    const { results, zoom } = result;
+    const queryParts = searchInput.value.trim().split( /\s+/ ).filter( p => p.length > 0 );
+    const showList = queryParts.length >= 2 || results.length > 1;
 
-    if ( match ) {
-        const parseVal = ( val ) => {
-            if ( !val ) return 0;
-            return useBase10 ? parseInt( val, 10 ) : vab6k2fekp6( val );
-        };
-
-        // ⟨ 1=v1, 2=h1, 3=v2, 4=h2, 5=v3, 6=h3, 7=v4, 8=h4 ⟩
-        const v1 = parseVal( match[ 1 ] );
-        const h1 = parseVal( match[ 2 ] );
-        const v2 = parseVal( match[ 3 ] );
-        const h2 = parseVal( match[ 4 ] );
-        const v3 = parseVal( match[ 5 ] );
-        const h3 = parseVal( match[ 6 ] );
-        const v4 = parseVal( match[ 7 ] );
-        const h4 = parseVal( match[ 8 ] );
-
-        const coords = gridToLatLon( v1, h1, v2, h2, v3, h3, v4, h4 );
-
-        currentLat = coords.lat;
-        currentLon = coords.lon;
-
-        // ⟨ Determine zoom level based on precision ⟩
-        let zoom = ZOOM_SEARCH_DEFAULT;
-        if ( match[ 3 ] ) zoom = ZOOM_LEVEL_2;
-        if ( match[ 5 ] ) zoom = ZOOM_LEVEL_3;
-        if ( match[ 7 ] ) zoom = ZOOM_LEVEL_4;
-
-        map.setView( [ currentLat, currentLon ], zoom );
-        marker.setLatLng( [ currentLat, currentLon ] );
-
-        updateAllInputs();
-        update();
-
+    if ( !showList && results.length === 1 ) {
+        const r = results[ 0 ];
+        updateMapPosition( r.lat, r.lon, zoom || ZOOM_LEVEL_2 );
         searchResults.classList.add( "hidden" );
+        return;
+    }
+
+    createResultButtons("#searchResults", results, zoom || ZOOM_LEVEL_2, (lat, lon, targetZoom) => {
+        updateMapPosition(lat, lon, targetZoom);
+        searchResults.classList.add("hidden");
+        searchInput.value = "";
+    });
+
+    searchResults.classList.remove( "hidden" );
+}
+
+async function searchAddress() {
+    const query = searchInput.value.trim();
+    if ( !query ) return;
+
+    const result = search( query );
+    if ( result ) {
+        displaySearchResults( result );
         return;
     }
 
@@ -660,45 +850,35 @@ async function searchAddress() {
     searchResults.classList.remove( "hidden" );
 
     try {
-        const response = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent( query )}&limit=5`
-        );
-
-        if ( !response.ok ) {
-            throw new Error( "Search failed" );
-        }
+        const response = await fetch( `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent( query )}&limit=5` );
+        if ( !response.ok ) throw new Error( "( ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ )" );
 
         const results = await response.json();
-
         if ( results.length === 0 ) {
             searchResults.innerHTML = "<p>֭ſɭɹ ſɟɔ j͐ʃɹʞ ⟅</p>";
             return;
         }
 
-        searchResults.innerHTML = results.map( ( result, index ) => `
-            <button data-lat="${result.lat}" data-lon="${result.lon}">
-                <p>${result.display_name}</p>
-            </button>
-        ` ).join( "" );
+        const osmResults = results.map(result => ({
+            lat: parseFloat(result.lat),
+            lon: parseFloat(result.lon),
+            ksakaName: result.display_name,
+            latinName: result.display_name,
+            v: 0,
+            h: 0
+        }));
 
-        document.querySelectorAll( "#searchResults button" ).forEach( item => {
-            item.addEventListener( "click", () => {
-                const lat = parseFloat( item.dataset.lat );
-                const lon = parseFloat( item.dataset.lon );
-
-                updateMapPosition( lat, lon, 0o14 );
-
-                searchResults.classList.add( "hidden" );
-                searchInput.value = "";
-            } );
-        } );
+        createResultButtons("#searchResults", osmResults, 0o20, (lat, lon) => {
+            updateMapPosition(lat, lon, 0o20);
+            searchResults.classList.add("hidden");
+            searchInput.value = "";
+        });
 
     } catch ( error ) {
         console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", error );
         searchResults.innerHTML = "<p>ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⟅</p>";
     }
 }
-
 
 // ⟪ Offline functionality 📥 ⟫
 
@@ -713,7 +893,7 @@ async function downloadCurrentView() {
     const tiles = getTileList( bounds, zoom );
     const total = tiles.length;
 
-    if ( total > 0o500 ) {
+    if ( total > 0o400 ) {
         if ( !confirm( `This will download ${total} tiles ( ~ ${( total * 1 / 0o20 ).toFixed( 1 ) } MB ) . Continue ?` ) ) {
             downloadBtn.disabled = false;
             progressBar.classList.remove( "active" );
@@ -722,7 +902,7 @@ async function downloadCurrentView() {
         }
     }
 
-    downloadStatus.textContent = `ſɭᴎɔ ſ͕ɭwc̭ ſɭɹ j͐ʃ ${total} j͑ʃᴜꞇ ſɭɔƽ ⟅`;
+    downloadStatus.textContent = `ſɭᶗ‹ɔ ſ͕ɭwc̭ ſɭɹ j͐ʃ ${total} j͑ʃᴜꞇ ſɭɔƽ ⟅`;
 
     try {
         const result = await sendMessageToSW( { type: "CACHE_TILES", tiles } );
@@ -732,7 +912,7 @@ async function downloadCurrentView() {
             progressBar.classList.remove( "active" );
             progressFill.style.width = "0%";
             updateCacheInfo();
-        }, 500 );
+        }, 0o400 );
     } catch ( err ) {
         downloadStatus.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${err.message} ❌ ⟅`;
         progressBar.classList.remove( "active" );
@@ -741,12 +921,10 @@ async function downloadCurrentView() {
     downloadBtn.disabled = false;
 }
 
-// ⟨ Get tile URL from coordinates ⟩
 function getTileUrl(x, y, z) {
     return `https://tile.openstreetmap.org/${z}/${x}/${y}.png`;
 }
 
-// ⟨ Convert lat/lon to tile coordinates ⟩
 function latLonToTile(lat, lon, zoom) {
     const scale = Math.pow(2, zoom);
     const x = Math.floor(( lon + 180 ) / 360 * scale);
@@ -754,7 +932,6 @@ function latLonToTile(lat, lon, zoom) {
     return { x, y };
 }
 
-// ⟨ Get list of tiles for bounds ⟩
 function getTileList(bounds, zoom) {
     const tiles = [];
     const nw = bounds.getNorthWest();
@@ -791,7 +968,7 @@ async function updateCacheInfo() {
     try {
         const result = await sendMessageToSW( { type: "GET_CACHE_SIZE" } );
         cacheStatus.textContent = `ꞁȷ̀ɜ ſןᴜ ʃɜƽ ꞁȷ̀ᴜꞇ j͑ʃ'ɜ ſןɹ - ${result.size} ⟅`;
-        cacheSize.textContent = `~ ${(result.size * 1 / 8).toFixed(1)} j͑ʃᴜꞇ ꞙɭц ſɟᴜ ꞙɭıɔ ⟅`;
+        cacheSize.textContent = `~ ${( result.size * 1 / 0o10 ).toFixed(1)} j͑ʃᴜꞇ ꞙɭц ſɟᴜ ꞙɭıɔ ⟅`;
     } catch ( err ) {
         console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", err);
     }

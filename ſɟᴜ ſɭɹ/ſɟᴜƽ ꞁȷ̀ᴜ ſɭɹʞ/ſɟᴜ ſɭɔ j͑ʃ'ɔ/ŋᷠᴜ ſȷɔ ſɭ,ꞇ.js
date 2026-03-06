@@ -1,9 +1,21 @@
-// ≺⧼ ŋᷠᴜ ſȷɔ ſɭ,ꞇ - Utils and Helpers ⧽≻
+// ≺⧼ Utils and Helpers ⧽≻
+
+// ⟪ Event Helpers 🖱️ ⟫
+
+function getClientCoords(e) {
+    const touch = e.touches?.[0] || e.changedTouches?.[0];
+    return {
+        x: touch ? touch.clientX : e.clientX,
+        y: touch ? touch.clientY : e.clientY
+    };
+}
+
+// ⟪ Cursor Helpers 🖰 ⟫
 
 const CURSOR_CLASSES = [
-    'canvas-cursor-grab', 'canvas-cursor-grabbing', 'canvas-cursor-pointer',
-    'canvas-cursor-move', 'canvas-cursor-default', 'canvas-cursor-crosshair',
-    'canvas-cursor-cell', 'canvas-cursor-text'
+    "canvas-cursor-grab", "canvas-cursor-grabbing", "canvas-cursor-pointer",
+    "canvas-cursor-move", "canvas-cursor-default", "canvas-cursor-crosshair",
+    "canvas-cursor-cell", "canvas-cursor-text"
 ];
 
 const TOOL_CURSORS = {
@@ -15,9 +27,6 @@ const TOOL_CURSORS = {
     shape: "crosshair",
     smooth: "crosshair"
 };
-
-
-// ⟪ Cursor Helpers 🖰 ⟫
 
 function resetCursor() {
     if (!isSpacePressed) {
@@ -34,6 +43,64 @@ function getToolCursor() {
     return TOOL_CURSORS[currentTool] || "default";
 }
 
+// ⟪ State Reset Helpers 🔄 ⟫
+
+function resetSelectionState() {
+    isDragging = false;
+    isSelecting = false;
+    isResizing = false;
+    isRotating = false;
+    resizeHandle = null;
+    selectionRect = null;
+    dragStartX = 0;
+    dragStartY = 0;
+    initialRotationAngle = 0;
+    initialObjectRotations = [];
+    initialBounds = null;
+    initialCenterX = 0;
+    initialCenterY = 0;
+    initialRotation = 0;
+    initialObjectStates = [];
+    isDrawing = false;
+}
+
+function stopPanning() {
+    if (isPanning) {
+        isPanning = false;
+        if (isSpacePressed) {
+            setCursor("grab");
+        } else {
+            resetCursor();
+        }
+    }
+}
+
+// ⟪ Button Initialization Helpers 🎛️ ⟫
+
+function setButtonPressed(groupSelector, btn) {
+    document.querySelectorAll(groupSelector).forEach(b =>
+        b.setAttribute("aria-pressed", "false")
+    );
+    if (btn) btn.setAttribute("aria-pressed", "true");
+}
+
+function initButtonGroup(selector, groupSelector, onClick) {
+    document.querySelectorAll(selector).forEach(btn => {
+        btn.addEventListener("click", () => {
+            if (groupSelector) setButtonPressed(groupSelector, btn);
+            onClick(btn);
+        });
+    });
+}
+
+function initButton(id, onClick) {
+    const btn = document.getElementById(id);
+    if (btn) btn.addEventListener("click", onClick);
+}
+
+function initButtons(buttonConfigs) {
+    buttonConfigs.forEach(({ id, onClick }) => initButton(id, onClick));
+}
 
 // ⟪ Text Edit Helpers 📝 ⟫
 
@@ -60,11 +127,17 @@ function getTextEditPosition() {
     const containerRect = container.getBoundingClientRect();
 
     const x = ((parseFloat(textEditInput.style.getPropertyValue("--text-x")) - containerRect.left - panOffsetX) / zoom);
-    const y = (((parseFloat(textEditInput.style.getPropertyValue("--text-y")) - containerRect.top - panOffsetY) / zoom) + currentSize * 0o4);
+    const y = ((parseFloat(textEditInput.style.getPropertyValue("--text-y")) - containerRect.top - panOffsetY) / zoom) + currentSize * TEXT_SIZE_MULTIPLIER;
 
     return { textX: x, textY: y };
 }
 
+function finishTextEditCommon() {
+    textEditInput.classList.remove("visible");
+    textEditInput.value = "";
+    isEditingText = false;
+    editingTextObjectIndex = -1;
+}
 
 // ⟪ Object Bounds Helpers 📐 ⟫
 
@@ -79,8 +152,8 @@ function getTextBounds(obj) {
     }
     ctx.font = `${obj.size}px "ı],ᴜ }ʃᴜ", sans-serif`;
     const metrics = ctx.measureText(obj.text || "W");
-    const width = Math.max(metrics.width, obj.size * 0o2);
-    const height = Math.max(obj.size, obj.size * 0o2);
+    const width = Math.max(metrics.width, obj.size * TEXT_MIN_WIDTH_MULTIPLIER);
+    const height = Math.max(obj.size, obj.size * TEXT_MIN_WIDTH_MULTIPLIER);
     return {
         x: obj.x,
         y: obj.y - height,
@@ -119,8 +192,8 @@ function getObjectBounds(obj) {
             return {
                 x: obj.x,
                 y: obj.y,
-                width: obj.width || 0o100,
-                height: obj.height || 0o100
+                width: obj.width || CANVAS_WIDTH,
+                height: obj.height || CANVAS_HEIGHT
             };
     }
 }
@@ -145,6 +218,23 @@ function getObjectCornerPoints(obj, padding = 0) {
     ];
 }
 
+function getCenterX(obj) {
+    if (obj.type === "line") return (obj.x1 + obj.x2) / 2;
+    if (obj.type === "circle") return obj.x;
+    if (obj.type === "path" || obj.type === "smoothPath") return obj.bounds.x + obj.bounds.width / 2;
+    return obj.x + (obj.width || CANVAS_WIDTH) / 2;
+}
+
+function getCenterY(obj) {
+    if (obj.type === "line") return (obj.y1 + obj.y2) / 2;
+    if (obj.type === "circle") return obj.y;
+    if (obj.type === "path" || obj.type === "smoothPath") return obj.bounds.y + obj.bounds.height / 2;
+    return obj.y + (obj.height || CANVAS_HEIGHT) / 2;
+}
+
+function getCenter(obj) {
+    return { x: getCenterX(obj), y: getCenterY(obj) };
+}
 
 // ⟪ Point/Object Detection 🎯 ⟫
 
@@ -165,7 +255,7 @@ function isPointInObject(x, y, obj) {
                    y >= obj.y - textHeight && y <= obj.y;
         case "line":
             const dist = pointToLineDistance(x, y, obj.x1, obj.y1, obj.x2, obj.y2);
-            return dist < obj.size + 0o4;
+            return dist < obj.size + DASH_LENGTH;
         case "path":
         case "smoothPath":
             return x >= obj.bounds.x && x <= obj.bounds.x + obj.bounds.width &&
@@ -213,7 +303,6 @@ function distanceToObject(x, y, obj) {
     }
 }
 
-
 // ⟪ Geometry Utilities 📏 ⟫
 
 function pointToLineDistance(px, py, x1, y1, x2, y2) {
@@ -226,18 +315,13 @@ function pointToLineDistance(px, py, x1, y1, x2, y2) {
     const lenSq = C * C + D * D;
     let param = -1;
 
-    if (lenSq !== 0) {
-        param = dot / lenSq;
-    }
+    if (lenSq !== 0) param = dot / lenSq;
 
     let xx, yy;
-
     if (param < 0) {
-        xx = x1;
-        yy = y1;
+        xx = x1; yy = y1;
     } else if (param > 1) {
-        xx = x2;
-        yy = y2;
+        xx = x2; yy = y2;
     } else {
         xx = x1 + param * C;
         yy = y1 + param * D;
@@ -245,7 +329,6 @@ function pointToLineDistance(px, py, x1, y1, x2, y2) {
 
     const dx = px - xx;
     const dy = py - yy;
-
     return Math.sqrt(dx * dx + dy * dy);
 }
 
@@ -254,25 +337,6 @@ function distance(p1, p2) {
     const dy = p1.y - p2.y;
     return Math.sqrt(dx * dx + dy * dy);
 }
-
-function getCenterX(obj) {
-    if (obj.type === "line") return (obj.x1 + obj.x2) / 2;
-    if (obj.type === "circle") return obj.x;
-    if (obj.type === "path" || obj.type === "smoothPath") return obj.bounds.x + obj.bounds.width / 2;
-    return obj.x + (obj.width || 0o100) / 2;
-}
-
-function getCenterY(obj) {
-    if (obj.type === "line") return (obj.y1 + obj.y2) / 2;
-    if (obj.type === "circle") return obj.y;
-    if (obj.type === "path" || obj.type === "smoothPath") return obj.bounds.y + obj.bounds.height / 2;
-    return obj.y + (obj.height || 0o100) / 2;
-}
-
-function getCenter(obj) {
-    return { x: getCenterX(obj), y: getCenterY(obj) };
-}
-
 
 // ⟪ Shape Utilities 🔷 ⟫
 
@@ -339,42 +403,24 @@ function createShapeObject(shape, x1, y1, x2, y2) {
 
     switch (shape) {
         case "line":
-            return {
-                ...baseObj,
-                type: "line",
-                x1: x1,
-                y1: y1,
-                x2: x2,
-                y2: y2
-            };
-
+            return { ...baseObj, type: "line", x1: x1, y1: y1, x2: x2, y2: y2 };
         case "circle":
             return {
-                ...baseObj,
-                type: "circle",
-                x: (x1 + x2) / 2,
-                y: (y1 + y2) / 2,
-                radiusX: Math.abs(x2 - x1) / 2,
-                radiusY: Math.abs(y2 - y1) / 2
+                ...baseObj, type: "circle",
+                x: (x1 + x2) / 2, y: (y1 + y2) / 2,
+                radiusX: Math.abs(x2 - x1) / 2, radiusY: Math.abs(y2 - y1) / 2
             };
-
         case "square":
         case "triangle":
             return {
-                ...baseObj,
-                type: "shape",
-                shape: shape,
-                x: Math.min(x1, x2),
-                y: Math.min(y1, y2),
-                width: Math.abs(x2 - x1),
-                height: Math.abs(y2 - y1)
+                ...baseObj, type: "shape", shape: shape,
+                x: Math.min(x1, x2), y: Math.min(y1, y2),
+                width: Math.abs(x2 - x1), height: Math.abs(y2 - y1)
             };
-
         default:
             return null;
     }
 }
-
 
 // ⟪ Path Utilities 〰️ ⟫
 
@@ -393,13 +439,18 @@ function createPathObject(points, color, size) {
         size: size,
         rotation: 0,
         layerId: activeLayerId,
-        bounds: {
-            x: minX,
-            y: minY,
-            width: maxX - minX,
-            height: maxY - minY
-        }
+        bounds: { x: minX, y: minY, width: maxX - minX, height: maxY - minY }
     };
+}
+
+function drawPathSegments(points) {
+    if (points.length < 2) return;
+
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
+    }
 }
 
 function drawPathPreview(points, color, size) {
@@ -411,15 +462,10 @@ function drawPathPreview(points, color, size) {
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
 
-    ctx.beginPath();
-    ctx.moveTo(points[0].x, points[0].y);
-    for (let i = 1; i < points.length; i++) {
-        ctx.lineTo(points[i].x, points[i].y);
-    }
+    drawPathSegments(points);
     ctx.stroke();
     ctx.restore();
 }
-
 
 // ⟪ Preview Utilities 👁️ ⟫
 
@@ -427,9 +473,9 @@ function drawPreviewShape(obj) {
     if (!obj) return;
 
     ctx.save();
-    ctx.setLineDash([0o4, 0o4]);
+    ctx.setLineDash(LINE_DASH_PATTERN);
     ctx.strokeStyle = obj.color;
-    ctx.lineWidth = obj.size || 0o2;
+    ctx.lineWidth = obj.size || 2;
     ctx.globalAlpha = 3/4;
 
     switch (obj.type) {
@@ -452,7 +498,6 @@ function drawPreviewShape(obj) {
     ctx.restore();
 }
 
-
 // ⟪ Rectangle Utilities ⬜ ⟫
 
 function normalizeRect(rect) {
@@ -467,26 +512,20 @@ function normalizeRect(rect) {
 function isObjectInRect(obj, rect) {
     const normalizedRect = normalizeRect(rect);
     const corners = getObjectCornerPoints(obj);
-    let anyInside = false;
-
+    
     for (const corner of corners) {
         if (corner.x >= normalizedRect.x && corner.x <= normalizedRect.x + normalizedRect.width &&
             corner.y >= normalizedRect.y && corner.y <= normalizedRect.y + normalizedRect.height) {
-            anyInside = true;
-            break;
+            return true;
         }
     }
-
-    return anyInside;
+    return false;
 }
-
 
 // ⟪ Color Utilities 🎨 ⟫
 
 function normalizeHexColor(value) {
-    if (!value.startsWith("#")) {
-        value = "#" + value;
-    }
+    if (!value.startsWith("#")) value = "#" + value;
     return value;
 }
 
@@ -501,11 +540,8 @@ function getContrastingColors(samplePoints) {
     for (const point of samplePoints) {
         const pixelData = ctx.getImageData(Math.floor(point.x), Math.floor(point.y), 1, 1).data;
         const brightness = (pixelData[0] * 299 + pixelData[1] * 587 + pixelData[2] * 114) / 1000;
-        if (brightness > 128) {
-            lightCount++;
-        } else {
-            darkCount++;
-        }
+        if (brightness > 128) lightCount++;
+        else darkCount++;
     }
 
     return {
@@ -514,6 +550,291 @@ function getContrastingColors(samplePoints) {
     };
 }
 
+// ⟪ Transform Utilities 🔄 ⟫
+
+function getObjectInitialState(obj) {
+    if (obj.type === "line") {
+        return { x1: obj.x1, y1: obj.y1, x2: obj.x2, y2: obj.y2 };
+    } else if (obj.type === "circle") {
+        return { x: obj.x, y: obj.y, radiusX: obj.radiusX, radiusY: obj.radiusY };
+    } else if (obj.type === "path" || obj.type === "smoothPath") {
+        return {
+            bounds: { ...obj.bounds },
+            points: obj.points.map(p => ({ x: p.x, y: p.y }))
+        };
+    } else {
+        return { x: obj.x, y: obj.y, width: obj.width, height: obj.height };
+    }
+}
+
+function invalidateTextCaches() {
+    objects.filter(obj => obj.type === "text" && obj.useHtmlText).forEach(clearTextObjectCache);
+}
+
+function clearTextObjectCache(obj) {
+    if (obj.type === "text") {
+        obj.textDirty = true;
+        obj.cachedCanvas = null;
+        obj.cachedWidth = null;
+        obj.cachedHeight = null;
+    }
+}
+
+function removeObject(obj) {
+    const index = objects.indexOf(obj);
+    if (index > -1) objects.splice(index, 1);
+}
+
+function transformSelectedObjects(transformFn) {
+    if (selectedObjects.length === 0) return;
+    selectedObjects.forEach(obj => {
+        transformFn(obj);
+        clearTextObjectCache(obj);
+    });
+    redrawCanvas();
+    saveState();
+}
+
+// ⟪ Resize Handle Utilities 🎯 ⟫
+
+function getHandles(obj) {
+    const bounds = getObjectBounds(obj);
+    const cx = getCenterX(obj);
+    const cy = getCenterY(obj);
+    const rotation = obj.rotation || 0;
+    const c = Math.cos(rotation), s = Math.sin(rotation);
+
+    const localHandles = [
+        { x: bounds.x, y: bounds.y, name: "nw" },
+        { x: bounds.x + bounds.width, y: bounds.y, name: "ne" },
+        { x: bounds.x + bounds.width, y: bounds.y + bounds.height, name: "se" },
+        { x: bounds.x, y: bounds.y + bounds.height, name: "sw" },
+        { x: bounds.x + bounds.width/2, y: bounds.y, name: "n" },
+        { x: bounds.x + bounds.width, y: bounds.y + bounds.height/2, name: "e" },
+        { x: bounds.x + bounds.width/2, y: bounds.y + bounds.height, name: "s" },
+        { x: bounds.x, y: bounds.y + bounds.height/2, name: "w" }
+    ];
+
+    return localHandles.map(h => ({
+        x: cx + (h.x - cx) * c - (h.y - cy) * s,
+        y: cy + (h.x - cx) * s + (h.y - cy) * c,
+        name: h.name,
+        localX: h.x,
+        localY: h.y
+    }));
+}
+
+function findResizeHandle(x, y) {
+    const obj = selectedObjects[0];
+    if (!obj) return null;
+
+    const cx = getCenterX(obj);
+    const cy = getCenterY(obj);
+    const rotation = obj.rotation || 0;
+    const c = Math.cos(-rotation), s = Math.sin(-rotation);
+
+    const localX = cx + (x - cx) * c - (y - cy) * s;
+    const localY = cy + (x - cx) * s + (y - cy) * c;
+
+    const bounds = getObjectBounds(obj);
+    const localHandles = [
+        { x: bounds.x, y: bounds.y, name: "nw" },
+        { x: bounds.x + bounds.width, y: bounds.y, name: "ne" },
+        { x: bounds.x + bounds.width, y: bounds.y + bounds.height, name: "se" },
+        { x: bounds.x, y: bounds.y + bounds.height, name: "sw" },
+        { x: bounds.x + bounds.width/2, y: bounds.y, name: "n" },
+        { x: bounds.x + bounds.width, y: bounds.y + bounds.height/2, name: "e" },
+        { x: bounds.x + bounds.width/2, y: bounds.y + bounds.height, name: "s" },
+        { x: bounds.x, y: bounds.y + bounds.height/2, name: "w" }
+    ];
+
+    for (const h of localHandles) {
+        if (Math.abs(localX - h.x) < RESIZE_HANDLE_HITBOX && 
+            Math.abs(localY - h.y) < RESIZE_HANDLE_HITBOX) {
+            return h.name;
+        }
+    }
+    return null;
+}
+
+function findRotateHandle(x, y) {
+    const obj = selectedObjects[0];
+    if (!obj) return false;
+    
+    const cx = getCenterX(obj);
+    const cy = getCenterY(obj);
+    const bounds = getObjectBounds(obj);
+    const rotation = obj.rotation || 0;
+    const c = Math.cos(rotation), s = Math.sin(rotation);
+
+    const localTopMid = { x: bounds.x + bounds.width/2, y: bounds.y };
+    const rhX = cx + (localTopMid.x - cx) * c - (localTopMid.y - cy) * s;
+    const rhY = cy + (localTopMid.x - cx) * s + (localTopMid.y - cy) * c - ROTATE_HANDLE_OFFSET;
+
+    const dist = Math.sqrt((x - rhX) ** 2 + (y - rhY) ** 2);
+    return dist < ROTATE_HANDLE_RADIUS;
+}
+
+function getResizeCursor(handle) {
+    const cursors = {
+        "nw": "nwse-resize", "ne": "nesw-resize",
+        "sw": "nesw-resize", "se": "nwse-resize",
+        "n": "ns-resize", "s": "ns-resize",
+        "w": "ew-resize", "e": "ew-resize"
+    };
+    return cursors[handle] || "default";
+}
+
+function resizeObject(obj, x, y, handle) {
+    const rotation = obj.rotation || 0;
+    const cx = getCenterX(obj);
+    const cy = getCenterY(obj);
+
+    const cosR = Math.cos(-rotation);
+    const sinR = Math.sin(-rotation);
+    const localX = cx + (x - cx) * cosR - (y - cy) * sinR;
+    const localY = cy + (x - cx) * sinR + (y - cy) * cosR;
+
+    const objIndex = selectedObjects.indexOf(obj);
+    const init = initialObjectStates[objIndex] || {};
+    const baseBounds = init.bounds || init;
+
+    let newLeft = baseBounds.x, newTop = baseBounds.y;
+    let newRight = baseBounds.x + baseBounds.width;
+    let newBottom = baseBounds.y + baseBounds.height;
+
+    if (handle.includes("w")) newLeft = localX;
+    if (handle.includes("e")) newRight = localX;
+    if (handle.includes("n")) newTop = localY;
+    if (handle.includes("s")) newBottom = localY;
+
+    const newWidth = Math.max(MIN_SIZE, newRight - newLeft);
+    const newHeight = Math.max(MIN_SIZE, newBottom - newTop);
+
+    // Adjust if size hit minimum
+    if (newWidth === MIN_SIZE) {
+        if (handle.includes("w")) newLeft = newRight - MIN_SIZE;
+        else newRight = newLeft + MIN_SIZE;
+    }
+    if (newHeight === MIN_SIZE) {
+        if (handle.includes("n")) newTop = newBottom - MIN_SIZE;
+        else newBottom = newTop + MIN_SIZE;
+    }
+
+    if (obj.type === "line") {
+        resizeLineObject(obj, handle, baseBounds, newLeft, newTop, newRight, newBottom, newWidth, newHeight);
+    } else if (obj.type === "circle") {
+        obj.x = (newLeft + newRight) / 2;
+        obj.y = (newTop + newBottom) / 2;
+        obj.radiusX = newWidth / 2;
+        obj.radiusY = newHeight / 2;
+    } else if (obj.type === "path" || obj.type === "smoothPath") {
+        resizePathObject(obj, handle, baseBounds, newLeft, newTop, newWidth, newHeight, init);
+    } else {
+        resizeShapeObject(obj, handle, baseBounds, newLeft, newTop, newWidth, newHeight);
+    }
+}
+
+function resizeLineObject(obj, handle, baseBounds, newLeft, newTop, newRight, newBottom, newWidth, newHeight) {
+    const { scaleX, scaleY, originX, originY } = getResizeOriginAndScale(baseBounds, handle, newWidth, newHeight);
+
+    if (handle.includes("n")) {
+        obj.y1 = originY + (obj.y1 - originY) * scaleY;
+    }
+    if (handle.includes("s")) {
+        obj.y2 = originY + (obj.y2 - originY) * scaleY;
+    }
+    if (handle.includes("w")) {
+        obj.x1 = originX + (obj.x1 - originX) * scaleX;
+    }
+    if (handle.includes("e")) {
+        obj.x2 = originX + (obj.x2 - originX) * scaleX;
+    }
+}
+
+function resizePathObject(obj, handle, baseBounds, newLeft, newTop, newWidth, newHeight, init) {
+    const { scaleX, scaleY, originX, originY } = getResizeOriginAndScale(baseBounds, handle, newWidth, newHeight);
+
+    if (init.points) {
+        init.points.forEach((p, i) => {
+            obj.points[i].x = originX + (p.x - originX) * scaleX;
+            obj.points[i].y = originY + (p.y - originY) * scaleY;
+        });
+    }
+
+    obj.bounds.width = newWidth;
+    obj.bounds.height = newHeight;
+    if (handle.includes("w")) obj.bounds.x = newLeft;
+    if (handle.includes("n")) obj.bounds.y = newTop;
+}
+
+function resizeShapeObject(obj, handle, baseBounds, newLeft, newTop, newWidth, newHeight) {
+    const adjustments = {
+        "n": () => { obj.y = newTop; obj.height = newHeight; },
+        "s": () => { obj.y = baseBounds.y; obj.height = newHeight; },
+        "w": () => { obj.x = newLeft; obj.width = newWidth; },
+        "e": () => { obj.x = baseBounds.x; obj.width = newWidth; },
+        "nw": () => { obj.x = newLeft; obj.y = newTop; obj.width = newWidth; obj.height = newHeight; },
+        "ne": () => { obj.x = baseBounds.x; obj.y = newTop; obj.width = newWidth; obj.height = newHeight; },
+        "sw": () => { obj.x = newLeft; obj.y = baseBounds.y; obj.width = newWidth; obj.height = newHeight; },
+        "se": () => { obj.x = baseBounds.x; obj.y = baseBounds.y; obj.width = newWidth; obj.height = newHeight; }
+    };
+
+    if (adjustments[handle]) adjustments[handle]();
+
+    if (obj.type === "text") {
+        obj.size = obj.height / TEXT_SIZE_MULTIPLIER;
+        obj.textDirty = true;
+        obj.cachedCanvas = null;
+        obj.cachedWidth = null;
+        obj.cachedHeight = null;
+    }
+}
+
+// ⟪ Move Object Utilities 🚚 ⟫
+
+function moveObject(obj, newX, newY) {
+    if (obj.type === "line") {
+        const minX = Math.min(obj.x1, obj.x2);
+        const minY = Math.min(obj.y1, obj.y2);
+        const dx = newX - minX;
+        const dy = newY - minY;
+        obj.x1 += dx; obj.y1 += dy;
+        obj.x2 += dx; obj.y2 += dy;
+    } else if (obj.type === "circle") {
+        obj.x = newX; obj.y = newY;
+    } else if (obj.type === "path" || obj.type === "smoothPath") {
+        const dx = newX - obj.bounds.x;
+        const dy = newY - obj.bounds.y;
+        obj.points.forEach(p => { p.x += dx; p.y += dy; });
+        obj.bounds.x = newX; obj.bounds.y = newY;
+    } else {
+        obj.x = newX; obj.y = newY;
+        clearTextObjectCache(obj);
+    }
+}
+
+function moveObjectByDelta(obj, dx, dy, initial) {
+    if (obj.type === "line") {
+        obj.x1 = initial.x1 + dx; obj.y1 = initial.y1 + dy;
+        obj.x2 = initial.x2 + dx; obj.y2 = initial.y2 + dy;
+    } else if (obj.type === "circle") {
+        obj.x = initial.x + dx; obj.y = initial.y + dy;
+    } else if (obj.type === "path" || obj.type === "smoothPath") {
+        const initBounds = initial.bounds || initial;
+        obj.points.forEach((p, i) => {
+            const initPoint = initial.points ? initial.points[i] : p;
+            p.x = initPoint.x + dx;
+            p.y = initPoint.y + dy;
+        });
+        obj.bounds.x = initBounds.x + dx;
+        obj.bounds.y = initBounds.y + dy;
+    } else {
+        obj.x = initial.x + dx;
+        obj.y = initial.y + dy;
+        clearTextObjectCache(obj);
+    }
+}
 
 // ⟪ Eraser Utilities 🧹 ⟫
 
@@ -543,7 +864,6 @@ function eraseObjectsAlongPath(eraserPath, eraserSize, eraseEntireObjects = fals
             }
         } else {
             const intersection = objectIntersectsPath(obj, eraserPath, eraserRadius);
-
             if (intersection === "full") {
                 objectsToRemove.push(obj);
             } else if (intersection === "partial") {
@@ -571,7 +891,6 @@ function eraseObjectsAlongPath(eraserPath, eraserSize, eraseEntireObjects = fals
     });
 
     newObjects.forEach(obj => objects.push(obj));
-
     return objectsToRemove.length + objectsToSplit.length > 0;
 }
 
@@ -584,9 +903,7 @@ function objectTouchesPath(obj, path, eraserRadius) {
                 obj.x1, obj.y1, obj.x2, obj.y2,
                 path[i].x, path[i].y, path[i + 1].x, path[i + 1].y,
                 eraserRadius
-            )) {
-                return true;
-            }
+            )) return true;
         }
     } else if (obj.type === "path" || obj.type === "smoothPath") {
         for (let j = 0; j < obj.points.length - 1; j++) {
@@ -597,9 +914,7 @@ function objectTouchesPath(obj, path, eraserRadius) {
                     p1.x, p1.y, p2.x, p2.y,
                     path[i].x, path[i].y, path[i + 1].x, path[i + 1].y,
                     eraserRadius
-                )) {
-                    return true;
-                }
+                )) return true;
             }
         }
     }
@@ -607,18 +922,14 @@ function objectTouchesPath(obj, path, eraserRadius) {
     for (const point of path) {
         if (point.x >= expandedBounds.x && point.x <= expandedBounds.x + expandedBounds.width &&
             point.y >= expandedBounds.y && point.y <= expandedBounds.y + expandedBounds.height) {
-            if (distanceToObject(point.x, point.y, obj) <= eraserRadius) {
-                return true;
-            }
+            if (distanceToObject(point.x, point.y, obj) <= eraserRadius) return true;
         }
     }
-
     return false;
 }
 
 function objectIntersectsPath(obj, path, eraserRadius) {
     const expandedBounds = expandBounds(getObjectBounds(obj), eraserRadius);
-
     let anyPointNearObject = false;
 
     for (const point of path) {
@@ -634,19 +945,16 @@ function objectIntersectsPath(obj, path, eraserRadius) {
     const objectSamplePoints = getObjectSamplePointsForErasure(obj);
     let coveredCount = 0;
 
-    for (const samplePoint of objectSamplePoints) {
-        for (const erasePoint of path) {
-            if (distance(samplePoint, erasePoint) <= eraserRadius) {
+    for ( const samplePoint of objectSamplePoints ) {
+        for ( const erasePoint of path ) {
+            if ( distance(samplePoint, erasePoint) <= eraserRadius ) {
                 coveredCount++;
                 break;
             }
         }
     }
 
-    if (coveredCount >= objectSamplePoints.length * 0.8) {
-        return "full";
-    }
-
+    if ( coveredCount >= objectSamplePoints.length * 3 / 4 ) return "full";
     return "partial";
 }
 
@@ -714,8 +1022,7 @@ function splitPathObject(obj, eraserPath, eraserRadius) {
                 const e2 = eraserPath[j + 1];
                 if (segmentsIntersectWithRadius(
                     prevPoint.x, prevPoint.y, point.x, point.y,
-                    e1.x, e1.y, e2.x, e2.y,
-                    eraserRadius
+                    e1.x, e1.y, e2.x, e2.y, eraserRadius
                 )) {
                     pointErased = true;
                     break;
@@ -724,35 +1031,21 @@ function splitPathObject(obj, eraserPath, eraserRadius) {
         }
 
         if (pointErased) {
-            if (currentSegment.length > 1) {
-                segments.push([...currentSegment]);
-                currentSegment = [];
-            }
+            if (currentSegment.length > 1) segments.push([...currentSegment]);
+            currentSegment = [];
         } else {
             currentSegment.push({ x: point.x, y: point.y });
         }
     }
 
-    if (currentSegment.length > 1) {
-        segments.push(currentSegment);
-    }
+    if (currentSegment.length > 1) segments.push(currentSegment);
 
-    if (segments.length === 0) {
-        return { newObjects: [] };
-    }
-
-    if (segments.length === 1 && segments[0].length === obj.points.length) {
-        return { newObjects: [obj] };
-    }
+    if (segments.length === 0) return { newObjects: [] };
+    if (segments.length === 1 && segments[0].length === obj.points.length) return { newObjects: [obj] };
 
     const newObjects = segments.map(segment => {
         const xs = segment.map(p => p.x);
         const ys = segment.map(p => p.y);
-        const minX = Math.min(...xs);
-        const minY = Math.min(...ys);
-        const maxX = Math.max(...xs);
-        const maxY = Math.max(...ys);
-
         return {
             type: obj.type,
             points: segment,
@@ -761,10 +1054,10 @@ function splitPathObject(obj, eraserPath, eraserRadius) {
             rotation: 0,
             layerId: obj.layerId,
             bounds: {
-                x: minX,
-                y: minY,
-                width: maxX - minX,
-                height: maxY - minY
+                x: Math.min(...xs),
+                y: Math.min(...ys),
+                width: Math.max(...xs) - Math.min(...xs),
+                height: Math.max(...ys) - Math.min(...ys)
             }
         };
     });
@@ -789,9 +1082,7 @@ function splitLineObject(obj, eraserPath, eraserRadius) {
                 obj.x1, obj.y1, obj.x2, obj.y2,
                 seg.x1, seg.y1, seg.x2, seg.y2
             );
-            if (t !== null && t >= 0 && t <= 1) {
-                intersections.push(t);
-            }
+            if (t !== null && t >= 0 && t <= 1) intersections.push(t);
         }
 
         const dist1 = pointToLineDistance(e1.x, e1.y, obj.x1, obj.y1, obj.x2, obj.y2);
@@ -810,14 +1101,12 @@ function splitLineObject(obj, eraserPath, eraserRadius) {
     intersections.push(0, 1);
     intersections.sort((a, b) => a - b);
     const unique = [intersections[0]];
-    for (let i = 1; i < intersections.length; i++) {
-        if (intersections[i] - intersections[i - 1] > 0.01) {
-            unique.push(intersections[i]);
-        }
+    for ( let i = 1; i < intersections.length; i++ ) {
+        if ( intersections[i] - intersections[i - 1] > 1 / 0o100 ) unique.push(intersections[i]);
     }
 
     const newObjects = [];
-    for (let i = 0; i < unique.length - 1; i++) {
+    for ( let i = 0; i < unique.length - 1; i++ ) {
         const t1 = unique[i];
         const t2 = unique[i + 1];
         const midT = (t1 + t2) / 2;
@@ -872,9 +1161,7 @@ function splitCircleObject(obj, eraserPath, eraserRadius) {
             }
         }
 
-        if (!pointErased) {
-            survivingPoints.push({ angle, x: point.x, y: point.y });
-        }
+        if (!pointErased) survivingPoints.push({ angle, x: point.x, y: point.y });
     }
 
     let centerErased = false;
@@ -886,24 +1173,15 @@ function splitCircleObject(obj, eraserPath, eraserRadius) {
         }
     }
 
-    if (!anyPointErased) {
-        return { newObjects: [obj] };
-    }
-
-    if (survivingPoints.length < 3 || centerErased) {
-        return { newObjects: [] };
-    }
-
+    if (!anyPointErased) return { newObjects: [obj] };
+    if (survivingPoints.length < 3 || centerErased) return { newObjects: [] };
     return { newObjects: [] };
 }
 
 function getLineT(x, y, x1, y1, x2, y2) {
     const dx = x2 - x1;
     const dy = y2 - y1;
-    if (Math.abs(dx) > Math.abs(dy)) {
-        return dx !== 0 ? (x - x1) / dx : null;
-    }
-    return dy !== 0 ? (y - y1) / dy : null;
+    return Math.abs(dx) > Math.abs(dy) ? (dx !== 0 ? (x - x1) / dx : null) : (dy !== 0 ? (y - y1) / dy : null);
 }
 
 function linesIntersect(x1, y1, x2, y2, x3, y3, x4, y4) {
@@ -917,28 +1195,19 @@ function linesIntersect(x1, y1, x2, y2, x3, y3, x4, y4) {
 function lineLineIntersection(x1, y1, x2, y2, x3, y3, x4, y4) {
     const denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
     if (denom === 0) return null;
-    const t = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom;
-    return t;
+    return ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom;
 }
 
 function segmentsIntersectWithRadius(x1, y1, x2, y2, x3, y3, x4, y4, radius) {
-    if (linesIntersect(x1, y1, x2, y2, x3, y3, x4, y4)) {
-        return true;
-    }
+    if (linesIntersect(x1, y1, x2, y2, x3, y3, x4, y4)) return true;
 
     const dist1 = pointToSegmentDistance(x1, y1, x3, y3, x4, y4);
     const dist2 = pointToSegmentDistance(x2, y2, x3, y3, x4, y4);
-    if (dist1 <= radius || dist2 <= radius) {
-        return true;
-    }
+    if (dist1 <= radius || dist2 <= radius) return true;
 
     const dist3 = pointToSegmentDistance(x3, y3, x1, y1, x2, y2);
     const dist4 = pointToSegmentDistance(x4, y4, x1, y1, x2, y2);
-    if (dist3 <= radius || dist4 <= radius) {
-        return true;
-    }
-
-    return false;
+    return dist3 <= radius || dist4 <= radius;
 }
 
 function pointToSegmentDistance(px, py, x1, y1, x2, y2) {
@@ -946,9 +1215,7 @@ function pointToSegmentDistance(px, py, x1, y1, x2, y2) {
     const dy = y2 - y1;
     const lenSq = dx * dx + dy * dy;
 
-    if (lenSq === 0) {
-        return distance({ x: px, y: py }, { x: x1, y: y1 });
-    }
+    if (lenSq === 0) return distance({ x: px, y: py }, { x: x1, y: y1 });
 
     let t = ((px - x1) * dx + (py - y1) * dy) / lenSq;
     t = Math.max(0, Math.min(1, t));
@@ -965,198 +1232,18 @@ function isValidObject(obj) {
         return obj.points && obj.points.length > 1;
     }
     if (obj.type === "line") {
-        return Math.abs(obj.x2 - obj.x1) > 0.1 || Math.abs(obj.y2 - obj.y1) > 0.1;
+        return Math.abs(obj.x2 - obj.x1) > 1 / 0o10 || Math.abs(obj.y2 - obj.y1) > 1 / 0o10;
     }
     return true;
 }
 
+// ⟪ Resize Helpers 📐 ⟫
 
-// ⟪ Transform Utilities 🔄 ⟫
+function getResizeOriginAndScale(baseBounds, handle, newWidth, newHeight) {
+    const scaleX = newWidth / baseBounds.width;
+    const scaleY = newHeight / baseBounds.height;
+    const originX = handle.includes("w") ? baseBounds.x + baseBounds.width : baseBounds.x;
+    const originY = handle.includes("n") ? baseBounds.y + baseBounds.height : baseBounds.y;
 
-function getObjectInitialState(obj) {
-    if (obj.type === "line") {
-        return {
-            x1: obj.x1, y1: obj.y1,
-            x2: obj.x2, y2: obj.y2
-        };
-    } else if (obj.type === "circle") {
-        return {
-            x: obj.x, y: obj.y,
-            radiusX: obj.radiusX, radiusY: obj.radiusY
-        };
-    } else if (obj.type === "path" || obj.type === "smoothPath") {
-        return {
-            bounds: {
-                x: obj.bounds.x,
-                y: obj.bounds.y,
-                width: obj.bounds.width,
-                height: obj.bounds.height
-            },
-            points: obj.points.map(p => ({ x: p.x, y: p.y }))
-        };
-    } else if (obj.type === "text") {
-        return {
-            x: obj.x, y: obj.y,
-            width: obj.width, height: obj.height
-        };
-    } else {
-        return {
-            x: obj.x, y: obj.y,
-            width: obj.width, height: obj.height
-        };
-    }
-}
-
-function invalidateTextCaches() {
-    objects.filter(obj => obj.type === "text" && obj.useHtmlText).forEach(obj => {
-        obj.textDirty = true;
-        obj.cachedCanvas = null;
-        obj.cachedWidth = null;
-        obj.cachedHeight = null;
-    });
-}
-
-function resizeObject(obj, x, y, handle) {
-    const minSize = 0o10;
-    const rotation = obj.rotation || 0;
-    const cx = getCenterX(obj);
-    const cy = getCenterY(obj);
-
-    const cosR = Math.cos(-rotation);
-    const sinR = Math.sin(-rotation);
-    const localX = cx + (x - cx) * cosR - (y - cy) * sinR;
-    const localY = cy + (x - cx) * sinR + (y - cy) * cosR;
-
-    const objIndex = selectedObjects.indexOf(obj);
-    const init = initialObjectStates[objIndex] || {};
-    const baseBounds = init.bounds || init;
-
-    let newLeft = baseBounds.x;
-    let newTop = baseBounds.y;
-    let newRight = baseBounds.x + baseBounds.width;
-    let newBottom = baseBounds.y + baseBounds.height;
-
-    if (handle.includes("w")) newLeft = localX;
-    if (handle.includes("e")) newRight = localX;
-    if (handle.includes("n")) newTop = localY;
-    if (handle.includes("s")) newBottom = localY;
-
-    const newWidth = Math.max(minSize, newRight - newLeft);
-    const newHeight = Math.max(minSize, newBottom - newTop);
-
-    if (newWidth === minSize) {
-        if (handle.includes("w")) newLeft = newRight - minSize;
-        else newRight = newLeft + minSize;
-    }
-    if (newHeight === minSize) {
-        if (handle.includes("n")) newTop = newBottom - minSize;
-        else newBottom = newTop + minSize;
-    }
-
-    if (obj.type === "line") {
-        const scaleX = newWidth / baseBounds.width;
-        const scaleY = newHeight / baseBounds.height;
-        const originX = handle.includes("w") ? baseBounds.x + baseBounds.width : baseBounds.x;
-        const originY = handle.includes("n") ? baseBounds.y + baseBounds.height : baseBounds.y;
-        
-        if (handle === "nw" || handle === "n" || handle === "ne") {
-            obj.y1 = originY + (obj.y1 - originY) * scaleY;
-        }
-        if (handle === "sw" || handle === "s" || handle === "se") {
-            obj.y2 = originY + (obj.y2 - originY) * scaleY;
-        }
-        if (handle === "nw" || handle === "w" || handle === "sw") {
-            obj.x1 = originX + (obj.x1 - originX) * scaleX;
-        }
-        if (handle === "ne" || handle === "e" || handle === "se") {
-            obj.x2 = originX + (obj.x2 - originX) * scaleX;
-        }
-    } else if (obj.type === "circle") {
-        const newRadiusX = newWidth / 2;
-        const newRadiusY = newHeight / 2;
-        const newCenterX = (newLeft + newRight) / 2;
-        const newCenterY = (newTop + newBottom) / 2;
-        
-        obj.x = newCenterX;
-        obj.y = newCenterY;
-        obj.radiusX = newRadiusX;
-        obj.radiusY = newRadiusY;
-    } else if (obj.type === "path" || obj.type === "smoothPath") {
-        const scaleX = newWidth / baseBounds.width;
-        const scaleY = newHeight / baseBounds.height;
-        const originX = handle.includes("w") ? baseBounds.x + baseBounds.width : baseBounds.x;
-        const originY = handle.includes("n") ? baseBounds.y + baseBounds.height : baseBounds.y;
-
-        if (init.points) {
-            init.points.forEach((p, i) => {
-                obj.points[i].x = originX + (p.x - originX) * scaleX;
-                obj.points[i].y = originY + (p.y - originY) * scaleY;
-            });
-        }
-
-        obj.bounds.width = newWidth;
-        obj.bounds.height = newHeight;
-        if (handle.includes("w")) obj.bounds.x = newLeft;
-        if (handle.includes("n")) obj.bounds.y = newTop;
-    } else {
-        if (handle === "n") {
-            obj.y = newTop;
-            obj.height = newHeight;
-        } else if (handle === "s") {
-            obj.y = baseBounds.y;
-            obj.height = newHeight;
-        } else if (handle === "w") {
-            obj.x = newLeft;
-            obj.width = newWidth;
-        } else if (handle === "e") {
-            obj.x = baseBounds.x;
-            obj.width = newWidth;
-        } else if (handle === "nw") {
-            obj.x = newLeft;
-            obj.y = newTop;
-            obj.width = newWidth;
-            obj.height = newHeight;
-        } else if (handle === "ne") {
-            obj.x = baseBounds.x;
-            obj.y = newTop;
-            obj.width = newWidth;
-            obj.height = newHeight;
-        } else if (handle === "sw") {
-            obj.x = newLeft;
-            obj.y = baseBounds.y;
-            obj.width = newWidth;
-            obj.height = newHeight;
-        } else if (handle === "se") {
-            obj.x = baseBounds.x;
-            obj.y = baseBounds.y;
-            obj.width = newWidth;
-            obj.height = newHeight;
-        }
-
-        if (obj.type === "text") {
-            obj.size = obj.height / 0o4;
-            obj.textDirty = true;
-            obj.cachedCanvas = null;
-            obj.cachedWidth = null;
-            obj.cachedHeight = null;
-        }
-    }
-}
-
-function transformSelectedObjects(transformFn) {
-    if (selectedObjects.length === 0) return;
-    selectedObjects.forEach(obj => {
-        transformFn(obj);
-        if (obj.type === "text") {
-            obj.textDirty = true;
-            obj.cachedCanvas = null;
-        }
-    });
-    redrawCanvas();
-    saveState();
-}
-
-function removeObject(obj) {
-    const index = objects.indexOf(obj);
-    if (index > -1) objects.splice(index, 1);
+    return { scaleX, scaleY, originX, originY };
 }

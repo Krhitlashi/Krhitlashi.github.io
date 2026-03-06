@@ -1,4 +1,4 @@
-// ≺⧼ ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ - Whiteboard Application ⧽≻
+// ≺⧼ Whiteboard Application - Main ⧽≻
 
 // ⟪ Initialization 🚀 ⟫
 
@@ -7,8 +7,7 @@ function init() {
     initLayers();
     initTextEditInput();
     initColors();
-    initTools();
-    initShapes();
+    initToolsAndShapes();
     initSizeSlider();
     initToolbar();
     initCanvasEvents();
@@ -21,8 +20,8 @@ function init() {
 }
 
 function initCanvas() {
-    canvas.width = 0o3000;
-    canvas.height = 0o2100;
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = CANVAS_HEIGHT;
 
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -46,13 +45,12 @@ function initLayers() {
 
 function addLayer() {
     layerCounter++;
-    const newLayer = {
+    layers.push({
         id: layerCounter,
         name: `ꞙɭ${layerCounter} ɭ(ꞇ ɭʃᴜ }ʃɔƽ`,
         visible: true,
         objects: []
-    };
-    layers.push(newLayer);
+    });
     activeLayerId = layerCounter;
     renderLayerList();
     saveState();
@@ -60,7 +58,7 @@ function addLayer() {
 
 function deleteLayer() {
     if (layers.length <= 1) return;
-    
+
     const layerIndex = layers.findIndex(l => l.id === activeLayerId);
     if (layerIndex > -1) {
         objects = objects.filter(obj => obj.layerId !== activeLayerId);
@@ -82,13 +80,8 @@ function moveLayer(direction) {
     saveState();
 }
 
-function moveLayerUp() {
-    moveLayer(1);
-}
-
-function moveLayerDown() {
-    moveLayer(-1);
-}
+function moveLayerUp() { moveLayer(1); }
+function moveLayerDown() { moveLayer(-1); }
 
 function toggleLayerVisibility(layerId) {
     const layer = layers.find(l => l.id === layerId);
@@ -131,6 +124,16 @@ function renderLayerList() {
 
 // ⟪ Text Editing 📝 ⟫
 
+function removeEmptyTextObject(index) {
+    if (index >= 0 && objects[index]) {
+        objects.splice(index, 1);
+        selectedObjects = [];
+        updateTransformControls();
+        redrawCanvas();
+        saveState();
+    }
+}
+
 function initTextEditInput() {
     textEditInput = document.createElement("textarea");
     textEditInput.className = "text-edit-input";
@@ -162,9 +165,8 @@ function initTextEditInput() {
 
 function startTextEditing(x, y, existingText = null) {
     startTextEdit();
-
     isEditingText = true;
-    positionTextEditInput(x, y, currentSize * 0o4, currentColor);
+    positionTextEditInput(x, y, currentSize * TEXT_SIZE_MULTIPLIER, currentColor);
     textEditInput.value = existingText || "";
     textEditInput.classList.add("visible");
     textEditInput.focus();
@@ -186,69 +188,52 @@ function finishTextEditing() {
         const obj = objects[editingTextObjectIndex];
 
         if (text.trim() === "") {
-            objects.splice(editingTextObjectIndex, 1);
-            selectedObjects = [];
-        } else {
-            obj.text = text;
-            obj.color = currentColor;
-            obj.textDirty = true;
-            obj.cachedCanvas = null;
-            obj.cachedWidth = null;
-            obj.cachedHeight = null;
+            removeEmptyTextObject(editingTextObjectIndex);
+            finishTextEditCommon();
+            return;
         }
+
+        obj.text = text;
+        obj.color = currentColor;
+        obj.textDirty = true;
+        obj.cachedCanvas = null;
+        obj.cachedWidth = null;
+        obj.cachedHeight = null;
         redrawCanvas();
-        saveState();
     } else if (text.trim() !== "") {
         const { textX, textY } = getTextEditPosition();
-
-        const textObj = {
+        objects.push({
             type: "text",
-            x: textX,
-            y: textY,
+            x: textX, y: textY,
             text: text,
             color: currentColor,
-            size: currentSize * 0o4,
+            size: currentSize * TEXT_SIZE_MULTIPLIER,
             rotation: 0,
             layerId: activeLayerId,
             useHtmlText: useHtmlText,
             textDirty: true,
             cachedWidth: null,
             cachedHeight: null
-        };
-        objects.push(textObj);
+        });
         redrawCanvas();
-        saveState();
     }
 
-    textEditInput.classList.remove("visible");
-    textEditInput.value = "";
-    isEditingText = false;
-    editingTextObjectIndex = -1;
+    finishTextEditCommon();
+    saveState();
 }
 
 function cancelTextEditing() {
     if (!isEditingText || !textEditInput) return;
 
-    if (editingTextObjectIndex >= 0 && objects[editingTextObjectIndex]) {
-        const obj = objects[editingTextObjectIndex];
-        if (obj.text.trim() === "") {
-            objects.splice(editingTextObjectIndex, 1);
-            selectedObjects = [];
-            updateTransformControls();
-            redrawCanvas();
-            saveState();
-        }
+    if (editingTextObjectIndex >= 0 && objects[editingTextObjectIndex]?.text.trim() === "") {
+        removeEmptyTextObject(editingTextObjectIndex);
+    } else {
+        finishTextEditCommon();
     }
-
-    textEditInput.classList.remove("visible");
-    textEditInput.value = "";
-    isEditingText = false;
-    editingTextObjectIndex = -1;
 }
 
 function editTextObject(obj) {
     startTextEdit();
-
     isEditingText = true;
     editingTextObjectIndex = objects.indexOf(obj);
     positionTextEditInput(obj.x, obj.y, obj.size, obj.color);
@@ -259,25 +244,6 @@ function editTextObject(obj) {
 }
 
 // ⟪ UI Initialization 🎨 ⟫
-
-function setButtonPressed(groupSelector, btn) {
-    document.querySelectorAll(groupSelector).forEach(b => b.setAttribute("aria-pressed", "false"));
-    if (btn) btn.setAttribute("aria-pressed", "true");
-}
-
-function initButtonGroup(selector, groupSelector, onClick) {
-    document.querySelectorAll(selector).forEach(btn => {
-        btn.addEventListener("click", () => {
-            if (groupSelector) setButtonPressed(groupSelector, btn);
-            onClick(btn);
-        });
-    });
-}
-
-function initButton(id, onClick) {
-    const btn = document.getElementById(id);
-    if (btn) btn.addEventListener("click", onClick);
-}
 
 function initColors() {
     const colorGrid = document.getElementById("colorGrid");
@@ -320,58 +286,39 @@ function initCustomColor() {
     });
 }
 
-function initTools() {
+function initToolsAndShapes() {
     initButtonGroup("button[data-tool]", "button[data-tool]", (btn) => {
         currentTool = btn.dataset.tool;
         canvas.dataset.tool = currentTool;
         updateTransformControls();
-        if (!isPanning && !isDrawing) {
-            setCursor(getToolCursor());
-        }
+        if (!isPanning && !isDrawing) setCursor(getToolCursor());
     });
 
-    initHtmlTextToggle();
-    initEraserModeToggle();
-}
-
-function initHtmlTextToggle() {
-    const htmlTextCheckbox = document.getElementById("htmlTextCheckbox");
-    if (!htmlTextCheckbox) return;
-
-    useHtmlText = htmlTextCheckbox.checked;
-
-    htmlTextCheckbox.addEventListener("change", () => {
-        useHtmlText = htmlTextCheckbox.checked;
-    });
-}
-
-function initEraserModeToggle() {
-    const eraserModeCheckbox = document.getElementById("eraserModeCheckbox");
-    if (!eraserModeCheckbox) return;
-
-    eraserEraseObjects = eraserModeCheckbox.checked;
-
-    eraserModeCheckbox.addEventListener("change", () => {
-        eraserEraseObjects = eraserModeCheckbox.checked;
-    });
-}
-
-function initShapes() {
     initButtonGroup("button[data-shape]", "button[data-shape]", (btn) => {
         currentShape = btn.dataset.shape;
         currentTool = "shape";
         canvas.dataset.tool = "shape";
         updateTransformControls();
-        if (!isPanning && !isDrawing) {
-            setCursor(getToolCursor());
-        }
+        if (!isPanning && !isDrawing) setCursor(getToolCursor());
     });
+
+    const htmlTextCheckbox = document.getElementById("htmlTextCheckbox");
+    if (htmlTextCheckbox) {
+        useHtmlText = htmlTextCheckbox.checked;
+        htmlTextCheckbox.addEventListener("change", () => { useHtmlText = htmlTextCheckbox.checked; });
+    }
+
+    const eraserModeCheckbox = document.getElementById("eraserModeCheckbox");
+    if (eraserModeCheckbox) {
+        eraserEraseObjects = eraserModeCheckbox.checked;
+        eraserModeCheckbox.addEventListener("change", () => { eraserEraseObjects = eraserModeCheckbox.checked; });
+    }
 }
 
 function initSizeSlider() {
     const slider = document.getElementById("brushSize");
     const valueDisplay = document.getElementById("brushSizeValue");
-    
+
     slider.addEventListener("input", () => {
         currentSize = parseInt(slider.value);
         valueDisplay.textContent = currentSize;
@@ -389,35 +336,30 @@ function initToolbar() {
 
 function saveState() {
     history = history.slice(0, historyIndex + 1);
-    
+
     const state = {
         layers: JSON.parse(JSON.stringify(layers)),
         objects: JSON.parse(JSON.stringify(objects))
     };
-    
+
     history.push(JSON.stringify(state));
     historyIndex++;
-    
-    if (history.length > maxHistory) {
+
+    if (history.length > HISTORY_MAX) {
         history.shift();
         historyIndex--;
     }
-    
+
     updateUndoRedoButtons();
 }
 
-function undo() {
-    return changeHistory(-1);
-}
-
-function redo() {
-    return changeHistory(1);
-}
+function undo() { changeHistory(-1); }
+function redo() { changeHistory(1); }
 
 function changeHistory(direction) {
     const newIndex = historyIndex + direction;
     if (newIndex < 0 || newIndex >= history.length) return;
-    
+
     historyIndex = newIndex;
     const state = JSON.parse(history[historyIndex]);
     layers = state.layers;
@@ -428,15 +370,16 @@ function changeHistory(direction) {
 }
 
 function updateUndoRedoButtons() {
-    const undoBtns = [document.getElementById("undoBtn"), document.getElementById("quickUndo")];
-    const redoBtns = [document.getElementById("redoBtn"), document.getElementById("quickRedo")];
+    const btnStates = [
+        { ids: ["undoBtn", "quickUndo"], disabled: historyIndex <= 0 },
+        { ids: ["redoBtn", "quickRedo"], disabled: historyIndex >= history.length - 1 }
+    ];
 
-    undoBtns.forEach(btn => {
-        if (btn) btn.disabled = historyIndex <= 0;
-    });
-
-    redoBtns.forEach(btn => {
-        if (btn) btn.disabled = historyIndex >= history.length - 1;
+    btnStates.forEach(({ ids, disabled }) => {
+        ids.forEach(id => {
+            const btn = document.getElementById(id);
+            if (btn) btn.disabled = disabled;
+        });
     });
 }
 
@@ -447,14 +390,11 @@ function getCanvasCoords(e) {
     const zoom = zoomNum / zoomDen;
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
-
-    const touch = e.touches?.[0] || e.changedTouches?.[0];
-    const clientX = touch ? touch.clientX : e.clientX;
-    const clientY = touch ? touch.clientY : e.clientY;
+    const coords = getClientCoords(e);
 
     return {
-        x: (clientX - rect.left) * scaleX,
-        y: (clientY - rect.top) * scaleY
+        x: (coords.x - rect.left) * scaleX,
+        y: (coords.y - rect.top) * scaleY
     };
 }
 
@@ -482,9 +422,7 @@ function startDrawing(e) {
             smoothY = coords.y;
             break;
         case "shape":
-            if (currentShape) {
-                previewShape = createShapeObject(currentShape, startX, startY, coords.x, coords.y);
-            }
+            if (currentShape) previewShape = createShapeObject(currentShape, startX, startY, coords.x, coords.y);
             break;
         case "text":
             createTextBox(startX, startY);
@@ -495,36 +433,26 @@ function startDrawing(e) {
 
 function createTextBox(x, y) {
     const textObj = {
-        type: "text",
-        x: x,
-        y: y,
-        text: "",
-        color: currentColor,
-        size: currentSize * 0o4,
-        rotation: 0,
-        layerId: activeLayerId,
+        type: "text", x: x, y: y,
+        text: "", color: currentColor,
+        size: currentSize * TEXT_SIZE_MULTIPLIER,
+        rotation: 0, layerId: activeLayerId,
         useHtmlText: useHtmlText,
-        textDirty: true,
-        cachedWidth: null,
-        cachedHeight: null
+        textDirty: true, cachedWidth: null, cachedHeight: null
     };
     objects.push(textObj);
     selectedObjects = [textObj];
     updateTransformControls();
     redrawCanvas();
     saveState();
-    
-    setTimeout(() => {
-        editTextObject(textObj);
-    }, 0o10);
+
+    setTimeout(() => editTextObject(textObj), 0o10);
 }
 
 function handleSelectToolClick(x, y, e) {
     const coords = { x, y };
 
-    if (selectedObjects.length > 0 && startRotation(coords.x, coords.y)) {
-        return;
-    }
+    if (selectedObjects.length > 0 && startRotation(coords.x, coords.y)) return;
 
     const clickedObject = findObjectAtPoint(coords.x, coords.y);
 
@@ -535,10 +463,7 @@ function handleSelectToolClick(x, y, e) {
             selectedObjects = [clickedObject];
             updateTransformControls();
             redrawCanvas();
-            // Check for resize/rotate handle after selecting
-            if (startRotation(coords.x, coords.y)) {
-                return;
-            }
+            if (startRotation(coords.x, coords.y)) return;
             isDragging = true;
             dragStartX = coords.x;
             dragStartY = coords.y;
@@ -555,18 +480,14 @@ function handleSelectToolClick(x, y, e) {
             selectedObjects.push(clickedObject);
         }
 
-        if (selectedObjects.length > 0 && startRotation(coords.x, coords.y)) {
-            return;
-        }
+        if (selectedObjects.length > 0 && startRotation(coords.x, coords.y)) return;
 
         isDragging = true;
         dragStartX = coords.x;
         dragStartY = coords.y;
         initialObjectStates = selectedObjects.map(getObjectInitialState);
     } else {
-        if (!e.shiftKey) {
-            selectedObjects = [];
-        }
+        if (!e.shiftKey) selectedObjects = [];
         isSelecting = true;
         selectionRect = { x: startX, y: startY, width: 0, height: 0 };
     }
@@ -579,7 +500,7 @@ function startRotation(x, y) {
     if (findRotateHandle(x, y)) {
         isRotating = true;
         const obj = selectedObjects[0];
-        const center = { x: getCenterX(obj), y: getCenterY(obj) };
+        const center = getCenter(obj);
         const dx = x - center.x, dy = y - center.y;
         initialRotationAngle = Math.atan2(dy, dx);
         initialObjectRotations = selectedObjects.map(o => o.rotation || 0);
@@ -592,16 +513,10 @@ function startRotation(x, y) {
         isResizing = true;
         resizeHandle = clickedHandle;
         const obj = selectedObjects[0];
-        const bounds = getObjectBounds(obj);
-        const cx = getCenterX(obj);
-        const cy = getCenterY(obj);
-        const rotation = obj.rotation || 0;
-
-        initialBounds = bounds;
-        initialCenterX = cx;
-        initialCenterY = cy;
-        initialRotation = rotation;
-
+        initialBounds = getObjectBounds(obj);
+        initialCenterX = getCenterX(obj);
+        initialCenterY = getCenterY(obj);
+        initialRotation = obj.rotation || 0;
         initialObjectStates = selectedObjects.map(getObjectInitialState);
         redrawCanvas();
         return true;
@@ -612,7 +527,7 @@ function startRotation(x, y) {
 
 function rotateSelectedObjects(x, y) {
     const obj = selectedObjects[0];
-    const center = { x: getCenterX(obj), y: getCenterY(obj) };
+    const center = getCenter(obj);
     const dx = x - center.x, dy = y - center.y;
     const currentAngle = Math.atan2(dy, dx);
     const angleDelta = currentAngle - initialRotationAngle;
@@ -624,28 +539,21 @@ function rotateSelectedObjects(x, y) {
 
 function draw(e) {
     e.preventDefault();
-
     const coords = getCanvasCoords(e);
 
-    document.getElementById("cursorPos").textContent = `${Math.round(coords.x / 0o10) * 0o10}, ${Math.round(coords.y / 0o10) * 0o10}`;
+    document.getElementById("cursorPos").textContent = 
+        `${Math.round(coords.x / 0o10) * 0o10}, ${Math.round(coords.y / 0o10) * 0o10}`;
 
     if (currentTool === "select" && !isDrawing) {
         const hoveredObject = findObjectAtPoint(coords.x, coords.y);
         const hoveredHandle = findResizeHandle(coords.x, coords.y);
         const hoveredRotate = findRotateHandle(coords.x, coords.y);
         redrawCanvas();
-        if (hoveredObject && !selectedObjects.includes(hoveredObject)) {
-            drawHoverEffect(hoveredObject);
-        }
-        if (hoveredHandle) {
-            setCursor(getResizeCursor(hoveredHandle));
-        } else if (hoveredRotate) {
-            setCursor("pointer");
-        } else if (hoveredObject) {
-            setCursor("move");
-        } else {
-            setCursor("default");
-        }
+        if (hoveredObject && !selectedObjects.includes(hoveredObject)) drawHoverEffect(hoveredObject);
+        if (hoveredHandle) setCursor(getResizeCursor(hoveredHandle));
+        else if (hoveredRotate) setCursor("pointer");
+        else if (hoveredObject) setCursor("move");
+        else setCursor("default");
         return;
     }
 
@@ -660,10 +568,7 @@ function draw(e) {
         } else if (isDragging && selectedObjects.length > 0) {
             const dx = coords.x - dragStartX;
             const dy = coords.y - dragStartY;
-            selectedObjects.forEach((obj, i) => {
-                const init = initialObjectStates[i] || {};
-                moveObjectByDelta(obj, dx, dy, init);
-            });
+            selectedObjects.forEach((obj, i) => moveObjectByDelta(obj, dx, dy, initialObjectStates[i] || {}));
             redrawCanvas();
         } else if (isSelecting) {
             selectionRect.width = coords.x - startX;
@@ -679,17 +584,15 @@ function draw(e) {
         redrawCanvas();
         drawPathPreview(currentPath, currentColor, currentSize);
     } else if (currentTool === "smooth") {
-        const smoothing = 0o1/0o10;
-        smoothX += (coords.x - smoothX) * smoothing;
-        smoothY += (coords.y - smoothY) * smoothing;
+        smoothX += (coords.x - smoothX) * SMOOTHING_FACTOR;
+        smoothY += (coords.y - smoothY) * SMOOTHING_FACTOR;
         smoothPath.push({ x: smoothX, y: smoothY });
         redrawCanvas();
         drawPathPreview(smoothPath, currentColor, currentSize);
     } else if (currentTool === "eraser") {
         currentPath.push({ x: coords.x, y: coords.y });
         redrawCanvas();
-
-        eraseObjectsAlongPath(currentPath, currentSize * 0o4, eraserEraseObjects);
+        eraseObjectsAlongPath(currentPath, currentSize * TEXT_SIZE_MULTIPLIER, eraserEraseObjects);
         redrawCanvas();
     }
 
@@ -715,40 +618,23 @@ function stopDrawing(e) {
             updateTransformControls();
             redrawCanvas();
         }
-        isDragging = false;
-        isSelecting = false;
-        isResizing = false;
-        isRotating = false;
-        resizeHandle = null;
-        selectionRect = null;
-        dragStartX = 0;
-        dragStartY = 0;
-        initialRotationAngle = 0;
-        initialObjectRotations = [];
-        initialBounds = null;
-        initialCenterX = 0;
-        initialCenterY = 0;
-        initialRotation = 0;
-        initialObjectStates = [];
-        isDrawing = false;
+        resetSelectionState();
         resetCursor();
-        if (selectedObjects.length > 0) {
-            saveState();
-        }
+        if (selectedObjects.length > 0) saveState();
         return;
     }
 
     if (currentTool === "shape" && currentShape && previewShape) {
         if (previewShape.width > 0o4 || previewShape.height > 0o4 ||
-            (previewShape.type === "line" && (Math.abs(previewShape.x2 - previewShape.x1) > 0o4 || Math.abs(previewShape.y2 - previewShape.y1) > 0o4))) {
+            (previewShape.type === "line" && (Math.abs(previewShape.x2 - previewShape.x1) > 0o4 || 
+             Math.abs(previewShape.y2 - previewShape.y1) > 0o4))) {
             objects.push(previewShape);
         }
         previewShape = null;
     }
 
     if (currentTool === "pen" && currentPath.length > 1) {
-        const pathObj = createPathObject(currentPath, currentColor, currentSize);
-        objects.push(pathObj);
+        objects.push(createPathObject(currentPath, currentColor, currentSize));
         currentPath = [];
     }
 
@@ -764,7 +650,6 @@ function stopDrawing(e) {
     }
 
     isDrawing = false;
-
     resetCursor();
 
     if (currentTool !== "text") {
@@ -773,119 +658,52 @@ function stopDrawing(e) {
     }
 }
 
-function moveObject(obj, newX, newY) {
-    if (obj.type === "line") {
-        const minX = Math.min(obj.x1, obj.x2);
-        const minY = Math.min(obj.y1, obj.y2);
-        const dx = newX - minX;
-        const dy = newY - minY;
-        obj.x1 += dx;
-        obj.y1 += dy;
-        obj.x2 += dx;
-        obj.y2 += dy;
-    } else if (obj.type === "circle") {
-        obj.x = newX;
-        obj.y = newY;
-    } else if (obj.type === "path" || obj.type === "smoothPath") {
-        const dx = newX - obj.bounds.x;
-        const dy = newY - obj.bounds.y;
-        obj.points.forEach(p => {
-            p.x += dx;
-            p.y += dy;
-        });
-        obj.bounds.x = newX;
-        obj.bounds.y = newY;
-    } else {
-        obj.x = newX;
-        obj.y = newY;
-        if (obj.type === "text") {
-            obj.textDirty = true;
-        }
-    }
-}
-
-function moveObjectByDelta(obj, dx, dy, initial) {
-    if (obj.type === "line") {
-        obj.x1 = initial.x1 + dx;
-        obj.y1 = initial.y1 + dy;
-        obj.x2 = initial.x2 + dx;
-        obj.y2 = initial.y2 + dy;
-    } else if (obj.type === "circle") {
-        obj.x = initial.x + dx;
-        obj.y = initial.y + dy;
-    } else if (obj.type === "path" || obj.type === "smoothPath") {
-        const initBounds = initial.bounds || initial;
-        const baseDx = dx;
-        const baseDy = dy;
-        obj.points.forEach((p, i) => {
-            const initPoint = initial.points ? initial.points[i] : p;
-            p.x = initPoint.x + baseDx;
-            p.y = initPoint.y + baseDy;
-        });
-        obj.bounds.x = initBounds.x + baseDx;
-        obj.bounds.y = initBounds.y + baseDy;
-    } else {
-        obj.x = initial.x + dx;
-        obj.y = initial.y + dy;
-        if (obj.type === "text") {
-            obj.textDirty = true;
-        }
-    }
-}
-
 function drawSelectionRect() {
     if (!selectionRect) return;
 
-    const radius = 0o20;
     const rect = normalizeRect(selectionRect);
-
     const colors = getContrastingColors([
         { x: rect.x + 0o4, y: rect.y + 0o4 },
         { x: rect.x + rect.width - 0o4, y: rect.y + rect.height - 0o4 }
     ]);
 
     ctx.save();
-    ctx.strokeStyle = colors.strokeColor;
+    ctx.strokeStyle = colors.stroke;
     ctx.lineWidth = 1;
-    ctx.setLineDash([0o4, 0o4]);
-    ctx.fillStyle = colors.fillColor;
-
-    drawRoundedRectPath(rect.x, rect.y, rect.width, rect.height, radius, true);
-
+    ctx.setLineDash(LINE_DASH_PATTERN);
+    ctx.fillStyle = colors.fill;
+    drawRoundedRectPath(rect.x, rect.y, rect.width, rect.height, CORNER_RADIUS, true);
     ctx.restore();
 }
 
 function drawHoverEffect(obj) {
-    const radius = 0o20;
-    const hoverStroke = "#000000";
-
+    const colors = getContrastingColors([{ x: getCenterX(obj), y: getCenterY(obj) }]);
+    
     ctx.save();
-
     applyObjectTransform(obj);
-
-    ctx.strokeStyle = hoverStroke;
+    ctx.strokeStyle = colors.stroke;
     ctx.fillStyle = "rgba(0,0,0,0)";
-    ctx.lineWidth = 0o2;
-    ctx.setLineDash([0o4, 0o4]);
+    ctx.lineWidth = SELECTION_LINE_WIDTH;
+    ctx.setLineDash(LINE_DASH_PATTERN);
 
     const bounds = getObjectBounds(obj);
-
-    drawRoundedRectPath(bounds.x, bounds.y, bounds.width, bounds.height, radius, false);
+    drawRoundedRectPath(bounds.x, bounds.y, bounds.width, bounds.height, CORNER_RADIUS, false);
     ctx.restore();
 }
 
 function getSelectionBounds() {
     if (selectedObjects.length === 0) return null;
+
     if (selectedObjects.length === 1) {
         const bounds = getObjectBounds(selectedObjects[0]);
-        const padding = 0o10;
         return {
-            x: bounds.x - padding,
-            y: bounds.y - padding,
-            width: bounds.width + padding * 2,
-            height: bounds.height + padding * 2
+            x: bounds.x - SELECTION_PADDING,
+            y: bounds.y - SELECTION_PADDING,
+            width: bounds.width + SELECTION_PADDING * 2,
+            height: bounds.height + SELECTION_PADDING * 2
         };
     }
+
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
     selectedObjects.forEach(obj => {
         const bounds = getObjectBounds(obj);
@@ -894,104 +712,13 @@ function getSelectionBounds() {
         maxX = Math.max(maxX, bounds.x + bounds.width);
         maxY = Math.max(maxY, bounds.y + bounds.height);
     });
-    const padding = 0o10;
+
     return {
-        x: minX - padding,
-        y: minY - padding,
-        width: maxX - minX + padding * 2,
-        height: maxY - minY + padding * 2
+        x: minX - SELECTION_PADDING,
+        y: minY - SELECTION_PADDING,
+        width: maxX - minX + SELECTION_PADDING * 2,
+        height: maxY - minY + SELECTION_PADDING * 2
     };
-}
-
-function getHandles(obj) {
-    const bounds = getObjectBounds(obj);
-    const cx = getCenterX(obj);
-    const cy = getCenterY(obj);
-    const rotation = obj.rotation || 0;
-    const c = Math.cos(rotation), s = Math.sin(rotation);
-
-    const localHandles = [
-        { x: bounds.x, y: bounds.y, name: "nw" },
-        { x: bounds.x + bounds.width, y: bounds.y, name: "ne" },
-        { x: bounds.x + bounds.width, y: bounds.y + bounds.height, name: "se" },
-        { x: bounds.x, y: bounds.y + bounds.height, name: "sw" },
-        { x: bounds.x + bounds.width/2, y: bounds.y, name: "n" },
-        { x: bounds.x + bounds.width, y: bounds.y + bounds.height/2, name: "e" },
-        { x: bounds.x + bounds.width/2, y: bounds.y + bounds.height, name: "s" },
-        { x: bounds.x, y: bounds.y + bounds.height/2, name: "w" }
-    ];
-
-    return localHandles.map(h => ({
-        x: cx + (h.x - cx) * c - (h.y - cy) * s,
-        y: cy + (h.x - cx) * s + (h.y - cy) * c,
-        name: h.name,
-        localX: h.x,
-        localY: h.y
-    }));
-}
-
-function findResizeHandle(x, y) {
-    const obj = selectedObjects[0];
-    if (!obj) return null;
-
-    const cx = getCenterX(obj);
-    const cy = getCenterY(obj);
-    const rotation = obj.rotation || 0;
-    const c = Math.cos(-rotation), s = Math.sin(-rotation);
-
-    const localX = cx + (x - cx) * c - (y - cy) * s;
-    const localY = cy + (x - cx) * s + (y - cy) * c;
-
-    const bounds = getObjectBounds(obj);
-    const localHandles = [
-        { x: bounds.x, y: bounds.y, name: "nw" },
-        { x: bounds.x + bounds.width, y: bounds.y, name: "ne" },
-        { x: bounds.x + bounds.width, y: bounds.y + bounds.height, name: "se" },
-        { x: bounds.x, y: bounds.y + bounds.height, name: "sw" },
-        { x: bounds.x + bounds.width/2, y: bounds.y, name: "n" },
-        { x: bounds.x + bounds.width, y: bounds.y + bounds.height/2, name: "e" },
-        { x: bounds.x + bounds.width/2, y: bounds.y + bounds.height, name: "s" },
-        { x: bounds.x, y: bounds.y + bounds.height/2, name: "w" }
-    ];
-
-    const size = 0o30;
-    for (const h of localHandles) {
-        if (Math.abs(localX - h.x) < size && Math.abs(localY - h.y) < size) {
-            return h.name;
-        }
-    }
-    return null;
-}
-
-function findRotateHandle(x, y) {
-    const obj = selectedObjects[0];
-    if (!obj) return false;
-    const cx = getCenterX(obj);
-    const cy = getCenterY(obj);
-    const bounds = getObjectBounds(obj);
-    const rotation = obj.rotation || 0;
-    const c = Math.cos(rotation), s = Math.sin(rotation);
-
-    const localTopMid = { x: bounds.x + bounds.width/2, y: bounds.y };
-    const rhX = cx + (localTopMid.x - cx) * c - (localTopMid.y - cy) * s;
-    const rhY = cy + (localTopMid.x - cx) * s + (localTopMid.y - cy) * c - 0o20;
-
-    const dist = Math.sqrt((x - rhX) ** 2 + (y - rhY) ** 2);
-    return dist < 0o30;
-}
-
-function getResizeCursor(handle) {
-    const cursors = {
-        "nw": "nwse-resize",
-        "ne": "nesw-resize",
-        "sw": "nesw-resize",
-        "se": "nwse-resize",
-        "n": "ns-resize",
-        "s": "ns-resize",
-        "w": "ew-resize",
-        "e": "ew-resize"
-    };
-    return cursors[handle] || "default";
 }
 
 // ⟪ Transform Controls 🎛️ ⟫
@@ -1009,9 +736,7 @@ function initTransformControls() {
     initButton("editSelected", () => {
         if (selectedObjects.length === 0) return;
         const obj = selectedObjects[0];
-        if (obj.type === "text") {
-            editTextObject(obj);
-        }
+        if (obj.type === "text") editTextObject(obj);
     });
 
     initButton("deleteSelected", () => {
@@ -1029,42 +754,32 @@ function initTransformControls() {
         redrawCanvas();
     });
 
-    initButton("rotateLeft", () => {
-        transformSelectedObjects(obj => { obj.rotation = (obj.rotation || 0) - Math.PI / 8; });
+    initButton("rotateLeft", () => transformSelectedObjects(obj => { obj.rotation -= Math.PI / 0o10; }));
+    initButton("rotateRight", () => transformSelectedObjects(obj => { obj.rotation += Math.PI / 0o10; }));
+
+    initButton("moveLayerUp", reorderSelectedObjects);
+    initButton("moveLayerDown", () => reorderSelectedObjects(-1));
+    initButton("bringFront", reorderSelectedObjects);
+    initButton("sendBack", () => reorderSelectedObjects(-1));
+
+    initButton("flipH", () => transformSelectedObjects(obj => { if (obj.width) obj.flipH = !obj.flipH; }));
+    initButton("flipV", () => transformSelectedObjects(obj => { if (obj.height) obj.flipV = !obj.flipV; }));
+}
+
+function reorderSelectedObjects(direction = 1) {
+    if (selectedObjects.length === 0) return;
+    selectedObjects.forEach(obj => {
+        const index = objects.indexOf(obj);
+        if (direction > 0 && index > -1 && index < objects.length - 1) {
+            objects.splice(index, 1);
+            objects.push(obj);
+        } else if (direction < 0 && index > 0) {
+            objects.splice(index, 1);
+            objects.unshift(obj);
+        }
     });
-
-    initButton("rotateRight", () => {
-        transformSelectedObjects(obj => { obj.rotation = (obj.rotation || 0) + Math.PI / 8; });
-    });
-
-    const reorderObject = (direction) => {
-        if (selectedObjects.length === 0) return;
-        selectedObjects.forEach(obj => {
-            const index = objects.indexOf(obj);
-            if (direction > 0 && index > -1 && index < objects.length - 1) {
-                objects.splice(index, 1);
-                objects.push(obj);
-            } else if (direction < 0 && index > 0) {
-                objects.splice(index, 1);
-                objects.unshift(obj);
-            }
-        });
-        redrawCanvas();
-        saveState();
-    };
-
-    initButton("moveLayerUp", () => reorderObject(1));
-    initButton("moveLayerDown", () => reorderObject(-1));
-    initButton("bringFront", () => reorderObject(1));
-    initButton("sendBack", () => reorderObject(-1));
-
-    initButton("flipH", () => {
-        transformSelectedObjects(obj => { if (obj.width) obj.flipH = !obj.flipH; });
-    });
-
-    initButton("flipV", () => {
-        transformSelectedObjects(obj => { if (obj.height) obj.flipV = !obj.flipV; });
-    });
+    redrawCanvas();
+    saveState();
 }
 
 // ⟪ Canvas Rendering 🖼️ ⟫
@@ -1080,9 +795,7 @@ function redrawCanvas() {
         })
         .forEach(obj => drawObject(obj));
 
-    selectedObjects.forEach(obj => {
-        drawSelectionBox(obj);
-    });
+    selectedObjects.forEach(obj => drawSelectionBox(obj));
 }
 
 function applyObjectTransform(obj) {
@@ -1110,7 +823,6 @@ function applyObjectTransform(obj) {
 
 function drawObject(obj) {
     ctx.save();
-
     applyObjectTransform(obj);
 
     ctx.strokeStyle = obj.color;
@@ -1126,27 +838,20 @@ function drawObject(obj) {
             ctx.lineTo(obj.x2, obj.y2);
             ctx.stroke();
             break;
-
         case "circle":
             ctx.beginPath();
             ctx.ellipse(obj.x, obj.y, obj.radiusX, obj.radiusY, 0, 0, Math.PI * 2);
             ctx.stroke();
             break;
-
         case "text":
             ctx.font = `${obj.size}px "ı],ᴜ }ʃᴜ", sans-serif`;
-            if (obj.useHtmlText) {
-                drawHtmlText(obj);
-            } else {
-                ctx.fillText(obj.text || "", obj.x, obj.y);
-            }
+            if (obj.useHtmlText) drawHtmlText(obj);
+            else ctx.fillText(obj.text || "", obj.x, obj.y);
             break;
-
         case "path":
         case "smoothPath":
             drawPath(obj);
             break;
-
         case "shape":
             drawShape(obj);
             break;
@@ -1171,19 +876,15 @@ function drawHtmlText(obj) {
     tempContainer.style.color = obj.color;
 
     const textContent = obj.text || " ";
-    const textNode = document.createTextNode(textContent);
-    tempContainer.appendChild(textNode);
+    tempContainer.appendChild(document.createTextNode(textContent));
     document.body.appendChild(tempContainer);
 
     vacepu(uniqueClass);
 
     let width = tempContainer.offsetWidth;
     let height = tempContainer.offsetHeight;
-
-    const minWidth = obj.size * 0o2;
-    const minHeight = obj.size;
-    width = Math.max(width, minWidth);
-    height = Math.max(height, minHeight);
+    width = Math.max(width, obj.size * TEXT_MIN_WIDTH_MULTIPLIER);
+    height = Math.max(height, obj.size);
 
     const dpr = window.devicePixelRatio || 1;
     const offscreen = document.createElement("canvas");
@@ -1191,9 +892,7 @@ function drawHtmlText(obj) {
     offscreen.height = Math.max(1, Math.floor(height * dpr));
     const offCtx = offscreen.getContext("2d");
     offCtx.scale(dpr, dpr);
-
     offCtx.clearRect(0, 0, width, height);
-
     offCtx.font = `${obj.size}px "ı],ᴜ }ʃᴜ", sans-serif`;
     offCtx.fillStyle = obj.color;
     offCtx.textBaseline = "top";
@@ -1204,19 +903,14 @@ function drawHtmlText(obj) {
 
     for (let i = 0; i < childNodes.length; i++) {
         const node = childNodes[i];
-
         if (node.nodeType === Node.ELEMENT_NODE && node.classList.contains("cepufalxez")) {
             const rect = node.getBoundingClientRect();
-            const relativeX = rect.left - containerRect.left;
-            const relativeY = rect.top - containerRect.top;
-            offCtx.fillText(node.textContent, relativeX, relativeY);
+            offCtx.fillText(node.textContent, rect.left - containerRect.left, rect.top - containerRect.top);
         } else if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
             const range = document.createRange();
             range.selectNodeContents(node);
             const rect = range.getBoundingClientRect();
-            const relativeX = rect.left - containerRect.left;
-            const relativeY = rect.top - containerRect.top;
-            offCtx.fillText(node.textContent, relativeX, relativeY);
+            offCtx.fillText(node.textContent, rect.left - containerRect.left, rect.top - containerRect.top);
         }
     }
 
@@ -1235,11 +929,7 @@ function drawHtmlText(obj) {
 function drawPath(obj) {
     if (obj.points.length < 2) return;
 
-    ctx.beginPath();
-    ctx.moveTo(obj.points[0].x, obj.points[0].y);
-    for (let i = 1; i < obj.points.length; i++) {
-        ctx.lineTo(obj.points[i].x, obj.points[i].y);
-    }
+    drawPathSegments(obj.points);
     ctx.stroke();
 }
 
@@ -1247,7 +937,6 @@ function drawShape(obj) {
     const { x, y, width, height, color, size, shape } = obj;
     ctx.strokeStyle = color;
     ctx.lineWidth = size;
-
     ctx.beginPath();
     drawShapePath(x, y, width, height, shape);
     ctx.stroke();
@@ -1255,7 +944,6 @@ function drawShape(obj) {
 
 function drawSelectionBox(obj) {
     const handles = getHandles(obj);
-    const hs = 0o20, hr = 0o6;
     const cx = getCenterX(obj);
     const cy = getCenterY(obj);
     const bounds = getObjectBounds(obj);
@@ -1263,11 +951,12 @@ function drawSelectionBox(obj) {
     const c = Math.cos(rotation), s = Math.sin(rotation);
 
     ctx.save();
-    ctx.strokeStyle = "#000000";
+    ctx.strokeStyle = SELECTION_STROKE_COLOR;
     ctx.fillStyle = "rgba(0,0,0,0)";
-    ctx.lineWidth = 0o2;
-    ctx.setLineDash([0o4, 0o4]);
+    ctx.lineWidth = SELECTION_LINE_WIDTH;
+    ctx.setLineDash(LINE_DASH_PATTERN);
 
+    // Draw selection rectangle
     ctx.beginPath();
     ctx.moveTo(handles[0].x, handles[0].y);
     ctx.lineTo(handles[1].x, handles[1].y);
@@ -1276,38 +965,38 @@ function drawSelectionBox(obj) {
     ctx.closePath();
     ctx.stroke();
 
-    ctx.fillStyle = "#181818";
-    ctx.strokeStyle = "#000000";
+    // Draw handles
+    ctx.fillStyle = HANDLE_FILL_COLOR;
+    ctx.strokeStyle = HANDLE_STROKE_COLOR;
     ctx.lineWidth = 2;
     ctx.setLineDash([]);
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 0o10; i++) {
         const h = handles[i];
         ctx.beginPath();
-        ctx.roundRect(h.x - hs/2, h.y - hs/2, hs, hs, hr);
+        ctx.roundRect(h.x - HANDLE_SIZE/2, h.y - HANDLE_SIZE/2, HANDLE_SIZE, HANDLE_SIZE, HANDLE_RADIUS);
         ctx.fill();
         ctx.stroke();
     }
 
+    // Draw rotate handle
     const localTopMid = { x: bounds.x + bounds.width/2, y: bounds.y };
     const rhX = cx + (localTopMid.x - cx) * c - (localTopMid.y - cy) * s;
-    const rhY = cy + (localTopMid.x - cx) * s + (localTopMid.y - cy) * c - 0o20;
+    const rhY = cy + (localTopMid.x - cx) * s + (localTopMid.y - cy) * c - ROTATE_HANDLE_OFFSET;
 
     ctx.beginPath();
-    ctx.arc(rhX, rhY, 0o20, 0, Math.PI * 2);
-    ctx.fillStyle = "#181818";
+    ctx.arc(rhX, rhY, ROTATE_HANDLE_RADIUS, 0, Math.PI * 2);
+    ctx.fillStyle = HANDLE_FILL_COLOR;
     ctx.fill();
-    ctx.strokeStyle = "#000000";
     ctx.stroke();
     ctx.beginPath();
-    ctx.arc(rhX, rhY, 0o12, 0, Math.PI * 1.5);
-    ctx.strokeStyle = "#000000";
-    ctx.lineWidth = 0o2;
+    ctx.arc(rhX, rhY, 0o12, 0, Math.PI * ( 3 / 2 ));
+    ctx.strokeStyle = HANDLE_STROKE_COLOR;
+    ctx.lineWidth = SELECTION_LINE_WIDTH;
     ctx.stroke();
 
     ctx.restore();
 }
-
 
 // ⟪ Zoom & Pan 🔍 ⟫
 
@@ -1320,9 +1009,7 @@ function initZoom() {
         document.documentElement.style.setProperty("--pan-x", panOffsetX + "px");
         document.documentElement.style.setProperty("--pan-y", panOffsetY + "px");
         zoomLevel.textContent = `${zoomNum}/${zoomDen}x`;
-
         invalidateTextCaches();
-
         redrawCanvas();
     }
 
@@ -1331,11 +1018,9 @@ function initZoom() {
         let newZoom = oldZoom * (numeratorMult / denominatorMult);
 
         if (newZoom < minZoom) {
-            zoomNum = 0o1;
-            zoomDen = 0o4;
+            zoomNum = 0o1; zoomDen = 0o4;
         } else if (newZoom > maxZoom) {
-            zoomNum = 0o4;
-            zoomDen = 0o1;
+            zoomNum = 0o4; zoomDen = 0o1;
         } else {
             const roundedZoom = Math.round(newZoom * 0o100) / 0o100;
             zoomNum = Math.round(roundedZoom * 0o100);
@@ -1347,7 +1032,6 @@ function initZoom() {
         if (centerX !== undefined && centerY !== undefined) {
             const container = document.getElementById("whiteboardContainer");
             const rect = container.getBoundingClientRect();
-
             panOffsetX = centerX - rect.left - (centerX - rect.left - panOffsetX) * (newZoom / oldZoom);
             panOffsetY = centerY - rect.top - (centerY - rect.top - panOffsetY) * (newZoom / oldZoom);
         }
@@ -1355,24 +1039,21 @@ function initZoom() {
         updateZoom();
     }
 
-    initButton("zoomIn", () => adjustZoom(0o41, 0o40, 0, 0o4));
-    initButton("zoomOut", () => adjustZoom(0o40, 0o41, 1/4, Infinity));
+    initButton("zoomIn", () => adjustZoom(ZOOM_STEP_NUM, ZOOM_STEP_DEN, 0, MAX_ZOOM));
+    initButton("zoomOut", () => adjustZoom(ZOOM_STEP_DEN, ZOOM_STEP_NUM, MIN_ZOOM, Infinity));
     initButton("zoomReset", () => {
-        zoomNum = 0o1;
-        zoomDen = 0o1;
-        panOffsetX = 0;
-        panOffsetY = 0;
+        zoomNum = 0o1; zoomDen = 0o1;
+        panOffsetX = 0; panOffsetY = 0;
         updateZoom();
     });
 
     canvas.addEventListener("wheel", (e) => {
         e.preventDefault();
-
         if (e.ctrlKey) {
             if (e.deltaY < 0) {
-                adjustZoom(0o101, 0o100, 0, 0o4, e.clientX, e.clientY);
+                adjustZoom(WHEEL_ZOOM_NUM, WHEEL_ZOOM_DEN, 0, MAX_ZOOM, e.clientX, e.clientY);
             } else {
-                adjustZoom(0o100, 0o101, 0o1/0o4, Infinity, e.clientX, e.clientY);
+                adjustZoom(WHEEL_ZOOM_DEN, WHEEL_ZOOM_NUM, MIN_ZOOM, Infinity, e.clientX, e.clientY);
             }
         } else {
             panOffsetX -= e.deltaX;
@@ -1382,34 +1063,33 @@ function initZoom() {
     });
 }
 
-
 // ⟪ File Operations 💾 ⟫
+
+function saveCanvas() {
+    const link = document.createElement("a");
+    link.download = "whiteboard.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+}
+
+function loadCanvas(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+            saveState();
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
 
 function initFileOperations() {
     const loadInput = document.getElementById("fileInput");
-
-    function saveCanvas() {
-        const link = document.createElement("a");
-        link.download = "whiteboard.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-    }
-
-    function loadCanvas(file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = new Image();
-            img.onload = () => {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "#ffffff";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0);
-                saveState();
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
 
     initButton("saveBtn", saveCanvas);
     initButton("quickSave", saveCanvas);
@@ -1417,51 +1097,25 @@ function initFileOperations() {
     if (loadInput) {
         initButton("loadBtn", () => loadInput.click());
         loadInput.addEventListener("change", (e) => {
-            if (e.target.files[0]) {
-                loadCanvas(e.target.files[0]);
-            }
+            if (e.target.files[0]) loadCanvas(e.target.files[0]);
         });
     }
 }
 
-
 // ⟪ Actions & Keyboard Shortcuts ⌨️ ⟫
 
-function initActions() {
-    initButton("undoBtn", undo);
-    initButton("quickUndo", undo);
-    initButton("redoBtn", redo);
-    initButton("quickRedo", redo);
-
-    const clearCanvas = () => {
-        if (confirm("Clear the entire canvas - This cannot be undone.")) {
-            objects = [];
-            selectedObjects = [];
-            redrawCanvas();
-            saveState();
-        }
-    };
-
-    initButton("clearBtn", clearCanvas);
-    initButton("quickClear", clearCanvas);
-}
+const KEYBOARD_SHORTCUTS = {
+    "z": (shift) => shift ? redo() : undo(),
+    "y": () => redo(),
+    "s": () => document.getElementById("saveBtn")?.click()
+};
 
 function handleKeyboard(e) {
     const isCtrl = e.ctrlKey || e.metaKey;
 
-    if (isCtrl && e.key === "z") {
+    if (isCtrl && KEYBOARD_SHORTCUTS[e.key]) {
         e.preventDefault();
-        e.shiftKey ? redo() : undo();
-        return;
-    }
-    if (isCtrl && e.key === "y") {
-        e.preventDefault();
-        redo();
-        return;
-    }
-    if (isCtrl && e.key === "s") {
-        e.preventDefault();
-        document.getElementById("saveBtn")?.click();
+        KEYBOARD_SHORTCUTS[e.key](e.shiftKey);
         return;
     }
     if ((e.key === "Delete" || e.key === "Backspace") &&
@@ -1477,31 +1131,51 @@ function handleKeyboard(e) {
     }
     if (e.code === "Space" && e.target === document.body) {
         isSpacePressed = true;
-        if (!isDrawing && !isPanning) {
-            setCursor("grab");
-        }
+        if (!isDrawing && !isPanning) setCursor("grab");
     }
+}
+
+function initActions() {
+    initButtons([
+        { id: "undoBtn", onClick: undo },
+        { id: "quickUndo", onClick: undo },
+        { id: "redoBtn", onClick: redo },
+        { id: "quickRedo", onClick: redo }
+    ]);
+
+    const clearCanvas = () => {
+        if (confirm("Clear the entire canvas - This cannot be undone.")) {
+            objects = [];
+            selectedObjects = [];
+            redrawCanvas();
+            saveState();
+        }
+    };
+
+    initButtons([
+        { id: "clearBtn", onClick: clearCanvas },
+        { id: "quickClear", onClick: clearCanvas }
+    ]);
+}
+
+function initLayerControls() {
+    initButtons([
+        { id: "addLayerBtn", onClick: addLayer },
+        { id: "deleteLayerBtn", onClick: deleteLayer },
+        { id: "moveLayerUpBtn", onClick: moveLayerUp },
+        { id: "moveLayerDownBtn", onClick: moveLayerDown }
+    ]);
 }
 
 function handleKeyup(e) {
     if (e.code === "Space") {
         isSpacePressed = false;
-        if (!isPanning && !isDrawing) {
-            setCursor(getToolCursor());
-        }
+        if (!isPanning && !isDrawing) setCursor(getToolCursor());
         isPanning = false;
     }
 }
 
-
 // ⟪ Canvas Events & Panning 🖱️ ⟫
-
-function initLayerControls() {
-    initButton("addLayerBtn", addLayer);
-    initButton("deleteLayerBtn", deleteLayer);
-    initButton("moveLayerUpBtn", moveLayerUp);
-    initButton("moveLayerDownBtn", moveLayerDown);
-}
 
 function initCanvasEvents() {
     const mouseEvents = [
@@ -1523,11 +1197,8 @@ function initCanvasEvents() {
     touchEvents.forEach(({ event, handler, options }) => canvas.addEventListener(event, handler, options));
 
     document.addEventListener("mouseup", handleGlobalMouseUp);
-
     document.addEventListener("mousedown", (e) => {
-        if (e.button === 1) {
-            e.preventDefault();
-        }
+        if (e.button === 1) e.preventDefault();
     });
 
     document.addEventListener("keydown", handleKeyboard);
@@ -1536,7 +1207,7 @@ function initCanvasEvents() {
 
 function handleDoubleClick(e) {
     if (e.button !== 0) return;
-    
+
     const coords = getCanvasCoords(e);
     const clickedObject = findObjectAtPoint(coords.x, coords.y);
 
@@ -1583,12 +1254,7 @@ function handleMouseMove(e) {
 
 function handleMouseUp(e) {
     if (isPanning) {
-        isPanning = false;
-        if (isSpacePressed) {
-            setCursor("grab");
-        } else {
-            resetCursor();
-        }
+        stopPanning();
     } else {
         stopDrawing(e);
     }
@@ -1596,26 +1262,14 @@ function handleMouseUp(e) {
 
 function handleMouseLeave(e) {
     if (isPanning) {
-        isPanning = false;
-        if (isSpacePressed) {
-            setCursor("grab");
-        } else {
-            resetCursor();
-        }
+        stopPanning();
     } else {
         stopDrawing(e);
     }
 }
 
 function handleGlobalMouseUp(e) {
-    if (isPanning) {
-        isPanning = false;
-        if (isSpacePressed) {
-            setCursor("grab");
-        } else {
-            resetCursor();
-        }
-    }
+    stopPanning();
 }
 
 document.addEventListener("DOMContentLoaded", init);
