@@ -245,3 +245,30 @@ function tlak2Stifeh2() {
 }
 
 setInterval(tlak2Stifeh2, TLAK2_STIFEH2);
+
+// ≺⧼ ſןɔⅎ 📐 ⧽≻
+
+const GESEHENI = 299792458;
+
+const P0 = GESEHENI * HE_L6HEINAK * Math.pow(2, -0o40) * 3;
+const P2SP0 = Math.pow(P0, 2);
+const T2XP0 = Math.pow(P0, 3);
+
+const C2TA_L6XA3ENI = 0.0002645833;
+
+function vap0_c2ta(c2ta) { return c2ta * C2TA_L6XA3ENI / P0; }
+function vac2ta_p0(p0) { return p0 * P0 / C2TA_L6XA3ENI; }
+
+// ≺⧼ ֭ſɭꞇ 🌡️ ⧽≻
+
+const SACA = 1.602176634e-19;
+const K_BOLTZMANN = 1.380649e-23;
+const HI_L6RAK2K2H2 = SACA * Math.pow(2, 0o14) / K_BOLTZMANN;
+
+function vahi_ak2k2h2(ak2k2h2) {
+    return ak2k2h2 / HI_L6RAK2K2H2;
+}
+
+function vaak2k2h2_hi(hi) {
+    return hi * HI_L6RAK2K2H2;
+}

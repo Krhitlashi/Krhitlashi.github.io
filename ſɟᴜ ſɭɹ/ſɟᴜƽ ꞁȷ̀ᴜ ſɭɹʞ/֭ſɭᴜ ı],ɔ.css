@@ -2,7 +2,6 @@
 
 :root {
     --toolbar-size: 256px;
-    --color-grid-size: 32px;
     --zoom: 1;
     --pan-x: 0px;
     --pan-y: 0px;
@@ -44,7 +43,8 @@ body.whiteboard-page {
 .whiteboard-canvas[data-tool="select"] { --cursor: default; }
 .whiteboard-canvas[data-tool="pen"],
 .whiteboard-canvas[data-tool="smooth"],
-.whiteboard-canvas[data-tool="shape"] { --cursor: crosshair; }
+.whiteboard-canvas[data-tool="shape"],
+.whiteboard-canvas[data-tool="connect"] { --cursor: crosshair; }
 .whiteboard-canvas[data-tool="eraser"] { --cursor: cell; }
 .whiteboard-canvas[data-tool="text"] { --cursor: text; }
 .whiteboard-canvas[data-cursor] { cursor: var(--cursor); }
@@ -176,17 +176,6 @@ body.whiteboard-page {
     line-height: 1;
     display: inline-block;
 }
-
-/* ⟪ ſɟᴜ }ʃɹƽ 🖱️ ⟫ */
-
-.whiteboard-canvas[data-cursor="grab"] { cursor: grab; }
-.whiteboard-canvas[data-cursor="grabbing"] { cursor: grabbing; }
-.whiteboard-canvas[data-cursor="pointer"] { cursor: pointer; }
-.whiteboard-canvas[data-cursor="move"] { cursor: move; }
-.whiteboard-canvas[data-cursor="default"] { cursor: default; }
-.whiteboard-canvas[data-cursor="crosshair"] { cursor: crosshair; }
-.whiteboard-canvas[data-cursor="cell"] { cursor: cell; }
-.whiteboard-canvas[data-cursor="text"] { cursor: text; }
 
 #fileInput {
     display: none;

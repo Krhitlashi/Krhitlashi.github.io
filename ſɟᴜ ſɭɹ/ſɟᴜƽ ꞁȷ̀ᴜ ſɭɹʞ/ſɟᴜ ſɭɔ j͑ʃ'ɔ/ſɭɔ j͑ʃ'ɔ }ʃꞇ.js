@@ -428,6 +428,15 @@ function startDrawing(e) {
             createTextBox(startX, startY);
             isDrawing = false;
             break;
+        case "connect":
+            const clickedObject = findObjectAtPoint(coords.x, coords.y);
+            if (clickedObject) {
+                if (!clickedObject.id) clickedObject.id = generateId();
+                connectStartObj = clickedObject;
+            } else {
+                isDrawing = false;
+            }
+            break;
     }
 }
 
@@ -594,6 +603,18 @@ function draw(e) {
         redrawCanvas();
         eraseObjectsAlongPath(currentPath, currentSize * TEXT_SIZE_MULTIPLIER, eraserEraseObjects);
         redrawCanvas();
+    } else if (currentTool === "connect" && connectStartObj) {
+        redrawCanvas();
+        ctx.save();
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = currentSize;
+        ctx.setLineDash(LINE_DASH_PATTERN);
+        ctx.beginPath();
+        const startC = getCenter(connectStartObj);
+        ctx.moveTo(startC.x, startC.y);
+        ctx.lineTo(coords.x, coords.y);
+        ctx.stroke();
+        ctx.restore();
     }
 
     if (currentTool === "shape" && currentShape) {
@@ -643,6 +664,23 @@ function stopDrawing(e) {
         smoothObj.type = "smoothPath";
         objects.push(smoothObj);
         smoothPath = [];
+    }
+    
+    if (currentTool === "connect" && connectStartObj) {
+        const targetObj = findObjectAtPoint(coords.x, coords.y);
+        if (targetObj && targetObj !== connectStartObj) {
+            if (!targetObj.id) targetObj.id = generateId();
+            objects.push({
+                type: "connection",
+                id: generateId(),
+                startId: connectStartObj.id,
+                endId: targetObj.id,
+                color: currentColor,
+                size: currentSize,
+                layerId: activeLayerId
+            });
+        }
+        connectStartObj = null;
     }
 
     if (currentTool === "eraser" && currentPath.length > 1) {
@@ -837,6 +875,18 @@ function drawObject(obj) {
             ctx.moveTo(obj.x1, obj.y1);
             ctx.lineTo(obj.x2, obj.y2);
             ctx.stroke();
+            break;
+        case "connection":
+            const startObj = objects.find(o => o.id === obj.startId);
+            const endObj = objects.find(o => o.id === obj.endId);
+            if (startObj && endObj) {
+                ctx.beginPath();
+                const c1 = getCenter(startObj);
+                const c2 = getCenter(endObj);
+                ctx.moveTo(c1.x, c1.y);
+                ctx.lineTo(c2.x, c2.y);
+                ctx.stroke();
+            }
             break;
         case "circle":
             ctx.beginPath();

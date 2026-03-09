@@ -11,6 +11,9 @@ function getClientCoords(e) {
 }
 
 // ⟪ Cursor Helpers 🖰 ⟫
+function generateId() {
+    return Date.now().toString(36) + Math.random().toString(36).substring(2, 9);
+}
 
 const CURSOR_CLASSES = [
     "canvas-cursor-grab", "canvas-cursor-grabbing", "canvas-cursor-pointer",
@@ -25,7 +28,8 @@ const TOOL_CURSORS = {
     eraser: "cell",
     text: "text",
     shape: "crosshair",
-    smooth: "crosshair"
+    smooth: "crosshair",
+    connect: "crosshair"
 };
 
 function resetCursor() {
@@ -112,22 +116,18 @@ function startTextEdit() {
 
 function positionTextEditInput(x, y, size, color) {
     const zoom = zoomNum / zoomDen;
-    const container = document.getElementById("whiteboardContainer");
-    const containerRect = container.getBoundingClientRect();
 
-    textEditInput.style.setProperty("--text-x", ((x * zoom) + containerRect.left + panOffsetX) + "px");
-    textEditInput.style.setProperty("--text-y", (((y - size) * zoom) + containerRect.top + panOffsetY) + "px");
+    textEditInput.style.setProperty("--text-x", (x * zoom) + "px");
+    textEditInput.style.setProperty("--text-y", ((y - size) * zoom) + "px");
     textEditInput.style.setProperty("--text-size", (size * zoom) + "px");
     textEditInput.style.setProperty("--text-color", color);
 }
 
 function getTextEditPosition() {
     const zoom = zoomNum / zoomDen;
-    const container = document.getElementById("whiteboardContainer");
-    const containerRect = container.getBoundingClientRect();
 
-    const x = ((parseFloat(textEditInput.style.getPropertyValue("--text-x")) - containerRect.left - panOffsetX) / zoom);
-    const y = ((parseFloat(textEditInput.style.getPropertyValue("--text-y")) - containerRect.top - panOffsetY) / zoom) + currentSize * TEXT_SIZE_MULTIPLIER;
+    const x = parseFloat(textEditInput.style.getPropertyValue("--text-x")) / zoom;
+    const y = parseFloat(textEditInput.style.getPropertyValue("--text-y")) / zoom + currentSize * TEXT_SIZE_MULTIPLIER;
 
     return { textX: x, textY: y };
 }
@@ -153,7 +153,7 @@ function getTextBounds(obj) {
     ctx.font = `${obj.size}px "ı],ᴜ }ʃᴜ", sans-serif`;
     const metrics = ctx.measureText(obj.text || "W");
     const width = Math.max(metrics.width, obj.size * TEXT_MIN_WIDTH_MULTIPLIER);
-    const height = Math.max(obj.size, obj.size * TEXT_MIN_WIDTH_MULTIPLIER);
+    const height = obj.size;
     return {
         x: obj.x,
         y: obj.y - height,
@@ -188,6 +188,18 @@ function getObjectBounds(obj) {
             };
         case "text":
             return getTextBounds(obj);
+        case "connection":
+            const startObj = objects.find(o => o.id === obj.startId);
+            const endObj = objects.find(o => o.id === obj.endId);
+            if (!startObj || !endObj) return { x: 0, y: 0, width: 0, height: 0 };
+            const c1 = getCenter(startObj);
+            const c2 = getCenter(endObj);
+            return {
+                x: Math.min(c1.x, c2.x),
+                y: Math.min(c1.y, c2.y),
+                width: Math.abs(c2.x - c1.x),
+                height: Math.abs(c2.y - c1.y)
+            };
         default:
             return {
                 x: obj.x,
@@ -222,6 +234,12 @@ function getCenterX(obj) {
     if (obj.type === "line") return (obj.x1 + obj.x2) / 2;
     if (obj.type === "circle") return obj.x;
     if (obj.type === "path" || obj.type === "smoothPath") return obj.bounds.x + obj.bounds.width / 2;
+    if (obj.type === "connection") {
+        const startObj = objects.find(o => o.id === obj.startId);
+        const endObj = objects.find(o => o.id === obj.endId);
+        if (!startObj || !endObj) return 0;
+        return (getCenterX(startObj) + getCenterX(endObj)) / 2;
+    }
     return obj.x + (obj.width || CANVAS_WIDTH) / 2;
 }
 
@@ -229,6 +247,12 @@ function getCenterY(obj) {
     if (obj.type === "line") return (obj.y1 + obj.y2) / 2;
     if (obj.type === "circle") return obj.y;
     if (obj.type === "path" || obj.type === "smoothPath") return obj.bounds.y + obj.bounds.height / 2;
+    if (obj.type === "connection") {
+        const startObj = objects.find(o => o.id === obj.startId);
+        const endObj = objects.find(o => o.id === obj.endId);
+        if (!startObj || !endObj) return 0;
+        return (getCenterY(startObj) + getCenterY(endObj)) / 2;
+    }
     return obj.y + (obj.height || CANVAS_HEIGHT) / 2;
 }
 
@@ -256,6 +280,14 @@ function isPointInObject(x, y, obj) {
         case "line":
             const dist = pointToLineDistance(x, y, obj.x1, obj.y1, obj.x2, obj.y2);
             return dist < obj.size + DASH_LENGTH;
+        case "connection":
+            const startObj = objects.find(o => o.id === obj.startId);
+            const endObj = objects.find(o => o.id === obj.endId);
+            if (!startObj || !endObj) return false;
+            const c1 = getCenter(startObj);
+            const c2 = getCenter(endObj);
+            const distConn = pointToLineDistance(x, y, c1.x, c1.y, c2.x, c2.y);
+            return distConn < obj.size + DASH_LENGTH;
         case "path":
         case "smoothPath":
             return x >= obj.bounds.x && x <= obj.bounds.x + obj.bounds.width &&
@@ -282,6 +314,13 @@ function distanceToObject(x, y, obj) {
     switch (obj.type) {
         case "line":
             return pointToLineDistance(x, y, obj.x1, obj.y1, obj.x2, obj.y2);
+        case "connection":
+            const startObj = objects.find(o => o.id === obj.startId);
+            const endObj = objects.find(o => o.id === obj.endId);
+            if (!startObj || !endObj) return Infinity;
+            const c1 = getCenter(startObj);
+            const c2 = getCenter(endObj);
+            return pointToLineDistance(x, y, c1.x, c1.y, c2.x, c2.y);
         case "circle":
             const distToCenter = Math.sqrt(Math.pow(x - obj.x, 2) + Math.pow(y - obj.y, 2));
             return Math.abs(distToCenter - Math.max(obj.radiusX, obj.radiusY));

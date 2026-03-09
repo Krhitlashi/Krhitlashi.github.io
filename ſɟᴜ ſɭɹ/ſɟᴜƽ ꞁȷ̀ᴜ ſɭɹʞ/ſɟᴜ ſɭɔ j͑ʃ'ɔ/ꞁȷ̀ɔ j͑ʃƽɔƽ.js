@@ -5,8 +5,8 @@ const canvas = document.getElementById( "whiteboardCanvas" );
 const ctx = canvas.getContext( "2d" );
 
 // ⟪ Magic Numbers - Named Constants 🔢 ⟫
-const CANVAS_WIDTH = 0o3000;
-const CANVAS_HEIGHT = 0o2100;
+const CANVAS_WIDTH = 0o3577;
+const CANVAS_HEIGHT = 0o2400;
 
 const MIN_SIZE = 0o10;
 const HANDLE_SIZE = 0o20;
