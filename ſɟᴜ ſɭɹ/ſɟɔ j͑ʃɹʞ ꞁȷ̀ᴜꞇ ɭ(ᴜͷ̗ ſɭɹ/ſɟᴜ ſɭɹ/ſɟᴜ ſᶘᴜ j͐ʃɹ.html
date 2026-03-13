@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="aih">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="inline-size=device-inline-size, initial-scale=1">
+    <title data-oskakefani="app_notetaker"></title>
+    <link rel="icon" type="image/x-icon" href="../../../j͑ʃɹ ɭʃᴜɔ˞ ɭl̀ɔ j͑ʃᴜꞇ.ico">
+    <link rel="manifest" href="../../../ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.json">
+    <link rel="stylesheet" href="../../../֭ſɭᴜ ı],ɔ.css">
+    <link rel="stylesheet" href="../֭ſɭᴜ ı],ɔ.css">
+</head>
+
+<body class="cepufal">
+    <h1 data-oskakefani="app_notetaker"></h1>
+    <textarea id="notepad" data-oskakefani="ph_start_typing"></textarea>
+    <thala class="cakaxa">
+        <button onclick="saveNotes()" data-oskakefani="cmd_save"></button>
+        <p id="status" style="opacity: 0; transition: opacity 0.3s;" data-oskakefani="msg_saved"></p>
+    </thala>
+    <script>
+        const pad = document.getElementById('notepad');
+        const status = document.getElementById('status');
+        pad.value = localStorage.getItem('notetaker-notes') || '';
+        function saveNotes() {
+            localStorage.setItem('notetaker-notes', pad.value);
+            status.style.opacity = '1';
+            setTimeout(() => status.style.opacity = '0', 0o3720); // octal for 2000ms
+        }
+
+        const skakefani = {
+            aih: {
+                "app_notetaker": "NoteTaker 📝",
+                "ph_start_typing": "Start typing...",
+                "cmd_save": "Save 💾",
+                "msg_saved": "✓ Saved"
+            },
+            en: {
+                "app_notetaker": "NoteTaker 📝",
+                "ph_start_typing": "Start typing...",
+                "cmd_save": "Save 💾",
+                "msg_saved": "✓ Saved"
+            }
+        };
+    </script>
+    <script src="../../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃƽᴜ ſɭɔʞ ꞁȷ̀ᴜ }ʃꞇ.js"></script>
+    <script src="../../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃƽᴜ ſɭɔʞ.js"></script>
+</body>
+
+</html>

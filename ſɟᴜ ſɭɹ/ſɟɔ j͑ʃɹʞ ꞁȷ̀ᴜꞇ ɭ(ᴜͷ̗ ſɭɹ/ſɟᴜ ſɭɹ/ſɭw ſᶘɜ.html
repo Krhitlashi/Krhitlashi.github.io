@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="aih">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="inline-size=device-inline-size, initial-scale=1">
+    <title data-oskakefani="settings_title"></title>
+    <link rel="icon" type="image/x-icon" href="../../../j͑ʃɹ ɭʃᴜɔ˞ ɭl̀ɔ j͑ʃᴜꞇ.ico">
+    <link rel="manifest" href="../../../ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.json">
+    <link rel="stylesheet" href="../../../֭ſɭᴜ ı],ɔ.css">
+    <link rel="stylesheet" href="../֭ſɭᴜ ı],ɔ.css">
+</head>
+
+<body class="cepufal">
+    <h1 data-oskakefani="settings_title"></h1>
+
+    <thala>
+        <p class="ksakap2sa" data-oskakefani="settings_theme"></p>
+        <select id="theme-select" class="k6tani">
+            <option value="detect" data-oskakefani="settings_theme_detect"></option>
+            <option value="light" data-oskakefani="settings_theme_light"></option>
+            <option value="dark" data-oskakefani="settings_theme_dark"></option>
+        </select>
+    </thala>
+
+    <sak></sak>
+    <thala>
+        <p class="ksakap2sa" data-oskakefani="settings_wallpaper"></p>
+        <input type="text" id="wallpaper-url" class="k6tani" placeholder="Wallpaper URL" data-oskakefani="settings_wallpaper_url">
+    </thala>
+
+    <sak></sak>
+    <thala>
+        <p class="ksakap2sa" data-oskakefani="settings_taskbar_size"></p>
+        <span id="taskbar-size-val"></span>
+        <input type="range" class="k6tani" min="48" max="112" step="8" value="64" id="taskbar-size">
+    </thala>
+
+    <sak></sak>
+    <thala>
+        <p class="ksakap2sa" data-oskakefani="settings_labels_display"></p>
+        <select id="label-display" class="k6tani">
+            <option value="vertical-pill" selected data-oskakefani="settings_vertical_pill"></option>
+            <option value="inside" data-oskakefani="settings_inside"></option>
+            <option value="off" data-oskakefani="settings_off"></option>
+        </select>
+    </thala>
+
+    <sak></sak>
+    <thala>
+        <p class="ksakap2sa" data-oskakefani="settings_language"></p>
+        <select id="language" class="k6tani">
+            <!-- Populated dynamically -->
+        </select>
+    </thala>
+
+    <sak></sak>
+    <thala>
+        <p class="ksakap2sa" data-oskakefani="settings_taskbar_layout"></p>
+        <label>
+            <span data-oskakefani="settings_position"></span>
+            <select id="taskbar-position" class="k6tani">
+                <option value="left" selected data-oskakefani="settings_left"></option>
+                <option value="right" data-oskakefani="settings_right"></option>
+                <option value="bottom" data-oskakefani="settings_bottom"></option>
+                <option value="top" data-oskakefani="settings_top"></option>
+            </select>
+        </label>
+    </thala>
+
+    <script>
+        function send(action, value) {
+            window.parent.postMessage({ source: 'settings', action, value }, '*');
+        }
+        document.getElementById('theme-select').onchange = e => send('setTheme', e.target.value);
+        document.getElementById('wallpaper-url').onchange = e => send('setWallpaper', e.target.value);
+        document.getElementById('taskbar-size').oninput = e => {
+            document.getElementById('taskbar-size-val').innerText = e.target.value + 'px';
+            send('updateTaskbarSettings', e.target.value);
+        };
+        document.getElementById('label-display').onchange = e => send('setLabelDisplay', e.target.value);
+        document.getElementById('language').onchange = e => send('setLanguage', e.target.value);
+        document.getElementById('taskbar-position').onchange = e => send('setTaskbarPosition', e.target.value);
+
+        // Initialize from localStorage
+        document.getElementById('theme-select').value = localStorage.getItem('os-theme') || 'detect';
+        document.getElementById('wallpaper-url').value = localStorage.getItem('os-wallpaper') || '';
+        document.getElementById('taskbar-position').value = localStorage.getItem('os-taskbar-position') || 'left';
+        const savedTaskbarSize = localStorage.getItem('os-taskbar-size') || '48';
+        document.getElementById('taskbar-size').value = savedTaskbarSize;
+        document.getElementById('taskbar-size-val').innerText = savedTaskbarSize + 'px';
+
+        // Map of language codes to their display names (fallback)
+        const langNames = {
+            aih: "Native",
+            en: "English",
+            ja: "日本語",
+            ar: "العربية"
+        };
+
+        function initDynamicContent() {
+            if (typeof skakefani === 'undefined') {
+                setTimeout(initDynamicContent, 0o100);
+                return;
+            }
+
+            const langSelect = document.getElementById('language');
+            langSelect.innerHTML = '';
+            
+            Object.keys(skakefani).forEach(lang => {
+                const option = document.createElement('option');
+                option.value = lang;
+                // Use skakefani for display name if available, otherwise fallback
+                const key = `settings_language_${lang}`;
+                option.innerText = skakefani[lang][key] || langNames[lang] || lang;
+                langSelect.appendChild(option);
+            });
+
+            // Set current language
+            langSelect.value = document.documentElement.lang || 'aih';
+        }
+
+        const skakefani = {
+            aih: {
+                "settings_title": "ſɭw ſᶘɜ ⚙️",
+                "settings_theme": "֭ſɭᴜ ı],ɔ",
+                "settings_theme_detect": "ꞁȷ̀ꞇ j͐ʃᴜƽ",
+                "settings_theme_light": "ɭʃᴜ̩э",
+                "settings_theme_dark": "֭ſɭw }ʃᴜ",
+                "settings_taskbar_size": "ſɟᴜƽ ꞁȷ̀ᴜ ı],ᴜ j͑ʃп́ɔ ſןᴜ j͐ʃэ",
+                "settings_labels_display": "ſɭɔ˞ᴜ ſɭᴜ j͑ʃᴜ ſɟᴜ ſɭɹ",
+                "settings_vertical_pill": "ſɟɔ ſןw",
+                "settings_inside": "ſɟɹ ֭ſɭɹ",
+                "settings_off": "}ʃɔƣ̋ ꞁȷ̀ᴜ ſ̀ȷɔ",
+                "settings_language": "ſ͔ɭᴜ ᶅſɔ",
+                "settings_taskbar_layout": "ſɟᴜƽ ꞁȷ̀ᴜ ı],ᴜ j͑ʃп́ɔ ſɭɔ ֭ſɭɔ",
+                "settings_position": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ",
+                "settings_left": "ſɟƨᴜ ŋᷠᴜ",
+                "settings_right": "ſןƨᴜ ŋᷠᴜ",
+                "settings_bottom": "ſןɔ˞ᴜƴ",
+                "settings_top": "j͑ʃɜ ſɭ,ᴜ"
+            },
+            en: {
+                "settings_title": "Settings ⚙️",
+                "settings_theme": "System Theme",
+                "settings_theme_detect": "Detect",
+                "settings_theme_light": "Light",
+                "settings_theme_dark": "Dark",
+                "settings_taskbar_size": "Taskbar Size",
+                "settings_labels_display": "Labels Display",
+                "settings_vertical_pill": "Vertical Pill",
+                "settings_inside": "Inside",
+                "settings_off": "Off",
+                "settings_language": "Language",
+                "settings_taskbar_layout": "Taskbar Layout",
+                "settings_position": "Position",
+                "settings_left": "Left",
+                "settings_right": "Right",
+                "settings_bottom": "Bottom",
+                "settings_top": "Top"
+            }
+        };
+
+        // Use default skakefani from external scripts
+
+        window.onload = initDynamicContent;
+    </script>
+    <script src="../../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃƽᴜ ſɭɔʞ ꞁȷ̀ᴜ }ʃꞇ.js"></script>
+    <script src="../../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃƽᴜ ſɭɔʞ.js"></script>
+</body>
+
+</html>

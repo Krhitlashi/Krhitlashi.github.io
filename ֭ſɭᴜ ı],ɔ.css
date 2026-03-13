@@ -288,6 +288,12 @@ button[aria-pressed="true"] {
     border: var(--សាកព៏២);
     border-radius: var(--ចិង);
 }
+button[aria-pressed="true"].caku1o {
+	background-color: var(--កេភ);
+}
+button[aria-pressed="true"].caku1o * {
+	color: var(--ខេលេសៃ);
+}
 select {
 	inline-size: 100%;
 	background-color: var(--តានេក);
@@ -489,7 +495,6 @@ input, textarea {
 	border: var(--សាកព៏);
 	padding: var(--អារេងព៏);
 	align-self: stretch;
-	backdrop-filter: var(--ច្ហិនី);
 }
 input:hover {
 	background-color: var(--តានេក២);

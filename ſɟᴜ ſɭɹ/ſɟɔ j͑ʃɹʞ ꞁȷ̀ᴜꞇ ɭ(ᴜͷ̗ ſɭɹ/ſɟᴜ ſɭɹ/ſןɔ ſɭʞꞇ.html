@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="aih">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="inline-size=device-inline-size, initial-scale=1">
+    <title data-oskakefani="app_terminal"></title>
+    <link rel="icon" type="image/x-icon" href="../../../j͑ʃɹ ɭʃᴜɔ˞ ɭl̀ɔ j͑ʃᴜꞇ.ico">
+    <link rel="manifest" href="../../../ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.json">
+    <link rel="stylesheet" href="../../../֭ſɭᴜ ı],ɔ.css">
+    <link rel="stylesheet" href="../֭ſɭᴜ ı],ɔ.css">
+</head>
+
+<body class="cepufal">
+    <thala>
+        <div data-oskakefani="terminal_version"></div>
+        <div data-oskakefani="terminal_help"></div>
+    </thala>
+    <div id="output"></div>
+    <input type="text" id="input" data-oskakefani="ph_terminal">
+</body>
+<script>
+    const output = document.getElementById('output');
+    const input = document.getElementById('input');
+    
+    function addCommandOutput(cmd, outputContent) {
+        const html = '<thala><div class="cmd-echo">' + cmd + '</div><ciihii class="cmd-output">' + outputContent + '</ciihii></thala>';
+        output.insertAdjacentHTML('beforebegin', html);
+    }
+    
+    input.focus();
+    input.addEventListener('keydown', e => {
+        if (e.key !== 'Enter') return;
+        const cmd = input.value.trim();
+        if (cmd) {
+            if (cmd === 'help') {
+                addCommandOutput(cmd, '<span data-oskakefani="terminal_commands"></span>');
+            } else if (cmd === 'clear') {
+                output.parentElement.querySelectorAll('thala:not(#output)').forEach(el => el.remove());
+            } else if (cmd === 'date') {
+                addCommandOutput(cmd, new Date().toLocaleString());
+            } else if (cmd.startsWith('echo ')) {
+                addCommandOutput(cmd, cmd.substring(5));
+            } else if (cmd === 'ls') {
+                addCommandOutput(cmd, 'Desktop  Documents  Downloads  Pictures');
+            } else {
+                addCommandOutput(cmd, 'Command not found: ' + cmd);
+            }
+            // Re-trigger translation for new content
+            const gawe = document.documentElement.lang || 'aih';
+            document.querySelectorAll('[data-oskakefani]').forEach(el => {
+                const kef = el.dataset.oskakefani;
+                el.textContent = window.skakefani?.[gawe]?.[kef] || window.skakefani?.['aih']?.[kef] || kef;
+            });
+        }
+        input.value = '';
+        document.documentElement.scrollTop = document.documentElement.scrollHeight;
+    });
+
+    window.skakefani = {
+        aih: {
+            "app_terminal": "ſןɔ ſɭʞꞇ 💻",
+            "terminal_version": "Dalk2Cel2fu Terminal v0",
+            "terminal_help": "Type 'help' for commands.",
+            "ph_terminal": "▶",
+            "terminal_commands": "Commands: help, clear, date, echo [msg], ls"
+        },
+        en: {
+            "app_terminal": "Terminal 💻",
+            "terminal_version": "Dalk2Cel2fu Terminal v0",
+            "terminal_help": "Type 'help' for commands.",
+            "ph_terminal": "▶",
+            "terminal_commands": "Commands: help, clear, date, echo [msg], ls"
+        }
+    };
+</script>
+<script src="../../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃƽᴜ ſɭɔʞ ꞁȷ̀ᴜ }ʃꞇ.js"></script>
+<script src="../../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃƽᴜ ſɭɔʞ.js"></script>
+</html>
