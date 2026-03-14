@@ -95,7 +95,7 @@ class WindowManager {
     static _buildTitleBar( id, title, simple = false ) {
         if ( simple ) {
             return `
-                <ksaka onmousedown="WindowManager.startDrag(event, '${id}')">
+                <ksaka onmousedown="WindowManager.startDrag(event, '${id}')" ontouchstart="WindowManager.startDrag(event, '${id}')">
                     <button onclick="WindowManager.closeWindow('${id}')" title="Close">/</button>
                     <button onclick="WindowManager.toggleMaximize('${id}')" title="Maximize">O</button>
                     <button onclick="WindowManager.minimizeWindow('${id}')" title="Minimize">|</button>
@@ -104,7 +104,7 @@ class WindowManager {
             `;
         }
         return `
-            <ksaka class="title-bar n2tase" onmousedown="WindowManager.startDrag(event, '${id}')">
+            <ksaka class="title-bar n2tase" onmousedown="WindowManager.startDrag(event, '${id}')" ontouchstart="WindowManager.startDrag(event, '${id}')">
                 <div class="window-controls cakaxa">
                     <button class="control-btn" onclick="WindowManager.closeWindow('${id}')" title="Close">/</button>
                     <button class="control-btn" onclick="WindowManager.toggleMaximize('${id}')" title="Maximize">O</button>
@@ -121,22 +121,45 @@ class WindowManager {
 
     static _buildResizeHandles( id ) {
         return `
-            <div class="resize-handle resize-handle-n" onmousedown="WindowManager.startResize(event, '${id}', 'n')"></div>
-            <div class="resize-handle resize-handle-s" onmousedown="WindowManager.startResize(event, '${id}', 's')"></div>
-            <div class="resize-handle resize-handle-e" onmousedown="WindowManager.startResize(event, '${id}', 'e')"></div>
-            <div class="resize-handle resize-handle-w" onmousedown="WindowManager.startResize(event, '${id}', 'w')"></div>
-            <div class="resize-handle resize-handle-ne" onmousedown="WindowManager.startResize(event, '${id}', 'ne')"></div>
-            <div class="resize-handle resize-handle-nw" onmousedown="WindowManager.startResize(event, '${id}', 'nw')"></div>
-            <div class="resize-handle resize-handle-se" onmousedown="WindowManager.startResize(event, '${id}', 'se')"></div>
-            <div class="resize-handle resize-handle-sw" onmousedown="WindowManager.startResize(event, '${id}', 'sw')"></div>
+            <div class="resize-handle resize-handle-n" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'n')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'n')"></div>
+            <div class="resize-handle resize-handle-s" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 's')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 's')"></div>
+            <div class="resize-handle resize-handle-e" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'e')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'e')"></div>
+            <div class="resize-handle resize-handle-w" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'w')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'w')"></div>
+            <div class="resize-handle resize-handle-ne" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'ne')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'ne')"></div>
+            <div class="resize-handle resize-handle-nw" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'nw')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'nw')"></div>
+            <div class="resize-handle resize-handle-se" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'se')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'se')"></div>
+            <div class="resize-handle resize-handle-sw" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'sw')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'sw')"></div>
         `;
+    }
+
+    // ⟪ Bring Window To Front ⟫
+
+    static bringToFront( id ) {
+        const win = document.getElementById( id );
+        if ( win ) {
+            win.style.zIndex = ++this.zIndex;
+        }
     }
 
     // ⟪ Load App From Path ⟫
 
     static loadAppFromPath( path, title ) {
-        const id = "win-" + Date.now();
         const container = getWindowContainer();
+        
+        // Check if app is already open
+        const existingWin = Array.from( document.querySelectorAll( ".window" ) ).find( win => {
+            const iframe = win.querySelector( "iframe" );
+            return iframe && iframe.src.includes( path );
+        } );
+        
+        if ( existingWin ) {
+            // App is already open - focus it and refresh recents
+            this.focusWindow( existingWin.id );
+            this.renderRecents();
+            return;
+        }
+        
+        const id = "win-" + Date.now();
         const win = this._createWindowElement( id, title );
         const app = ( typeof APPS_DATA !== "undefined" ) ? APPS_DATA.find( a => a.path === path ) : null;
         win.dataset.emoji = app?.emoji || "🖥️";
@@ -159,12 +182,10 @@ class WindowManager {
         this._injectStylesIntoIframe( iframeId );
 
         // Animate window opening with fractions
-        AnimationManager.windowOpen( win, {
-            duration: ANIM_SETTINGS.windowOpen.duration,
-            easing: ANIM_SETTINGS.windowOpen.easing,
-            offsetY: ANIM_SETTINGS.windowOpen.offsetY,
-            scale: ANIM_SETTINGS.windowOpen.scale
-        } );
+        AnimationManager.windowOpen( win, { ...ANIM_SETTINGS.windowOpen } );
+        
+        // Refresh recents to show new window
+        this.renderRecents();
     }
 
     // ⟪ Create Window ⟫
@@ -199,12 +220,7 @@ class WindowManager {
         }
 
         // Animate window opening with fractions
-        AnimationManager.windowOpen( win, {
-            duration: ANIM_SETTINGS.windowOpen.duration,
-            easing: ANIM_SETTINGS.windowOpen.easing,
-            offsetY: ANIM_SETTINGS.windowOpen.offsetY,
-            scale: ANIM_SETTINGS.windowOpen.scale
-        } );
+        AnimationManager.windowOpen( win, { ...ANIM_SETTINGS.windowOpen } );
     }
 
     // ⟪ Start Resize ⟫
@@ -212,9 +228,13 @@ class WindowManager {
     static startResize( e, id, handle ) {
         e.stopPropagation();
         e.preventDefault();
-        setDraggingState( true );
+
         const win = document.getElementById( id );
         if ( !win || win.classList.contains( "maximized" ) || win.classList.contains( "fullscreen" ) ) return;
+
+        // Set resizing flag
+        win._isResizing = true;
+        setDraggingState( true );
 
         const rect = win.getBoundingClientRect();
         const startLeft = win.offsetLeft;
@@ -223,19 +243,22 @@ class WindowManager {
         const startHeight = win.offsetHeight;
         const startRight = startLeft + startWidth;
         const startBottom = startTop + startHeight;
-        const startX = e.clientX, startY = e.clientY;
         
+        // Support both mouse and touch
+        const startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+        const startY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+
         // Calculate cursor offset from window edge (handles extend outside window)
         const offsetX = handle.includes( 'w' ) ? startX - rect.left : 0;
         const offsetY = handle.includes( 'n' ) ? startY - rect.top : 0;
 
-        const doDrag = e => {
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-            
+        const doDrag = (clientX, clientY) => {
+            const dx = clientX - startX;
+            const dy = clientY - startY;
+
             // Calculate new position and size using consistent formula
             let newLeft = startLeft, newTop = startTop, newRight = startRight, newBottom = startBottom;
-            
+
             if ( handle.includes( 'w' ) ) {
                 newLeft = startLeft + dx + offsetX;
             } else if ( handle.includes( 'e' ) ) {
@@ -246,11 +269,11 @@ class WindowManager {
             } else if ( handle.includes( 's' ) ) {
                 newBottom = startBottom + dy;
             }
-            
+
             // Calculate final position and size
             const finalWidth = Math.max( 0o460, newRight - newLeft );
             const finalHeight = Math.max( 0o310, newBottom - newTop );
-            
+
             win.style.left = newLeft + "px";
             win.style.top = newTop + "px";
             win.style.width = finalWidth + "px";
@@ -259,12 +282,33 @@ class WindowManager {
 
         const stopDrag = () => {
             setDraggingState( false );
-            document.removeEventListener( "mousemove", doDrag );
-            document.removeEventListener( "mouseup", stopDrag );
+            win._isResizing = false;
         };
 
-        document.addEventListener( "mousemove", doDrag );
-        document.addEventListener( "mouseup", stopDrag );
+        // Support both mouse and touch events
+        if ( e.type === "touchstart" ) {
+            const onTouchMove = (ev) => {
+                ev.preventDefault();
+                const touch = ev.touches[0];
+                doDrag(touch.clientX, touch.clientY);
+            };
+            const onTouchEnd = () => {
+                document.removeEventListener("touchmove", onTouchMove);
+                document.removeEventListener("touchend", onTouchEnd);
+                stopDrag();
+            };
+            document.addEventListener("touchmove", onTouchMove, { passive: false });
+            document.addEventListener("touchend", onTouchEnd);
+        } else {
+            const onMouseMove = (ev) => doDrag(ev.clientX, ev.clientY);
+            const onMouseUp = () => {
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", onMouseUp);
+                stopDrag();
+            };
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", onMouseUp);
+        }
     }
 
     // ⟪ Close Window ⟫
@@ -275,15 +319,11 @@ class WindowManager {
             const title = getWindowTitle( win );
 
             // Animate window closing with fractions
-            AnimationManager.windowClose( win, {
-                duration: ANIM_SETTINGS.windowClose.duration,
-                easing: ANIM_SETTINGS.windowClose.easing,
-                offsetY: ANIM_SETTINGS.windowClose.offsetY,
-                scale: ANIM_SETTINGS.windowClose.scale
-            } ).then( () => {
+            AnimationManager.windowClose( win, { ...ANIM_SETTINGS.windowClose } ).then( () => {
                 this.setAppActive( title, false );
                 win.remove();
                 this.updateTaskbarApps();
+                this.renderRecents();
             } );
 
             return;
@@ -294,25 +334,52 @@ class WindowManager {
 
     static startDrag( e, id ) {
         e.preventDefault();
-        setDraggingState( true );
+
         const win = document.getElementById( id );
+        if ( !win || win._isResizing ) return;
+
+        setDraggingState( true );
         const rect = win.getBoundingClientRect();
-        const shiftX = e.clientX - rect.left;
-        const shiftY = e.clientY - rect.top;
+        
+        // Support both mouse and touch
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+        const clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+        const shiftX = clientX - rect.left;
+        const shiftY = clientY - rect.top;
 
-        const onMouseMove = e => {
-            win.style.left = ( e.pageX - shiftX ) + "px";
-            win.style.top = ( e.pageY - shiftY ) + "px";
+        const doDrag = (newX, newY) => {
+            win.style.left = (newX - shiftX) + "px";
+            win.style.top = (newY - shiftY) + "px";
         };
 
-        const onMouseUp = () => {
+        const stopDrag = () => {
             setDraggingState( false );
-            document.removeEventListener( "mousemove", onMouseMove );
-            document.removeEventListener( "mouseup", onMouseUp );
         };
 
-        document.addEventListener( "mousemove", onMouseMove );
-        document.addEventListener( "mouseup", onMouseUp );
+        // Support both mouse and touch events
+        if ( e.type === "touchstart" ) {
+            const onTouchMove = (ev) => {
+                ev.preventDefault();
+                const touch = ev.touches[0];
+                doDrag(touch.clientX, touch.clientY);
+            };
+            const onTouchEnd = () => {
+                document.removeEventListener("touchmove", onTouchMove);
+                document.removeEventListener("touchend", onTouchEnd);
+                stopDrag();
+            };
+            document.addEventListener("touchmove", onTouchMove, { passive: false });
+            document.addEventListener("touchend", onTouchEnd);
+        } else {
+            const onMouseMove = (ev) => doDrag(ev.clientX, ev.clientY);
+            const onMouseUp = () => {
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", onMouseUp);
+                stopDrag();
+            };
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", onMouseUp);
+        }
     }
 
     // ⟪ Toggle Maximize ⟫
@@ -352,7 +419,7 @@ class WindowManager {
     static minimizeWindow( id ) {
         const win = document.getElementById( id );
         if ( win ) {
-            // Add minimized class immediately to trigger state change, 
+            // Add minimized class immediately to trigger state change,
             // but animation manager will handle the visual part.
             AnimationManager.minimizeWindow( win, {
                 duration: ANIM_SETTINGS.windowMinimize.duration,
@@ -360,6 +427,7 @@ class WindowManager {
             } ).then( () => {
                 win.classList.add( "minimized" );
                 this.updateTaskbarApps();
+                this.renderRecents();
                 if ( typeof updateDock === "function" ) updateDock();
             } );
         }
@@ -389,7 +457,7 @@ class WindowManager {
         const strings = typeof getStrings === "function" ? getStrings() : {};
 
         if ( windows.length === 0 ) {
-            list.innerHTML = `<div style="padding: 24px; text-align: center; opacity: 0.5;">${strings.recents_no_apps || "No open apps"}</div>`;
+            list.innerHTML = `<div style="padding: 24px; text-align: center; opacity: ${ANIM_FRACTIONS.fourEighths};">${strings.recents_no_apps || "No open apps"}</div>`;
             return;
         }
 
@@ -641,7 +709,7 @@ class WindowManager {
     }
 
     // ⟪ Init Taskbar ⟫
-    
+
     static initTaskbar() {
         const taskbar = getTaskbar();
         if ( !taskbar ) return;
@@ -650,9 +718,54 @@ class WindowManager {
         taskbar.dataset.flow = "default";
         taskbar.dataset.large = "false";
 
-        // Read saved position from localStorage (same as settings uses)
-        const savedPos = localStorage.getItem( "os-taskbar-position" ) || "left";
-        this.setTaskbarPosition( savedPos );
+        // Check if mobile device (small screen)
+        const isMobile = window.innerWidth < 768 || window.innerHeight < 768;
+        
+        // Auto-position taskbar based on screen size and orientation
+        const autoPositionTaskbar = () => {
+            const newIsMobile = window.innerWidth < 768 || window.innerHeight < 768;
+            const newIsPortrait = window.innerHeight > window.innerWidth;
+            const currentPos = taskbar.dataset.position;
+            
+            if ( newIsMobile ) {
+                const isValidForPortrait = currentPos === "bottom";
+                const isValidForLandscape = currentPos === "left" || currentPos === "right";
+                const needsUpdate = newIsPortrait ? !isValidForPortrait : !isValidForLandscape;
+                
+                if ( needsUpdate ) {
+                    this.setTaskbarPosition( newIsPortrait ? "bottom" : "left" );
+                }
+            }
+        };
+
+        if ( isMobile ) {
+            // Mobile: auto-detect orientation and set position
+            const isPortrait = window.innerHeight > window.innerWidth;
+            const savedPos = localStorage.getItem( "os-taskbar-position" );
+            
+            if ( savedPos ) {
+                // Use saved position if it matches orientation
+                const validForPortrait = savedPos === "bottom";
+                const validForLandscape = savedPos === "left" || savedPos === "right";
+                
+                if ( ( isPortrait && validForPortrait ) || ( !isPortrait && validForLandscape ) ) {
+                    this.setTaskbarPosition( savedPos );
+                } else {
+                    // Auto-set based on orientation
+                    this.setTaskbarPosition( isPortrait ? "bottom" : "left" );
+                }
+            } else {
+                // No saved position - auto-set based on orientation
+                this.setTaskbarPosition( isPortrait ? "bottom" : "left" );
+            }
+            
+            // Listen for orientation changes and resize
+            window.addEventListener( "orientationchange", autoPositionTaskbar );
+            window.addEventListener( "resize", autoPositionTaskbar );
+        } else {
+            const savedPos = localStorage.getItem( "os-taskbar-position" ) || "left";
+            this.setTaskbarPosition( savedPos );
+        }
     }
 }
 

@@ -7,8 +7,8 @@ const System = {
 
     toOctalString( str ) {
         if ( !str || typeof vab6caja !== "function" ) return str;
-        if ( str.includes( ":" ) ) return str.split( ":" ).map( p => vab6caja( parseInt( p, 10 ) ) || p ).join( "." );
-        return vab6caja( parseInt( str, 10 ) ) || str;
+        if ( str.includes( ":" ) ) return str.split( ":" ).map( p => vab6caja( parseInt( p, 0o10 ) ) || p ).join( "." );
+        return vab6caja( parseInt( str, 0o10 ) ) || str;
     },
 
     updateClock() {
@@ -30,7 +30,7 @@ const System = {
         if ( window.ClockManager ) ClockManager.init();
         
         // 2. ⟨ Service Loops ⟩
-        setInterval( () => this.updateClock(), 2000 );
+        setInterval( () => this.updateClock(), 0o2000 );
         this.updateClock();
 
         // 3. ⟨ Events ⟩

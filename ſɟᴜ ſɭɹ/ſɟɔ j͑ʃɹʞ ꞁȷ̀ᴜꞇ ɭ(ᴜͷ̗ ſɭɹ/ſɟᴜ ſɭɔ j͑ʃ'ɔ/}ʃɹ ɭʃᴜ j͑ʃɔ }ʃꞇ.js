@@ -12,6 +12,13 @@ class PanelManager {
         dock: "taskbar-dock"
     };
 
+    // ⟪ Check Panel Visibility ⟫
+
+    static isPanelVisible( panelId ) {
+        const panel = DOMCache.get( panelId );
+        return panel && hasClass( panel, "visible" );
+    }
+
     // ⟪ Set Button Pressed State ⟫
 
     static setButtonPressed( btnId, pressed ) {
@@ -153,39 +160,62 @@ class PanelManager {
     static #getPanelPositions( tbBuffer, edge, gap, isSliders, isVertical, pos, btnId, panelId ) {
         const sliderOffset = isSliders ? `calc(${tbBuffer} + 300px + ${gap})` : tbBuffer;
         const isFullSizePanel = panelId === "notifications" || panelId === "clockFlyout";
+        const isLeftAligned = btnId === "status-area" || btnId === "recents-btn";
+        const isRightAligned = btnId === "clock-area" || btnId === "notification-btn";
 
-        if ( !isVertical ) {
-            if ( pos === "bottom" ) {
-                const base = { bottom: sliderOffset, top: isFullSizePanel ? edge : "auto" };
-                return btnId === "status-area" || btnId === "recents-btn"
-                    ? { ...base, left: edge }
-                    : btnId === "clock-area" || btnId === "notification-btn"
-                        ? { ...base, right: edge }
-                        : { ...base, left: "50%", transform: "translateX(-50%)" };
-            } else {
-                const base = { top: sliderOffset, bottom: isFullSizePanel ? edge : "auto" };
-                return btnId === "status-area" || btnId === "recents-btn"
-                    ? { ...base, left: edge }
-                    : btnId === "clock-area" || btnId === "notification-btn"
-                        ? { ...base, right: edge }
-                        : { ...base, left: "50%", transform: "translateX(-50%)" };
+        // Configuration object for panel positions based on taskbar position
+        const positionConfig = {
+            top: {
+                primary: isLeftAligned ? "left" : isRightAligned ? "right" : "left",
+                secondary: isLeftAligned || isRightAligned ? "top" : "top",
+                primaryOffset: sliderOffset,
+                secondaryOffset: isLeftAligned ? edge : isRightAligned ? edge : "50%",
+                opposite: isFullSizePanel ? edge : "auto",
+                transform: !isLeftAligned && !isRightAligned ? "translateX(-50%)" : "none"
+            },
+            bottom: {
+                primary: isLeftAligned ? "left" : isRightAligned ? "right" : "left",
+                secondary: isLeftAligned || isRightAligned ? "bottom" : "bottom",
+                primaryOffset: sliderOffset,
+                secondaryOffset: isLeftAligned ? edge : isRightAligned ? edge : "50%",
+                opposite: isFullSizePanel ? edge : "auto",
+                transform: !isLeftAligned && !isRightAligned ? "translateX(-50%)" : "none"
+            },
+            left: {
+                primary: isLeftAligned ? "top" : isRightAligned ? "bottom" : "top",
+                secondary: isLeftAligned || isRightAligned ? "left" : "left",
+                primaryOffset: isLeftAligned ? edge : isRightAligned ? edge : "50%",
+                secondaryOffset: sliderOffset,
+                opposite: isFullSizePanel ? edge : "auto",
+                transform: !isLeftAligned && !isRightAligned ? "translateY(-50%)" : "none"
+            },
+            right: {
+                primary: isLeftAligned ? "top" : isRightAligned ? "bottom" : "top",
+                secondary: isLeftAligned || isRightAligned ? "right" : "right",
+                primaryOffset: isLeftAligned ? edge : isRightAligned ? edge : "50%",
+                secondaryOffset: sliderOffset,
+                opposite: isFullSizePanel ? edge : "auto",
+                transform: !isLeftAligned && !isRightAligned ? "translateY(-50%)" : "none"
             }
+        };
+
+        const cfg = positionConfig[ pos ] || positionConfig.bottom;
+
+        // Build position object based on orientation
+        if ( isVertical ) {
+            return {
+                [ cfg.secondary ]: cfg.secondaryOffset,
+                [ cfg.primary ]: cfg.primaryOffset,
+                [ cfg.primary === "top" ? "bottom" : "top" ]: cfg.opposite,
+                transform: cfg.transform
+            };
         } else {
-            if ( pos === "left" ) {
-                const base = { left: sliderOffset, right: isFullSizePanel ? edge : "auto" };
-                return btnId === "status-area" || btnId === "recents-btn"
-                    ? { ...base, top: edge, bottom: isFullSizePanel ? "auto" : "auto" } // Vertical taskbar needs different logic for full height
-                    : btnId === "clock-area" || btnId === "notification-btn"
-                        ? { ...base, bottom: edge, top: isFullSizePanel ? edge : "auto" }
-                        : { ...base, top: "50%", transform: "translateY(-50%)" };
-            } else {
-                const base = { right: sliderOffset, left: isFullSizePanel ? edge : "auto" };
-                return btnId === "status-area" || btnId === "recents-btn"
-                    ? { ...base, top: edge, bottom: isFullSizePanel ? "auto" : "auto" }
-                    : btnId === "clock-area" || btnId === "notification-btn"
-                        ? { ...base, bottom: edge, top: isFullSizePanel ? edge : "auto" }
-                        : { ...base, top: "50%", transform: "translateY(-50%)" };
-            }
+            return {
+                [ cfg.secondary ]: cfg.secondaryOffset,
+                [ cfg.primary ]: cfg.primaryOffset,
+                [ cfg.primary === "left" ? "right" : "left" ]: cfg.opposite,
+                transform: cfg.transform
+            };
         }
     }
 

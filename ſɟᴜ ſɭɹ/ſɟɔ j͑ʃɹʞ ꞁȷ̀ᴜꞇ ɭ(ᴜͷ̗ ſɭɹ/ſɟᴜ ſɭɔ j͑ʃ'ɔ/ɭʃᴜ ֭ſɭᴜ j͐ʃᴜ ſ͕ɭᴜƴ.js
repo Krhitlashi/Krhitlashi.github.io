@@ -15,28 +15,56 @@ const AnimationManager = {
         easeIn: "cubic-bezier(0.5, 0, 1, 1)",
         easeOut: "cubic-bezier(0, 0, 0.25, 1)",
         easeInOut: "cubic-bezier(0.5, 0, 0.25, 1)",
-        spring: "cubic-bezier(0.25, 1.55, 0.625, 1)",
-        bounce: "cubic-bezier(0.625, -0.55, 0.2565, 1.55)"
+        spring: "cubic-bezier(0.25, 1.5, 0.625, 1)",
+        bounce: "cubic-bezier(0.625, -0.5, 0.25, 1.5)"
+    },
+
+    // ⟪ Position Utilities ⟫
+
+    // Get complete position configuration for a taskbar position
+    getPositionConfig( pos = null ) {
+        const taskbar = getTaskbar();
+        const position = pos || taskbar?.dataset.position || "left";
+
+        const transforms = {
+            top: { slide: "translateY(-100%)", offset: "translateY({offset}px)", axis: "Y", invert: -1 },
+            bottom: { slide: "translateY(100%)", offset: "translateY(-{offset}px)", axis: "Y", invert: -1 },
+            left: { slide: "translateX(-100%)", offset: "translateX({offset}px)", axis: "X", invert: 1 },
+            right: { slide: "translateX(100%)", offset: "translateX(-{offset}px)", axis: "X", invert: 1 }
+        };
+
+        const cfg = transforms[ position ] || transforms.bottom;
+
+        return {
+            position,
+            slideTransform: cfg.slide,
+            offsetTransform: cfg.offset,
+            axis: cfg.axis,
+            invert: cfg.invert,
+            insetProp: position
+        };
     },
 
     // ⟪ Get Panel Animation Direction Based on Taskbar ⟫
 
     // All panels slide out from the taskbar edge
     getPanelDirection( panelId ) {
-        const taskbar = getTaskbar();
-        const pos = taskbar?.dataset.position || "left";
+        const { position } = this.getPositionConfig();
         // All panels share the same directional logic — slide from taskbar edge
-        return { from: pos, to: pos };
+        return { from: position, to: position };
     },
 
     // ⟪ Get Transform for Direction ⟫
 
     getDirectionTransform( direction, fraction = 1 ) {
+        const { slideTransform } = this.getPositionConfig( direction );
+        // Apply fraction to the percentage
+        const percentage = fraction * 100;
         const transforms = {
-            top: `translateY(-${fraction * 100}%)`,
-            bottom: `translateY(${fraction * 100}%)`,
-            left: `translateX(-${fraction * 100}%)`,
-            right: `translateX(${fraction * 100}%)`
+            top: `translateY(-${percentage}%)`,
+            bottom: `translateY(${percentage}%)`,
+            left: `translateX(-${percentage}%)`,
+            right: `translateX(${percentage}%)`
         };
         return transforms[ direction ] || transforms.bottom;
     },
@@ -44,19 +72,26 @@ const AnimationManager = {
     // ⟪ Get Taskbar Edge Offset ⟫
 
     getTaskbarOffset( fraction = 1 ) {
-        const taskbar = getTaskbar();
-        const pos = taskbar?.dataset.position || "left";
+        const { position, offsetTransform, insetProp } = this.getPositionConfig();
         const tbSize = parseInt( getComputedStyle( document.documentElement ).getPropertyValue( CSS_VARS.taskbarSize ) ) || SYS_TASKBAR_SIZE;
         const offset = tbSize * fraction;
 
-        const offsets = {
-            left: { transform: `translateX(${offset}px)`, inset: { left: `${offset}px` } },
-            right: { transform: `translateX(-${offset}px)`, inset: { right: `${offset}px` } },
-            top: { transform: `translateY(${offset}px)`, inset: { top: `${offset}px` } },
-            bottom: { transform: `translateY(-${offset}px)`, inset: { bottom: `${offset}px` } }
+        return {
+            transform: offsetTransform.replace( "{offset}", offset ),
+            inset: { [ insetProp ]: `${offset}px` }
         };
+    },
 
-        return offsets[ pos ] || offsets.bottom;
+    // ⟪ Get Taskbar Size for Position ⟫
+
+    getTaskbarSizeForPosition( pos = null, fraction = 1 ) {
+        const { position } = this.getPositionConfig( pos );
+        const tbSize = parseInt( getComputedStyle( document.documentElement ).getPropertyValue( CSS_VARS.taskbarSize ) ) || SYS_TASKBAR_SIZE;
+        return {
+            position,
+            size: tbSize,
+            offset: tbSize * fraction
+        };
     },
 
     // ⟪ Fade In ⟫
@@ -304,22 +339,20 @@ const AnimationManager = {
         const duration = options.duration ?? ANIM_DURATION_LONG;
         const easing = options.easing ?? this.easings.easeOut;
         const fraction = options.fraction ?? ANIM_FRACTIONS.oneEighth;
+        const scale = options.scale ?? ANIM_FRACTIONS.sevenEighths;
 
-        // Get taskbar position for initial offset
-        const taskbar = getTaskbar();
-        const pos = taskbar?.dataset.position || "left";
-        const tbSize = parseInt( getComputedStyle( document.documentElement ).getPropertyValue( CSS_VARS.taskbarSize ) ) || SYS_TASKBAR_SIZE;
+        // Get taskbar position and offset
+        const { position, offset } = this.getTaskbarSizeForPosition( null, fraction );
 
         // Calculate offset based on taskbar position
         const offsets = {
-            left: `translateX(${tbSize * fraction}px) translateY(-20px)`,
-            right: `translateX(-${tbSize * fraction}px) translateY(-20px)`,
-            top: `translateY(${tbSize * fraction}px)`,
-            bottom: `translateY(-${tbSize * fraction}px)`
+            left: `translateX(${offset}px) translateY(-20px)`,
+            right: `translateX(-${offset}px) translateY(-20px)`,
+            top: `translateY(${offset}px)`,
+            bottom: `translateY(-${offset}px)`
         };
 
-        const startTransform = offsets[ pos ] || offsets.bottom;
-        const scale = options.scale ?? ANIM_FRACTIONS.sevenEighths;
+        const startTransform = offsets[ position ] || offsets.bottom;
 
         element.style.display = "block";
         element.style.transform = startTransform + ` scale(${scale})`;
@@ -347,22 +380,20 @@ const AnimationManager = {
         const duration = options.duration ?? ANIM_DURATION_SHORT;
         const easing = options.easing ?? this.easings.easeIn;
         const fraction = options.fraction ?? ANIM_FRACTIONS.oneEighth;
+        const scale = options.scale ?? ANIM_FRACTIONS.sevenEighths;
 
-        // Get taskbar position for end offset
-        const taskbar = getTaskbar();
-        const pos = taskbar?.dataset.position || "left";
-        const tbSize = parseInt( getComputedStyle( document.documentElement ).getPropertyValue( CSS_VARS.taskbarSize ) ) || SYS_TASKBAR_SIZE;
+        // Get taskbar position and offset
+        const { position, offset } = this.getTaskbarSizeForPosition( null, fraction );
 
         // Calculate end transform toward taskbar
         const offsets = {
-            left: `translateX(${tbSize * fraction}px) translateY(10px)`,
-            right: `translateX(-${tbSize * fraction}px) translateY(10px)`,
-            top: `translateY(${tbSize * fraction}px)`,
-            bottom: `translateY(-${tbSize * fraction}px)`
+            left: `translateX(${offset}px) translateY(8px)`,
+            right: `translateX(-${offset}px) translateY(8px)`,
+            top: `translateY(${offset}px)`,
+            bottom: `translateY(-${offset}px)`
         };
 
-        const endTransform = offsets[ pos ] || offsets.bottom;
-        const scale = options.scale ?? ANIM_FRACTIONS.sevenEighths;
+        const endTransform = offsets[ position ] || offsets.bottom;
 
         element.style.pointerEvents = "none";
 
@@ -389,20 +420,18 @@ const AnimationManager = {
         const easing = options.easing ?? this.easings.easeIn;
         const fraction = options.fraction ?? ANIM_FRACTIONS.oneEighth;
 
-        // Get taskbar position for direction
-        const taskbar = getTaskbar();
-        const pos = taskbar?.dataset.position || "left";
-        const tbSize = parseInt( getComputedStyle( document.documentElement ).getPropertyValue( CSS_VARS.taskbarSize ) ) || SYS_TASKBAR_SIZE;
+        // Get taskbar position and size
+        const { position, size } = this.getTaskbarSizeForPosition( null, 1 );
 
-        // Calculate minimize transform toward taskbar
+        // Calculate minimize transform toward taskbar (using 4x and 2x multipliers)
         const minimizeTransforms = {
-            left: `translateX(${tbSize * 4}px) scale(${fraction})`,
-            right: `translateX(-${tbSize * 4}px) scale(${fraction})`,
-            top: `translateY(${tbSize * 2}px) scale(${fraction})`,
-            bottom: `translateY(-${tbSize * 2}px) scale(${fraction})`
+            left: `translateX(${size * 4}px) scale(${fraction})`,
+            right: `translateX(-${size * 4}px) scale(${fraction})`,
+            top: `translateY(${size * 2}px) scale(${fraction})`,
+            bottom: `translateY(-${size * 2}px) scale(${fraction})`
         };
 
-        const endTransform = minimizeTransforms[ pos ] || minimizeTransforms.bottom;
+        const endTransform = minimizeTransforms[ position ] || minimizeTransforms.bottom;
 
         element.style.pointerEvents = "none";
 
@@ -553,14 +582,15 @@ const AnimationManager = {
         if ( !element ) return Promise.resolve();
         const duration = options.duration ?? ANIM_DURATION_SHORT;
         const easing = this.easings.easeOut;
-        
+        const scale = ANIM_FRACTIONS.sevenEighths;
+
         element.style.display = "flex";
-        element.style.transform = "scale(0.875)";
+        element.style.transform = `scale(${scale})`;
         element.style.opacity = "0";
         void element.offsetWidth;
 
         return element.animate([
-            { transform: "scale(0.875)", opacity: 0 },
+            { transform: `scale(${scale})`, opacity: 0 },
             { transform: "scale(1)", opacity: 1 }
         ], { duration, easing }).finished.then(() => {
             element.style.transform = "";

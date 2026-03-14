@@ -6,8 +6,7 @@ const QSManager = ( function() {
     // ⟪ Load From Storage ⟫
 
     function loadFromStorage() {
-        const stored = Storage.get( STORAGE_KEYS.qsState, {} );
-        state = { ...state, ...stored };
+        state = Storage.loadWithDefaults( STORAGE_KEYS.qsState, QS_DEFAULTS );
     }
 
     // ⟪ Save To Storage ⟫
@@ -68,7 +67,7 @@ const QSManager = ( function() {
             document.documentElement.style.setProperty( CSS_VARS.brightness, value / SYS_BRIGHTNESS_MAX );
             const osRoot = document.getElementById( "os-root" );
             if ( osRoot ) {
-                osRoot.style.filter = `brightness(${0.5 + ( value / SYS_BRIGHTNESS_BUFFER )})`;
+                osRoot.style.filter = `brightness(${ANIM_FRACTIONS.fourEighths + ( value / SYS_BRIGHTNESS_BUFFER )})`;
             }
         },
 

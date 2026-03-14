@@ -142,9 +142,31 @@ function setupDragHandlers(onMove, onUp) {
  * @returns {{width: number, height: number}}
  */
 function getContainerDimensions(fixedWidth, fixedHeight, container) {
+    if ( fixedWidth && fixedHeight ) return { width: fixedWidth, height: fixedHeight };
+
+    // Always prefer container client area if available and visible
+    if ( container && container.clientWidth > 0 && container.clientHeight > 0 ) {
+        return { width: container.clientWidth, height: container.clientHeight };
+    }
+
+    // Fallback to measuring the computed style or bounding rect
+    if ( container ) {
+        const rect = container.getBoundingClientRect();
+        if ( rect.width > 0 && rect.height > 0 ) {
+            return { width: rect.width, height: rect.height };
+        }
+    }
+
+    // Ultimate fallback window inner minus panel insets
+    const style = getComputedStyle( document.documentElement );
+    const iT = parseInt( style.getPropertyValue( '--panel-inset-top' ) ) || 0;
+    const iB = parseInt( style.getPropertyValue( '--panel-inset-bottom' ) ) || 0;
+    const iL = parseInt( style.getPropertyValue( '--panel-inset-left' ) ) || 0;
+    const iR = parseInt( style.getPropertyValue( '--panel-inset-right' ) ) || 0;
+
     return {
-        width: fixedWidth || container?.clientWidth || window.innerWidth,
-        height: fixedHeight || container?.clientHeight || window.innerHeight
+        width: fixedWidth || ( window.innerWidth - iL - iR ) || window.innerWidth,
+        height: fixedHeight || ( window.innerHeight - iT - iB ) || window.innerHeight
     };
 }
 
@@ -172,7 +194,15 @@ function setElementSpans(el, colSpan, rowSpan) {
 }
 
 /**
- * Set element dragging state (zIndex and class)
+ * Get WindowManager with fallback
+ * @returns {any|null}
+ */
+function getWindowManager() {
+    return window.WindowManager || (typeof WindowManager !== "undefined" ? WindowManager : null);
+}
+
+/**
+ * Set element dragging state (class)
  * @param {HTMLElement} el
  * @param {boolean} dragging
  */
@@ -181,11 +211,34 @@ function setElementDragging(el, dragging) {
 }
 
 /**
- * Get WindowManager with fallback
- * @returns {any|null}
+ * Force reflow on element (triggers layout recalculation)
+ * @param {HTMLElement} el
  */
-function getWindowManager() {
-    return window.WindowManager || (typeof WindowManager !== "undefined" ? WindowManager : null);
+function forceReflow( el ) {
+    void el.offsetWidth;
+}
+
+/**
+ * Stop event propagation and default behavior
+ * @param {Event} e
+ */
+function stopEvent( e ) {
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+/**
+ * Get element position and span values from dataset
+ * @param {HTMLElement} el
+ * @returns {{col: number, row: number, colSpan: number, rowSpan: number}}
+ */
+function getElementPosition( el ) {
+    return {
+        col: parseInt( el.dataset.col ) || 0,
+        row: parseInt( el.dataset.row ) || 0,
+        colSpan: parseInt( el.dataset.colSpan ) || 1,
+        rowSpan: parseInt( el.dataset.rowSpan ) || 1
+    };
 }
 
 /**
@@ -598,6 +651,41 @@ const Storage = {
             sessionStorage.setItem( key, JSON.stringify( value ) );
         } catch ( e ) {
             console.error( "SessionStorage set failed", e );
+        }
+    },
+
+    /**
+     * Get item from localStorage merged with defaults
+     * @param {string} key
+     * @param {object} defaults
+     * @returns {object}
+     */
+    loadWithDefaults( key, defaults ) {
+        try {
+            const item = localStorage.getItem( key );
+            if ( !item ) return { ...defaults };
+            const parsed = JSON.parse( item );
+            return { ...defaults, ...parsed };
+        } catch {
+            return { ...defaults };
+        }
+    },
+
+    /**
+     * Update existing stored object with new values
+     * @param {string} key
+     * @param {object} updates
+     * @returns {object} merged result
+     */
+    saveWithMerge( key, updates ) {
+        try {
+            const existing = this.get( key, {} );
+            const merged = { ...existing, ...updates };
+            localStorage.setItem( key, JSON.stringify( merged ) );
+            return merged;
+        } catch ( e ) {
+            console.error( "Storage merge failed", e );
+            return updates;
         }
     }
 };

@@ -129,27 +129,27 @@ const EVENT_NAMES = {
 const ANIM_SETTINGS = {
     panelSlide: {
         duration: ANIM_DURATION_DEFAULT,
-        easing: "cubic-bezier(0.4, 0, 0.2, 1)"
+        easing: "cubic-bezier(0.5, 0, 0.25, 1)"
     },
     panelFade: {
         duration: ANIM_DURATION_SHORT,
-        easing: "cubic-bezier(0, 0, 0.2, 1)"
+        easing: "cubic-bezier(0, 0, 0.25, 1)"
     },
     windowOpen: {
         duration: ANIM_DURATION_LONG,
-        easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
-        offsetY: "-20px",
+        easing: "cubic-bezier(0.375, 1.5, 0.625, 1)",
+        offsetY: "-16px",
         scale: ANIM_FRACTIONS.sevenEighths
     },
     windowClose: {
         duration: ANIM_DURATION_SHORT,
-        easing: "cubic-bezier(0.4, 0, 1, 1)",
-        offsetY: "10px",
+        easing: "cubic-bezier(0.5, 0, 1, 1)",
+        offsetY: "8px",
         scale: ANIM_FRACTIONS.sevenEighths
     },
     windowMinimize: {
         duration: ANIM_DURATION_SHORT,
-        easing: "cubic-bezier(0.4, 0, 1, 1)",
+        easing: "cubic-bezier(0.5, 0, 1, 1)",
         scale: ANIM_FRACTIONS.oneEighth
     },
     ripple: {

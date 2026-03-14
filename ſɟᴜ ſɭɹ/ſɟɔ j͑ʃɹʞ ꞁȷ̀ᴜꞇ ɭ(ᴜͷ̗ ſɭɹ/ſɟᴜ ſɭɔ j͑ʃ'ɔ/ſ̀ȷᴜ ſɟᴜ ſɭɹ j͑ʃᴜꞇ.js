@@ -2,6 +2,12 @@
 
 let APPS = [];
 
+// ⟪ Mobile Grid Dimensions ⟫
+const MOBILE_GRID_ROWS = 0o6;  // 6 rows
+const MOBILE_GRID_COLS = 0o4;  // 4 columns
+const DESKTOP_GRID_ROWS = 0o10;
+const DESKTOP_GRID_COLS = 0o20;
+
 // ⟪ Icon Grid ⟫
 
 class IconGrid {
@@ -9,15 +15,22 @@ class IconGrid {
         this.containerId = containerId;
         this.container = document.getElementById(containerId);
         this.config = config;
-        this.rows = config.rows || DIM_DEFAULT_ROWS;
-        this.cols = config.cols || DIM_DEFAULT_COLS;
+        
+        // Auto-detect mobile vs desktop
+        this.isMobile = this.checkIsMobile();
+        this.rows = this.isMobile ? MOBILE_GRID_ROWS : ( config.rows || DESKTOP_GRID_ROWS );
+        this.cols = this.isMobile ? MOBILE_GRID_COLS : ( config.cols || DESKTOP_GRID_COLS );
         this.initialRows = this.rows;
         this.initialCols = this.cols;
         this.bottomUp = config.bottomUp || false;
         this.fixedWidth = config.width;
         this.fixedHeight = config.height;
         this.editMode = false;
-        this.labelMode = config.labelMode || "external"; // "external" or "internal"
+        this.labelMode = config.labelMode || "external";
+        this.currentPage = 0;
+        this.totalPages = 1;
+        this.touchStartY = 0;
+        this.touchStartX = 0;
 
         if ( !this.container ) return;
 
@@ -28,11 +41,75 @@ class IconGrid {
             }
         });
 
+        // Touch events for swipe pagination
+        this.container.addEventListener("touchstart", (e) => this.handleTouchStart(e), { passive: true });
+        this.container.addEventListener("touchmove", (e) => this.handleTouchMove(e), { passive: false });
+        this.container.addEventListener("touchend", (e) => this.handleTouchEnd(e), { passive: true });
+
+        // Listen for screen size changes
+        window.addEventListener("resize", () => this.handleScreenResize());
+
         this.init();
     }
 
+    checkIsMobile() {
+        return window.innerWidth < 768 || window.innerHeight < 768;
+    }
+
+    handleScreenResize() {
+        const wasMobile = this.isMobile;
+        this.isMobile = this.checkIsMobile();
+        
+        if ( wasMobile !== this.isMobile ) {
+            // Screen size changed between mobile and desktop
+            this.rows = this.isMobile ? MOBILE_GRID_ROWS : DESKTOP_GRID_ROWS;
+            this.cols = this.isMobile ? MOBILE_GRID_COLS : DESKTOP_GRID_COLS;
+            this.refresh();
+            this.relayout();
+        }
+    }
+
+    handleTouchStart(e) {
+        this.touchStartY = e.touches[0].clientY;
+        this.touchStartX = e.touches[0].clientX;
+    }
+
+    handleTouchMove(e) {
+        if ( this.containerId === "desktop" || this.containerId === "start-menu-content" ) {
+            e.preventDefault();
+        }
+    }
+
+    handleTouchEnd(e) {
+        const touchEndY = e.changedTouches[0].clientY;
+        const touchEndX = e.changedTouches[0].clientX;
+        const diffY = touchEndY - this.touchStartY;
+        const diffX = touchEndX - this.touchStartX;
+        
+        // Vertical swipe for pagination (only on mobile)
+        if ( this.isMobile && Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 50 ) {
+            if ( diffY > 0 ) {
+                // Swipe down - previous page
+                if ( this.currentPage > 0 ) {
+                    this.currentPage--;
+                    this.refresh();
+                    if ( window.DesktopIconManager ) DesktopIconManager._updatePageIndicators();
+                }
+            } else {
+                // Swipe up - next page
+                const maxPage = Math.ceil( APPS.length / ( this.rows * this.cols ) ) - 1;
+                if ( this.currentPage < maxPage ) {
+                    this.currentPage++;
+                    this.refresh();
+                    if ( window.DesktopIconManager ) DesktopIconManager._updatePageIndicators();
+                }
+            }
+        }
+    }
+
     init() {
-        this.container.innerHTML = "";
+        // Don't modify container styles - let CSS handle positioning
+        // Container should use CSS rules from ֭ſɭᴜ ı],ɔ.css
     }
 
     updateAdaptiveOrientation(el) {
@@ -152,13 +229,16 @@ class IconGrid {
             labelSpan.innerText = appData.name;
             buttonEl.appendChild(labelSpan);
         }
-        
+
         cepufalEl.appendChild(buttonEl);
         el.appendChild(cepufalEl);
 
         const handle = document.createElement("div");
         handle.className = "resize-handle";
-        handle.onmousedown = (e) => this.handleResize(e, el);
+        handle.onmousedown = (e) => {
+            e.stopPropagation();
+            this.handleResize(e, el);
+        };
 
         el.appendChild(handle);
 
@@ -166,46 +246,76 @@ class IconGrid {
         this.snapToGrid(el, index);
         this.updateAdaptiveOrientation(el);
 
-        el.onmousedown = ( e ) => {
-            const canDrag = this.editMode || ( this.containerId === "desktop" && e.target !== handle );
-            if ( canDrag && e.target !== handle ) {
+        // Track resize state on the element itself
+        el._isResizing = false;
+
+        // Handle mousedown in capture phase (before button consumes it)
+        el.addEventListener("mousedown", ( e ) => {
+            // Check if clicking directly on resize handle element
+            const isResizeHandle = e.target === handle;
+            const canDrag = this.editMode || ( this.containerId === "desktop" && !isResizeHandle );
+
+            // Block drag if currently resizing or on resize handle
+            if ( el._isResizing || isResizeHandle ) {
+                return;
+            }
+
+            if ( canDrag ) {
+                e.preventDefault();
+                e.stopPropagation();
+                
                 const startX = e.clientX;
                 const startY = e.clientY;
-                
+
                 const onInitialMove = ( moveEv ) => {
                     const dist = Math.sqrt(Math.pow(moveEv.clientX - startX, 2) + Math.pow(moveEv.clientY - startY, 2));
-                    if ( dist > 0o10 ) { 
+                    if ( dist > 0o10 ) {
                         document.removeEventListener("mousemove", onInitialMove);
                         document.removeEventListener("mouseup", onInitialUp);
                         isDragging = true;
-                        this.handleDrag(e, el, () => { 
-                            // Small delay to ensure click handler sees isDragging=true
-                            setTimeout(() => { isDragging = false; }, 0o0); 
+                        this.handleDrag(e, el, () => {
+                            setTimeout(() => { isDragging = false; }, 0o10 );
                         });
                     }
                 };
-                
+
                 const onInitialUp = () => {
                     document.removeEventListener("mousemove", onInitialMove);
                     document.removeEventListener("mouseup", onInitialUp);
+                    isDragging = false;
                 };
-                
+
                 document.addEventListener("mousemove", onInitialMove);
                 document.addEventListener("mouseup", onInitialUp);
             }
-        };
+        }, { capture: true });
 
         return el;
     }
 
     snapToGrid(el, index) {
+        if ( !this.container ) return;
+
+        // Handle pagination for mobile desktop only
+        const itemsPerPage = this.rows * this.cols;
+        const pageIndex = itemsPerPage > 0 ? Math.floor( index / itemsPerPage ) : 0;
+        const indexOnPage = itemsPerPage > 0 ? index % itemsPerPage : index;
+
+        // Store page info on element
+        el.dataset.page = pageIndex;
+
+        // Show/hide based on pagination (mobile desktop only)
+        if ( this.isMobile && this.containerId === "desktop" ) {
+            el.style.display = pageIndex === this.currentPage ? "" : "none";
+        }
         if ( this.containerId !== "start-menu-content" ) {
-            const c = Math.floor(index / this.rows);
-            const r = ( this.rows - 1 ) - ( index % this.rows );
+            const c = Math.floor(indexOnPage / this.rows);
+            const r = ( this.rows - 1 ) - ( indexOnPage % this.rows );
             this.applyPosition(el, c, r);
             return;
         }
 
+        // Start menu: use full index for scrolling layout
         const taskbar = typeof getTaskbar === "function" ? getTaskbar() : document.getElementById("taskbar");
         const taskbarPos = taskbar?.dataset.position || "left";
         const isVerticalTaskbar = taskbarPos === "left" || taskbarPos === "right";
@@ -252,7 +362,7 @@ class IconGrid {
                 needsRefresh = true;
             }
             if ( needsRefresh ) {
-                this.refresh(); 
+                this.refresh();
                 return;
             }
         } else {
@@ -264,7 +374,7 @@ class IconGrid {
         if ( r < 0 ) r = 0;
 
         const gap = 0o10;
-        
+
         const widthCalc = `calc((${colSpan} / ${this.cols}) * (100% - ${(this.cols - 1) * gap}px) + ${(colSpan - 1) * gap}px)`;
         const heightCalc = `calc((${rowSpan} / ${this.rows}) * (100% - ${(this.rows - 1) * gap}px) + ${(rowSpan - 1) * gap}px)`;
         const leftCalc = `calc((${c} / ${this.cols}) * (100% - ${(this.cols - 1) * gap}px) + ${c * gap}px${xOffset ? ` + ${xOffset}px` : ""})`;
@@ -277,7 +387,7 @@ class IconGrid {
 
         el.dataset.col = c;
         el.dataset.row = r;
-        
+
         if ( canExpand ) {
             this.container.style.minHeight = `${(this.rows / this.initialRows) * 100}%`;
             this.container.style.width = "100%";
@@ -381,7 +491,7 @@ class IconGrid {
                 el.style.top = ev.clientY - el.offsetHeight / 2 + "px";
             } else {
                 const { width: containerW, height: containerH } = getContainerDimensions(this.fixedWidth, this.fixedHeight, this.container);
-                const gap = 8;
+                const gap = 0o10;
                 const cellW = (containerW - (this.cols - 1) * gap) / this.cols;
                 const cellH = (containerH - (this.rows - 1) * gap) / this.rows;
 
@@ -431,9 +541,12 @@ class IconGrid {
     }
 
     handleResize(e, el) {
-        if (!this.editMode) return;
+        if ( !this.editMode ) return;
         e.preventDefault();
         e.stopPropagation();
+
+        // Set resizing flag to block drag during resize
+        el._isResizing = true;
 
         const startX = e.clientX;
         const startY = e.clientY;
@@ -441,11 +554,10 @@ class IconGrid {
         const startH = el.offsetHeight;
 
         const { width: containerW, height: containerH } = getContainerDimensions(this.fixedWidth, this.fixedHeight, this.container);
-        const gap = 8;
+        const gap = 0o10;
         const cellW = (containerW - (this.cols - 1) * gap) / this.cols;
         const cellH = (containerH - (this.rows - 1) * gap) / this.rows;
 
-        setElementDragging(el, true);
         el.classList.add("resizing");
 
         const move = (ev) => {
@@ -469,7 +581,8 @@ class IconGrid {
 
         const up = () => {
             el.classList.remove("resizing");
-            setElementDragging(el, false);
+            el.classList.remove("dragging");
+            el._isResizing = false;
 
             if (el.dataset.pendingColSpan) {
                 const newColSpan = parseInt(el.dataset.pendingColSpan);
@@ -482,22 +595,31 @@ class IconGrid {
                 delete el.dataset.pendingRowSpan;
             }
 
+            // Force reflow to ensure styles are applied
+            void el.offsetWidth;
+
             this.applyPosition(el, parseInt(el.dataset.col), parseInt(el.dataset.row));
             this.updateAdaptiveOrientation(el);
         };
 
-        setupDragHandlers(move, up);
+        // Use direct event listeners for proper cleanup
+        document.addEventListener("mousemove", move);
+        document.addEventListener("mouseup", function onResizeUp() {
+            document.removeEventListener("mousemove", move);
+            document.removeEventListener("mouseup", onResizeUp);
+            up();
+        });
     }
 
     snapAfterDrag(el) {
         const { width: containerW, height: containerH } = getContainerDimensions(this.fixedWidth, this.fixedHeight, this.container);
-        const gap = 8;
+        const gap = 0o10;
         const cellW = (containerW - (this.cols - 1) * gap) / this.cols;
         const cellH = (containerH - (this.rows - 1) * gap) / this.rows;
 
         const containerRect = this.container.getBoundingClientRect();
         const elRect = el.getBoundingClientRect();
-        
+
         const localX = (elRect.left - containerRect.left);
         const localY = (elRect.top - containerRect.top);
 
@@ -557,6 +679,13 @@ class IconGrid {
         tiles.forEach((tile, index) => {
             const c = parseInt(tile.dataset.col);
             const r = parseInt(tile.dataset.row);
+            const page = parseInt(tile.dataset.page) || 0;
+            
+            // Update pagination visibility (mobile desktop only)
+            if ( this.isMobile && this.containerId === "desktop" ) {
+                tile.style.display = page === this.currentPage ? "" : "none";
+            }
+
             if (!isNaN(c) && !isNaN(r)) this.applyPosition(tile, c, r);
             else this.snapToGrid(tile, index);
         });
@@ -593,9 +722,26 @@ window.ContextMenuManager = {
 
     showForTile(x, y, tileEl) {
         this.currentTile = tileEl;
+        
+        // Build move page actions for mobile
+        const movePageActions = [];
+        const maxPage = Math.ceil( APPS.length / ( MOBILE_GRID_ROWS * MOBILE_GRID_COLS ) ) - 1;
+        
+        if ( maxPage > 0 ) {
+            for ( let i = 0; i <= maxPage; i++ ) {
+                movePageActions.push({
+                    action: `move-page-${i}`,
+                    label: `Page ${i + 1}`,
+                    icon: `${i + 1}`,
+                    title: `Move to page ${i + 1}`
+                });
+            }
+        }
+        
         this._renderMenu([
             { action: "edit-mode", label: "Edit Mode", icon: "✏️", i18n: "ctx_edit_mode" }
         ], [
+            ...movePageActions,
             { action: "toggle-widget", icon: "🖼️", title: "Widget Mode", i18n: "ctx_widget_mode" },
             { action: "toggle-live-tile", icon: "✨", title: "Live Tile Mode", i18n: "ctx_live_tile_mode" }
         ], x, y);
@@ -640,6 +786,16 @@ window.ContextMenuManager = {
 
     handleAction(action) {
         const wm = getWindowManager();
+        
+        // Handle move page actions for mobile
+        if ( action.startsWith("move-page-") ) {
+            const targetPage = parseInt( action.replace("move-page-", "") );
+            if ( this.currentTile && window.DesktopIconManager?.desktop ) {
+                window.DesktopIconManager.moveTileToPage( this.currentTile, targetPage );
+            }
+            return;
+        }
+        
         switch (action) {
             case "refresh": location.reload(); break;
             case "toggle-widget":
@@ -650,8 +806,8 @@ window.ContextMenuManager = {
                 }
                 break;
             case "edit-mode": window.DesktopIconManager?.desktop?.toggleEdit(); break;
-            case "new-note": wm?.createWindow("ſɟᴜ ſɭɹ/ſɟᴜ ſᶘᴜ j͐ʃɹ.html"); break;
-            case "terminal": wm?.createWindow("ſɟᴜ ſɭɹ/ſןɔ ſɭʞꞇ.html"); break;
+            case "new-note": wm?.loadAppFromPath("ſɟᴜ ſɭɹ/ſɟᴜ ſᶘᴜ j͐ʃɹ.html", "Notes"); break;
+            case "terminal": wm?.loadAppFromPath("ſɟᴜ ſɭɹ/ſןɔ ſɭʞꞇ.html", "Terminal"); break;
         }
     }
 };
@@ -665,6 +821,39 @@ window.DesktopIconManager = {
         [this.desktop, this.startMenu].forEach(grid => {
             if (grid?.container) grid.container.querySelectorAll(".app-tile").forEach(t => grid.snapAfterDrag(t));
         });
+    },
+
+    _handleResize() {
+        [this.desktop, this.startMenu].forEach(grid => {
+            if (grid?.container) grid.relayout();
+        });
+    },
+
+    // Move tile to a specific page (mobile only)
+    moveTileToPage(tile, targetPage) {
+        if ( !tile || !this.desktop ) return;
+        
+        const appPath = tile.dataset.app;
+        const appIndex = APPS.findIndex( app => app.app === appPath );
+        
+        if ( appIndex === -1 ) return;
+        
+        // Remove tile from current position
+        tile.remove();
+        
+        // Re-add at new page position
+        const itemsPerPage = MOBILE_GRID_ROWS * MOBILE_GRID_COLS;
+        const newIndex = ( targetPage * itemsPerPage ) + ( appIndex % itemsPerPage );
+        
+        const newEl = this.desktop.addIcon( APPS[appIndex], newIndex );
+        this.desktop.snapToGrid( newEl, newIndex );
+        
+        // Update page indicators
+        this._updatePageIndicators();
+        
+        // Refresh to show tile on new page
+        this.desktop.currentPage = targetPage;
+        this.desktop.refresh();
     },
 
     transferIconFromStartMenu(el) {
@@ -684,8 +873,9 @@ window.DesktopIconManager = {
     },
 
     async init() {
-        this.desktop = new IconGrid("desktop", { rows: DIM_DEFAULT_ROWS, cols: DIM_DEFAULT_COLS, centered: false, bottomUp: true, labelMode: 'external' });
-        this.startMenu = new IconGrid("start-menu-content", { rows: DIM_DEFAULT_ROWS, cols: DIM_DEFAULT_COLS, centered: false, bottomUp: true, labelMode: 'external' });
+        // IconGrid auto-detects mobile vs desktop now
+        this.desktop = new IconGrid("desktop", { centered: false, bottomUp: true, labelMode: 'external' });
+        this.startMenu = new IconGrid("start-menu-content", { centered: false, bottomUp: true, labelMode: 'external' });
 
         APPS = APPS_DATA.map(app => ({
             name: app.path.split("/").pop().replace(".html", ""),
@@ -700,6 +890,7 @@ window.DesktopIconManager = {
 
         this._initQuickSettings();
         this._relayoutAll();
+        this._createPageIndicators();
         setTimeout(() => this.desktop?.relayout(), 0o140);
 
         window.addEventListener("resize", throttle(() => {
@@ -709,6 +900,46 @@ window.DesktopIconManager = {
 
         QSManager.init();
         NotificationManager.init();
+    },
+
+    _createPageIndicators() {
+        // Remove existing indicators
+        const existing = document.querySelector(".page-indicators");
+        if (existing) existing.remove();
+
+        // Create page indicators for mobile
+        const itemsPerPage = MOBILE_GRID_ROWS * MOBILE_GRID_COLS;
+        const totalPages = Math.ceil(APPS.length / itemsPerPage);
+        
+        if (totalPages <= 1) return;
+
+        const container = document.createElement("div");
+        container.className = "page-indicators";
+        
+        for (let i = 0; i < totalPages; i++) {
+            const dot = document.createElement("div");
+            dot.className = "page-indicator" + (i === 0 ? " active" : "");
+            dot.onclick = () => {
+                if (this.desktop) {
+                    this.desktop.currentPage = i;
+                    this.desktop.refresh();
+                    this._updatePageIndicators();
+                }
+            };
+            container.appendChild(dot);
+        }
+        
+        document.body.appendChild(container);
+    },
+
+    _updatePageIndicators() {
+        const container = document.querySelector(".page-indicators");
+        if (!container || !this.desktop) return;
+        
+        const dots = container.querySelectorAll(".page-indicator");
+        dots.forEach((dot, i) => {
+            dot.classList.toggle("active", i === this.desktop.currentPage);
+        });
     },
 
     _initQuickSettings() {
@@ -736,12 +967,12 @@ window.DesktopIconManager = {
             QS_TOGGLES.forEach(t => { if (!savedToggleOrder.includes(t.id)) toggles.push(t); });
         }
         qsGrid.innerHTML = toggles.map( t => `
-            <div class="xeku1okek" data-qs-id="${t.id}" onclick="window.DesktopIconManager._handleQSClick( event , this , "xeku1okek-order" )">
+            <div class="xeku1okek" data-qs-id="${t.id}" onclick="window.DesktopIconManager._handleQSClick( event , this , 'xeku1okek-order' )">
                 <button class="caku1o" data-setting="${t.id}" aria-pressed="${t.default}" onclick="if ( window.toggleQsButton ) toggleQsButton( this )">
                     <span class="icon">${t.icon}</span>
                     <span class="label" data-oskakefani="${t.string}">${t.label}</span>
                 </button>
-                <button class="qs-remove-btn" onclick="event.stopPropagation(); window.DesktopIconManager._removeQSItem( event , "xeku1okek-order" , "${t.id}" )">/</button>
+                <button class="qs-remove-btn" onclick="event.stopPropagation(); window.DesktopIconManager._removeQSItem( event , 'xeku1okek-order' , '${t.id}' )">/</button>
             </div>
         `).join( "" );
 
@@ -870,42 +1101,13 @@ window.ClockManager = {
         this.update(); setInterval(() => this.update(), 0o2000);
     },
     update() {
-        this.timeEl = this.timeEl || document.getElementById("full-clock-time");
-        this.dateEl = this.dateEl || document.getElementById("full-clock-date");
+        this.timeEl = this.timeEl || document.getElementById( "full-clock-time" );
+        this.dateEl = this.dateEl || document.getElementById( "full-clock-date" );
         const now = new Date();
-        if (this.timeEl && typeof vab6caja === "function" && typeof castifeh2 === "function") {
-            const time = castifeh2(now);
-            this.timeEl.innerText = `${vab6caja(time.she)} . ${vab6caja(time.qe)} . ${vab6caja(time.he)}`;
+        if ( this.timeEl && typeof vab6caja === "function" && typeof castifeh2 === "function" ) {
+            const time = castifeh2( now );
+            this.timeEl.innerText = `${vab6caja( time.she )} . ${vab6caja( time.qe )} . ${vab6caja( time.he )}`;
         }
-        if (this.dateEl && typeof kf2Cax2lStafl2 === "function") this.dateEl.innerText = kf2Cax2lStafl2(now);
+        if ( this.dateEl && typeof kf2Cax2lStafl2 === "function" ) this.dateEl.innerText = kf2Cax2lStafl2( now );
     }
 };
-
-function getContainerDimensions(fixedWidth, fixedHeight, container) {
-    if (fixedWidth && fixedHeight) return { width: fixedWidth, height: fixedHeight };
-    
-    // Always prefer container client area if available and visible
-    if (container && container.clientWidth > 0 && container.clientHeight > 0) {
-        return { width: container.clientWidth, height: container.clientHeight };
-    }
-
-    // Fallback to measuring the computed style or bounding rect
-    if (container) {
-        const rect = container.getBoundingClientRect();
-        if (rect.width > 0 && rect.height > 0) {
-            return { width: rect.width, height: rect.height };
-        }
-    }
-
-    // Ultimate fallback window inner minus panel insets
-    const style = getComputedStyle(document.documentElement);
-    const iT = parseInt(style.getPropertyValue('--panel-inset-top')) || 0;
-    const iB = parseInt(style.getPropertyValue('--panel-inset-bottom')) || 0;
-    const iL = parseInt(style.getPropertyValue('--panel-inset-left')) || 0;
-    const iR = parseInt(style.getPropertyValue('--panel-inset-right')) || 0;
-    
-    return { 
-        width: fixedWidth || (window.innerWidth - iL - iR) || window.innerWidth, 
-        height: fixedHeight || (window.innerHeight - iT - iB) || window.innerHeight 
-    };
-}

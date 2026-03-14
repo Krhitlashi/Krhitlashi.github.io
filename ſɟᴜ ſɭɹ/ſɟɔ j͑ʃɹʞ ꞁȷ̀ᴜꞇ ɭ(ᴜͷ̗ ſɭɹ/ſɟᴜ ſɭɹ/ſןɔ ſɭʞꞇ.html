@@ -4,8 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="inline-size=device-inline-size, initial-scale=1">
-    <title data-oskakefani="app_terminal"></title>
+    
+    <title data-oskakefani="ſןɔ ſɭʞꞇ"></title>
     <link rel="icon" type="image/x-icon" href="../../../j͑ʃɹ ɭʃᴜɔ˞ ɭl̀ɔ j͑ʃᴜꞇ.ico">
+
     <link rel="manifest" href="../../../ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.json">
     <link rel="stylesheet" href="../../../֭ſɭᴜ ı],ɔ.css">
     <link rel="stylesheet" href="../֭ſɭᴜ ı],ɔ.css">
@@ -13,67 +15,67 @@
 
 <body class="cepufal">
     <thala>
-        <div data-oskakefani="terminal_version"></div>
-        <div data-oskakefani="terminal_help"></div>
+        <div data-oskakefani="֭ſɭw ſ͕ɭᴜȝ j͑ʃɔ ſןɔ ſɭʞꞇ"></div>
+        <div data-oskakefani="ſȷɔ ſɭ,ꞇ }ʃꞇ"></div>
     </thala>
-    <div id="output"></div>
-    <input type="text" id="input" data-oskakefani="ph_terminal">
+    <div id="3akakani"></div>
+    <input type="text" id="banani" data-oskakefani="ph_terminal">
 </body>
 <script>
-    const output = document.getElementById('output');
-    const input = document.getElementById('input');
+    const tlakakani = document.getElementById("3akakani");
+    const banani = document.getElementById("banani");
     
-    function addCommandOutput(cmd, outputContent) {
-        const html = '<thala><div class="cmd-echo">' + cmd + '</div><ciihii class="cmd-output">' + outputContent + '</ciihii></thala>';
-        output.insertAdjacentHTML('beforebegin', html);
+    function nllakOkeveni(okvn, tlakakaniContent) {
+        const html = `<thala><div>` + okvn + `</div><ciihii>` + tlakakaniContent + `</ciihii></thala>`;
+        tlakakani.insertAdjacentHTML("beforebegin", html);
     }
     
-    input.focus();
-    input.addEventListener('keydown', e => {
-        if (e.key !== 'Enter') return;
-        const cmd = input.value.trim();
-        if (cmd) {
-            if (cmd === 'help') {
-                addCommandOutput(cmd, '<span data-oskakefani="terminal_commands"></span>');
-            } else if (cmd === 'clear') {
-                output.parentElement.querySelectorAll('thala:not(#output)').forEach(el => el.remove());
-            } else if (cmd === 'date') {
-                addCommandOutput(cmd, new Date().toLocaleString());
-            } else if (cmd.startsWith('echo ')) {
-                addCommandOutput(cmd, cmd.substring(5));
-            } else if (cmd === 'ls') {
-                addCommandOutput(cmd, 'Desktop  Documents  Downloads  Pictures');
+    banani.focus();
+    banani.addEventListener("keydown", bn => {
+        if ( bn.key !== "Enter" ) return;
+        const okvn = banani.value.trim();
+        if ( okvn ) {
+            if ( okvn === "fezi" ) {
+                nllakOkeveni(okvn, `<span data-oskakefani="ſɟɔⅎƴ ꞁȷ̀ɜ ſɭɔ j͑ʃ'ɔ }ʃꞇ"></span>`);
+            } else if ( okvn === "vawe" ) {
+                tlakakani.parentElement.querySelectorAll('thala:not(#tlakakani)').forEach(el => el.remove());
+            } else if ( okvn === "stifeh2" ) {
+                nllakOkeveni(okvn, new Date().toLocaleString());
+            } else if ( okvn.startsWith("safe " )) {
+                nllakOkeveni(okvn, okvn.substring(0o10));
+            } else if ( okvn === "cakavop2" ) {
+                nllakOkeveni(okvn, "Desktop  Documents  Downloads  Pictures");
             } else {
-                addCommandOutput(cmd, 'Command not found: ' + cmd);
+                nllakOkeveni(okvn, "( ꞁȷ̀ɜ ſɭɔ ſɭɔ ſ͕ȷᴜ ꞁȷ̀ɜ ſɭɔ j͑ʃ'ɔ }ʃꞇ ) " + okvn);
             }
+
             // Re-trigger translation for new content
-            const gawe = document.documentElement.lang || 'aih';
-            document.querySelectorAll('[data-oskakefani]').forEach(el => {
+            const gawe = document.documentElement.lang || "aih";
+            document.querySelectorAll("[data-oskakefani]").forEach(el => {
                 const kef = el.dataset.oskakefani;
-                el.textContent = window.skakefani?.[gawe]?.[kef] || window.skakefani?.['aih']?.[kef] || kef;
+                el.textContent = window.skakefani?.[gawe]?.[kef] || window.skakefani?.["aih"]?.[kef] || kef;
             });
         }
-        input.value = '';
+        banani.value = "";
         document.documentElement.scrollTop = document.documentElement.scrollHeight;
     });
 
     window.skakefani = {
         aih: {
-            "app_terminal": "ſןɔ ſɭʞꞇ 💻",
-            "terminal_version": "Dalk2Cel2fu Terminal v0",
-            "terminal_help": "Type 'help' for commands.",
-            "ph_terminal": "▶",
-            "terminal_commands": "Commands: help, clear, date, echo [msg], ls"
+            "ſןɔ ſɭʞꞇ": "ſןɔ ſɭʞꞇ 💻",
+            "֭ſɭw ſ͕ɭᴜȝ j͑ʃɔ ſןɔ ſɭʞꞇ": "ſןɔ ſɭʞꞇ ( ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ ֭ſɭw ſ͕ɭᴜȝ )",
+            "ſȷɔ ſɭ,ꞇ }ʃꞇ": "ʃᴜ }ʃᴜ ꞁȷ̀ɔ ⸙ fezi ⸙ ſɭᴜͷ̗ ſɭᴜ j͑ʃᴜ ꞁȷ̀ɔ ſᶘᴜ ɽ͑ʃ'ᴜ ꞁȷ̀ɜ ſɭɔ j͑ʃ'ɔ }ʃꞇ ⟅",
+            "ſɟɔⅎƴ ꞁȷ̀ɜ ſɭɔ j͑ʃ'ɔ }ʃꞇ": "ꞁȷ̀ɜ ſɭɔ j͑ʃ'ɔ }ʃꞇ - fezi ｡ vawe ｡ stifeh2 ｡ safe [ ꞁȷ̀ɜ ı],ɹ ] ｡ cakavop2"
         },
         en: {
-            "app_terminal": "Terminal 💻",
-            "terminal_version": "Dalk2Cel2fu Terminal v0",
-            "terminal_help": "Type 'help' for commands.",
-            "ph_terminal": "▶",
-            "terminal_commands": "Commands: help, clear, date, echo [msg], ls"
+            "ſןɔ ſɭʞꞇ": "Terminal 💻",
+            "֭ſɭw ſ͕ɭᴜȝ j͑ʃɔ ſןɔ ſɭʞꞇ": "Dalk2Cel2fu Terminal v1",
+            "ſȷɔ ſɭ,ꞇ }ʃꞇ": "Type \"fezi\" for commands.",
+            "ſɟɔⅎƴ ꞁȷ̀ɜ ſɭɔ j͑ʃ'ɔ }ʃꞇ": "Commands - fezi ( help ) , vawe ( clear ) , stifeh2 ( date ) , safe [ msg ] , cakavop2 ( ls )"
         }
     };
 </script>
-<script src="../../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃƽᴜ ſɭɔʞ ꞁȷ̀ᴜ }ʃꞇ.js"></script>
 <script src="../../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃƽᴜ ſɭɔʞ.js"></script>
+<script src="./ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
+
 </html>

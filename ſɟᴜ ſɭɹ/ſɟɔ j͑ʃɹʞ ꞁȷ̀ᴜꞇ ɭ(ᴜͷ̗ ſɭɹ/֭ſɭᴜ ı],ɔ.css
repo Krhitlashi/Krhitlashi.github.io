@@ -110,10 +110,11 @@
     color: var(--កេភ២);
 }
 
-.edit-mode .app-tile .resize-handle { display: flex; }
-.edit-mode .app-tile:hover {
-    background: var(--តានេកខេលេ); 
-    border-radius: var(--អិត្ភេ); 
+/* Only show resize handles for desktop tiles in edit mode (not start menu) */
+#desktop.edit-mode .app-tile .resize-handle { display: flex; }
+#desktop.edit-mode .app-tile:hover {
+    background: var(--តានេកខេលេ);
+    border-radius: var(--អិត្ភេ);
 }
 .app-tile.dragging { 
     opacity: 0.625;
@@ -130,6 +131,7 @@
     display: none;
     flex-direction: column;
     overflow: visible;
+    z-index: 2048;
 }
 #start-menu.open {
     display: flex;
@@ -138,10 +140,61 @@
     flex-grow: 1;
     position: relative;
     overflow: auto;
+    min-height: 100%;
 }
 #start-menu .app-tile:hover {
     background: var(--តានេក២);
     border-radius: var(--អិត្ភេ);
+}
+
+/* ⟪ Mobile Grid Pagination ⟫ */
+
+/* Page indicator dots for mobile */
+.page-indicators {
+    position: fixed;
+    bottom: calc(var(--taskbar-width) + var(--អារេងព៏) + 0o20);
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    gap: 0o10;
+    z-index: 1000;
+}
+
+@media (max-width: 767px), (max-height: 767px) {
+    .page-indicators {
+        display: flex;
+    }
+    
+    .page-indicator {
+        width: 0o10;
+        height: 0o10;
+        border-radius: 50%;
+        background: var(--កេភ២);
+        opacity: 0.5;
+        transition: opacity 0.25s, background 0.25s;
+    }
+    
+    .page-indicator.active {
+        opacity: 1;
+        background: var(--កេភ);
+    }
+    
+    /* Touch-friendly window controls on mobile */
+    .window .title-bar {
+        min-height: 0o60;
+        touch-action: none;
+    }
+    
+    .window .control-btn {
+        min-width: 0o60;
+        min-height: 0o60;
+    }
+    
+    /* Larger resize handles for touch */
+    .window .resize-handle {
+        min-width: 0o30;
+        min-height: 0o30;
+    }
 }
 
 /* ⟪ Panels ⟫ */
@@ -157,6 +210,7 @@
 #context-menu {
     position: fixed;
     display: none;
+    z-index: 8192;
 }
 #quick-settings-sliders.visible,
 #quick-settings-buttons.visible,
@@ -308,6 +362,7 @@
     block-size: 64px;
 }
 
+/* Mobile view - show home bar, hide start button */
 @media (max-width: 767px), (max-height: 767px) {
     #taskbar .home-bar {
         display: flex !important;
@@ -320,6 +375,46 @@
         block-size: 48px;
     }
     #taskbar .taskbar-app-btn { display: none; }
+    #taskbar .taskbar-center {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    
+    /* Mobile portrait - force taskbar to bottom */
+    @media (orientation: portrait) {
+        #taskbar[data-position="bottom"] {
+            display: flex !important;
+        }
+        #taskbar[data-position="left"],
+        #taskbar[data-position="right"],
+        #taskbar[data-position="top"] {
+            display: none !important;
+        }
+        /* Home bar horizontal on bottom taskbar */
+        #taskbar[data-position="bottom"] .home-bar {
+            inline-size: 48px;
+            block-size: 4px;
+        }
+    }
+    
+    /* Mobile landscape - allow left or right taskbar */
+    @media (orientation: landscape) {
+        #taskbar[data-position="left"],
+        #taskbar[data-position="right"] {
+            display: flex !important;
+        }
+        #taskbar[data-position="bottom"],
+        #taskbar[data-position="top"] {
+            display: none !important;
+        }
+        /* Home bar vertical on side taskbars */
+        #taskbar[data-position="left"] .home-bar,
+        #taskbar[data-position="right"] .home-bar {
+            inline-size: 4px;
+            block-size: 48px;
+        }
+    }
 }
 @media (min-width: 768px) and (min-height: 768px) {
     #taskbar .home-bar {
@@ -353,7 +448,8 @@
     overflow: visible;
 }
 .window.minimized {
-    display: none; 
+    visibility: hidden;
+    pointer-events: none;
 }
 .window.maximized {
     min-inline-size: 0;
@@ -389,6 +485,7 @@
     transition: opacity 0.25s;
     border-radius: var(--ចិង);
     background: transparent;
+    pointer-events: auto;
 }
 .window:not(.maximized):not(.fullscreen) .resize-handle:hover {
     opacity: 1;
@@ -409,12 +506,12 @@
 .window .resize-handle-ne::after { transform: scaleY(-1); }
 .window .resize-handle-nw::after { transform: scale(-1); }
 
-/* Edge resize handles */
+/* Edge resize handles - side resize */
 
-.window .resize-handle-s { bottom: 0; left: 0; cursor: s-resize; }
-.window .resize-handle-n { top: 0; left: 0; cursor: n-resize; }
-.window .resize-handle-e { top: 0; right: 0; cursor: e-resize; }
-.window .resize-handle-w { top: 0; left: 0; cursor: w-resize; }
+.window .resize-handle-s { bottom: -4px; left: 0; right: 0; height: 8px; cursor: s-resize; }
+.window .resize-handle-n { top: -4px; left: 0; right: 0; height: 8px; cursor: n-resize; }
+.window .resize-handle-e { top: 0; right: -4px; bottom: 0; width: 8px; cursor: e-resize; }
+.window .resize-handle-w { top: 0; left: -4px; bottom: 0; width: 8px; cursor: w-resize; }
 .window > iframe { flex: 1; min-block-size: 0; min-inline-size: 0; }
 
 /* ⟪ Utility Classes ⟫ */
