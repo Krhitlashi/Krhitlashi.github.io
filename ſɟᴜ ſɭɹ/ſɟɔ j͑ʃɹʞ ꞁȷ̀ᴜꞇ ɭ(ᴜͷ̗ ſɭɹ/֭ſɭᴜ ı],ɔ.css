@@ -37,6 +37,7 @@
 .app-tile .cepufal {
     block-size: 100% !important;
     inline-size: 100% !important;
+    overflow: hidden;
 }
 
 /* Orientation Logic for Tiles */
@@ -77,7 +78,8 @@
 }
 .app-tile button {
     flex: 1;
-    block-size: auto !important;
+    block-size: 100% !important;
+    inline-size: 100%;
     background-color: var(--ឆាងាធីច្ហិ);
     backdrop-filter: var(--ច្ហិនី);
 }
@@ -87,6 +89,7 @@
 }
 .app-tile .label.inside {
     overflow: hidden;
+    white-space: nowrap;
 }
 
 /* ⟪ App Tile Resize Handle ⟫ */
@@ -345,6 +348,10 @@
 #taskbar[data-position="top"] .taskbar-section {
     flex-direction: row;
 }
+#taskbar[data-position="bottom"] .taskbar-section button,
+#taskbar[data-position="top"] .taskbar-section button {
+    block-size: auto;
+}
 
 .home-bar {
     background: var(--កេភ);
@@ -362,7 +369,8 @@
     block-size: 64px;
 }
 
-/* Mobile view - show home bar, hide start button */
+/* ⟪ Mobile view ⟫ - show home bar, hide start button */
+
 @media (max-width: 767px), (max-height: 767px) {
     #taskbar .home-bar {
         display: flex !important;
@@ -374,14 +382,8 @@
         inline-size: 4px;
         block-size: 48px;
     }
-    #taskbar .taskbar-app-btn { display: none; }
-    #taskbar .taskbar-center {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-    }
+    #taskbar .home-bar-icon { display: none; }
     
-    /* Mobile portrait - force taskbar to bottom */
     @media (orientation: portrait) {
         #taskbar[data-position="bottom"] {
             display: flex !important;
@@ -391,14 +393,12 @@
         #taskbar[data-position="top"] {
             display: none !important;
         }
-        /* Home bar horizontal on bottom taskbar */
         #taskbar[data-position="bottom"] .home-bar {
             inline-size: 48px;
             block-size: 4px;
         }
     }
     
-    /* Mobile landscape - allow left or right taskbar */
     @media (orientation: landscape) {
         #taskbar[data-position="left"],
         #taskbar[data-position="right"] {

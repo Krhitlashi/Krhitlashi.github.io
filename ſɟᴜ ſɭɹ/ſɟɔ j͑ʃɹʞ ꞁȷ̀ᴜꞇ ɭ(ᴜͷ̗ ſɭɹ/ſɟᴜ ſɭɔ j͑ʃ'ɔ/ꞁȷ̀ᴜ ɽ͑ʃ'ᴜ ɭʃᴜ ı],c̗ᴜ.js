@@ -2,65 +2,56 @@
 
 class NotificationManager {
     static #dismissed = new Set();
-    static #notifications = [...NOTIFICATION_DEFAULTS];
+    static #notifications = [...CONSTANTS.NOTIFICATION_DEFAULTS];
 
-    // ⟪ Load Dismissed From Storage ⟫
-
+    // ⟨ Load Dismissed From Storage ⟩
     static loadFromStorage() {
-        const stored = Storage.get(STORAGE_KEYS.dismissedNotifs, []);
+        const stored = Storage.get(CONSTANTS.STORAGE_KEYS.dismissedNotifs, []);
         stored.forEach(id => this.#dismissed.add(id));
     }
 
-    // ⟪ Save To Storage ⟫
-
+    // ⟨ Save To Storage ⟩
     static saveToStorage() {
-        Storage.set(STORAGE_KEYS.dismissedNotifs, Array.from(this.#dismissed));
+        Storage.set(CONSTANTS.STORAGE_KEYS.dismissedNotifs, Array.from(this.#dismissed));
     }
 
-    // ⟪ Add Notification ⟫
-
+    // ⟨ Add Notification ⟩
     static add(notification) {
         this.#notifications.push(notification);
         this.render();
     }
 
-    // ⟪ Remove Notification ⟫
-
+    // ⟨ Remove Notification ⟩
     static remove(index) {
         this.#notifications.splice(index, 1);
         this.render();
     }
 
-    // ⟪ Dismiss Notification ⟫
-
+    // ⟨ Dismiss Notification ⟩
     static dismiss(index) {
         this.#dismissed.add(index);
         this.saveToStorage();
         this.render();
     }
 
-    // ⟪ Clear All Notifications ⟫
-
+    // ⟨ Clear All Notifications ⟩
     static clear() {
         this.#notifications.forEach((_, i) => this.#dismissed.add(i));
         this.saveToStorage();
         this.render();
     }
 
-    // ⟪ Get Active Notifications ⟫
-
+    // ⟨ Get Active Notifications ⟩
     static getActive() {
         return this.#notifications.filter((_, i) => !this.#dismissed.has(i));
     }
 
-    // ⟪ Get Count ⟫
-
+    // ⟨ Get Count ⟩
     static getCount() {
         return this.getActive().length;
     }
 
-    // ⟪ Render Notifications ⟫
-
+    // ⟨ Render Notifications ⟩
     static render() {
         const list = DOMCache.get("notif-list");
         if (!list) return;
@@ -93,8 +84,7 @@ class NotificationManager {
         if (countSpan) countSpan.innerText = System.toOctalString(this.getCount().toString());
     }
 
-    // ⟪ Init ⟫
-
+    // ⟨ Init ⟩
     static init() {
         this.loadFromStorage();
         this.render();

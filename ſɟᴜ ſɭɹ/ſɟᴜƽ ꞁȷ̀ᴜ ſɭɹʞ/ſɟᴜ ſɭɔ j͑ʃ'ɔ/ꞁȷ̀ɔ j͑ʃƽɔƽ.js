@@ -1,10 +1,12 @@
-// ≺⧼ Constants and Variables ⧽≻
+// ≺⧼ Constants and State ⧽≻
 
 // ⟪ Canvas Elements 🎨 ⟫
-const canvas = document.getElementById( "whiteboardCanvas" );
-const ctx = canvas.getContext( "2d" );
 
-// ⟪ Magic Numbers - Named Constants 🔢 ⟫
+const canvas = document.getElementById("whiteboardCanvas");
+const ctx = canvas.getContext("2d");
+
+// ⟪ Constants 🔢 ⟫
+
 const CANVAS_WIDTH = 0o3577;
 const CANVAS_HEIGHT = 0o2400;
 
@@ -28,69 +30,135 @@ const TEXT_SIZE_MULTIPLIER = 0o4;
 const TEXT_MIN_WIDTH_MULTIPLIER = 0o2;
 const HISTORY_MAX = 0o40;
 const INITIAL_BRUSH_SIZE = 0o4;
+const ZOOM_BASE = 0o100;
+const MIN_DELTA = 0o1 / 0o100;
 
-const LINE_DASH_PATTERN = [ 0o4, 0o4 ];
+const LINE_DASH_PATTERN = [0o4, 0o4];
 const SELECTION_LINE_WIDTH = 0o2;
 const HANDLE_FILL_COLOR = "#181818";
 const HANDLE_STROKE_COLOR = "#000000";
 const SELECTION_STROKE_COLOR = "#000000";
 
-// ⟪ Global State 📊 ⟫
-let currentTool = "select";
-let currentColor = "#000000";
-let currentSize = INITIAL_BRUSH_SIZE;
-let isDrawing = false;
-let startX = 0;
-let startY = 0;
-let lastX = 0;
-let lastY = 0;
-let zoomNum = 0o1;
-let zoomDen = 0o1;
-let currentShape = null;
+// ⟪ Additional Constants 🔢 ⟫
 
-let history = [];
-let historyIndex = -0o1;
+const MIN_PATH_DIMENSION = 0o4;
+const TEXT_EDIT_INDEX_NONE = -0o1;
+const MIN_PATH_POINTS = 0o2;
+const CONNECTION_LINE_DASH = [0o4, 0o4];
 
-let panOffsetX = 0;
-let panOffsetY = 0;
-let isPanning = false;
-let panStartX = 0;
-let panStartY = 0;
-let isSpacePressed = false;
+// ⟪ Tool Cursors 🖰 ⟫
 
-let layers = [];
-let activeLayerId = 0;
-let layerCounter = 0;
+const TOOL_CURSORS = {
+    pen: "crosshair",
+    select: "default",
+    pan: "grab",
+    eraser: "cell",
+    text: "text",
+    shape: "crosshair",
+    smooth: "crosshair",
+    connect: "crosshair"
+};
 
-let objects = [];
-let selectedObjects = [];
-let isDragging = false;
-let isResizing = false;
-let isRotating = false;
-let isSelecting = false;
-let selectionRect = null;
-let resizeHandle = null;
-let dragOffsetX = 0;
-let dragOffsetY = 0;
-let dragStartX = 0;
-let dragStartY = 0;
-let initialRotationAngle = 0;
-let initialObjectRotations = [];
-let initialBounds = null;
-let initialCenterX = 0;
-let initialCenterY = 0;
-let initialRotation = 0;
-let initialObjectStates = [];
+const CURSOR_CLASSES = [
+    "canvas-cursor-grab", "canvas-cursor-grabbing", "canvas-cursor-pointer",
+    "canvas-cursor-move", "canvas-cursor-default", "canvas-cursor-crosshair",
+    "canvas-cursor-cell", "canvas-cursor-text"
+];
 
-let currentPath = [];
-let previewShape = null;
-let smoothPath = [];
-let smoothX = 0;
-let smoothY = 0;
+// ⟪ Application State 📊 ⟫
 
-let isEditingText = false;
-let textEditInput = null;
-let useHtmlText = true;
-let editingTextObjectIndex = -0o1;
+const state = {
+    tool: "select",
+    color: "#000000",
+    size: INITIAL_BRUSH_SIZE,
+    shape: null,
+    isDrawing: false,
+    startX: 0,
+    startY: 0,
+    lastX: 0,
+    lastY: 0,
+    zoomNum: 0o1,
+    zoomDen: 0o1
+};
 
-let eraserEraseObjects = false;
+const panState = {
+    offsetX: 0,
+    offsetY: 0,
+    isPanning: false,
+    startX: 0,
+    startY: 0
+};
+
+const spaceState = {
+    isPressed: false
+};
+
+// ⟪ Layer State 📚 ⟫
+
+const layerState = {
+    layers: [],
+    activeId: 0,
+    counter: 0
+};
+
+// ⟪ Object State 📐 ⟫
+
+const objectState = {
+    objects: [],
+    selected: [],
+    isDragging: false,
+    isResizing: false,
+    isRotating: false,
+    isSelecting: false,
+    selectionRect: null,
+    resizeHandle: null,
+    dragOffsetX: 0,
+    dragOffsetY: 0,
+    dragStartX: 0,
+    dragStartY: 0,
+    initialRotationAngle: 0,
+    initialObjectRotations: [],
+    initialBounds: null,
+    initialCenterX: 0,
+    initialCenterY: 0,
+    initialRotation: 0,
+    initialObjectStates: []
+};
+
+// ⟪ Path State 〰️ ⟫
+
+const pathState = {
+    current: [],
+    preview: null,
+    smooth: [],
+    smoothX: 0,
+    smoothY: 0
+};
+
+// ⟪ Text State 📝 ⟫
+
+const textState = {
+    isEditing: false,
+    input: null,
+    useHtml: true,
+    editingIndex: TEXT_EDIT_INDEX_NONE
+};
+
+// ⟪ Eraser State 🧹 ⟫
+
+const eraserState = {
+    eraseObjects: false
+};
+
+// ⟪ History State 📋 ⟫
+
+const historyState = {
+    history: [],
+    index: -0o1
+};
+
+// ⟪ Connection State 🔗 ⟫
+
+const connectionState = {
+    startObj: null
+};

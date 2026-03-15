@@ -1,24 +1,24 @@
 // ≺⧼ Quick Settings Manager ⧽≻ - Centralized QS state management
 
 const QSManager = ( function() {
-    let state = { ...QS_DEFAULTS };
+    let state = { ...CONSTANTS.QS.DEFAULTS };
 
     // ⟪ Load From Storage ⟫
 
     function loadFromStorage() {
-        state = Storage.loadWithDefaults( STORAGE_KEYS.qsState, QS_DEFAULTS );
+        state = Storage.loadWithDefaults( CONSTANTS.STORAGE_KEYS.qsState, CONSTANTS.QS.DEFAULTS );
     }
 
     // ⟪ Save To Storage ⟫
 
     function saveToStorage() {
-        Storage.set( STORAGE_KEYS.qsState, state );
+        Storage.set( CONSTANTS.STORAGE_KEYS.qsState, state );
     }
 
     // ⟪ Dispatch Change Event ⟫
 
     function dispatchChange( key, value ) {
-        const event = new CustomEvent( EVENT_NAMES.settingsChange, {
+        const event = new CustomEvent( CONSTANTS.EVENT_NAMES.settingsChange, {
             detail: { key, value }
         } );
         document.dispatchEvent( event );
@@ -64,10 +64,10 @@ const QSManager = ( function() {
 
         setBrightness( value ) {
             this.set( "brightness", value );
-            document.documentElement.style.setProperty( CSS_VARS.brightness, value / SYS_BRIGHTNESS_MAX );
+            document.documentElement.style.setProperty( CONSTANTS.CSS_VARS.brightness, value / CONSTANTS.SYS.BRIGHTNESS_MAX );
             const osRoot = document.getElementById( "os-root" );
             if ( osRoot ) {
-                osRoot.style.filter = `brightness(${ANIM_FRACTIONS.fourEighths + ( value / SYS_BRIGHTNESS_BUFFER )})`;
+                osRoot.style.filter = `brightness(${CONSTANTS.ANIM.FRACTIONS.fourEighths + ( value / CONSTANTS.SYS.BRIGHTNESS_BUFFER )})`;
             }
         },
 

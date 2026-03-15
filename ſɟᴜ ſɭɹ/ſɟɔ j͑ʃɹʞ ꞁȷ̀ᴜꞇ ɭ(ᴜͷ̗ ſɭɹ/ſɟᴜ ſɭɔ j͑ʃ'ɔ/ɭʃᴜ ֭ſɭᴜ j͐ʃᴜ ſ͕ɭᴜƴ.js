@@ -4,20 +4,13 @@ const AnimationManager = {
     // ⟪ Default Animation Settings ⟫
 
     defaults: {
-        duration: ANIM_DURATION_DEFAULT,
-        easing: "cubic-bezier(0.5, 0, 0.25, 1)"
+        duration: CONSTANTS.ANIM.DURATION_DEFAULT,
+        easing: CONSTANTS.ANIM.EASINGS.ease
     },
 
     // ⟪ Easing Functions ⟫
 
-    easings: {
-        ease: "cubic-bezier(0.5, 0, 0.25, 1)",
-        easeIn: "cubic-bezier(0.5, 0, 1, 1)",
-        easeOut: "cubic-bezier(0, 0, 0.25, 1)",
-        easeInOut: "cubic-bezier(0.5, 0, 0.25, 1)",
-        spring: "cubic-bezier(0.25, 1.5, 0.625, 1)",
-        bounce: "cubic-bezier(0.625, -0.5, 0.25, 1.5)"
-    },
+    easings: CONSTANTS.ANIM.EASINGS,
 
     // ⟪ Position Utilities ⟫
 
@@ -73,7 +66,7 @@ const AnimationManager = {
 
     getTaskbarOffset( fraction = 1 ) {
         const { position, offsetTransform, insetProp } = this.getPositionConfig();
-        const tbSize = parseInt( getComputedStyle( document.documentElement ).getPropertyValue( CSS_VARS.taskbarSize ) ) || SYS_TASKBAR_SIZE;
+        const tbSize = parseInt( getComputedStyle( document.documentElement ).getPropertyValue( CONSTANTS.CSS_VARS.taskbarSize ) ) || CONSTANTS.SYS.TASKBAR_SIZE;
         const offset = tbSize * fraction;
 
         return {
@@ -86,7 +79,7 @@ const AnimationManager = {
 
     getTaskbarSizeForPosition( pos = null, fraction = 1 ) {
         const { position } = this.getPositionConfig( pos );
-        const tbSize = parseInt( getComputedStyle( document.documentElement ).getPropertyValue( CSS_VARS.taskbarSize ) ) || SYS_TASKBAR_SIZE;
+        const tbSize = parseInt( getComputedStyle( document.documentElement ).getPropertyValue( CONSTANTS.CSS_VARS.taskbarSize ) ) || CONSTANTS.SYS.TASKBAR_SIZE;
         return {
             position,
             size: tbSize,
@@ -284,7 +277,7 @@ const AnimationManager = {
 
         const duration = options.duration ?? this.defaults.duration;
         const easing = options.easing ?? this.easings.spring;
-        const fromScale = options.fromScale ?? ANIM_FRACTIONS.sevenEighths;
+        const fromScale = options.fromScale ?? CONSTANTS.ANIM.FRACTIONS.sevenEighths;
 
         element.style.display = options.display || "flex";
         element.style.transform = `scale(${fromScale})`;
@@ -313,7 +306,7 @@ const AnimationManager = {
 
         const duration = options.duration ?? this.defaults.duration;
         const easing = options.easing ?? this.easings.easeIn;
-        const toScale = options.toScale ?? ANIM_FRACTIONS.sevenEighths;
+        const toScale = options.toScale ?? CONSTANTS.ANIM.FRACTIONS.sevenEighths;
 
         element.style.pointerEvents = "none";
 
@@ -336,10 +329,10 @@ const AnimationManager = {
     windowOpen( element, options = {} ) {
         if ( !element ) return Promise.resolve();
 
-        const duration = options.duration ?? ANIM_DURATION_LONG;
+        const duration = options.duration ?? CONSTANTS.ANIM.DURATION_LONG;
         const easing = options.easing ?? this.easings.easeOut;
-        const fraction = options.fraction ?? ANIM_FRACTIONS.oneEighth;
-        const scale = options.scale ?? ANIM_FRACTIONS.sevenEighths;
+        const fraction = options.fraction ?? CONSTANTS.ANIM.FRACTIONS.oneEighth;
+        const scale = options.scale ?? CONSTANTS.ANIM.FRACTIONS.sevenEighths;
 
         // Get taskbar position and offset
         const { position, offset } = this.getTaskbarSizeForPosition( null, fraction );
@@ -377,10 +370,10 @@ const AnimationManager = {
     windowClose( element, options = {} ) {
         if ( !element ) return Promise.resolve();
 
-        const duration = options.duration ?? ANIM_DURATION_SHORT;
+        const duration = options.duration ?? CONSTANTS.ANIM.DURATION_SHORT;
         const easing = options.easing ?? this.easings.easeIn;
-        const fraction = options.fraction ?? ANIM_FRACTIONS.oneEighth;
-        const scale = options.scale ?? ANIM_FRACTIONS.sevenEighths;
+        const fraction = options.fraction ?? CONSTANTS.ANIM.FRACTIONS.oneEighth;
+        const scale = options.scale ?? CONSTANTS.ANIM.FRACTIONS.sevenEighths;
 
         // Get taskbar position and offset
         const { position, offset } = this.getTaskbarSizeForPosition( null, fraction );
@@ -416,9 +409,9 @@ const AnimationManager = {
     minimizeWindow( element, options = {} ) {
         if ( !element ) return Promise.resolve();
 
-        const duration = options.duration ?? ANIM_DURATION_SHORT;
+        const duration = options.duration ?? CONSTANTS.ANIM.DURATION_SHORT;
         const easing = options.easing ?? this.easings.easeIn;
-        const fraction = options.fraction ?? ANIM_FRACTIONS.oneEighth;
+        const fraction = options.fraction ?? CONSTANTS.ANIM.FRACTIONS.oneEighth;
 
         // Get taskbar position and size
         const { position, size } = this.getTaskbarSizeForPosition( null, 1 );
@@ -453,13 +446,13 @@ const AnimationManager = {
     maximizeWindow( element, options = {} ) {
         if ( !element ) return Promise.resolve();
 
-        const duration = options.duration ?? ANIM_DURATION_DEFAULT;
+        const duration = options.duration ?? CONSTANTS.ANIM.DURATION_DEFAULT;
         const easing = options.easing ?? this.easings.easeOut;
-        const fromScale = options.fromScale ?? ANIM_FRACTIONS.sevenEighths;
+        const fromScale = options.fromScale ?? CONSTANTS.ANIM.FRACTIONS.sevenEighths;
 
         return element.animate(
             [
-                { transform: `scale(${fromScale})`, opacity: ANIM_FRACTIONS.sixEighths },
+                { transform: `scale(${fromScale})`, opacity: CONSTANTS.ANIM.FRACTIONS.sixEighths },
                 { transform: "scale(1)", opacity: 1 }
             ],
             { duration, easing }
@@ -474,9 +467,9 @@ const AnimationManager = {
     restoreWindow( element, options = {} ) {
         if ( !element ) return Promise.resolve();
 
-        const duration = options.duration ?? ANIM_DURATION_DEFAULT;
+        const duration = options.duration ?? CONSTANTS.ANIM.DURATION_DEFAULT;
         const easing = options.easing ?? this.easings.spring;
-        const fraction = options.fraction ?? ANIM_FRACTIONS.oneEighth;
+        const fraction = options.fraction ?? CONSTANTS.ANIM.FRACTIONS.oneEighth;
 
         element.style.display = "block";
         element.style.transform = `scale(${fraction})`;
@@ -501,8 +494,8 @@ const AnimationManager = {
     ripple( element, event, options = {} ) {
         if ( !element ) return;
 
-        const duration = options.duration ?? ANIM_DURATION_DEFAULT;
-        const color = options.color ?? `rgba(255, 255, 255, ${ANIM_FRACTIONS.twoEighths})`;
+        const duration = options.duration ?? CONSTANTS.ANIM.DURATION_DEFAULT;
+        const color = options.color ?? `rgba(255, 255, 255, ${CONSTANTS.ANIM.FRACTIONS.twoEighths})`;
 
         const ripple = document.createElement( "span" );
         ripple.className = "ripple-effect";
@@ -563,7 +556,7 @@ const AnimationManager = {
 
     parseEasing( easing, t ) {
         if ( easing.includes( "cubic-bezier" ) ) {
-            return t < ANIM_FRACTIONS.fourEighths ? 2 * t * t : -1 + ( 4 - 2 * t ) * t;
+            return t < CONSTANTS.ANIM.FRACTIONS.fourEighths ? 2 * t * t : -1 + ( 4 - 2 * t ) * t;
         }
         return t;
     },
@@ -580,9 +573,9 @@ const AnimationManager = {
 
     popup( element, options = {} ) {
         if ( !element ) return Promise.resolve();
-        const duration = options.duration ?? ANIM_DURATION_SHORT;
+        const duration = options.duration ?? CONSTANTS.ANIM.DURATION_SHORT;
         const easing = this.easings.easeOut;
-        const scale = ANIM_FRACTIONS.sevenEighths;
+        const scale = CONSTANTS.ANIM.FRACTIONS.sevenEighths;
 
         element.style.display = "flex";
         element.style.transform = `scale(${scale})`;
@@ -610,9 +603,9 @@ const AnimationManager = {
     openPanel( element, panelId, options = {} ) {
         if ( !element ) return Promise.resolve();
 
-        const fraction = options.fraction ?? ANIM_FRACTIONS.full;
-        const duration = options.duration ?? ANIM_SETTINGS.panelSlide.duration;
-        const easing = options.easing ?? ANIM_SETTINGS.panelSlide.easing;
+        const fraction = options.fraction ?? CONSTANTS.ANIM.FRACTIONS.full;
+        const duration = options.duration ?? CONSTANTS.ANIM_SETTINGS.panelSlide.duration;
+        const easing = options.easing ?? CONSTANTS.ANIM_SETTINGS.panelSlide.easing;
 
         return this.slideInFromTaskbar( element, panelId, {
             duration,
@@ -626,9 +619,9 @@ const AnimationManager = {
     closePanel( element, panelId, options = {} ) {
         if ( !element ) return Promise.resolve();
 
-        const fraction = options.fraction ?? ANIM_FRACTIONS.full;
-        const duration = options.duration ?? ANIM_SETTINGS.panelSlide.duration;
-        const easing = options.easing ?? ANIM_SETTINGS.panelSlide.easing;
+        const fraction = options.fraction ?? CONSTANTS.ANIM.FRACTIONS.full;
+        const duration = options.duration ?? CONSTANTS.ANIM_SETTINGS.panelSlide.duration;
+        const easing = options.easing ?? CONSTANTS.ANIM_SETTINGS.panelSlide.easing;
 
         return this.slideOutToTaskbar( element, panelId, {
             duration,

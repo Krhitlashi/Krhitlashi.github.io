@@ -1,14 +1,14 @@
-// ≺⧼ Constants ⧽≻
+// ≺⧼ WindowManager ⧽≻
 
 class WindowManager {
-    static zIndex = WM_BASE_Z_INDEX;
+    static zIndex = CONSTANTS.WM.BASE_Z_INDEX;
 
     // ⟪ App URL Map ⟫ - Built from APPS_DATA ( path → path )
 
     static get APP_URLS() {
-        if ( typeof APPS_DATA !== "undefined" ) {
+        if ( typeof CONSTANTS.APPS_DATA !== "undefined" ) {
             const map = {};
-            APPS_DATA.forEach( app => {
+            CONSTANTS.APPS_DATA.forEach( app => {
                 map[ app.path ] = app.path;
             } );
             return map;
@@ -20,8 +20,8 @@ class WindowManager {
 
     static _randomWindowPosition( baseY ) {
         return {
-            x: ( Math.floor( Math.random() * WM_WINDOW_RANDOM_RANGE ) * WM_WINDOW_RANDOM_STEP ) + WM_WINDOW_BASE_X,
-            y: ( Math.floor( Math.random() * WM_WINDOW_RANDOM_RANGE ) * WM_WINDOW_RANDOM_STEP ) + baseY
+            x: ( Math.floor( Math.random() * CONSTANTS.WM.WINDOW_RANDOM_RANGE ) * CONSTANTS.WM.WINDOW_RANDOM_STEP ) + CONSTANTS.WM.WINDOW_BASE_X,
+            y: ( Math.floor( Math.random() * CONSTANTS.WM.WINDOW_RANDOM_RANGE ) * CONSTANTS.WM.WINDOW_RANDOM_STEP ) + baseY
         };
     }
 
@@ -158,12 +158,12 @@ class WindowManager {
             this.renderRecents();
             return;
         }
-        
+
         const id = "win-" + Date.now();
         const win = this._createWindowElement( id, title );
-        const app = ( typeof APPS_DATA !== "undefined" ) ? APPS_DATA.find( a => a.path === path ) : null;
+        const app = ( typeof CONSTANTS.APPS_DATA !== "undefined" ) ? CONSTANTS.APPS_DATA.find( a => a.path === path ) : null;
         win.dataset.emoji = app?.emoji || "🖥️";
-        const { x, y } = this._randomWindowPosition( WM_WINDOW_BASE_Y_LOAD );
+        const { x, y } = this._randomWindowPosition( CONSTANTS.WM.WINDOW_BASE_Y_LOAD );
         win.style.left = x + "px";
         win.style.top = y + "px";
         win.style.zIndex = ++this.zIndex;
@@ -182,8 +182,8 @@ class WindowManager {
         this._injectStylesIntoIframe( iframeId );
 
         // Animate window opening with fractions
-        AnimationManager.windowOpen( win, { ...ANIM_SETTINGS.windowOpen } );
-        
+        AnimationManager.windowOpen( win, { ...CONSTANTS.ANIM_SETTINGS.windowOpen } );
+
         // Refresh recents to show new window
         this.renderRecents();
     }
@@ -195,9 +195,9 @@ class WindowManager {
         const title = path.split( "/" ).pop().replace( ".html", "" );
         const container = getWindowContainer();
         const win = this._createWindowElement( id, title );
-        const app = ( typeof APPS_DATA !== "undefined" ) ? APPS_DATA.find( a => a.path === path ) : null;
+        const app = ( typeof CONSTANTS.APPS_DATA !== "undefined" ) ? CONSTANTS.APPS_DATA.find( a => a.path === path ) : null;
         win.dataset.emoji = app?.emoji || "🖥️";
-        const { x, y } = this._randomWindowPosition( WM_WINDOW_BASE_Y_CREATE );
+        const { x, y } = this._randomWindowPosition( CONSTANTS.WM.WINDOW_BASE_Y_CREATE );
         win.style.left = x + "px";
         win.style.top = y + "px";
         win.style.zIndex = ++this.zIndex;
@@ -220,7 +220,7 @@ class WindowManager {
         }
 
         // Animate window opening with fractions
-        AnimationManager.windowOpen( win, { ...ANIM_SETTINGS.windowOpen } );
+        AnimationManager.windowOpen( win, { ...CONSTANTS.ANIM_SETTINGS.windowOpen } );
     }
 
     // ⟪ Start Resize ⟫
@@ -319,7 +319,7 @@ class WindowManager {
             const title = getWindowTitle( win );
 
             // Animate window closing with fractions
-            AnimationManager.windowClose( win, { ...ANIM_SETTINGS.windowClose } ).then( () => {
+            AnimationManager.windowClose( win, { ...CONSTANTS.ANIM_SETTINGS.windowClose } ).then( () => {
                 this.setAppActive( title, false );
                 win.remove();
                 this.updateTaskbarApps();
@@ -422,8 +422,8 @@ class WindowManager {
             // Add minimized class immediately to trigger state change,
             // but animation manager will handle the visual part.
             AnimationManager.minimizeWindow( win, {
-                duration: ANIM_SETTINGS.windowMinimize.duration,
-                easing: ANIM_SETTINGS.windowMinimize.easing
+                duration: CONSTANTS.ANIM_SETTINGS.windowMinimize.duration,
+                easing: CONSTANTS.ANIM_SETTINGS.windowMinimize.easing
             } ).then( () => {
                 win.classList.add( "minimized" );
                 this.updateTaskbarApps();
@@ -457,7 +457,7 @@ class WindowManager {
         const strings = typeof getStrings === "function" ? getStrings() : {};
 
         if ( windows.length === 0 ) {
-            list.innerHTML = `<div style="padding: 24px; text-align: center; opacity: ${ANIM_FRACTIONS.fourEighths};">${strings.recents_no_apps || "No open apps"}</div>`;
+            list.innerHTML = `<div style="padding: 24px; text-align: center; opacity: ${CONSTANTS.ANIM.FRACTIONS.fourEighths};">${strings.recents_no_apps || "No open apps"}</div>`;
             return;
         }
 
@@ -534,7 +534,7 @@ class WindowManager {
 
         const taskbar = getTaskbar();
         if ( taskbar ) {
-            taskbar.dataset.large = ( parseInt( val ) >= WM_TASKBAR_LARGE_THRESHOLD ) ? "true" : "false";
+            taskbar.dataset.large = ( parseInt( val ) >= CONSTANTS.WM.TASKBAR_LARGE_THRESHOLD ) ? "true" : "false";
         }
         this.updateTaskbarApps();
         if ( typeof updateHomeBarAppearance === "function" ) {
@@ -697,7 +697,7 @@ class WindowManager {
                 document.querySelectorAll( "#desktop .app-tile" ).forEach( tile =>
                     window.DesktopIconManager.desktop.applyPosition( tile, parseInt( tile.dataset.col ), parseInt( tile.dataset.row ) )
                 );
-            }, WM_TASKBAR_REPOSITION_DELAY );
+            }, CONSTANTS.WM.TASKBAR_REPOSITION_DELAY );
         }
 
         if ( typeof updateHomeBarAppearance === "function" ) {
@@ -739,7 +739,7 @@ class WindowManager {
         };
 
         if ( isMobile ) {
-            // Mobile: auto-detect orientation and set position
+            // Mobile auto-detect orientation and set position
             const isPortrait = window.innerHeight > window.innerWidth;
             const savedPos = localStorage.getItem( "os-taskbar-position" );
             

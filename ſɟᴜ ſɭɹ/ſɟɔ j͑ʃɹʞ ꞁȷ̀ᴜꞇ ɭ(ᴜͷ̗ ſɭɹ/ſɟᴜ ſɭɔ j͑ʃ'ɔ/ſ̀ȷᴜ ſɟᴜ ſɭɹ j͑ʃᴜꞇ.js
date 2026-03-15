@@ -1,12 +1,12 @@
-// ≺⧼ Constants ⧽≻
+// ≺⧼ IconGrid Class ⧽≻
 
 let APPS = [];
 
 // ⟪ Mobile Grid Dimensions ⟫
 const MOBILE_GRID_ROWS = 0o6;  // 6 rows
 const MOBILE_GRID_COLS = 0o4;  // 4 columns
-const DESKTOP_GRID_ROWS = 0o10;
-const DESKTOP_GRID_COLS = 0o20;
+const DESKTOP_GRID_ROWS = CONSTANTS.DIM.DEFAULT_ROWS;  // 0o10 = 8 rows
+const DESKTOP_GRID_COLS = CONSTANTS.DIM.DEFAULT_COLS;  // 0o20 = 16 columns
 
 // ⟪ Icon Grid ⟫
 
@@ -108,8 +108,10 @@ class IconGrid {
     }
 
     init() {
-        // Don't modify container styles - let CSS handle positioning
-        // Container should use CSS rules from ֭ſɭᴜ ı],ɔ.css
+        // Clear container to remove any existing tiles
+        if ( this.container ) {
+            this.container.innerHTML = "";
+        }
     }
 
     updateAdaptiveOrientation(el) {
@@ -184,22 +186,10 @@ class IconGrid {
         cepufalEl.className = "cepufal";
         cepufalEl.style.padding = "0";
 
-        // Create title bar (ksaka - like recents-card)
-        const labelContainer = document.createElement("ksaka");
-        labelContainer.className = "title-bar";
-        const textSpan = document.createElement("p");
-        textSpan.className = "title-bar-title";
-        textSpan.innerText = appData.name;
-        labelContainer.appendChild(textSpan);
-        
-        // Hide pill if mode is hidden (off) or inside
-        const isPillVisible = this.labelMode !== "hidden" && this.labelMode !== "inside" && this.labelMode !== "off";
-        if ( isPillVisible ) {
-            cepufalEl.appendChild(labelContainer);
-        }
-
         // Create button area
         const buttonEl = document.createElement("button");
+        buttonEl.style.blockSize = "100%";
+        buttonEl.style.inlineSize = "100%";
         buttonEl.onclick = ( e ) => {
             e.stopPropagation();
             if ( !this.editMode && !el.classList.contains("resizing" ) && !isDragging) {
@@ -216,11 +206,6 @@ class IconGrid {
             }
         };
 
-        const iconSpan = document.createElement("span");
-        iconSpan.className = "icon";
-        iconSpan.innerText = appData.icon;
-        buttonEl.appendChild(iconSpan);
-
         // Add label based on mode
         if ( this.labelMode === "inside" ) {
             // Internal mode: label inside button area
@@ -228,7 +213,21 @@ class IconGrid {
             labelSpan.className = "label inside";
             labelSpan.innerText = appData.name;
             buttonEl.appendChild(labelSpan);
+        } else if ( this.labelMode !== "hidden" && this.labelMode !== "off" ) {
+            // External mode: create title bar (ksaka - like recents-card)
+            const labelContainer = document.createElement("ksaka");
+            labelContainer.className = "title-bar";
+            const textSpan = document.createElement("p");
+            textSpan.className = "title-bar-title";
+            textSpan.innerText = appData.name;
+            labelContainer.appendChild(textSpan);
+            cepufalEl.appendChild(labelContainer);
         }
+
+        const iconSpan = document.createElement("span");
+        iconSpan.className = "icon";
+        iconSpan.innerText = appData.icon;
+        buttonEl.appendChild(iconSpan);
 
         cepufalEl.appendChild(buttonEl);
         el.appendChild(cepufalEl);

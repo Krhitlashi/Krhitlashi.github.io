@@ -22,110 +22,111 @@
         </div>
     </div>
 
-    <div class="soza scace" id="toolbarContainer">
-        <thala class="n2tase" id="toolsPanel">
-            <p class="ksakap2sa"><span data-oskakefani="ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ"></span> 🔧</p>
-            <button data-tool="select">
-                <span data-oskakefani="ſɭᴜƽ"></span> 🖱️
-            </button>
-            <button data-tool="pen">
-                <span data-oskakefani="ſɭɹ ſᶘᴜ"></span> ✏️
-            </button>
-            <button data-tool="smooth">
-                <span data-oskakefani="j͑ʃ'ᴜ ı],ᴜ ֭ſɭᴜ"></span> 〰️
-            </button>
-            <button data-tool="connect">
-                <span data-oskakefani="ſɟɹƽ"></span> 🔗
-            </button>
-            <button data-tool="eraser">
-                <span data-oskakefani="ſɟᴜ ֭ſɭɹͷ̗"></span> 🧹
-                <input type="checkbox" class="ca12nasabosu" id="eraserModeCheckbox">
-            </button>
-            <button data-tool="text" id="textToolBtn">
-                <span data-oskakefani="ſɭɘэ"></span> 📝
-                <input type="checkbox" class="ca12nasabosu" id="htmlTextCheckbox" checked>
-            </button>
-        </thala>
-        
-        <thala class="n2tase" id="colorsPanel">
-            <p class="ksakap2sa"><span data-oskakefani="ᶅſɔ ֭ſɭɹ"></span> 🎨</p>
-            <div class="qox2n2kucaxema" id="colorGrid"></div>
-            <div class="custom-color">
-                <input type="color" id="customColor" value="#000000">
-                <input type="text" id="hexColor" placeholder="#000000" maxlength="7">
-            </div>
-        </thala>
-        
-        <thala class="n2tase" id="sizePanel">
-            <p class="ksakap2sa"><span data-oskakefani="ſɟᴜ ſɭɹʞ j͑ʃп́ɔ ſןᴜ j͐ʃэ"></span> 📏</p>
-            <input type="range" class="k6tani" id="brushSize" min="1" max="64" value="4">
-            <p><span id="brushSizeValue">4</span>px</p>
-        </thala>
-        
-        <thala class="n2tase" id="shapesPanel">
-            <p class="ksakap2sa"><span data-oskakefani="}ʃᴜ ſɭɜ ı],ᴜ"></span> ◆</p>
-            <div class="qox2n2kucaxema" id="shapeGrid">
-                <button data-shape="line">╱</button>
-                <button data-shape="circle">○</button>
-                <button data-shape="triangle">△</button>
-                <button data-shape="square">▢</button>
-            </div>
-        </thala>
-        
-        <thala class="n2tase" id="actionsPanel">
-            <p class="ksakap2sa"><span data-oskakefani="ſɭ,ɔ }ʃꞇ"></span> 📋</p>
-            <button id="undoBtn">
-                <span data-oskakefani="}ʃɔ ſɭᴜ j͐ʃᴜ"></span> ↩️
-            </button>
-            <button id="redoBtn">
-                <span data-oskakefani="}ʃɔ }ʃɔ ſɭᴜ j͐ʃᴜ"></span> ↪️
-            </button>
-            <button id="clearBtn">
-                <span data-oskakefani="j͑ʃ'ᴜ ᶅſɔ"></span> 🗑️
-            </button>
-        </thala>
-        
-        <thala class="n2tase" id="layersPanel">
-            <p class="ksakap2sa"><span data-oskakefani="ɭʃᴜ }ʃɔƽ"></span> 📚</p>
-            <ciihii>
-                <button id="addLayerBtn">➕</button>
-                <button id="deleteLayerBtn">➖</button>
-                <button id="moveLayerUpBtn">⬆️</button>
-                <button id="moveLayerDownBtn">⬇️</button>
-            </ciihii>
-            <maxema id="layerList"></maxema>
-        </thala>
+    <div class="toolbar-wrapper scace">
+        <div id="toolbarContainer">
+            <thala class="n2tase" id="toolsPanel">
+                <p class="ksakap2sa"><span data-oskakefani="ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ"></span> 🔧</p>
+                <button data-tool="select">
+                    <span data-oskakefani="ſɭᴜƽ"></span> 🖱️
+                </button>
+                <button data-tool="pen">
+                    <span data-oskakefani="ſɭɹ ſᶘᴜ"></span> ✏️
+                </button>
+                <button data-tool="smooth">
+                    <span data-oskakefani="j͑ʃ'ᴜ ı],ᴜ ֭ſɭᴜ"></span> 〰️
+                </button>
+                <button data-tool="connect">
+                    <span data-oskakefani="ſɟɹƽ"></span> 🔗
+                </button>
+                <button data-tool="eraser">
+                    <span data-oskakefani="ſɟᴜ ֭ſɭɹͷ̗"></span> 🧹
+                    <input type="checkbox" class="ca12nasabosu" id="eraserModeCheckbox">
+                </button>
+                <button data-tool="text" id="textToolBtn">
+                    <span data-oskakefani="ſɭɘэ"></span> 📝
+                    <input type="checkbox" class="ca12nasabosu" id="htmlTextCheckbox" checked>
+                </button>
+            </thala>
+            
+            <thala class="n2tase" id="colorsPanel">
+                <p class="ksakap2sa"><span data-oskakefani="ᶅſɔ ֭ſɭɹ"></span> 🎨</p>
+                <div class="qox2n2kucaxema" id="colorGrid"></div>
+                <div class="custom-color">
+                    <input type="color" id="customColor" value="#000000">
+                    <input type="text" id="hexColor" placeholder="#000000" maxlength="7">
+                </div>
+            </thala>
+            
+            <thala class="n2tase" id="sizePanel">
+                <p class="ksakap2sa"><span data-oskakefani="ſɟᴜ ſɭɹʞ j͑ʃп́ɔ ſןᴜ j͐ʃэ"></span> 📏</p>
+                <input type="range" class="k6tani" id="brushSize" min="1" max="64" value="4">
+                <p><span id="brushSizeValue">4</span>px</p>
+            </thala>
+            
+            <thala class="n2tase" id="shapesPanel">
+                <p class="ksakap2sa"><span data-oskakefani="}ʃᴜ ſɭɜ ı],ᴜ"></span> ◆</p>
+                <div class="qox2n2kucaxema" id="shapeGrid">
+                    <button data-shape="line">╱</button>
+                    <button data-shape="circle">○</button>
+                    <button data-shape="triangle">△</button>
+                    <button data-shape="square">▢</button>
+                </div>
+            </thala>
+            
+            <thala class="n2tase" id="actionsPanel">
+                <p class="ksakap2sa"><span data-oskakefani="ſɭ,ɔ }ʃꞇ"></span> 📋</p>
+                <button id="undoBtn">
+                    <span data-oskakefani="}ʃɔ ſɭᴜ j͐ʃᴜ"></span> ↩️
+                </button>
+                <button id="redoBtn">
+                    <span data-oskakefani="}ʃɔ }ʃɔ ſɭᴜ j͐ʃᴜ"></span> ↪️
+                </button>
+                <button id="clearBtn">
+                    <span data-oskakefani="j͑ʃ'ᴜ ᶅſɔ"></span> 🗑️
+                </button>
+            </thala>
+            
+            <thala class="n2tase" id="layersPanel">
+                <p class="ksakap2sa"><span data-oskakefani="ɭʃᴜ }ʃɔƽ"></span> 📚</p>
+                <ciihii>
+                    <button id="addLayerBtn">➕</button>
+                    <button id="deleteLayerBtn">➖</button>
+                    <button id="moveLayerUpBtn">⬆️</button>
+                    <button id="moveLayerDownBtn">⬇️</button>
+                </ciihii>
+                <maxema id="layerList"></maxema>
+            </thala>
 
-        <thala class="n2tase" id="filePanel">
-            <p class="ksakap2sa"><span data-oskakefani="ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ"></span> 💾</p>
-            <button id="saveBtn">
-                <span data-oskakefani="j͑ʃ'ɔ ſ̀ȷᴜȝ"></span> 💾
-            </button>
-            <button id="loadBtn">
-                <span data-oskakefani="j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ"></span> 📂
-            </button>
-            <input type="file" id="fileInput" accept=".png,.jpg,.jpeg">
-        </thala>
-        
-        <thala class="n2tase" id="navPanel">
-            <p class="ksakap2sa"><span data-oskakefani="j͑ʃɹ ſɟɔ j͐ʃɹʞ"></span> 🔗</p>
-            <a href="../../index.html">
-                <span data-oskakefani="ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ"></span> 🏠
-            </a>
-            <a href="../../ſ͔ɭᴜ ᶅſɔ.html">
-                <span data-oskakefani="ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ"></span> 📖
-            </a>
-            <a href="../../ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ.html">
-                <span data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ"></span> 📁
-            </a>
-            <a href="../../ꞁȷ̀ꞇ }ʃᴜƽ.html">
-                <span data-oskakefani="ꞁȷ̀ꞇ }ʃᴜƽ"></span> ⚙️
-            </a>
-        </thala>
+            <thala class="n2tase" id="filePanel">
+                <p class="ksakap2sa"><span data-oskakefani="ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ"></span> 💾</p>
+                <button id="saveBtn">
+                    <span data-oskakefani="j͑ʃ'ɔ ſ̀ȷᴜȝ"></span> 💾
+                </button>
+                <button id="loadBtn">
+                    <span data-oskakefani="j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ"></span> 📂
+                </button>
+                <input type="file" id="fileInput" accept=".png,.jpg,.jpeg">
+            </thala>
+            
+            <thala class="n2tase" id="navPanel">
+                <p class="ksakap2sa"><span data-oskakefani="j͑ʃɹ ſɟɔ j͐ʃɹʞ"></span> 🔗</p>
+                <a href="../../index.html">
+                    <span data-oskakefani="ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ"></span> 🏠
+                </a>
+                <a href="../../ſ͔ɭᴜ ᶅſɔ.html">
+                    <span data-oskakefani="ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ"></span> 📖
+                </a>
+                <a href="../../ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ.html">
+                    <span data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ"></span> 📁
+                </a>
+                <a href="../../ꞁȷ̀ꞇ }ʃᴜƽ.html">
+                    <span data-oskakefani="ꞁȷ̀ꞇ }ʃᴜƽ"></span> ⚙️
+                </a>
+            </thala>
+        </div>
+        <button class="n2tase toolbar-toggle" id="toolbarToggle"></button>
     </div>
 
-    <button class="n2tase toolbar-toggle" id="toolbarToggle"></button>
-    
     <thala class="cakaxa n2tase quick-actions">
         <button id="quickUndo">↩️</button>
         <button id="quickRedo">↪️</button>

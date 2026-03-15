@@ -1,5 +1,81 @@
 // ≺⧼ Whiteboard Application - Main ⧽≻
 
+// ⟪ Layer Manager Class 📋 ⟫
+
+class LayerManager {
+    constructor() {
+        this.layers = [];
+        this.activeId = 0;
+        this.counter = 0;
+    }
+
+    create(name) {
+        this.counter++;
+        const layer = {
+            id: this.counter,
+            name: name || `ꞙɭ${this.counter} ɭ(ꞇ ɭʃᴜ }ʃɔƽ`,
+            visible: true,
+            objects: []
+        };
+        this.layers.push(layer);
+        this.activeId = this.counter;
+        return layer;
+    }
+
+    delete(layerId) {
+        if (this.layers.length <= 1) return false;
+        const index = this.layers.findIndex(l => l.id === layerId);
+        if (index === -1) return false;
+        
+        objectState.objects = objectState.objects.filter(o => o.layerId !== layerId);
+        this.layers.splice(index, 1);
+        
+        if (this.activeId === layerId) {
+            this.activeId = this.layers[0].id;
+        }
+        return true;
+    }
+
+    move(layerId, direction) {
+        const index = this.layers.findIndex(l => l.id === layerId);
+        const swapIndex = index + direction;
+        if (swapIndex < 0 || swapIndex >= this.layers.length) return false;
+        
+        [this.layers[index], this.layers[swapIndex]] = 
+        [this.layers[swapIndex], this.layers[index]];
+        return true;
+    }
+
+    toggleVisibility(layerId) {
+        const layer = this.layers.find(l => l.id === layerId);
+        if (layer) {
+            layer.visible = !layer.visible;
+            return true;
+        }
+        return false;
+    }
+
+    setActive(layerId) {
+        this.activeId = layerId;
+    }
+
+    getActive() {
+        return this.layers.find(l => l.id === this.activeId);
+    }
+
+    isVisible(layerId) {
+        return this.layers.find(l => l.id === layerId)?.visible ?? false;
+    }
+
+    syncToLayerState() {
+        layerState.layers = this.layers;
+        layerState.activeId = this.activeId;
+        layerState.counter = this.counter;
+    }
+}
+
+const layerManager = new LayerManager();
+
 // ⟪ Initialization 🚀 ⟫
 
 function init() {
@@ -13,7 +89,6 @@ function init() {
     initCanvasEvents();
     initActions();
     initLayerControls();
-    initTransformControls();
     initZoom();
     initFileOperations();
     saveState();
@@ -30,40 +105,25 @@ function initCanvas() {
 }
 
 function initLayers() {
-    layers = [{
-        id: 0,
-        name: "ꞙɭı ɭ(ꞇ ɭʃᴜ }ʃɔƽ",
-        visible: true,
-        objects: []
-    }];
-    activeLayerId = 0;
-    layerCounter = 1;
+    layerManager.layers = [];
+    layerManager.counter = 0;
+    layerManager.create("ꞙɭı ɭ(ꞇ ɭʃᴜ }ʃɔƽ");
+    layerManager.syncToLayerState();
     renderLayerList();
 }
 
 // ⟪ Layer Management 📚 ⟫
 
 function addLayer() {
-    layerCounter++;
-    layers.push({
-        id: layerCounter,
-        name: `ꞙɭ${layerCounter} ɭ(ꞇ ɭʃᴜ }ʃɔƽ`,
-        visible: true,
-        objects: []
-    });
-    activeLayerId = layerCounter;
+    layerManager.create();
+    layerManager.syncToLayerState();
     renderLayerList();
     saveState();
 }
 
 function deleteLayer() {
-    if (layers.length <= 1) return;
-
-    const layerIndex = layers.findIndex(l => l.id === activeLayerId);
-    if (layerIndex > -1) {
-        objects = objects.filter(obj => obj.layerId !== activeLayerId);
-        layers.splice(layerIndex, 1);
-        activeLayerId = layers[0].id;
+    if (layerManager.delete(layerState.activeId)) {
+        layerManager.syncToLayerState();
         renderLayerList();
         redrawCanvas();
         saveState();
@@ -71,22 +131,18 @@ function deleteLayer() {
 }
 
 function moveLayer(direction) {
-    const layerIndex = layers.findIndex(l => l.id === activeLayerId);
-    const swapIndex = layerIndex + direction;
-    if (swapIndex < 0 || swapIndex >= layers.length) return;
-
-    [layers[layerIndex], layers[swapIndex]] = [layers[swapIndex], layers[layerIndex]];
-    renderLayerList();
-    saveState();
+    if (layerManager.move(layerState.activeId, direction)) {
+        layerManager.syncToLayerState();
+        renderLayerList();
+        saveState();
+    }
 }
 
 function moveLayerUp() { moveLayer(1); }
 function moveLayerDown() { moveLayer(-1); }
 
 function toggleLayerVisibility(layerId) {
-    const layer = layers.find(l => l.id === layerId);
-    if (layer) {
-        layer.visible = !layer.visible;
+    if (layerManager.toggleVisibility(layerId)) {
         renderLayerList();
         redrawCanvas();
         saveState();
@@ -94,7 +150,8 @@ function toggleLayerVisibility(layerId) {
 }
 
 function selectLayer(layerId) {
-    activeLayerId = layerId;
+    layerManager.setActive(layerId);
+    layerManager.syncToLayerState();
     renderLayerList();
 }
 
@@ -104,9 +161,9 @@ function renderLayerList() {
 
     layerList.innerHTML = "";
 
-    layers.slice().reverse().forEach(layer => {
+    layerState.layers.slice().reverse().forEach(layer => {
         const layerItem = document.createElement("button");
-        layerItem.setAttribute("aria-pressed", layer.id === activeLayerId ? "true" : "false");
+        layerItem.setAttribute("aria-pressed", layer.id === layerState.activeId ? "true" : "false");
         layerItem.innerHTML = `
             <span>${layer.name}</span>
             <span class="layer-visibility" data-visible="${layer.visible}"></span>
@@ -125,9 +182,9 @@ function renderLayerList() {
 // ⟪ Text Editing 📝 ⟫
 
 function removeEmptyTextObject(index) {
-    if (index >= 0 && objects[index]) {
-        objects.splice(index, 1);
-        selectedObjects = [];
+    if (index >= 0 && objectState.objects[index]) {
+        objectState.objects.splice(index, 1);
+        objectState.selected = [];
         updateTransformControls();
         redrawCanvas();
         saveState();
@@ -135,11 +192,11 @@ function removeEmptyTextObject(index) {
 }
 
 function initTextEditInput() {
-    textEditInput = document.createElement("textarea");
-    textEditInput.className = "text-edit-input";
+    textState.input = document.createElement("textarea");
+    textState.input.className = "text-edit-input";
 
-    textEditInput.addEventListener("blur", finishTextEditing);
-    textEditInput.addEventListener("keydown", (e) => {
+    textState.input.addEventListener("blur", finishTextEditing);
+    textState.input.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
             e.preventDefault();
             cancelTextEditing();
@@ -148,10 +205,10 @@ function initTextEditInput() {
             finishTextEditing();
         }
     });
-    textEditInput.addEventListener("input", () => {
-        if (editingTextObjectIndex >= 0 && objects[editingTextObjectIndex]) {
-            const obj = objects[editingTextObjectIndex];
-            obj.text = textEditInput.value;
+    textState.input.addEventListener("input", () => {
+        if (textState.editingIndex >= 0 && objectState.objects[textState.editingIndex]) {
+            const obj = objectState.objects[textState.editingIndex];
+            obj.text = textState.input.value;
             obj.textDirty = true;
             obj.cachedCanvas = null;
             obj.cachedWidth = null;
@@ -160,41 +217,41 @@ function initTextEditInput() {
         }
     });
 
-    document.getElementById("whiteboardContainer").appendChild(textEditInput);
+    document.getElementById("whiteboardContainer").appendChild(textState.input);
 }
 
 function startTextEditing(x, y, existingText = null) {
     startTextEdit();
-    isEditingText = true;
-    positionTextEditInput(x, y, currentSize * TEXT_SIZE_MULTIPLIER, currentColor);
-    textEditInput.value = existingText || "";
-    textEditInput.classList.add("visible");
-    textEditInput.focus();
+    textState.isEditing = true;
+    positionTextEditInput(x, y, state.size * TEXT_SIZE_MULTIPLIER, state.color);
+    textState.input.value = existingText || "";
+    textState.input.classList.add("visible");
+    textState.input.focus();
 
     const autoResize = () => {
-        textEditInput.style.height = "auto";
-        textEditInput.style.height = textEditInput.scrollHeight + "px";
+        textState.input.style.height = "auto";
+        textState.input.style.height = textState.input.scrollHeight + "px";
     };
     autoResize();
-    textEditInput.addEventListener("input", autoResize, { once: true });
+    textState.input.addEventListener("input", autoResize, { once: true });
 }
 
 function finishTextEditing() {
-    if (!isEditingText || !textEditInput) return;
+    if (!textState.isEditing || !textState.input) return;
 
-    const text = textEditInput.value;
+    const text = textState.input.value;
 
-    if (editingTextObjectIndex >= 0 && objects[editingTextObjectIndex]) {
-        const obj = objects[editingTextObjectIndex];
+    if (textState.editingIndex >= 0 && objectState.objects[textState.editingIndex]) {
+        const obj = objectState.objects[textState.editingIndex];
 
         if (text.trim() === "") {
-            removeEmptyTextObject(editingTextObjectIndex);
+            removeEmptyTextObject(textState.editingIndex);
             finishTextEditCommon();
             return;
         }
 
         obj.text = text;
-        obj.color = currentColor;
+        obj.color = state.color;
         obj.textDirty = true;
         obj.cachedCanvas = null;
         obj.cachedWidth = null;
@@ -202,15 +259,15 @@ function finishTextEditing() {
         redrawCanvas();
     } else if (text.trim() !== "") {
         const { textX, textY } = getTextEditPosition();
-        objects.push({
+        objectState.objects.push({
             type: "text",
             x: textX, y: textY,
             text: text,
-            color: currentColor,
-            size: currentSize * TEXT_SIZE_MULTIPLIER,
+            color: state.color,
+            size: state.size * TEXT_SIZE_MULTIPLIER,
             rotation: 0,
-            layerId: activeLayerId,
-            useHtmlText: useHtmlText,
+            layerId: layerState.activeId,
+            useHtmlText: textState.useHtml,
             textDirty: true,
             cachedWidth: null,
             cachedHeight: null
@@ -223,10 +280,10 @@ function finishTextEditing() {
 }
 
 function cancelTextEditing() {
-    if (!isEditingText || !textEditInput) return;
+    if (!textState.isEditing || !textState.input) return;
 
-    if (editingTextObjectIndex >= 0 && objects[editingTextObjectIndex]?.text.trim() === "") {
-        removeEmptyTextObject(editingTextObjectIndex);
+    if (textState.editingIndex >= 0 && objectState.objects[textState.editingIndex]?.text.trim() === "") {
+        removeEmptyTextObject(textState.editingIndex);
     } else {
         finishTextEditCommon();
     }
@@ -234,13 +291,13 @@ function cancelTextEditing() {
 
 function editTextObject(obj) {
     startTextEdit();
-    isEditingText = true;
-    editingTextObjectIndex = objects.indexOf(obj);
+    textState.isEditing = true;
+    textState.editingIndex = objectState.objects.indexOf(obj);
     positionTextEditInput(obj.x, obj.y, obj.size, obj.color);
-    textEditInput.value = obj.text;
-    textEditInput.classList.add("visible");
-    textEditInput.focus();
-    textEditInput.select();
+    textState.input.value = obj.text;
+    textState.input.classList.add("visible");
+    textState.input.focus();
+    textState.input.select();
 }
 
 // ⟪ UI Initialization 🎨 ⟫
@@ -250,7 +307,7 @@ function initColors() {
     if (!colorGrid) return;
 
     initButtonGroup("#colorGrid button[data-color]", "#colorGrid button", (btn) => {
-        currentColor = btn.dataset.color;
+        state.color = btn.dataset.color;
     });
 
     initCustomColor();
@@ -265,7 +322,7 @@ function initCustomColor() {
     colorPicker.addEventListener("input", () => {
         const color = colorPicker.value;
         hexInput.value = color.toUpperCase();
-        currentColor = color;
+        state.color = color;
         setButtonPressed("#colorGrid button", null);
     });
 
@@ -273,7 +330,7 @@ function initCustomColor() {
         const value = normalizeHexColor(hexInput.value);
         if (isValidHexColor(value)) {
             colorPicker.value = value;
-            currentColor = value;
+            state.color = value;
             setButtonPressed("#colorGrid button", null);
         }
     });
@@ -288,30 +345,30 @@ function initCustomColor() {
 
 function initToolsAndShapes() {
     initButtonGroup("button[data-tool]", "button[data-tool]", (btn) => {
-        currentTool = btn.dataset.tool;
-        canvas.dataset.tool = currentTool;
+        state.tool = btn.dataset.tool;
+        canvas.dataset.tool = state.tool;
         updateTransformControls();
-        if (!isPanning && !isDrawing) setCursor(getToolCursor());
+        if (!panState.isPanning && !state.isDrawing) setCursor(getToolCursor());
     });
 
     initButtonGroup("button[data-shape]", "button[data-shape]", (btn) => {
-        currentShape = btn.dataset.shape;
-        currentTool = "shape";
+        state.shape = btn.dataset.shape;
+        state.tool = "shape";
         canvas.dataset.tool = "shape";
         updateTransformControls();
-        if (!isPanning && !isDrawing) setCursor(getToolCursor());
+        if (!panState.isPanning && !state.isDrawing) setCursor(getToolCursor());
     });
 
     const htmlTextCheckbox = document.getElementById("htmlTextCheckbox");
     if (htmlTextCheckbox) {
-        useHtmlText = htmlTextCheckbox.checked;
-        htmlTextCheckbox.addEventListener("change", () => { useHtmlText = htmlTextCheckbox.checked; });
+        textState.useHtml = htmlTextCheckbox.checked;
+        htmlTextCheckbox.addEventListener("change", () => { textState.useHtml = htmlTextCheckbox.checked; });
     }
 
     const eraserModeCheckbox = document.getElementById("eraserModeCheckbox");
     if (eraserModeCheckbox) {
-        eraserEraseObjects = eraserModeCheckbox.checked;
-        eraserModeCheckbox.addEventListener("change", () => { eraserEraseObjects = eraserModeCheckbox.checked; });
+        eraserState.eraseObjects = eraserModeCheckbox.checked;
+        eraserModeCheckbox.addEventListener("change", () => { eraserState.eraseObjects = eraserModeCheckbox.checked; });
     }
 }
 
@@ -320,8 +377,8 @@ function initSizeSlider() {
     const valueDisplay = document.getElementById("brushSizeValue");
 
     slider.addEventListener("input", () => {
-        currentSize = parseInt(slider.value);
-        valueDisplay.textContent = currentSize;
+        state.size = parseInt(slider.value);
+        valueDisplay.textContent = state.size;
     });
 }
 
@@ -335,19 +392,19 @@ function initToolbar() {
 // ⟪ History & Undo/Redo 📚 ⟫
 
 function saveState() {
-    history = history.slice(0, historyIndex + 1);
+    historyState.history = historyState.history.slice(0, historyState.index + 1);
 
-    const state = {
-        layers: JSON.parse(JSON.stringify(layers)),
-        objects: JSON.parse(JSON.stringify(objects))
+    const stateData = {
+        layers: JSON.parse(JSON.stringify(layerState.layers)),
+        objects: JSON.parse(JSON.stringify(objectState.objects))
     };
 
-    history.push(JSON.stringify(state));
-    historyIndex++;
+    historyState.history.push(JSON.stringify(stateData));
+    historyState.index++;
 
-    if (history.length > HISTORY_MAX) {
-        history.shift();
-        historyIndex--;
+    if (historyState.history.length > HISTORY_MAX) {
+        historyState.history.shift();
+        historyState.index--;
     }
 
     updateUndoRedoButtons();
@@ -357,13 +414,13 @@ function undo() { changeHistory(-1); }
 function redo() { changeHistory(1); }
 
 function changeHistory(direction) {
-    const newIndex = historyIndex + direction;
-    if (newIndex < 0 || newIndex >= history.length) return;
+    const newIndex = historyState.index + direction;
+    if (newIndex < 0 || newIndex >= historyState.history.length) return;
 
-    historyIndex = newIndex;
-    const state = JSON.parse(history[historyIndex]);
-    layers = state.layers;
-    objects = state.objects;
+    historyState.index = newIndex;
+    const stateData = JSON.parse(historyState.history[historyState.index]);
+    layerState.layers = stateData.layers;
+    objectState.objects = stateData.objects;
     renderLayerList();
     redrawCanvas();
     updateUndoRedoButtons();
@@ -371,8 +428,8 @@ function changeHistory(direction) {
 
 function updateUndoRedoButtons() {
     const btnStates = [
-        { ids: ["undoBtn", "quickUndo"], disabled: historyIndex <= 0 },
-        { ids: ["redoBtn", "quickRedo"], disabled: historyIndex >= history.length - 1 }
+        { ids: ["undoBtn", "quickUndo"], disabled: historyState.index <= 0 },
+        { ids: ["redoBtn", "quickRedo"], disabled: historyState.index >= historyState.history.length - 1 }
     ];
 
     btnStates.forEach(({ ids, disabled }) => {
@@ -387,7 +444,7 @@ function updateUndoRedoButtons() {
 
 function getCanvasCoords(e) {
     const rect = canvas.getBoundingClientRect();
-    const zoom = zoomNum / zoomDen;
+    const zoom = state.zoomNum / state.zoomDen;
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
     const coords = getClientCoords(e);
@@ -400,41 +457,41 @@ function getCanvasCoords(e) {
 
 function startDrawing(e) {
     e.preventDefault();
-    isDrawing = true;
+    state.isDrawing = true;
 
     const coords = getCanvasCoords(e);
-    startX = coords.x;
-    startY = coords.y;
-    lastX = coords.x;
-    lastY = coords.y;
+    state.startX = coords.x;
+    state.startY = coords.y;
+    state.lastX = coords.x;
+    state.lastY = coords.y;
 
-    switch (currentTool) {
+    switch (state.tool) {
         case "select":
             handleSelectToolClick(coords.x, coords.y, e);
             return;
         case "pen":
         case "eraser":
-            currentPath = [{ x: coords.x, y: coords.y }];
+            pathState.current = [{ x: coords.x, y: coords.y }];
             break;
         case "smooth":
-            smoothPath = [{ x: coords.x, y: coords.y }];
-            smoothX = coords.x;
-            smoothY = coords.y;
+            pathState.smooth = [{ x: coords.x, y: coords.y }];
+            pathState.smoothX = coords.x;
+            pathState.smoothY = coords.y;
             break;
         case "shape":
-            if (currentShape) previewShape = createShapeObject(currentShape, startX, startY, coords.x, coords.y);
+            if (state.shape) pathState.preview = createShapeObject(state.shape, state.startX, state.startY, coords.x, coords.y);
             break;
         case "text":
-            createTextBox(startX, startY);
-            isDrawing = false;
+            createTextBox(state.startX, state.startY);
+            state.isDrawing = false;
             break;
         case "connect":
             const clickedObject = findObjectAtPoint(coords.x, coords.y);
             if (clickedObject) {
                 if (!clickedObject.id) clickedObject.id = generateId();
-                connectStartObj = clickedObject;
+                connectionState.startObj = clickedObject;
             } else {
-                isDrawing = false;
+                state.isDrawing = false;
             }
             break;
     }
@@ -443,14 +500,14 @@ function startDrawing(e) {
 function createTextBox(x, y) {
     const textObj = {
         type: "text", x: x, y: y,
-        text: "", color: currentColor,
-        size: currentSize * TEXT_SIZE_MULTIPLIER,
-        rotation: 0, layerId: activeLayerId,
-        useHtmlText: useHtmlText,
+        text: "", color: state.color,
+        size: state.size * TEXT_SIZE_MULTIPLIER,
+        rotation: 0, layerId: layerState.activeId,
+        useHtmlText: textState.useHtml,
         textDirty: true, cachedWidth: null, cachedHeight: null
     };
-    objects.push(textObj);
-    selectedObjects = [textObj];
+    objectState.objects.push(textObj);
+    objectState.selected = [textObj];
     updateTransformControls();
     redrawCanvas();
     saveState();
@@ -461,44 +518,44 @@ function createTextBox(x, y) {
 function handleSelectToolClick(x, y, e) {
     const coords = { x, y };
 
-    if (selectedObjects.length > 0 && startRotation(coords.x, coords.y)) return;
+    if (objectState.selected.length > 0 && startRotation(coords.x, coords.y)) return;
 
     const clickedObject = findObjectAtPoint(coords.x, coords.y);
 
     if (clickedObject) {
-        const wasAlreadySelected = selectedObjects.includes(clickedObject);
+        const wasAlreadySelected = objectState.selected.includes(clickedObject);
 
         if (!e.shiftKey && !wasAlreadySelected) {
-            selectedObjects = [clickedObject];
+            objectState.selected = [clickedObject];
             updateTransformControls();
             redrawCanvas();
             if (startRotation(coords.x, coords.y)) return;
-            isDragging = true;
-            dragStartX = coords.x;
-            dragStartY = coords.y;
-            initialObjectStates = selectedObjects.map(getObjectInitialState);
+            objectState.isDragging = true;
+            objectState.dragStartX = coords.x;
+            objectState.dragStartY = coords.y;
+            objectState.initialObjectStates = objectState.selected.map(getObjectInitialState);
             return;
         }
         if (e.shiftKey) {
             if (wasAlreadySelected) {
-                selectedObjects = selectedObjects.filter(o => o !== clickedObject);
+                objectState.selected = objectState.selected.filter(o => o !== clickedObject);
                 updateTransformControls();
                 redrawCanvas();
                 return;
             }
-            selectedObjects.push(clickedObject);
+            objectState.selected.push(clickedObject);
         }
 
-        if (selectedObjects.length > 0 && startRotation(coords.x, coords.y)) return;
+        if (objectState.selected.length > 0 && startRotation(coords.x, coords.y)) return;
 
-        isDragging = true;
-        dragStartX = coords.x;
-        dragStartY = coords.y;
-        initialObjectStates = selectedObjects.map(getObjectInitialState);
+        objectState.isDragging = true;
+        objectState.dragStartX = coords.x;
+        objectState.dragStartY = coords.y;
+        objectState.initialObjectStates = objectState.selected.map(getObjectInitialState);
     } else {
-        if (!e.shiftKey) selectedObjects = [];
-        isSelecting = true;
-        selectionRect = { x: startX, y: startY, width: 0, height: 0 };
+        if (!e.shiftKey) objectState.selected = [];
+        objectState.isSelecting = true;
+        objectState.selectionRect = { x: state.startX, y: state.startY, width: 0, height: 0 };
     }
 
     updateTransformControls();
@@ -507,26 +564,26 @@ function handleSelectToolClick(x, y, e) {
 
 function startRotation(x, y) {
     if (findRotateHandle(x, y)) {
-        isRotating = true;
-        const obj = selectedObjects[0];
+        objectState.isRotating = true;
+        const obj = objectState.selected[0];
         const center = getCenter(obj);
         const dx = x - center.x, dy = y - center.y;
-        initialRotationAngle = Math.atan2(dy, dx);
-        initialObjectRotations = selectedObjects.map(o => o.rotation || 0);
+        objectState.initialRotationAngle = Math.atan2(dy, dx);
+        objectState.initialObjectRotations = objectState.selected.map(o => o.rotation || 0);
         redrawCanvas();
         return true;
     }
 
     const clickedHandle = findResizeHandle(x, y);
     if (clickedHandle) {
-        isResizing = true;
-        resizeHandle = clickedHandle;
-        const obj = selectedObjects[0];
-        initialBounds = getObjectBounds(obj);
-        initialCenterX = getCenterX(obj);
-        initialCenterY = getCenterY(obj);
-        initialRotation = obj.rotation || 0;
-        initialObjectStates = selectedObjects.map(getObjectInitialState);
+        objectState.isResizing = true;
+        objectState.resizeHandle = clickedHandle;
+        const obj = objectState.selected[0];
+        objectState.initialBounds = getObjectBounds(obj);
+        objectState.initialCenterX = getCenterX(obj);
+        objectState.initialCenterY = getCenterY(obj);
+        objectState.initialRotation = obj.rotation || 0;
+        objectState.initialObjectStates = objectState.selected.map(getObjectInitialState);
         redrawCanvas();
         return true;
     }
@@ -535,13 +592,13 @@ function startRotation(x, y) {
 }
 
 function rotateSelectedObjects(x, y) {
-    const obj = selectedObjects[0];
+    const obj = objectState.selected[0];
     const center = getCenter(obj);
     const dx = x - center.x, dy = y - center.y;
     const currentAngle = Math.atan2(dy, dx);
-    const angleDelta = currentAngle - initialRotationAngle;
-    selectedObjects.forEach((o, i) => {
-        o.rotation = (initialObjectRotations[i] || 0) + angleDelta;
+    const angleDelta = currentAngle - objectState.initialRotationAngle;
+    objectState.selected.forEach((o, i) => {
+        o.rotation = (objectState.initialObjectRotations[i] || 0) + angleDelta;
     });
     redrawCanvas();
 }
@@ -550,15 +607,15 @@ function draw(e) {
     e.preventDefault();
     const coords = getCanvasCoords(e);
 
-    document.getElementById("cursorPos").textContent = 
+    document.getElementById("cursorPos").textContent =
         `${Math.round(coords.x / 0o10) * 0o10}, ${Math.round(coords.y / 0o10) * 0o10}`;
 
-    if (currentTool === "select" && !isDrawing) {
+    if (state.tool === "select" && !state.isDrawing) {
         const hoveredObject = findObjectAtPoint(coords.x, coords.y);
         const hoveredHandle = findResizeHandle(coords.x, coords.y);
         const hoveredRotate = findRotateHandle(coords.x, coords.y);
         redrawCanvas();
-        if (hoveredObject && !selectedObjects.includes(hoveredObject)) drawHoverEffect(hoveredObject);
+        if (hoveredObject && !objectState.selected.includes(hoveredObject)) drawHoverEffect(hoveredObject);
         if (hoveredHandle) setCursor(getResizeCursor(hoveredHandle));
         else if (hoveredRotate) setCursor("pointer");
         else if (hoveredObject) setCursor("move");
@@ -566,140 +623,149 @@ function draw(e) {
         return;
     }
 
-    if (!isDrawing) return;
+    if (!state.isDrawing) return;
 
-    if (currentTool === "select") {
-        if (isResizing && resizeHandle && selectedObjects.length > 0) {
-            selectedObjects.forEach(obj => resizeObject(obj, coords.x, coords.y, resizeHandle));
+    if (state.tool === "select") {
+        if (objectState.isResizing && objectState.resizeHandle && objectState.selected.length > 0) {
+            objectState.selected.forEach(obj => resizeObject(obj, coords.x, coords.y, objectState.resizeHandle));
             redrawCanvas();
-        } else if (isRotating && selectedObjects.length > 0) {
+        } else if (objectState.isRotating && objectState.selected.length > 0) {
             rotateSelectedObjects(coords.x, coords.y);
-        } else if (isDragging && selectedObjects.length > 0) {
-            const dx = coords.x - dragStartX;
-            const dy = coords.y - dragStartY;
-            selectedObjects.forEach((obj, i) => moveObjectByDelta(obj, dx, dy, initialObjectStates[i] || {}));
+        } else if (objectState.isDragging && objectState.selected.length > 0) {
+            const dx = coords.x - objectState.dragStartX;
+            const dy = coords.y - objectState.dragStartY;
+            objectState.selected.forEach((obj, i) => moveObjectByDelta(obj, dx, dy, objectState.initialObjectStates[i] || {}));
             redrawCanvas();
-        } else if (isSelecting) {
-            selectionRect.width = coords.x - startX;
-            selectionRect.height = coords.y - startY;
+        } else if (objectState.isSelecting) {
+            objectState.selectionRect.width = coords.x - state.startX;
+            objectState.selectionRect.height = coords.y - state.startY;
             redrawCanvas();
             drawSelectionRect();
         }
         return;
     }
 
-    if (currentTool === "pen") {
-        currentPath.push({ x: coords.x, y: coords.y });
+    if (state.tool === "pen") {
+        pathState.current.push({ x: coords.x, y: coords.y });
         redrawCanvas();
-        drawPathPreview(currentPath, currentColor, currentSize);
-    } else if (currentTool === "smooth") {
-        smoothX += (coords.x - smoothX) * SMOOTHING_FACTOR;
-        smoothY += (coords.y - smoothY) * SMOOTHING_FACTOR;
-        smoothPath.push({ x: smoothX, y: smoothY });
+        drawPathPreview(pathState.current, state.color, state.size);
+    } else if (state.tool === "smooth") {
+        pathState.smoothX += (coords.x - pathState.smoothX) * SMOOTHING_FACTOR;
+        pathState.smoothY += (coords.y - pathState.smoothY) * SMOOTHING_FACTOR;
+        pathState.smooth.push({ x: pathState.smoothX, y: pathState.smoothY });
         redrawCanvas();
-        drawPathPreview(smoothPath, currentColor, currentSize);
-    } else if (currentTool === "eraser") {
-        currentPath.push({ x: coords.x, y: coords.y });
+        drawPathPreview(pathState.smooth, state.color, state.size);
+    } else if (state.tool === "eraser") {
+        pathState.current.push({ x: coords.x, y: coords.y });
         redrawCanvas();
-        eraseObjectsAlongPath(currentPath, currentSize * TEXT_SIZE_MULTIPLIER, eraserEraseObjects);
+        eraseObjectsAlongPath(pathState.current, state.size * TEXT_SIZE_MULTIPLIER, eraserState.eraseObjects);
         redrawCanvas();
-    } else if (currentTool === "connect" && connectStartObj) {
+    } else if (state.tool === "connect" && connectionState.startObj) {
         redrawCanvas();
         ctx.save();
-        ctx.strokeStyle = currentColor;
-        ctx.lineWidth = currentSize;
+        ctx.strokeStyle = state.color;
+        ctx.lineWidth = state.size;
         ctx.setLineDash(LINE_DASH_PATTERN);
         ctx.beginPath();
-        const startC = getCenter(connectStartObj);
+        const startC = getCenter(connectionState.startObj);
         ctx.moveTo(startC.x, startC.y);
         ctx.lineTo(coords.x, coords.y);
         ctx.stroke();
         ctx.restore();
     }
 
-    if (currentTool === "shape" && currentShape) {
-        previewShape = createShapeObject(currentShape, startX, startY, coords.x, coords.y);
+    if (state.tool === "shape" && state.shape) {
+        pathState.preview = createShapeObject(state.shape, state.startX, state.startY, coords.x, coords.y);
         redrawCanvas();
-        drawPreviewShape(previewShape);
+        drawPreviewShape(pathState.preview);
     }
 
-    lastX = coords.x;
-    lastY = coords.y;
+    state.lastX = coords.x;
+    state.lastY = coords.y;
 }
 
 function stopDrawing(e) {
-    if (!isDrawing) return;
+    if (!state.isDrawing) return;
 
     const coords = getCanvasCoords(e);
 
-    if (currentTool === "select") {
-        if (isSelecting && selectionRect) {
-            const rect = normalizeRect(selectionRect);
-            selectedObjects = objects.filter(obj => isObjectInRect(obj, rect));
+    if (state.tool === "select") {
+        if (objectState.isSelecting && objectState.selectionRect) {
+            const rect = normalizeRect(objectState.selectionRect);
+            objectState.selected = objectState.objects.filter(obj => isObjectInRect(obj, rect));
             updateTransformControls();
             redrawCanvas();
         }
         resetSelectionState();
         resetCursor();
-        if (selectedObjects.length > 0) saveState();
+        if (objectState.selected.length > 0) saveState();
         return;
     }
 
-    if (currentTool === "shape" && currentShape && previewShape) {
-        if (previewShape.width > 0o4 || previewShape.height > 0o4 ||
-            (previewShape.type === "line" && (Math.abs(previewShape.x2 - previewShape.x1) > 0o4 || 
-             Math.abs(previewShape.y2 - previewShape.y1) > 0o4))) {
-            objects.push(previewShape);
+    if (state.tool === "shape" && state.shape && pathState.preview) {
+        // Check minimum size based on shape type
+        let shouldAdd = false;
+        if (pathState.preview.type === "circle") {
+            shouldAdd = pathState.preview.radiusX > 0o2 || pathState.preview.radiusY > 0o2;
+        } else if (pathState.preview.type === "line") {
+            shouldAdd = Math.abs(pathState.preview.x2 - pathState.preview.x1) > 0o4 ||
+                       Math.abs(pathState.preview.y2 - pathState.preview.y1) > 0o4;
+        } else {
+            shouldAdd = pathState.preview.width > 0o4 || pathState.preview.height > 0o4;
         }
-        previewShape = null;
+        
+        if (shouldAdd) {
+            objectState.objects.push(pathState.preview);
+        }
+        pathState.preview = null;
     }
 
-    if (currentTool === "pen" && currentPath.length > 1) {
-        objects.push(createPathObject(currentPath, currentColor, currentSize));
-        currentPath = [];
+    if (state.tool === "pen" && pathState.current.length > 1) {
+        objectState.objects.push(createPathObject(pathState.current, state.color, state.size));
+        pathState.current = [];
     }
 
-    if (currentTool === "smooth" && smoothPath.length > 1) {
-        const smoothObj = createPathObject(smoothPath, currentColor, currentSize);
+    if (state.tool === "smooth" && pathState.smooth.length > 1) {
+        const smoothObj = createPathObject(pathState.smooth, state.color, state.size);
         smoothObj.type = "smoothPath";
-        objects.push(smoothObj);
-        smoothPath = [];
+        objectState.objects.push(smoothObj);
+        pathState.smooth = [];
     }
-    
-    if (currentTool === "connect" && connectStartObj) {
+
+    if (state.tool === "connect" && connectionState.startObj) {
         const targetObj = findObjectAtPoint(coords.x, coords.y);
-        if (targetObj && targetObj !== connectStartObj) {
+        if (targetObj && targetObj !== connectionState.startObj) {
             if (!targetObj.id) targetObj.id = generateId();
-            objects.push({
+            objectState.objects.push({
                 type: "connection",
                 id: generateId(),
-                startId: connectStartObj.id,
+                startId: connectionState.startObj.id,
                 endId: targetObj.id,
-                color: currentColor,
-                size: currentSize,
-                layerId: activeLayerId
+                color: state.color,
+                size: state.size,
+                layerId: layerState.activeId
             });
         }
-        connectStartObj = null;
+        connectionState.startObj = null;
     }
 
-    if (currentTool === "eraser" && currentPath.length > 1) {
-        currentPath = [];
+    if (state.tool === "eraser" && pathState.current.length > 1) {
+        pathState.current = [];
     }
 
-    isDrawing = false;
+    state.isDrawing = false;
     resetCursor();
 
-    if (currentTool !== "text") {
+    if (state.tool !== "text") {
         redrawCanvas();
         saveState();
     }
 }
 
 function drawSelectionRect() {
-    if (!selectionRect) return;
+    if (!objectState.selectionRect) return;
 
-    const rect = normalizeRect(selectionRect);
+    const rect = normalizeRect(objectState.selectionRect);
     const colors = getContrastingColors([
         { x: rect.x + 0o4, y: rect.y + 0o4 },
         { x: rect.x + rect.width - 0o4, y: rect.y + rect.height - 0o4 }
@@ -716,7 +782,7 @@ function drawSelectionRect() {
 
 function drawHoverEffect(obj) {
     const colors = getContrastingColors([{ x: getCenterX(obj), y: getCenterY(obj) }]);
-    
+
     ctx.save();
     applyObjectTransform(obj);
     ctx.strokeStyle = colors.stroke;
@@ -730,10 +796,10 @@ function drawHoverEffect(obj) {
 }
 
 function getSelectionBounds() {
-    if (selectedObjects.length === 0) return null;
+    if (objectState.selected.length === 0) return null;
 
-    if (selectedObjects.length === 1) {
-        const bounds = getObjectBounds(selectedObjects[0]);
+    if (objectState.selected.length === 1) {
+        const bounds = getObjectBounds(objectState.selected[0]);
         return {
             x: bounds.x - SELECTION_PADDING,
             y: bounds.y - SELECTION_PADDING,
@@ -743,7 +809,7 @@ function getSelectionBounds() {
     }
 
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-    selectedObjects.forEach(obj => {
+    objectState.selected.forEach(obj => {
         const bounds = getObjectBounds(obj);
         minX = Math.min(minX, bounds.x);
         minY = Math.min(minY, bounds.y);
@@ -764,30 +830,30 @@ function getSelectionBounds() {
 function updateTransformControls() {
     const controls = document.getElementById("transformControls");
     if (controls) {
-        const hasTextObject = selectedObjects.some(obj => obj.type === "text");
-        controls.classList.toggle("visible", selectedObjects.length > 0);
+        const hasTextObject = objectState.selected.some(obj => obj.type === "text");
+        controls.classList.toggle("visible", objectState.selected.length > 0);
         controls.classList.toggle("has-text", hasTextObject);
     }
 }
 
 function initTransformControls() {
     initButton("editSelected", () => {
-        if (selectedObjects.length === 0) return;
-        const obj = selectedObjects[0];
+        if (objectState.selected.length === 0) return;
+        const obj = objectState.selected[0];
         if (obj.type === "text") editTextObject(obj);
     });
 
     initButton("deleteSelected", () => {
-        if (selectedObjects.length === 0) return;
-        selectedObjects.forEach(obj => removeObject(obj));
-        selectedObjects = [];
+        if (objectState.selected.length === 0) return;
+        objectState.selected.forEach(obj => removeObject(obj));
+        objectState.selected = [];
         updateTransformControls();
         redrawCanvas();
         saveState();
     });
 
     initButton("clearSelected", () => {
-        selectedObjects = [];
+        objectState.selected = [];
         updateTransformControls();
         redrawCanvas();
     });
@@ -805,15 +871,15 @@ function initTransformControls() {
 }
 
 function reorderSelectedObjects(direction = 1) {
-    if (selectedObjects.length === 0) return;
-    selectedObjects.forEach(obj => {
-        const index = objects.indexOf(obj);
-        if (direction > 0 && index > -1 && index < objects.length - 1) {
-            objects.splice(index, 1);
-            objects.push(obj);
+    if (objectState.selected.length === 0) return;
+    objectState.selected.forEach(obj => {
+        const index = objectState.objects.indexOf(obj);
+        if (direction > 0 && index > -1 && index < objectState.objects.length - 1) {
+            objectState.objects.splice(index, 1);
+            objectState.objects.push(obj);
         } else if (direction < 0 && index > 0) {
-            objects.splice(index, 1);
-            objects.unshift(obj);
+            objectState.objects.splice(index, 1);
+            objectState.objects.unshift(obj);
         }
     });
     redrawCanvas();
@@ -826,14 +892,14 @@ function redrawCanvas() {
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    objects
+    objectState.objects
         .filter(obj => {
-            const layer = layers.find(l => l.id === obj.layerId);
+            const layer = layerState.layers.find(l => l.id === obj.layerId);
             return layer && layer.visible;
         })
         .forEach(obj => drawObject(obj));
 
-    selectedObjects.forEach(obj => drawSelectionBox(obj));
+    objectState.selected.forEach(obj => drawSelectionBox(obj));
 }
 
 function applyObjectTransform(obj) {
@@ -877,14 +943,11 @@ function drawObject(obj) {
             ctx.stroke();
             break;
         case "connection":
-            const startObj = objects.find(o => o.id === obj.startId);
-            const endObj = objects.find(o => o.id === obj.endId);
-            if (startObj && endObj) {
+            const endpoints = getConnectionEndpoints(obj);
+            if (endpoints) {
                 ctx.beginPath();
-                const c1 = getCenter(startObj);
-                const c2 = getCenter(endObj);
-                ctx.moveTo(c1.x, c1.y);
-                ctx.lineTo(c2.x, c2.y);
+                ctx.moveTo(endpoints.start.x, endpoints.start.y);
+                ctx.lineTo(endpoints.end.x, endpoints.end.y);
                 ctx.stroke();
             }
             break;
@@ -1006,7 +1069,6 @@ function drawSelectionBox(obj) {
     ctx.lineWidth = SELECTION_LINE_WIDTH;
     ctx.setLineDash(LINE_DASH_PATTERN);
 
-    // Draw selection rectangle
     ctx.beginPath();
     ctx.moveTo(handles[0].x, handles[0].y);
     ctx.lineTo(handles[1].x, handles[1].y);
@@ -1015,7 +1077,6 @@ function drawSelectionBox(obj) {
     ctx.closePath();
     ctx.stroke();
 
-    // Draw handles
     ctx.fillStyle = HANDLE_FILL_COLOR;
     ctx.strokeStyle = HANDLE_STROKE_COLOR;
     ctx.lineWidth = 2;
@@ -1024,13 +1085,12 @@ function drawSelectionBox(obj) {
     for (let i = 0; i < 0o10; i++) {
         const h = handles[i];
         ctx.beginPath();
-        ctx.roundRect(h.x - HANDLE_SIZE/2, h.y - HANDLE_SIZE/2, HANDLE_SIZE, HANDLE_SIZE, HANDLE_RADIUS);
+        ctx.roundRect(h.x - HANDLE_SIZE / 2, h.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE, HANDLE_RADIUS);
         ctx.fill();
         ctx.stroke();
     }
 
-    // Draw rotate handle
-    const localTopMid = { x: bounds.x + bounds.width/2, y: bounds.y };
+    const localTopMid = { x: bounds.x + bounds.width / 2, y: bounds.y };
     const rhX = cx + (localTopMid.x - cx) * c - (localTopMid.y - cy) * s;
     const rhY = cy + (localTopMid.x - cx) * s + (localTopMid.y - cy) * c - ROTATE_HANDLE_OFFSET;
 
@@ -1040,7 +1100,7 @@ function drawSelectionBox(obj) {
     ctx.fill();
     ctx.stroke();
     ctx.beginPath();
-    ctx.arc(rhX, rhY, 0o12, 0, Math.PI * ( 3 / 2 ));
+    ctx.arc(rhX, rhY, 0o12, 0, Math.PI * (3 / 2));
     ctx.strokeStyle = HANDLE_STROKE_COLOR;
     ctx.lineWidth = SELECTION_LINE_WIDTH;
     ctx.stroke();
@@ -1052,65 +1112,67 @@ function drawSelectionBox(obj) {
 
 function initZoom() {
     const zoomLevel = document.getElementById("zoomLevel");
+    const toolbar = document.getElementById("toolbarContainer");
+
+    if (!zoomLevel) {
+        console.warn("zoomLevel element not found");
+        return;
+    }
 
     function updateZoom() {
-        const zoom = zoomNum / zoomDen;
+        const zoom = state.zoomNum / state.zoomDen;
         document.documentElement.style.setProperty("--zoom", zoom);
-        document.documentElement.style.setProperty("--pan-x", panOffsetX + "px");
-        document.documentElement.style.setProperty("--pan-y", panOffsetY + "px");
-        zoomLevel.textContent = `${zoomNum}/${zoomDen}x`;
+        document.documentElement.style.setProperty("--pan-x", panState.offsetX + "px");
+        document.documentElement.style.setProperty("--pan-y", panState.offsetY + "px");
+        zoomLevel.textContent = `${state.zoomNum}/${state.zoomDen}x`;
         invalidateTextCaches();
         redrawCanvas();
     }
 
-    function adjustZoom(numeratorMult, denominatorMult, minZoom, maxZoom, centerX, centerY) {
-        const oldZoom = zoomNum / zoomDen;
-        let newZoom = oldZoom * (numeratorMult / denominatorMult);
-
-        if (newZoom < minZoom) {
-            zoomNum = 0o1; zoomDen = 0o4;
-        } else if (newZoom > maxZoom) {
-            zoomNum = 0o4; zoomDen = 0o1;
+    function setZoom(newZoom) {
+        if (newZoom < MIN_ZOOM) {
+            state.zoomNum = 0o1;
+            state.zoomDen = 0o4;
+        } else if (newZoom > MAX_ZOOM) {
+            state.zoomNum = 0o4;
+            state.zoomDen = 0o1;
         } else {
-            const roundedZoom = Math.round(newZoom * 0o100) / 0o100;
-            zoomNum = Math.round(roundedZoom * 0o100);
-            zoomDen = 0o100;
-        }
-
-        newZoom = zoomNum / zoomDen;
-
-        if (centerX !== undefined && centerY !== undefined) {
-            const container = document.getElementById("whiteboardContainer");
-            const rect = container.getBoundingClientRect();
-            panOffsetX = centerX - rect.left - (centerX - rect.left - panOffsetX) * (newZoom / oldZoom);
-            panOffsetY = centerY - rect.top - (centerY - rect.top - panOffsetY) * (newZoom / oldZoom);
+            const zoomNumerator = Math.round(newZoom * ZOOM_BASE);
+            state.zoomNum = zoomNumerator;
+            state.zoomDen = ZOOM_BASE;
         }
 
         updateZoom();
     }
 
-    initButton("zoomIn", () => adjustZoom(ZOOM_STEP_NUM, ZOOM_STEP_DEN, 0, MAX_ZOOM));
-    initButton("zoomOut", () => adjustZoom(ZOOM_STEP_DEN, ZOOM_STEP_NUM, MIN_ZOOM, Infinity));
+    function adjustZoom(numeratorMult, denominatorMult) {
+        const oldZoom = state.zoomNum / state.zoomDen;
+        const newZoom = oldZoom * (numeratorMult / denominatorMult);
+        setZoom(newZoom);
+    }
+
+    initButton("zoomIn", () => adjustZoom(ZOOM_STEP_NUM, ZOOM_STEP_DEN));
+    initButton("zoomOut", () => adjustZoom(ZOOM_STEP_DEN, ZOOM_STEP_NUM));
     initButton("zoomReset", () => {
-        zoomNum = 0o1; zoomDen = 0o1;
-        panOffsetX = 0; panOffsetY = 0;
+        state.zoomNum = 0o1; state.zoomDen = 0o1;
+        panState.offsetX = 0; panState.offsetY = 0;
         updateZoom();
     });
 
     canvas.addEventListener("wheel", (e) => {
-        e.preventDefault();
         if (e.ctrlKey) {
-            if (e.deltaY < 0) {
-                adjustZoom(WHEEL_ZOOM_NUM, WHEEL_ZOOM_DEN, 0, MAX_ZOOM, e.clientX, e.clientY);
-            } else {
-                adjustZoom(WHEEL_ZOOM_DEN, WHEEL_ZOOM_NUM, MIN_ZOOM, Infinity, e.clientX, e.clientY);
-            }
+            e.preventDefault();
+            const currentZoom = state.zoomNum / state.zoomDen;
+            const zoomFactor = e.deltaY < 0 ? (WHEEL_ZOOM_NUM / WHEEL_ZOOM_DEN) : (WHEEL_ZOOM_DEN / WHEEL_ZOOM_NUM);
+            const newZoom = currentZoom * zoomFactor;
+            setZoom(newZoom);
         } else {
-            panOffsetX -= e.deltaX;
-            panOffsetY -= e.deltaY;
+            e.preventDefault();
+            panState.offsetX -= e.deltaX;
+            panState.offsetY -= e.deltaY;
             updateZoom();
         }
-    });
+    }, { passive: false });
 }
 
 // ⟪ File Operations 💾 ⟫
@@ -1169,7 +1231,7 @@ function handleKeyboard(e) {
         return;
     }
     if ((e.key === "Delete" || e.key === "Backspace") &&
-        selectedObjects.length > 0 && document.activeElement === document.body) {
+        objectState.selected.length > 0 && document.activeElement === document.body) {
         e.preventDefault();
         document.getElementById("deleteSelected")?.click();
         return;
@@ -1180,8 +1242,8 @@ function handleKeyboard(e) {
         return;
     }
     if (e.code === "Space" && e.target === document.body) {
-        isSpacePressed = true;
-        if (!isDrawing && !isPanning) setCursor("grab");
+        spaceState.isPressed = true;
+        if (!state.isDrawing && !panState.isPanning) setCursor("grab");
     }
 }
 
@@ -1195,8 +1257,8 @@ function initActions() {
 
     const clearCanvas = () => {
         if (confirm("Clear the entire canvas - This cannot be undone.")) {
-            objects = [];
-            selectedObjects = [];
+            objectState.objects = [];
+            objectState.selected = [];
             redrawCanvas();
             saveState();
         }
@@ -1219,9 +1281,9 @@ function initLayerControls() {
 
 function handleKeyup(e) {
     if (e.code === "Space") {
-        isSpacePressed = false;
-        if (!isPanning && !isDrawing) setCursor(getToolCursor());
-        isPanning = false;
+        spaceState.isPressed = false;
+        if (!panState.isPanning && !state.isDrawing) setCursor(getToolCursor());
+        panState.isPanning = false;
     }
 }
 
@@ -1267,43 +1329,43 @@ function handleDoubleClick(e) {
 }
 
 function handleMouseDown(e) {
-    if (e.button === 1 || (isSpacePressed && e.button === 0)) {
+    if (e.button === 1 || (spaceState.isPressed && e.button === 0)) {
         e.preventDefault();
         e.stopPropagation();
-        isPanning = true;
-        panStartX = e.clientX;
-        panStartY = e.clientY;
+        panState.isPanning = true;
+        panState.startX = e.clientX;
+        panState.startY = e.clientY;
         setCursor("grabbing");
         return;
     }
-    if (e.button === 0 && !isSpacePressed) {
+    if (e.button === 0 && !spaceState.isPressed) {
         startDrawing(e);
     }
 }
 
 function handleMouseMove(e) {
-    if (isPanning) {
+    if (panState.isPanning) {
         e.preventDefault();
         e.stopPropagation();
 
-        const dx = e.clientX - panStartX;
-        const dy = e.clientY - panStartY;
+        const dx = e.clientX - panState.startX;
+        const dy = e.clientY - panState.startY;
 
-        panOffsetX += dx;
-        panOffsetY += dy;
+        panState.offsetX += dx;
+        panState.offsetY += dy;
 
-        panStartX = e.clientX;
-        panStartY = e.clientY;
+        panState.startX = e.clientX;
+        panState.startY = e.clientY;
 
-        document.documentElement.style.setProperty("--pan-x", panOffsetX + "px");
-        document.documentElement.style.setProperty("--pan-y", panOffsetY + "px");
+        document.documentElement.style.setProperty("--pan-x", panState.offsetX + "px");
+        document.documentElement.style.setProperty("--pan-y", panState.offsetY + "px");
     } else {
         draw(e);
     }
 }
 
 function handleMouseUp(e) {
-    if (isPanning) {
+    if (panState.isPanning) {
         stopPanning();
     } else {
         stopDrawing(e);
@@ -1311,7 +1373,7 @@ function handleMouseUp(e) {
 }
 
 function handleMouseLeave(e) {
-    if (isPanning) {
+    if (panState.isPanning) {
         stopPanning();
     } else {
         stopDrawing(e);

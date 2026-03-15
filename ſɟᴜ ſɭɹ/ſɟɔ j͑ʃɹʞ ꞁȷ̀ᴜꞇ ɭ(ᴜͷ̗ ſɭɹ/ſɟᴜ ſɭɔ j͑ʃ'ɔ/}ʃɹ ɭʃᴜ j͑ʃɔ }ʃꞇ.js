@@ -1,7 +1,7 @@
 // ≺⧼ Panel Manager ⧽≻ - Consolidated panel management with directional animations
 
 class PanelManager {
-    static animationDuration = ANIM_DURATION_DEFAULT;
+    static animationDuration = CONSTANTS.ANIM.DURATION_DEFAULT;
 
     static panels = {
         quickSettings: "quick-settings-container",
@@ -121,7 +121,7 @@ class PanelManager {
         const dock = DOMCache.get( this.panels.dock );
         if ( dock && hasClass( dock, "visible" ) ) {
             animations.push( AnimationManager.fadeOut( dock, {
-                duration: ANIM_DURATION_SHORT
+                duration: CONSTANTS.ANIM.DURATION_SHORT
             } ).then( () => {
                 removeClass( dock, "visible" );
             } ) );
@@ -138,9 +138,9 @@ class PanelManager {
         const pos = taskbar ? ( taskbar.dataset.position || "left" ) : "left";
         const isVertical = pos === "left" || pos === "right";
 
-        const tbSize = parseInt( getComputedStyle( document.documentElement ).getPropertyValue( CSS_VARS.taskbarSize ) ) || SYS_TASKBAR_SIZE;
-        const tbBuffer = `${tbSize + SYS_MARGIN * 2}px`;
-        const edge = `${SYS_MARGIN}px`;
+        const tbSize = parseInt( getComputedStyle( document.documentElement ).getPropertyValue( CONSTANTS.CSS_VARS.taskbarSize ) ) || CONSTANTS.SYS.TASKBAR_SIZE;
+        const tbBuffer = `${tbSize + CONSTANTS.SYS.MARGIN * 2}px`;
+        const edge = `${CONSTANTS.SYS.MARGIN}px`;
         const gap = "8px";
 
         // Clear all position properties before applying new ones
@@ -148,7 +148,7 @@ class PanelManager {
         panel.style.transform = "none";
         panel.style.blockSize = "fit-content"; // Default
 
-        const positions = this.#getPanelPositions( tbBuffer, edge, gap, isSliders, isVertical, pos, btnId, panelId );
+        const positions = this.#getPanelPositions( tbBuffer, edge, gap, isSliders, isVertical, pos, btnId, panelId, taskbar );
 
         Object.entries( positions ).forEach( ( [ prop, val ] ) => {
             panel.style[ prop ] = val;
@@ -157,64 +157,48 @@ class PanelManager {
 
     // ⟪ Get Panel Positions ⟫
 
-    static #getPanelPositions( tbBuffer, edge, gap, isSliders, isVertical, pos, btnId, panelId ) {
+    static #getPanelPositions( tbBuffer, edge, gap, isSliders, isVertical, pos, btnId, panelId, taskbar ) {
         const sliderOffset = isSliders ? `calc(${tbBuffer} + 300px + ${gap})` : tbBuffer;
-        const isFullSizePanel = panelId === "notifications" || panelId === "clockFlyout";
         const isLeftAligned = btnId === "status-area" || btnId === "recents-btn";
         const isRightAligned = btnId === "clock-area" || btnId === "notification-btn";
+        const isCenterAligned = !isLeftAligned && !isRightAligned;
 
-        // Configuration object for panel positions based on taskbar position
-        const positionConfig = {
-            top: {
-                primary: isLeftAligned ? "left" : isRightAligned ? "right" : "left",
-                secondary: isLeftAligned || isRightAligned ? "top" : "top",
-                primaryOffset: sliderOffset,
-                secondaryOffset: isLeftAligned ? edge : isRightAligned ? edge : "50%",
-                opposite: isFullSizePanel ? edge : "auto",
-                transform: !isLeftAligned && !isRightAligned ? "translateX(-50%)" : "none"
-            },
-            bottom: {
-                primary: isLeftAligned ? "left" : isRightAligned ? "right" : "left",
-                secondary: isLeftAligned || isRightAligned ? "bottom" : "bottom",
-                primaryOffset: sliderOffset,
-                secondaryOffset: isLeftAligned ? edge : isRightAligned ? edge : "50%",
-                opposite: isFullSizePanel ? edge : "auto",
-                transform: !isLeftAligned && !isRightAligned ? "translateX(-50%)" : "none"
-            },
-            left: {
-                primary: isLeftAligned ? "top" : isRightAligned ? "bottom" : "top",
-                secondary: isLeftAligned || isRightAligned ? "left" : "left",
-                primaryOffset: isLeftAligned ? edge : isRightAligned ? edge : "50%",
-                secondaryOffset: sliderOffset,
-                opposite: isFullSizePanel ? edge : "auto",
-                transform: !isLeftAligned && !isRightAligned ? "translateY(-50%)" : "none"
-            },
-            right: {
-                primary: isLeftAligned ? "top" : isRightAligned ? "bottom" : "top",
-                secondary: isLeftAligned || isRightAligned ? "right" : "right",
-                primaryOffset: isLeftAligned ? edge : isRightAligned ? edge : "50%",
-                secondaryOffset: sliderOffset,
-                opposite: isFullSizePanel ? edge : "auto",
-                transform: !isLeftAligned && !isRightAligned ? "translateY(-50%)" : "none"
-            }
-        };
-
-        const cfg = positionConfig[ pos ] || positionConfig.bottom;
-
-        // Build position object based on orientation
-        if ( isVertical ) {
+        // Position panels based on taskbar position
+        if ( pos === "bottom" ) {
+            // Taskbar at bottom - panel appears above it
             return {
-                [ cfg.secondary ]: cfg.secondaryOffset,
-                [ cfg.primary ]: cfg.primaryOffset,
-                [ cfg.primary === "top" ? "bottom" : "top" ]: cfg.opposite,
-                transform: cfg.transform
+                bottom: sliderOffset,
+                left: isLeftAligned ? edge : isRightAligned ? "auto" : "50%",
+                right: isRightAligned ? edge : "auto",
+                top: "auto",
+                transform: isCenterAligned ? "translateX(-50%)" : "none"
             };
-        } else {
+        } else if ( pos === "top" ) {
+            // Taskbar at top - panel appears below it
             return {
-                [ cfg.secondary ]: cfg.secondaryOffset,
-                [ cfg.primary ]: cfg.primaryOffset,
-                [ cfg.primary === "left" ? "right" : "left" ]: cfg.opposite,
-                transform: cfg.transform
+                top: sliderOffset,
+                left: isLeftAligned ? edge : isRightAligned ? "auto" : "50%",
+                right: isRightAligned ? edge : "auto",
+                bottom: "auto",
+                transform: isCenterAligned ? "translateX(-50%)" : "none"
+            };
+        } else if ( pos === "left" ) {
+            // Taskbar at left - panel appears to the right of it
+            return {
+                left: sliderOffset,
+                top: isLeftAligned ? edge : isRightAligned ? "auto" : "50%",
+                bottom: isRightAligned ? edge : "auto",
+                right: "auto",
+                transform: isCenterAligned ? "translateY(-50%)" : "none"
+            };
+        } else { // pos === "right"
+            // Taskbar at right - panel appears to the left of it
+            return {
+                right: sliderOffset,
+                top: isLeftAligned ? edge : isRightAligned ? "auto" : "50%",
+                bottom: isRightAligned ? edge : "auto",
+                left: "auto",
+                transform: isCenterAligned ? "translateY(-50%)" : "none"
             };
         }
     }
@@ -333,13 +317,13 @@ class PanelManager {
 
     static showRecents( e ) {
         if ( e ) e.preventDefault();
-        
+
         const panel = DOMCache.get( this.panels.recents );
         if ( !panel ) return;
         const dock = DOMCache.get( this.panels.dock );
 
         const isVisible = hasClass( panel, "visible" );
-        
+
         // Close system panels AND the start menu if it's open to prevent interference
         this.closeAllPanels();
 
@@ -355,7 +339,7 @@ class PanelManager {
                 const windows = getOpenWindows();
                 if ( windows.length > 0 ) {
                     addClass( dock, "visible" );
-                    AnimationManager.fadeIn( dock, { duration: ANIM_DURATION_SHORT } );
+                    AnimationManager.fadeIn( dock, { duration: CONSTANTS.ANIM.DURATION_SHORT } );
                 }
             }
 
