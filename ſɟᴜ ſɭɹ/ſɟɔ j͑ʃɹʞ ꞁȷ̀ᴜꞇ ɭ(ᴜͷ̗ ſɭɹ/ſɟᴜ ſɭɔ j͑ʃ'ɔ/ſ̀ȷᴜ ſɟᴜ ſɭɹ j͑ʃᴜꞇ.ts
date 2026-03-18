@@ -23,6 +23,7 @@ declare const vab6caja: any;
 declare const castifeh2: any;
 declare const kf2Cax2lStafl2: any;
 declare const toggleQsButton: any;
+declare const getStrings: any;
 declare const updateSlider: any;
 
 interface Window {
@@ -115,24 +116,19 @@ function setupTileDrag(grid: IconGrid, el: HTMLElement, startX: number, startY: 
     const move = (clientX: number, clientY: number) => {
         const deltaX = clientX - startX;
         const deltaY = clientY - startY;
+        const dragDistance = Math.abs(deltaX) + Math.abs(deltaY);
 
         // Set isDragging only after moving beyond threshold
-        if (!hasDragged) {
-            const dragDistance = Math.abs(deltaX) + Math.abs(deltaY);
-            if (dragDistance > CONSTANTS.DIM.DRAG_THRESHOLD) {
-                hasDragged = true;
-            }
+        if (!hasDragged && dragDistance > CONSTANTS.DIM.DRAG_THRESHOLD) {
+            hasDragged = true;
         }
 
         // Close start menu if dragging far enough
-        if (!startMenuClosed && startMenu && grid.containerId === "start-menu-content") {
-            const dragDistance = Math.abs(deltaX) + Math.abs(deltaY);
-            if (dragDistance > CONSTANTS.DIM.DRAG_THRESHOLD) {
-                startMenu.classList.remove("open");
-                document.body.classList.remove("start-menu-open");
-                if (typeof closeAllPanels === "function") closeAllPanels();
-                startMenuClosed = true;
-            }
+        if (!startMenuClosed && startMenu && grid.containerId === "start-menu-content" && dragDistance > CONSTANTS.DIM.DRAG_THRESHOLD) {
+            startMenu.classList.remove("open");
+            document.body.classList.remove("start-menu-open");
+            if (typeof closeAllPanels === "function") closeAllPanels();
+            startMenuClosed = true;
         }
 
         if (el.style.position === "fixed") {
@@ -823,6 +819,10 @@ class IconGrid {
 // ⟪ Context Menu Manager ⟫
 
 (window as any).ContextMenuManager = {
+    menu: null as HTMLElement | null,
+    desktop: null as HTMLElement | null,
+    menuOpen: false,
+
     init() {
         this.menu = document.getElementById("context-menu");
         this.desktop = document.getElementById("desktop");
@@ -831,10 +831,28 @@ class IconGrid {
         this.desktop.addEventListener("contextmenu", (e: MouseEvent) => {
             if ((e.target as HTMLElement).closest(".app-tile")) return;
             e.preventDefault();
+            e.stopPropagation();
+            this.menuOpen = true;
             this.showForDesktop(e.clientX, e.clientY);
         });
 
-        document.addEventListener("click", () => this.hide());
+        // Hide menu on click outside (same pattern as PanelManager)
+        document.addEventListener("mousedown", (e: MouseEvent) => {
+            if (!this.menuOpen) return;
+            const selectors: string[] = ["#context-menu"];
+            if (!selectors.some(sel => (e.target as HTMLElement).closest(sel))) {
+                this.hide();
+            }
+        });
+
+        // Hide menu on right click outside (to show new context menu)
+        document.addEventListener("contextmenu", (e: MouseEvent) => {
+            if (!this.menuOpen) return;
+            const inMenu = (e.target as HTMLElement).closest("#context-menu");
+            if (!inMenu) {
+                this.hide();
+            }
+        });
     },
 
     showForDesktop(x: number, y: number) {
@@ -842,46 +860,55 @@ class IconGrid {
         this._renderMenu([
             { action: "edit-mode", label: "Edit Mode", icon: "✏️", i18n: "ctx_edit_mode" }
         ], [
-            { action: "refresh", icon: "🔄", title: "Refresh", i18n: "ctx_refresh" },
-            { action: "new-note", icon: "📝", title: "New Note", i18n: "ctx_new_note" },
-            { action: "terminal", icon: "💻", title: "Terminal", i18n: "ctx_terminal" }
+            { action: "refresh", label: "Refresh", icon: "🔄", i18n: "ctx_refresh" },
+            { action: "new-note", label: "New Note", icon: "📝", i18n: "ctx_new_note" },
+            { action: "terminal", label: "Terminal", icon: "💻", i18n: "ctx_terminal" }
         ], x, y);
     },
 
     showForTile(x: number, y: number, tileEl: HTMLElement) {
         this.currentTile = tileEl;
-        
+
         // Build move page actions for mobile
         const movePageActions = [];
         const maxPage = Math.ceil( APPS.length / ( MOBILE_GRID_ROWS * MOBILE_GRID_COLS ) ) - 1;
-        
+
         if ( maxPage > 0 ) {
             for ( let i = 0; i <= maxPage; i++ ) {
                 movePageActions.push({
                     action: `move-page-${i}`,
                     label: `Page ${i + 1}`,
                     icon: `${i + 1}`,
-                    title: `Move to page ${i + 1}`
+                    i18n: "ctx_move_page"
                 });
             }
         }
-        
+
         this._renderMenu([
             { action: "edit-mode", label: "Edit Mode", icon: "✏️", i18n: "ctx_edit_mode" }
         ], [
             ...movePageActions,
-            { action: "toggle-widget", icon: "🖼️", title: "Widget Mode", i18n: "ctx_widget_mode" },
-            { action: "toggle-live-tile", icon: "✨", title: "Live Tile Mode", i18n: "ctx_live_tile_mode" }
+            { action: "toggle-widget", label: "Widget Mode", icon: "🖼️", i18n: "ctx_widget_mode" },
+            { action: "toggle-live-tile", label: "Live Tile Mode", icon: "✨", i18n: "ctx_live_tile_mode" }
         ], x, y);
     },
 
     _renderMenu(primaryActions: any[], secondaryActions: any[], x: number, y: number) {
         const allActions = [...primaryActions, ...secondaryActions];
+        const strings = typeof getStrings === "function" ? getStrings() : {};
         const renderButton = (btn: any) => {
             const attrs = [`data-action="${btn.action}"`];
+            let label = btn.label || "";
+            if (btn.i18n && strings[btn.i18n]) {
+                label = strings[btn.i18n];
+                // Handle placeholder substitution for ctx_move_page
+                if (btn.i18n === "ctx_move_page" && btn.label) {
+                    const pageNum = btn.label.replace("Page ", "");
+                    label = label.replace("{ɿ}", pageNum);
+                }
+            }
             if (btn.i18n) attrs.push(`data-oskakefani="${btn.i18n}"`);
-            if (btn.title && !btn.i18n) attrs.push(`title="${btn.title}"`);
-            return `<button ${attrs.join(" ")} ${btn.i18n ? `title="${btn.title}"` : ""}>${btn.label ? `<span>${btn.label}</span>` : ""}<span>${btn.icon}</span></button>`;
+            return `<button ${attrs.join(" ")} title="${label}">${label ? `<span>${label}</span>` : ""}<span>${btn.icon}</span></button>`;
         };
 
         if (this.menu) {
@@ -916,7 +943,10 @@ class IconGrid {
         }
     },
 
-    hide() { if (this.menu) this.menu.classList.remove("visible"); },
+    hide() {
+        if (this.menu) this.menu.classList.remove("visible");
+        this.menuOpen = false;
+    },
 
     handleAction(action: string | undefined) {
         if (!action) return;
@@ -967,9 +997,9 @@ class IconGrid {
     // Move tile to a specific page (mobile only)
     moveTileToPage(tile: HTMLElement, targetPage: number) {
         if ( !tile || !this.desktop ) return;
-        
+
         const appPath = tile.dataset.app;
-        const appIndex = APPS.findIndex( app => app.app === appPath );
+        const appIndex = APPS.findIndex( (app: any) => app.app === appPath );
         
         if ( appIndex === -1 ) return;
         
@@ -1013,13 +1043,13 @@ class IconGrid {
         this.desktop = new IconGrid("desktop", { centered: false, bottomUp: true, labelMode: 'external' });
         this.startMenu = new IconGrid("start-menu-content", { centered: false, bottomUp: true, labelMode: 'external' });
 
-        APPS = APPS_DATA.map((app: any) => ({
+        (APPS as any) = APPS_DATA.map((app: any) => ({
             name: app.path.split("/").pop().replace(".html", ""),
             icon: app.emoji,
             app: app.path
         }));
 
-        APPS.forEach((app, i) => {
+        APPS.forEach((app: any, i: number) => {
             this.desktop?.addIcon(app, i);
             this.startMenu?.addIcon(app, i);
         });
@@ -1104,12 +1134,12 @@ class IconGrid {
             QS_TOGGLES.forEach((t: any) => { if (!savedToggleOrder.includes(t.id)) toggles.push(t); });
         }
         qsGrid.innerHTML = toggles.map( (t: any) => `
-            <div class="xeku1okek" data-qs-id="${t.id}" onclick="(window as any).DesktopIconManager._handleQSClick( event , this , 'xeku1okek-order' )">
-                <button class="caku1o" data-setting="${t.id}" aria-pressed="${t.default}" onclick="if ( (window as any).toggleQsButton ) toggleQsButton( this )">
+            <div class="xeku1okek" data-qs-id="${t.id}" onclick="window.DesktopIconManager._handleQSClick( event , this , 'xeku1okek-order' )">
+                <button class="caku1o" data-setting="${t.id}" aria-pressed="${t.default}" onclick="if ( window.toggleQsButton ) toggleQsButton( this )">
                     <span class="icon">${t.icon}</span>
                     <span class="label" data-oskakefani="${t.string}">${t.label}</span>
                 </button>
-                <button class="qs-remove-btn" onclick="event.stopPropagation(); (window as any).DesktopIconManager._removeQSItem( event , 'xeku1okek-order' , '${t.id}' )">/</button>
+                <button class="qs-remove-btn" onclick="event.stopPropagation(); window.DesktopIconManager._removeQSItem( event , 'xeku1okek-order' , '${t.id}' )">/</button>
             </div>
         `).join( "" );
 
@@ -1123,13 +1153,13 @@ class IconGrid {
             defaultSliders.forEach( (s: any) => { if ( !savedSliderOrder.includes( s.id ) ) sliders.push( s ); } );
         }
         slidersContainer.innerHTML = sliders.map( (s: any) => `
-            <div class="xeku1okek" data-qs-id="${s.id}" onclick="(window as any).DesktopIconManager._handleQSClick( event , this , 'qs-slider-order' )">
+            <div class="xeku1okek" data-qs-id="${s.id}" onclick="window.DesktopIconManager._handleQSClick( event , this , 'qs-slider-order' )">
                 <ciihii class="">
                     <span class="label" data-oskakefani="${s.string}">${s.label}</span>
                     <span class="icon">${s.icon}</span>
-                    <input type="range" class="k6tani" min="0" max="${s.max}" value="${s.value}" oninput="if ( (window as any).updateSlider ) updateSlider( '${s.handler}' , this.value )">
+                    <input type="range" class="k6tani" min="0" max="${s.max}" value="${s.value}" oninput="if ( window.updateSlider ) updateSlider( '${s.handler}' , this.value )">
                 </ciihii>
-                <button class="qs-remove-btn" onclick="event.stopPropagation(); (window as any).DesktopIconManager._removeQSItem( event , 'qs-slider-order' , '${s.id}' )">/</button>
+                <button class="qs-remove-btn" onclick="event.stopPropagation(); window.DesktopIconManager._removeQSItem( event , 'qs-slider-order' , '${s.id}' )">/</button>
             </div>
         `).join( "" );
 

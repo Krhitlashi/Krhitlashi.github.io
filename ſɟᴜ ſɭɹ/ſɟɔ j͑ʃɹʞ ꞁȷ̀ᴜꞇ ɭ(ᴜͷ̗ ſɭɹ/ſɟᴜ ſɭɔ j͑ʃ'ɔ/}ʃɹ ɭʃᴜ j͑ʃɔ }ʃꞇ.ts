@@ -59,7 +59,6 @@ class PanelManager {
         if (!panel) return Promise.resolve();
 
         this.positionPanel(panel, btnId, isSliders, panelId);
-        panel.style.display = "flex";
 
         void panel.offsetWidth;
 
@@ -162,39 +161,24 @@ class PanelManager {
         const isRightAligned: boolean = btnId === "clock-area" || btnId === "notification-btn";
         const isCenterAligned: boolean = !isLeftAligned && !isRightAligned;
 
-        if (pos === "bottom") {
-            return {
-                bottom: sliderOffset,
-                left: isLeftAligned ? edge : isRightAligned ? "auto" : "50%",
-                right: isRightAligned ? edge : "auto",
-                top: "auto",
-                transform: isCenterAligned ? "translateX(-50%)" : "none"
-            };
-        } else if (pos === "top") {
-            return {
-                top: sliderOffset,
-                left: isLeftAligned ? edge : isRightAligned ? "auto" : "50%",
-                right: isRightAligned ? edge : "auto",
-                bottom: "auto",
-                transform: isCenterAligned ? "translateX(-50%)" : "none"
-            };
-        } else if (pos === "left") {
-            return {
-                left: sliderOffset,
-                top: isLeftAligned ? edge : isRightAligned ? "auto" : "50%",
-                bottom: isRightAligned ? edge : "auto",
-                right: "auto",
-                transform: isCenterAligned ? "translateY(-50%)" : "none"
-            };
-        } else {
-            return {
-                right: sliderOffset,
-                top: isLeftAligned ? edge : isRightAligned ? "auto" : "50%",
-                bottom: isRightAligned ? edge : "auto",
-                left: "auto",
-                transform: isCenterAligned ? "translateY(-50%)" : "none"
-            };
-        }
+        // Position config lookup table
+        const configs: { [key: string]: { offset: string; align: string; opposite: string; secondary: string; transform: string } } = {
+            bottom: { offset: "bottom", align: "left", opposite: "top", secondary: "right", transform: "translateX(-50%)" },
+            top:    { offset: "top",    align: "left", opposite: "bottom", secondary: "right", transform: "translateX(-50%)" },
+            left:   { offset: "left",   align: "top",  opposite: "right", secondary: "bottom", transform: "translateY(-50%)" },
+            right:  { offset: "right",  align: "top",  opposite: "left", secondary: "bottom", transform: "translateY(-50%)" }
+        };
+
+        const config = configs[pos] || configs.bottom;
+        const alignValue = isLeftAligned ? edge : isRightAligned ? "auto" : "50%";
+
+        return {
+            [config.offset]: sliderOffset,
+            [config.align]: alignValue,
+            [config.secondary]: isRightAligned ? edge : "auto",
+            [config.opposite]: "auto",
+            transform: isCenterAligned ? config.transform : "none"
+        };
     }
 
     // ⟪ Toggle Panel ⟫
@@ -226,7 +210,6 @@ class PanelManager {
             }
 
             setTimeout(() => {
-                container.style.display = "flex";
                 this.positionPanel(container, "status-area", false, "quickSettings");
                 void container.offsetWidth;
                 addClass(container, "visible");

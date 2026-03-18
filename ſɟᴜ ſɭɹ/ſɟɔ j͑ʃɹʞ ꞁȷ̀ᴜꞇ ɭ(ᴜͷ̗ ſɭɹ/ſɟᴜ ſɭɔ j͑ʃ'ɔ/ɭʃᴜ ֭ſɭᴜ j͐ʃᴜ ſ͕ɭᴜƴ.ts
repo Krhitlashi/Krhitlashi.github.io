@@ -143,6 +143,47 @@ const AnimationManager: {
         });
     },
 
+    // ⟪ Slide Panel ( Unified Internal Method ) ⟫
+
+    slidePanel(
+        element: HTMLElement,
+        panelId: string,
+        isEntering: boolean,
+        options: any = {}
+    ): Promise<void> {
+        if (!element) return Promise.resolve();
+
+        const { duration, easing, fraction = 1 } = options;
+        const direction = this.getPanelDirection(panelId);
+        const edge = isEntering ? direction.from : direction.to;
+
+        const baseTransform: string = element.style.transform && element.style.transform !== "none" ? element.style.transform : "";
+        const slideTransform: string = this.getDirectionTransform(edge, fraction);
+        
+        const startTransform: string = isEntering ? `${baseTransform} ${slideTransform}`.trim() : (baseTransform || "translate(0, 0)");
+        const endTransform: string = isEntering ? (baseTransform || "translate(0, 0)") : `${baseTransform} ${slideTransform}`.trim();
+
+        element.style.display = options.display || "flex";
+        element.style.transform = startTransform;
+        element.style.opacity = isEntering ? "0" : "1";
+        element.style.pointerEvents = "none";
+
+        void element.offsetWidth;
+
+        return element.animate(
+            [
+                { transform: startTransform, opacity: isEntering ? 0 : 1 },
+                { transform: endTransform, opacity: isEntering ? 1 : 0 }
+            ],
+            { duration, easing }
+        ).finished.then(() => {
+            element.style.transform = baseTransform;
+            element.style.opacity = "";
+            element.style.pointerEvents = "";
+            if (!isEntering) element.style.display = "none";
+        });
+    },
+
     // ⟪ Slide In From Taskbar Edge ⟫
 
     slideInFromTaskbar(element: HTMLElement, panelId: string, options: any = {}): Promise<void> {
@@ -152,34 +193,7 @@ const AnimationManager: {
         const easing: string = options.easing ?? this.easings.easeOut;
         const fraction: number = options.fraction ?? 1;
 
-        const direction = this.getPanelDirection(panelId);
-        const fromEdge: string = direction.from;
-
-        const baseTransform: string = element.style.transform && element.style.transform !== "none" ? element.style.transform : "";
-
-        // Start from taskbar edge (hidden behind/inside taskbar)
-        const slideTransform: string = this.getDirectionTransform(fromEdge, fraction);
-        const startTransform: string = `${baseTransform} ${slideTransform}`.trim();
-        const endTransform: string = baseTransform || "translate(0, 0)";
-
-        element.style.display = options.display || "flex";
-        element.style.transform = startTransform;
-        element.style.opacity = "0";
-        element.style.pointerEvents = "none";
-
-        void element.offsetWidth;
-
-        return element.animate(
-            [
-                { transform: startTransform, opacity: 0 },
-                { transform: endTransform, opacity: 1 }
-            ],
-            { duration, easing }
-        ).finished.then(() => {
-            element.style.transform = baseTransform;
-            element.style.opacity = "";
-            element.style.pointerEvents = "";
-        });
+        return this.slidePanel(element, panelId, true, { duration, easing, fraction, display: options.display });
     },
 
     // ⟪ Slide Out To Taskbar Edge ⟫
@@ -191,30 +205,7 @@ const AnimationManager: {
         const easing: string = options.easing ?? this.easings.easeIn;
         const fraction: number = options.fraction ?? 1;
 
-        const direction = this.getPanelDirection(panelId);
-        const toEdge: string = direction.to;
-
-        const baseTransform: string = element.style.transform && element.style.transform !== "none" ? element.style.transform : "";
-
-        // Slide back into taskbar edge
-        const slideTransform: string = this.getDirectionTransform(toEdge, fraction);
-        const endTransform: string = `${baseTransform} ${slideTransform}`.trim();
-        const startTransform: string = baseTransform || "translate(0, 0)";
-
-        element.style.pointerEvents = "none";
-
-        return element.animate(
-            [
-                { transform: startTransform, opacity: 1 },
-                { transform: endTransform, opacity: 0 }
-            ],
-            { duration, easing }
-        ).finished.then(() => {
-            element.style.display = "none";
-            element.style.transform = baseTransform;
-            element.style.opacity = "";
-            element.style.pointerEvents = "";
-        });
+        return this.slidePanel(element, panelId, false, { duration, easing, fraction, display: options.display });
     },
 
     // ⟪ Slide In ( from edge ) ⟫
@@ -584,7 +575,6 @@ const AnimationManager: {
         const easing: string = this.easings.easeOut;
         const scale: number = CONSTANTS.ANIM.FRACTIONS.sevenEighths;
 
-        element.style.display = "flex";
         element.style.transform = `scale(${scale})`;
         element.style.opacity = "0";
         void element.offsetWidth;

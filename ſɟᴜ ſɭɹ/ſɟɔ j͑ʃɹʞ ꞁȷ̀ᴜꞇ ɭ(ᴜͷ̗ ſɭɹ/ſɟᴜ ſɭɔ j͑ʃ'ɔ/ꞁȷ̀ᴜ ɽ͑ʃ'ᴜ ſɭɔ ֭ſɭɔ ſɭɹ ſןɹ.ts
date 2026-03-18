@@ -71,7 +71,7 @@ class WindowManager {
                     style.id = "injected-style";
                     style.textContent = `
                         h1, .saxesukef, .cakaxa, .soza, nav, footer, header { display: none !important; }
-                        body { background-color: var(--ខេលេសៃច្ហិ, #000000a0) !important; }
+                        body { background-color: transparent !important; padding: var(--អារេងព៏) !important; }
                     `;
                     doc.head.appendChild( style );
                 }
@@ -86,24 +86,6 @@ class WindowManager {
                         link.href = globalCss.href;
                         doc.head.appendChild( link );
                     }
-                }
-
-                // Copy CSS custom properties from parent :root
-                if ( !doc.getElementById( "injected-vars" ) ) {
-                    const parentVars = getComputedStyle( document.documentElement );
-                    const varsStyle = doc.createElement( "style" );
-                    varsStyle.id = "injected-vars";
-                    const varNames = [ "--តានេកខេលេ", "--តានេក", "--តានេក២", "--តានេក៣",
-                        "--សាកព៏", "--សាកព៏២", "--សាកព៏៣",
-                        "--ខេលេសៃ", "--ខេលេសៃច្ហិ", "--កេភ", "--កេភ២",
-                        "--អារេងព៏", "--អារេងចិ", "--អារេង", "--អារេងមិ",
-                        "--អិត្ភេពឺ", "--អិត្ភេ", "--អិត្ភេចិ", "--អិត្ភេមិ", "--ចិង",
-                        "--ច្ហិនី" ];
-                    const declarations = varNames
-                        .map( v => `${v}: ${parentVars.getPropertyValue( v ).trim() || "inherit"};` )
-                        .join( "\n" );
-                    varsStyle.textContent = `:root { ${declarations} }`;
-                    doc.head.appendChild( varsStyle );
                 }
             } catch ( e ) {
                 // Cross-origin iframes will throw; silently ignore
@@ -135,7 +117,7 @@ class WindowManager {
     }
 
     static _buildIframeContent( iframeId: string, url: string ): string {
-        return `<iframe id="${iframeId}" src="${url}" sandbox="allow-same-origin allow-scripts" style="inline-size:100%; block-size:100%; border:none; border-radius: var(--អិត្ភេចិ);"></iframe>`;
+        return `<iframe id="${iframeId}" src="${url}" sandbox="allow-same-origin allow-scripts" style="inline-size:100%; block-size:100%;" class="n2tase"></iframe>`;
     }
 
     static _buildResizeHandles( id: string ): string {
@@ -226,7 +208,7 @@ class WindowManager {
         const iframeId = "iframe-" + id;
         const internalContent = appUrl
             ? this._buildIframeContent( iframeId, appUrl )
-            : ( content || `<div style="padding:16px; height:100%; justify-content:center;"><p>${title}</p></div>` );
+            : ( content || `<div><p>${title}</p></div>` );
 
         win.innerHTML = this._buildTitleBar( id, title ) + internalContent +
             this._buildResizeHandles( id );
@@ -270,26 +252,28 @@ class WindowManager {
         const startY = pos.y;
 
         // Calculate cursor offset from window edge ( handles extend outside window )
-        const offsetX = handle.includes( "w" ) ? startX - rect.left : 0;
-        const offsetY = handle.includes( "n" ) ? startY - rect.top : 0;
+        const isWest = handle.includes( "w" );
+        const isEast = handle.includes( "e" );
+        const isNorth = handle.includes( "n" );
+        const isSouth = handle.includes( "s" );
+        const offsetX = isWest ? startX - rect.left : 0;
+        const offsetY = isNorth ? startY - rect.top : 0;
 
         const doDrag = ( clientX: number, clientY: number ) => {
             const dx = clientX - startX;
             const dy = clientY - startY;
 
-            // Calculate new position and size using consistent formula
-            let newLeft = startLeft, newTop = startTop, newRight = startRight, newBottom = startBottom;
+            // Calculate new position and size using direction flags
+            let newLeft = startLeft;
+            let newTop = startTop;
+            let newRight = startRight;
+            let newBottom = startBottom;
 
-            if ( handle.includes( "w" ) ) {
-                newLeft = startLeft + dx + offsetX;
-            } else if ( handle.includes( "e" ) ) {
-                newRight = startRight + dx;
-            }
-            if ( handle.includes( "n" ) ) {
-                newTop = startTop + dy + offsetY;
-            } else if ( handle.includes( "s" ) ) {
-                newBottom = startBottom + dy;
-            }
+            if ( isWest ) newLeft = startLeft + dx + offsetX;
+            else if ( isEast ) newRight = startRight + dx;
+
+            if ( isNorth ) newTop = startTop + dy + offsetY;
+            else if ( isSouth ) newBottom = startBottom + dy;
 
             // Calculate final position and size
             const finalWidth = Math.max( CONSTANTS.INPUT.RESIZE_MIN_WIDTH, newRight - newLeft );
@@ -301,21 +285,34 @@ class WindowManager {
             win.style.height = finalHeight + "px";
         };
 
-        const stopDrag = () => {
-            setDraggingState( false );
-            ( win as any )._isResizing = false;
+        // Create move handlers
+        const onMove = ( ev: MouseEvent ) => {
+            doDrag( ev.clientX, ev.clientY );
         };
 
-        // Use unified input handler for both mouse and touch
-        const onMove = ( ev: any, data: any ) => {
-            doDrag( data.x, data.y );
+        const onTouchMove = ( ev: TouchEvent ) => {
+            ev.preventDefault();
+            const touch = ev.touches[ 0 ] || ev.changedTouches[ 0 ];
+            if ( touch ) doDrag( touch.clientX, touch.clientY );
         };
 
         const onEnd = () => {
-            stopDrag();
+            setDraggingState( false );
+            ( win as any )._isResizing = false;
+            // Remove event listeners
+            document.removeEventListener( "mousemove", onMove );
+            document.removeEventListener( "mouseup", onEnd );
+            document.removeEventListener( "touchmove", onTouchMove, { passive: false } as any );
+            document.removeEventListener( "touchend", onEnd );
+            document.removeEventListener( "touchcancel", onEnd );
         };
 
-        InputHandler.setupResize( win, handle, null, onMove, onEnd );
+        // Set up event listeners directly on document
+        document.addEventListener( "mousemove", onMove );
+        document.addEventListener( "mouseup", onEnd );
+        document.addEventListener( "touchmove", onTouchMove, { passive: false } as any );
+        document.addEventListener( "touchend", onEnd );
+        document.addEventListener( "touchcancel", onEnd );
     }
 
     // ⟪ Close Window ⟫
@@ -451,7 +448,7 @@ class WindowManager {
         const strings = typeof getStrings === "function" ? getStrings() : {};
 
         if ( windows.length === 0 ) {
-            list.innerHTML = `<div style="padding: 24px; text-align: center; opacity: ${CONSTANTS.ANIM.FRACTIONS.fourEighths};">${strings.recents_no_apps || "No open apps"}</div>`;
+            list.innerHTML = `<div style="padding: 24px; text-align: center; opacity: 0.5;">${strings.recents_no_apps || "No open apps"}</div>`;
             return;
         }
 

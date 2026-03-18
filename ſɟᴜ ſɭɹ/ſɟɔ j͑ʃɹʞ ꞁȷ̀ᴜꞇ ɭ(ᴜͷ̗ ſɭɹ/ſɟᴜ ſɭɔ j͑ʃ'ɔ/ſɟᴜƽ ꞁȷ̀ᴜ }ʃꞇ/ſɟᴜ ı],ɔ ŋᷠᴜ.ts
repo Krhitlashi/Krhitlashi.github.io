@@ -62,6 +62,95 @@ const InputHandler = {
         return e.type.startsWith("touch");
     },
 
+    // ⟪ Internal Pointer Handler Setup ⟫
+    setupPointerHandlers(
+        element: HTMLElement,
+        isResize: boolean,
+        handlers: {
+            onStart: (e: Event, pos: { x: number; y: number }) => void,
+            onMove: (e: Event, pos: { x: number; y: number; deltaX: number; deltaY: number }) => void,
+            onEnd: (e: Event) => void
+        }
+    ): () => void {
+        let moveHandler: ((ev: Event) => void) | null = null;
+        let endHandler: ((ev: Event) => void) | null = null;
+
+        const handleStart = (e: Event) => {
+            if (isResize) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+
+            this.isTouch = this.isTouchEvent(e);
+            const pos = this.getPointerPos(e);
+
+            this.startX = pos.x;
+            this.startY = pos.y;
+            this.activeElement = element;
+            if (isResize) this.isResizing = true;
+
+            handlers.onStart(e, { x: pos.x, y: pos.y });
+
+            // Determine event targets and types
+            const moveEvent = this.isTouch ? "touchmove" : "mousemove";
+            const endEvent = this.isTouch ? "touchend" : "mouseup";
+            const target = (isResize || this.isTouch) ? document : element;
+
+            // Create move handler
+            moveHandler = (ev: Event) => {
+                if (!this.activeElement) return;
+                if (this.isTouch && !isResize) ev.preventDefault();
+                if (!isResize && !this.isDragging) {
+                    const movePos = this.getPointerPos(ev);
+                    const deltaX = movePos.x - this.startX;
+                    const deltaY = movePos.y - this.startY;
+                    if (Math.abs(deltaX) + Math.abs(deltaY) > this.dragThreshold) {
+                        this.isDragging = true;
+                    }
+                }
+                const movePos = this.getPointerPos(ev);
+                handlers.onMove(ev, {
+                    x: movePos.x,
+                    y: movePos.y,
+                    deltaX: movePos.x - this.startX,
+                    deltaY: movePos.y - this.startY
+                });
+            };
+
+            // Create end handler
+            endHandler = (ev: Event) => {
+                if (!this.activeElement) return;
+                if (isResize) this.isResizing = false;
+                handlers.onEnd(ev);
+                this.cleanup();
+
+                // Remove listeners after end
+                if (moveHandler) target.removeEventListener(moveEvent, moveHandler);
+                if (endHandler) target.removeEventListener(endEvent, endHandler);
+                moveHandler = null;
+                endHandler = null;
+            };
+
+            target.addEventListener(moveEvent, moveHandler, { passive: false });
+            target.addEventListener(endEvent, endHandler);
+        };
+
+        element.addEventListener("mousedown", handleStart);
+        element.addEventListener("touchstart", handleStart, { passive: true });
+
+        return () => {
+            this.cleanup();
+            // Cleanup any lingering listeners
+            if (moveHandler || endHandler) {
+                const moveEvent = this.isTouch ? "touchmove" : "mousemove";
+                const endEvent = this.isTouch ? "touchend" : "mouseup";
+                const target = (isResize || this.isTouch) ? document : element;
+                if (moveHandler) target.removeEventListener(moveEvent, moveHandler);
+                if (endHandler) target.removeEventListener(endEvent, endHandler);
+            }
+        };
+    },
+
     // ⟪ Setup Functions ⟫
     setupDrag(
         element: HTMLElement,
@@ -71,57 +160,14 @@ const InputHandler = {
     ): (() => void) | undefined {
         if (!element) return;
 
-        const handleStart = (e: Event) => {
-            this.isTouch = this.isTouchEvent(e);
-            const pos = this.getPointerPos(e);
-
-            this.startX = pos.x;
-            this.startY = pos.y;
-            this.activeElement = element;
-
-            if (onStart) onStart(e, { x: pos.x, y: pos.y });
-
-            if (this.isTouch) {
-                element.addEventListener("touchmove", handleMove, { passive: false });
-                element.addEventListener("touchend", handleEnd);
-                element.addEventListener("touchcancel", handleEnd);
-            } else {
-                element.addEventListener("mousemove", handleMove);
-                element.addEventListener("mouseup", handleEnd);
+        return this.setupPointerHandlers(element, false, {
+            onStart: (e, pos) => onStart?.(e, { x: pos.x, y: pos.y }),
+            onMove: (e, pos) => onMove?.(e, { x: pos.x, y: pos.y, deltaX: pos.deltaX, deltaY: pos.deltaY }),
+            onEnd: (e) => {
+                const pos = this.getPointerPos(e);
+                onEnd?.(e, { x: pos.x, y: pos.y, deltaX: pos.x - this.startX, deltaY: pos.y - this.startY });
             }
-        };
-
-        const handleMove = (e: Event) => {
-            if (!this.activeElement) return;
-            if (this.isTouch) e.preventDefault();
-
-            const pos = this.getPointerPos(e);
-            const deltaX = pos.x - this.startX;
-            const deltaY = pos.y - this.startY;
-
-            if (!this.isDragging && Math.abs(deltaX) + Math.abs(deltaY) > this.dragThreshold) {
-                this.isDragging = true;
-            }
-
-            if (onMove) onMove(e, { x: pos.x, y: pos.y, deltaX, deltaY });
-        };
-
-        const handleEnd = (e: Event) => {
-            if (!this.activeElement) return;
-
-            const pos = this.getPointerPos(e);
-            const deltaX = pos.x - this.startX;
-            const deltaY = pos.y - this.startY;
-
-            if (onEnd) onEnd(e, { x: pos.x, y: pos.y, deltaX, deltaY });
-
-            this.cleanup();
-        };
-
-        element.addEventListener("mousedown", handleStart);
-        element.addEventListener("touchstart", handleStart, { passive: true });
-
-        return () => this.cleanup();
+        });
     },
 
     setupResize(
@@ -133,54 +179,11 @@ const InputHandler = {
     ): (() => void) | undefined {
         if (!element) return;
 
-        const handleStart = (e: Event) => {
-            e.stopPropagation();
-            e.preventDefault();
-
-            this.isTouch = this.isTouchEvent(e);
-            const pos = this.getPointerPos(e);
-
-            this.startX = pos.x;
-            this.startY = pos.y;
-            this.activeElement = element;
-            this.isResizing = true;
-
-            if (onStart) onStart(e, { x: pos.x, y: pos.y, handle });
-
-            if (this.isTouch) {
-                document.addEventListener("touchmove", handleMove, { passive: false });
-                document.addEventListener("touchend", handleEnd);
-                document.addEventListener("touchcancel", handleEnd);
-            } else {
-                document.addEventListener("mousemove", handleMove);
-                document.addEventListener("mouseup", handleEnd);
-            }
-        };
-
-        const handleMove = (e: Event) => {
-            if (!this.activeElement || !this.isResizing) return;
-            if (this.isTouch) e.preventDefault();
-
-            const pos = this.getPointerPos(e);
-            const deltaX = pos.x - this.startX;
-            const deltaY = pos.y - this.startY;
-
-            if (onMove) onMove(e, { x: pos.x, y: pos.y, deltaX, deltaY, handle });
-        };
-
-        const handleEnd = (e: Event) => {
-            if (!this.isResizing) return;
-
-            if (onEnd) onEnd(e, { handle });
-
-            this.isResizing = false;
-            this.cleanup();
-        };
-
-        element.addEventListener("mousedown", handleStart);
-        element.addEventListener("touchstart", handleStart, { passive: false });
-
-        return () => this.cleanup();
+        return this.setupPointerHandlers(element, true, {
+            onStart: (e, pos) => onStart?.(e, { x: pos.x, y: pos.y, handle }),
+            onMove: (e, pos) => onMove?.(e, { x: pos.x, y: pos.y, deltaX: pos.deltaX, deltaY: pos.deltaY, handle }),
+            onEnd: (e) => onEnd?.(e, { handle })
+        });
     },
 
     setupTap(
