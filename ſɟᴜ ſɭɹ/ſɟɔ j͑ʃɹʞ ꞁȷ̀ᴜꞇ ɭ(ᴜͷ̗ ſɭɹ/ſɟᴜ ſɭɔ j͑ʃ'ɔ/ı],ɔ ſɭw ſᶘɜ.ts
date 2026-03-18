@@ -1,23 +1,34 @@
 // ≺⧼ Quick Settings Manager ⧽≻ - Centralized QS state management
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+declare const CONSTANTS: any;
+declare const Storage: any;
+
+interface QSState {
+    [ key: string ]: any;
+}
+
 const QSManager = ( function() {
-    let state = { ...CONSTANTS.QS.DEFAULTS };
+    let state: QSState = { ...CONSTANTS.QS.DEFAULTS };
 
     // ⟪ Load From Storage ⟫
 
-    function loadFromStorage() {
-        state = Storage.loadWithDefaults( CONSTANTS.STORAGE_KEYS.qsState, CONSTANTS.QS.DEFAULTS );
+    function loadFromStorage(): void {
+        const storage = (window as any).StorageUtil;
+        state = storage.loadWithDefaults( CONSTANTS.STORAGE_KEYS.qsState, CONSTANTS.QS.DEFAULTS );
     }
 
     // ⟪ Save To Storage ⟫
 
-    function saveToStorage() {
-        Storage.set( CONSTANTS.STORAGE_KEYS.qsState, state );
+    function saveToStorage(): void {
+        const storage = (window as any).StorageUtil;
+        storage.set( CONSTANTS.STORAGE_KEYS.qsState, state );
     }
 
     // ⟪ Dispatch Change Event ⟫
 
-    function dispatchChange( key, value ) {
+    function dispatchChange( key: string, value: any ): void {
         const event = new CustomEvent( CONSTANTS.EVENT_NAMES.settingsChange, {
             detail: { key, value }
         } );
@@ -27,13 +38,13 @@ const QSManager = ( function() {
     return {
         // ⟪ Get State ⟫
 
-        get( key ) {
+        get( key: string ): any {
             return state[ key ];
         },
 
         // ⟪ Set State ⟫
 
-        set( key, value ) {
+        set( key: string, value: any ): void {
             state[ key ] = value;
             saveToStorage();
             dispatchChange( key, value );
@@ -41,7 +52,7 @@ const QSManager = ( function() {
 
         // ⟪ Toggle State ⟫
 
-        toggle( key ) {
+        toggle( key: string ): boolean {
             const newValue = !state[ key ];
             this.set( key, newValue );
             return newValue;
@@ -49,22 +60,22 @@ const QSManager = ( function() {
 
         // ⟪ Get All State ⟫
 
-        getAll() {
+        getAll(): QSState {
             return { ...state };
         },
 
         // ⟪ Set All State ⟫
 
-        setAll( newState ) {
+        setAll( newState: QSState ): void {
             state = { ...state, ...newState };
             saveToStorage();
         },
 
         // ⟪ Update Brightness ⟫
 
-        setBrightness( value ) {
+        setBrightness( value: number ): void {
             this.set( "brightness", value );
-            document.documentElement.style.setProperty( CONSTANTS.CSS_VARS.brightness, value / CONSTANTS.SYS.BRIGHTNESS_MAX );
+            document.documentElement.style.setProperty( CONSTANTS.CSS_VARS.brightness, ( value / CONSTANTS.SYS.BRIGHTNESS_MAX ).toString() );
             const osRoot = document.getElementById( "os-root" );
             if ( osRoot ) {
                 osRoot.style.filter = `brightness(${CONSTANTS.ANIM.FRACTIONS.fourEighths + ( value / CONSTANTS.SYS.BRIGHTNESS_BUFFER )})`;
@@ -73,14 +84,14 @@ const QSManager = ( function() {
 
         // ⟪ Update Volume ⟫
 
-        setVolume( value ) {
+        setVolume( value: number ): void {
             this.set( "volume", value );
             // Could integrate with Web Audio API here
         },
 
         // ⟪ Toggle Button Handler ⟫
 
-        handleToggle( btn ) {
+        handleToggle( btn: HTMLElement ): void {
             const isPressed = btn.getAttribute( "aria-pressed" ) === "true";
             const newState = !isPressed;
             btn.setAttribute( "aria-pressed", newState.toString() );
@@ -93,29 +104,29 @@ const QSManager = ( function() {
 
         // ⟪ Init ⟫
 
-        init() {
+        init(): void {
             loadFromStorage();
             this.restoreUI();
         },
 
         // ⟪ Restore UI State ⟫
 
-        restoreUI() {
+        restoreUI(): void {
             // Restore toggle button states
-            document.querySelectorAll( ".xeku1okek" ).forEach( btn => {
-                const setting = btn.getAttribute( "data-setting" );
+            document.querySelectorAll( ".xeku1okek" ).forEach( ( btn: Element ) => {
+                const setting = ( btn as HTMLElement ).getAttribute( "data-setting" );
                 if ( setting ) {
                     const value = this.get( setting );
-                    btn.setAttribute( "aria-pressed", value?.toString() || "false" );
+                    ( btn as HTMLElement ).setAttribute( "aria-pressed", value?.toString() || "false" );
                 }
             } );
 
             // Restore slider values
-            document.querySelectorAll( "#quick-settings-sliders input[type='range']" ).forEach( slider => {
+            document.querySelectorAll( "#quick-settings-sliders input[type='range']" ).forEach( ( slider: Element ) => {
                 const parent = slider.closest( "[data-qs-id]" );
                 const id = parent?.getAttribute( "data-qs-id" );
                 if ( id ) {
-                    slider.value = this.get( id ) || 0;
+                    ( slider as HTMLInputElement ).value = this.get( id ) || 0;
                 }
             } );
         }
@@ -124,4 +135,4 @@ const QSManager = ( function() {
 
 // ⟪ Global Alias ⟫
 
-window.QSManager = QSManager;
+( window as any ).QSManager = QSManager;

@@ -1,73 +1,84 @@
 // ≺⧼ Notification Manager ⧽≻ - Centralized notification management
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+declare const CONSTANTS: any;
+declare const Storage: any;
+declare const DOMCache: any;
+declare const getStrings: any;
+declare const System: any;
+
 class NotificationManager {
-    static #dismissed = new Set();
-    static #notifications = [...CONSTANTS.NOTIFICATION_DEFAULTS];
+    static #dismissed: Set<any> = new Set();
+    static #notifications: any[] = [...CONSTANTS.NOTIFICATION_DEFAULTS];
 
     // ⟨ Load Dismissed From Storage ⟩
-    static loadFromStorage() {
-        const stored = Storage.get(CONSTANTS.STORAGE_KEYS.dismissedNotifs, []);
-        stored.forEach(id => this.#dismissed.add(id));
+    static loadFromStorage(): void {
+        const storage = (window as any).StorageUtil;
+        const stored: number[] = storage.get(CONSTANTS.STORAGE_KEYS.dismissedNotifs, []);
+        stored.forEach((id: number) => this.#dismissed.add(id));
     }
 
     // ⟨ Save To Storage ⟩
-    static saveToStorage() {
-        Storage.set(CONSTANTS.STORAGE_KEYS.dismissedNotifs, Array.from(this.#dismissed));
+    static saveToStorage(): void {
+        const storage = (window as any).StorageUtil;
+        storage.set(CONSTANTS.STORAGE_KEYS.dismissedNotifs, Array.from(this.#dismissed));
     }
 
     // ⟨ Add Notification ⟩
-    static add(notification) {
+    static add(notification: any): void {
         this.#notifications.push(notification);
         this.render();
     }
 
     // ⟨ Remove Notification ⟩
-    static remove(index) {
+    static remove(index: number): void {
         this.#notifications.splice(index, 1);
         this.render();
     }
 
     // ⟨ Dismiss Notification ⟩
-    static dismiss(index) {
+    static dismiss(index: number): void {
         this.#dismissed.add(index);
         this.saveToStorage();
         this.render();
     }
 
     // ⟨ Clear All Notifications ⟩
-    static clear() {
+    static clear(): void {
         this.#notifications.forEach((_, i) => this.#dismissed.add(i));
         this.saveToStorage();
         this.render();
     }
 
     // ⟨ Get Active Notifications ⟩
-    static getActive() {
+    static getActive(): any[] {
         return this.#notifications.filter((_, i) => !this.#dismissed.has(i));
     }
 
     // ⟨ Get Count ⟩
-    static getCount() {
+    static getCount(): number {
         return this.getActive().length;
     }
 
     // ⟨ Render Notifications ⟩
-    static render() {
+    static render(): void {
         const list = DOMCache.get("notif-list");
         if (!list) return;
 
         const strings = getStrings();
         const active = this.getActive();
-        const countSpan = document.querySelector(".notification-count");
+        const countSpan: any = document.querySelector(".notification-count");
 
         if (active.length === 0) {
             const noNotifText = strings.notif_none;
             list.innerHTML = `<div>${noNotifText}</div>`;
-            if (countSpan) countSpan.innerText = System.toOctalString("0");
+            const system = (window as any).System;
+            if (countSpan && system) countSpan.innerText = system.toOctalString("0");
             return;
         }
 
-        list.innerHTML = active.map((n, idx) => {
+        list.innerHTML = active.map((n: any, idx: number) => {
             const origIdx = this.#notifications.indexOf(n);
             const title = strings[n.title];
             const desc = strings[n.desc];
@@ -81,12 +92,16 @@ class NotificationManager {
             </ciihii>`;
         }).join("");
 
-        if (countSpan) countSpan.innerText = System.toOctalString(this.getCount().toString());
+        const system = (window as any).System;
+        if (countSpan && system) countSpan.innerText = system.toOctalString(this.getCount().toString());
     }
 
     // ⟨ Init ⟩
-    static init() {
+    static init(): void {
         this.loadFromStorage();
         this.render();
     }
 }
+
+// Attach to window for global access
+(window as any).NotificationManager = NotificationManager;

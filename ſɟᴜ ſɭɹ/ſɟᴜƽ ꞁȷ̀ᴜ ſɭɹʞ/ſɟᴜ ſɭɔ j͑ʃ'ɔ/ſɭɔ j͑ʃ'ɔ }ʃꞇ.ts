@@ -1,17 +1,62 @@
 // ≺⧼ Whiteboard Application - Main ⧽≻
 
+import {
+    canvas, ctx, state, panState, spaceState, layerState, objectState, pathState, textState, eraserState, historyState, connectionState,
+    TOOL_CURSORS, CURSOR_CLASSES,
+    CANVAS_WIDTH, CANVAS_HEIGHT, MIN_SIZE, HANDLE_SIZE, HANDLE_RADIUS, SELECTION_PADDING, CORNER_RADIUS,
+    DASH_LENGTH, ROTATE_HANDLE_OFFSET, ROTATE_HANDLE_RADIUS, RESIZE_HANDLE_HITBOX, MIN_ZOOM, MAX_ZOOM,
+    ZOOM_STEP_NUM, ZOOM_STEP_DEN, WHEEL_ZOOM_NUM, WHEEL_ZOOM_DEN, SMOOTHING_FACTOR,
+    TEXT_SIZE_MULTIPLIER, TEXT_MIN_WIDTH_MULTIPLIER, HISTORY_MAX, INITIAL_BRUSH_SIZE, ZOOM_BASE, MIN_DELTA,
+    LINE_DASH_PATTERN, SELECTION_LINE_WIDTH, HANDLE_FILL_COLOR, HANDLE_STROKE_COLOR, SELECTION_STROKE_COLOR,
+    MIN_PATH_DIMENSION, TEXT_EDIT_INDEX_NONE, MIN_PATH_POINTS, CONNECTION_LINE_DASH,
+    WhiteboardObject, Point, Layer, Rect, TouchOrMouseEvent, ResetStateOptions
+} from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
+
+import {
+    getClientCoords, generateId, resetCursor, setCursor, getToolCursor,
+    resetAllState, resetSelectionState, stopPanning,
+    setButtonPressed, initButtonGroup, initButton, initButtons,
+    startTextEdit, positionTextEditInput, getTextEditPosition, finishTextEditCommon,
+    getBounds, getObjectBounds, getObjectExpandedBounds, getObjectCornerPoints,
+    getCenter, getCenterX, getCenterY,
+    isPointInObject, findObjectAtPoint, distanceToObject,
+    pointToLineDistance, distance,
+    drawRoundedRectPath, drawAsymmetricalSquarePath, drawShapePath, drawShapePreview, createShapeObject,
+    createPathObject, drawPathSegments, drawPathPreview,
+    drawPreviewShape,
+    normalizeRect, isObjectInRect,
+    normalizeHexColor, isValidHexColor, getContrastingColors,
+    getObjectInitialState, invalidateTextCaches, clearTextObjectCache, removeObject, transformSelectedObjects,
+    getHandles, findResizeHandle, findRotateHandle, getResizeCursor, resizeObject,
+    resizeLineObject, resizePathObject, resizeShapeObject,
+    moveObject, moveObjectByDelta,
+    expandBounds, eraseObjectsAlongPath,
+    objectTouchesPath, objectIntersectsPath, getObjectSamplePointsForErasure,
+    splitObjectByPath, splitPathObject, splitLineObject, splitCircleObject,
+    getLineT, linesIntersect, lineLineIntersection, segmentsIntersectWithRadius, pointToSegmentDistance,
+    isValidObject,
+    getResizeOriginAndScale,
+    OBJECT_HANDLERS, DEFAULT_HANDLER, getHandler,
+    getConnectionEndpoints, isConnectionValid,
+    initTextEditInput as initTextEditInputUtil
+} from "./ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
+
 // ⟪ Layer Manager Class 📋 ⟫
 
 class LayerManager {
+    layers: Layer[];
+    activeId: number;
+    counter: number;
+
     constructor() {
         this.layers = [];
         this.activeId = 0;
         this.counter = 0;
     }
 
-    create(name) {
+    create(name?: string): Layer {
         this.counter++;
-        const layer = {
+        const layer: Layer = {
             id: this.counter,
             name: name || `ꞙɭ${this.counter} ɭ(ꞇ ɭʃᴜ }ʃɔƽ`,
             visible: true,
@@ -22,31 +67,31 @@ class LayerManager {
         return layer;
     }
 
-    delete(layerId) {
+    delete(layerId: number): boolean {
         if (this.layers.length <= 1) return false;
         const index = this.layers.findIndex(l => l.id === layerId);
         if (index === -1) return false;
-        
+
         objectState.objects = objectState.objects.filter(o => o.layerId !== layerId);
         this.layers.splice(index, 1);
-        
+
         if (this.activeId === layerId) {
             this.activeId = this.layers[0].id;
         }
         return true;
     }
 
-    move(layerId, direction) {
+    move(layerId: number, direction: number): boolean {
         const index = this.layers.findIndex(l => l.id === layerId);
         const swapIndex = index + direction;
         if (swapIndex < 0 || swapIndex >= this.layers.length) return false;
-        
-        [this.layers[index], this.layers[swapIndex]] = 
+
+        [this.layers[index], this.layers[swapIndex]] =
         [this.layers[swapIndex], this.layers[index]];
         return true;
     }
 
-    toggleVisibility(layerId) {
+    toggleVisibility(layerId: number): boolean {
         const layer = this.layers.find(l => l.id === layerId);
         if (layer) {
             layer.visible = !layer.visible;
@@ -55,19 +100,19 @@ class LayerManager {
         return false;
     }
 
-    setActive(layerId) {
+    setActive(layerId: number): void {
         this.activeId = layerId;
     }
 
-    getActive() {
+    getActive(): Layer | undefined {
         return this.layers.find(l => l.id === this.activeId);
     }
 
-    isVisible(layerId) {
+    isVisible(layerId: number): boolean {
         return this.layers.find(l => l.id === layerId)?.visible ?? false;
     }
 
-    syncToLayerState() {
+    syncToLayerState(): void {
         layerState.layers = this.layers;
         layerState.activeId = this.activeId;
         layerState.counter = this.counter;
@@ -78,7 +123,7 @@ const layerManager = new LayerManager();
 
 // ⟪ Initialization 🚀 ⟫
 
-function init() {
+function init(): void {
     initCanvas();
     initLayers();
     initTextEditInput();
@@ -94,17 +139,18 @@ function init() {
     saveState();
 }
 
-function initCanvas() {
+function initCanvas(): void {
+    if (!canvas) return;
     canvas.width = CANVAS_WIDTH;
     canvas.height = CANVAS_HEIGHT;
 
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx!.fillStyle = "#ffffff";
+    ctx!.fillRect(0, 0, canvas.width, canvas.height);
 
-    document.getElementById("canvasSize").textContent = `${canvas.width} × ${canvas.height}`;
+    document.getElementById("canvasSize")!.textContent = `${canvas.width} × ${canvas.height}`;
 }
 
-function initLayers() {
+function initLayers(): void {
     layerManager.layers = [];
     layerManager.counter = 0;
     layerManager.create("ꞙɭı ɭ(ꞇ ɭʃᴜ }ʃɔƽ");
@@ -114,14 +160,14 @@ function initLayers() {
 
 // ⟪ Layer Management 📚 ⟫
 
-function addLayer() {
+function addLayer(): void {
     layerManager.create();
     layerManager.syncToLayerState();
     renderLayerList();
     saveState();
 }
 
-function deleteLayer() {
+function deleteLayer(): void {
     if (layerManager.delete(layerState.activeId)) {
         layerManager.syncToLayerState();
         renderLayerList();
@@ -130,7 +176,7 @@ function deleteLayer() {
     }
 }
 
-function moveLayer(direction) {
+function moveLayer(direction: number): void {
     if (layerManager.move(layerState.activeId, direction)) {
         layerManager.syncToLayerState();
         renderLayerList();
@@ -138,10 +184,10 @@ function moveLayer(direction) {
     }
 }
 
-function moveLayerUp() { moveLayer(1); }
-function moveLayerDown() { moveLayer(-1); }
+function moveLayerUp(): void { moveLayer(1); }
+function moveLayerDown(): void { moveLayer(-1); }
 
-function toggleLayerVisibility(layerId) {
+function toggleLayerVisibility(layerId: number): void {
     if (layerManager.toggleVisibility(layerId)) {
         renderLayerList();
         redrawCanvas();
@@ -149,13 +195,13 @@ function toggleLayerVisibility(layerId) {
     }
 }
 
-function selectLayer(layerId) {
+function selectLayer(layerId: number): void {
     layerManager.setActive(layerId);
     layerManager.syncToLayerState();
     renderLayerList();
 }
 
-function renderLayerList() {
+function renderLayerList(): void {
     const layerList = document.getElementById("layerList");
     if (!layerList) return;
 
@@ -169,7 +215,7 @@ function renderLayerList() {
             <span class="layer-visibility" data-visible="${layer.visible}"></span>
         `;
         layerItem.addEventListener("click", (e) => {
-            if (e.target.classList.contains("layer-visibility")) {
+            if ((e.target as HTMLElement).classList.contains("layer-visibility")) {
                 toggleLayerVisibility(layer.id);
             } else {
                 selectLayer(layer.id);
@@ -181,7 +227,7 @@ function renderLayerList() {
 
 // ⟪ Text Editing 📝 ⟫
 
-function removeEmptyTextObject(index) {
+function removeEmptyTextObject(index: number): void {
     if (index >= 0 && objectState.objects[index]) {
         objectState.objects.splice(index, 1);
         objectState.selected = [];
@@ -191,7 +237,7 @@ function removeEmptyTextObject(index) {
     }
 }
 
-function initTextEditInput() {
+function initTextEditInput(): void {
     textState.input = document.createElement("textarea");
     textState.input.className = "text-edit-input";
 
@@ -208,7 +254,7 @@ function initTextEditInput() {
     textState.input.addEventListener("input", () => {
         if (textState.editingIndex >= 0 && objectState.objects[textState.editingIndex]) {
             const obj = objectState.objects[textState.editingIndex];
-            obj.text = textState.input.value;
+            obj.text = textState.input!.value;
             obj.textDirty = true;
             obj.cachedCanvas = null;
             obj.cachedWidth = null;
@@ -217,26 +263,26 @@ function initTextEditInput() {
         }
     });
 
-    document.getElementById("whiteboardContainer").appendChild(textState.input);
+    document.getElementById("whiteboardContainer")!.appendChild(textState.input);
 }
 
-function startTextEditing(x, y, existingText = null) {
+function startTextEditing(x: number, y: number, existingText: string | null = null): void {
     startTextEdit();
     textState.isEditing = true;
     positionTextEditInput(x, y, state.size * TEXT_SIZE_MULTIPLIER, state.color);
-    textState.input.value = existingText || "";
-    textState.input.classList.add("visible");
-    textState.input.focus();
+    textState.input!.value = existingText || "";
+    textState.input!.classList.add("visible");
+    textState.input!.focus();
 
     const autoResize = () => {
-        textState.input.style.height = "auto";
-        textState.input.style.height = textState.input.scrollHeight + "px";
+        textState.input!.style.height = "auto";
+        textState.input!.style.height = textState.input!.scrollHeight + "px";
     };
     autoResize();
-    textState.input.addEventListener("input", autoResize, { once: true });
+    textState.input!.addEventListener("input", autoResize, { once: true });
 }
 
-function finishTextEditing() {
+function finishTextEditing(): void {
     if (!textState.isEditing || !textState.input) return;
 
     const text = textState.input.value;
@@ -279,43 +325,43 @@ function finishTextEditing() {
     saveState();
 }
 
-function cancelTextEditing() {
+function cancelTextEditing(): void {
     if (!textState.isEditing || !textState.input) return;
 
-    if (textState.editingIndex >= 0 && objectState.objects[textState.editingIndex]?.text.trim() === "") {
+    if (textState.editingIndex >= 0 && objectState.objects[textState.editingIndex]?.text?.trim() === "") {
         removeEmptyTextObject(textState.editingIndex);
     } else {
         finishTextEditCommon();
     }
 }
 
-function editTextObject(obj) {
+function editTextObject(obj: WhiteboardObject): void {
     startTextEdit();
     textState.isEditing = true;
     textState.editingIndex = objectState.objects.indexOf(obj);
-    positionTextEditInput(obj.x, obj.y, obj.size, obj.color);
-    textState.input.value = obj.text;
-    textState.input.classList.add("visible");
-    textState.input.focus();
-    textState.input.select();
+    positionTextEditInput(obj.x!, obj.y!, obj.size!, obj.color!);
+    textState.input!.value = obj.text || "";
+    textState.input!.classList.add("visible");
+    textState.input!.focus();
+    textState.input!.select();
 }
 
 // ⟪ UI Initialization 🎨 ⟫
 
-function initColors() {
+function initColors(): void {
     const colorGrid = document.getElementById("colorGrid");
     if (!colorGrid) return;
 
     initButtonGroup("#colorGrid button[data-color]", "#colorGrid button", (btn) => {
-        state.color = btn.dataset.color;
+        state.color = btn.dataset.color!;
     });
 
     initCustomColor();
 }
 
-function initCustomColor() {
-    const colorPicker = document.getElementById("customColor");
-    const hexInput = document.getElementById("hexColor");
+function initCustomColor(): void {
+    const colorPicker = document.getElementById("customColor") as HTMLInputElement | null;
+    const hexInput = document.getElementById("hexColor") as HTMLInputElement | null;
 
     if (!colorPicker || !hexInput) return;
 
@@ -343,46 +389,46 @@ function initCustomColor() {
     });
 }
 
-function initToolsAndShapes() {
+function initToolsAndShapes(): void {
     initButtonGroup("button[data-tool]", "button[data-tool]", (btn) => {
-        state.tool = btn.dataset.tool;
-        canvas.dataset.tool = state.tool;
+        state.tool = btn.dataset.tool!;
+        if (canvas) canvas.dataset.tool = state.tool;
         updateTransformControls();
         if (!panState.isPanning && !state.isDrawing) setCursor(getToolCursor());
     });
 
     initButtonGroup("button[data-shape]", "button[data-shape]", (btn) => {
-        state.shape = btn.dataset.shape;
+        state.shape = btn.dataset.shape!;
         state.tool = "shape";
-        canvas.dataset.tool = "shape";
+        if (canvas) canvas.dataset.tool = "shape";
         updateTransformControls();
         if (!panState.isPanning && !state.isDrawing) setCursor(getToolCursor());
     });
 
-    const htmlTextCheckbox = document.getElementById("htmlTextCheckbox");
+    const htmlTextCheckbox = document.getElementById("htmlTextCheckbox") as HTMLInputElement | null;
     if (htmlTextCheckbox) {
         textState.useHtml = htmlTextCheckbox.checked;
         htmlTextCheckbox.addEventListener("change", () => { textState.useHtml = htmlTextCheckbox.checked; });
     }
 
-    const eraserModeCheckbox = document.getElementById("eraserModeCheckbox");
+    const eraserModeCheckbox = document.getElementById("eraserModeCheckbox") as HTMLInputElement | null;
     if (eraserModeCheckbox) {
         eraserState.eraseObjects = eraserModeCheckbox.checked;
         eraserModeCheckbox.addEventListener("change", () => { eraserState.eraseObjects = eraserModeCheckbox.checked; });
     }
 }
 
-function initSizeSlider() {
-    const slider = document.getElementById("brushSize");
+function initSizeSlider(): void {
+    const slider = document.getElementById("brushSize") as HTMLInputElement;
     const valueDisplay = document.getElementById("brushSizeValue");
 
     slider.addEventListener("input", () => {
         state.size = parseInt(slider.value);
-        valueDisplay.textContent = state.size;
+        valueDisplay!.textContent = state.size.toString();
     });
 }
 
-function initToolbar() {
+function initToolbar(): void {
     const toolbar = document.getElementById("toolbarContainer");
     initButton("toolbarToggle", () => {
         if (toolbar) a3esoza(toolbar);
@@ -391,7 +437,7 @@ function initToolbar() {
 
 // ⟪ History & Undo/Redo 📚 ⟫
 
-function saveState() {
+function saveState(): void {
     historyState.history = historyState.history.slice(0, historyState.index + 1);
 
     const stateData = {
@@ -410,10 +456,10 @@ function saveState() {
     updateUndoRedoButtons();
 }
 
-function undo() { changeHistory(-1); }
-function redo() { changeHistory(1); }
+function undo(): void { changeHistory(-1); }
+function redo(): void { changeHistory(1); }
 
-function changeHistory(direction) {
+function changeHistory(direction: number): void {
     const newIndex = historyState.index + direction;
     if (newIndex < 0 || newIndex >= historyState.history.length) return;
 
@@ -426,7 +472,7 @@ function changeHistory(direction) {
     updateUndoRedoButtons();
 }
 
-function updateUndoRedoButtons() {
+function updateUndoRedoButtons(): void {
     const btnStates = [
         { ids: ["undoBtn", "quickUndo"], disabled: historyState.index <= 0 },
         { ids: ["redoBtn", "quickRedo"], disabled: historyState.index >= historyState.history.length - 1 }
@@ -435,14 +481,15 @@ function updateUndoRedoButtons() {
     btnStates.forEach(({ ids, disabled }) => {
         ids.forEach(id => {
             const btn = document.getElementById(id);
-            if (btn) btn.disabled = disabled;
+            if (btn) (btn as HTMLButtonElement).disabled = disabled;
         });
     });
 }
 
 // ⟪ Canvas Input & Drawing ✏️ ⟫
 
-function getCanvasCoords(e) {
+function getCanvasCoords(e: TouchOrMouseEvent): Point {
+    if (!canvas) return { x: 0, y: 0 };
     const rect = canvas.getBoundingClientRect();
     const zoom = state.zoomNum / state.zoomDen;
     const scaleX = canvas.width / rect.width;
@@ -455,7 +502,7 @@ function getCanvasCoords(e) {
     };
 }
 
-function startDrawing(e) {
+function startDrawing(e: TouchOrMouseEvent): void {
     e.preventDefault();
     state.isDrawing = true;
 
@@ -497,8 +544,8 @@ function startDrawing(e) {
     }
 }
 
-function createTextBox(x, y) {
-    const textObj = {
+function createTextBox(x: number, y: number): void {
+    const textObj: WhiteboardObject = {
         type: "text", x: x, y: y,
         text: "", color: state.color,
         size: state.size * TEXT_SIZE_MULTIPLIER,
@@ -515,7 +562,7 @@ function createTextBox(x, y) {
     setTimeout(() => editTextObject(textObj), 0o10);
 }
 
-function handleSelectToolClick(x, y, e) {
+function handleSelectToolClick(x: number, y: number, e: TouchOrMouseEvent): void {
     const coords = { x, y };
 
     if (objectState.selected.length > 0 && startRotation(coords.x, coords.y)) return;
@@ -562,7 +609,7 @@ function handleSelectToolClick(x, y, e) {
     redrawCanvas();
 }
 
-function startRotation(x, y) {
+function startRotation(x: number, y: number): boolean {
     if (findRotateHandle(x, y)) {
         objectState.isRotating = true;
         const obj = objectState.selected[0];
@@ -591,7 +638,7 @@ function startRotation(x, y) {
     return false;
 }
 
-function rotateSelectedObjects(x, y) {
+function rotateSelectedObjects(x: number, y: number): void {
     const obj = objectState.selected[0];
     const center = getCenter(obj);
     const dx = x - center.x, dy = y - center.y;
@@ -603,11 +650,11 @@ function rotateSelectedObjects(x, y) {
     redrawCanvas();
 }
 
-function draw(e) {
+function draw(e: TouchOrMouseEvent): void {
     e.preventDefault();
     const coords = getCanvasCoords(e);
 
-    document.getElementById("cursorPos").textContent =
+    document.getElementById("cursorPos")!.textContent =
         `${Math.round(coords.x / 0o10) * 0o10}, ${Math.round(coords.y / 0o10) * 0o10}`;
 
     if (state.tool === "select" && !state.isDrawing) {
@@ -627,7 +674,7 @@ function draw(e) {
 
     if (state.tool === "select") {
         if (objectState.isResizing && objectState.resizeHandle && objectState.selected.length > 0) {
-            objectState.selected.forEach(obj => resizeObject(obj, coords.x, coords.y, objectState.resizeHandle));
+            objectState.selected.forEach(obj => resizeObject(obj, coords.x, coords.y, objectState.resizeHandle!));
             redrawCanvas();
         } else if (objectState.isRotating && objectState.selected.length > 0) {
             rotateSelectedObjects(coords.x, coords.y);
@@ -637,8 +684,8 @@ function draw(e) {
             objectState.selected.forEach((obj, i) => moveObjectByDelta(obj, dx, dy, objectState.initialObjectStates[i] || {}));
             redrawCanvas();
         } else if (objectState.isSelecting) {
-            objectState.selectionRect.width = coords.x - state.startX;
-            objectState.selectionRect.height = coords.y - state.startY;
+            objectState.selectionRect!.width = coords.x - state.startX;
+            objectState.selectionRect!.height = coords.y - state.startY;
             redrawCanvas();
             drawSelectionRect();
         }
@@ -662,29 +709,29 @@ function draw(e) {
         redrawCanvas();
     } else if (state.tool === "connect" && connectionState.startObj) {
         redrawCanvas();
-        ctx.save();
-        ctx.strokeStyle = state.color;
-        ctx.lineWidth = state.size;
-        ctx.setLineDash(LINE_DASH_PATTERN);
-        ctx.beginPath();
+        ctx!.save();
+        ctx!.strokeStyle = state.color;
+        ctx!.lineWidth = state.size;
+        ctx!.setLineDash(LINE_DASH_PATTERN);
+        ctx!.beginPath();
         const startC = getCenter(connectionState.startObj);
-        ctx.moveTo(startC.x, startC.y);
-        ctx.lineTo(coords.x, coords.y);
-        ctx.stroke();
-        ctx.restore();
+        ctx!.moveTo(startC.x, startC.y);
+        ctx!.lineTo(coords.x, coords.y);
+        ctx!.stroke();
+        ctx!.restore();
     }
 
     if (state.tool === "shape" && state.shape) {
         pathState.preview = createShapeObject(state.shape, state.startX, state.startY, coords.x, coords.y);
         redrawCanvas();
-        drawPreviewShape(pathState.preview);
+        if (pathState.preview) drawPreviewShape(pathState.preview);
     }
 
     state.lastX = coords.x;
     state.lastY = coords.y;
 }
 
-function stopDrawing(e) {
+function stopDrawing(e: TouchOrMouseEvent): void {
     if (!state.isDrawing) return;
 
     const coords = getCanvasCoords(e);
@@ -703,17 +750,16 @@ function stopDrawing(e) {
     }
 
     if (state.tool === "shape" && state.shape && pathState.preview) {
-        // Check minimum size based on shape type
         let shouldAdd = false;
         if (pathState.preview.type === "circle") {
-            shouldAdd = pathState.preview.radiusX > 0o2 || pathState.preview.radiusY > 0o2;
+            shouldAdd = pathState.preview.radiusX! > 0o2 || pathState.preview.radiusY! > 0o2;
         } else if (pathState.preview.type === "line") {
-            shouldAdd = Math.abs(pathState.preview.x2 - pathState.preview.x1) > 0o4 ||
-                       Math.abs(pathState.preview.y2 - pathState.preview.y1) > 0o4;
+            shouldAdd = Math.abs(pathState.preview.x2! - pathState.preview.x1!) > 0o4 ||
+                       Math.abs(pathState.preview.y2! - pathState.preview.y1!) > 0o4;
         } else {
-            shouldAdd = pathState.preview.width > 0o4 || pathState.preview.height > 0o4;
+            shouldAdd = pathState.preview.width! > 0o4 || pathState.preview.height! > 0o4;
         }
-        
+
         if (shouldAdd) {
             objectState.objects.push(pathState.preview);
         }
@@ -739,7 +785,7 @@ function stopDrawing(e) {
             objectState.objects.push({
                 type: "connection",
                 id: generateId(),
-                startId: connectionState.startObj.id,
+                startId: connectionState.startObj.id!,
                 endId: targetObj.id,
                 color: state.color,
                 size: state.size,
@@ -762,7 +808,7 @@ function stopDrawing(e) {
     }
 }
 
-function drawSelectionRect() {
+function drawSelectionRect(): void {
     if (!objectState.selectionRect) return;
 
     const rect = normalizeRect(objectState.selectionRect);
@@ -771,31 +817,31 @@ function drawSelectionRect() {
         { x: rect.x + rect.width - 0o4, y: rect.y + rect.height - 0o4 }
     ]);
 
-    ctx.save();
-    ctx.strokeStyle = colors.stroke;
-    ctx.lineWidth = 1;
-    ctx.setLineDash(LINE_DASH_PATTERN);
-    ctx.fillStyle = colors.fill;
+    ctx!.save();
+    ctx!.strokeStyle = colors.stroke;
+    ctx!.lineWidth = 1;
+    ctx!.setLineDash(LINE_DASH_PATTERN);
+    ctx!.fillStyle = colors.fill;
     drawRoundedRectPath(rect.x, rect.y, rect.width, rect.height, CORNER_RADIUS, true);
-    ctx.restore();
+    ctx!.restore();
 }
 
-function drawHoverEffect(obj) {
+function drawHoverEffect(obj: WhiteboardObject): void {
     const colors = getContrastingColors([{ x: getCenterX(obj), y: getCenterY(obj) }]);
 
-    ctx.save();
+    ctx!.save();
     applyObjectTransform(obj);
-    ctx.strokeStyle = colors.stroke;
-    ctx.fillStyle = "rgba(0,0,0,0)";
-    ctx.lineWidth = SELECTION_LINE_WIDTH;
-    ctx.setLineDash(LINE_DASH_PATTERN);
+    ctx!.strokeStyle = colors.stroke;
+    ctx!.fillStyle = "rgba(0,0,0,0)";
+    ctx!.lineWidth = SELECTION_LINE_WIDTH;
+    ctx!.setLineDash(LINE_DASH_PATTERN);
 
     const bounds = getObjectBounds(obj);
     drawRoundedRectPath(bounds.x, bounds.y, bounds.width, bounds.height, CORNER_RADIUS, false);
-    ctx.restore();
+    ctx!.restore();
 }
 
-function getSelectionBounds() {
+function getSelectionBounds(): Rect | null {
     if (objectState.selected.length === 0) return null;
 
     if (objectState.selected.length === 1) {
@@ -827,7 +873,7 @@ function getSelectionBounds() {
 
 // ⟪ Transform Controls 🎛️ ⟫
 
-function updateTransformControls() {
+function updateTransformControls(): void {
     const controls = document.getElementById("transformControls");
     if (controls) {
         const hasTextObject = objectState.selected.some(obj => obj.type === "text");
@@ -836,7 +882,7 @@ function updateTransformControls() {
     }
 }
 
-function initTransformControls() {
+function initTransformControls(): void {
     initButton("editSelected", () => {
         if (objectState.selected.length === 0) return;
         const obj = objectState.selected[0];
@@ -858,8 +904,8 @@ function initTransformControls() {
         redrawCanvas();
     });
 
-    initButton("rotateLeft", () => transformSelectedObjects(obj => { obj.rotation -= Math.PI / 0o10; }));
-    initButton("rotateRight", () => transformSelectedObjects(obj => { obj.rotation += Math.PI / 0o10; }));
+    initButton("rotateLeft", () => transformSelectedObjects(obj => { obj.rotation! -= Math.PI / 0o10; }));
+    initButton("rotateRight", () => transformSelectedObjects(obj => { obj.rotation! += Math.PI / 0o10; }));
 
     initButton("moveLayerUp", reorderSelectedObjects);
     initButton("moveLayerDown", () => reorderSelectedObjects(-1));
@@ -870,7 +916,7 @@ function initTransformControls() {
     initButton("flipV", () => transformSelectedObjects(obj => { if (obj.height) obj.flipV = !obj.flipV; }));
 }
 
-function reorderSelectedObjects(direction = 1) {
+function reorderSelectedObjects(direction: number = 1): void {
     if (objectState.selected.length === 0) return;
     objectState.selected.forEach(obj => {
         const index = objectState.objects.indexOf(obj);
@@ -888,7 +934,8 @@ function reorderSelectedObjects(direction = 1) {
 
 // ⟪ Canvas Rendering 🖼️ ⟫
 
-function redrawCanvas() {
+function redrawCanvas(): void {
+    if (!ctx || !canvas) return;
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -902,64 +949,64 @@ function redrawCanvas() {
     objectState.selected.forEach(obj => drawSelectionBox(obj));
 }
 
-function applyObjectTransform(obj) {
+function applyObjectTransform(obj: WhiteboardObject): void {
     const cx = getCenterX(obj);
     const cy = getCenterY(obj);
 
     if (obj.rotation !== undefined && obj.rotation !== 0) {
-        ctx.translate(cx, cy);
-        ctx.rotate(obj.rotation);
-        ctx.translate(-cx, -cy);
+        ctx!.translate(cx, cy);
+        ctx!.rotate(obj.rotation);
+        ctx!.translate(-cx, -cy);
     }
 
     if (obj.flipH && obj.width) {
-        ctx.translate(obj.x + obj.width, 0);
-        ctx.scale(-1, 1);
-        ctx.translate(-obj.x, 0);
+        ctx!.translate(obj.x! + obj.width, 0);
+        ctx!.scale(-1, 1);
+        ctx!.translate(-obj.x!, 0);
     }
 
     if (obj.flipV && obj.height) {
-        ctx.translate(0, obj.y + obj.height);
-        ctx.scale(1, -1);
-        ctx.translate(0, -obj.y);
+        ctx!.translate(0, obj.y! + obj.height);
+        ctx!.scale(1, -1);
+        ctx!.translate(0, -obj.y!);
     }
 }
 
-function drawObject(obj) {
-    ctx.save();
+function drawObject(obj: WhiteboardObject): void {
+    ctx!.save();
     applyObjectTransform(obj);
 
-    ctx.strokeStyle = obj.color;
-    ctx.fillStyle = obj.color;
-    ctx.lineWidth = obj.size || 2;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
+    ctx!.strokeStyle = obj.color!;
+    ctx!.fillStyle = obj.color!;
+    ctx!.lineWidth = obj.size || 2;
+    ctx!.lineCap = "round";
+    ctx!.lineJoin = "round";
 
     switch (obj.type) {
         case "line":
-            ctx.beginPath();
-            ctx.moveTo(obj.x1, obj.y1);
-            ctx.lineTo(obj.x2, obj.y2);
-            ctx.stroke();
+            ctx!.beginPath();
+            ctx!.moveTo(obj.x1!, obj.y1!);
+            ctx!.lineTo(obj.x2!, obj.y2!);
+            ctx!.stroke();
             break;
         case "connection":
             const endpoints = getConnectionEndpoints(obj);
             if (endpoints) {
-                ctx.beginPath();
-                ctx.moveTo(endpoints.start.x, endpoints.start.y);
-                ctx.lineTo(endpoints.end.x, endpoints.end.y);
-                ctx.stroke();
+                ctx!.beginPath();
+                ctx!.moveTo(endpoints.start.x, endpoints.start.y);
+                ctx!.lineTo(endpoints.end.x, endpoints.end.y);
+                ctx!.stroke();
             }
             break;
         case "circle":
-            ctx.beginPath();
-            ctx.ellipse(obj.x, obj.y, obj.radiusX, obj.radiusY, 0, 0, Math.PI * 2);
-            ctx.stroke();
+            ctx!.beginPath();
+            ctx!.ellipse(obj.x!, obj.y!, obj.radiusX!, obj.radiusY!, 0, 0, Math.PI * 2);
+            ctx!.stroke();
             break;
         case "text":
-            ctx.font = `${obj.size}px "ı],ᴜ }ʃᴜ", sans-serif`;
+            ctx!.font = `${obj.size}px "ı],ᴜ }ʃᴜ", sans-serif`;
             if (obj.useHtmlText) drawHtmlText(obj);
-            else ctx.fillText(obj.text || "", obj.x, obj.y);
+            else ctx!.fillText(obj.text || "", obj.x!, obj.y!);
             break;
         case "path":
         case "smoothPath":
@@ -970,15 +1017,15 @@ function drawObject(obj) {
             break;
     }
 
-    ctx.restore();
+    ctx!.restore();
 }
 
-function drawHtmlText(obj) {
+function drawHtmlText(obj: WhiteboardObject): void {
     const hasCache = obj.cachedCanvas && obj.cachedWidth && obj.cachedHeight;
     if (hasCache && !obj.textDirty) {
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = "high";
-        ctx.drawImage(obj.cachedCanvas, obj.x, obj.y - obj.cachedHeight, obj.cachedWidth, obj.cachedHeight);
+        ctx!.imageSmoothingEnabled = true;
+        ctx!.imageSmoothingQuality = "high";
+        ctx!.drawImage(obj.cachedCanvas!, obj.x!, obj.y! - (obj.cachedHeight || 0), obj.cachedWidth!, obj.cachedHeight!);
         return;
     }
 
@@ -986,7 +1033,7 @@ function drawHtmlText(obj) {
     const tempContainer = document.createElement("div");
     tempContainer.className = "cepufal cepufal-html-text-measure " + uniqueClass;
     tempContainer.style.font = `${obj.size}px "ı],ᴜ }ʃᴜ", sans-serif`;
-    tempContainer.style.color = obj.color;
+    tempContainer.style.color = obj.color!;
 
     const textContent = obj.text || " ";
     tempContainer.appendChild(document.createTextNode(textContent));
@@ -996,18 +1043,18 @@ function drawHtmlText(obj) {
 
     let width = tempContainer.offsetWidth;
     let height = tempContainer.offsetHeight;
-    width = Math.max(width, obj.size * TEXT_MIN_WIDTH_MULTIPLIER);
-    height = Math.max(height, obj.size);
+    width = Math.max(width, obj.size! * TEXT_MIN_WIDTH_MULTIPLIER);
+    height = Math.max(height, obj.size!);
 
     const dpr = window.devicePixelRatio || 1;
     const offscreen = document.createElement("canvas");
     offscreen.width = Math.max(1, Math.floor(width * dpr));
     offscreen.height = Math.max(1, Math.floor(height * dpr));
-    const offCtx = offscreen.getContext("2d");
+    const offCtx = offscreen.getContext("2d")!;
     offCtx.scale(dpr, dpr);
     offCtx.clearRect(0, 0, width, height);
     offCtx.font = `${obj.size}px "ı],ᴜ }ʃᴜ", sans-serif`;
-    offCtx.fillStyle = obj.color;
+    offCtx.fillStyle = obj.color!;
     offCtx.textBaseline = "top";
     offCtx.textAlign = "left";
 
@@ -1016,10 +1063,10 @@ function drawHtmlText(obj) {
 
     for (let i = 0; i < childNodes.length; i++) {
         const node = childNodes[i];
-        if (node.nodeType === Node.ELEMENT_NODE && node.classList.contains("cepufalxez")) {
-            const rect = node.getBoundingClientRect();
-            offCtx.fillText(node.textContent, rect.left - containerRect.left, rect.top - containerRect.top);
-        } else if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+        if (node.nodeType === Node.ELEMENT_NODE && (node as HTMLElement).classList.contains("cepufalxez")) {
+            const rect = (node as HTMLElement).getBoundingClientRect();
+            offCtx.fillText((node as HTMLElement).textContent!, rect.left - containerRect.left, rect.top - containerRect.top);
+        } else if (node.nodeType === Node.TEXT_NODE && node.textContent?.trim()) {
             const range = document.createRange();
             range.selectNodeContents(node);
             const rect = range.getBoundingClientRect();
@@ -1032,30 +1079,30 @@ function drawHtmlText(obj) {
     obj.cachedHeight = height;
     obj.textDirty = false;
 
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = "high";
-    ctx.drawImage(offscreen, obj.x, obj.y - height, width, height);
+    ctx!.imageSmoothingEnabled = true;
+    ctx!.imageSmoothingQuality = "high";
+    ctx!.drawImage(offscreen, obj.x!, obj.y! - height, width, height);
 
     document.body.removeChild(tempContainer);
 }
 
-function drawPath(obj) {
-    if (obj.points.length < 2) return;
+function drawPath(obj: WhiteboardObject): void {
+    if (obj.points!.length < 2) return;
 
-    drawPathSegments(obj.points);
-    ctx.stroke();
+    drawPathSegments(obj.points!);
+    ctx!.stroke();
 }
 
-function drawShape(obj) {
+function drawShape(obj: WhiteboardObject): void {
     const { x, y, width, height, color, size, shape } = obj;
-    ctx.strokeStyle = color;
-    ctx.lineWidth = size;
-    ctx.beginPath();
-    drawShapePath(x, y, width, height, shape);
-    ctx.stroke();
+    ctx!.strokeStyle = color!;
+    ctx!.lineWidth = size!;
+    ctx!.beginPath();
+    drawShapePath(x!, y!, width!, height!, shape!);
+    ctx!.stroke();
 }
 
-function drawSelectionBox(obj) {
+function drawSelectionBox(obj: WhiteboardObject): void {
     const handles = getHandles(obj);
     const cx = getCenterX(obj);
     const cy = getCenterY(obj);
@@ -1063,54 +1110,54 @@ function drawSelectionBox(obj) {
     const rotation = obj.rotation || 0;
     const c = Math.cos(rotation), s = Math.sin(rotation);
 
-    ctx.save();
-    ctx.strokeStyle = SELECTION_STROKE_COLOR;
-    ctx.fillStyle = "rgba(0,0,0,0)";
-    ctx.lineWidth = SELECTION_LINE_WIDTH;
-    ctx.setLineDash(LINE_DASH_PATTERN);
+    ctx!.save();
+    ctx!.strokeStyle = SELECTION_STROKE_COLOR;
+    ctx!.fillStyle = "rgba(0,0,0,0)";
+    ctx!.lineWidth = SELECTION_LINE_WIDTH;
+    ctx!.setLineDash(LINE_DASH_PATTERN);
 
-    ctx.beginPath();
-    ctx.moveTo(handles[0].x, handles[0].y);
-    ctx.lineTo(handles[1].x, handles[1].y);
-    ctx.lineTo(handles[2].x, handles[2].y);
-    ctx.lineTo(handles[3].x, handles[3].y);
-    ctx.closePath();
-    ctx.stroke();
+    ctx!.beginPath();
+    ctx!.moveTo(handles[0].x, handles[0].y);
+    ctx!.lineTo(handles[1].x, handles[1].y);
+    ctx!.lineTo(handles[2].x, handles[2].y);
+    ctx!.lineTo(handles[3].x, handles[3].y);
+    ctx!.closePath();
+    ctx!.stroke();
 
-    ctx.fillStyle = HANDLE_FILL_COLOR;
-    ctx.strokeStyle = HANDLE_STROKE_COLOR;
-    ctx.lineWidth = 2;
-    ctx.setLineDash([]);
+    ctx!.fillStyle = HANDLE_FILL_COLOR;
+    ctx!.strokeStyle = HANDLE_STROKE_COLOR;
+    ctx!.lineWidth = 2;
+    ctx!.setLineDash([]);
 
     for (let i = 0; i < 0o10; i++) {
         const h = handles[i];
-        ctx.beginPath();
-        ctx.roundRect(h.x - HANDLE_SIZE / 2, h.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE, HANDLE_RADIUS);
-        ctx.fill();
-        ctx.stroke();
+        ctx!.beginPath();
+        ctx!.roundRect(h.x - HANDLE_SIZE / 2, h.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE, HANDLE_RADIUS);
+        ctx!.fill();
+        ctx!.stroke();
     }
 
     const localTopMid = { x: bounds.x + bounds.width / 2, y: bounds.y };
     const rhX = cx + (localTopMid.x - cx) * c - (localTopMid.y - cy) * s;
     const rhY = cy + (localTopMid.x - cx) * s + (localTopMid.y - cy) * c - ROTATE_HANDLE_OFFSET;
 
-    ctx.beginPath();
-    ctx.arc(rhX, rhY, ROTATE_HANDLE_RADIUS, 0, Math.PI * 2);
-    ctx.fillStyle = HANDLE_FILL_COLOR;
-    ctx.fill();
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(rhX, rhY, 0o12, 0, Math.PI * (3 / 2));
-    ctx.strokeStyle = HANDLE_STROKE_COLOR;
-    ctx.lineWidth = SELECTION_LINE_WIDTH;
-    ctx.stroke();
+    ctx!.beginPath();
+    ctx!.arc(rhX, rhY, ROTATE_HANDLE_RADIUS, 0, Math.PI * 2);
+    ctx!.fillStyle = HANDLE_FILL_COLOR;
+    ctx!.fill();
+    ctx!.stroke();
+    ctx!.beginPath();
+    ctx!.arc(rhX, rhY, 0o12, 0, Math.PI * (3 / 2));
+    ctx!.strokeStyle = HANDLE_STROKE_COLOR;
+    ctx!.lineWidth = SELECTION_LINE_WIDTH;
+    ctx!.stroke();
 
-    ctx.restore();
+    ctx!.restore();
 }
 
 // ⟪ Zoom & Pan 🔍 ⟫
 
-function initZoom() {
+function initZoom(): void {
     const zoomLevel = document.getElementById("zoomLevel");
     const toolbar = document.getElementById("toolbarContainer");
 
@@ -1119,17 +1166,17 @@ function initZoom() {
         return;
     }
 
-    function updateZoom() {
+    function updateZoom(): void {
         const zoom = state.zoomNum / state.zoomDen;
-        document.documentElement.style.setProperty("--zoom", zoom);
+        document.documentElement.style.setProperty("--zoom", zoom.toString());
         document.documentElement.style.setProperty("--pan-x", panState.offsetX + "px");
         document.documentElement.style.setProperty("--pan-y", panState.offsetY + "px");
-        zoomLevel.textContent = `${state.zoomNum}/${state.zoomDen}x`;
+        if (zoomLevel) zoomLevel.textContent = `${state.zoomNum}/${state.zoomDen}x`;
         invalidateTextCaches();
         redrawCanvas();
     }
 
-    function setZoom(newZoom) {
+    function setZoom(newZoom: number): void {
         if (newZoom < MIN_ZOOM) {
             state.zoomNum = 0o1;
             state.zoomDen = 0o4;
@@ -1145,7 +1192,7 @@ function initZoom() {
         updateZoom();
     }
 
-    function adjustZoom(numeratorMult, denominatorMult) {
+    function adjustZoom(numeratorMult: number, denominatorMult: number): void {
         const oldZoom = state.zoomNum / state.zoomDen;
         const newZoom = oldZoom * (numeratorMult / denominatorMult);
         setZoom(newZoom);
@@ -1159,49 +1206,52 @@ function initZoom() {
         updateZoom();
     });
 
-    canvas.addEventListener("wheel", (e) => {
-        if (e.ctrlKey) {
-            e.preventDefault();
-            const currentZoom = state.zoomNum / state.zoomDen;
-            const zoomFactor = e.deltaY < 0 ? (WHEEL_ZOOM_NUM / WHEEL_ZOOM_DEN) : (WHEEL_ZOOM_DEN / WHEEL_ZOOM_NUM);
-            const newZoom = currentZoom * zoomFactor;
-            setZoom(newZoom);
-        } else {
-            e.preventDefault();
-            panState.offsetX -= e.deltaX;
-            panState.offsetY -= e.deltaY;
-            updateZoom();
-        }
-    }, { passive: false });
+    if (canvas) {
+        canvas.addEventListener("wheel", (e: WheelEvent) => {
+            if (e.ctrlKey) {
+                e.preventDefault();
+                const currentZoom = state.zoomNum / state.zoomDen;
+                const zoomFactor = e.deltaY < 0 ? (WHEEL_ZOOM_NUM / WHEEL_ZOOM_DEN) : (WHEEL_ZOOM_DEN / WHEEL_ZOOM_NUM);
+                const newZoom = currentZoom * zoomFactor;
+                setZoom(newZoom);
+            } else {
+                e.preventDefault();
+                panState.offsetX -= e.deltaX;
+                panState.offsetY -= e.deltaY;
+                updateZoom();
+            }
+        }, { passive: false });
+    }
 }
 
 // ⟪ File Operations 💾 ⟫
 
-function saveCanvas() {
+function saveCanvas(): void {
+    if (!canvas) return;
     const link = document.createElement("a");
     link.download = "whiteboard.png";
     link.href = canvas.toDataURL("image/png");
     link.click();
 }
 
-function loadCanvas(file) {
+function loadCanvas(file: File): void {
     const reader = new FileReader();
     reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#ffffff";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0);
+            ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
+            ctx!.fillStyle = "#ffffff";
+            ctx!.fillRect(0, 0, canvas!.width, canvas!.height);
+            ctx!.drawImage(img, 0, 0);
             saveState();
         };
-        img.src = e.target.result;
+        img.src = e.target!.result as string;
     };
     reader.readAsDataURL(file);
 }
 
-function initFileOperations() {
-    const loadInput = document.getElementById("fileInput");
+function initFileOperations(): void {
+    const loadInput = document.getElementById("fileInput") as HTMLInputElement | null;
 
     initButton("saveBtn", saveCanvas);
     initButton("quickSave", saveCanvas);
@@ -1209,25 +1259,25 @@ function initFileOperations() {
     if (loadInput) {
         initButton("loadBtn", () => loadInput.click());
         loadInput.addEventListener("change", (e) => {
-            if (e.target.files[0]) loadCanvas(e.target.files[0]);
+            if ((e.target as HTMLInputElement).files![0]) loadCanvas((e.target as HTMLInputElement).files![0]);
         });
     }
 }
 
 // ⟪ Actions & Keyboard Shortcuts ⌨️ ⟫
 
-const KEYBOARD_SHORTCUTS = {
+const KEYBOARD_SHORTCUTS: Record<string, (shift: boolean) => void | (() => void)> = {
     "z": (shift) => shift ? redo() : undo(),
     "y": () => redo(),
     "s": () => document.getElementById("saveBtn")?.click()
 };
 
-function handleKeyboard(e) {
+function handleKeyboard(e: KeyboardEvent): void {
     const isCtrl = e.ctrlKey || e.metaKey;
 
     if (isCtrl && KEYBOARD_SHORTCUTS[e.key]) {
         e.preventDefault();
-        KEYBOARD_SHORTCUTS[e.key](e.shiftKey);
+        (KEYBOARD_SHORTCUTS[e.key] as (shift: boolean) => void)(e.shiftKey);
         return;
     }
     if ((e.key === "Delete" || e.key === "Backspace") &&
@@ -1247,7 +1297,7 @@ function handleKeyboard(e) {
     }
 }
 
-function initActions() {
+function initActions(): void {
     initButtons([
         { id: "undoBtn", onClick: undo },
         { id: "quickUndo", onClick: undo },
@@ -1270,7 +1320,7 @@ function initActions() {
     ]);
 }
 
-function initLayerControls() {
+function initLayerControls(): void {
     initButtons([
         { id: "addLayerBtn", onClick: addLayer },
         { id: "deleteLayerBtn", onClick: deleteLayer },
@@ -1279,7 +1329,7 @@ function initLayerControls() {
     ]);
 }
 
-function handleKeyup(e) {
+function handleKeyup(e: KeyboardEvent): void {
     if (e.code === "Space") {
         spaceState.isPressed = false;
         if (!panState.isPanning && !state.isDrawing) setCursor(getToolCursor());
@@ -1289,7 +1339,9 @@ function handleKeyup(e) {
 
 // ⟪ Canvas Events & Panning 🖱️ ⟫
 
-function initCanvasEvents() {
+function initCanvasEvents(): void {
+    if (!canvas) return;
+
     const mouseEvents = [
         { event: "mousedown", handler: handleMouseDown },
         { event: "mousemove", handler: handleMouseMove },
@@ -1305,8 +1357,12 @@ function initCanvasEvents() {
         { event: "touchcancel", handler: stopDrawing }
     ];
 
-    mouseEvents.forEach(({ event, handler }) => canvas.addEventListener(event, handler));
-    touchEvents.forEach(({ event, handler, options }) => canvas.addEventListener(event, handler, options));
+    mouseEvents.forEach(({ event, handler }) => {
+        if (canvas) canvas.addEventListener(event as keyof HTMLElementEventMap, handler as EventListener);
+    });
+    touchEvents.forEach(({ event, handler, options }) => {
+        if (canvas) canvas.addEventListener(event as keyof HTMLElementEventMap, handler as EventListener, options);
+    });
 
     document.addEventListener("mouseup", handleGlobalMouseUp);
     document.addEventListener("mousedown", (e) => {
@@ -1317,7 +1373,7 @@ function initCanvasEvents() {
     document.addEventListener("keyup", handleKeyup);
 }
 
-function handleDoubleClick(e) {
+function handleDoubleClick(e: MouseEvent): void {
     if (e.button !== 0) return;
 
     const coords = getCanvasCoords(e);
@@ -1328,7 +1384,7 @@ function handleDoubleClick(e) {
     }
 }
 
-function handleMouseDown(e) {
+function handleMouseDown(e: MouseEvent): void {
     if (e.button === 1 || (spaceState.isPressed && e.button === 0)) {
         e.preventDefault();
         e.stopPropagation();
@@ -1343,7 +1399,7 @@ function handleMouseDown(e) {
     }
 }
 
-function handleMouseMove(e) {
+function handleMouseMove(e: MouseEvent): void {
     if (panState.isPanning) {
         e.preventDefault();
         e.stopPropagation();
@@ -1364,7 +1420,7 @@ function handleMouseMove(e) {
     }
 }
 
-function handleMouseUp(e) {
+function handleMouseUp(e: MouseEvent): void {
     if (panState.isPanning) {
         stopPanning();
     } else {
@@ -1372,7 +1428,7 @@ function handleMouseUp(e) {
     }
 }
 
-function handleMouseLeave(e) {
+function handleMouseLeave(e: MouseEvent): void {
     if (panState.isPanning) {
         stopPanning();
     } else {
@@ -1380,8 +1436,16 @@ function handleMouseLeave(e) {
     }
 }
 
-function handleGlobalMouseUp(e) {
+function handleGlobalMouseUp(e: MouseEvent): void {
     stopPanning();
+}
+
+function a3esoza(element: HTMLElement): void {
+    element.classList.toggle("collapsed");
+}
+
+function vacepu(className: string): void {
+    // Placeholder for text measurement function
 }
 
 document.addEventListener("DOMContentLoaded", init);

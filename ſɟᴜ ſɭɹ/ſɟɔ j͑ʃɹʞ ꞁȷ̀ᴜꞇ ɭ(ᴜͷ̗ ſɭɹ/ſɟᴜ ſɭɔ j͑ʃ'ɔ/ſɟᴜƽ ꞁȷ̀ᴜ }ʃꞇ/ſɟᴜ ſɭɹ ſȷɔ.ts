@@ -1,5 +1,7 @@
 // ≺⧼ Math Utilities ⧽≻
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /**
  * Clamp a value between min and max
  * @param {number} value
@@ -7,7 +9,7 @@
  * @param {number} max
  * @returns {number}
  */
-function clamp(value, min, max) {
+function clamp(value: number, min: number, max: number): number {
     return Math.max(min, Math.min(max, value));
 }
 
@@ -17,9 +19,9 @@ function clamp(value, min, max) {
  * @param {number} wait
  * @returns {Function}
  */
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
+function debounce<T extends (...args: any[]) => void>(func: T, wait: number): (...args: Parameters<T>) => void {
+    let timeout: any;
+    return function executedFunction(...args: Parameters<T>) {
         const later = () => {
             clearTimeout(timeout);
             func(...args);
@@ -35,9 +37,9 @@ function debounce(func, wait) {
  * @param {number} limit
  * @returns {Function}
  */
-function throttle(func, limit) {
-    let inThrottle;
-    return function (...args) {
+function throttle<T extends (...args: any[]) => void>(func: T, limit: number): (...args: Parameters<T>) => void {
+    let inThrottle: any;
+    return function (this: any, ...args: Parameters<T>) {
         if (!inThrottle) {
             func.apply(this, args);
             inThrottle = true;
@@ -45,3 +47,8 @@ function throttle(func, limit) {
         }
     };
 }
+
+// Attach to window for global access
+(window as any).clamp = clamp;
+(window as any).debounce = debounce;
+(window as any).throttle = throttle;

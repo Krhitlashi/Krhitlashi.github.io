@@ -1,19 +1,13 @@
 // ≺⧼ Element Utilities ⧽≻
 
-/**
- * Set the dragging state on the document body
- * @param {boolean} isDragging
- */
-function setDraggingState(isDragging) {
-    document.body.classList.toggle("is-dragging", isDragging);
-}
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Set aria-pressed state on a button
  * @param {string|HTMLElement} btn - Button ID or element
  * @param {boolean} pressed
  */
-function setButtonPressed(btn, pressed) {
+function setButtonPressed(btn: string | HTMLElement, pressed: boolean): void {
     const el = typeof btn === "string" ? document.getElementById(btn) : btn;
     if (el) {
         if (pressed) {
@@ -28,7 +22,7 @@ function setButtonPressed(btn, pressed) {
  * Show element with fade-in animation
  * @param {HTMLElement} el
  */
-function showWithAnimation(el) {
+function showWithAnimation(el: HTMLElement): void {
     el.classList.add("visible");
 }
 
@@ -37,7 +31,7 @@ function showWithAnimation(el) {
  * @param {HTMLElement} el
  * @param {number} duration - Animation duration in ms
  */
-function hideWithAnimation(el, duration = 0o300) {
+function hideWithAnimation(el: HTMLElement, duration: number = 0o300): void {
     el.classList.remove("visible");
     setTimeout(() => el.style.display = "none", duration);
 }
@@ -47,10 +41,10 @@ function hideWithAnimation(el, duration = 0o300) {
  * @param {HTMLElement} el
  * @returns {{colSpan: number, rowSpan: number}}
  */
-function getElementSpans(el) {
+function getElementSpans(el: HTMLElement): { colSpan: number; rowSpan: number } {
     return {
-        colSpan: parseInt(el.dataset.colSpan) || 1,
-        rowSpan: parseInt(el.dataset.rowSpan) || 1
+        colSpan: parseInt(el.dataset.colSpan as string) || 1,
+        rowSpan: parseInt(el.dataset.rowSpan as string) || 1
     };
 }
 
@@ -60,9 +54,9 @@ function getElementSpans(el) {
  * @param {number} colSpan
  * @param {number} rowSpan
  */
-function setElementSpans(el, colSpan, rowSpan) {
-    el.dataset.colSpan = colSpan;
-    el.dataset.rowSpan = rowSpan;
+function setElementSpans(el: HTMLElement, colSpan: number, rowSpan: number): void {
+    el.dataset.colSpan = colSpan.toString();
+    el.dataset.rowSpan = rowSpan.toString();
 }
 
 /**
@@ -70,7 +64,7 @@ function setElementSpans(el, colSpan, rowSpan) {
  * @param {HTMLElement} el
  * @param {boolean} dragging
  */
-function setElementDragging(el, dragging) {
+function setElementDragging(el: HTMLElement, dragging: boolean): void {
     el.classList.toggle("dragging", dragging);
 }
 
@@ -78,7 +72,7 @@ function setElementDragging(el, dragging) {
  * Force reflow on element (triggers layout recalculation)
  * @param {HTMLElement} el
  */
-function forceReflow(el) {
+function forceReflow(el: HTMLElement): void {
     void el.offsetWidth;
 }
 
@@ -87,12 +81,12 @@ function forceReflow(el) {
  * @param {HTMLElement} el
  * @returns {{col: number, row: number, colSpan: number, rowSpan: number}}
  */
-function getElementPosition(el) {
+function getElementPosition(el: HTMLElement): { col: number; row: number; colSpan: number; rowSpan: number } {
     return {
-        col: parseInt(el.dataset.col) || 0,
-        row: parseInt(el.dataset.row) || 0,
-        colSpan: parseInt(el.dataset.colSpan) || 1,
-        rowSpan: parseInt(el.dataset.rowSpan) || 1
+        col: parseInt(el.dataset.col as string) || 0,
+        row: parseInt(el.dataset.row as string) || 0,
+        colSpan: parseInt(el.dataset.colSpan as string) || 1,
+        rowSpan: parseInt(el.dataset.rowSpan as string) || 1
     };
 }
 
@@ -102,7 +96,7 @@ function getElementPosition(el) {
  * @param {string} className
  * @param {boolean} force
  */
-function toggleClass(el, className, force) {
+function toggleClass(el: HTMLElement | null, className: string, force?: boolean): void {
     if (!el) return;
     el.classList.toggle(className, force);
 }
@@ -112,7 +106,7 @@ function toggleClass(el, className, force) {
  * @param {HTMLElement} el
  * @param {string} className
  */
-function addClass(el, className) {
+function addClass(el: HTMLElement | null | undefined, className: string): void {
     el?.classList.add(className);
 }
 
@@ -121,7 +115,7 @@ function addClass(el, className) {
  * @param {HTMLElement} el
  * @param {string} className
  */
-function removeClass(el, className) {
+function removeClass(el: HTMLElement | null | undefined, className: string): void {
     el?.classList.remove(className);
 }
 
@@ -131,6 +125,20 @@ function removeClass(el, className) {
  * @param {string} className
  * @returns {boolean}
  */
-function hasClass(el, className) {
+function hasClass(el: HTMLElement | null | undefined, className: string): boolean {
     return el?.classList.contains(className) ?? false;
 }
+
+// Attach to window for global access
+(window as any).setButtonPressed = setButtonPressed;
+(window as any).showWithAnimation = showWithAnimation;
+(window as any).hideWithAnimation = hideWithAnimation;
+(window as any).getElementSpans = getElementSpans;
+(window as any).setElementSpans = setElementSpans;
+(window as any).setElementDragging = setElementDragging;
+(window as any).forceReflow = forceReflow;
+(window as any).getElementPosition = getElementPosition;
+(window as any).toggleClass = toggleClass;
+(window as any).addClass = addClass;
+(window as any).removeClass = removeClass;
+(window as any).hasClass = hasClass;

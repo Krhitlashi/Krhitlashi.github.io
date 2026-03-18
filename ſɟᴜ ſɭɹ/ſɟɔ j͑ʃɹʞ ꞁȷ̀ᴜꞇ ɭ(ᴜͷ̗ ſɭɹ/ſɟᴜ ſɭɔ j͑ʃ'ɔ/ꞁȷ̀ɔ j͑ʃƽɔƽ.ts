@@ -1,6 +1,9 @@
 // ≺⧼ Constants ⧽≻
 
-const CONSTANTS = {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+// Attach CONSTANTS to window for global access
+(window as any).CONSTANTS = {
     // ⟨ Window Manager ⟩
     WM: {
         BASE_Z_INDEX: 0o200,
@@ -30,7 +33,40 @@ const CONSTANTS = {
         DEFAULT_ROWS: 0o10,
         DEFAULT_COLS: 0o20,
         MARGIN_COMPENSATION: 0o20,
-        INTERACTIVE_TAGS: [ "INPUT", "BUTTON", "LABEL" ]
+        INTERACTIVE_TAGS: ["INPUT", "BUTTON", "LABEL"],
+        // Grid layout constants
+        GAP_SIZE: 0o10,           // 8px - gap between icons
+        CELL_MIN_WIDTH: 0o100,    // 64px minimum cell width
+        CELL_MIN_HEIGHT: 0o100,   // 64px minimum cell height
+        // Mobile grid dimensions
+        MOBILE_ROWS: 0o6,         // 6 rows on mobile
+        MOBILE_COLS: 0o4,         // 4 columns on mobile
+        // Drag thresholds
+        DRAG_THRESHOLD: 0o10,     // 8px - minimum movement for drag
+        // Label modes
+        LABEL_MODES: {
+            EXTERNAL: "external",
+            INSIDE: "inside",
+            HIDDEN: "hidden",
+            OFF: "off"
+        }
+    },
+
+    // ⟨ Input Handler ⟩
+    INPUT: {
+        DRAG_THRESHOLD: 0o10,     // 8px - minimum distance for drag
+        LONG_PRESS_DURATION: 500, // ms for long press
+        SWIPE_THRESHOLD: 50,      // 40px - minimum swipe distance
+        DOUBLE_TAP_DELAY: 300,    // ms between taps
+        RESIZE_MIN_WIDTH: 0o460,  // 304px minimum resize width
+        RESIZE_MIN_HEIGHT: 0o310  // 200px minimum resize height
+    },
+
+    // ⟨ Breakpoints ⟩
+    BREAKPOINTS: {
+        MOBILE: 768,              // px - mobile/desktop threshold
+        TASKBAR_LARGE: 0o100,     // 64px - large taskbar threshold
+        SMALL_SCREEN: 0o300       // 192px - very small screens
     },
 
     // ⟨ Clock ⟩
@@ -170,33 +206,39 @@ const CONSTANTS = {
 
 // ⟪ Flat Exports for Common Usage ⟫
 
-const APPS_DATA = CONSTANTS.APPS_DATA;
-const QS_TOGGLES = CONSTANTS.QS.TOGGLES;
-const CSS_VARS = CONSTANTS.CSS_VARS;
-const SYS_TASKBAR_SIZE = CONSTANTS.SYS.TASKBAR_SIZE;
+(window as any).APPS_DATA = (window as any).CONSTANTS.APPS_DATA;
+(window as any).QS_TOGGLES = (window as any).CONSTANTS.QS.TOGGLES;
+(window as any).CSS_VARS = (window as any).CONSTANTS.CSS_VARS;
+(window as any).SYS_TASKBAR_SIZE = (window as any).CONSTANTS.SYS.TASKBAR_SIZE;
 
 // ⟪ DOM Cache Utility ⟫
 
-const DOMCache = {
+const DOMCache: any = {
     _cache: {},
-    get( id ) {
-        if ( !this._cache[ id ] ) {
-            this._cache[ id ] = document.getElementById( id );
+    get(id: string): HTMLElement | null {
+        if (!(this as any)._cache[id]) {
+            (this as any)._cache[id] = document.getElementById(id);
         }
-        return this._cache[ id ];
+        return (this as any)._cache[id];
     },
-    clear() {
-        this._cache = {};
+    clear(): void {
+        (this as any)._cache = {};
     },
-    remove( id ) {
-        delete this._cache[ id ];
+    remove(id: string): void {
+        delete (this as any)._cache[id];
     }
 };
 
+// Attach to window for global access
+(window as any).DOMCache = DOMCache;
+
 // ⟪ Notification Helper ⟫
 
-function clearNotifications() {
-    if ( window.NotificationManager ) {
-        NotificationManager.clear();
+function clearNotifications(): void {
+    if ((window as any).NotificationManager) {
+        (window as any).NotificationManager.clear();
     }
 }
+
+// Attach to window for global access
+(window as any).clearNotifications = clearNotifications;

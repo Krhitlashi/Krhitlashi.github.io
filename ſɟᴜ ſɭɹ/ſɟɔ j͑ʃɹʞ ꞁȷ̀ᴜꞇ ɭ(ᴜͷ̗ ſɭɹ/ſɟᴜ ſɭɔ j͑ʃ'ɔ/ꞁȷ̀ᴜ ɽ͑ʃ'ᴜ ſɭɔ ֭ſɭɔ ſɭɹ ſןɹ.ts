@@ -1,14 +1,33 @@
 // ≺⧼ WindowManager ⧽≻
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+declare const CONSTANTS: any;
+declare const getWindowContainer: any;
+declare const getWindowTitle: any;
+declare const isTaskbarLarge: any;
+declare const getHomeArea: any;
+declare const getTaskbar: any;
+declare const setDraggingState: any;
+declare const InputHandler: any;
+declare const AnimationManager: any;
+declare const getStrings: any;
+declare const vab6caja: any;
+declare const APPS: any;
+declare const updateDock: any;
+declare const k2regawe: any;
+
 class WindowManager {
-    static zIndex = CONSTANTS.WM.BASE_Z_INDEX;
+    static zIndex: number = CONSTANTS.WM.BASE_Z_INDEX;
+    static _themeWatcher: any = null;
+    static _currentTheme: string = "detect";
 
     // ⟪ App URL Map ⟫ - Built from APPS_DATA ( path → path )
 
-    static get APP_URLS() {
+    static get APP_URLS(): { [ key: string ]: string } {
         if ( typeof CONSTANTS.APPS_DATA !== "undefined" ) {
-            const map = {};
-            CONSTANTS.APPS_DATA.forEach( app => {
+            const map: { [ key: string ]: string } = {};
+            CONSTANTS.APPS_DATA.forEach( ( app: any ) => {
                 map[ app.path ] = app.path;
             } );
             return map;
@@ -18,32 +37,32 @@ class WindowManager {
 
     // ⟪ Helper Functions ⟫
 
-    static _randomWindowPosition( baseY ) {
+    static _randomWindowPosition( baseY: number ): { x: number; y: number } {
         return {
             x: ( Math.floor( Math.random() * CONSTANTS.WM.WINDOW_RANDOM_RANGE ) * CONSTANTS.WM.WINDOW_RANDOM_STEP ) + CONSTANTS.WM.WINDOW_BASE_X,
             y: ( Math.floor( Math.random() * CONSTANTS.WM.WINDOW_RANDOM_RANGE ) * CONSTANTS.WM.WINDOW_RANDOM_STEP ) + baseY
         };
     }
 
-    static _createWindowElement( id, title, internalContent ) {
+    static _createWindowElement( id: string, title: string, internalContent?: string ): HTMLElement {
         const win = document.createElement( "div" );
         win.classList.add( "window" );
         win.id = id;
         return win;
     }
 
-    static _setupWindowInteractions( win, id, title ) {
-        win.addEventListener( "mousedown", () => { win.style.zIndex = ++this.zIndex; } );
+    static _setupWindowInteractions( win: HTMLElement, id: string, title: string ): void {
+        win.addEventListener( "mousedown", () => { win.style.zIndex = ( ++this.zIndex ).toString(); } );
         this.setAppActive( title, true );
     }
 
-    static _injectStylesIntoIframe( iframeId ) {
-        const iframe = document.getElementById( iframeId );
+    static _injectStylesIntoIframe( iframeId: string ): void {
+        const iframe = document.getElementById( iframeId ) as HTMLIFrameElement | null;
         if ( !iframe ) return;
 
-        iframe.onload = function() {
+        iframe.onload = (): void => {
             try {
-                const doc = this.contentDocument || this.contentWindow.document;
+                const doc = iframe.contentDocument || ( iframe.contentWindow as Window )?.document;
                 if ( !doc?.head ) return;
 
                 // Inject override styles
@@ -59,7 +78,7 @@ class WindowManager {
 
                 // Link the global stylesheet for full design system
                 if ( !doc.getElementById( "injected-global-css" ) ) {
-                    const globalCss = document.querySelector( 'link[href*="֭ſɭᴜ ı],ɔ.css"]' );
+                    const globalCss = document.querySelector( 'link[href*="֭ſɭᴜ ı],ɔ.css"]' ) as HTMLLinkElement | null;
                     if ( globalCss ) {
                         const link = doc.createElement( "link" );
                         link.id = "injected-global-css";
@@ -92,7 +111,7 @@ class WindowManager {
         };
     }
 
-    static _buildTitleBar( id, title, simple = false ) {
+    static _buildTitleBar( id: string, title: string, simple: boolean = false ): string {
         if ( simple ) {
             return `
                 <ksaka onmousedown="WindowManager.startDrag(event, '${id}')" ontouchstart="WindowManager.startDrag(event, '${id}')">
@@ -115,11 +134,11 @@ class WindowManager {
         `;
     }
 
-    static _buildIframeContent( iframeId, url ) {
+    static _buildIframeContent( iframeId: string, url: string ): string {
         return `<iframe id="${iframeId}" src="${url}" sandbox="allow-same-origin allow-scripts" style="inline-size:100%; block-size:100%; border:none; border-radius: var(--អិត្ភេចិ);"></iframe>`;
     }
 
-    static _buildResizeHandles( id ) {
+    static _buildResizeHandles( id: string ): string {
         return `
             <div class="resize-handle resize-handle-n" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'n')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'n')"></div>
             <div class="resize-handle resize-handle-s" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 's')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 's')"></div>
@@ -134,23 +153,24 @@ class WindowManager {
 
     // ⟪ Bring Window To Front ⟫
 
-    static bringToFront( id ) {
+    static bringToFront( id: string ): void {
         const win = document.getElementById( id );
         if ( win ) {
-            win.style.zIndex = ++this.zIndex;
+            win.style.zIndex = ( ++this.zIndex ).toString();
         }
     }
 
     // ⟪ Load App From Path ⟫
 
-    static loadAppFromPath( path, title ) {
+    static loadAppFromPath( path: string, title: string ): void {
         const container = getWindowContainer();
-        
+
         // Check if app is already open
-        const existingWin = Array.from( document.querySelectorAll( ".window" ) ).find( win => {
+        const existingWin = Array.from( document.querySelectorAll( ".window" ) ).find( ( win: any ) => {
             const iframe = win.querySelector( "iframe" );
             return iframe && iframe.src.includes( path );
         } );
+        
         
         if ( existingWin ) {
             // App is already open - focus it and refresh recents
@@ -161,12 +181,12 @@ class WindowManager {
 
         const id = "win-" + Date.now();
         const win = this._createWindowElement( id, title );
-        const app = ( typeof CONSTANTS.APPS_DATA !== "undefined" ) ? CONSTANTS.APPS_DATA.find( a => a.path === path ) : null;
+        const app = ( typeof CONSTANTS.APPS_DATA !== "undefined" ) ? CONSTANTS.APPS_DATA.find( ( a: any ) => a.path === path ) : null;
         win.dataset.emoji = app?.emoji || "🖥️";
         const { x, y } = this._randomWindowPosition( CONSTANTS.WM.WINDOW_BASE_Y_LOAD );
         win.style.left = x + "px";
         win.style.top = y + "px";
-        win.style.zIndex = ++this.zIndex;
+        win.style.zIndex = ( ++this.zIndex ).toString();
 
         const iframeId = "iframe-" + id;
         win.innerHTML = `
@@ -190,17 +210,17 @@ class WindowManager {
 
     // ⟪ Create Window ⟫
 
-    static createWindow( path, content = "" ) {
+    static createWindow( path: string, content: string = "" ): void {
         const id = "win-" + Date.now();
-        const title = path.split( "/" ).pop().replace( ".html", "" );
+        const title = path.split( "/" ).pop()?.replace( ".html", "" ) || "App";
         const container = getWindowContainer();
         const win = this._createWindowElement( id, title );
-        const app = ( typeof CONSTANTS.APPS_DATA !== "undefined" ) ? CONSTANTS.APPS_DATA.find( a => a.path === path ) : null;
+        const app = ( typeof CONSTANTS.APPS_DATA !== "undefined" ) ? CONSTANTS.APPS_DATA.find( ( a: any ) => a.path === path ) : null;
         win.dataset.emoji = app?.emoji || "🖥️";
         const { x, y } = this._randomWindowPosition( CONSTANTS.WM.WINDOW_BASE_Y_CREATE );
         win.style.left = x + "px";
         win.style.top = y + "px";
-        win.style.zIndex = ++this.zIndex;
+        win.style.zIndex = ( ++this.zIndex ).toString();
 
         const appUrl = this.APP_URLS[ path ];
         const iframeId = "iframe-" + id;
@@ -225,7 +245,7 @@ class WindowManager {
 
     // ⟪ Start Resize ⟫
 
-    static startResize( e, id, handle ) {
+    static startResize( e: MouseEvent | TouchEvent, id: string, handle: string ): void {
         e.stopPropagation();
         e.preventDefault();
 
@@ -233,7 +253,7 @@ class WindowManager {
         if ( !win || win.classList.contains( "maximized" ) || win.classList.contains( "fullscreen" ) ) return;
 
         // Set resizing flag
-        win._isResizing = true;
+        ( win as any )._isResizing = true;
         setDraggingState( true );
 
         const rect = win.getBoundingClientRect();
@@ -243,36 +263,37 @@ class WindowManager {
         const startHeight = win.offsetHeight;
         const startRight = startLeft + startWidth;
         const startBottom = startTop + startHeight;
-        
-        // Support both mouse and touch
-        const startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-        const startY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
 
-        // Calculate cursor offset from window edge (handles extend outside window)
-        const offsetX = handle.includes( 'w' ) ? startX - rect.left : 0;
-        const offsetY = handle.includes( 'n' ) ? startY - rect.top : 0;
+        // Get pointer position using unified handler
+        const pos = InputHandler.getPointerPos( e );
+        const startX = pos.x;
+        const startY = pos.y;
 
-        const doDrag = (clientX, clientY) => {
+        // Calculate cursor offset from window edge ( handles extend outside window )
+        const offsetX = handle.includes( "w" ) ? startX - rect.left : 0;
+        const offsetY = handle.includes( "n" ) ? startY - rect.top : 0;
+
+        const doDrag = ( clientX: number, clientY: number ) => {
             const dx = clientX - startX;
             const dy = clientY - startY;
 
             // Calculate new position and size using consistent formula
             let newLeft = startLeft, newTop = startTop, newRight = startRight, newBottom = startBottom;
 
-            if ( handle.includes( 'w' ) ) {
+            if ( handle.includes( "w" ) ) {
                 newLeft = startLeft + dx + offsetX;
-            } else if ( handle.includes( 'e' ) ) {
+            } else if ( handle.includes( "e" ) ) {
                 newRight = startRight + dx;
             }
-            if ( handle.includes( 'n' ) ) {
+            if ( handle.includes( "n" ) ) {
                 newTop = startTop + dy + offsetY;
-            } else if ( handle.includes( 's' ) ) {
+            } else if ( handle.includes( "s" ) ) {
                 newBottom = startBottom + dy;
             }
 
             // Calculate final position and size
-            const finalWidth = Math.max( 0o460, newRight - newLeft );
-            const finalHeight = Math.max( 0o310, newBottom - newTop );
+            const finalWidth = Math.max( CONSTANTS.INPUT.RESIZE_MIN_WIDTH, newRight - newLeft );
+            const finalHeight = Math.max( CONSTANTS.INPUT.RESIZE_MIN_HEIGHT, newBottom - newTop );
 
             win.style.left = newLeft + "px";
             win.style.top = newTop + "px";
@@ -282,38 +303,24 @@ class WindowManager {
 
         const stopDrag = () => {
             setDraggingState( false );
-            win._isResizing = false;
+            ( win as any )._isResizing = false;
         };
 
-        // Support both mouse and touch events
-        if ( e.type === "touchstart" ) {
-            const onTouchMove = (ev) => {
-                ev.preventDefault();
-                const touch = ev.touches[0];
-                doDrag(touch.clientX, touch.clientY);
-            };
-            const onTouchEnd = () => {
-                document.removeEventListener("touchmove", onTouchMove);
-                document.removeEventListener("touchend", onTouchEnd);
-                stopDrag();
-            };
-            document.addEventListener("touchmove", onTouchMove, { passive: false });
-            document.addEventListener("touchend", onTouchEnd);
-        } else {
-            const onMouseMove = (ev) => doDrag(ev.clientX, ev.clientY);
-            const onMouseUp = () => {
-                document.removeEventListener("mousemove", onMouseMove);
-                document.removeEventListener("mouseup", onMouseUp);
-                stopDrag();
-            };
-            document.addEventListener("mousemove", onMouseMove);
-            document.addEventListener("mouseup", onMouseUp);
-        }
+        // Use unified input handler for both mouse and touch
+        const onMove = ( ev: any, data: any ) => {
+            doDrag( data.x, data.y );
+        };
+
+        const onEnd = () => {
+            stopDrag();
+        };
+
+        InputHandler.setupResize( win, handle, null, onMove, onEnd );
     }
 
     // ⟪ Close Window ⟫
 
-    static closeWindow( id ) {
+    static closeWindow( id: string ): void {
         const win = document.getElementById( id );
         if ( win ) {
             const title = getWindowTitle( win );
@@ -332,59 +339,46 @@ class WindowManager {
 
     // ⟪ Start Drag ⟫
 
-    static startDrag( e, id ) {
+    static startDrag( e: MouseEvent | TouchEvent, id: string ): void {
         e.preventDefault();
 
         const win = document.getElementById( id );
-        if ( !win || win._isResizing ) return;
+        if ( !win || ( win as any )._isResizing ) return;
 
         setDraggingState( true );
         const rect = win.getBoundingClientRect();
-        
-        // Support both mouse and touch
-        const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-        const clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+
+        // Get pointer position using unified handler
+        const pos = InputHandler.getPointerPos( e );
+        const clientX = pos.x;
+        const clientY = pos.y;
         const shiftX = clientX - rect.left;
         const shiftY = clientY - rect.top;
 
-        const doDrag = (newX, newY) => {
-            win.style.left = (newX - shiftX) + "px";
-            win.style.top = (newY - shiftY) + "px";
+        const doDrag = ( newX: number, newY: number ) => {
+            win.style.left = ( newX - shiftX ) + "px";
+            win.style.top = ( newY - shiftY ) + "px";
         };
 
         const stopDrag = () => {
             setDraggingState( false );
         };
 
-        // Support both mouse and touch events
-        if ( e.type === "touchstart" ) {
-            const onTouchMove = (ev) => {
-                ev.preventDefault();
-                const touch = ev.touches[0];
-                doDrag(touch.clientX, touch.clientY);
-            };
-            const onTouchEnd = () => {
-                document.removeEventListener("touchmove", onTouchMove);
-                document.removeEventListener("touchend", onTouchEnd);
-                stopDrag();
-            };
-            document.addEventListener("touchmove", onTouchMove, { passive: false });
-            document.addEventListener("touchend", onTouchEnd);
-        } else {
-            const onMouseMove = (ev) => doDrag(ev.clientX, ev.clientY);
-            const onMouseUp = () => {
-                document.removeEventListener("mousemove", onMouseMove);
-                document.removeEventListener("mouseup", onMouseUp);
-                stopDrag();
-            };
-            document.addEventListener("mousemove", onMouseMove);
-            document.addEventListener("mouseup", onMouseUp);
-        }
+        // Use unified input handler for both mouse and touch
+        const onMove = ( ev: any, data: any ) => {
+            doDrag( data.x, data.y );
+        };
+
+        const onEnd = () => {
+            stopDrag();
+        };
+
+        InputHandler.setupDrag( win, null, onMove, onEnd );
     }
 
     // ⟪ Toggle Maximize ⟫
 
-    static toggleMaximize( id ) {
+    static toggleMaximize( id: string ): void {
         const win = document.getElementById( id );
         if ( !win ) return;
 
@@ -394,8 +388,8 @@ class WindowManager {
             win.style.height = win.dataset.prevHeight || "";
             win.style.left = win.dataset.prevLeft || "";
             win.style.top = win.dataset.prevTop || "";
-            win.style.right = "";
-            win.style.bottom = "";
+            ( win.style as any ).right = "";
+            ( win.style as any ).bottom = "";
             win.classList.remove( "maximized" );
         } else {
             // Save current dimensions
@@ -408,15 +402,15 @@ class WindowManager {
             win.style.height = "";
             win.style.left = "";
             win.style.top = "";
-            win.style.right = "";
-            win.style.bottom = "";
+            ( win.style as any ).right = "";
+            ( win.style as any ).bottom = "";
             win.classList.add( "maximized" );
         }
     }
 
     // ⟪ Minimize Window ⟫
 
-    static minimizeWindow( id ) {
+    static minimizeWindow( id: string ): void {
         const win = document.getElementById( id );
         if ( win ) {
             // Add minimized class immediately to trigger state change,
@@ -435,21 +429,21 @@ class WindowManager {
 
     // ⟪ Focus Window ⟫
 
-    static focusWindow( id ) {
+    static focusWindow( id: string ): void {
         const win = document.getElementById( id );
         if ( win ) {
             if ( win.classList.contains( "minimized" ) ) {
                 win.classList.remove( "minimized" );
                 AnimationManager.restoreWindow( win );
             }
-            win.style.zIndex = ++this.zIndex;
-            if ( window.PanelManager ) PanelManager.closeAllPanels();
+            win.style.zIndex = ( ++this.zIndex ).toString();
+            if ( ( window as any ).PanelManager ) ( window as any ).PanelManager.closeAllPanels();
             this.updateTaskbarApps();
         }
     }
 
     // ⟪ Render Recents ⟫
-    static renderRecents() {
+    static renderRecents(): void {
         const list = document.getElementById( "recents-list" );
         if ( !list ) return;
 
@@ -461,7 +455,7 @@ class WindowManager {
             return;
         }
 
-        list.innerHTML = Array.from( windows ).map( win => {
+        list.innerHTML = Array.from( windows ).map( ( win: any ) => {
             const title = win.querySelector( ".title-bar-title" )?.innerText || "App";
             const emoji = win.dataset.emoji || "🖥️";
             const id = win.id;
@@ -481,7 +475,7 @@ class WindowManager {
 
     // ⟪ Update Dock ⟫
 
-    static updateDock() {
+    static updateDock(): void {
         const dock = document.getElementById( "taskbar-dock" );
         if ( !dock ) return;
 
@@ -491,13 +485,13 @@ class WindowManager {
             return;
         }
 
-        dock.innerHTML = Array.from( windows ).map( win => {
+        dock.innerHTML = Array.from( windows ).map( ( win: any ) => {
             const title = win.querySelector( ".title-bar-title" )?.innerText || "App";
             const id = win.id;
             const isMinimized = win.classList.contains( "minimized" );
             return `
                 <button class="dock-btn n2tase ${isMinimized ? "minimized" : ""}" onclick="WindowManager.focusWindow('${id}')" title="${title}">
-                    ${title[0].toUpperCase()}
+                    ${title[ 0 ].toUpperCase()}
                 </button>
             `;
         } ).join( "" );
@@ -505,23 +499,22 @@ class WindowManager {
 
     // ⟪ Set App Active ⟫
 
-    static setAppActive( appName, active ) {
-        const countSpan = document.querySelector( ".active-apps-count" );
+    static setAppActive( appName: string | null, active: boolean | null ): void {
+        const countSpan = document.querySelector( ".active-apps-count" ) as HTMLElement | null;
         if ( countSpan ) {
             const count = document.querySelectorAll( ".window" ).length;
-            countSpan.innerText = typeof vab6caja === "function" ? vab6caja( count ) : count;
+            countSpan.innerText = typeof ( window as any ).vab6caja === "function" ? ( window as any ).vab6caja( count ) : count.toString();
         }
     }
 
     // ⟪ Update Taskbar Apps ⟫
 
-    static updateTaskbarApps() {
+    static updateTaskbarApps(): void {
         const center = getHomeArea();
         const taskbar = getTaskbar();
         if ( !center || !taskbar ) return;
 
-        const isLarge = isTaskbarLarge();
-        center.querySelectorAll( ".taskbar-app-btn" ).forEach( b => b.remove() );
+        center.querySelectorAll( ".taskbar-app-btn" ).forEach( ( b: HTMLElement ) => b.remove() );
 
         // Recent apps only shown in recents panel and start menu, not in taskbar
         this.setAppActive( null, null );
@@ -529,7 +522,7 @@ class WindowManager {
 
     // ⟪ Settings Handlers ⟫
 
-    static updateTaskbarSettings( val ) {
+    static updateTaskbarSettings( val: string ): void {
         document.documentElement.style.setProperty( "--taskbar-width", val + "px" );
 
         const taskbar = getTaskbar();
@@ -547,26 +540,26 @@ class WindowManager {
 
     // ⟪ Theme Management ⟫
 
-    static setTheme( theme ) {
+    static setTheme( theme: string ): void {
         if ( theme === "detect" ) {
             const isDark = window.matchMedia( "(prefers-color-scheme: dark)" ).matches;
             this.applyTheme( isDark );
             // Watch for system changes
-            if (!this._themeWatcher) {
-                this._themeWatcher = (e) => {
-                    if (this._currentTheme === "detect") this.applyTheme(e.matches);
+            if ( !this._themeWatcher ) {
+                this._themeWatcher = ( e: MediaQueryListEvent ) => {
+                    if ( this._currentTheme === "detect" ) this.applyTheme( e.matches );
                 };
-                window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", this._themeWatcher);
+                window.matchMedia( "(prefers-color-scheme: dark)" ).addEventListener( "change", this._themeWatcher );
             }
         } else {
             this.applyTheme( theme === "dark" );
         }
         this._currentTheme = theme;
-        localStorage.setItem("os-theme", theme);
+        localStorage.setItem( "os-theme", theme );
     }
 
-    static applyTheme( isDark ) {
-        const themeVars = isDark ? {
+    static applyTheme( isDark: boolean ): void {
+        const themeVars: { [ key: string ]: string } = isDark ? {
             "--ខេលេសៃ": "#000", "--ខេលេសៃច្ហិ": "#000000a0", "--កេភ": "#fff", "--កេភ២": "#c4c4c4",
             "--តានេក": "#ffffff10", "--តានេកខេលេ": "#ffffff10", "--តានេក២": "#ffffff20",
             "--ឆាងាធី": "#181818", "--ឆាងាធីច្ហិ": "#181818c0"
@@ -575,18 +568,18 @@ class WindowManager {
             "--តានេក": "#00000010", "--តានេកខេលេ": "#00000008", "--តានេក២": "#00000020",
             "--ឆាងាធី": "#f4f4f4", "--ឆាងាធីច្ហិ": "#f4f4f4c0"
         };
-        const applyTo = ( doc ) => {
+        const applyTo = ( doc: Document | null ) => {
             if ( !doc?.documentElement ) return;
             Object.entries( themeVars ).forEach( ( [ p, v ] ) => doc.documentElement.style.setProperty( p, v ) );
         };
         applyTo( document );
-        document.querySelectorAll( "iframe" ).forEach( f => { try { applyTo( f.contentDocument ); } catch ( e ) {} } );
+        document.querySelectorAll( "iframe" ).forEach( ( f: HTMLIFrameElement ) => { try { applyTo( f.contentDocument ); } catch ( e ) { /* ignore */ } } );
     }
 
     // ⟪ Wallpaper Management ⟫
 
-    static setWallpaper( url ) {
-        const root = document.getElementById("os-root");
+    static setWallpaper( url: string ): void {
+        const root = document.getElementById( "os-root" );
         if ( root ) {
             if ( url ) {
                 root.style.backgroundImage = `url('${url}')`;
@@ -596,23 +589,23 @@ class WindowManager {
                 root.style.backgroundImage = "none";
             }
         }
-        localStorage.setItem("os-wallpaper", url || "");
+        localStorage.setItem( "os-wallpaper", url || "" );
     }
 
     // ⟪ Initialization ⟫
 
-    static init() {
-        const savedTheme = localStorage.getItem("os-theme") || "detect";
-        this.setTheme(savedTheme);
+    static init(): void {
+        const savedTheme = localStorage.getItem( "os-theme" ) || "detect";
+        this.setTheme( savedTheme );
 
-        const savedWallpaper = localStorage.getItem("os-wallpaper");
-        if (savedWallpaper) {
-            this.setWallpaper(savedWallpaper);
+        const savedWallpaper = localStorage.getItem( "os-wallpaper" );
+        if ( savedWallpaper ) {
+            this.setWallpaper( savedWallpaper );
         }
 
         // Initialize taskbar size from localStorage
-        const savedTaskbarSize = localStorage.getItem("os-taskbar-size") || "48";
-        this.updateTaskbarSettings(savedTaskbarSize);
+        const savedTaskbarSize = localStorage.getItem( "os-taskbar-size" ) || "48";
+        this.updateTaskbarSettings( savedTaskbarSize );
 
         // Initialize taskbar with saved position and insets
         this.initTaskbar();
@@ -620,7 +613,7 @@ class WindowManager {
 
     // ⟪ Set Language ⟫
 
-    static setLanguage( val ) {
+    static setLanguage( val: string ): void {
         if ( typeof k2regawe === "function" ) {
             k2regawe( val );
         }
@@ -628,29 +621,30 @@ class WindowManager {
 
     // ⟪ Set Label Display ⟫
 
-    static setLabelDisplay( val ) {
-        if (window.DesktopIconManager) {
-            if (window.DesktopIconManager.desktop) {
-                window.DesktopIconManager.desktop.labelMode = val;
-                window.DesktopIconManager.desktop.init();
+    static setLabelDisplay( val: string ): void {
+        if ( ( window as any ).DesktopIconManager ) {
+            const dim = ( window as any ).DesktopIconManager;
+            if ( dim.desktop ) {
+                dim.desktop.labelMode = val;
+                dim.desktop.init();
             }
-            if (window.DesktopIconManager.startMenu) {
-                window.DesktopIconManager.startMenu.labelMode = val;
-                window.DesktopIconManager.startMenu.init();
+            if ( dim.startMenu ) {
+                dim.startMenu.labelMode = val;
+                dim.startMenu.init();
             }
 
             // Re-add icons to both grids
-            APPS.forEach((app, i) => {
-                window.DesktopIconManager.desktop?.addIcon(app, i);
-                window.DesktopIconManager.startMenu?.addIcon(app, i);
-            });
-            window.DesktopIconManager._relayoutAll();
+            APPS.forEach( ( app: any, i: number ) => {
+                dim.desktop?.addIcon( app, i );
+                dim.startMenu?.addIcon( app, i );
+            } );
+            dim._relayoutAll();
         }
     }
 
     // ⟪ Set Taskbar Position ⟫
 
-    static setTaskbarPosition( pos ) {
+    static setTaskbarPosition( pos: string ): void {
         const taskbar = getTaskbar();
         if ( taskbar ) taskbar.dataset.position = pos;
 
@@ -658,7 +652,7 @@ class WindowManager {
         const sizeWithGap = "calc(var(--taskbar-width) + var(--អារេងព៏) + var(--អារេងព៏) + var(--inset-gap))";
         const margin = "var(--អារេងព៏)";
 
-        const panelInsets = {
+        const panelInsets: { [ key: string ]: { [ key: string ]: string } } = {
             left: { "left": sizeWithGap, "right": margin, "top": margin, "bottom": margin },
             right: { "right": sizeWithGap, "left": margin, "top": margin, "bottom": margin },
             top: { "top": sizeWithGap, "bottom": margin, "left": margin, "right": margin },
@@ -677,7 +671,7 @@ class WindowManager {
         } );
 
         // Update title bar orientation for windows
-        document.querySelectorAll( ".window" ).forEach( el => {
+        document.querySelectorAll( ".window" ).forEach( ( el: any ) => {
             const titleBar = el.querySelector( ".title-bar" );
             if ( titleBar ) {
                 titleBar.dataset.position = pos;
@@ -686,16 +680,16 @@ class WindowManager {
         } );
 
         // Update tile orientations via managers
-        if (window.DesktopIconManager) {
-            [window.DesktopIconManager.desktop, window.DesktopIconManager.startMenu].forEach(grid => {
-                grid?.container?.querySelectorAll(".app-tile").forEach(tile => grid.updateAdaptiveOrientation(tile));
-            });
+        if ( ( window as any ).DesktopIconManager ) {
+            [ ( window as any ).DesktopIconManager.desktop, ( window as any ).DesktopIconManager.startMenu ].forEach( ( grid: any ) => {
+                grid?.container?.querySelectorAll( ".app-tile" ).forEach( ( tile: HTMLElement ) => grid.updateAdaptiveOrientation( tile ) );
+            } );
         }
 
-        if ( window.DesktopIconManager?.desktop ) {
+        if ( ( window as any ).DesktopIconManager?.desktop ) {
             setTimeout( () => {
-                document.querySelectorAll( "#desktop .app-tile" ).forEach( tile =>
-                    window.DesktopIconManager.desktop.applyPosition( tile, parseInt( tile.dataset.col ), parseInt( tile.dataset.row ) )
+                document.querySelectorAll( "#desktop .app-tile" ).forEach( ( tile: any ) =>
+                    ( window as any ).DesktopIconManager.desktop.applyPosition( tile, parseInt( tile.dataset.col ), parseInt( tile.dataset.row ) )
                 );
             }, CONSTANTS.WM.TASKBAR_REPOSITION_DELAY );
         }
@@ -710,7 +704,7 @@ class WindowManager {
 
     // ⟪ Init Taskbar ⟫
 
-    static initTaskbar() {
+    static initTaskbar(): void {
         const taskbar = getTaskbar();
         if ( !taskbar ) return;
 
@@ -718,20 +712,20 @@ class WindowManager {
         taskbar.dataset.flow = "default";
         taskbar.dataset.large = "false";
 
-        // Check if mobile device (small screen)
-        const isMobile = window.innerWidth < 768 || window.innerHeight < 768;
-        
+        // Check if mobile device ( small screen )
+        const isMobile = window.innerWidth < CONSTANTS.BREAKPOINTS.MOBILE || window.innerHeight < CONSTANTS.BREAKPOINTS.MOBILE;
+
         // Auto-position taskbar based on screen size and orientation
         const autoPositionTaskbar = () => {
-            const newIsMobile = window.innerWidth < 768 || window.innerHeight < 768;
+            const newIsMobile = window.innerWidth < CONSTANTS.BREAKPOINTS.MOBILE || window.innerHeight < CONSTANTS.BREAKPOINTS.MOBILE;
             const newIsPortrait = window.innerHeight > window.innerWidth;
             const currentPos = taskbar.dataset.position;
-            
+
             if ( newIsMobile ) {
                 const isValidForPortrait = currentPos === "bottom";
                 const isValidForLandscape = currentPos === "left" || currentPos === "right";
                 const needsUpdate = newIsPortrait ? !isValidForPortrait : !isValidForLandscape;
-                
+
                 if ( needsUpdate ) {
                     this.setTaskbarPosition( newIsPortrait ? "bottom" : "left" );
                 }
@@ -742,12 +736,12 @@ class WindowManager {
             // Mobile auto-detect orientation and set position
             const isPortrait = window.innerHeight > window.innerWidth;
             const savedPos = localStorage.getItem( "os-taskbar-position" );
-            
+
             if ( savedPos ) {
                 // Use saved position if it matches orientation
                 const validForPortrait = savedPos === "bottom";
                 const validForLandscape = savedPos === "left" || savedPos === "right";
-                
+
                 if ( ( isPortrait && validForPortrait ) || ( !isPortrait && validForLandscape ) ) {
                     this.setTaskbarPosition( savedPos );
                 } else {
@@ -758,7 +752,7 @@ class WindowManager {
                 // No saved position - auto-set based on orientation
                 this.setTaskbarPosition( isPortrait ? "bottom" : "left" );
             }
-            
+
             // Listen for orientation changes and resize
             window.addEventListener( "orientationchange", autoPositionTaskbar );
             window.addEventListener( "resize", autoPositionTaskbar );
@@ -773,14 +767,20 @@ class WindowManager {
 window.addEventListener( "message", ( e ) => {
     if ( e.data?.source !== "settings" ) return;
     const { action, value } = e.data;
-    if ( typeof WindowManager[ action ] === "function" ) {
-        WindowManager[ action ]( value );
+    if ( typeof ( WindowManager as any )[ action ] === "function" ) {
+        ( WindowManager as any )[ action ]( value );
     }
 } );
 
 // Initialize Window Manager settings (theme, wallpaper, etc.)
-document.addEventListener("DOMContentLoaded", () => WindowManager.init());
+document.addEventListener( "DOMContentLoaded", () => WindowManager.init() );
 
-window.WindowManager = WindowManager;
-window.renderRecents = () => WindowManager.renderRecents();
-window.updateDock = () => WindowManager.updateDock();
+( window as any ).WindowManager = WindowManager;
+( window as any ).renderRecents = () => WindowManager.renderRecents();
+( window as any ).updateDock = () => WindowManager.updateDock();
+
+// Stub for updateHomeBarAppearance (optional feature)
+function updateHomeBarAppearance(): void {
+    // Optional: Implement home bar appearance update logic
+}
+( window as any ).updateHomeBarAppearance = updateHomeBarAppearance;

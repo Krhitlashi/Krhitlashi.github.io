@@ -1,13 +1,13 @@
 // ≺⧼ Storage Utilities ⧽≻
 
-const Storage = {
+const StorageUtil = {
     /**
      * Get item from localStorage
      * @param {string} key
      * @param {any} defaultValue
      * @returns {any}
      */
-    get(key, defaultValue = null) {
+    get(key: string, defaultValue: any = null): any {
         try {
             const item = localStorage.getItem(key);
             return item ? JSON.parse(item) : defaultValue;
@@ -21,7 +21,7 @@ const Storage = {
      * @param {string} key
      * @param {any} value
      */
-    set(key, value) {
+    set(key: string, value: any): void {
         try {
             localStorage.setItem(key, JSON.stringify(value));
         } catch (e) {
@@ -33,7 +33,7 @@ const Storage = {
      * Remove item from localStorage
      * @param {string} key
      */
-    remove(key) {
+    remove(key: string): void {
         localStorage.removeItem(key);
     },
 
@@ -43,7 +43,7 @@ const Storage = {
      * @param {object} defaults
      * @returns {object}
      */
-    loadWithDefaults(key, defaults) {
+    loadWithDefaults(key: string, defaults: object): object {
         try {
             const item = localStorage.getItem(key);
             if (!item) return { ...defaults };
@@ -54,3 +54,6 @@ const Storage = {
         }
     }
 };
+
+// Attach to window for global access - use StorageUtil to avoid conflict with native Storage
+(window as any).StorageUtil = StorageUtil;

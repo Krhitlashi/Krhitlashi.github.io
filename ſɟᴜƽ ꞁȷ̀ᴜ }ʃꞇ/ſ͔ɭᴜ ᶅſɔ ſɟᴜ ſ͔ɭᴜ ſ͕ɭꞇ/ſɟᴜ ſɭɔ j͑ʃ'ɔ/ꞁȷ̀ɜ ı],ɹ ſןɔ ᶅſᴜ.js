@@ -201,7 +201,7 @@ function isVowelFinal(word) {
  * @returns {Object} Modified verb entry with gawekiif and translation.
  */
 function applyVerbModifiers(verb, options = {}) {
-    const {
+    let {
         affix = null,
         modality = null,
         modalityNegated = false,
