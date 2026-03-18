@@ -26,14 +26,14 @@ function getHtmlEntries(dir: string, allFiles: Record<string, string> = {}) {
   return allFiles;
 }
 
-// Plugin to copy static JS and CSS files to dist
+// Plugin to copy static JS files to dist
 const copyStaticFilesPlugin = {
   name: "copy-static-files",
   closeBundle() {
     const distDir = join(__dirname, "dist");
     const excludedDirs = ["node_modules", "dist", ".git", ".github", ".idea"];
     
-    // Recursively find all .js and .css files
+    // Recursively find all .js files
     function findStaticFiles(dir: string, files: string[] = []): string[] {
       const entries = readdirSync(dir, { withFileTypes: true });
       
@@ -47,7 +47,7 @@ const copyStaticFilesPlugin = {
         
         if (entry.isDirectory()) {
           findStaticFiles(fullPath, files);
-        } else if (entry.isFile() && (entry.name.endsWith(".js") || entry.name.endsWith(".css"))) {
+        } else if (entry.isFile() && (entry.name.endsWith(".js"))) {
           files.push(fullPath);
         }
       }
