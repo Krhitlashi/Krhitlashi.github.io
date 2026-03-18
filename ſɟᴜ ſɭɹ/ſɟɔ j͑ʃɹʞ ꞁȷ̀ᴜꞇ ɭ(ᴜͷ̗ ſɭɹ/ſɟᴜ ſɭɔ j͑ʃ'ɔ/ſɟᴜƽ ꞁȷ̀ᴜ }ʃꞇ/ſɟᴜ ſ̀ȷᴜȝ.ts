@@ -52,6 +52,74 @@ const StorageUtil = {
         } catch {
             return { ...defaults };
         }
+    },
+
+    /**
+     * Save desktop tile positions and sizes to localStorage
+     * @param {HTMLElement[]} tiles - Array of tile elements
+     * @param {string} storageKey - Key for localStorage (default: "desktopTileLayout")
+     */
+    saveTileLayout(tiles: HTMLElement[], storageKey: string = "desktopTileLayout"): void {
+        try {
+            const layout = tiles.map(tile => ({
+                id: tile.id || tile.dataset.app || tile.dataset.id,
+                col: parseInt(tile.dataset.col as string) || 0,
+                row: parseInt(tile.dataset.row as string) || 0,
+                colSpan: parseInt(tile.dataset.colSpan as string) || 1,
+                rowSpan: parseInt(tile.dataset.rowSpan as string) || 1
+            })).filter(item => item.id);
+            
+            localStorage.setItem(storageKey, JSON.stringify(layout));
+        } catch (e) {
+            console.error("Failed to save tile layout", e);
+        }
+    },
+
+    /**
+     * Load desktop tile positions and sizes from localStorage
+     * @param {string} storageKey - Key for localStorage (default: "desktopTileLayout")
+     * @returns {Array<{id: string, col: number, row: number, colSpan: number, rowSpan: number}>}
+     */
+    loadTileLayout(storageKey: string = "desktopTileLayout"): Array<{id: string, col: number, row: number, colSpan: number, rowSpan: number}> {
+        try {
+            const item = localStorage.getItem(storageKey);
+            return item ? JSON.parse(item) : [];
+        } catch {
+            return [];
+        }
+    },
+
+    /**
+     * Apply saved tile positions and sizes to tile elements
+     * @param {HTMLElement[]} tiles - Array of tile elements
+     * @param {string} storageKey - Key for localStorage (default: "desktopTileLayout")
+     * @param {(tile: HTMLElement, col: number, row: number, colSpan: number, rowSpan: number) => void} applyPositionFn - Optional function to apply positions
+     */
+    applyTileLayout(tiles: HTMLElement[], storageKey: string = "desktopTileLayout", applyPositionFn?: (tile: HTMLElement, col: number, row: number, colSpan: number, rowSpan: number) => void): void {
+        const savedLayout = this.loadTileLayout(storageKey);
+        if (!savedLayout.length) return;
+
+        tiles.forEach(tile => {
+            const tileId = tile.id || tile.dataset.app || tile.dataset.id;
+            const saved = savedLayout.find(item => item.id === tileId);
+            if (saved) {
+                tile.dataset.col = saved.col.toString();
+                tile.dataset.row = saved.row.toString();
+                tile.dataset.colSpan = saved.colSpan.toString();
+                tile.dataset.rowSpan = saved.rowSpan.toString();
+                if (applyPositionFn) {
+                    applyPositionFn(tile, saved.col, saved.row, saved.colSpan, saved.rowSpan);
+                }
+            }
+        });
+    },
+
+    /**
+     * Clear saved tile layout from localStorage
+     * @param {string} storageKey - Key for localStorage (default: "desktopTileLayout")
+     */
+    clearTileLayout(storageKey: string = "desktopTileLayout"): void {
+        this.remove(storageKey);
     }
 };
 

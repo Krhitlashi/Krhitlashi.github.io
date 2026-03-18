@@ -354,7 +354,7 @@ const AnimationManager: {
         return element.animate(
             [
                 { transform: startTransform + ` scale(${scale})`, opacity: 0 },
-                { transform: "translateY(0) scale(1)", opacity: 1 }
+                { transform: "scale(1)", opacity: 1 }
             ],
             { duration, easing }
         ).finished.then(() => {
@@ -390,7 +390,7 @@ const AnimationManager: {
 
         return element.animate(
             [
-                { transform: "translateY(0) scale(1)", opacity: 1 },
+                { transform: "scale(1)", opacity: 1 },
                 { transform: endTransform + ` scale(${scale})`, opacity: 0 }
             ],
             { duration, easing }
@@ -407,29 +407,52 @@ const AnimationManager: {
     minimizeWindow(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
-        const duration: number = options.duration ?? CONSTANTS.ANIM.DURATION_SHORT;
-        const easing: string = options.easing ?? this.easings.easeIn;
-        const fraction: number = options.fraction ?? CONSTANTS.ANIM.FRACTIONS.oneEighth;
+        const duration: number = options.duration ?? CONSTANTS.ANIM_SETTINGS.windowMinimize.duration;
+        const easing: string = options.easing ?? CONSTANTS.ANIM_SETTINGS.windowMinimize.easing;
+        const scale: number = options.scale ?? CONSTANTS.ANIM_SETTINGS.windowMinimize.scale;
 
         // Get taskbar position and size
-        const { position, size } = this.getTaskbarSizeForPosition(null, 1);
+        const { position } = this.getPositionConfig();
+        const taskbar: HTMLElement | null = getTaskbar();
+        const tbRect: DOMRect = taskbar?.getBoundingClientRect() || { left: 0, top: window.innerHeight, right: window.innerWidth, bottom: window.innerHeight, width: window.innerWidth, height: 0, x: 0, y: window.innerHeight, toJSON() { return {}; } };
+        const winRect: DOMRect = element.getBoundingClientRect();
 
-        // Calculate minimize transform toward taskbar (using 4x and 2x multipliers)
-        const minimizeTransforms: { [key: string]: string } = {
-            left: `translateX(${size * 4}px) scale(${fraction})`,
-            right: `translateX(-${size * 4}px) scale(${fraction})`,
-            top: `translateY(${size * 2}px) scale(${fraction})`,
-            bottom: `translateY(-${size * 2}px) scale(${fraction})`
-        };
+        // Calculate the center point of the window
+        const winCenterX: number = winRect.left + winRect.width / 2;
+        const winCenterY: number = winRect.top + winRect.height / 2;
 
-        const endTransform: string = minimizeTransforms[position] || minimizeTransforms.bottom;
+        // Calculate target point on taskbar
+        let targetX: number, targetY: number;
+        switch (position) {
+            case "left":
+                targetX = tbRect.right;
+                targetY = winCenterY;
+                break;
+            case "right":
+                targetX = tbRect.left;
+                targetY = winCenterY;
+                break;
+            case "top":
+                targetX = winCenterX;
+                targetY = tbRect.bottom;
+                break;
+            case "bottom":
+            default:
+                targetX = winCenterX;
+                targetY = tbRect.top;
+                break;
+        }
+
+        // Calculate translation distance
+        const translateX: number = targetX - winCenterX;
+        const translateY: number = targetY - winCenterY;
 
         element.style.pointerEvents = "none";
 
         return element.animate(
             [
-                { transform: "translateY(0) scale(1)", opacity: 1 },
-                { transform: endTransform, opacity: 0 }
+                { transform: "scale(1)", opacity: 1 },
+                { transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`, opacity: 0 }
             ],
             { duration, easing }
         ).finished.then(() => {
@@ -444,14 +467,35 @@ const AnimationManager: {
     maximizeWindow(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
-        const duration: number = options.duration ?? CONSTANTS.ANIM.DURATION_DEFAULT;
-        const easing: string = options.easing ?? this.easings.easeOut;
-        const fromScale: number = options.fromScale ?? CONSTANTS.ANIM.FRACTIONS.sevenEighths;
+        const duration: number = options.duration ?? CONSTANTS.ANIM_SETTINGS.windowMaximize.duration;
+        const easing: string = options.easing ?? CONSTANTS.ANIM_SETTINGS.windowMaximize.easing;
+        const fromScale: number = options.fromScale ?? CONSTANTS.ANIM_SETTINGS.windowMaximize.scale;
 
         return element.animate(
             [
                 { transform: `scale(${fromScale})`, opacity: CONSTANTS.ANIM.FRACTIONS.sixEighths },
                 { transform: "scale(1)", opacity: 1 }
+            ],
+            { duration, easing }
+        ).finished.then(() => {
+            element.style.transform = "";
+            element.style.opacity = "";
+        });
+    },
+
+    // ⟪ Restore from Maximize Animation ⟫
+
+    unmaximizeWindow(element: HTMLElement, options: any = {}): Promise<void> {
+        if (!element) return Promise.resolve();
+
+        const duration: number = options.duration ?? CONSTANTS.ANIM_SETTINGS.windowMaximize.duration;
+        const easing: string = options.easing ?? CONSTANTS.ANIM_SETTINGS.windowMaximize.easing;
+        const toScale: number = options.toScale ?? CONSTANTS.ANIM_SETTINGS.windowMaximize.scale;
+
+        return element.animate(
+            [
+                { transform: "scale(1)", opacity: 1 },
+                { transform: `scale(${toScale})`, opacity: CONSTANTS.ANIM.FRACTIONS.sixEighths }
             ],
             { duration, easing }
         ).finished.then(() => {
@@ -569,11 +613,11 @@ const AnimationManager: {
 
     // ⟪ Popup Animation ( for context menu ) ⟫
 
-    popup(element: HTMLElement, options: any = {}): Promise<void> {
+    popupIn(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
-        const duration: number = options.duration ?? CONSTANTS.ANIM.DURATION_SHORT;
-        const easing: string = this.easings.easeOut;
-        const scale: number = CONSTANTS.ANIM.FRACTIONS.sevenEighths;
+        const duration: number = options.duration ?? CONSTANTS.ANIM_SETTINGS.popup.duration;
+        const easing: string = options.easing ?? CONSTANTS.ANIM_SETTINGS.popup.easing;
+        const scale: number = options.scale ?? CONSTANTS.ANIM_SETTINGS.popup.scale;
 
         element.style.transform = `scale(${scale})`;
         element.style.opacity = "0";
@@ -586,6 +630,33 @@ const AnimationManager: {
             element.style.transform = "";
             element.style.opacity = "";
         });
+    },
+
+    // ⟪ Popup Close Animation ( fade out ) ⟫
+
+    popupOut(element: HTMLElement, options: any = {}): Promise<void> {
+        if (!element) return Promise.resolve();
+        const duration: number = options.duration ?? CONSTANTS.ANIM_SETTINGS.popup.duration;
+        const easing: string = options.easing ?? CONSTANTS.ANIM_SETTINGS.popup.easing;
+        const scale: number = options.scale ?? CONSTANTS.ANIM_SETTINGS.popup.scale;
+
+        element.style.pointerEvents = "none";
+
+        return element.animate([
+            { transform: "scale(1)", opacity: 1 },
+            { transform: `scale(${scale})`, opacity: 0 }
+        ], { duration, easing }).finished.then(() => {
+            element.style.display = "none";
+            element.style.transform = "";
+            element.style.opacity = "";
+            element.style.pointerEvents = "";
+        });
+    },
+
+    // ⟪ Popup Animation ( for context menu ) - Legacy Alias ⟫
+
+    popup(element: HTMLElement, options: any = {}): Promise<void> {
+        return this.popupIn(element, options);
     },
 
     // ⟪ Full Screen App Fade In ⟫

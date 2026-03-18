@@ -13,6 +13,7 @@ declare const getElementSpans: any;
 declare const getWindowManager: any;
 declare const getTaskbar: any;
 declare const Storage: any;
+declare const StorageUtil: any;
 declare const QSManager: any;
 declare const NotificationManager: any;
 declare const AnimationManager: any;
@@ -106,7 +107,7 @@ function setupTileDrag(grid: IconGrid, el: HTMLElement, startX: number, startY: 
     let hasDragged = false;
 
     setElementDragging(el, true);
-    el.style.zIndex = "10000";
+    el.style.zIndex = "8192";
 
     if (grid.containerId === "start-menu-content") {
         document.body.appendChild(el);
@@ -262,6 +263,9 @@ function setupTileResize(grid: IconGrid, el: HTMLElement, startX: number, startY
         void el.offsetWidth;
         grid.applyPosition(el, parseInt(el.dataset.col || "0"), parseInt(el.dataset.row || "0"));
         grid.updateAdaptiveOrientation(el);
+
+        // Save tile layout to storage
+        if ( grid.containerId === "desktop" ) (window as any).DesktopIconManager?._saveDesktopLayout();
     };
 
     const onMove = (ev: any) => {
@@ -789,6 +793,9 @@ class IconGrid {
 
         this.applyPosition(el, c, r);
         this.updateAdaptiveOrientation(el);
+
+        // Save tile layout to storage
+        if ( this.containerId === "desktop" ) (window as any).DesktopIconManager?._saveDesktopLayout();
     }
 
     toggleEdit(): void {
@@ -939,12 +946,29 @@ class IconGrid {
             if (rect.right > window.innerWidth) this.menu.style.left = (window.innerWidth - rect.width) + "px";
             if (rect.bottom > window.innerHeight) this.menu.style.top = (window.innerHeight - rect.height) + "px";
 
-            if ((window as any).AnimationManager) (window as any).AnimationManager.popup(this.menu);
+            if ((window as any).AnimationManager) {
+                (window as any).AnimationManager.popupIn(this.menu, {
+                    duration: CONSTANTS.ANIM_SETTINGS.popup.duration,
+                    easing: CONSTANTS.ANIM_SETTINGS.popup.easing
+                });
+            }
         }
     },
 
     hide() {
-        if (this.menu) this.menu.classList.remove("visible");
+        if (this.menu) {
+            const anim = (window as any).AnimationManager;
+            if (anim) {
+                anim.popupOut(this.menu, {
+                    duration: CONSTANTS.ANIM_SETTINGS.popup.duration,
+                    easing: CONSTANTS.ANIM_SETTINGS.popup.easing
+                }).then(() => {
+                    this.menu.classList.remove("visible");
+                });
+            } else {
+                this.menu.classList.remove("visible");
+            }
+        }
         this.menuOpen = false;
     },
 
@@ -994,6 +1018,13 @@ class IconGrid {
         });
     },
 
+    _saveDesktopLayout() {
+        if ( StorageUtil && this.desktop?.container ) {
+            const tiles = Array.from(this.desktop.container.querySelectorAll(".app-tile")) as HTMLElement[];
+            StorageUtil.saveTileLayout(tiles, "desktopTileLayout");
+        }
+    },
+
     // Move tile to a specific page (mobile only)
     moveTileToPage(tile: HTMLElement, targetPage: number) {
         if ( !tile || !this.desktop ) return;
@@ -1036,6 +1067,7 @@ class IconGrid {
             else this.startMenu.snapToGrid(tileEl, idx);
         });
         this._relayoutAll();
+        this._saveDesktopLayout();
     },
 
     async init() {
@@ -1053,6 +1085,15 @@ class IconGrid {
             this.desktop?.addIcon(app, i);
             this.startMenu?.addIcon(app, i);
         });
+
+        // Apply saved tile layout from storage
+        if ( StorageUtil && this.desktop?.container ) {
+            const tiles = Array.from(this.desktop.container.querySelectorAll(".app-tile")) as HTMLElement[];
+            const desktop = this.desktop;
+            StorageUtil.applyTileLayout(tiles, "desktopTileLayout", (tile: HTMLElement, col: number, row: number) => {
+                desktop.applyPosition(tile, col, row);
+            });
+        }
 
         this._initQuickSettings();
         this._relayoutAll();

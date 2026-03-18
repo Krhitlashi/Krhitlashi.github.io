@@ -66,6 +66,10 @@
         <select id="language" class="k6tani">
         </select>
     </thala>
+
+    <sak></sak>
+
+    <button id="reset-storage-btn" data-oskakefani="settings_reset_storage"></button>
 </body>
 <script>
     function send(action, value) {
@@ -80,6 +84,10 @@
     document.getElementById("label-display").onchange = e => send("setLabelDisplay", e.target.value);
     document.getElementById("language").onchange = e => send("setLanguage", e.target.value);
     document.getElementById("taskbar-position").onchange = e => send("setTaskbarPosition", e.target.value);
+    document.getElementById("reset-storage-btn").onclick = () => {
+        localStorage.clear();
+        location.reload();
+    };
 
     // Initialize from localStorage
     document.getElementById("theme-select").value = localStorage.getItem("os-theme") || "detect";
@@ -131,7 +139,8 @@
             "settings_left": "ſɟƨᴜ ŋᷠᴜ",
             "settings_right": "ſןƨᴜ ŋᷠᴜ",
             "settings_bottom": "ſןɔ˞ᴜƴ",
-            "settings_top": "j͑ʃɜ ſɭ,ᴜ"
+            "settings_top": "j͑ʃɜ ſɭ,ᴜ",
+            "settings_reset_storage": "ɭʃɜ j͑ʃᴜᶗ‹ ſɭw ſᶘɜ"
         },
         en: {
             "settings_title": "Settings ⚙️",
@@ -152,7 +161,8 @@
             "settings_left": "Left",
             "settings_right": "Right",
             "settings_bottom": "Bottom",
-            "settings_top": "Top"
+            "settings_top": "Top",
+            "settings_reset_storage": "Reset All Storage"
         }
     };
 

@@ -133,9 +133,19 @@
             easing: "cubic-bezier(0.5, 0, 1, 1)",
             scale: 1/8
         },
+        windowMaximize: {
+            duration: 0o300,
+            easing: "cubic-bezier(0, 0, 0.25, 1)",
+            scale: 7/8
+        },
+        popup: {
+            duration: 0o200,
+            easing: "cubic-bezier(0, 0, 0.25, 1)",
+            scale: 7/8
+        },
         ripple: {
             duration: 0o300,
-            color: "rgba(255, 255, 255, 0.24)"
+            color: "rgba(255, 255, 255, 0.25)"
         }
     },
 

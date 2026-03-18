@@ -380,6 +380,12 @@ class WindowManager {
         if ( !win ) return;
 
         if ( win.classList.contains( "maximized" ) ) {
+            // Play unmaximize animation first
+            AnimationManager.unmaximizeWindow( win, {
+                duration: CONSTANTS.ANIM_SETTINGS.windowMaximize.duration,
+                easing: CONSTANTS.ANIM_SETTINGS.windowMaximize.easing,
+                toScale: CONSTANTS.ANIM_SETTINGS.windowMaximize.scale
+            } );
             // Restore previous dimensions
             win.style.width = win.dataset.prevWidth || "";
             win.style.height = win.dataset.prevHeight || "";
@@ -402,6 +408,12 @@ class WindowManager {
             ( win.style as any ).right = "";
             ( win.style as any ).bottom = "";
             win.classList.add( "maximized" );
+            // Play maximize animation
+            AnimationManager.maximizeWindow( win, {
+                duration: CONSTANTS.ANIM_SETTINGS.windowMaximize.duration,
+                easing: CONSTANTS.ANIM_SETTINGS.windowMaximize.easing,
+                fromScale: CONSTANTS.ANIM_SETTINGS.windowMaximize.scale
+            } );
         }
     }
 
