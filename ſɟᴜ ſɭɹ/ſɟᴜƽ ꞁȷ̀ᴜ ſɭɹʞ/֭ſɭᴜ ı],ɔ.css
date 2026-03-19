@@ -110,7 +110,7 @@ body.whiteboard-page {
     transition: all 0.25s ease;
     display: flex;
     flex-direction: column;
-    max-block-size: 100vh;
+    max-block-size: calc(100vb - var(--អារេងព៏) * 2);
     overflow: auto;
     border-radius: var(--អិត្ភេពឺ);
 }
@@ -146,10 +146,10 @@ body.whiteboard-page {
 
 /* ⟪ ɭʃᴜ }ʃɔƽ 📚 ⟫ */
 
-#layerList button .layer-visibility::before {
+#layerList button .layer-visibility::before, #pageList button .page-visibility::before {
     content: "👁️";
 }
-#layerList button .layer-visibility[data-visible="false"]::before {
+#layerList button .layer-visibility[data-visible="false"]::before, #pageList button .page-visibility[data-visible="false"]::before {
     content: "🚫";
 }
 
@@ -161,7 +161,7 @@ body.whiteboard-page {
     inset-block-start: var(--text-y, 0);
     color: var(--text-color, #000);
     caret-color: var(--text-color, #000);
-    z-index: 10;
+    z-index: 8;
     display: none;
     line-height: 1;
     outline: none;

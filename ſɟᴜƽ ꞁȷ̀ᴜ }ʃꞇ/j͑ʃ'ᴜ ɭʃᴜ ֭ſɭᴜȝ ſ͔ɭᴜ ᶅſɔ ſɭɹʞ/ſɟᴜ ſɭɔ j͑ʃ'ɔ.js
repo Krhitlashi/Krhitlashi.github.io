@@ -521,8 +521,8 @@ function kf2Aravab6m6q(tahaqWeK2p2, a1aKnu3a = false) {
                 <title>j͑ʃ'ᴜ ɭʃᴜ ֭ſɭᴜȝ ʃэ ŋᷠэȝ ſɭɹ ſןɹ</title>
                 <style>
                     @page { size: portrait; margin: 0; }
-                    body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: white; }
-                    img { display: block; max-width: 100vw; max-height: 100vh; object-fit: contain; }
+                    body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vb; background: white; }
+                    img { display: block; max-width: 100vi; max-height: 100vb; object-fit: contain; }
                 </style>
             </head>
             <body>
@@ -551,8 +551,8 @@ function kf2Aravab6m6q(tahaqWeK2p2, a1aKnu3a = false) {
                     }
                     body { margin: 0; padding: 0; }
                     .page {
-                        width: 100vw;
-                        height: 100vh;
+                        width: 100vi;
+                        height: 100vb;
                         display: flex;
                         justify-content: center;
                         align-items: center;

@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="toolbar-wrapper scace">
+    <div class="toolbar-wrapper">
         <div id="toolbarContainer">
             <thala class="n2tase" id="toolsPanel">
                 <p class="ksakap2sa"><span data-oskakefani="ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ"></span> 🔧</p>
@@ -88,7 +88,7 @@
             
             <thala class="n2tase" id="layersPanel">
                 <p class="ksakap2sa"><span data-oskakefani="ɭʃᴜ }ʃɔƽ"></span> 📚</p>
-                <ciihii>
+                <ciihii style="flex-direction: row;">
                     <button id="addLayerBtn">➕</button>
                     <button id="deleteLayerBtn">➖</button>
                     <button id="moveLayerUpBtn">⬆️</button>
@@ -97,10 +97,22 @@
                 <maxema id="layerList"></maxema>
             </thala>
 
+            <thala class="n2tase" id="pagesPanel">
+                <p class="ksakap2sa"><span data-oskakefani="ſ̀ȷᴜ"></span> 📄</p>
+                <ciihii style="flex-direction: row;">
+                    <button id="addPageBtn">➕</button>
+                    <button id="deletePageBtn">➖</button>
+                </ciihii>
+                <maxema id="pageList"></maxema>
+            </thala>
+
             <thala class="n2tase" id="filePanel">
                 <p class="ksakap2sa"><span data-oskakefani="ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ"></span> 💾</p>
                 <button id="saveBtn">
                     <span data-oskakefani="j͑ʃ'ɔ ſ̀ȷᴜȝ"></span> 💾
+                </button>
+                <button id="savePdfBtn">
+                    <span data-oskakefani="ſɭʞɹ ʃэ ŋᷠэȝ ſɭɹ ſןɹ"></span> 📝
                 </button>
                 <button id="loadBtn">
                     <span data-oskakefani="j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ"></span> 📂
@@ -135,9 +147,9 @@
     </thala>
     
     <thala class="cakaxa n2tase zoom-controls">
-        <button id="zoomOut">−</button>
-        <p id="zoomLevel">1/1x</p>
-        <button id="zoomIn">+</button>
+        <button id="zoomOut">›</button>
+        <p id="zoomLevel">1/1</p>
+        <button id="zoomIn">x</button>
         <button id="zoomReset">⟲</button>
     </thala>
     
@@ -154,6 +166,9 @@
     
     <thala class="cakaxa n2tase" id="transformControls">
         <button id="editSelected">✏️</button>
+        <button id="duplicateSelected">📋</button>
+        <button id="copySelected">📄</button>
+        <button id="pasteSelected">📥</button>
         <button id="deleteSelected">🗑️</button>
         <button id="clearSelected">/</button>
         <button id="rotateLeft">↺</button>
@@ -192,8 +207,10 @@
             "}ʃɔ }ʃɔ ſɭᴜ j͐ʃᴜ": "}ʃɔ }ʃɔ ſɭᴜ j͐ʃᴜ",
             "j͑ʃ'ᴜ ᶅſɔ": "j͑ʃ'ᴜ ᶅſɔ",
             "ɭʃᴜ }ʃɔƽ": "ɭʃᴜ }ʃɔƽ",
+            "ſ̀ȷᴜ": "ſ̀ȷᴜ",
             "ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ": "ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ",
             "j͑ʃ'ɔ ſ̀ȷᴜȝ": "j͑ʃ'ɔ ſ̀ȷᴜȝ",
+            "ſɭʞɹ ʃэ ŋᷠэȝ ſɭɹ ſןɹ": "ſɭʞɹ ʃэ ŋᷠэȝ ſɭɹ ſןɹ",
             "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ": "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ",
             "j͑ʃɹ ſɟɔ j͐ʃɹʞ": "j͑ʃɹ ſɟɔ j͐ʃɹʞ",
             "ſןᴜ j͐ʃэ": "ſןᴜ j͐ʃэ",
@@ -222,8 +239,10 @@
             "}ʃɔ }ʃɔ ſɭᴜ j͐ʃᴜ": "Redo",
             "j͑ʃ'ᴜ ᶅſɔ": "Clear",
             "ɭʃᴜ }ʃɔƽ": "Layers",
+            "ſ̀ȷᴜ": "Pages",
             "ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ": "File",
             "j͑ʃ'ɔ ſ̀ȷᴜȝ": "Save",
+            "ſɭʞɹ ʃэ ŋᷠэȝ ſɭɹ ſןɹ": "Save as PDF",
             "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ": "Load",
             "j͑ʃɹ ſɟɔ j͐ʃɹʞ": "Navigation",
             "ſןᴜ j͐ʃэ": "Size",

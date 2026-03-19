@@ -1,16 +1,17 @@
 // ≺⧼ Utils and Helpers ⧽≻
 
 import {
-    canvas, ctx, state, panState, spaceState, layerState, objectState, pathState, textState, eraserState, historyState,
+    canvas, ctx, state, panState, spaceState, layerState, objectState, pathState, textState,
     TOOL_CURSORS, CURSOR_CLASSES,
-    CANVAS_WIDTH, CANVAS_HEIGHT, MIN_SIZE, HANDLE_SIZE, HANDLE_RADIUS, SELECTION_PADDING, CORNER_RADIUS,
-    DASH_LENGTH, ROTATE_HANDLE_OFFSET, ROTATE_HANDLE_RADIUS, RESIZE_HANDLE_HITBOX, MIN_ZOOM, MAX_ZOOM,
-    ZOOM_STEP_NUM, ZOOM_STEP_DEN, WHEEL_ZOOM_NUM, WHEEL_ZOOM_DEN, SMOOTHING_FACTOR,
-    TEXT_SIZE_MULTIPLIER, TEXT_MIN_WIDTH_MULTIPLIER, HISTORY_MAX, INITIAL_BRUSH_SIZE, ZOOM_BASE, MIN_DELTA,
-    LINE_DASH_PATTERN, SELECTION_LINE_WIDTH, HANDLE_FILL_COLOR, HANDLE_STROKE_COLOR, SELECTION_STROKE_COLOR,
-    MIN_PATH_DIMENSION, TEXT_EDIT_INDEX_NONE, MIN_PATH_POINTS, CONNECTION_LINE_DASH,
-    WhiteboardObject, Point, ObjectHandler, Layer, LayerState, ObjectState, PathState, TextState, EraserState, HistoryState, ConnectionState
-} from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
+    CANVAS_WIDTH, CANVAS_HEIGHT, MIN_SIZE,
+    DASH_LENGTH, ROTATE_HANDLE_OFFSET, ROTATE_HANDLE_RADIUS, RESIZE_HANDLE_HITBOX,
+
+    TEXT_SIZE_MULTIPLIER, TEXT_MIN_WIDTH_MULTIPLIER, MIN_DELTA,
+    LINE_DASH_PATTERN,
+    TEXT_EDIT_INDEX_NONE,
+    BRIGHTNESS_WEIGHT_R, BRIGHTNESS_WEIGHT_G, BRIGHTNESS_WEIGHT_B, BRIGHTNESS_DIVISOR, BRIGHTNESS_THRESHOLD,
+    PREVIEW_ALPHA, COVERAGE_THRESHOLD_FRACTION,
+    WhiteboardObject, Point, ObjectHandler} from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
 
 // ⟪ Event Helpers 🖱️ ⟫
 
@@ -147,7 +148,8 @@ export function initButtons(buttonConfigs: Array<{ id: string; onClick: () => vo
 
 export function startTextEdit(): void {
     if (!textState.input) {
-        initTextEditInput();
+        textState.input = document.createElement("textarea");
+        textState.input.className = "text-edit-input";
     }
 }
 
@@ -367,11 +369,14 @@ export function drawShapePath(x: number, y: number, width: number, height: numbe
     }
 }
 
-export function drawShapePreview(obj: WhiteboardObject): void {
+export function drawShapePreview(obj: WhiteboardObject, context: CanvasRenderingContext2D | null = null): void {
     const { x, y, width, height, shape } = obj;
-    ctx!.beginPath();
+    const ctxToUse = context || ctx;
+    if (!ctxToUse) return;
+
+    ctxToUse.beginPath();
     drawShapePath(x!, y!, width!, height!, shape!);
-    ctx!.stroke();
+    ctxToUse.stroke();
 }
 
 export function createShapeObject(shape: string, x1: number, y1: number, x2: number, y2: number): WhiteboardObject | null {
@@ -434,49 +439,55 @@ export function drawPathSegments(points: Point[]): void {
     }
 }
 
-export function drawPathPreview(points: Point[], color: string, size: number): void {
+export function drawPathPreview(points: Point[], color: string, size: number, context: CanvasRenderingContext2D | null = null): void {
     if (points.length < 2) return;
 
-    ctx!.save();
-    ctx!.strokeStyle = color;
-    ctx!.lineWidth = size;
-    ctx!.lineCap = "round";
-    ctx!.lineJoin = "round";
+    const ctxToUse = context || ctx;
+    if (!ctxToUse) return;
+
+    ctxToUse.save();
+    ctxToUse.strokeStyle = color;
+    ctxToUse.lineWidth = size;
+    ctxToUse.lineCap = "round";
+    ctxToUse.lineJoin = "round";
 
     drawPathSegments(points);
-    ctx!.stroke();
-    ctx!.restore();
+    ctxToUse.stroke();
+    ctxToUse.restore();
 }
 
 // ⟪ Preview Utilities 👁️ ⟫
 
-export function drawPreviewShape(obj: WhiteboardObject): void {
+export function drawPreviewShape(obj: WhiteboardObject, context: CanvasRenderingContext2D | null = null): void {
     if (!obj) return;
 
-    ctx!.save();
-    ctx!.setLineDash(LINE_DASH_PATTERN);
-    ctx!.strokeStyle = obj.color!;
-    ctx!.lineWidth = obj.size || 2;
-    ctx!.globalAlpha = 3 / 4;
+    const ctxToUse = context || ctx;
+    if (!ctxToUse) return;
+
+    ctxToUse.save();
+    ctxToUse.setLineDash(LINE_DASH_PATTERN);
+    ctxToUse.strokeStyle = obj.color!;
+    ctxToUse.lineWidth = obj.size || 2;
+    ctxToUse.globalAlpha = PREVIEW_ALPHA;
 
     switch (obj.type) {
         case "line":
-            ctx!.beginPath();
-            ctx!.moveTo(obj.x1!, obj.y1!);
-            ctx!.lineTo(obj.x2!, obj.y2!);
-            ctx!.stroke();
+            ctxToUse.beginPath();
+            ctxToUse.moveTo(obj.x1!, obj.y1!);
+            ctxToUse.lineTo(obj.x2!, obj.y2!);
+            ctxToUse.stroke();
             break;
         case "circle":
-            ctx!.beginPath();
-            ctx!.ellipse(obj.x!, obj.y!, obj.radiusX!, obj.radiusY!, 0, 0, Math.PI * 2);
-            ctx!.stroke();
+            ctxToUse.beginPath();
+            ctxToUse.ellipse(obj.x!, obj.y!, obj.radiusX!, obj.radiusY!, 0, 0, Math.PI * 2);
+            ctxToUse.stroke();
             break;
         case "shape":
-            drawShapePreview(obj);
+            drawShapePreview(obj, ctxToUse);
             break;
     }
 
-    ctx!.restore();
+    ctxToUse.restore();
 }
 
 // ⟪ Rectangle Utilities ⬜ ⟫
@@ -527,14 +538,17 @@ export function getContrastingColors(samplePoints: Point[]): { stroke: string; f
 
     for (const point of samplePoints) {
         const pixelData = ctx!.getImageData(Math.floor(point.x), Math.floor(point.y), 1, 1).data;
-        const brightness = (pixelData[0] * 299 + pixelData[1] * 587 + pixelData[2] * 114) / 1000;
-        if (brightness > 128) lightCount++;
+        const brightness =
+            (pixelData[0] * BRIGHTNESS_WEIGHT_R +
+             pixelData[1] * BRIGHTNESS_WEIGHT_G +
+             pixelData[2] * BRIGHTNESS_WEIGHT_B) / BRIGHTNESS_DIVISOR;
+        if (brightness > BRIGHTNESS_THRESHOLD) lightCount++;
         else darkCount++;
     }
 
     return {
         stroke: lightCount > darkCount ? "#000000" : "#ffffff",
-        fill: lightCount > darkCount ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)"
+        fill: lightCount > darkCount ? "rgba(0, 0, 0, 0.25)" : "rgba(255, 255, 255, 0.25)"
     };
 }
 
@@ -573,18 +587,18 @@ export function removeObject(obj: WhiteboardObject): void {
     if (index > -1) objectState.objects.splice(index, 1);
 }
 
-// Forward declaration for circular dependency
-export function redrawCanvas(): void {}
-export function saveState(): void {}
-
-export function transformSelectedObjects(transformFn: (obj: WhiteboardObject) => void): void {
+export function transformSelectedObjects(
+    transformFn: (obj: WhiteboardObject) => void,
+    redrawFn: () => void,
+    saveFn: () => void
+): void {
     if (objectState.selected.length === 0) return;
     objectState.selected.forEach(obj => {
         transformFn(obj);
         clearTextObjectCache(obj);
     });
-    redrawCanvas();
-    saveState();
+    redrawFn();
+    saveFn();
 }
 
 // ⟪ Resize Handle Utilities 🎯 ⟫
@@ -792,27 +806,6 @@ export function resizeShapeObject(obj: WhiteboardObject, handle: string, baseBou
 
 // ⟪ Move Object Utilities 🚚 ⟫
 
-export function moveObject(obj: WhiteboardObject, newX: number, newY: number): void {
-    if (obj.type === "line") {
-        const minX = Math.min(obj.x1!, obj.x2!);
-        const minY = Math.min(obj.y1!, obj.y2!);
-        const dx = newX - minX;
-        const dy = newY - minY;
-        obj.x1! += dx; obj.y1! += dy;
-        obj.x2! += dx; obj.y2! += dy;
-    } else if (obj.type === "circle") {
-        obj.x = newX; obj.y = newY;
-    } else if (obj.type === "path" || obj.type === "smoothPath") {
-        const dx = newX - obj.bounds!.x;
-        const dy = newY - obj.bounds!.y;
-        obj.points!.forEach(p => { p.x += dx; p.y += dy; });
-        obj.bounds!.x = newX; obj.bounds!.y = newY;
-    } else {
-        obj.x = newX; obj.y = newY;
-        clearTextObjectCache(obj);
-    }
-}
-
 export function moveObjectByDelta(obj: WhiteboardObject, dx: number, dy: number, initial: any): void {
     if (obj.type === "line") {
         obj.x1 = initial.x1 + dx; obj.y1 = initial.y1 + dy;
@@ -953,7 +946,7 @@ export function objectIntersectsPath(obj: WhiteboardObject, path: Point[], erase
         }
     }
 
-    if (coveredCount >= objectSamplePoints.length * 3 / 4) return "full";
+    if (coveredCount >= objectSamplePoints.length * COVERAGE_THRESHOLD_FRACTION) return "full";
     return "partial";
 }
 
@@ -1478,13 +1471,4 @@ export function getConnectionEndpoints(connectionObj: WhiteboardObject): { start
     const endObj = objectState.objects.find(o => o.id === connectionObj.endId);
     if (!startObj || !endObj) return null;
     return { start: getCenter(startObj), end: getCenter(endObj) };
-}
-
-export function isConnectionValid(connectionObj: WhiteboardObject): boolean {
-    return getConnectionEndpoints(connectionObj) !== null;
-}
-
-export function initTextEditInput(): void {
-    textState.input = document.createElement("textarea");
-    textState.input.className = "text-edit-input";
 }

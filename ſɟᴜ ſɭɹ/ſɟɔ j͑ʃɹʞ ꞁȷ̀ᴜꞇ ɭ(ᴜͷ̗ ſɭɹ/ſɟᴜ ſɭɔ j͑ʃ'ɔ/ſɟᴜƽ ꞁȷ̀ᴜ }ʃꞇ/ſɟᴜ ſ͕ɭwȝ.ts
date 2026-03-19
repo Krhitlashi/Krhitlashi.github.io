@@ -18,18 +18,18 @@ interface TaskbarInfo {
  * @returns {HTMLElement|null}
  */
 function getTaskbar(): HTMLElement | null {
-    return document.getElementById("taskbar");
+    return document.getElementById( "taskbar" );
 }
 
 // Attach to window for global access
-(window as any).getTaskbar = getTaskbar;
+( window as any ).getTaskbar = getTaskbar;
 
 /**
  * Get the start menu element
  * @returns {HTMLElement|null}
  */
 function getStartMenu(): HTMLElement | null {
-    return document.getElementById("start-menu");
+    return document.getElementById( "start-menu" );
 }
 
 /**
@@ -37,7 +37,7 @@ function getStartMenu(): HTMLElement | null {
  * @returns {HTMLElement|null}
  */
 function getHomeArea(): HTMLElement | null {
-    return document.getElementById("home-area");
+    return document.getElementById( "home-area" );
 }
 
 /**
@@ -45,7 +45,7 @@ function getHomeArea(): HTMLElement | null {
  * @returns {HTMLElement|null}
  */
 function getWindowContainer(): HTMLElement | null {
-    return document.getElementById("window-container");
+    return document.getElementById( "window-container" );
 }
 
 /**
@@ -53,7 +53,7 @@ function getWindowContainer(): HTMLElement | null {
  * @returns {NodeList}
  */
 function getOpenWindows(): NodeListOf<HTMLElement> {
-    return document.querySelectorAll(".window");
+    return document.querySelectorAll( ".window" );
 }
 
 /**
@@ -80,8 +80,8 @@ function isTaskbarLarge(): boolean {
  * @param {HTMLElement} win
  * @returns {string}
  */
-function getWindowTitle(win: HTMLElement): string {
-    return (win.querySelector(".title-bar-title") as HTMLElement)?.innerText || "App";
+function getWindowTitle( win: HTMLElement ): string {
+    return ( win.querySelector( ".title-bar-title" ) as HTMLElement )?.innerText || "App";
 }
 
 /**
@@ -89,9 +89,9 @@ function getWindowTitle(win: HTMLElement): string {
  * @param {string} title
  * @returns {string}
  */
-function getAppIcon(title: string): string {
-    if (typeof APPS === "undefined") return "🖥️";
-    const app = (APPS as any[]).find((a: any) => a.app === title);
+function getAppIcon( title: string ): string {
+    if ( typeof APPS === "undefined" ) return "🖥️";
+    const app = ( APPS as any[] ).find( ( a: any ) => a.app === title );
     return app?.icon || "🖥️";
 }
 
@@ -100,10 +100,10 @@ function getAppIcon(title: string): string {
  * @returns {object}
  */
 function getStrings(): { [key: string]: string } {
-    const lang = (typeof kjesaiGawe !== "undefined" ? kjesaiGawe : "aih");
-    return (typeof skakefani !== "undefined" && (skakefani as any)[lang])
-        ? (skakefani as any)[lang]
-        : (skakefani ? (skakefani as any).en : {});
+    const lang = ( typeof kjesaiGawe !== "undefined" ? kjesaiGawe : "aih" );
+    return ( typeof skakefani !== "undefined" && ( skakefani as any )[ lang ] )
+        ? ( skakefani as any )[ lang ]
+        : ( skakefani ? ( skakefani as any ).en : {} );
 }
 
 /**
@@ -111,17 +111,17 @@ function getStrings(): { [key: string]: string } {
  * @returns {any|null}
  */
 function getWindowManager(): any {
-    return (window as any).WindowManager || (typeof WindowManager !== "undefined" ? WindowManager : null);
+    return ( window as any ).WindowManager || ( typeof WindowManager !== "undefined" ? WindowManager : null );
 }
 
 // Attach all utilities to window for global access
-(window as any).getStartMenu = getStartMenu;
-(window as any).getHomeArea = getHomeArea;
-(window as any).getWindowContainer = getWindowContainer;
-(window as any).getOpenWindows = getOpenWindows;
-(window as any).getTaskbarInfo = getTaskbarInfo;
-(window as any).isTaskbarLarge = isTaskbarLarge;
-(window as any).getWindowTitle = getWindowTitle;
-(window as any).getAppIcon = getAppIcon;
-(window as any).getStrings = getStrings;
-(window as any).getWindowManager = getWindowManager;
+( window as any ).getStartMenu = getStartMenu;
+( window as any ).getHomeArea = getHomeArea;
+( window as any ).getWindowContainer = getWindowContainer;
+( window as any ).getOpenWindows = getOpenWindows;
+( window as any ).getTaskbarInfo = getTaskbarInfo;
+( window as any ).isTaskbarLarge = isTaskbarLarge;
+( window as any ).getWindowTitle = getWindowTitle;
+( window as any ).getAppIcon = getAppIcon;
+( window as any ).getStrings = getStrings;
+( window as any ).getWindowManager = getWindowManager;

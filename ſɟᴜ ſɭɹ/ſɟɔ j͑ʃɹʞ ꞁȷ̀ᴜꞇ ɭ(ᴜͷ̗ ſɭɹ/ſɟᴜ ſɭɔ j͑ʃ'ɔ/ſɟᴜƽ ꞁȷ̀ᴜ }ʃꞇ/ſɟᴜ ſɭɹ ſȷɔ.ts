@@ -9,8 +9,8 @@
  * @param {number} max
  * @returns {number}
  */
-function clamp(value: number, min: number, max: number): number {
-    return Math.max(min, Math.min(max, value));
+function clamp( value: number, min: number, max: number ): number {
+    return Math.max( min, Math.min( max, value ) );
 }
 
 /**
@@ -19,15 +19,15 @@ function clamp(value: number, min: number, max: number): number {
  * @param {number} wait
  * @returns {Function}
  */
-function debounce<T extends (...args: any[]) => void>(func: T, wait: number): (...args: Parameters<T>) => void {
+function debounce<T extends ( ...args: any[] ) => void>( func: T, wait: number ): ( ...args: Parameters<T> ) => void {
     let timeout: any;
-    return function executedFunction(...args: Parameters<T>) {
+    return function executedFunction( ...args: Parameters<T> ) {
         const later = () => {
-            clearTimeout(timeout);
-            func(...args);
+            clearTimeout( timeout );
+            func( ...args );
         };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
+        clearTimeout( timeout );
+        timeout = setTimeout( later, wait );
     };
 }
 
@@ -37,18 +37,18 @@ function debounce<T extends (...args: any[]) => void>(func: T, wait: number): (.
  * @param {number} limit
  * @returns {Function}
  */
-function throttle<T extends (...args: any[]) => void>(func: T, limit: number): (...args: Parameters<T>) => void {
+function throttle<T extends ( ...args: any[] ) => void>( func: T, limit: number ): ( ...args: Parameters<T> ) => void {
     let inThrottle: any;
-    return function (this: any, ...args: Parameters<T>) {
-        if (!inThrottle) {
-            func.apply(this, args);
+    return function ( this: any, ...args: Parameters<T> ) {
+        if ( !inThrottle ) {
+            func.apply( this, args );
             inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
+            setTimeout( () => inThrottle = false, limit );
         }
     };
 }
 
 // Attach to window for global access
-(window as any).clamp = clamp;
-(window as any).debounce = debounce;
-(window as any).throttle = throttle;
+( window as any ).clamp = clamp;
+( window as any ).debounce = debounce;
+( window as any ).throttle = throttle;

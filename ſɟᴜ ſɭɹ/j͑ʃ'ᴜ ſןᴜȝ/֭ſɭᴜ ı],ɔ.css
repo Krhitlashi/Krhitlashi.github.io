@@ -1,0 +1,72 @@
+/* ≺⧼ ſɟᴜ j͑ʃ'ᴜ ſןᴜȝ 🧱 ⧽≻ */
+
+.workspace-3d-container {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: auto;
+}
+
+#workspace3dCanvas {
+    inline-size: 100%;
+    block-size: 100%;
+    touch-action: none;
+}
+
+/* ⟪ toolbar-wrapper 🧰 ⟫ */
+
+.toolbar-wrapper {
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    inset-block-start: 16px;
+    inset-inline-start: 16px;
+    z-index: 128;
+}
+
+#toolbarContainer {
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    max-block-size: calc(100vb - var(--អារេងព៏) * 2);
+    overflow: auto;
+    border-radius: var(--អិត្ភេពឺ);
+}
+
+#toolbarContainer[style*="scale: 0"] {
+    position: absolute;
+    pointer-events: none;
+}
+
+.toolbar-toggle {
+    inline-size: 48px;
+    block-size: 48px;
+    transition: margin-inline-start 0.25s ease;
+}
+
+.toolbar-toggle::after {
+    content: "<";
+    transition: transform 0.25s ease;
+}
+
+#toolbarContainer[style*="scale: 0"] ~ .toolbar-toggle::after {
+    transform: rotate(180deg);
+}
+
+/* ⟪ quick-actions & status-bar ⟫ */
+
+.quick-actions {
+    position: fixed;
+    inset-block-start: var(--អារេងព៏);
+    inset-inline-end: var(--អារេងព៏);
+    z-index: 128;
+}
+
+.status-bar {
+    position: fixed;
+    inset-block-end: var(--អារេងព៏);
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    z-index: 128;
+    font-size: 0.75em;
+}

@@ -43,8 +43,16 @@ export const SELECTION_STROKE_COLOR = "#000000";
 
 export const MIN_PATH_DIMENSION = 0o4;
 export const TEXT_EDIT_INDEX_NONE = -0o1;
-export const MIN_PATH_POINTS = 0o2;
-export const CONNECTION_LINE_DASH = [0o4, 0o4];
+
+// ⟪ Color & Brightness Constants 🎨 ⟫
+
+export const BRIGHTNESS_WEIGHT_R = 299;
+export const BRIGHTNESS_WEIGHT_G = 587;
+export const BRIGHTNESS_WEIGHT_B = 114;
+export const BRIGHTNESS_DIVISOR = 0o1000;
+export const BRIGHTNESS_THRESHOLD = 128;
+export const PREVIEW_ALPHA = 3 / 4;
+export const COVERAGE_THRESHOLD_FRACTION = 3 / 4;
 
 // ⟪ Tool Cursors 🖰 ⟫
 
@@ -136,6 +144,27 @@ export interface LayerState {
 
 export const layerState: LayerState = {
     layers: [],
+    activeId: 0,
+    counter: 0
+};
+
+// ⟪ Page State 📄 ⟫
+
+export interface Page {
+    id: number;
+    name: string;
+    visible: boolean;
+    objects: WhiteboardObject[];
+}
+
+export interface PageState {
+    pages: Page[];
+    activeId: number;
+    counter: number;
+}
+
+export const pageState: PageState = {
+    pages: [],
     activeId: 0,
     counter: 0
 };
@@ -296,35 +325,21 @@ export const connectionState: ConnectionState = {
     startObj: null
 };
 
+// ⟪ Clipboard State 📋 ⟫
+
+export interface ClipboardState {
+    objects: WhiteboardObject[];
+}
+
+export const clipboardState: ClipboardState = {
+    objects: []
+};
+
 // ⟪ Object Handler Interface 📐 ⟫
-
-export interface PointI {
-    x: number;
-    y: number;
-}
-
-export interface Rect {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-}
-
-export interface TouchOrMouseEvent extends MouseEvent {
-    touches?: TouchList;
-    changedTouches?: TouchList;
-}
-
-export interface ResetStateOptions {
-    selection?: boolean;
-    panning?: boolean;
-    drawing?: boolean;
-    textEdit?: boolean;
-}
 
 export interface ObjectHandler {
     getBounds: (obj: WhiteboardObject) => { x: number; y: number; width: number; height: number };
-    getCenter: (obj: WhiteboardObject) => PointI;
+    getCenter: (obj: WhiteboardObject) => { x: number; y: number };
     isPointInside: (x: number, y: number, obj: WhiteboardObject) => boolean;
     getInitialBounds?: (obj: WhiteboardObject) => any;
     resize?: (obj: WhiteboardObject, handle: string, localX: number, localY: number, init: any) => void;
