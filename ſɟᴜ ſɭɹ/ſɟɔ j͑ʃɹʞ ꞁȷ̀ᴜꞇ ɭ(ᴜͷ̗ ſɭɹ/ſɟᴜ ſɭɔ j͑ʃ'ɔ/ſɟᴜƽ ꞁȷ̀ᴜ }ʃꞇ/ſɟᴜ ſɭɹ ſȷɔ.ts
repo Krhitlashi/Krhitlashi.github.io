@@ -1,7 +1,5 @@
 // ≺⧼ Math Utilities ⧽≻
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 /**
  * Clamp a value between min and max
  * @param {number} value

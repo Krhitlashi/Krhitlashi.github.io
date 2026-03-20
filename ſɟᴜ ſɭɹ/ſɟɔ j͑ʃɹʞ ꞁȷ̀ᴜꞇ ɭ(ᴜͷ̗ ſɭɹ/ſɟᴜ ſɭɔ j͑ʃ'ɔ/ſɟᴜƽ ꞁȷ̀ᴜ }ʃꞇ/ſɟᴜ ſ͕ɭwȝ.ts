@@ -1,7 +1,5 @@
 // ≺⧼ DOM Utilities ⧽≻
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 declare const CONSTANTS: any;
 declare const APPS: any;
 declare const kjesaiGawe: any;

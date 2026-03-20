@@ -1,13 +1,12 @@
 // ≺⧼ Animation Manager ⧽≻ - Taskbar-directional animations with octal fractions
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 declare const CONSTANTS: any;
 declare const getTaskbar: any;
 
 const AnimationManager: {
     defaults: { duration: number; easing: string };
     easings: any;
+    _positionConfigCache: { [key: string]: any };
     [key: string]: any;
 } = {
     // ⟪ Default Animation Settings ⟫
@@ -19,12 +18,20 @@ const AnimationManager: {
     // ⟪ Easing Functions ⟫
     easings: CONSTANTS.ANIM.EASINGS,
 
+    // ⟪ Position Config Cache ⟫
+    _positionConfigCache: {},
+
     // ⟪ Position Utilities ⟫
 
     // Get complete position configuration for a taskbar position
     getPositionConfig(pos: any = null): any {
         const taskbar: HTMLElement | null = getTaskbar();
         const position: string = pos || taskbar?.dataset.position || "left";
+
+        // Return cached config if available
+        if (this._positionConfigCache[position]) {
+            return this._positionConfigCache[position];
+        }
 
         const transforms: { [key: string]: { slide: string; offset: string; axis: string; invert: number } } = {
             top: { slide: "translateY(-100%)", offset: "translateY({offset}px)", axis: "Y", invert: -1 },
@@ -35,7 +42,7 @@ const AnimationManager: {
 
         const cfg = transforms[position] || transforms.bottom;
 
-        return {
+        const result = {
             position,
             slideTransform: cfg.slide,
             offsetTransform: cfg.offset,
@@ -43,6 +50,9 @@ const AnimationManager: {
             invert: cfg.invert,
             insetProp: position
         };
+
+        this._positionConfigCache[position] = result;
+        return result;
     },
 
     // ⟪ Get Panel Animation Direction Based on Taskbar ⟫
@@ -57,8 +67,6 @@ const AnimationManager: {
     // ⟪ Get Transform for Direction ⟫
 
     getDirectionTransform(direction: string, fraction: number = 1): string {
-        const { slideTransform } = this.getPositionConfig(direction);
-        // Apply fraction to the percentage
         const percentage: number = fraction * 100;
         const transforms: { [key: string]: string } = {
             top: `translateY(-${percentage}%)`,

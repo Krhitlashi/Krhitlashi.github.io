@@ -1,9 +1,7 @@
 // ≺⧼ Quick Settings Manager ⧽≻ - Centralized QS state management
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 declare const CONSTANTS: any;
-declare const Storage: any;
+declare const StorageUtil: any;
 
 interface QSState {
     [ key: string ]: any;
@@ -13,17 +11,13 @@ const QSManager = ( function() {
     let state: QSState = { ...CONSTANTS.QS.DEFAULTS };
 
     // ⟪ Load From Storage ⟫
-
     function loadFromStorage(): void {
-        const storage = (window as any).StorageUtil;
-        state = storage.loadWithDefaults( CONSTANTS.STORAGE_KEYS.qsState, CONSTANTS.QS.DEFAULTS );
+        state = StorageUtil.loadWithDefaults( CONSTANTS.STORAGE_KEYS.qsState, CONSTANTS.QS.DEFAULTS );
     }
 
     // ⟪ Save To Storage ⟫
-
     function saveToStorage(): void {
-        const storage = (window as any).StorageUtil;
-        storage.set( CONSTANTS.STORAGE_KEYS.qsState, state );
+        StorageUtil.set( CONSTANTS.STORAGE_KEYS.qsState, state );
     }
 
     // ⟪ Dispatch Change Event ⟫

@@ -369,7 +369,7 @@ class BlockBuilderWorkspace {
                 const y = Math.round(pos.y * 2) / 2;
                 const z = Math.round(pos.z * 2) / 2;
                 this.addBlock(x, y, z);
-            } else if (this.currentTool === "remove" && intersect.object instanceof THREE.Mesh) {
+            } else if (this.currentTool === "remove" && intersect.object instanceof THREE.Mesh && intersect.object.name === "block") {
                 this.removeBlock(intersect.object);
             } else if (this.currentTool === "paint" && intersect.object instanceof THREE.Mesh && intersect.object.name === "block") {
                 this.clearSelection();
@@ -613,10 +613,11 @@ class BlockBuilderWorkspace {
                 this.scene.remove(block);
                 this.blocks.delete(key);
             }
-        } else if (entry.action === "remove" && entry.block) {
-            const block = this.createBlock(entry.block.color, entry.block.position.x, entry.block.position.y, entry.block.position.z);
+        } else if (entry.action === "remove" && entry.previousData && typeof entry.previousData !== "string") {
+            const blockData = entry.previousData as BlockData;
+            const block = this.createBlock(blockData.color, blockData.position.x, blockData.position.y, blockData.position.z);
             this.scene.add(block);
-            this.blocks.set(`${entry.block.position.x},${entry.block.position.y},${entry.block.position.z}`, block);
+            this.blocks.set(`${blockData.position.x},${blockData.position.y},${blockData.position.z}`, block);
         } else if (entry.action === "paint" && entry.block) {
             const key = `${entry.block.position.x},${entry.block.position.y},${entry.block.position.z}`;
             const block = this.blocks.get(key);
@@ -643,11 +644,12 @@ class BlockBuilderWorkspace {
             const block = this.createBlock(entry.block.color, entry.block.position.x, entry.block.position.y, entry.block.position.z);
             this.scene.add(block);
             this.blocks.set(`${entry.block.position.x},${entry.block.position.y},${entry.block.position.z}`, block);
-        } else if (entry.action === "remove" && entry.block) {
-            const key = `${entry.block.position.x},${entry.block.position.y},${entry.block.position.z}`;
-            const block = this.blocks.get(key);
-            if (block) {
-                this.scene.remove(block);
+        } else if (entry.action === "remove" && entry.previousData && typeof entry.previousData !== "string") {
+            const blockData = entry.previousData as BlockData;
+            const key = `${blockData.position.x},${blockData.position.y},${blockData.position.z}`;
+            const existingBlock = this.blocks.get(key);
+            if (existingBlock) {
+                this.scene.remove(existingBlock);
                 this.blocks.delete(key);
             }
         } else if (entry.action === "paint" && entry.block) {

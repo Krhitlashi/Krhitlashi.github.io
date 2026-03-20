@@ -1,6 +1,35 @@
 // ≺⧼ Element Utilities ⧽≻
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+declare const CONSTANTS: any;
+
+/**
+ * Get container dimensions (fixed or from element)
+ * @param {number|null} fixedWidth - Fixed width or null
+ * @param {number|null} fixedHeight - Fixed height or null
+ * @param {HTMLElement|null} container - Container element
+ * @returns {{width: number, height: number}}
+ */
+export function getContainerDimensions( fixedWidth: number | null, fixedHeight: number | null, container: HTMLElement | null ): { width: number; height: number } {
+    return {
+        width: fixedWidth ?? ( container?.clientWidth || window.innerWidth ),
+        height: fixedHeight ?? ( container?.clientHeight || window.innerHeight )
+    };
+}
+
+/**
+ * Check if point is within bounds
+ * @param {number} x
+ * @param {number} y
+ * @param {DOMRect} bounds
+ * @returns {boolean}
+ */
+export function isWithinBounds( x: number, y: number, bounds: DOMRect ): boolean {
+    return x >= bounds.left && x <= bounds.right && y >= bounds.top && y <= bounds.bottom;
+}
+
+// Attach to window for global access
+( window as any ).getContainerDimensions = getContainerDimensions;
+( window as any ).isWithinBounds = isWithinBounds;
 
 /**
  * Set aria-pressed state on a button
@@ -81,7 +110,7 @@ function forceReflow( el: HTMLElement ): void {
  * @param {HTMLElement} el
  * @returns {{col: number, row: number, colSpan: number, rowSpan: number}}
  */
-function getElementPosition( el: HTMLElement ): { col: number; row: number; colSpan: number; rowSpan: number } {
+export function getElementPosition( el: HTMLElement ): { col: number; row: number; colSpan: number; rowSpan: number } {
     return {
         col: parseInt( el.dataset.col as string ) || 0,
         row: parseInt( el.dataset.row as string ) || 0,

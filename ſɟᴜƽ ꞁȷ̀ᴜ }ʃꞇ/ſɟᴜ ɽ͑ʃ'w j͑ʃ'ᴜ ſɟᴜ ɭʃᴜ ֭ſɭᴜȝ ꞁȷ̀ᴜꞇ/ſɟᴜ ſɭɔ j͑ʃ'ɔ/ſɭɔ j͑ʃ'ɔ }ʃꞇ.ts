@@ -9,170 +9,200 @@ const PAL6_KUCAQ_XAHA = 0o20 * 0o10; // Box size * supersampling
 
 const VOP2_RUVACATAHAQU = "ɭʃɔ";
 
-// ⟪ ſ͔ɭɔ }ʃɔɔ˞ ֭ſɭᴜ ı],ɔ 🖌️ ⟫
+// ⟪ ŋᷠᴜ ſȷɔ ſɭ,ꞇ 🔧 ⟫
+
+/**
+ * Loads an image from URL and returns as promise
+ * @param src - Image source URL
+ * @returns Promise resolving to HTMLImageElement
+ */
+function q2qTahaq( src: string ): Promise<HTMLImageElement> {
+    return new Promise( ( resolve, reject ) => {
+        const tahaq = new Image();
+        tahaq.onload = () => resolve( tahaq );
+        tahaq.onerror = reject;
+        tahaq.src = src;
+    } );
+}
+
+/**
+ * Centers a smaller dimension within a larger one
+ * @param larger - The container size
+ * @param smaller - The content size
+ * @returns The offset to center the content
+ */
+function neq2qCepu( larger: number, smaller: number ): number {
+    return Math.floor( ( larger - smaller ) / 2 );
+}
+
+/**
+ * Creates a canvas with specified dimensions
+ * @param width - Canvas width
+ * @param height - Canvas height
+ * @returns HTMLCanvasElement with dimensions set
+ */
+function k2falTahaq( width: number, height: number ): HTMLCanvasElement {
+    const tahaq = document.createElement( "canvas" );
+    tahaq.width = width;
+    tahaq.height = height;
+    return tahaq;
+}
+
+// ⟪ ſ͔ɭɔ }ʃɔɔ˞ ֭ſɭᴜ ı],ɔ �🖌️ ⟫
 
 /**
  * Calculates amount curved for angle
  * @param sost2 ( [ number, number ] ) - Center point [ x, y ]
- * @param r ( number ) - Radius
+ * @param ka5ik ( number ) - Radius
  * @param sefini_saxe ( number ) - Start angle in degrees
  * @param sefini_tlakak ( number ) - End angle in degrees
- * @param n ( number = 45 ) - Number of points ( default 45 for smoother curves )
- * Returns [ number, number ][]
+ * @param tafani_swek2fe ( number = 0o40 ) - Number of points ( default 0o40 for smoother curves )
+ * @returns [ number, number ][]
  *     Array of points along the arc
  */
 function quq_vem2_fkabe(
     sost2: [number, number],
-    r: number,
+    ka5ik: number,
     sefini_saxe: number,
     sefini_tlakak: number,
-    n: number = 45
+    tafani_swek2fe: number = 0o40
 ): [number, number][] {
     const er2ha_vem2ni: [number, number][] = [];
-    for ( let i = 0; i <= n; i++ ) {
-        const tafkaq = ( sefini_saxe + ( sefini_tlakak - sefini_saxe ) * i / n ) * ( Math.PI / 180 );
+    for ( let i = 0; i <= tafani_swek2fe; i++ ) {
+        const tafkaq = ( sefini_saxe + ( sefini_tlakak - sefini_saxe ) * i / tafani_swek2fe ) * ( Math.PI / 180 );
         er2ha_vem2ni.push( [
-            sost2[0] + r * Math.cos( tafkaq ),
-            sost2[1] + r * Math.sin( tafkaq )
+            sost2[0] + ka5ik * Math.cos( tafkaq ),
+            sost2[1] + ka5ik * Math.sin( tafkaq )
         ] );
     }
     return er2ha_vem2ni;
 }
 
-interface StyledPilImageOptions {
-    box_size?: number;
-    border?: number;
-    paint_color?: [number, number, number, number];
-    embeded_araq_tahaq?: string;
-    [ key: string ]: unknown;
+interface SakKu1o {
+    kuba_swepal6?: number;
+    catu5ek?: number;
+    kx2k2f_sweweh2?: [number, number, number, number];
+    araqal_c2h2su_tahaq?: string;
+    [ kxesu_araq: string ]: unknown;
 }
 
-interface QRCodeData {
+interface RuvaCatahaquVop2 {
     modules: boolean[][];
-    border: number;
+    catu5ek: number;
 }
 
 class IitbesuRuvaCatahaqu {
-    private _img: HTMLCanvasElement;
+    private _tahaq: HTMLCanvasElement;
     private canvas: CanvasRenderingContext2D | null = null;
-    private embeded_araq_tahaq: string | undefined;
-    public box_size: number;
-    public border: number;
-    public paint_color: [number, number, number, number];
+    private araqal_c2h2su_tahaq: string | undefined;
+    public kuba_swepal6: number;
+    public catu5ek: number;
+    public kx2k2f_sweweh2: [number, number, number, number];
     public KANAQANIDOMA_2TBE: number = KANAQANIDOMA_2TBE;
 
     constructor(
         public modules: boolean[][],
-        options: StyledPilImageOptions = {}
+        options: SakKu1o = {}
     ) {
-        this.box_size = options.box_size || 0o10;
-        this.border = options.border || 4;
-        this.paint_color = options.paint_color || [ 0, 0, 0, 255 ];
-        this.embeded_araq_tahaq = options.embeded_araq_tahaq;
+        this.kuba_swepal6 = options.kuba_swepal6 || 0o10;
+        this.catu5ek = options.catu5ek || 4;
+        this.kx2k2f_sweweh2 = options.kx2k2f_sweweh2 || [ 0, 0, 0, 255 ];
+        this.araqal_c2h2su_tahaq = options.araqal_c2h2su_tahaq;
 
-        const moduleCount = modules.length;
-        const size = ( moduleCount + this.border * 2 ) * this.box_size;
-        this._img = document.createElement( "canvas" );
-        this._img.width = size;
-        this._img.height = size;
-        this.canvas = this._img.getContext( "2d" );
+        const hakek_swek2fe = modules.length;
+        const size = ( hakek_swek2fe + this.catu5ek * 2 ) * this.kuba_swepal6;
+        this._tahaq = document.createElement( "canvas" );
+        this._tahaq.width = size;
+        this._tahaq.height = size;
+        this.canvas = this._tahaq.getContext( "2d" );
     }
 
     async k2fal_sost2su_tahaq(): Promise<void> {
-        if ( !this.embeded_araq_tahaq || !this.canvas ) return;
+        if ( !this.araqal_c2h2su_tahaq || !this.canvas ) return;
 
-        const tahaq = await this.loadImage( this.embeded_araq_tahaq );
-        const sf = this._img.width;
-        const ld = this._img.height;
+        const tahaq = await q2qTahaq( this.araqal_c2h2su_tahaq );
+        const sf = this._tahaq.width;
+        const ld = this._tahaq.height;
         const araq: [number, number] = [
-            Math.floor( ( sf - tahaq.width ) / 2 ),
-            Math.floor( ( ld - tahaq.height ) / 2 )
+            neq2qCepu( sf, tahaq.width ),
+            neq2qCepu( ld, tahaq.height )
         ];
 
         this.canvas.drawImage( tahaq, araq[0], araq[1] );
     }
 
-    private loadImage( src: string ): Promise<HTMLImageElement> {
-        return new Promise( ( resolve, reject ) => {
-            const img = new Image();
-            img.onload = () => resolve( img );
-            img.onerror = reject;
-            img.src = src;
-        } );
-    }
-
-    drawrect_context( row: number, col: number, qr: QRCodeData, visited?: Set<string> ): void {
+    drawrect_context( tapuni: number, cepuni: number, qr: RuvaCatahaquVop2, a1a_kozeq?: Set<string> ): void {
         if ( !this.canvas ) {
-            this.canvas = this._img.getContext( "2d" );
+            this.canvas = this._tahaq.getContext( "2d" );
         }
 
-        if ( this.is_eye( row, col, qr ) ) {
+        if ( this.k2fIibanu( tapuni, cepuni, qr ) ) {
             const sefini = qr.modules.length;
-            const a1a_ls = row === 0 && col === 0;
-            const a1a_lr = row === 0 && col === sefini - 7;
-            const a1a_ks = row === sefini - 7 && col === 0;
+            const a1a_ls = tapuni === 0 && cepuni === 0;
+            const a1a_lr = tapuni === 0 && cepuni === sefini - 7;
+            const a1a_ks = tapuni === sefini - 7 && cepuni === 0;
 
             if ( a1a_ls || a1a_lr || a1a_ks ) {
-                this.k2f_2banusost2su( row, col, a1a_ls, a1a_lr, a1a_ks );
+                this.k2f_2banusost2su( tapuni, cepuni, a1a_ls, a1a_lr, a1a_ks );
             }
             return;
         }
 
-        this.drawVerticalPill( row, col, qr, visited );
+        this.k2falCepuSak( tapuni, cepuni, qr, a1a_kozeq );
     }
 
-    private is_eye( row: number, col: number, qr: QRCodeData ): boolean {
+    private k2fIibanu( tapuni: number, cepuni: number, qr: RuvaCatahaquVop2 ): boolean {
         const sefini = qr.modules.length;
-        const inTopLeft = row < 7 && col < 7;
-        const inTopRight = row < 7 && col >= sefini - 7;
-        const inBottomLeft = row >= sefini - 7 && col < 7;
-        return inTopLeft || inTopRight || inBottomLeft;
+        const sozaCtama = tapuni < 7 && cepuni < 7;
+        const sozaPtama = tapuni < 7 && cepuni >= sefini - 7;
+        const psazCtama = tapuni >= sefini - 7 && cepuni < 7;
+        return sozaCtama || sozaPtama || psazCtama;
     }
 
-    private drawVerticalPill( row: number, col: number, qr: QRCodeData, visited?: Set<string> ): void {
+    private k2falCepuSak( tapuni: number, cepuni: number, qr: RuvaCatahaquVop2, a1a_kozeq?: Set<string> ): void {
         if ( !this.canvas ) return;
-        if ( !qr.modules[row][col] ) return;
+        if ( !qr.modules[tapuni][cepuni] ) return;
 
-        // Skip if already visited (part of a previous vertical run)
-        const key = `${row},${col}`;
-        if ( visited && visited.has( key ) ) return;
+        // Skip if already a1a_kozeq (part of a previous vertical run)
+        const kxesu_araq = `${tapuni},${cepuni}`;
+        if ( a1a_kozeq && a1a_kozeq.has( kxesu_araq ) ) return;
 
-        // Mark current module as visited
-        if ( visited ) visited.add( key );
+        // Mark current module as a1a_kozeq
+        if ( a1a_kozeq ) a1a_kozeq.add( kxesu_araq );
 
         // Find vertical run - count consecutive modules below this one
-        let runLength = 1;
-        while ( row + runLength < qr.modules.length && qr.modules[row + runLength][col] ) {
-            if ( visited ) visited.add( `${row + runLength},${col}` );
-            runLength++;
+        let hacepuni_swel6da = 1;
+        while ( tapuni + hacepuni_swel6da < qr.modules.length && qr.modules[tapuni + hacepuni_swel6da][cepuni] ) {
+            if ( a1a_kozeq ) a1a_kozeq.add( `${tapuni + hacepuni_swel6da},${cepuni}` );
+            hacepuni_swel6da++;
         }
 
-        const x = ( col + this.border ) * this.box_size;
-        const y = ( row + this.border ) * this.box_size;
+        const x = ( cepuni + this.catu5ek ) * this.kuba_swepal6;
+        const y = ( tapuni + this.catu5ek ) * this.kuba_swepal6;
 
         // Vertical pill - narrower width, full height with rounded top/bottom
-        const pillWidth = this.box_size * 0o6 / 0o10; // 6/8 = 3/4 of box size
-        const pillX = x + ( this.box_size - pillWidth ) / 2;
-        const radius = pillWidth / 2;
-        const centerX = pillX + radius;
+        const sakSwesefi = this.kuba_swepal6 * 0o6 / 0o10; // 6/8 = 3/4 of box size
+        const sakSwetapu = x + ( this.kuba_swepal6 - sakSwesefi ) / 2;
+        const ka5ik = sakSwesefi / 2;
+        const sost2Swetapu = sakSwetapu + ka5ik;
 
         // For elongated pill, top arc at start, bottom arc at end of run
-        const topArcCenterY = y + radius;
-        const bottomArcCenterY = y + ( runLength * this.box_size ) - radius;
+        const sozaFkabeSost2Cepuni = y + ka5ik;
+        const psazFkabeSost2Cepuni = y + ( hacepuni_swel6da * this.kuba_swepal6 ) - ka5ik;
 
         // Draw elongated vertical pill shape (clockwise path)
-        this.canvas.fillStyle = `rgba( ${ this.paint_color.join( "," ) } )`;
+        this.canvas.fillStyle = `rgba( ${ this.kx2k2f_sweweh2.join( "," ) } )`;
         this.canvas.beginPath();
         // Start at top-left (9 o'clock of top arc)
-        this.canvas.moveTo( centerX - radius, topArcCenterY );
+        this.canvas.moveTo( sost2Swetapu - ka5ik, sozaFkabeSost2Cepuni );
         // Draw top semicircle (left to right via top) - clockwise from π to 2π
-        this.canvas.arc( centerX, topArcCenterY, radius, Math.PI, 2 * Math.PI, false );
+        this.canvas.arc( sost2Swetapu, sozaFkabeSost2Cepuni, ka5ik, Math.PI, 2 * Math.PI, false );
         // Draw straight line down right side to bottom arc
-        this.canvas.lineTo( centerX + radius, bottomArcCenterY );
+        this.canvas.lineTo( sost2Swetapu + ka5ik, psazFkabeSost2Cepuni );
         // Draw bottom semicircle (right to left via bottom) - clockwise from 0 to π
-        this.canvas.arc( centerX, bottomArcCenterY, radius, 0, Math.PI, false );
+        this.canvas.arc( sost2Swetapu, psazFkabeSost2Cepuni, ka5ik, 0, Math.PI, false );
         // Draw straight line up left side to close
-        this.canvas.lineTo( centerX - radius, topArcCenterY );
+        this.canvas.lineTo( sost2Swetapu - ka5ik, sozaFkabeSost2Cepuni );
         this.canvas.closePath();
         this.canvas.fill();
     }
@@ -184,51 +214,51 @@ class IitbesuRuvaCatahaqu {
     ): void {
         if ( !this.canvas ) return;
 
-        const [ x0, y0, x1, y1 ] = kuba;
-        const sf = x1 - x0;
-        const ld = y1 - y0;
+        const [ tp_heta, cp_heta, tp_xaqa, cp_xaqa ] = kuba;
+        const sf = tp_xaqa - tp_heta;
+        const ld = cp_xaqa - cp_heta;
         
-        // For vertical pills, use width-based radius for top/bottom
+        // For vertical pills, use width-based ka5ik for top/bottom
         const kemafi_fkabe = sf / 2;
-        const r = kemafi_fkabe * this.KANAQANIDOMA_2TBE;
+        const ka5ik = kemafi_fkabe * this.KANAQANIDOMA_2TBE;
         const fkabe_cibe = kemafi_fkabe * 0o2 / 0o10;
 
         const er2ha_vem2: [number, number][] = [];
 
-        // TL ( 180 to 270 ) , Center ( x0 + r , y0 + r )
+        // TL ( 180 to 270 ) , Center ( tp_heta + ka5ik , cp_heta + ka5ik )
         if ( tafani[0] ) {
-            const sost2: [number, number] = [ x0 + fkabe_cibe, y0 + fkabe_cibe ];
+            const sost2: [number, number] = [ tp_heta + fkabe_cibe, cp_heta + fkabe_cibe ];
             er2ha_vem2.push( ...quq_vem2_fkabe( sost2, fkabe_cibe, 180, 270 ) );
         } else {
-            const sost2: [number, number] = [ x0 + r, y0 + r ];
-            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, r, 180, 270 ) );
+            const sost2: [number, number] = [ tp_heta + ka5ik, cp_heta + ka5ik ];
+            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, ka5ik, 180, 270 ) );
         }
 
-        // TR ( 270 to 360 ) , Center ( x1 - r , y0 + r )
+        // TR ( 270 to 360 ) , Center ( tp_xaqa - ka5ik , cp_heta + ka5ik )
         if ( tafani[1] ) {
-            const sost2: [number, number] = [ x1 - fkabe_cibe, y0 + fkabe_cibe ];
+            const sost2: [number, number] = [ tp_xaqa - fkabe_cibe, cp_heta + fkabe_cibe ];
             er2ha_vem2.push( ...quq_vem2_fkabe( sost2, fkabe_cibe, 270, 360 ) );
         } else {
-            const sost2: [number, number] = [ x1 - r, y0 + r ];
-            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, r, 270, 360 ) );
+            const sost2: [number, number] = [ tp_xaqa - ka5ik, cp_heta + ka5ik ];
+            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, ka5ik, 270, 360 ) );
         }
 
-        // BR ( 0 to 90 ) , Center ( x1 - r , y1 - r )
+        // BR ( 0 to 90 ) , Center ( tp_xaqa - ka5ik , cp_xaqa - ka5ik )
         if ( tafani[2] ) {
-            const sost2: [number, number] = [ x1 - fkabe_cibe, y1 - fkabe_cibe ];
+            const sost2: [number, number] = [ tp_xaqa - fkabe_cibe, cp_xaqa - fkabe_cibe ];
             er2ha_vem2.push( ...quq_vem2_fkabe( sost2, fkabe_cibe, 0, 90 ) );
         } else {
-            const sost2: [number, number] = [ x1 - r, y1 - r ];
-            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, r, 0, 90 ) );
+            const sost2: [number, number] = [ tp_xaqa - ka5ik, cp_xaqa - ka5ik ];
+            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, ka5ik, 0, 90 ) );
         }
 
-        // BL ( 90 to 180 ) , Center ( x0 + r , y1 - r )
+        // BL ( 90 to 180 ) , Center ( tp_heta + ka5ik , cp_xaqa - ka5ik )
         if ( tafani[3] ) {
-            const sost2: [number, number] = [ x0 + fkabe_cibe, y1 - fkabe_cibe ];
+            const sost2: [number, number] = [ tp_heta + fkabe_cibe, cp_xaqa - fkabe_cibe ];
             er2ha_vem2.push( ...quq_vem2_fkabe( sost2, fkabe_cibe, 90, 180 ) );
         } else {
-            const sost2: [number, number] = [ x0 + r, y1 - r ];
-            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, r, 90, 180 ) );
+            const sost2: [number, number] = [ tp_heta + ka5ik, cp_xaqa - ka5ik ];
+            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, ka5ik, 90, 180 ) );
         }
 
         this.canvas.beginPath();
@@ -251,22 +281,22 @@ class IitbesuRuvaCatahaqu {
         a1a_ks: boolean
     ): void {
         // Outer Frame ( 7x7 modules )
-        const tlkk_sc = this.pixel_box( tapuni, cepuni );
-        const tlkk_pp = this.pixel_box( tapuni + 6, cepuni + 6 );
+        const tlkk_sc = this.c2tasu_kuba( tapuni, cepuni );
+        const tlkk_pp = this.c2tasu_kuba( tapuni + 6, cepuni + 6 );
         const kuba_3akak: [number, number, number, number] = [
             tlkk_sc[0][0], tlkk_sc[0][1], tlkk_pp[1][0], tlkk_pp[1][1]
         ];
 
         // Inner Hole ( 5x5 modules , one module inset from frame )
-        const sx_sc = this.pixel_box( tapuni + 1, cepuni + 1 );
-        const sx_pp = this.pixel_box( tapuni + 5, cepuni + 5 );
+        const sx_sc = this.c2tasu_kuba( tapuni + 1, cepuni + 1 );
+        const sx_pp = this.c2tasu_kuba( tapuni + 5, cepuni + 5 );
         const kuba_saxe: [number, number, number, number] = [
             sx_sc[0][0], sx_sc[0][1], sx_pp[1][0], sx_pp[1][1]
         ];
 
         // Eyeball ( 3x3 modules , two modules inset from frame )
-        const iibanu_sc = this.pixel_box( tapuni + 2, cepuni + 2 );
-        const iibanu_pp = this.pixel_box( tapuni + 4, cepuni + 4 );
+        const iibanu_sc = this.c2tasu_kuba( tapuni + 2, cepuni + 2 );
+        const iibanu_pp = this.c2tasu_kuba( tapuni + 4, cepuni + 4 );
         const kuba_2banusost2su: [number, number, number, number] = [
             iibanu_sc[0][0], iibanu_sc[0][1], iibanu_pp[1][0], iibanu_pp[1][1]
         ];
@@ -287,67 +317,67 @@ class IitbesuRuvaCatahaqu {
         }
 
         // Draw the shapes
-        this.k2f_nakoxa( kuba_3akak, fkabe_2banu, this.paint_color );
+        this.k2f_nakoxa( kuba_3akak, fkabe_2banu, this.kx2k2f_sweweh2 );
         this.k2f_nakoxa( kuba_saxe, fkabe_2banu, [ 255, 255, 255, 255 ] );
-        this.k2f_nakoxa( kuba_2banusost2su, fkabe_2banusost2, this.paint_color );
+        this.k2f_nakoxa( kuba_2banusost2su, fkabe_2banusost2, this.kx2k2f_sweweh2 );
     }
 
-    private pixel_box( row: number, col: number ): [[number, number], [number, number]] {
-        const x = ( col + this.border ) * this.box_size;
-        const y = ( row + this.border ) * this.box_size;
-        return [ [ x, y ], [ x + this.box_size, y + this.box_size ] ];
+    private c2tasu_kuba( tapuni: number, cepuni: number ): [[number, number], [number, number]] {
+        const x = ( cepuni + this.catu5ek ) * this.kuba_swepal6;
+        const y = ( tapuni + this.catu5ek ) * this.kuba_swepal6;
+        return [ [ x, y ], [ x + this.kuba_swepal6, y + this.kuba_swepal6 ] ];
     }
 
     toCanvas(): HTMLCanvasElement {
-        return this._img;
+        return this._tahaq;
     }
 }
 
 /**
  * Creates a leaf-shaped mask canvas
  * @param vem2 ( number ) - Size of the canvas
- * Returns HTMLCanvasElement
+ * @returns HTMLCanvasElement
  *     Canvas with leaf shape drawn in white
  */
 function kf2_k6liqani_2tbesu( vem2: number ): HTMLCanvasElement {
     const canvas = document.createElement( "canvas" );
     canvas.width = vem2;
     canvas.height = vem2;
-    const ctx = canvas.getContext( "2d" );
-    if ( !ctx ) return canvas;
+    const kumukalasu = canvas.getContext( "2d" );
+    if ( !kumukalasu ) return canvas;
 
-    const x0 = 0, y0 = 0, x1 = vem2, y1 = vem2;
+    const tp_heta = 0, cp_heta = 0, tp_xaqa = vem2, cp_xaqa = vem2;
     const er2ha_vem2ni: [number, number][] = [];
 
     const fkabe_taf = ( vem2 / 2 ) * KANAQANIDOMA_2TBE;
     const fkabe_cibe = ( vem2 / 2 ) * 0o2 / 0o10;
 
     // ( Rounded ) 180-270
-    const sost2_sc: [number, number] = [ x0 + fkabe_taf, y0 + fkabe_taf ];
+    const sost2_sc: [number, number] = [ tp_heta + fkabe_taf, cp_heta + fkabe_taf ];
     er2ha_vem2ni.push( ...quq_vem2_fkabe( sost2_sc, fkabe_taf, 180, 270 ) );
 
     // ( Sharp ) 270-360
-    const sost2_sr: [number, number] = [ x1 - fkabe_cibe, y0 + fkabe_cibe ];
+    const sost2_sr: [number, number] = [ tp_xaqa - fkabe_cibe, cp_heta + fkabe_cibe ];
     er2ha_vem2ni.push( ...quq_vem2_fkabe( sost2_sr, fkabe_cibe, 270, 360 ) );
 
     // ( Rounded ) 0-90
-    const sost2_pr: [number, number] = [ x1 - fkabe_taf, y1 - fkabe_taf ];
+    const sost2_pr: [number, number] = [ tp_xaqa - fkabe_taf, cp_xaqa - fkabe_taf ];
     er2ha_vem2ni.push( ...quq_vem2_fkabe( sost2_pr, fkabe_taf, 0, 90 ) );
 
     // ( Sharp ) 90-180
-    const sost2_pc: [number, number] = [ x0 + fkabe_cibe, y1 - fkabe_cibe ];
+    const sost2_pc: [number, number] = [ tp_heta + fkabe_cibe, cp_xaqa - fkabe_cibe ];
     er2ha_vem2ni.push( ...quq_vem2_fkabe( sost2_pc, fkabe_cibe, 90, 180 ) );
 
-    ctx.beginPath();
+    kumukalasu.beginPath();
     if ( er2ha_vem2ni.length > 0 ) {
-        ctx.moveTo( er2ha_vem2ni[0][0], er2ha_vem2ni[0][1] );
+        kumukalasu.moveTo( er2ha_vem2ni[0][0], er2ha_vem2ni[0][1] );
         for ( let i = 1; i < er2ha_vem2ni.length; i++ ) {
-            ctx.lineTo( er2ha_vem2ni[i][0], er2ha_vem2ni[i][1] );
+            kumukalasu.lineTo( er2ha_vem2ni[i][0], er2ha_vem2ni[i][1] );
         }
     }
-    ctx.closePath();
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fill();
+    kumukalasu.closePath();
+    kumukalasu.fillStyle = "#FFFFFF";
+    kumukalasu.fill();
 
     return canvas;
 }
@@ -356,7 +386,7 @@ function kf2_k6liqani_2tbesu( vem2: number ): HTMLCanvasElement {
  * Crops and masks an image into a leaf shape
  * @param araq_saxe ( string ) - Source image path
  * @param pal6_l6kanaz ( number, optional ) - Target size
- * Returns HTMLCanvasElement | null
+ * @returns HTMLCanvasElement | null
  *     Masked canvas or null on error
  */
 async function k6liq_tahaq(
@@ -364,84 +394,64 @@ async function k6liq_tahaq(
     pal6_l6kanaz?: number
 ): Promise<HTMLCanvasElement | null> {
     try {
-        const tahaq = await new Promise<HTMLImageElement>( ( resolve, reject ) => {
-            const img = new Image();
-            img.onload = () => resolve( img );
-            img.onerror = reject;
-            img.src = araq_saxe;
-        } );
+        const tahaq = await q2qTahaq( araq_saxe );
 
         let sf = tahaq.width;
         let ld = tahaq.height;
 
         // Make it square by cropping to center
         const kmam2_pal6 = Math.min( sf, ld );
-        const ctamani = Math.floor( ( sf - kmam2_pal6 ) / 2 );
-        const soza = Math.floor( ( ld - kmam2_pal6 ) / 2 );
+        const ctamani = neq2qCepu( sf, kmam2_pal6 );
+        const soza = neq2qCepu( ld, kmam2_pal6 );
 
         // Create canvas for cropping
-        const canvas = document.createElement( "canvas" );
-        canvas.width = kmam2_pal6;
-        canvas.height = kmam2_pal6;
-        const ctx = canvas.getContext( "2d" );
-        if ( !ctx ) return null;
+        const canvas = k2falTahaq( kmam2_pal6, kmam2_pal6 );
+        const kumukalasu = canvas.getContext( "2d" );
+        if ( !kumukalasu ) return null;
 
-        ctx.drawImage( tahaq, ctamani, soza, kmam2_pal6, kmam2_pal6, 0, 0, kmam2_pal6, kmam2_pal6 );
+        kumukalasu.drawImage( tahaq, ctamani, soza, kmam2_pal6, kmam2_pal6, 0, 0, kmam2_pal6, kmam2_pal6 );
 
-        let pal6: number;
-        if ( pal6_l6kanaz ) {
-            pal6 = pal6_l6kanaz;
-        } else {
-            pal6 = kmam2_pal6;
-        }
-
+        const pal6 = pal6_l6kanaz ?? kmam2_pal6;
         const k6liqani = kf2_k6liqani_2tbesu( pal6 );
 
         // Apply leaf mask
-        const finalCanvas = document.createElement( "canvas" );
-        finalCanvas.width = pal6;
-        finalCanvas.height = pal6;
-        const finalCtx = finalCanvas.getContext( "2d" );
-        if ( !finalCtx ) return null;
+        const tlakakuCakak2f = k2falTahaq( pal6, pal6 );
+        const tlakakuQumuKalasu = tlakakuCakak2f.getContext( "2d" );
+        if ( !tlakakuQumuKalasu ) return null;
 
         // Draw the cropped/scaled image
-        finalCtx.drawImage( canvas, 0, 0, pal6, pal6 );
+        tlakakuQumuKalasu.drawImage( canvas, 0, 0, pal6, pal6 );
 
         // Apply mask using composite operation
-        finalCtx.globalCompositeOperation = "destination-in";
-        finalCtx.drawImage( k6liqani, 0, 0 );
-        finalCtx.globalCompositeOperation = "source-over";
+        tlakakuQumuKalasu.globalCompositeOperation = "destination-in";
+        tlakakuQumuKalasu.drawImage( k6liqani, 0, 0 );
+        tlakakuQumuKalasu.globalCompositeOperation = "source-over";
 
-        return finalCanvas;
+        return tlakakuCakak2f;
     } catch ( e ) {
-        console.error( `( Error loading custom image ) ${ e }` );
+        console.error( `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ - loading custom image ) ${ e }` );
         return null;
     }
 }
 
 /**
  * Handles the logic for embedding a logo
- * @param ruva ( QRCodeData ) - QR code data
+ * @param ruva ( RuvaCatahaquVop2 ) - QR code data
  * @param araq_tahaq ( string ) - Logo image path
  * @param eskeklna_cab6howe_tahaq ( Record<string, unknown> ) - Options object to modify
- * Returns void
+ * @returns void
  */
 async function nLak_tahaq_ruva(
-    ruva: QRCodeData,
+    ruva: RuvaCatahaquVop2,
     araq_tahaq: string,
     eskeklna_cab6howe_tahaq: Record<string, unknown>
 ): Promise<void> {
     if ( !araq_tahaq ) return;
 
     try {
-        await new Promise<HTMLImageElement>( ( resolve, reject ) => {
-            const img = new Image();
-            img.onload = () => resolve( img );
-            img.onerror = reject;
-            img.src = araq_tahaq;
-        } );
+        await q2qTahaq( araq_tahaq );
     } catch ( e ) {
-        console.log( `( Warning ) Could not open custom image '${araq_tahaq}' ⟅ ${ e }` );
+        console.log( `( ʃэ ɭʃɔ }ʃᴜ }ʃꞇ ) Could not open custom image '${araq_tahaq}' ⟅ ${ e }` );
         return;
     }
 
@@ -471,30 +481,26 @@ async function nLak_tahaq_ruva(
     const c2ta_swer2ha_tahaq = kek_tahaq * PAL6_KUCAQ_XAHA;
 
     // Prepare Masked Logo - first create correctly masked logo at target size
-    const result = await k6liq_tahaq( araq_tahaq, c2ta_swer2ha_tahaq );
+    const ts0ni = await k6liq_tahaq( araq_tahaq, c2ta_swer2ha_tahaq );
 
-    if ( result ) {
+    if ( ts0ni ) {
         // Create Padding Container ( Large )
-        const maxema_l6req2k = document.createElement( "canvas" );
-        maxema_l6req2k.width = c2ta_swer2ha_eq2k;
-        maxema_l6req2k.height = c2ta_swer2ha_eq2k;
+        const maxema_l6req2k = k2falTahaq( c2ta_swer2ha_eq2k, c2ta_swer2ha_eq2k );
         const maxemaCtx = maxema_l6req2k.getContext( "2d" );
         if ( !maxemaCtx ) return;
 
         // Center the logo in the container
-        const neq2q_tp = Math.floor( ( c2ta_swer2ha_eq2k - c2ta_swer2ha_tahaq ) / 2 );
-        const neq2q_cp = Math.floor( ( c2ta_swer2ha_eq2k - c2ta_swer2ha_tahaq ) / 2 );
-        maxemaCtx.drawImage( result, neq2q_tp, neq2q_cp );
+        const neq2q_tp = neq2qCepu( c2ta_swer2ha_eq2k, c2ta_swer2ha_tahaq );
+        const neq2q_cp = neq2qCepu( c2ta_swer2ha_eq2k, c2ta_swer2ha_tahaq );
+        maxemaCtx.drawImage( ts0ni, neq2q_tp, neq2q_cp );
 
-        eskeklna_cab6howe_tahaq["embeded_araq_tahaq"] = maxema_l6req2k.toDataURL( "image/png" );
+        eskeklna_cab6howe_tahaq["araqal_c2h2su_tahaq"] = maxema_l6req2k.toDataURL( "image/png" );
 
         // Create a module-level mask to erase data bits in the center
-        const k6liqani_kek = document.createElement( "canvas" );
-        k6liqani_kek.width = kek_swevem2;
-        k6liqani_kek.height = kek_swevem2;
+        const k6liqani_kek = k2falTahaq( kek_swevem2, kek_swevem2 );
         const aak_kek = kf2_k6liqani_2tbesu( kek_eq2k );
-        const neq2q_tp_kek = Math.floor( ( kek_swevem2 - kek_eq2k ) / 2 );
-        const neq2q_cp_kek = Math.floor( ( kek_swevem2 - kek_eq2k ) / 2 );
+        const neq2q_tp_kek = neq2qCepu( kek_swevem2, kek_eq2k );
+        const neq2q_cp_kek = neq2qCepu( kek_swevem2, kek_eq2k );
 
         const kekCtx = k6liqani_kek.getContext( "2d" );
         if ( kekCtx ) {
@@ -503,35 +509,33 @@ async function nLak_tahaq_ruva(
             // Apply to ruva.modules
             console.log( `ſɭᶗ‹ɔ ֭ſɭɹͷ̗ j͑ʃɜ j͑ʃƨɹ ( ${ kek_eq2k } x ${ kek_eq2k } ) ⟅` );
             const kekImageData = kekCtx.getImageData( 0, 0, kek_swevem2, kek_swevem2 );
-            for ( let r = 0; r < kek_swevem2; r++ ) {
+            for ( let ka5ik = 0; ka5ik < kek_swevem2; ka5ik++ ) {
                 for ( let c = 0; c < kek_swevem2; c++ ) {
-                    const pixelIndex = ( r * kek_swevem2 + c ) * 4;
+                    const pixelIndex = ( ka5ik * kek_swevem2 + c ) * 4;
                     if ( kekImageData.data[pixelIndex] > 0 ) {
-                        ruva.modules[r][c] = false;
+                        ruva.modules[ka5ik][c] = false;
                     }
                 }
             }
         }
 
         // Create Pixel-Level Mask ( Legacy/Backup for k2f_araken2q )
-        const pal6_er2ha = ( kek_swevem2 + ( ruva.border * 2 ) ) * PAL6_KUCAQ_XAHA;
-        const k6liqani_er2ha = document.createElement( "canvas" );
-        k6liqani_er2ha.width = pal6_er2ha;
-        k6liqani_er2ha.height = pal6_er2ha;
+        const pal6_er2ha = ( kek_swevem2 + ( ruva.catu5ek * 2 ) ) * PAL6_KUCAQ_XAHA;
+        const k6liqani_er2ha = k2falTahaq( pal6_er2ha, pal6_er2ha );
         const er2haCtx = k6liqani_er2ha.getContext( "2d" );
 
         // Create the leaf mask for the hole
         const k6liqani_6k = kf2_k6liqani_2tbesu( c2ta_swer2ha_eq2k );
 
         // Paste it in center
-        const neq2q_tp_er2ha = Math.floor( ( pal6_er2ha - c2ta_swer2ha_eq2k ) / 2 );
-        const neq2q_cp_er2ha = Math.floor( ( pal6_er2ha - c2ta_swer2ha_eq2k ) / 2 );
+        const neq2q_tp_er2ha = neq2qCepu( pal6_er2ha, c2ta_swer2ha_eq2k );
+        const neq2q_cp_er2ha = neq2qCepu( pal6_er2ha, c2ta_swer2ha_eq2k );
         if ( er2haCtx ) {
             er2haCtx.drawImage( k6liqani_6k, neq2q_tp_er2ha, neq2q_cp_er2ha );
             eskeklna_cab6howe_tahaq["logo_mask"] = er2haCtx;
         }
     } else {
-        console.log( "( Warning ) Could not process custom image , skipping embedding ⟅" );
+        console.log( "( ʃэ ɭʃɔ }ʃᴜ }ʃꞇ ) Could not process custom image , skipping embedding ⟅" );
     }
 }
 
@@ -542,7 +546,7 @@ async function nLak_tahaq_ruva(
  * @param data ( string = "Teh" ) - Data to encode in QR code
  * @param logoPath ( string, optional ) - Path to logo image
  * @param outputCanvas ( HTMLCanvasElement, optional ) - Target canvas element
- * Returns HTMLCanvasElement
+ * @returns HTMLCanvasElement
  *     Canvas containing the generated QR code
  */
 export async function generateQRCode(
@@ -552,8 +556,7 @@ export async function generateQRCode(
 ): Promise<HTMLCanvasElement> {
     // Generate QR code data
     const qrData = QRCode.create( data, {
-        errorCorrectionLevel: "H",
-        version: 1
+        errorCorrectionLevel: "H"
     } );
 
     const modules: boolean[][] = [];
@@ -565,15 +568,15 @@ export async function generateQRCode(
         }
     }
 
-    const ruvacatahaqu: QRCodeData = {
+    const ruvacatahaqu: RuvaCatahaquVop2 = {
         modules,
-        border: 2
+        catu5ek: 2
     };
 
-    const eskeklna_tahaq: StyledPilImageOptions = {
-        box_size: PAL6_KUCAQ_XAHA,
-        border: 2,
-        paint_color: [ 0o200, 0o200, 0o200, 255 ] // #808080
+    const eskeklna_tahaq: SakKu1o = {
+        kuba_swepal6: PAL6_KUCAQ_XAHA,
+        catu5ek: 2,
+        kx2k2f_sweweh2: [ 0o200, 0o200, 0o200, 255 ] // #808080
     };
 
     // ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 💾 ⟫
@@ -584,13 +587,13 @@ export async function generateQRCode(
 
     const img_high_res = new IitbesuRuvaCatahaqu( ruvacatahaqu.modules, eskeklna_tahaq );
 
-    // Track visited modules to merge vertical runs into elongated pills
-    const visited = new Set<string>();
+    // Track a1a_kozeq modules to merge vertical runs into elongated pills
+    const a1a_kozeq = new Set<string>();
 
     // Draw all modules
-    for ( let row = 0; row < ruvacatahaqu.modules.length; row++ ) {
-        for ( let col = 0; col < ruvacatahaqu.modules[row].length; col++ ) {
-            img_high_res.drawrect_context( row, col, ruvacatahaqu, visited );
+    for ( let tapuni = 0; tapuni < ruvacatahaqu.modules.length; tapuni++ ) {
+        for ( let cepuni = 0; cepuni < ruvacatahaqu.modules[tapuni].length; cepuni++ ) {
+            img_high_res.drawrect_context( tapuni, cepuni, ruvacatahaqu, a1a_kozeq );
         }
     }
 
@@ -600,37 +603,35 @@ export async function generateQRCode(
     // Resize back down to target size for smoothness ( Antialiasing )
     const target_size = Math.floor( img_high_res.toCanvas().width / VEM2_XAHA );
 
-    let finalCanvas: HTMLCanvasElement;
+    let tlakakuCakak2f: HTMLCanvasElement;
     if ( outputCanvas ) {
-        finalCanvas = outputCanvas;
-        finalCanvas.width = target_size;
-        finalCanvas.height = target_size;
+        tlakakuCakak2f = outputCanvas;
+        tlakakuCakak2f.width = target_size;
+        tlakakuCakak2f.height = target_size;
     } else {
-        finalCanvas = document.createElement( "canvas" );
-        finalCanvas.width = target_size;
-        finalCanvas.height = target_size;
+        tlakakuCakak2f = k2falTahaq( target_size, target_size );
     }
 
-    const finalCtx = finalCanvas.getContext( "2d" );
-    if ( finalCtx ) {
-        finalCtx.imageSmoothingEnabled = true;
-        finalCtx.imageSmoothingQuality = "high";
-        finalCtx.drawImage( img_high_res.toCanvas(), 0, 0, target_size, target_size );
+    const tlakakuQumuKalasu = tlakakuCakak2f.getContext( "2d" );
+    if ( tlakakuQumuKalasu ) {
+        tlakakuQumuKalasu.imageSmoothingEnabled = true;
+        tlakakuQumuKalasu.imageSmoothingQuality = "high";
+        tlakakuQumuKalasu.drawImage( img_high_res.toCanvas(), 0, 0, target_size, target_size );
     }
 
-    return finalCanvas;
+    return tlakakuCakak2f;
 }
 
 // Auto-run if in browser environment with a target canvas
 if ( typeof window !== "undefined" ) {
     window.addEventListener( "DOMContentLoaded", async () => {
-        const canvas = document.getElementById( "qr-canvas" ) as HTMLCanvasElement;
-        const input = document.getElementById( "qr-input" ) as HTMLTextAreaElement;
-        const logoInput = document.getElementById( "logo-input" ) as HTMLInputElement;
+        const canvas = document.getElementById( "cakak2f-sarvcthq" ) as HTMLCanvasElement;
+        const arabana = document.getElementById( "arabana-sarvcthq" ) as HTMLTextAreaElement;
+        const araq2qTahaq = document.getElementById( "logo-arabana" ) as HTMLInputElement;
         const errorEl = document.getElementById( "tlohk2ni" );
 
-        if ( !canvas || !input ) {
-            console.error( "QR canvas or input not found" );
+        if ( !canvas || !arabana ) {
+            console.error( "ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ ⟅" );
             return;
         }
 
@@ -643,7 +644,7 @@ if ( typeof window !== "undefined" ) {
                     errorEl.style.display = "none";
                 }
             } catch ( e ) {
-                console.error( "QR generation failed:", e );
+                console.error( "( ſ͕ȷɜ ſɭʞɹ )", e );
                 if ( errorEl ) {
                     errorEl.style.display = "block";
                 }
@@ -653,15 +654,15 @@ if ( typeof window !== "undefined" ) {
         // Generate initial QR code
         await generateQR( VOP2_RUVACATAHAQU, undefined );
 
-        // Generate QR code on text input change
-        input.addEventListener( "input", async () => {
-            const value = input.value.trim() || VOP2_RUVACATAHAQU;
+        // Generate QR code on text arabana change
+        arabana.addEventListener( "input", async () => {
+            const value = arabana.value.trim() || VOP2_RUVACATAHAQU;
             await generateQR( value, currentLogoPath );
         } );
 
         // Handle logo upload
-        if ( logoInput ) {
-            logoInput.addEventListener( "change", async ( event ) => {
+        if ( araq2qTahaq ) {
+            araq2qTahaq.addEventListener( "change", async ( event ) => {
                 const target = event.target as HTMLInputElement;
                 if ( target.files && target.files[0] ) {
                     const file = target.files[0];
@@ -669,14 +670,14 @@ if ( typeof window !== "undefined" ) {
                     reader.onload = async ( e ) => {
                         if ( e.target?.result ) {
                             currentLogoPath = e.target.result as string;
-                            const value = input.value.trim() || VOP2_RUVACATAHAQU;
+                            const value = arabana.value.trim() || VOP2_RUVACATAHAQU;
                             await generateQR( value, currentLogoPath );
                         }
                     };
                     reader.readAsDataURL( file );
                 } else {
                     currentLogoPath = undefined;
-                    const value = input.value.trim() || VOP2_RUVACATAHAQU;
+                    const value = arabana.value.trim() || VOP2_RUVACATAHAQU;
                     await generateQR( value, undefined );
                 }
             } );

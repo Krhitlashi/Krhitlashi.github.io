@@ -13,6 +13,10 @@ import {
     PREVIEW_ALPHA, COVERAGE_THRESHOLD_FRACTION,
     WhiteboardObject, Point, ObjectHandler} from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
 
+import {
+    clearTextObjectCache as clearTextCacheImpl
+} from "./ſןᴜ ʃɜƽ.js";
+
 // ⟪ Event Helpers 🖱️ ⟫
 
 export interface TouchOrMouseEvent extends MouseEvent {
@@ -574,12 +578,7 @@ export function invalidateTextCaches( ): void {
 }
 
 export function clearTextObjectCache( obj: WhiteboardObject ): void {
-    if ( obj.type === "text" ) {
-        obj.textDirty = true;
-        obj.cachedCanvas = null;
-        obj.cachedWidth = null;
-        obj.cachedHeight = null;
-    }
+    clearTextCacheImpl( obj );
 }
 
 export function removeObject( obj: WhiteboardObject ): void {

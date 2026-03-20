@@ -1,18 +1,14 @@
 // ≺⧼ WindowManager ⧽≻
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 declare const CONSTANTS: any;
 declare const getWindowContainer: any;
 declare const getWindowTitle: any;
-declare const isTaskbarLarge: any;
 declare const getHomeArea: any;
 declare const getTaskbar: any;
 declare const setDraggingState: any;
 declare const InputHandler: any;
 declare const AnimationManager: any;
 declare const getStrings: any;
-declare const vab6caja: any;
 declare const APPS: any;
 declare const updateDock: any;
 declare const k2regawe: any;
@@ -44,7 +40,7 @@ class WindowManager {
         };
     }
 
-    static _createWindowElement( id: string, title: string, internalContent?: string ): HTMLElement {
+    static _createWindowElement( id: string, title: string ): HTMLElement {
         const win = document.createElement( "div" );
         win.classList.add( "window" );
         win.id = id;
@@ -72,6 +68,8 @@ class WindowManager {
                     style.textContent = `
                         h1, .saxesukef, .cakaxa, .soza, nav, footer, header { display: none !important; }
                         body { background-color: transparent !important; padding: var(--អារេងព៏) !important; }
+                        ciihii {
+                        background-color: var(--តានេក) !important; }
                     `;
                     doc.head.appendChild( style );
                 }
@@ -538,11 +536,7 @@ class WindowManager {
         if ( taskbar ) {
             taskbar.dataset.large = ( parseInt( val ) >= CONSTANTS.WM.TASKBAR_LARGE_THRESHOLD ) ? "true" : "false";
         }
-        this.updateTaskbarApps();
-        if ( typeof updateHomeBarAppearance === "function" ) {
-            updateHomeBarAppearance();
-        }
-
+        
         // Save to localStorage
         localStorage.setItem( "os-taskbar-size", val );
     }
@@ -590,6 +584,7 @@ class WindowManager {
     static setWallpaper( url: string ): void {
         const root = document.getElementById( "os-root" );
         if ( root ) {
+            root.classList.remove( "wallpaper-gradient" );
             if ( url ) {
                 root.style.backgroundImage = `url('${url}')`;
                 root.style.backgroundSize = "cover";
@@ -601,15 +596,49 @@ class WindowManager {
         localStorage.setItem( "os-wallpaper", url || "" );
     }
 
+    static setGradientWallpaper( start: string, end: string ): void {
+        const root = document.getElementById( "os-root" );
+        if ( root ) {
+            root.classList.add( "wallpaper-gradient" );
+            root.style.backgroundImage = `linear-gradient(135deg, ${start}, ${end})`;
+            root.style.backgroundSize = "100% 100%";
+        }
+        localStorage.setItem( "os-wallpaper-gradient", JSON.stringify( { start, end } ) );
+        localStorage.removeItem( "os-wallpaper" );
+    }
+
+    static setRandomGradientWallpaper(): void {
+        const randomColor = () => '#' + Math.floor( Math.random() * 16777215 ).toString( 16 ).padStart( 6, '0' );
+        const start = randomColor();
+        const end = randomColor();
+        this.setGradientWallpaper( start, end );
+    }
+
+    static clearWallpaper(): void {
+        const root = document.getElementById( "os-root" );
+        if ( root ) {
+            root.classList.remove( "wallpaper-gradient" );
+            root.style.backgroundImage = "none";
+        }
+        localStorage.removeItem( "os-wallpaper" );
+        localStorage.removeItem( "os-wallpaper-gradient" );
+    }
+
     // ⟪ Initialization ⟫
 
     static init(): void {
         const savedTheme = localStorage.getItem( "os-theme" ) || "detect";
         this.setTheme( savedTheme );
 
+        // Load wallpaper (image or gradient)
         const savedWallpaper = localStorage.getItem( "os-wallpaper" );
         if ( savedWallpaper ) {
             this.setWallpaper( savedWallpaper );
+        } else {
+            const savedGradient = JSON.parse( localStorage.getItem( "os-wallpaper-gradient" ) || "null" );
+            if ( savedGradient ) {
+                this.setGradientWallpaper( savedGradient.start, savedGradient.end );
+            }
         }
 
         // Initialize taskbar size from localStorage
@@ -703,10 +732,6 @@ class WindowManager {
             }, CONSTANTS.WM.TASKBAR_REPOSITION_DELAY );
         }
 
-        if ( typeof updateHomeBarAppearance === "function" ) {
-            updateHomeBarAppearance();
-        }
-
         // Save to localStorage
         localStorage.setItem( "os-taskbar-position", pos );
     }
@@ -776,6 +801,21 @@ class WindowManager {
 window.addEventListener( "message", ( e ) => {
     if ( e.data?.source !== "settings" ) return;
     const { action, value } = e.data;
+    
+    // Handle gradient wallpaper actions
+    if ( action === "setGradientWallpaper" && value?.start && value?.end ) {
+        WindowManager.setGradientWallpaper( value.start, value.end );
+        return;
+    }
+    if ( action === "setRandomGradientWallpaper" ) {
+        WindowManager.setRandomGradientWallpaper();
+        return;
+    }
+    if ( action === "clearWallpaper" ) {
+        WindowManager.clearWallpaper();
+        return;
+    }
+    
     if ( typeof ( WindowManager as any )[ action ] === "function" ) {
         ( WindowManager as any )[ action ]( value );
     }
@@ -787,9 +827,3 @@ document.addEventListener( "DOMContentLoaded", () => WindowManager.init() );
 ( window as any ).WindowManager = WindowManager;
 ( window as any ).renderRecents = () => WindowManager.renderRecents();
 ( window as any ).updateDock = () => WindowManager.updateDock();
-
-// Stub for updateHomeBarAppearance (optional feature)
-function updateHomeBarAppearance(): void {
-    // Optional: Implement home bar appearance update logic
-}
-( window as any ).updateHomeBarAppearance = updateHomeBarAppearance;

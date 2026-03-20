@@ -150,4 +150,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 if ( typeof window !== "undefined" ) {
   window.vacepu = vacepu;
+  window.a3esoza = a3esoza;
 }

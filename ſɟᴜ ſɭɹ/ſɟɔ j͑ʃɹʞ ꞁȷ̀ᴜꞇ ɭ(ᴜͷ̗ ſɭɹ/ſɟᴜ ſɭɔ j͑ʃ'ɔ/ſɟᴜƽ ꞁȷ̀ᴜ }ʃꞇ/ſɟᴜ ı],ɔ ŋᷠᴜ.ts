@@ -1,7 +1,5 @@
 // ≺⧼ Input Handler - Unified Touch and Mouse Controls ⧽≻
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 // Runtime: get CONSTANTS from window (loaded by HTML script tag)
 const CONSTANTS = (window as any).CONSTANTS;
 
@@ -11,24 +9,6 @@ interface PointerData {
     deltaX?: number;
     deltaY?: number;
     handle?: string;
-}
-
-interface InputHandlerState {
-    isDragging: boolean;
-    isResizing: boolean;
-    isTouch: boolean;
-    activeElement: HTMLElement | null;
-    startX: number;
-    startY: number;
-    startLeft: number;
-    startTop: number;
-    startWidth: number;
-    startHeight: number;
-    offsetX: number;
-    offsetY: number;
-    dragThreshold: number;
-    longPressTimer: number | null;
-    longPressDuration: number;
 }
 
 const InputHandler = {

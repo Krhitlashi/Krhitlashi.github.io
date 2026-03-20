@@ -136,6 +136,7 @@ body.whiteboard-page {
     inline-size: 48px;
     block-size: 48px;
     transition: margin-inline-start 0.25s ease;
+    pointer-events: auto;
 }
 .toolbar-toggle::after {
     content: "<";

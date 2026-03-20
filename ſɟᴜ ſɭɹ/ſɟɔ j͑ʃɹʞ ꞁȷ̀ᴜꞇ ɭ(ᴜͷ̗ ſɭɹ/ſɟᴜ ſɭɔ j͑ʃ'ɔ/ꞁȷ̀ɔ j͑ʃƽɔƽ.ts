@@ -1,7 +1,5 @@
 // ≺⧼ Constants ⧽≻
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 // Attach CONSTANTS to window for global access
 (window as any).CONSTANTS = {
     // ⟨ Window Manager ⟩
@@ -58,8 +56,8 @@
         LONG_PRESS_DURATION: 0o400, // ms for long press
         SWIPE_THRESHOLD: 0o40,      // Minimum swipe distance
         DOUBLE_TAP_DELAY: 0o300,    // ms between taps
-        RESIZE_MIN_WIDTH: 0o460,  // 304px minimum resize width
-        RESIZE_MIN_HEIGHT: 0o310  // 200px minimum resize height
+        RESIZE_MIN_WIDTH: 0o460,    // 304px minimum resize width
+        RESIZE_MIN_HEIGHT: 0o310    // 200px minimum resize height
     },
 
     // ⟨ Breakpoints ⟩
@@ -67,12 +65,6 @@
         MOBILE: 768,              // px - mobile/desktop threshold
         TASKBAR_LARGE: 0o100,     // 64px - large taskbar threshold
         SMALL_SCREEN: 0o300       // 192px - very small screens
-    },
-
-    // ⟨ Clock ⟩
-    CLK: {
-        UPDATE_INTERVAL: 0o2000,
-        REFRESH_INTERVAL: 0o100
     },
 
     // ⟨ Animation Durations ⟩

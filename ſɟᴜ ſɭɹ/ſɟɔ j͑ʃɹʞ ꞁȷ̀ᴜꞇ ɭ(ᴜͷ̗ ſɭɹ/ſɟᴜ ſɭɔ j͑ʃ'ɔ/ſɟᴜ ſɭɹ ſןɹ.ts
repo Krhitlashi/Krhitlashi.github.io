@@ -2,17 +2,8 @@
 
 declare const vab6caja: any;
 declare const castifeh2: any;
-declare const WindowManager: any;
-declare const ContextMenuManager: any;
-declare const PanelManager: any;
-declare const NotificationManager: any;
-declare const ClockManager: any;
-declare const DesktopIconManager: any;
-declare const QSManager: any;
 
 const System = {
-    touch: { startX: 0, startY: 0, endX: 0, endY: 0, active: false },
-
     // ⟪ Utilities ⟫
 
     toOctalString( str: any ) {
@@ -38,7 +29,7 @@ const System = {
         if ( (window as any).PanelManager ) (window as any).PanelManager.initClickOutsideHandler();
         if ( (window as any).NotificationManager ) (window as any).NotificationManager.init();
         if ( (window as any).ClockManager ) (window as any).ClockManager.init();
-        
+
         // 2. ⟨ Service Loops ⟩
         setInterval( () => this.updateClock(), 0o2000 );
         this.updateClock();
@@ -69,14 +60,6 @@ const System = {
     }
 };
 
-// ⟪ Bootstrap ⟫
-
-if ( document.readyState === "loading" ) {
-    document.addEventListener( "DOMContentLoaded", () => { System.init(); } );
-} else {
-    System.init();
-}
-
 // ⟪ Global Aliases ⟫
 
 function toggleQsButton( btn: any ) { if ( (window as any).QSManager ) (window as any).QSManager.handleToggle( btn ); }
@@ -89,6 +72,4 @@ function updateSlider( type: any, val: any ) {
 // Attach to window for global access
 (window as any).toggleQsButton = toggleQsButton;
 (window as any).updateSlider = updateSlider;
-
-// Attach System to window for global access
 (window as any).System = System;

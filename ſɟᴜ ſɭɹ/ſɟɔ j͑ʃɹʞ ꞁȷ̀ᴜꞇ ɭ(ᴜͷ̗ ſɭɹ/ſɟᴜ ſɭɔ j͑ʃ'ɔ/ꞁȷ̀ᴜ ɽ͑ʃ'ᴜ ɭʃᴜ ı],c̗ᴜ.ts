@@ -1,12 +1,9 @@
 // ≺⧼ Notification Manager ⧽≻ - Centralized notification management
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 declare const CONSTANTS: any;
-declare const Storage: any;
 declare const DOMCache: any;
 declare const getStrings: any;
-declare const System: any;
+declare const StorageUtil: any;
 
 class NotificationManager {
     static #dismissed: Set<any> = new Set();
@@ -14,15 +11,13 @@ class NotificationManager {
 
     // ⟨ Load Dismissed From Storage ⟩
     static loadFromStorage(): void {
-        const storage = (window as any).StorageUtil;
-        const stored: number[] = storage.get(CONSTANTS.STORAGE_KEYS.dismissedNotifs, []);
+        const stored: number[] = StorageUtil.get(CONSTANTS.STORAGE_KEYS.dismissedNotifs, []);
         stored.forEach((id: number) => this.#dismissed.add(id));
     }
 
     // ⟨ Save To Storage ⟩
     static saveToStorage(): void {
-        const storage = (window as any).StorageUtil;
-        storage.set(CONSTANTS.STORAGE_KEYS.dismissedNotifs, Array.from(this.#dismissed));
+        StorageUtil.set(CONSTANTS.STORAGE_KEYS.dismissedNotifs, Array.from(this.#dismissed));
     }
 
     // ⟨ Add Notification ⟩
@@ -78,7 +73,7 @@ class NotificationManager {
             return;
         }
 
-        list.innerHTML = active.map((n: any, idx: number) => {
+        list.innerHTML = active.map((n: any) => {
             const origIdx = this.#notifications.indexOf(n);
             const title = strings[n.title];
             const desc = strings[n.desc];

@@ -1,7 +1,5 @@
 // ≺⧼ Panel Manager ⧽≻ - Consolidated panel management with directional animations
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 declare const CONSTANTS: any;
 declare const AnimationManager: any;
 declare const DOMCache: any;
@@ -12,13 +10,9 @@ declare const setButtonPressed: any;
 declare const getStartMenu: any;
 declare const getTaskbar: any;
 declare const isTaskbarLarge: any;
-declare const closeAllPanels: any;
 declare const renderRecents: any;
 declare const updateDock: any;
-declare const getHomeArea: any;
 declare const getOpenWindows: any;
-declare const NotificationManager: any;
-declare const ClockManager: any;
 
 class PanelManager {
     static animationDuration: number = CONSTANTS.ANIM.DURATION_DEFAULT;
@@ -32,10 +26,14 @@ class PanelManager {
         dock: "taskbar-dock"
     };
 
+    // ⟪ Get Panel By ID ⟫
+    static getPanel(panelId: string): HTMLElement | null {
+        return DOMCache.get(panelId);
+    }
+
     // ⟪ Check Panel Visibility ⟫
-    static isPanelVisible(panelId: string): boolean {
-        const panel: HTMLElement | null = DOMCache.get(panelId);
-        return panel && hasClass(panel, "visible");
+    static isPanelVisible(panel: HTMLElement | null): boolean {
+        return panel != null && hasClass(panel, "visible");
     }
 
     // ⟪ Set Button Pressed State ⟫
@@ -76,14 +74,14 @@ class PanelManager {
         const animations: Promise<void>[] = [];
 
         [this.panels.quickSettings, this.panels.notifications, this.panels.clockFlyout].forEach(panelId => {
-            const panel: HTMLElement | null = DOMCache.get(panelId);
-            if (panel && hasClass(panel, "visible")) {
+            const panel = this.getPanel(panelId);
+            if (panel && this.isPanelVisible(panel)) {
                 animations.push(this.hidePanel(panel, panelId));
             }
         });
 
-        const dock: HTMLElement | null = DOMCache.get(this.panels.dock);
-        if (dock && hasClass(dock, "visible")) {
+        const dock = this.getPanel(this.panels.dock);
+        if (dock && this.isPanelVisible(dock)) {
             removeClass(dock, "visible");
         }
 
@@ -99,8 +97,8 @@ class PanelManager {
         const animations: Promise<void>[] = [];
 
         [this.panels.quickSettings, this.panels.notifications, this.panels.clockFlyout, this.panels.recents].forEach(panelId => {
-            const panel: HTMLElement | null = DOMCache.get(panelId);
-            if (panel && hasClass(panel, "visible")) {
+            const panel = this.getPanel(panelId);
+            if (panel && this.isPanelVisible(panel)) {
                 animations.push(this.hidePanel(panel, panelId));
             }
         });
@@ -119,8 +117,8 @@ class PanelManager {
             this.setButtonPressed(btnId, false);
         });
 
-        const dock: HTMLElement | null = DOMCache.get(this.panels.dock);
-        if (dock && hasClass(dock, "visible")) {
+        const dock = this.getPanel(this.panels.dock);
+        if (this.isPanelVisible(dock)) {
             animations.push(AnimationManager.fadeOut(dock, {
                 duration: CONSTANTS.ANIM.DURATION_SHORT
             }).then(() => {
@@ -183,10 +181,10 @@ class PanelManager {
 
     // ⟪ Toggle Panel ⟫
     static togglePanel(panelId: string, btnId: string, isSliders: boolean = false): void {
-        const panel: HTMLElement | null = DOMCache.get(panelId);
+        const panel = this.getPanel(panelId);
         if (!panel) return;
 
-        const isVisible: boolean = hasClass(panel, "visible");
+        const isVisible = this.isPanelVisible(panel);
         this.closeAllPanels();
 
         if (!isVisible) {
@@ -198,12 +196,13 @@ class PanelManager {
 
     // ⟪ Toggle Quick Settings ⟫
     static toggleQuickSettings(): void {
-        const container: HTMLElement | null = DOMCache.get(this.panels.quickSettings);
+        const container = this.getPanel(this.panels.quickSettings);
         if (!container) return;
-        const isVisible: boolean = hasClass(container, "visible");
+
+        const isVisible = this.isPanelVisible(container);
         this.closeAllPanels();
 
-        if (!isVisible && container) {
+        if (!isVisible) {
             if ((container as any)._hideTimeout) {
                 clearTimeout((container as any)._hideTimeout);
                 delete (container as any)._hideTimeout;
@@ -224,9 +223,10 @@ class PanelManager {
     // ⟪ Toggle Notifications ⟫
     static toggleNotifications(): void {
         if ((window as any).NotificationManager) (window as any).NotificationManager.render();
-        const panel: HTMLElement | null = DOMCache.get(this.panels.notifications);
+        const panel = this.getPanel(this.panels.notifications);
         if (!panel) return;
-        const isVisible: boolean = hasClass(panel, "visible");
+
+        const isVisible = this.isPanelVisible(panel);
         this.closeAllPanels();
 
         if (!isVisible) {
@@ -241,9 +241,10 @@ class PanelManager {
         if ((window as any).ClockManager) {
             (window as any).ClockManager.update();
         }
-        const panel: HTMLElement | null = DOMCache.get(this.panels.clockFlyout);
+        const panel = this.getPanel(this.panels.clockFlyout);
         if (!panel) return;
-        const isVisible: boolean = hasClass(panel, "visible");
+
+        const isVisible = this.isPanelVisible(panel);
         this.closeAllPanels();
 
         if (!isVisible) {
@@ -258,7 +259,7 @@ class PanelManager {
         const startMenu: HTMLElement | null = getStartMenu();
         if (!startMenu) return;
 
-        const isOpen: boolean = hasClass(startMenu, "open");
+        const isOpen = hasClass(startMenu, "open");
         if (isOpen) {
             AnimationManager.closePanel(startMenu, "startMenu", {
                 duration: this.animationDuration
@@ -287,11 +288,11 @@ class PanelManager {
     static showRecents(e?: Event): void {
         if (e) e.preventDefault();
 
-        const panel: HTMLElement | null = DOMCache.get(this.panels.recents);
+        const panel = this.getPanel(this.panels.recents);
         if (!panel) return;
-        const dock: HTMLElement | null = DOMCache.get(this.panels.dock);
+        const dock = this.getPanel(this.panels.dock);
 
-        const isVisible: boolean = hasClass(panel, "visible");
+        const isVisible = this.isPanelVisible(panel);
         this.closeAllPanels();
 
         if (!isVisible) {
