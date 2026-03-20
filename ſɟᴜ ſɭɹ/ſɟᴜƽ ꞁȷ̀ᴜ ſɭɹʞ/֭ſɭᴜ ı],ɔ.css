@@ -9,11 +9,15 @@
 /* ⟪ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ ⬜ ⟫ */
 
 html, body {
-    overflow: visible;
+    overflow: hidden;
+    touch-action: manipulation;
+    overscroll-behavior: none;
 }
 body.whiteboard-page {
-    overflow: visible;
+    overflow: hidden;
     align-items: flex-start;
+    touch-action: manipulation;
+    overscroll-behavior: none;
 }
 .whiteboard-container {
     position: relative;
@@ -23,12 +27,15 @@ body.whiteboard-page {
     overflow: visible;
     pointer-events: auto;
     transform: translate(var(--pan-x), var(--pan-y));
+    touch-action: none;
 }
 .whiteboard-canvas-wrapper {
     transform-origin: 0 0;
     transform: scale(var(--zoom));
     display: flex;
     flex: 1;
+    will-change: transform;
+    position: relative;
 }
 .whiteboard-canvas {
     background-color: #fff;
@@ -37,6 +44,9 @@ body.whiteboard-page {
     touch-action: none;
     flex-shrink: 0;
     pointer-events: auto;
+    overscroll-behavior: none;
+    position: relative;
+    z-index: 2;
 }
 
 .whiteboard-canvas[data-tool="select"] { --cursor: default; }
@@ -105,14 +115,18 @@ body.whiteboard-page {
     inset-block-start: 16px;
     inset-inline-start: 16px;
     z-index: 64;
+    pointer-events: none;
 }
 #toolbarContainer {
     transition: all 0.25s ease;
     display: flex;
     flex-direction: column;
-    max-block-size: calc(100vb - var(--អារេងព៏) * 2);
+    max-block-size: calc( 100vb - var( --អារេងព៏ ) * 2 );
     overflow: auto;
-    border-radius: var(--អិត្ភេពឺ);
+    border-radius: var( --អិត្ភេពឺ );
+    pointer-events: auto;
+    touch-action: auto;
+    -webkit-overflow-scrolling: touch;
 }
 #toolbarContainer[style*="scale: 0"] {
     position: absolute;

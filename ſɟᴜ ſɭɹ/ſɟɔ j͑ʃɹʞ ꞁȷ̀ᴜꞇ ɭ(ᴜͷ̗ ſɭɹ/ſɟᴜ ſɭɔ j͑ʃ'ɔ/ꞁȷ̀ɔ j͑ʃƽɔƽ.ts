@@ -55,9 +55,9 @@
     // ⟨ Input Handler ⟩
     INPUT: {
         DRAG_THRESHOLD: 0o10,     // 8px - minimum distance for drag
-        LONG_PRESS_DURATION: 500, // ms for long press
-        SWIPE_THRESHOLD: 50,      // 40px - minimum swipe distance
-        DOUBLE_TAP_DELAY: 300,    // ms between taps
+        LONG_PRESS_DURATION: 0o400, // ms for long press
+        SWIPE_THRESHOLD: 0o40,      // Minimum swipe distance
+        DOUBLE_TAP_DELAY: 0o300,    // ms between taps
         RESIZE_MIN_WIDTH: 0o460,  // 304px minimum resize width
         RESIZE_MIN_HEIGHT: 0o310  // 200px minimum resize height
     },

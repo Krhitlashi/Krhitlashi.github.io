@@ -2,8 +2,8 @@
 
 // ⟪ Canvas Elements 🎨 ⟫
 
-export const canvas = document.getElementById("whiteboardCanvas") as HTMLCanvasElement | null;
-export const ctx = canvas?.getContext("2d") as CanvasRenderingContext2D | null;
+export const canvas = document.getElementById( "whiteboardCanvas" ) as HTMLCanvasElement | null;
+export const ctx = canvas?.getContext( "2d" ) as CanvasRenderingContext2D | null;
 
 // ⟪ Constants 🔢 ⟫
 
@@ -33,7 +33,7 @@ export const INITIAL_BRUSH_SIZE = 0o4;
 export const ZOOM_BASE = 0o100;
 export const MIN_DELTA = 0o1 / 0o100;
 
-export const LINE_DASH_PATTERN = [0o4, 0o4];
+export const LINE_DASH_PATTERN = [ 0o4, 0o4 ];
 export const SELECTION_LINE_WIDTH = 0o2;
 export const HANDLE_FILL_COLOR = "#181818";
 export const HANDLE_STROKE_COLOR = "#000000";
@@ -56,7 +56,7 @@ export const COVERAGE_THRESHOLD_FRACTION = 3 / 4;
 
 // ⟪ Tool Cursors 🖰 ⟫
 
-export const TOOL_CURSORS: Record<string, string> = {
+export const TOOL_CURSORS: Record< string, string > = {
     pen: "crosshair",
     select: "default",
     pan: "grab",
@@ -67,11 +67,7 @@ export const TOOL_CURSORS: Record<string, string> = {
     connect: "crosshair"
 };
 
-export const CURSOR_CLASSES = [
-    "canvas-cursor-grab", "canvas-cursor-grabbing", "canvas-cursor-pointer",
-    "canvas-cursor-move", "canvas-cursor-default", "canvas-cursor-crosshair",
-    "canvas-cursor-cell", "canvas-cursor-text"
-];
+export const CURSOR_CLASSES = [ "canvas-cursor-grab", "canvas-cursor-grabbing", "canvas-cursor-pointer", "canvas-cursor-move", "canvas-cursor-default", "canvas-cursor-crosshair", "canvas-cursor-cell", "canvas-cursor-text" ];
 
 // ⟪ Application State 📊 ⟫
 
@@ -117,6 +113,24 @@ export const panState: PanState = {
     isPanning: false,
     startX: 0,
     startY: 0
+};
+
+export interface TouchGestureState {
+    isPinching: boolean;
+    initialDistance: number;
+    initialZoom: number;
+    lastTouchDistance: number;
+    panStartX: number;
+    panStartY: number;
+}
+
+export const touchGestureState: TouchGestureState = {
+    isPinching: false,
+    initialDistance: 0,
+    initialZoom: 0,
+    lastTouchDistance: 0,
+    panStartX: 0,
+    panStartY: 0
 };
 
 export interface SpaceState {
@@ -338,9 +352,9 @@ export const clipboardState: ClipboardState = {
 // ⟪ Object Handler Interface 📐 ⟫
 
 export interface ObjectHandler {
-    getBounds: (obj: WhiteboardObject) => { x: number; y: number; width: number; height: number };
-    getCenter: (obj: WhiteboardObject) => { x: number; y: number };
-    isPointInside: (x: number, y: number, obj: WhiteboardObject) => boolean;
-    getInitialBounds?: (obj: WhiteboardObject) => any;
-    resize?: (obj: WhiteboardObject, handle: string, localX: number, localY: number, init: any) => void;
+    getBounds: ( obj: WhiteboardObject ) => { x: number; y: number; width: number; height: number };
+    getCenter: ( obj: WhiteboardObject ) => { x: number; y: number };
+    isPointInside: ( x: number, y: number, obj: WhiteboardObject ) => boolean;
+    getInitialBounds?: ( obj: WhiteboardObject ) => any;
+    resize?: ( obj: WhiteboardObject, handle: string, localX: number, localY: number, init: any ) => void;
 }
