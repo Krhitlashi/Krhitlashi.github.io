@@ -223,7 +223,12 @@ function handleDocumentMouseMove( e: MouseEvent ): void {
 function handleDocumentMouseUp( e: MouseEvent ): void {
     if ( panState.isPanning ) {
         panState.isPanning = false;
-        if ( canvas ) canvas.dataset.cursor = "grab";
+        if ( spaceState.isPressed ) {
+            if ( canvas ) canvas.dataset.cursor = "grab";
+        } else {
+            if ( canvas ) delete canvas.dataset.cursor;
+            setCursor( getToolCursor() );
+        }
         return;
     }
     if ( state.isDrawing ) stopDrawing( e );
@@ -236,26 +241,86 @@ function isScrollableElement( el: EventTarget | null ): boolean {
         style.overflowX === "auto" || style.overflowX === "scroll";
 }
 
-function handleTouchStart( e: TouchEvent ): void {
-    if ( e.touches.length === 1 && !isUIElement( e.target ) ) {
-        const touch = e.touches[ 0 ];
-        handleDocumentMouseDown( new MouseEvent( "mousedown", {
-            clientX: touch.clientX, clientY: touch.clientY, button: 0
-        } ) );
+function getTouchCenter( e: TouchEvent ): { x: number; y: number } {
+    if ( e.touches.length === 2 ) {
+        return {
+            x: ( e.touches[ 0 ].clientX + e.touches[ 1 ].clientX ) / 2,
+            y: ( e.touches[ 0 ].clientY + e.touches[ 1 ].clientY ) / 2
+        };
+    }
+    return { x: e.touches[ 0 ].clientX, y: e.touches[ 0 ].clientY };
+}
+
+function startPanFromPoint( x: number, y: number ): void {
+    panState.isPanning = true;
+    panState.startX = x - panState.offsetX;
+    panState.startY = y - panState.offsetY;
+    if ( canvas ) canvas.dataset.cursor = "grabbing";
+}
+
+function updatePan( clientX: number, clientY: number ): void {
+    panState.offsetX = clientX - panState.startX;
+    panState.offsetY = clientY - panState.startY;
+    constrainPan();
+    document.documentElement.style.setProperty( "--pan-x", panState.offsetX + "px" );
+    document.documentElement.style.setProperty( "--pan-y", panState.offsetY + "px" );
+}
+
+function endPan(): void {
+    panState.isPanning = false;
+    if ( spaceState.isPressed ) {
+        if ( canvas ) canvas.dataset.cursor = "grab";
+    } else {
+        if ( canvas ) delete canvas.dataset.cursor;
+        setCursor( getToolCursor() );
     }
 }
 
+function handleTouchStart( e: TouchEvent ): void {
+    if ( e.touches.length > 2 || isUIElement( e.target ) ) return;
+
+    if ( e.touches.length === 2 ) {
+        e.preventDefault();
+        const center = getTouchCenter( e );
+        startPanFromPoint( center.x, center.y );
+        return;
+    }
+
+    if ( spaceState.isPressed ) {
+        e.preventDefault();
+        startPanFromPoint( e.touches[ 0 ].clientX, e.touches[ 0 ].clientY );
+        return;
+    }
+
+    handleDocumentMouseDown( new MouseEvent( "mousedown", {
+        clientX: e.touches[ 0 ].clientX, clientY: e.touches[ 0 ].clientY, button: 0
+    } ) );
+}
+
 function handleTouchMove( e: TouchEvent ): void {
-    if ( e.touches.length === 1 && state.isDrawing ) {
-        const touch = e.touches[ 0 ];
+    if ( e.touches.length > 2 ) return;
+
+    if ( panState.isPanning ) {
+        e.preventDefault();
+        const center = getTouchCenter( e );
+        updatePan( center.x, center.y );
+        return;
+    }
+
+    if ( state.isDrawing ) {
         draw( new MouseEvent( "mousemove", {
-            clientX: touch.clientX, clientY: touch.clientY
+            clientX: e.touches[ 0 ].clientX, clientY: e.touches[ 0 ].clientY
         } ) );
     }
 }
 
 function handleTouchEnd( e: TouchEvent ): void {
-    if ( e.changedTouches.length === 1 ) {
+    if ( panState.isPanning ) {
+        endPan();
+        return;
+    }
+
+    if ( e.changedTouches.length === 1 && state.isDrawing ) {
         const touch = e.changedTouches[ 0 ];
         stopDrawing( new MouseEvent( "mouseup", {
             clientX: touch.clientX, clientY: touch.clientY
@@ -264,6 +329,10 @@ function handleTouchEnd( e: TouchEvent ): void {
 }
 
 function handleTouchCancel( e: TouchEvent ): void {
+    if ( panState.isPanning ) {
+        endPan();
+        return;
+    }
     handleTouchEnd( e );
 }
 
@@ -279,13 +348,17 @@ function handleDoubleClick( e: MouseEvent ): void {
 function handleKeyup( e: KeyboardEvent ): void {
     if ( e.code === "Space" ) {
         spaceState.isPressed = false;
-        if ( !panState.isPanning && !state.isDrawing ) setCursor( getToolCursor() );
+        if ( !panState.isPanning && !state.isDrawing ) {
+            if ( canvas ) delete canvas.dataset.cursor;
+            setCursor( getToolCursor() );
+        }
     }
 }
 
 function handleBlur(): void {
     spaceState.isPressed = false;
     panState.isPanning = false;
+    if ( canvas ) delete canvas.dataset.cursor;
     resetCursor();
 }
 
