@@ -217,7 +217,7 @@ class IitbesuRuvaCatahaqu {
         const [ tp_heta, cp_heta, tp_xaqa, cp_xaqa ] = kuba;
         const sf = tp_xaqa - tp_heta;
         const ld = cp_xaqa - cp_heta;
-        
+
         // For vertical pills, use width-based ka5ik for top/bottom
         const kemafi_fkabe = sf / 2;
         const ka5ik = kemafi_fkabe * this.KANAQANIDOMA_2TBE;
@@ -269,6 +269,16 @@ class IitbesuRuvaCatahaqu {
             }
         }
         this.canvas.closePath();
+
+        // If fully transparent, clear the shape area instead of filling
+        if ( tem2ni[3] === 0 ) {
+            this.canvas.save();
+            this.canvas.clip();
+            this.canvas.clearRect( tp_heta, cp_heta, sf, ld );
+            this.canvas.restore();
+            return;
+        }
+
         this.canvas.fillStyle = `rgba( ${ tem2ni.join( "," ) } )`;
         this.canvas.fill();
     }
@@ -318,7 +328,7 @@ class IitbesuRuvaCatahaqu {
 
         // Draw the shapes
         this.k2f_nakoxa( kuba_3akak, fkabe_2banu, this.kx2k2f_sweweh2 );
-        this.k2f_nakoxa( kuba_saxe, fkabe_2banu, [ 0, 0, 0, 255 ] );
+        this.k2f_nakoxa( kuba_saxe, fkabe_2banu, [ 0, 0, 0, 0 ] );
         this.k2f_nakoxa( kuba_2banusost2su, fkabe_2banusost2, this.kx2k2f_sweweh2 );
     }
 
@@ -627,8 +637,9 @@ if ( typeof window !== "undefined" ) {
     window.addEventListener( "DOMContentLoaded", async () => {
         const canvas = document.getElementById( "cakak2f-sarvcthq" ) as HTMLCanvasElement;
         const arabana = document.getElementById( "arabana-sarvcthq" ) as HTMLTextAreaElement;
-        const araq2qTahaq = document.getElementById( "logo-arabana" ) as HTMLInputElement;
+        const araq2qTahaq = document.getElementById( "araq2q-tahaq" ) as HTMLInputElement;
         const errorEl = document.getElementById( "tlohk2ni" );
+        const downloadBtn = document.getElementById( "qumk2" ) as HTMLButtonElement;
 
         if ( !canvas || !arabana ) {
             console.error( "ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ ⟅" );
@@ -679,6 +690,21 @@ if ( typeof window !== "undefined" ) {
                     currentLogoPath = undefined;
                     const value = arabana.value.trim() || VOP2_RUVACATAHAQU;
                     await generateQR( value, undefined );
+                }
+            } );
+        }
+
+        // Handle download button
+        if ( downloadBtn ) {
+            downloadBtn.addEventListener( "click", () => {
+                try {
+                    const dataUrl = canvas.toDataURL( "image/png" );
+                    const link = document.createElement( "a" );
+                    link.download = "ruvavatahaqu.png";
+                    link.href = dataUrl;
+                    link.click();
+                } catch ( e ) {
+                    console.error( "( ſ͕ȷɜ ſ͕ɭwc̭ ſɭɹ )", e );
                 }
             } );
         }
