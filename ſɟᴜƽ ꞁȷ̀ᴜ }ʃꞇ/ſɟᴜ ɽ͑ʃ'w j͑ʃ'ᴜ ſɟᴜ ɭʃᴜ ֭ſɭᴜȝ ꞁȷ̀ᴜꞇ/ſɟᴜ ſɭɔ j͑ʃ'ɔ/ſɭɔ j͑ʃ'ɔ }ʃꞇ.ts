@@ -318,7 +318,7 @@ class IitbesuRuvaCatahaqu {
 
         // Draw the shapes
         this.k2f_nakoxa( kuba_3akak, fkabe_2banu, this.kx2k2f_sweweh2 );
-        this.k2f_nakoxa( kuba_saxe, fkabe_2banu, [ 255, 255, 255, 255 ] );
+        this.k2f_nakoxa( kuba_saxe, fkabe_2banu, [ 0, 0, 0, 255 ] );
         this.k2f_nakoxa( kuba_2banusost2su, fkabe_2banusost2, this.kx2k2f_sweweh2 );
     }
 
@@ -576,7 +576,7 @@ export async function generateQRCode(
     const eskeklna_tahaq: SakKu1o = {
         kuba_swepal6: PAL6_KUCAQ_XAHA,
         catu5ek: 2,
-        kx2k2f_sweweh2: [ 0o200, 0o200, 0o200, 255 ] // #808080
+        kx2k2f_sweweh2: [ 255, 255, 255, 255 ]
     };
 
     // ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 💾 ⟫
