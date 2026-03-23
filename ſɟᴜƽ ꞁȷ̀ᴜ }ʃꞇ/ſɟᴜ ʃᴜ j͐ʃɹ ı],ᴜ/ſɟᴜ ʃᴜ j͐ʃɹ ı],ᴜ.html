@@ -25,90 +25,94 @@
         <a href="../../ꞁȷ̀ꞇ }ʃᴜƽ.html" data-oskakefani="ꞁȷ̀ꞇ }ʃᴜƽ"></a>
     </thala>
 
-    <thala class="cakaxa">
-        <div class="sabosuc2w2q">
+    <thala>
+        <sabosuc2w2q>
             <input type="text" id="searchInput" placeholder="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ı" style="flex: 1;">
             <button id="searchBtn" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ"></button>
-        </div>
-    </thala>
-    
-    <thala id="searchResults" class="hidden"></thala>
-
-    <thala class="cakaxa">
-        <div class="sabosuc2w2q">
-            <button id="tabDecimal" data-oskakefani="ı],ᴜ ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ }ʃꞇ" aria-pressed="true"></button>
-            <button id="tabDMS" data-oskakefani="j͑ʃɔ ſȷꞇ }ʃꞇ" aria-pressed="false"></button>
-        </div>
-    </thala>
-
-    <thala id="decimalControls">
-        <div class="sabosuc2w2q">
-            <div>
-                <label data-oskakefani="ſɟɔ ſןw }ʃꞇ"></label>
-            <input type="number" id="latInput" value="47.48" step="0.00001" min="-90" max="90">
-        </div>
-        <div>
-            <label data-oskakefani="ɭʃᴜ ſןw }ʃꞇ"></label>
-            <input type="number" id="lonInput" value="-122.21" step="0.00001" min="-180" max="180">
-        </div>
-        </div>
-    </thala>
-
-    <thala id="dmsControls" class="hidden">
-        <div>
-            <div>
-                <label data-oskakefani="ſɟɔ ſןw }ʃꞇ"></label>
-                <div>
-                    <input type="number" id="latDeg" placeholder="Deg">
-                    <span>°</span>
-                    <input type="number" id="latMin" placeholder="Min">
-                    <span>'</span>
-                    <input type="number" id="latSec" placeholder="Sec">
-                    <span>"</span>
-                    <select id="latHem">
-                        <option value="N" data-oskakefani="j͐ʃᴜȝ"></option>
-                        <option value="S" data-oskakefani="ſɭᴜȝ"></option>
-                    </select>
-                </div>
-            </div>
-            <div>
-                <label data-oskakefani="ɭʃᴜ ſןw }ʃꞇ"></label>
-                <div>
-                    <input type="number" id="lonDeg" placeholder="Deg">
-                    <span>°</span>
-                    <input type="number" id="lonMin" placeholder="Min">
-                    <span>'</span>
-                    <input type="number" id="lonSec" placeholder="Sec">
-                    <span>"</span>
-                    <select id="lonHem">
-                        <option value="E" data-oskakefani="j͑ʃᴜȝ"></option>
-                        <option value="W" data-oskakefani="ɽ͑ʃ'ᴜȝ"></option>
-                    </select>
-                </div>
-            </div>
-        </div>
+        </sabosuc2w2q>
+        
+        <maxema id="searchResults" class="hidden"></maxema>
     </thala>
 
     <thala>
-        <div class="sabosuc2w2q">
-            <label>
-                <input type="checkbox" id="showGridCheck" class="ca12nasabosu" checked>
-                <span data-oskakefani="ſɟɔ ŋᷠɔ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ"></span>
-            </label>
-            <label>
-                <input type="checkbox" id="useBase10Check" class="ca12nasabosu">
-                <span data-oskakefani="ſɭc̗ᴜ ſɭɹ ſȷɔ ı],ᴜ ſןɹ j͑ʃᴜꞇ"></span>
-            </label>
-        </div>
+        <sabosuc2w2q>
+            <button id="tabDecimal" data-oskakefani="ı],ᴜ ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ }ʃꞇ" aria-pressed="true"></button>
+            <button id="tabDMS" data-oskakefani="j͑ʃɔ ſȷꞇ }ʃꞇ" aria-pressed="false"></button>
+        </sabosuc2w2q>
 
+        <ciihii id="decimalControls">
+            <sabosuc2w2q>
+                <label> 
+                    <span data-oskakefani="ſɟɔ ſןw }ʃꞇ"></span>
+                    <input type="number" id="latInput" value="47.48" step="0.00001" min="-90" max="90">
+                </label>
+                <label> 
+                    <span data-oskakefani="ɭʃᴜ ſןw }ʃꞇ"></span>
+                    <input type="number" id="lonInput" value="-122.21" step="0.00001" min="-180" max="180">
+                </label>
+            </sabosuc2w2q>
+        </ciihii>
+
+        <ciihii id="dmsControls" class="hidden">
+            <p class="ksakat2xa" data-oskakefani="ſɟɔ ſןw }ʃꞇ"></p>
+            <sabosuc2w2q>
+                <label>
+                    <span data-oskakefani="j͐ʃᴜȝ"></span>
+                    <input type="radio" name="latHem" value="N" class="ca12nasukf2qu" checked>
+                </label>
+                <label>
+                    <span data-oskakefani="ſɭᴜȝ"></span>
+                    <input type="radio" name="latHem" value="S" class="ca12nasukf2qu">
+                </label>
+            </sabosuc2w2q>
+            <sabosuc2w2q>
+                <input type="number" id="latDeg" placeholder="Deg">
+                <span>°</span>
+                <input type="number" id="latMin" placeholder="Min">
+                <span>'</span>
+                <input type="number" id="latSec" placeholder="Sec">
+                <span>"</span>
+            </sabosuc2w2q>
+            <p class="ksakat2xa" data-oskakefani="ɭʃᴜ ſןw }ʃꞇ"></p>
+            <sabosuc2w2q>
+                <label>
+                    <span data-oskakefani="j͑ʃᴜȝ"></span>
+                    <input type="radio" name="lonHem" value="E" class="ca12nasukf2qu" checked>
+                </label>
+                <label>
+                    <span data-oskakefani="ɽ͑ʃ'ᴜȝ"></span>
+                    <input type="radio" name="lonHem" value="W" class="ca12nasukf2qu">
+                </label>
+            </sabosuc2w2q>
+            <sabosuc2w2q>
+                <input type="number" id="lonDeg" placeholder="Deg">
+                <span>°</span>
+                <input type="number" id="lonMin" placeholder="Min">
+                <span>'</span>
+                <input type="number" id="lonSec" placeholder="Sec">
+                <span>"</span>
+            </sabosuc2w2q>
+        </ciihii>
+    </thala>
+
+    <thala>
         <p class="ksakap2sa" data-oskakefani="ꞁȷ̀ɔ ɽ͑ʃ'ɹ ֭ſɭᴜ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ }ʃɹƽ"></p>
-        <ciihii class="result-card">
+        <sabosuc2w2q>
+            <label>
+                <span data-oskakefani="ſɟɔ ŋᷠɔ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ"></span>
+                <input type="checkbox" id="showGridCheck" class="ca12nasabosu" checked>
+            </label>
+            <label>
+                <span data-oskakefani="ſɭc̗ᴜ ſɭɹ ſȷɔ ı],ᴜ ſןɹ j͑ʃᴜꞇ"></span>
+                <input type="checkbox" id="useBase10Check" class="ca12nasabosu">
+            </label>
+        </sabosuc2w2q>
+        <ciihii class="result-card" style="block-size: 176px;">
             <div id="outputCoords">-- -- - -- -- - -- --</div>
             <div id="kefAraq">-- -- -- --</div>
             <div id="outputName">-- -- -- --</div>
             <div id="piak">-- -- -- --</div>
         </ciihii>
-
         <div class="map-section" id="mapContainer">
             <div id="map"></div>
             <canvas id="gridCanvas"></canvas>
@@ -121,17 +125,32 @@
 
     <thala>
         <p class="ksakap2sa" data-oskakefani="֭ſɭᴜ ſȷɔ ſ͕ɭwc̭ ſɭɹ }ʃꞇ"></p>
-        <div class="sabosuc2w2q">
+        <sabosuc2w2q>
             <span id="cacheStatus"></span>
             <span id="cacheSize"></span>
-        </div>
-        <select id="zoomSelect">
-            <option value="3" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ı"></option>
-            <option value="5" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ɿ"></option>
-            <option value="7" selected data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ц"></option>
-            <option value="9" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ э"></option>
-            <option value="11" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ꞟ"></option>
-        </select>
+        </sabosuc2w2q>
+        <sabosuc2w2q>
+            <label>
+                <span data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ı"></span>
+                <input type="radio" name="zoomSelect" value="3" class="ca12nasukf2qu">
+            </label>
+            <label>
+                <span data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ɿ"></span>
+                <input type="radio" name="zoomSelect" value="5" class="ca12nasukf2qu">
+            </label>
+            <label>
+                <span data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ц"></span>
+                <input type="radio" name="zoomSelect" value="7" class="ca12nasukf2qu" checked>
+            </label>
+            <label>
+                <span data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ э"></span>
+                <input type="radio" name="zoomSelect" value="9" class="ca12nasukf2qu">
+            </label>
+            <label>
+                <span data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ꞟ"></span>
+                <input type="radio" name="zoomSelect" value="11" class="ca12nasukf2qu">
+            </label>
+        </sabosuc2w2q>
         <button id="downloadBtn" data-oskakefani="ſ͕ɭwc̭ ſɭɹ ſɭɹ ɭl̀ɔ }ʃꞇ"></button>
         <button id="clearCacheBtn" data-oskakefani="j͑ʃ'ᴜ ֭ſɭɹ ſןᴜ ʃɜƽ"></button>
         <div id="progressBar" style="inline-size: 100%; block-size: 4px; background: #303030; margin-block-start: 8px; display: none;">
@@ -141,6 +160,8 @@
     </thala>
 
     <button id="resetBtn" data-oskakefani="ɭʃɜ j͑ʃᴜᶗ‹"></button>
+
+    <sak></sak>
 
     <thala>
         <p class="ksakap2sa" data-oskakefani="j͑ʃɹ ᶅſɔ }ʃꞇ"></p>
@@ -182,16 +203,19 @@
             "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ": "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ",
             "ſɟɔ ſןw }ʃꞇ": "ſɟɔ ſןw }ʃꞇ",
             "ɭʃᴜ ſןw }ʃꞇ": "ɭʃᴜ ſןw }ʃꞇ",
+            
+            "ꞁȷ̀ɔ ɽ͑ʃ'ɹ ֭ſɭᴜ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ }ʃɹƽ": "ꞁȷ̀ɔ ɽ͑ʃ'ɹ ֭ſɭᴜ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ }ʃɹƽ ⭕",
             "ſɟɔ ŋᷠɔ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ": "ſɟɔ ŋᷠɔ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ",
             "ſɭc̗ᴜ ſɭɹ ſȷɔ ı],ᴜ ſןɹ j͑ʃᴜꞇ": "ſɭc̗ᴜ ſɭɹ ſȷɔ ı],ᴜ ſןɹ j͑ʃᴜꞇ",
-            "ꞁȷ̀ɔ ɽ͑ʃ'ɹ ֭ſɭᴜ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ }ʃɹƽ": "ꞁȷ̀ɔ ɽ͑ʃ'ɹ ֭ſɭᴜ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ }ʃɹƽ",
             "ſɟᴜ ֭ſɭɹ j͑ʃɔ": "ſɟᴜ ֭ſɭɹ j͑ʃɔ",
             "j͑ʃ'ɔ }ʃᴜ ŋᷠᴜ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ": "j͑ʃ'ɔ }ʃᴜ ŋᷠᴜ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ",
-            "֭ſɭᴜ ſȷɔ ſ͕ɭwc̭ ſɭɹ }ʃꞇ": "֭ſɭᴜ ſȷɔ ſ͕ɭwc̭ ſɭɹ }ʃꞇ",
+
+            "֭ſɭᴜ ſȷɔ ſ͕ɭwc̭ ſɭɹ }ʃꞇ": "֭ſɭᴜ ſȷɔ ſ͕ɭwc̭ ſɭɹ }ʃꞇ 📥",
             "ſ͕ɭwc̭ ſɭɹ ſɭɹ ɭl̀ɔ }ʃꞇ": "ſ͕ɭwc̭ ſɭɹ ſɭɹ ɭl̀ɔ }ʃꞇ",
             "j͑ʃ'ᴜ ֭ſɭɹ ſןᴜ ʃɜƽ": "j͑ʃ'ᴜ ֭ſɭɹ ſןᴜ ʃɜƽ",
             "ɭʃɜ j͑ʃᴜᶗ‹": "ɭʃɜ j͑ʃᴜᶗ‹",
-            "j͑ʃɹ ᶅſɔ }ʃꞇ": "j͑ʃɹ ᶅſɔ }ʃꞇ",
+
+            "j͑ʃɹ ᶅſɔ }ʃꞇ": "j͑ʃɹ ᶅſɔ }ʃꞇ 🗺️",
             "j͑ʃɹ ᶅſɔ }ʃꞇ ı": "j͑ʃ'ɔ ſɟɔ ſןw ʌ ꞙɭıɔɔ ʌ j͑ʃ'ɔ ɭʃᴜ ſןw ʌ ꞙɭэɔ ʌ ſɭɹ ɽ͑ʃ'ɔ ɿ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ ʌ ſɭᴜͷ̗ ɭʃɜƽ ʌ ʃᴜ j͐ʃɹ ı],ᴜ ⟅ }ʃwɔ˞ ʌ ꞁȷ̀ɜ ſɭɹ ɽ͑ʃ'ɔ j͐ʃ ʌ ɭʃɹ ı],ᴜ j͑ʃᴜꞇ ʌ ɭʃᴜ }ʃɔƽ ⟅",
             "j͐ʃᴜȝ": "j͐ʃᴜȝ",
             "ſɭᴜȝ": "ſɭᴜȝ",
@@ -200,16 +224,16 @@
             "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ı": "ц - ɭʃw ɭʃwͷ̗",
             "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ɿ": "ꞟ - ſɭэ ſᶘɹ",
             "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ц": "ƨ - j͑ʃɹ ſɭэ ſᶘɹ",
-            "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ э": "ıı - ſɭᴜꞇ ɭʃɔ",
+            "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ э": "ıı - ſɭᴜ ɭl̀ɹ ɭʃɔ",
             "ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ꞟ": "ıц - ſɭэ ֭ſɭэ",
 
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ♨️",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ı ı": "ſɟɔ ſןᴜꞇ эɔ • ɭʃᴜ ſןᴜꞇ ıɔɔ",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ı ɿ": "ɭ(ɜ ŋᷠᴜ ꞁȷ̀ɜ ſɟᴜ ɭʃᴜ ſɭᴜ j͑ʃᴜ",
-            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ı ц": "эɔ.эɔ • ıɔɔ.эɔ",
-            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ı": "ſɟɔ ſןᴜꞇ",
+            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ı ц": "эɔ ɔэɔ • ıɔɔ ɔэɔ",
+            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ı": "ſɟɔ ſןw",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ɿ": "ᶅſ ſן ſȷ ŋᷠ ʃ ɽ͑ʃ' j͑ʃ' ſᶘ ɭ( ɭʃ j͑ʃ }ʃ j͐ʃ ſ̀ȷ ſɭ, ſɭˬ ɭl̀ ſɟ ı], ſ͕ȷ ſ͔ɭ ſɭ ֭ſɭ ſ͕ɭ j͑ʃɘ j͑ʃƨ j͑ʃᴜ̭ j͑ʃƽ ſןᴜ̭ ɭʃƽ ſɟɘ ſɭƨ",
-            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ц": "ɭʃᴜ ſןᴜꞇ",
+            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ц": "ɭʃᴜ ſןw",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ э": "ꞇ ɹ ɔ ᴜ w ɜ э эⅎ / ʞ ⰱ ɔ˞ ͷ̗ ƴ ᶗ‹ ƽ ȝ",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ꞟ": "֭ſɭᴜ ɭʃɔ",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ɿ ɩ": "ꞁȷ̀ꞇ ꞁȷ̀ɔ ꞁȷ̀ɜ ꞁȷ̀э / ꞁȷ̀w = ſɭᴜͷ̗",
@@ -227,16 +251,19 @@
             "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ": "Search",
             "ſɟɔ ſןw }ʃꞇ": "Latitude",
             "ɭʃᴜ ſןw }ʃꞇ": "Longitude",
+            
+            "ꞁȷ̀ɔ ɽ͑ʃ'ɹ ֭ſɭᴜ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ }ʃɹƽ": "Full Coordinate ⭕",
             "ſɟɔ ŋᷠɔ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ": "Show Grid Lines",
             "ſɭc̗ᴜ ſɭɹ ſȷɔ ı],ᴜ ſןɹ j͑ʃᴜꞇ": "Use Base 10",
-            "ꞁȷ̀ɔ ɽ͑ʃ'ɹ ֭ſɭᴜ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ }ʃɹƽ": "Full Coordinate",
             "ſɟᴜ ֭ſɭɹ j͑ʃɔ": "Satellite",
             "j͑ʃ'ɔ }ʃᴜ ŋᷠᴜ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ": "Grid Only",
-            "֭ſɭᴜ ſȷɔ ſ͕ɭwc̭ ſɭɹ }ʃꞇ": "Offline Map Downloads",
+
+            "֭ſɭᴜ ſȷɔ ſ͕ɭwc̭ ſɭɹ }ʃꞇ": "Offline Map Downloads 📥",
             "ſ͕ɭwc̭ ſɭɹ ſɭɹ ɭl̀ɔ }ʃꞇ": "Download Current View",
             "j͑ʃ'ᴜ ֭ſɭɹ ſןᴜ ʃɜƽ": "Clear Cache",
             "ɭʃɜ j͑ʃᴜᶗ‹": "Reset View",
-            "j͑ʃɹ ᶅſɔ }ʃꞇ": "System Details",
+
+            "j͑ʃɹ ᶅſɔ }ʃꞇ": "System Details 🗺️",
             "j͑ʃɹ ᶅſɔ }ʃꞇ ı": "Divides the world into a 64x32 primary grid. Includes a tertiary level for high precision.",
             "j͐ʃᴜȝ": "N",
             "ſɭᴜȝ": "S",
@@ -266,6 +293,6 @@
 <script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
 <script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɟᴜ ı],ɹͷ̗.js"></script>
 
-<script src="ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
+<script src="ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɭɔ j͑ʃ'ɔ }ʃꞇ.ts"></script>
 
 </html>

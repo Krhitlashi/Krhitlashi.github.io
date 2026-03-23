@@ -16,7 +16,7 @@ const sozasaiAregj2kKek = document.getElementById("sozasaiAreqj2k");
 const raqaiAreqj2kKek = document.getElementById("raqaiAreqj2k");
 const psazaiAreqj2kKek = document.getElementById("psazaiAreqj2k");
 const saqaiAreqj2kKek = document.getElementById("saqaiAreqj2k");
-const pawasaiAraqKek = document.getElementById("pawasaiAraq");
+const pawasaiAraqKek = () => document.querySelector(`input[name="pawasaiAraq"]:checked`);
 const sefaktapuniKek = document.getElementById("sefaktapuni");
 const xezSwekmavem2Kek = document.getElementById("xezSwekmavem2");
 const tapuAreqj2kKek = document.getElementById("tapuAreqj2k");
@@ -138,7 +138,7 @@ kf2Sweca12na.addEventListener("click", function () {
     const raqaiAreqj2k = parseInt(raqaiAreqj2kKek.value, 0o10);
     const psazaiAreqj2k = parseInt(psazaiAreqj2kKek.value, 0o10);
     const saqaiAreqj2k = parseInt(saqaiAreqj2kKek.value, 0o10);
-    const pawasaiAraq = pawasaiAraqKek.value;
+    const pawasaiAraq = pawasaiAraqKek()?.value || "left";
     const sefaktapuni = sefaktapuniKek.checked;
     const xezSwekmavem2 = parseInt(xezSwekmavem2Kek.value, 0o10);
     const tapuAreqj2k = parseInt(tapuAreqj2kKek.value, 0o10);

@@ -1,5 +1,14 @@
 // ≺⧼ ſɟᴜ ſɭɔ j͑ʃ'ɔ - Ktash Coordinate Map ⧽≻
 
+// ⟪ External Declarations 🔌 ⟫
+
+declare const L: any;
+declare const vacepu: ( className: string ) => void;
+declare const skakefK2fe: ( text: string ) => string;
+declare const vab6caja: ( num: number ) => string;
+declare const vab6k2fekp6: ( text: string ) => number;
+declare const K2FE: string[];
+
 // ⟪ Constants 🔢 ⟫
 
 const GRID_OFFSET = 11.62354;
@@ -12,105 +21,109 @@ const ZOOM_LEVEL_3 = 0o14;
 const ZOOM_LEVEL_4 = 0o20;
 const ZOOM_RESET = 0o3;
 
-// ⟪ Helper Functions 🛠️ ⟫
+// ⟪ Types 📐 ⟫
 
-function updateMapPosition(lat, lon, zoom = null) {
-    currentLat = lat;
-    currentLon = lon;
-    marker.setLatLng([currentLat, currentLon]);
-    if ( zoom !== null ) {
-        map.setView([currentLat, currentLon], zoom);
-    }
-    updateAllInputs();
-    update();
+interface GridSystem {
+    ksaka: { v: string; hPrefix: string[]; hSuffix: string[] };
+    latin: { v: string; hPrefix: string[]; hSuffix: string[] };
+    chmuah: { v: string; hPrefix: string[]; hSuffix: string[] };
 }
 
-function getElements(...ids) {
-    const elements = {};
-    for ( const id of ids ) {
-        elements[id] = document.getElementById(id);
-    }
-    return elements;
+interface GridCoords {
+    v1: number; h1: number;
+    v2: number; h2: number;
+    v3: number; h3: number;
+    v4: number; h4: number;
 }
 
-function addEventListeners(elements, event, handler) {
-    for ( const el of elements ) {
-        el.addEventListener(event, handler);
-    }
+interface SearchResult {
+    lat: number;
+    lon: number;
+    v: number;
+    h: number;
+    startLevel?: number;
+    ksakaName: string;
+    latinName: string;
+    chmuahName: string;
 }
 
-function clampCoordinate(value, min, max) {
-    if ( value < min ) return min;
-    if ( value > max ) return max;
-    return value;
+interface SearchReturn {
+    results: SearchResult[];
+    zoom?: number;
 }
 
-function updateMarkerPosition() {
-    map.setView([currentLat, currentLon]);
-    marker.setLatLng([currentLat, currentLon]);
+interface ParsedCoords {
+    lat: number;
+    lon: number;
 }
 
-function parseCoordinatePairs(pairs) {
-    const fullV = [0, 0, 0, 0];
-    const fullH = [0, 0, 0, 0];
-    const v = [], h = [];
-
-    for ( const pair of pairs ) {
-        const mid = Math.ceil(pair.length / 2);
-        const vStr = pair.slice(0, mid);
-        const hStr = pair.slice(mid);
-        const vVal = parseInt(vStr, 8);
-        const hVal = parseInt(hStr, 8);
-        if ( isNaN(vVal) || isNaN(hVal) ) return null;
-        v.push(vVal - 1);
-        h.push(hVal - 1);
-    }
-
-    const startLevel = 4 - pairs.length;
-    for ( let i = 0; i < pairs.length; i++ ) {
-        fullV[startLevel + i] = v[i];
-        fullH[startLevel + i] = h[i];
-    }
-
-    return { fullV, fullH };
+interface DMSObject {
+    deg: number;
+    min: number;
+    sec: number;
 }
 
-function createResultButtons(containerSelector, results, zoom, onSelect) {
-    const displayResults = results.slice(0, 0o40);
-    document.querySelector(containerSelector).innerHTML = displayResults.map(r => `
-        <button data-lat="${r.lat}" data-lon="${r.lon}">
-            <p><strong>${r.ksakaName}</strong> ( ${r.latinName} )</p>
-            <small>${r.v + 1} ${r.h + 1}</small>
-        </button>
-    `).join("");
-
-    document.querySelectorAll(`${containerSelector} button`).forEach(item => {
-        item.addEventListener("click", () => {
-            onSelect(parseFloat(item.dataset.lat), parseFloat(item.dataset.lon), zoom);
-        });
-    });
+interface CacheSizeResult {
+    size: number;
+    count: number;
 }
 
-function calcGridLevels(value, totalRange, divisions, isLongitude = false) {
-    let raw1 = ( value / totalRange ) * divisions[0];
-    if ( raw1 >= divisions[0] ) raw1 = divisions[0] - 0.000001;
-    if ( raw1 < 0 ) raw1 = 0;
-    let level1 = Math.floor(raw1);
-    let remainder = raw1 - level1;
-
-    const levels = [ level1 ];
-    for ( let i = 1; i < 4; i++ ) {
-        let raw = remainder * divisions[i];
-        let level = Math.floor(raw);
-        remainder = raw - level;
-        levels.push(level);
-    }
-    return levels;
+interface SWMessage {
+    type: string;
+    tiles?: string[];
 }
+
+// ⟪ Global Variables 🌍 ⟫
+
+let latInput: HTMLInputElement;
+let lonInput: HTMLInputElement;
+let latDeg: HTMLInputElement;
+let latMin: HTMLInputElement;
+let latSec: HTMLInputElement;
+let lonDeg: HTMLInputElement;
+let lonMin: HTMLInputElement;
+let lonSec: HTMLInputElement;
+let dmsInputs: HTMLInputElement[];
+
+let tabDecimal: HTMLButtonElement;
+let tabDMS: HTMLButtonElement;
+let decimalControls: HTMLElement;
+let dmsControls: HTMLElement;
+
+let outputCoords: HTMLDivElement;
+let kefAraq: HTMLDivElement;
+let outputName: HTMLDivElement;
+let piak: HTMLDivElement;
+let canvas: HTMLCanvasElement;
+let ctx: CanvasRenderingContext2D;
+let mapContainer: HTMLElement;
+let showGridCheck: HTMLInputElement;
+let useBase10Check: HTMLInputElement;
+let resetBtn: HTMLButtonElement;
+
+let downloadBtn: HTMLButtonElement;
+let clearCacheBtn: HTMLButtonElement;
+let cacheStatus: HTMLSpanElement;
+let cacheSize: HTMLSpanElement;
+let progressBar: HTMLDivElement;
+let progressFill: HTMLDivElement;
+let downloadStatus: HTMLElement;
+
+let searchInput: HTMLInputElement;
+let searchBtn: HTMLButtonElement;
+let searchResults: HTMLElement;
+
+let currentLat = 47.48;
+let currentLon = -122.21;
+let showGrid = true;
+let useBase10 = false;
+
+let map: any = null;
+let marker: any = null;
 
 // ⟪ Data Arrays 📚 ⟫
 
-const GRID_SYSTEMS = [];
+const GRID_SYSTEMS: GridSystem[] = [];
 
 for ( let i = 0; i < 0o40; i++ ) {
     GRID_SYSTEMS.push({
@@ -132,77 +145,157 @@ for ( let i = 0; i < 0o40; i++ ) {
     });
 }
 
-// ⟪ DOM Elements 🔧 ⟫
+// ⟪ Helper Functions 🛠️ ⟫
 
-let latInput, lonInput, latDeg, latMin, latSec, latHem, lonDeg, lonMin, lonSec, lonHem, dmsInputs;
-let tabDecimal, tabDMS, decimalControls, dmsControls;
-let outputCoords, kefAraq, outputName, piak, canvas, ctx, mapContainer, showGridCheck, useBase10Check, resetBtn;
-let zoomSelect, downloadBtn, clearCacheBtn, cacheStatus, cacheSize, progressBar, progressFill, downloadStatus;
-let searchInput, searchBtn, searchResults;
+function updateMapPosition(lat: number, lon: number, zoom: number | null = null): void {
+    currentLat = lat;
+    currentLon = lon;
+    marker!.setLatLng([currentLat, currentLon]);
+    if ( zoom !== null ) {
+        map!.setView([currentLat, currentLon], zoom);
+    }
+    updateAllInputs();
+    update();
+}
 
-let currentLat = 47.48;
-let currentLon = -122.21;
-let showGrid = true;
-let useBase10 = false;
-let map = null;
-let marker = null;
+function getElements(...ids: string[]): Record<string, HTMLElement | null> {
+    const elements: Record<string, HTMLElement | null> = {};
+    for ( const id of ids ) {
+        elements[id] = document.getElementById(id);
+    }
+    return elements;
+}
+
+function addEventListeners(elements: HTMLElement[], event: string, handler: EventListener): void {
+    for ( const el of elements ) {
+        el.addEventListener(event, handler);
+    }
+}
+
+function clampCoordinate(value: number, min: number, max: number): number {
+    if ( value < min ) return min;
+    if ( value > max ) return max;
+    return value;
+}
+
+function updateMarkerPosition(): void {
+    map!.setView([currentLat, currentLon]);
+    marker!.setLatLng([currentLat, currentLon]);
+}
+
+function parseCoordinatePairs(pairs: string[]): { fullV: number[]; fullH: number[] } | null {
+    const fullV = [0, 0, 0, 0];
+    const fullH = [0, 0, 0, 0];
+    const v: number[] = [];
+    const h: number[] = [];
+
+    for ( const pair of pairs ) {
+        const mid = Math.ceil(pair.length / 2);
+        const vStr = pair.slice(0, mid);
+        const hStr = pair.slice(mid);
+        const vVal = parseInt(vStr, 8);
+        const hVal = parseInt(hStr, 8);
+        if ( isNaN(vVal) || isNaN(hVal) ) return null;
+        v.push(vVal - 1);
+        h.push(hVal - 1);
+    }
+
+    const startLevel = 4 - pairs.length;
+    for ( let i = 0; i < pairs.length; i++ ) {
+        fullV[startLevel + i] = v[i];
+        fullH[startLevel + i] = h[i];
+    }
+
+    return { fullV, fullH };
+}
+
+function createResultButtons(containerSelector: string, results: SearchResult[], zoom: number, onSelect: (lat: number, lon: number, targetZoom: number) => void): void {
+    const displayResults = results.slice(0, 0o40);
+    document.querySelector(containerSelector)!.innerHTML = displayResults.map(r => `
+        <button data-lat="${r.lat}" data-lon="${r.lon}">
+            <p><strong>${r.ksakaName}</strong> ( ${r.latinName} )</p>
+            <small>${r.v + 1} ${r.h + 1}</small>
+        </button>
+    `).join("");
+
+    document.querySelectorAll(`${containerSelector} button`).forEach(item => {
+        item.addEventListener("click", () => {
+            const btn = item as HTMLButtonElement;
+            onSelect(parseFloat(btn.dataset.lat!), parseFloat(btn.dataset.lon!), zoom);
+        });
+    });
+}
+
+function calcGridLevels(value: number, totalRange: number, divisions: number[], _isLongitude = false): number[] {
+    let raw1 = ( value / totalRange ) * divisions[0];
+    if ( raw1 >= divisions[0] ) raw1 = divisions[0] - 0.000001;
+    if ( raw1 < 0 ) raw1 = 0;
+    let level1 = Math.floor(raw1);
+    let remainder = raw1 - level1;
+
+    const levels = [ level1 ];
+    for ( let i = 1; i < 4; i++ ) {
+        let raw = remainder * divisions[i];
+        let level = Math.floor(raw);
+        remainder = raw - level;
+        levels.push(level);
+    }
+    return levels;
+}
 
 // ⟪ Initialization 🚀 ⟫
 
-function initElements() {
+function initElements(): void {
     const elements = getElements(
-        "latInput", "lonInput", "latDeg", "latMin", "latSec", "latHem",
-        "lonDeg", "lonMin", "lonSec", "lonHem", "tabDecimal", "tabDMS",
+        "latInput", "lonInput", "latDeg", "latMin", "latSec",
+        "lonDeg", "lonMin", "lonSec", "tabDecimal", "tabDMS",
         "decimalControls", "dmsControls", "outputCoords", "kefAraq",
         "outputName", "piak", "gridCanvas", "mapContainer", "showGridCheck",
-        "useBase10Check", "resetBtn", "zoomSelect", "downloadBtn",
+        "useBase10Check", "resetBtn", "downloadBtn",
         "clearCacheBtn", "cacheStatus", "cacheSize", "progressBar",
         "progressFill", "downloadStatus", "searchInput", "searchBtn", "searchResults"
-    );
+    ) as Record<string, HTMLElement>;
 
-    latInput = elements.latInput;
-    lonInput = elements.lonInput;
-    latDeg = elements.latDeg;
-    latMin = elements.latMin;
-    latSec = elements.latSec;
-    latHem = elements.latHem;
-    lonDeg = elements.lonDeg;
-    lonMin = elements.lonMin;
-    lonSec = elements.lonSec;
-    lonHem = elements.lonHem;
-    dmsInputs = [ latDeg, latMin, latSec, latHem, lonDeg, lonMin, lonSec, lonHem ];
+    latInput = elements.latInput as HTMLInputElement;
+    lonInput = elements.lonInput as HTMLInputElement;
+    latDeg = elements.latDeg as HTMLInputElement;
+    latMin = elements.latMin as HTMLInputElement;
+    latSec = elements.latSec as HTMLInputElement;
+    lonDeg = elements.lonDeg as HTMLInputElement;
+    lonMin = elements.lonMin as HTMLInputElement;
+    lonSec = elements.lonSec as HTMLInputElement;
+    dmsInputs = [ latDeg, latMin, latSec, lonDeg, lonMin, lonSec ];
 
-    tabDecimal = elements.tabDecimal;
-    tabDMS = elements.tabDMS;
-    decimalControls = elements.decimalControls;
-    dmsControls = elements.dmsControls;
+    tabDecimal = elements.tabDecimal as HTMLButtonElement;
+    tabDMS = elements.tabDMS as HTMLButtonElement;
+    decimalControls = elements.decimalControls as HTMLElement;
+    dmsControls = elements.dmsControls as HTMLElement;
 
-    outputCoords = elements.outputCoords;
-    kefAraq = elements.kefAraq;
-    outputName = elements.outputName;
-    piak = elements.piak;
-    canvas = elements.gridCanvas;
-    ctx = canvas.getContext("2d");
-    mapContainer = elements.mapContainer;
-    showGridCheck = elements.showGridCheck;
-    useBase10Check = elements.useBase10Check;
-    resetBtn = elements.resetBtn;
+    outputCoords = elements.outputCoords as HTMLDivElement;
+    kefAraq = elements.kefAraq as HTMLDivElement;
+    outputName = elements.outputName as HTMLDivElement;
+    piak = elements.piak as HTMLDivElement;
+    canvas = elements.gridCanvas as HTMLCanvasElement;
+    ctx = canvas.getContext("2d")!;
+    mapContainer = elements.mapContainer as HTMLElement;
+    showGridCheck = elements.showGridCheck as HTMLInputElement;
+    useBase10Check = elements.useBase10Check as HTMLInputElement;
+    resetBtn = elements.resetBtn as HTMLButtonElement;
 
-    zoomSelect = elements.zoomSelect;
-    downloadBtn = elements.downloadBtn;
-    clearCacheBtn = elements.clearCacheBtn;
-    cacheStatus = elements.cacheStatus;
-    cacheSize = elements.cacheSize;
-    progressBar = elements.progressBar;
-    progressFill = elements.progressFill;
-    downloadStatus = elements.downloadStatus;
+    downloadBtn = elements.downloadBtn as HTMLButtonElement;
+    clearCacheBtn = elements.clearCacheBtn as HTMLButtonElement;
+    cacheStatus = elements.cacheStatus as HTMLSpanElement;
+    cacheSize = elements.cacheSize as HTMLSpanElement;
+    progressBar = elements.progressBar as HTMLDivElement;
+    progressFill = elements.progressFill as HTMLDivElement;
+    downloadStatus = elements.downloadStatus as HTMLElement;
 
-    searchInput = elements.searchInput;
-    searchBtn = elements.searchBtn;
-    searchResults = elements.searchResults;
+    searchInput = elements.searchInput as HTMLInputElement;
+    searchBtn = elements.searchBtn as HTMLButtonElement;
+    searchResults = elements.searchResults as HTMLElement;
 }
 
-function init() {
+function init(): void {
     initElements();
 
     const urlCoords = parseURLCoords();
@@ -247,27 +340,32 @@ function init() {
         el.addEventListener("change", handleDMSInput);
     });
 
+    const latHemRadios = document.querySelectorAll(`input[name="latHem"]`);
+    const lonHemRadios = document.querySelectorAll(`input[name="lonHem"]`);
+    latHemRadios.forEach(radio => radio.addEventListener("change", handleDMSInput));
+    lonHemRadios.forEach(radio => radio.addEventListener("change", handleDMSInput));
+
     tabDecimal.addEventListener("click", () => switchMode("decimal"));
     tabDMS.addEventListener("click", () => switchMode("dms"));
 
     showGridCheck.addEventListener("change", ( e ) => {
-        showGrid = e.target.checked;
+        showGrid = ( e.target as HTMLInputElement ).checked;
         draw();
     });
 
     useBase10Check.addEventListener("change", ( e ) => {
-        useBase10 = e.target.checked;
+        useBase10 = ( e.target as HTMLInputElement ).checked;
         update();
     });
 
-    const gridOnlyToggle = document.getElementById("gridOnlyToggle");
+    const gridOnlyToggle = document.getElementById("gridOnlyToggle") as HTMLButtonElement;
     let gridOnlyMode = false;
     gridOnlyToggle.addEventListener("click", () => {
         gridOnlyMode = !gridOnlyMode;
-        gridOnlyToggle.setAttribute("aria-pressed", gridOnlyMode);
+        gridOnlyToggle.setAttribute("aria-pressed", gridOnlyMode.toString());
         document.querySelectorAll("#map .leaflet-tile-pane, #map .leaflet-layer")
             .forEach(tile => {
-                tile.style.opacity = gridOnlyMode ? "0" : "1";
+                ( tile as HTMLElement ).style.opacity = gridOnlyMode ? "0" : "1";
             });
         draw();
     } );
@@ -276,21 +374,26 @@ function init() {
         updateMapPosition( 0, 0, ZOOM_RESET );
     });
 
+    const zoomRadios = document.querySelectorAll(`input[name="zoomSelect"]`);
+    zoomRadios.forEach(radio => radio.addEventListener("change", () => {
+        // Zoom level changed by user - can be used to trigger map zoom if needed
+    }));
+
     downloadBtn.addEventListener( "click", downloadCurrentView );
     clearCacheBtn.addEventListener( "click", clearCache );
 
     searchBtn.addEventListener( "click", searchAddress );
     searchInput.addEventListener( "keypress", ( e ) => {
-        if ( e.key === "Enter" ) {
+        if ( ( e as KeyboardEvent ).key === "Enter" ) {
             searchAddress();
         }
     } );
     searchInput.addEventListener( "paste", handlePaste );
 
-    let urlUpdateTimeout = null;
-    function updateURLDebounced() {
+    let urlUpdateTimeout: ReturnType<typeof setTimeout> | null = null;
+    function updateURLDebounced(): void {
         if ( urlUpdateTimeout ) clearTimeout( urlUpdateTimeout );
-        urlUpdateTimeout = setTimeout( updateURL, 500 );
+        urlUpdateTimeout = setTimeout( updateURL, 0o400 );
     }
     map.on( "moveend", updateURLDebounced );
     map.on( "zoomend", updateURLDebounced );
@@ -306,16 +409,16 @@ function init() {
     }
 }
 
-function handleMapClickLeaflet( e ) {
+function handleMapClickLeaflet( e: any ): void {
     updateMapPosition( e.latlng.lat, e.latlng.lng );
 }
 
-function updateMapSync() {
-    const center = map.getCenter();
+function updateMapSync(): void {
+    const center = map!.getCenter();
     updateMapPosition( center.lat, center.lng );
 }
 
-function switchMode( mode ) {
+function switchMode( mode: "decimal" | "dms" ): void {
     if ( mode === "decimal" ) {
         tabDecimal.setAttribute( "aria-pressed", "true" );
         tabDMS.setAttribute( "aria-pressed", "false" );
@@ -329,7 +432,7 @@ function switchMode( mode ) {
     }
 }
 
-function resizeCanvas() {
+function resizeCanvas(): void {
     const rect = mapContainer.getBoundingClientRect();
     canvas.width = rect.width;
     canvas.height = rect.height;
@@ -338,7 +441,7 @@ function resizeCanvas() {
 
 // ⟪ Data Handling 📊 ⟫
 
-function handleDecimalInput() {
+function handleDecimalInput(): void {
     let lat = parseFloat( latInput.value );
     let lon = parseFloat( lonInput.value );
 
@@ -356,16 +459,16 @@ function handleDecimalInput() {
     update();
 }
 
-function handleDMSInput() {
+function handleDMSInput(): void {
     let lDeg = parseFloat( latDeg.value ) || 0;
     let lMin = parseFloat( latMin.value ) || 0;
     let lSec = parseFloat( latSec.value ) || 0;
-    let lHem = latHem.value;
+    let lHem = document.querySelector(`input[name="latHem"]:checked`)?.getAttribute("value") || "N";
 
     let loDeg = parseFloat( lonDeg.value ) || 0;
     let loMin = parseFloat( lonMin.value ) || 0;
     let loSec = parseFloat( lonSec.value ) || 0;
-    let loHem = lonHem.value;
+    let loHem = document.querySelector(`input[name="lonHem"]:checked`)?.getAttribute("value") || "E";
 
     let decLat = lDeg + ( lMin / 60 ) + ( lSec / 3600 );
     if ( lHem === "S" ) decLat = -decLat;
@@ -387,27 +490,29 @@ function handleDMSInput() {
     update();
 }
 
-function updateAllInputs() {
+function updateAllInputs(): void {
     latInput.value = currentLat.toFixed( 5 );
     lonInput.value = currentLon.toFixed( 5 );
     updateDMSInputs();
 }
 
-function updateDMSInputs() {
+function updateDMSInputs(): void {
     const latObj = decimalToDMS( currentLat );
-    latDeg.value = latObj.deg;
-    latMin.value = latObj.min;
+    latDeg.value = latObj.deg.toString();
+    latMin.value = latObj.min.toString();
     latSec.value = latObj.sec.toFixed( 2 );
-    latHem.value = currentLat >= 0 ? "N" : "S";
+    const latRadio = document.querySelector(`input[name="latHem"][value="${currentLat >= 0 ? "N" : "S"}"]`) as HTMLInputElement | null;
+    if ( latRadio ) latRadio.checked = true;
 
     const lonObj = decimalToDMS( currentLon );
-    lonDeg.value = lonObj.deg;
-    lonMin.value = lonObj.min;
+    lonDeg.value = lonObj.deg.toString();
+    lonMin.value = lonObj.min.toString();
     lonSec.value = lonObj.sec.toFixed( 2 );
-    lonHem.value = currentLon >= 0 ? "E" : "W";
+    const lonRadio = document.querySelector(`input[name="lonHem"][value="${currentLon >= 0 ? "E" : "W"}"]`) as HTMLInputElement | null;
+    if ( lonRadio ) lonRadio.checked = true;
 }
 
-function decimalToDMS( decimal ) {
+function decimalToDMS( decimal: number ): DMSObject {
     const absVal = Math.abs( decimal );
     const deg = Math.floor( absVal );
     const minFull = ( absVal - deg ) * 60;
@@ -418,7 +523,7 @@ function decimalToDMS( decimal ) {
 
 // ⟪ Coordinate & Grid Logic 📍 ⟫
 
-function getGridCoords( lat, lon ) {
+function getGridCoords( lat: number, lon: number ): GridCoords {
     let baseDegWest = ( lon <= 0 ) ? -lon : ( 360 - lon );
     if ( lon === 0 ) baseDegWest = 0;
 
@@ -435,7 +540,7 @@ function getGridCoords( lat, lon ) {
     };
 }
 
-function levelsToNormalized( levels, divisors ) {
+function levelsToNormalized( levels: number[], divisors: number[] ): number {
     let total = 0;
     for ( let i = 0; i < levels.length; i++ ) {
         let divisor = 1;
@@ -447,7 +552,7 @@ function levelsToNormalized( levels, divisors ) {
     return total;
 }
 
-function gridToLatLon( v1, h1, v2, h2, v3, h3, v4, h4 ) {
+function gridToLatLon( v1: number, h1: number, v2: number, h2: number, v3: number, h3: number, v4: number, h4: number ): ParsedCoords {
     const vLevels = [ v1, v2, v3, v4 ].map( v => Math.max( 0, v - 1 ) );
     const hLevels = [ h1, h2, h3, h4 ].map( h => Math.max( 0, h - 1 ) );
 
@@ -466,7 +571,7 @@ function gridToLatLon( v1, h1, v2, h2, v3, h3, v4, h4 ) {
     return { lat, lon };
 }
 
-function getName( v, h, system = "ksaka" ) {
+function getName( v: number, h: number, system: "ksaka" | "latin" | "chmuah" = "ksaka" ): string {
     const sys = GRID_SYSTEMS[ v ]?.[ system ];
     if ( !sys ) return "?";
 
@@ -477,16 +582,16 @@ function getName( v, h, system = "ksaka" ) {
     return vName + hName;
 }
 
-function getNameLatin( v, h ) {
+function getNameLatin( v: number, h: number ): string {
     const name = getName( v, h, "latin" );
     return name.charAt( 0 ).toUpperCase() + name.slice( 1 );
 }
 
-function getNameChmuah( v, h ) {
+function getNameChmuah( v: number, h: number ): string {
     return getName( v, h, "chmuah" );
 }
 
-function getNamesForCoords( vArr, hArr ) {
+function getNamesForCoords( vArr: number[], hArr: number[] ): { ksakaName: string; latinName: string; chmuahName: string } {
     return {
         ksakaName: vArr.map( ( v, i ) => getName( v - 1, hArr[ i ] - 1, "ksaka" ) ).join( " " ),
         latinName: vArr.map( ( v, i ) => getNameLatin( v - 1, hArr[ i ] - 1 ) ).join( " " ),
@@ -494,7 +599,7 @@ function getNamesForCoords( vArr, hArr ) {
     };
 }
 
-function draw() {
+function draw(): void {
     const w = canvas.width;
     const h = canvas.height;
     ctx.clearRect( 0, 0, w, h );
@@ -508,7 +613,7 @@ function draw() {
     const east = bounds.getEast();
     const west = bounds.getWest();
 
-    function drawGridLinesForLevel( vDivisions, hDivisions, color, width ) {
+    function drawGridLinesForLevel( vDivisions: number, hDivisions: number, color: string, width: number ): void {
         ctx.beginPath();
         ctx.strokeStyle = color;
         ctx.lineWidth = width;
@@ -517,8 +622,8 @@ function draw() {
             let lat = 90 - ( vIdx / vDivisions ) * 180;
             if ( lat < south - 1 || lat > north + 1 ) continue;
 
-            const p1 = map.latLngToContainerPoint( [ lat, west ] );
-            const p2 = map.latLngToContainerPoint( [ lat, east ] );
+            const p1 = map!.latLngToContainerPoint( [ lat, west ] );
+            const p2 = map!.latLngToContainerPoint( [ lat, east ] );
 
             ctx.moveTo( p1.x, p1.y );
             ctx.lineTo( p2.x, p2.y );
@@ -555,8 +660,8 @@ function draw() {
 
             if ( !isInView ) continue;
 
-            const p1 = map.latLngToContainerPoint( [ north, displayLon ] );
-            const p2 = map.latLngToContainerPoint( [ south, displayLon ] );
+            const p1 = map!.latLngToContainerPoint( [ north, displayLon ] );
+            const p2 = map!.latLngToContainerPoint( [ south, displayLon ] );
 
             ctx.moveTo( p1.x, p1.y );
             ctx.lineTo( p2.x, p2.y );
@@ -579,7 +684,7 @@ function draw() {
     }
 }
 
-function update() {
+function update(): void {
     const n2k = getGridCoords( currentLat, currentLon );
 
     const v1 = n2k.v1 + 1; const h1 = n2k.h1 + 1;
@@ -587,7 +692,7 @@ function update() {
     const v3 = n2k.v3 + 1; const h3 = n2k.h3 + 1;
     const v4 = n2k.v4 + 1; const h4 = n2k.h4 + 1;
 
-    let coords;
+    let coords: string;
     if ( useBase10 ) {
         coords = `${v1} ${h1} - ${v2} ${h2} - ${v3} ${h3} - ${v4} ${h4}`;
     } else {
@@ -601,20 +706,22 @@ function update() {
     outputName.innerHTML = names.latinName;
     piak.innerHTML = names.chmuahName;
 
+    vacepu("cepufal");
+
     draw();
 }
 
 // ⟪ Search 🔍 ⟫
 
-function parseCoordValue( val ) {
+function parseCoordValue( val: string ): number {
     if ( !val ) return 0;
-    if ( [ ...val ].some( c => K2FE.includes( c ) ) ) {
+    if ( Array.from(val).some( c => K2FE.includes( c ) ) ) {
         return vab6k2fekp6( val );
     }
     return useBase10 ? parseInt( val, 0o12 ) : parseInt( val, 0o10 );
 }
 
-function isCoordinatePattern( query ) {
+function isCoordinatePattern( query: string ): boolean {
     const parts = query.trim().split( /[\s\-–—]+/ ).filter( p => p.length > 0 );
     if ( parts.length < 2 ) return false;
     const numPattern = new RegExp( `^[\\d${K2FE}]+$` );
@@ -623,7 +730,7 @@ function isCoordinatePattern( query ) {
 
 // ⟪ URL Coordinate Handling 🔗 ⟫
 
-function parseURLCoords() {
+function parseURLCoords(): ParsedCoords | null {
     const params = new URLSearchParams( window.location.search );
     const coords = params.get( "n2k" );
     if ( !coords ) return null;
@@ -645,25 +752,25 @@ function parseURLCoords() {
     return { lat: gridResult.lat, lon: gridResult.lon };
 }
 
-function updateURL() {
+function updateURL(): void {
     const n2k = getGridCoords( currentLat, currentLon );
     const v = [ n2k.v1 + 1, n2k.v2 + 1, n2k.v3 + 1, n2k.v4 + 1 ];
     const h = [ n2k.h1 + 1, n2k.h2 + 1, n2k.h3 + 1, n2k.h4 + 1 ];
 
-    const pairs = [];
+    const pairs: string[] = [];
     for ( let i = 0; i < 4; i++ ) {
         const vStr = v[ i ].toString( 0o10 ).padStart( 2, "0" );
         const hStr = h[ i ].toString( 0o10 ).padStart( 2, "0" );
         pairs.push( vStr + hStr );
     }
 
-    const url = new URL( window.location );
+    const url = new URL( window.location.href );
     url.searchParams.set( "n2k", pairs.join( "-" ) );
     window.history.replaceState( {}, "", url );
 }
 
-function handlePaste( e ) {
-    const paste = e.clipboardData.getData( "text" );
+function handlePaste( e: ClipboardEvent ): void {
+    const paste = e.clipboardData?.getData( "text" );
     if ( !paste ) return;
 
     try {
@@ -693,22 +800,23 @@ function handlePaste( e ) {
             updateMapPosition( gridResult.lat, gridResult.lon, zoom );
             return;
         }
-    } catch ( err ) {
+    } catch ( _err ) {
     }
 }
 
-function buildNames( vArr, hArr ) {
+function buildNames( vArr: number[], hArr: number[] ): { ksakaName: string; latinName: string; chmuahName: string } {
     return getNamesForCoords( vArr, hArr );
 }
 
-function search( query ) {
+function search( query: string ): SearchReturn | null {
     if ( !query ) return null;
 
     if ( isCoordinatePattern( query ) ) {
         const pairs = query.trim().split( /[\s]*[\-–—][\s]*/ ).filter( p => p.length > 0 );
-        const parseVal = ( val ) => parseCoordValue( val ) || 0;
+        const parseVal = ( val: string ) => parseCoordValue( val ) || 0;
 
-        const v = [], h = [];
+        const v: number[] = [];
+        const h: number[] = [];
         for ( const pair of pairs ) {
             const nums = pair.trim().split( /\s+/ ).filter( p => p.length > 0 );
             if ( nums.length >= 2 ) {
@@ -750,17 +858,18 @@ function search( query ) {
     const currentV = [ currentCoords.v1, currentCoords.v2, currentCoords.v3, currentCoords.v4 ];
     const currentH = [ currentCoords.h1, currentCoords.h2, currentCoords.h3, currentCoords.h4 ];
 
-    const results = [];
+    const results: SearchResult[] = [];
 
-    function searchLevel( level, startLevel, vArr, hArr, system ) {
+    function searchLevel( level: number, startLevel: number, vArr: number[], hArr: number[], system: "k" | "l" | "c" ): void {
         const hLimit = level === 0 ? 0o100 : 0o40;
         const vLimit = 0o40;
 
         for ( let v = 0; v < vLimit; v++ ) {
             for ( let h = 0; h < hLimit; h++ ) {
-                const name = system === "k" ? getName( v, h, "ksaka" )
-                    : system === "l" ? getNameLatin( v, h )
-                    : getNameChmuah( v, h );
+                let name: string;
+                if ( system === "k" ) name = getName( v, h, "ksaka" );
+                else if ( system === "l" ) name = getNameLatin( v, h );
+                else name = getNameChmuah( v, h );
 
                 if ( !name.toLowerCase().startsWith( queryParts[ level - startLevel ] ) ) continue;
 
@@ -786,7 +895,7 @@ function search( query ) {
                         lon: coords.lon,
                         v: fullV[ 0 ],
                         h: fullH[ 0 ],
-                        startLevel: startLevel,
+                        startLevel,
                         ...names
                     });
                 } else if ( level < 3 ) {
@@ -797,7 +906,7 @@ function search( query ) {
     }
 
     for ( let startLevel = 0; startLevel <= 4 - numParts; startLevel++ ) {
-        [ "k", "l", "c" ].forEach( sys => searchLevel( startLevel, startLevel, [], [], sys ) );
+        ( [ "k", "l", "c" ] as const ).forEach( ( sys ) => searchLevel( startLevel, startLevel, [], [], sys ) );
     }
 
     results.sort( ( a, b ) => {
@@ -809,7 +918,7 @@ function search( query ) {
     return results.length > 0 ? { results } : null;
 }
 
-function displaySearchResults( result ) {
+function displaySearchResults( result: SearchReturn | null ): void {
     if ( !result ) {
         searchResults.innerHTML = "<p>֭ſɭɹ ſɟɔ j͐ʃɹʞ ⟅</p>";
         searchResults.classList.remove( "hidden" );
@@ -836,7 +945,7 @@ function displaySearchResults( result ) {
     searchResults.classList.remove( "hidden" );
 }
 
-async function searchAddress() {
+async function searchAddress(): Promise<void> {
     const query = searchInput.value.trim();
     if ( !query ) return;
 
@@ -853,17 +962,18 @@ async function searchAddress() {
         const response = await fetch( `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent( query )}&limit=5` );
         if ( !response.ok ) throw new Error( "( ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ )" );
 
-        const results = await response.json();
+        const results: any[] = await response.json();
         if ( results.length === 0 ) {
             searchResults.innerHTML = "<p>֭ſɭɹ ſɟɔ j͐ʃɹʞ ⟅</p>";
             return;
         }
 
-        const osmResults = results.map(result => ({
+        const osmResults: SearchResult[] = results.map(result => ({
             lat: parseFloat(result.lat),
             lon: parseFloat(result.lon),
             ksakaName: result.display_name,
             latinName: result.display_name,
+            chmuahName: result.display_name,
             v: 0,
             h: 0
         }));
@@ -882,9 +992,9 @@ async function searchAddress() {
 
 // ⟪ Offline functionality 📥 ⟫
 
-async function downloadCurrentView() {
-    const zoom = parseInt( zoomSelect.value );
-    const bounds = map.getBounds();
+async function downloadCurrentView(): Promise<void> {
+    const zoom = parseInt( document.querySelector(`input[name="zoomSelect"]:checked`)?.getAttribute("value") || "7" );
+    const bounds = map!.getBounds();
 
     downloadBtn.disabled = true;
     progressBar.classList.add( "active" );
@@ -905,7 +1015,7 @@ async function downloadCurrentView() {
     downloadStatus.textContent = `ſɭᶗ‹ɔ ſ͕ɭwc̭ ſɭɹ j͐ʃ ${total} j͑ʃᴜꞇ ſɭɔƽ ⟅`;
 
     try {
-        const result = await sendMessageToSW( { type: "CACHE_TILES", tiles } );
+        const result = await sendMessageToSW( { type: "CACHE_TILES", tiles } ) as CacheSizeResult;
         progressFill.style.width = "100%";
         setTimeout( () => {
             downloadStatus.textContent = `ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜꞇ ſ͕ɭwc̭ ſɭɹ j͐ʃ ${result.count} j͑ʃᴜꞇ ſɭɔƽ ✅ ⟅`;
@@ -914,26 +1024,26 @@ async function downloadCurrentView() {
             updateCacheInfo();
         }, 0o400 );
     } catch ( err ) {
-        downloadStatus.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${err.message} ❌ ⟅`;
+        downloadStatus.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${( err as Error ).message} ❌ ⟅`;
         progressBar.classList.remove( "active" );
     }
 
     downloadBtn.disabled = false;
 }
 
-function getTileUrl(x, y, z) {
+function getTileUrl(x: number, y: number, z: number): string {
     return `https://tile.openstreetmap.org/${z}/${x}/${y}.png`;
 }
 
-function latLonToTile(lat, lon, zoom) {
+function latLonToTile(lat: number, lon: number, zoom: number): { x: number; y: number } {
     const scale = Math.pow(2, zoom);
     const x = Math.floor(( lon + 180 ) / 360 * scale);
     const y = Math.floor(( 1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * scale);
     return { x, y };
 }
 
-function getTileList(bounds, zoom) {
-    const tiles = [];
+function getTileList(bounds: any, zoom: number): string[] {
+    const tiles: string[] = [];
     const nw = bounds.getNorthWest();
     const se = bounds.getSouthEast();
 
@@ -949,7 +1059,7 @@ function getTileList(bounds, zoom) {
     return tiles;
 }
 
-async function clearCache() {
+async function clearCache(): Promise<void> {
     if ( !confirm( "Clear all cached tiles ?" ) ) return;
 
     clearCacheBtn.disabled = true;
@@ -959,14 +1069,14 @@ async function clearCache() {
         updateCacheInfo();
         setTimeout(() => downloadStatus.textContent = "", 0o3000);
     } catch ( err ) {
-        downloadStatus.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${err.message} ❌ ⟅`;
+        downloadStatus.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${( err as Error ).message} ❌ ⟅`;
     }
     clearCacheBtn.disabled = false;
 }
 
-async function updateCacheInfo() {
+async function updateCacheInfo(): Promise<void> {
     try {
-        const result = await sendMessageToSW( { type: "GET_CACHE_SIZE" } );
+        const result = await sendMessageToSW( { type: "GET_CACHE_SIZE" } ) as CacheSizeResult;
         cacheStatus.textContent = `ꞁȷ̀ɜ ſןᴜ ʃɜƽ ꞁȷ̀ᴜꞇ j͑ʃ'ɜ ſןɹ - ${result.size} ⟅`;
         cacheSize.textContent = `~ ${( result.size * 1 / 0o10 ).toFixed(1)} j͑ʃᴜꞇ ꞙɭц ſɟᴜ ꞙɭıɔ ⟅`;
     } catch ( err ) {
@@ -974,7 +1084,7 @@ async function updateCacheInfo() {
     }
 }
 
-function sendMessageToSW(message) {
+function sendMessageToSW(message: SWMessage): Promise<any> {
     return new Promise(( resolve, reject ) => {
         if ( !navigator.serviceWorker.controller ) {
             reject(new Error("No service worker controller"));

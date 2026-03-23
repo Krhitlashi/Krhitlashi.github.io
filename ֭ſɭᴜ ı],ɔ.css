@@ -230,12 +230,12 @@ p:has(> .cepufalxez), h1:has(> .cepufalxez) {
 	line-height: 1.25 !important;
 }
 .ksakat2xa {
-	font-size-adjust: 0.625;
+	font-size-adjust: 0.5625;
 	line-height: 1.25;
 }
 .ksakat2xa .cepufalxez {
 	align-self: center;
-	font-size-adjust: 0.625;
+	font-size-adjust: 0.5625;
 	line-height: 1.25 !important;
 }
 .kefhuruq {
@@ -455,13 +455,11 @@ summary:active {
 
 /* ⟪ j͑ʃᴜ ʃɜ j͑ʃw j͑ʃп́ɔ ſɟɹ ᶅſɹȝ ſɭw ʃᴜ ⤴️ ⟫ */
 
-.c2w2qkuba, .sabosuc2w2q {
+.c2w2qkuba, sabosuc2w2q {
 	inline-size: 100%;
 	border-radius: var(--អិត្ភេ);
 	display: flex;
 	flex-direction: row;
-	overflow-block: auto;
-	scrollbar-width: auto;
 }
 .c2w2qkuba img,
 .c2w2qkuba iframe {
@@ -471,7 +469,7 @@ summary:active {
 	display: inline-block;
 	scroll-snap-align: center;
 }
-.sabosuc2w2q {
+sabosuc2w2q {
 	align-items: center;
 	justify-content: center;
 }

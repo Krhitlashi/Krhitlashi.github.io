@@ -1796,13 +1796,12 @@ function initSentenceGeneratorUI(): void {
             const label = document.createElement("label");
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
-            checkbox.className = "modifier-checkbox";
             checkbox.checked = enabledModifiers[mod.id] ?? true;
             checkbox.addEventListener("change", () => {
                 enabledModifiers[mod.id] = checkbox.checked;
             });
-            label.appendChild(checkbox);
             label.appendChild(document.createTextNode(" " + mod.name));
+            label.appendChild(checkbox);
             container.appendChild(label);
         });
     }

@@ -22,6 +22,18 @@ function cemeTahaq(araqTahaq: File): void {
   TLOHK2NI.style.display = "none";
 }
 
+// ⟨ ɭʃɀɜ HEIC - Convert HEIC ⟩
+
+async function TboHEIC(ckvpEHeic: File): Promise<Blob> {
+  const heic2anyHac0zani = await import("heic2any");
+  const heic2any = heic2anyHac0zani.default as unknown as ( options: { blob: Blob; toType: string } ) => Promise<Blob | Blob[]>;
+  const tlakakani = await heic2any({
+    blob: ckvpEHeic,
+    toType: "image/png"
+  });
+  return tlakakani as Blob;
+}
+
 // ⟪ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ᶅſɔ ֭ſɭɹ - Convert Color ⟫
 
 function vabam2K2fe(k2fe: number): number {
@@ -238,11 +250,29 @@ function qumk2Tahaq(): void {
 
 QUMK2.addEventListener( "click", qumk2Tahaq );
 
-ARAQ2Q_TAHAQ.addEventListener( "change", function(): void {
+ARAQ2Q_TAHAQ.addEventListener( "change", async function(): Promise<void> {
   const ckvp = this.files?.[0];
   if ( !ckvp ) return;
 
   TLOHK2NI.style.display = "none";
+
+  // Check if file is HEIC and convert to PNG
+  if ( ckvp.type === "image/heic" || ckvp.type === "image/heif" || ckvp.name.toLowerCase().endsWith(".heic") || ckvp.name.toLowerCase().endsWith(".heif") ) {
+    try {
+      const pngBlob = await TboHEIC(ckvp);
+      const pngCkvp = new File([pngBlob], ckvp.name.replace(/\.heic$/i, ".png").replace(/\.heif$/i, ".png"), { type: "image/png" });
+      
+      if ( A1A_VACAJA.checked || A1A_VATANEK.checked || A1A_VAXAHA.checked ) {
+        vasakaTahaq(pngCkvp);
+      } else {
+        cemeTahaq(pngCkvp);
+      }
+      return;
+    } catch ( e ) {
+      TLOHK2NI.style.display = "flex";
+      return;
+    }
+  }
 
   if ( A1A_VACAJA.checked || A1A_VATANEK.checked || A1A_VAXAHA.checked ) {
     vasakaTahaq( ckvp );
