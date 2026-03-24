@@ -564,10 +564,10 @@ export async function generateQRCode(
     logoPath?: string,
     outputCanvas?: HTMLCanvasElement
 ): Promise<HTMLCanvasElement> {
-    // Generate QR code data
+    // Generate QR code data with Byte mode for proper Unicode/UTF-8 support
     const qrData = QRCode.create( data, {
         errorCorrectionLevel: "H"
-    } );
+    } as QRCode.QRCodeOptions );
 
     const modules: boolean[][] = [];
     const size = qrData.modules.size;

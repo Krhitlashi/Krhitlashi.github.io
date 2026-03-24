@@ -7,9 +7,7 @@ const MAX_TILES = 0o2000;
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
-  const isTileRequest = url.hostname.includes("tile.openstreetmap.org") ||
-    url.hostname.includes("tiles.stadiamaps.com") ||
-    url.hostname.includes("arcgisonline.com") ||
+  const isTileRequest = url.hostname.includes("tile.openstreetmap.org")
     url.pathname.match(/\/\d+\/\d+\/\d+\.(png|jpg|jpeg)/) ||
     url.pathname.includes("MapServer/tile/");
 
