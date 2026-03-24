@@ -1,20 +1,16 @@
 // ≺⧼ Whiteboard Application - Main Entry Point ⧽≻
 
 import {
-    canvas, state, panState, spaceState, objectState,
+    canvas, state, panState, spaceState, objectState, touchGestureState,
     CANVAS_WIDTH, CANVAS_HEIGHT,
-    ZOOM_STEP_NUM, ZOOM_STEP_DEN, WHEEL_ZOOM_NUM, WHEEL_ZOOM_DEN,
-    MIN_ZOOM, MAX_ZOOM, ZOOM_BASE
+    ZOOM_STEP_NUM, ZOOM_STEP_DEN, ZOOM_BASE,
+    MIN_ZOOM, MAX_ZOOM
 } from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
 
 import {
     resetCursor, setCursor, getToolCursor, initButton,
-    findObjectAtPoint
+    findObjectAtPoint, invalidateTextCaches
 } from "./ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
-
-import {
-    invalidateTextCachesForObjects
-} from "./ſןᴜ ʃɜƽ.js";
 
 import {
     layerManager, pageManager, renderLayerList, renderPageList
@@ -36,10 +32,9 @@ import {
     initTextEditInput, editTextObject
 } from "./ſɟᴜ ſɭɹʞ.js";
 
-// Local wrapper for backwards compatibility
-function invalidateTextCaches(): void {
-    invalidateTextCachesForObjects( objectState.objects );
-}
+// ⟪ Zoom State 📐 ⟫
+
+let setZoomFn: ( zoom: number ) => void = () => { };
 
 // ⟪ Initialization 🚀 ⟫
 
@@ -83,26 +78,26 @@ function initZoom(): void {
         document.documentElement.style.setProperty( "--zoom", zoom.toString() );
         document.documentElement.style.setProperty( "--pan-x", panState.offsetX + "px" );
         document.documentElement.style.setProperty( "--pan-y", panState.offsetY + "px" );
-        if ( zoomLevel ) zoomLevel.textContent = `${state.zoomNum}/${state.zoomDen}x`;
+        if ( zoomLevel ) zoomLevel.textContent = `${Math.round( state.zoomNum )}/${state.zoomDen}x`;
         invalidateTextCaches();
         redrawCanvas();
     }
 
     function setZoom( newZoom: number ): void {
-        if ( newZoom < MIN_ZOOM ) {
-            state.zoomNum = 1;
-            state.zoomDen = 4;
-        } else if ( newZoom > MAX_ZOOM ) {
-            state.zoomNum = 4;
-            state.zoomDen = 1;
+        if ( newZoom <= MIN_ZOOM ) {
+            state.zoomNum = MIN_ZOOM * ZOOM_BASE;
+            state.zoomDen = ZOOM_BASE;
+        } else if ( newZoom >= MAX_ZOOM ) {
+            state.zoomNum = MAX_ZOOM * ZOOM_BASE;
+            state.zoomDen = ZOOM_BASE;
         } else {
-            const zoomNumerator = Math.round( newZoom * ZOOM_BASE );
-            state.zoomNum = zoomNumerator;
+            state.zoomNum = newZoom * ZOOM_BASE;
             state.zoomDen = ZOOM_BASE;
         }
-        constrainPan();
         updateZoom();
     }
+
+    setZoomFn = setZoom;
 
     function adjustZoom( numeratorMult: number, denominatorMult: number ): void {
         const oldZoom = state.zoomNum / state.zoomDen;
@@ -123,26 +118,21 @@ function initZoom(): void {
         if ( e.ctrlKey ) {
             e.preventDefault();
             const currentZoom = state.zoomNum / state.zoomDen;
-            const zoomFactor = e.deltaY < 0 ? ( WHEEL_ZOOM_NUM / WHEEL_ZOOM_DEN ) : ( WHEEL_ZOOM_DEN / WHEEL_ZOOM_NUM );
-            setZoom( currentZoom * zoomFactor );
+            const zoomFactor = Math.exp( -e.deltaY * 0o2 / 0o1000 );
+            const newZoom = currentZoom * zoomFactor;
+            setZoom( newZoom );
         } else if ( isScrollableElement( e.target ) ) {
             return;
         } else {
             e.preventDefault();
-            panState.offsetX -= e.deltaX;
-            panState.offsetY -= e.deltaY;
-            constrainPan();
+            const panSpeed = 0o2;
+            panState.offsetX -= e.deltaX * panSpeed;
+            panState.offsetY -= e.deltaY * panSpeed;
             updateZoom();
         }
     }, { passive: false } );
 
     updateZoom();
-}
-
-function constrainPan(): void {
-    const margin = Math.max( window.innerWidth, window.innerHeight ) * 2;
-    panState.offsetX = Math.min( Math.max( panState.offsetX, -margin ), margin );
-    panState.offsetY = Math.min( Math.max( panState.offsetY, -margin ), margin );
 }
 
 function initCanvasEvents(): void {
@@ -165,7 +155,6 @@ function initCanvasEvents(): void {
     window.addEventListener( "blur", handleBlur );
 
     window.addEventListener( "resize", () => {
-        constrainPan();
         document.documentElement.style.setProperty( "--zoom", ( state.zoomNum / state.zoomDen ).toString() );
         document.documentElement.style.setProperty( "--pan-x", panState.offsetX + "px" );
         document.documentElement.style.setProperty( "--pan-y", panState.offsetY + "px" );
@@ -212,7 +201,6 @@ function handleDocumentMouseMove( e: MouseEvent ): void {
         e.preventDefault();
         panState.offsetX = e.clientX - panState.startX;
         panState.offsetY = e.clientY - panState.startY;
-        constrainPan();
         document.documentElement.style.setProperty( "--pan-x", panState.offsetX + "px" );
         document.documentElement.style.setProperty( "--pan-y", panState.offsetY + "px" );
         return;
@@ -237,8 +225,7 @@ function handleDocumentMouseUp( e: MouseEvent ): void {
 function isScrollableElement( el: EventTarget | null ): boolean {
     if ( !el || !( el instanceof HTMLElement ) ) return false;
     const style = window.getComputedStyle( el );
-    return style.overflowY === "auto" || style.overflowY === "scroll" ||
-        style.overflowX === "auto" || style.overflowX === "scroll";
+    return /auto|scroll/.test( style.overflowY ) || /auto|scroll/.test( style.overflowX );
 }
 
 function getTouchCenter( e: TouchEvent ): { x: number; y: number } {
@@ -251,29 +238,11 @@ function getTouchCenter( e: TouchEvent ): { x: number; y: number } {
     return { x: e.touches[ 0 ].clientX, y: e.touches[ 0 ].clientY };
 }
 
-function startPanFromPoint( x: number, y: number ): void {
-    panState.isPanning = true;
-    panState.startX = x - panState.offsetX;
-    panState.startY = y - panState.offsetY;
-    if ( canvas ) canvas.dataset.cursor = "grabbing";
-}
-
-function updatePan( clientX: number, clientY: number ): void {
-    panState.offsetX = clientX - panState.startX;
-    panState.offsetY = clientY - panState.startY;
-    constrainPan();
-    document.documentElement.style.setProperty( "--pan-x", panState.offsetX + "px" );
-    document.documentElement.style.setProperty( "--pan-y", panState.offsetY + "px" );
-}
-
-function endPan(): void {
-    panState.isPanning = false;
-    if ( spaceState.isPressed ) {
-        if ( canvas ) canvas.dataset.cursor = "grab";
-    } else {
-        if ( canvas ) delete canvas.dataset.cursor;
-        setCursor( getToolCursor() );
-    }
+function getTouchDistance( e: TouchEvent ): number {
+    if ( e.touches.length !== 2 ) return 0;
+    const dx = e.touches[ 0 ].clientX - e.touches[ 1 ].clientX;
+    const dy = e.touches[ 0 ].clientY - e.touches[ 1 ].clientY;
+    return Math.sqrt( dx * dx + dy * dy );
 }
 
 function handleTouchStart( e: TouchEvent ): void {
@@ -281,14 +250,26 @@ function handleTouchStart( e: TouchEvent ): void {
 
     if ( e.touches.length === 2 ) {
         e.preventDefault();
+        // Start pinch-to-zoom
+        touchGestureState.isPinching = true;
+        touchGestureState.initialDistance = getTouchDistance( e );
+        touchGestureState.initialZoom = state.zoomNum / state.zoomDen;
+
+        // Also start panning from center
+        panState.isPanning = true;
         const center = getTouchCenter( e );
-        startPanFromPoint( center.x, center.y );
+        panState.startX = center.x - panState.offsetX;
+        panState.startY = center.y - panState.offsetY;
+        if ( canvas ) canvas.dataset.cursor = "grabbing";
         return;
     }
 
     if ( spaceState.isPressed ) {
         e.preventDefault();
-        startPanFromPoint( e.touches[ 0 ].clientX, e.touches[ 0 ].clientY );
+        panState.isPanning = true;
+        panState.startX = e.touches[ 0 ].clientX - panState.offsetX;
+        panState.startY = e.touches[ 0 ].clientY - panState.offsetY;
+        if ( canvas ) canvas.dataset.cursor = "grabbing";
         return;
     }
 
@@ -300,10 +281,33 @@ function handleTouchStart( e: TouchEvent ): void {
 function handleTouchMove( e: TouchEvent ): void {
     if ( e.touches.length > 2 ) return;
 
+    if ( e.touches.length === 2 && touchGestureState.isPinching ) {
+        e.preventDefault();
+
+        // Handle pinch-to-zoom
+        const currentDistance = getTouchDistance( e );
+        if ( currentDistance > 0 && touchGestureState.initialDistance > 0 ) {
+            const zoomFactor = currentDistance / touchGestureState.initialDistance;
+            const newZoom = touchGestureState.initialZoom * zoomFactor;
+            setZoomFn( newZoom );
+        }
+
+        // Handle panning with two fingers
+        const center = getTouchCenter( e );
+        panState.offsetX = center.x - panState.startX;
+        panState.offsetY = center.y - panState.startY;
+        document.documentElement.style.setProperty( "--pan-x", panState.offsetX + "px" );
+        document.documentElement.style.setProperty( "--pan-y", panState.offsetY + "px" );
+        return;
+    }
+
     if ( panState.isPanning ) {
         e.preventDefault();
         const center = getTouchCenter( e );
-        updatePan( center.x, center.y );
+        panState.offsetX = center.x - panState.startX;
+        panState.offsetY = center.y - panState.startY;
+        document.documentElement.style.setProperty( "--pan-x", panState.offsetX + "px" );
+        document.documentElement.style.setProperty( "--pan-y", panState.offsetY + "px" );
         return;
     }
 
@@ -315,8 +319,20 @@ function handleTouchMove( e: TouchEvent ): void {
 }
 
 function handleTouchEnd( e: TouchEvent ): void {
+    if ( touchGestureState.isPinching ) {
+        touchGestureState.isPinching = false;
+        touchGestureState.initialDistance = 0;
+        touchGestureState.initialZoom = 0;
+    }
+
     if ( panState.isPanning ) {
-        endPan();
+        panState.isPanning = false;
+        if ( spaceState.isPressed ) {
+            if ( canvas ) canvas.dataset.cursor = "grab";
+        } else {
+            if ( canvas ) delete canvas.dataset.cursor;
+            setCursor( getToolCursor() );
+        }
         return;
     }
 
@@ -329,8 +345,20 @@ function handleTouchEnd( e: TouchEvent ): void {
 }
 
 function handleTouchCancel( e: TouchEvent ): void {
+    if ( touchGestureState.isPinching ) {
+        touchGestureState.isPinching = false;
+        touchGestureState.initialDistance = 0;
+        touchGestureState.initialZoom = 0;
+    }
+
     if ( panState.isPanning ) {
-        endPan();
+        panState.isPanning = false;
+        if ( spaceState.isPressed ) {
+            if ( canvas ) canvas.dataset.cursor = "grab";
+        } else {
+            if ( canvas ) delete canvas.dataset.cursor;
+            setCursor( getToolCursor() );
+        }
         return;
     }
     handleTouchEnd( e );

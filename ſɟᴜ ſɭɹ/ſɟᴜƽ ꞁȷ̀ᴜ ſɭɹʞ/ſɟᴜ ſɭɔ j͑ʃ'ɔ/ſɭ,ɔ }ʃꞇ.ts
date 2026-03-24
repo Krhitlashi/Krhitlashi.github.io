@@ -243,17 +243,6 @@ export function initPageControls(): void {
     ] );
 }
 
-// ⟪ Layer/Page Actions 📚📄 ⟫
-// These are re-exported from managers.ts for convenience
-export const addLayer = addLayerAction;
-export const deleteLayer = deleteLayerAction;
-export const moveLayer = moveLayerAction;
-export const syncLayersAndSave = syncLayersAndSaveAction;
-export const addPage = addPageAction;
-export const deletePage = deletePageAction;
-export const movePage = movePageAction;
-export const syncPagesAndSave = syncPagesAndSaveAction;
-
 // ⟪ Transform Control Actions 🎛️ ⟫
 
 function editSelectedText(): void {

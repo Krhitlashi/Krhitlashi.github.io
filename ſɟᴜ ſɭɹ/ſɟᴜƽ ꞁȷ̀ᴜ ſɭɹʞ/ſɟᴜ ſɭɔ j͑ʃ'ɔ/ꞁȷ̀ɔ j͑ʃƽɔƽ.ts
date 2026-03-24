@@ -13,9 +13,7 @@ export const CANVAS_HEIGHT = 0o2400;
 export const MIN_SIZE = 0o10;
 export const HANDLE_SIZE = 0o20;
 export const HANDLE_RADIUS = 0o6;
-export const SELECTION_PADDING = 0o10;
 export const CORNER_RADIUS = 0o20;
-export const DASH_LENGTH = 0o4;
 export const ROTATE_HANDLE_OFFSET = 0o20;
 export const ROTATE_HANDLE_RADIUS = 0o30;
 export const RESIZE_HANDLE_HITBOX = 0o30;
@@ -23,26 +21,18 @@ export const MIN_ZOOM = 0o1 / 0o4;
 export const MAX_ZOOM = 0o4;
 export const ZOOM_STEP_NUM = 0o41;
 export const ZOOM_STEP_DEN = 0o40;
-export const WHEEL_ZOOM_NUM = 0o101;
-export const WHEEL_ZOOM_DEN = 0o100;
 export const SMOOTHING_FACTOR = 0o1 / 0o10;
 export const TEXT_SIZE_MULTIPLIER = 0o4;
 export const TEXT_MIN_WIDTH_MULTIPLIER = 0o2;
 export const HISTORY_MAX = 0o40;
 export const INITIAL_BRUSH_SIZE = 0o4;
 export const ZOOM_BASE = 0o100;
-export const MIN_DELTA = 0o1 / 0o100;
 
 export const LINE_DASH_PATTERN = [ 0o4, 0o4 ];
 export const SELECTION_LINE_WIDTH = 0o2;
 export const HANDLE_FILL_COLOR = "#181818";
 export const HANDLE_STROKE_COLOR = "#000000";
 export const SELECTION_STROKE_COLOR = "#000000";
-
-// ⟪ Additional Constants 🔢 ⟫
-
-export const MIN_PATH_DIMENSION = 0o4;
-export const TEXT_EDIT_INDEX_NONE = -0o1;
 
 // ⟪ Color & Brightness Constants 🎨 ⟫
 
@@ -119,18 +109,12 @@ export interface TouchGestureState {
     isPinching: boolean;
     initialDistance: number;
     initialZoom: number;
-    lastTouchDistance: number;
-    panStartX: number;
-    panStartY: number;
 }
 
 export const touchGestureState: TouchGestureState = {
     isPinching: false,
     initialDistance: 0,
-    initialZoom: 0,
-    lastTouchDistance: 0,
-    panStartX: 0,
-    panStartY: 0
+    initialZoom: 0
 };
 
 export interface SpaceState {
@@ -304,7 +288,7 @@ export const textState: TextState = {
     isEditing: false,
     input: null,
     useHtml: true,
-    editingIndex: TEXT_EDIT_INDEX_NONE
+    editingIndex: -1
 };
 
 // ⟪ Eraser State 🧹 ⟫

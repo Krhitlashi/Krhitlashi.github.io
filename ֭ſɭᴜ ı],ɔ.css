@@ -557,6 +557,11 @@ input[type="radio"]:checked:before {
     content: "";
     transition: all 0.5s ease;
 }
+label {
+	display: flex;
+	align-self: center;
+	align-items: center;
+}
 .k6tani {
 	appearance: none;
 	background-color: var(--តានេក);

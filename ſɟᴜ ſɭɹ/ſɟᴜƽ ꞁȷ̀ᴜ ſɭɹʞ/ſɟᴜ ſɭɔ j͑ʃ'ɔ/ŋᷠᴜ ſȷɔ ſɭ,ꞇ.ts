@@ -4,17 +4,16 @@ import {
     canvas, ctx, state, panState, spaceState, layerState, objectState, pathState, textState,
     TOOL_CURSORS, CURSOR_CLASSES,
     CANVAS_WIDTH, CANVAS_HEIGHT, MIN_SIZE,
-    DASH_LENGTH, ROTATE_HANDLE_OFFSET, ROTATE_HANDLE_RADIUS, RESIZE_HANDLE_HITBOX,
-
-    TEXT_SIZE_MULTIPLIER, TEXT_MIN_WIDTH_MULTIPLIER, MIN_DELTA,
+    ROTATE_HANDLE_OFFSET, ROTATE_HANDLE_RADIUS, RESIZE_HANDLE_HITBOX,
+    TEXT_SIZE_MULTIPLIER, TEXT_MIN_WIDTH_MULTIPLIER,
     LINE_DASH_PATTERN,
-    TEXT_EDIT_INDEX_NONE,
     BRIGHTNESS_WEIGHT_R, BRIGHTNESS_WEIGHT_G, BRIGHTNESS_WEIGHT_B, BRIGHTNESS_DIVISOR, BRIGHTNESS_THRESHOLD,
     PREVIEW_ALPHA, COVERAGE_THRESHOLD_FRACTION,
     WhiteboardObject, Point, ObjectHandler} from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
 
 import {
-    clearTextObjectCache as clearTextCacheImpl
+    clearTextObjectCache,
+    invalidateTextCachesForObjects
 } from "./ſןᴜ ʃɜƽ.js";
 
 // ⟪ Event Helpers 🖱️ ⟫
@@ -179,7 +178,7 @@ export function finishTextEditCommon( ): void {
     textState.input!.classList.remove( "visible" );
     textState.input!.value = "";
     textState.isEditing = false;
-    textState.editingIndex = TEXT_EDIT_INDEX_NONE;
+    textState.editingIndex = -1;
 }
 
 // ⟪ Object Bounds Helpers 📐 ⟫
@@ -574,11 +573,7 @@ export function getObjectInitialState( obj: WhiteboardObject ): any {
 }
 
 export function invalidateTextCaches( ): void {
-    objectState.objects.filter( obj => obj.type === "text" && obj.useHtmlText ).forEach( clearTextObjectCache );
-}
-
-export function clearTextObjectCache( obj: WhiteboardObject ): void {
-    clearTextCacheImpl( obj );
+    invalidateTextCachesForObjects( objectState.objects );
 }
 
 export function removeObject( obj: WhiteboardObject ): void {
@@ -1096,7 +1091,7 @@ export function splitLineObject( obj: WhiteboardObject, eraserPath: Point[], era
     intersections.sort( ( a, b ) => a - b );
     const unique = [ intersections[ 0 ] ];
     for ( let i = 1; i < intersections.length; i++ ) {
-        if ( intersections[ i ] - intersections[ i - 1 ] > MIN_DELTA ) unique.push( intersections[ i ] );
+        if ( intersections[ i ] - intersections[ i - 1 ] > 0o1 / 0o100 ) unique.push( intersections[ i ] );
     }
 
     const newObjects: WhiteboardObject[] = [];
@@ -1226,7 +1221,7 @@ export function isValidObject( obj: WhiteboardObject | null ): boolean {
         return obj.points !== undefined && obj.points.length > 1;
     }
     if ( obj.type === "line" ) {
-        return Math.abs( ( obj.x2 || 0 ) - ( obj.x1 || 0 ) ) > MIN_DELTA || Math.abs( ( obj.y2 || 0 ) - ( obj.y1 || 0 ) ) > MIN_DELTA;
+        return Math.abs( ( obj.x2 || 0 ) - ( obj.x1 || 0 ) ) > 0o1 / 0o100 || Math.abs( ( obj.y2 || 0 ) - ( obj.y1 || 0 ) ) > 0o1 / 0o100;
     }
     return true;
 }
@@ -1258,7 +1253,7 @@ export const OBJECT_HANDLERS: Record<string, ObjectHandler> = {
             return { x: ( obj.x1! + obj.x2! ) / 2, y: ( obj.y1! + obj.y2! ) / 2 };
         },
         isPointInside( x, y, obj ) {
-            return pointToLineDistance( x, y, obj.x1!, obj.y1!, obj.x2!, obj.y2! ) < obj.size! + DASH_LENGTH;
+            return pointToLineDistance( x, y, obj.x1!, obj.y1!, obj.x2!, obj.y2! ) < obj.size! + 0o4;
         },
         getInitialBounds( obj ) {
             return { x1: obj.x1, y1: obj.y1, x2: obj.x2, y2: obj.y2 };
@@ -1406,7 +1401,7 @@ export const OBJECT_HANDLERS: Record<string, ObjectHandler> = {
             const endpoints = getConnectionEndpoints( obj );
             if ( !endpoints ) return false;
             return pointToLineDistance( x, y, endpoints.start.x, endpoints.start.y,
-                                       endpoints.end.x, endpoints.end.y ) < obj.size! + DASH_LENGTH;
+                                       endpoints.end.x, endpoints.end.y ) < obj.size! + 0o4;
         },
         getInitialBounds( obj ) {
             return { startId: obj.startId, endId: obj.endId };

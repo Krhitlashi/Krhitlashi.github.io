@@ -44,13 +44,10 @@ export abstract class BaseItemManager<T extends { id: number; name: string; visi
         const item = this.createItem( this.counter, name || `${this.namePrefix}${this.counter} ɭ(ꞇ ɭʃᴜ }ʃɔƽ` );
         this.items.push( item );
         this.activeId = this.counter;
-        this.onItemCreated( item );
         return item;
     }
 
     protected abstract createItem( id: number, name: string ): T;
-
-    protected onItemCreated( _item: T ): void { /* override if needed */ }
 
     delete( itemId: number ): boolean {
         if ( this.items.length <= 1 ) return false;
@@ -66,7 +63,7 @@ export abstract class BaseItemManager<T extends { id: number; name: string; visi
         return true;
     }
 
-    protected onItemDeleting( _item: T ): void { /* override if needed */ }
+    protected onItemDeleting( _item: T ): void { }
 
     move( itemId: number, direction: number ): boolean {
         const index = this.items.findIndex( i => i.id === itemId );
@@ -82,20 +79,14 @@ export abstract class BaseItemManager<T extends { id: number; name: string; visi
         const item = this.items.find( i => i.id === itemId );
         if ( item ) {
             item.visible = !item.visible;
-            this.onVisibilityToggled( item );
             return true;
         }
         return false;
     }
 
-    protected onVisibilityToggled( _item: T ): void { /* override if needed */ }
-
     setActive( itemId: number ): void {
         this.activeId = itemId;
-        this.onItemSetActive( itemId );
     }
-
-    protected onItemSetActive( _itemId: number ): void { /* override if needed */ }
 
     getActive(): T | undefined {
         return this.items.find( i => i.id === this.activeId );
@@ -128,7 +119,7 @@ export class LayerManager extends BaseItemManager<Layer> {
         layerState.counter = this.counter;
     }
 
-    protected onItemDeleting( layer: Layer ): void {
+    protected override onItemDeleting( layer: Layer ): void {
         objectState.objects = objectState.objects.filter( o => o.layerId !== layer.id );
     }
 }
