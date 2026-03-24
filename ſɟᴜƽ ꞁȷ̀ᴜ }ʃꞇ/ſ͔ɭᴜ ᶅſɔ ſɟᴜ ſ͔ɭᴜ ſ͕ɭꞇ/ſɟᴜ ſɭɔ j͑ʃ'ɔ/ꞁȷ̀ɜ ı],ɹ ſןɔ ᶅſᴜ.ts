@@ -23,7 +23,7 @@ const SPECIAL_MARKERS = [ SUBJECT_MARKER, INTERROGATIVE_YESNO, INTERROGATIVE_CON
 
 const IIKRHIA_VOWELS = "ꞇɹɔᴜwɜэⅎ";
 const CODAS = [
-    "п́", "ɘ", "ʞ", "ɀ", "c̭", "ƣ̋", "ⰱ", "ƨ", "ԏ͕", "ꝛ̗",
+    "п́", "ɘ", "ʞ", "ɀ", "c̭", "ƣ̋", "ⰱ", "ƨ", "ԏ͕", "ꝛ̗",
     "ɔ˞", "c̗", "ŋ", "ͷ̗", "ɯ", "ƴ", "ᴎ", "ᴜ̭", "ᶗ‹", "ⱷ̮̀",
     "ɴ", "ƽ", "ᴜ̩", "ȝ"
 ];
@@ -36,7 +36,7 @@ const ADJECTIVIZING_PREFIXES: Record<string, [string, string]> = {
     "J6R": [ "ɭl̀эƣ̋", "ɭl̀э" ],
     "H2R": [ "֭ſɭɹƣ̋", "֭ſɭɹ" ],
     "SAR": [ "j͑ʃᴜƣ̋", "j͑ʃᴜ" ],
-    "SWER": [ "j͑ʃп́ɔƣ̋", "j͑ʃп́ɔ" ],
+    "SWER": [ "j͑ʃп́ɔƣ̋", "j͑ʃп́ɔ" ],
     "SER": [ "j͑ʃɔƣ̋", "j͑ʃɔ" ],
 };
 
@@ -473,7 +473,7 @@ const IIKRHIA_INITIALS = [
 ];
 
 const IIKRHIA_INTERNALS = [
-    "п́", "ɘ", "ʞ", "ɀ", "c̭", "ƣ̋", "ⰱ", "ƨ", "ԏ͕", "ꝛ̗", "ɔ˞", "c̗", "ŋ", "ͷ̗",
+    "п́", "ɘ", "ʞ", "ɀ", "c̭", "ƣ̋", "ⰱ", "ƨ", "ԏ͕", "ꝛ̗", "ɔ˞", "c̗", "ŋ", "ͷ̗",
     "ɯ", "ƴ", "ᴎ", "ᴜ̭", "ᶗ‹", "ⱷ̮̀", "ɴ", "ƽ", "ᴜ̩", "ȝ",
     "ꞇ", "ɔ", "ᴜ", "ɹ", "ɜ", "э", "ɔⅎ", "ɜⅎ", "эⅎ",
 ];
@@ -1758,7 +1758,6 @@ function initSentenceGeneratorUI(): void {
         const anyRadio = document.createElement("input");
         anyRadio.type = "radio";
         anyRadio.name = "structure";
-        anyRadio.className = "ca12nasukf2qu";
         anyRadio.value = "";
         anyRadio.checked = true;
         anyRadio.addEventListener("change", () => {
@@ -1774,7 +1773,6 @@ function initSentenceGeneratorUI(): void {
             const radio = document.createElement("input");
             radio.type = "radio";
             radio.name = "structure";
-            radio.className = "ca12nasukf2qu";
             radio.value = struct;
             radio.addEventListener("change", () => {
                 selectedStructure = struct;
@@ -1824,9 +1822,7 @@ function initSentenceGeneratorUI(): void {
                 if (structureEl) structureEl.textContent = sentence.structure;
                 if (gawekiifEl) {
                     gawekiifEl.textContent = sentence.gawekiif;
-                    if (typeof (window as unknown as Record<string, unknown>).vacepu === "function") {
-                        ((window as unknown as Record<string, unknown>).vacepu as (id: string) => void)("ox2pewa");
-                    }
+                    window.vacepu("ox2pewa");
                 }
                 if (translationEl) translationEl.textContent = sentence.translation;
                 showOutput();

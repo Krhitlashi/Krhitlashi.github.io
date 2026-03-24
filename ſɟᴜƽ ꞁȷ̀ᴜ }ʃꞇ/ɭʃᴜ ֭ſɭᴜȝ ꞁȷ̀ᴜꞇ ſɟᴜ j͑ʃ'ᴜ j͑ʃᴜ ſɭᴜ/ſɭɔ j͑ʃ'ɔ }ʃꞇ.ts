@@ -2,6 +2,7 @@
 
 // ⟪ ꞁȷ̀ɜ ʃэ ſɭɹ ⟫
 
+const TLAKAKANI = document.getElementById("tlakakani") as HTMLElement;
 const TLAKAKU_TAHAQ = document.getElementById("tlakaku-tahaq") as HTMLImageElement;
 const ARAQ2Q_TAHAQ = document.getElementById("araq2q-tahaq") as HTMLInputElement;
 const A1A_VACAJA = document.getElementById("a1a-vacaja") as HTMLInputElement;
@@ -12,7 +13,7 @@ const QUMK2 = document.getElementById("qumk2") as HTMLButtonElement;
 
 let tlakakuTahaqSweruva: string | null = null;
 
-// ⟪ j͑ʃп́ɔ ɭʃᴜ ֭ſɭᴜȝ ⟫
+// ⟪ j͑ʃп́ɔ ɭʃᴜ ֭ſɭᴜȝ ⟫
 
 function cemeTahaq(araqTahaq: File): void {
   const maxemaSaxez = URL.createObjectURL(araqTahaq);
@@ -20,6 +21,7 @@ function cemeTahaq(araqTahaq: File): void {
   TLAKAKU_TAHAQ.alt = "ɭʃᴜ ֭ſɭᴜȝ";
   tlakakuTahaqSweruva = maxemaSaxez;
   TLOHK2NI.style.display = "none";
+  TLAKAKANI.style.display = "block";
 }
 
 // ⟨ ɭʃɀɜ HEIC - Convert HEIC ⟩
@@ -212,13 +214,16 @@ function vasakaTahaq(tahaq: File): void {
         TLAKAKU_TAHAQ.src = tlakakuTahaqSweruva;
         TLAKAKU_TAHAQ.alt = "ɭʃᴜ ֭ſɭᴜȝ";
         TLOHK2NI.style.display = "none";
+        TLAKAKANI.style.display = "flex";
       } catch ( e ) {
         TLOHK2NI.style.display = "flex";
+        TLAKAKANI.style.display = "none";
       }
     };
 
     tahaq.onerror = function(): void {
       TLOHK2NI.style.display = "flex";
+      TLAKAKANI.style.display = "none";
     };
 
     tahaq.src = tla;
@@ -226,6 +231,7 @@ function vasakaTahaq(tahaq: File): void {
 
   mavefal.onerror = function(): void {
     TLOHK2NI.style.display = "flex";
+    TLAKAKANI.style.display = "none";
   };
 
   mavefal.readAsDataURL( tahaq );
@@ -255,13 +261,14 @@ ARAQ2Q_TAHAQ.addEventListener( "change", async function(): Promise<void> {
   if ( !ckvp ) return;
 
   TLOHK2NI.style.display = "none";
+  TLAKAKANI.style.display = "none";
 
   // Check if file is HEIC and convert to PNG
   if ( ckvp.type === "image/heic" || ckvp.type === "image/heif" || ckvp.name.toLowerCase().endsWith(".heic") || ckvp.name.toLowerCase().endsWith(".heif") ) {
     try {
       const pngBlob = await TboHEIC(ckvp);
       const pngCkvp = new File([pngBlob], ckvp.name.replace(/\.heic$/i, ".png").replace(/\.heif$/i, ".png"), { type: "image/png" });
-      
+
       if ( A1A_VACAJA.checked || A1A_VATANEK.checked || A1A_VAXAHA.checked ) {
         vasakaTahaq(pngCkvp);
       } else {
@@ -270,6 +277,7 @@ ARAQ2Q_TAHAQ.addEventListener( "change", async function(): Promise<void> {
       return;
     } catch ( e ) {
       TLOHK2NI.style.display = "flex";
+      TLAKAKANI.style.display = "none";
       return;
     }
   }

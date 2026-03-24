@@ -9,76 +9,130 @@
 
 // ⟪ Constants 📦 ⟫
 
-const lagaCvpKek = document.getElementById("lagaCvp");
-const lagaKsakaKek = document.getElementById("lagaKsaka");
-const cepuAreqj2kKek = document.getElementById("cepuAreqj2k");
-const sozasaiAregj2kKek = document.getElementById("sozasaiAreqj2k");
-const raqaiAreqj2kKek = document.getElementById("raqaiAreqj2k");
-const psazaiAreqj2kKek = document.getElementById("psazaiAreqj2k");
-const saqaiAreqj2kKek = document.getElementById("saqaiAreqj2k");
-const pawasaiAraqKek = () => document.querySelector(`input[name="pawasaiAraq"]:checked`);
-const sefaktapuniKek = document.getElementById("sefaktapuni");
-const xezSwekmavem2Kek = document.getElementById("xezSwekmavem2");
-const tapuAreqj2kKek = document.getElementById("tapuAreqj2k");
+const PORTRAIT_PAGE_WIDTH = 794;
+const LANDSCAPE_PAGE_WIDTH = 1123;
+const ERROR_INVALID_INPUT = "j͐ʃэ ɭʃɔ ſ͕ɭᴜꞇ j͑ʃ'ɔ ſɭп́ɜ ⟅";
 
-const kf2Sweca12na = document.getElementById("kf2Sweca12na");
-const kf2B6m6qK2p2Ca12na = document.getElementById("kf2B6m6qK2p2Ca12na");
-const tlohk2niKek = document.getElementById("tlohk2ni");
-const lagaCvp3ohk2niKek = document.getElementById("lagaCvp3ohk2ni");
-const inakLagaKek = document.getElementById("inakLaga");
 
-let tz2saiTahaq = null;
+// ⟪ Types 📐 ⟫
+
+interface Tz2saiTahaq {
+    tlakakaiKucaq: TlakakaiKucaq[];
+    tapuAreqj2k: number;
+    height: number;
+    sozasaiAreqj2k: number;
+    psazaiAreqj2k: number;
+    saqaiAreqj2k: number;
+    raqaiAreqj2k: number;
+    arak21okoWeh2: string;
+}
+
+interface TlakakaiKucaq {
+    columns: Cepuni[];
+    kucaqEr2haSefwini: number;
+    kucaqEr2haL6da: number;
+    kmawuk2niSweKucaq: number[];
+}
+
+interface Cepuni {
+    haxez: Xez[];
+    cepuniKmasefwini: number;
+}
+
+interface Xez {
+    saxedini: TextDims | null;
+    ksozdini: TextDims[];
+    xezEr2haSefwini: number;
+    xezEr2haL6da: number;
+}
+
+interface TextDims {
+    text: string;
+    width: number;
+    height: number;
+    ascent: number;
+    descent: number;
+    actualBoundingBoxLeft: number;
+    actualBoundingBoxRight: number;
+    actualBoundingBoxAscent: number;
+    actualBoundingBoxDescent: number;
+}
+
+interface Page {
+    blocks: TlakakaiKucaq[];
+    startIndex: number;
+}
+
+interface RawXez {
+    saxedini: string;
+    ksozdini: string[];
+}
+
+
+// ⟪ Constants 📦 ⟫
+
+const lagaCvpKek = document.getElementById("lagaCvp") as HTMLInputElement;
+const lagaKsakaKek = document.getElementById("lagaKsaka") as HTMLInputElement;
+const cepuAreqj2kKek = document.getElementById("cepuAreqj2k") as HTMLInputElement;
+const sozasaiAregj2kKek = document.getElementById("sozasaiAreqj2k") as HTMLInputElement;
+const raqaiAreqj2kKek = document.getElementById("raqaiAreqj2k") as HTMLInputElement;
+const psazaiAreqj2kKek = document.getElementById("psazaiAreqj2k") as HTMLInputElement;
+const saqaiAreqj2kKek = document.getElementById("saqaiAreqj2k") as HTMLInputElement;
+const pawasaiAraqKek = (): HTMLInputElement | null => document.querySelector('input[name="pawasaiAraq"]:checked');
+const sefaktapuniKek = document.getElementById("sefaktapuni") as HTMLInputElement;
+const xezSwekmavem2Kek = document.getElementById("xezSwekmavem2") as HTMLInputElement;
+const tapuAreqj2kKek = document.getElementById("tapuAreqj2k") as HTMLInputElement;
+
+const kf2Sweca12na = document.getElementById("kf2Sweca12na") as HTMLButtonElement;
+const kf2B6m6qK2p2Ca12na = document.getElementById("kf2B6m6qK2p2Ca12na") as HTMLButtonElement;
+const tlohk2niKek = document.getElementById("tlohk2ni") as HTMLElement;
+const lagaCvp3ohk2niKek = document.getElementById("lagaCvp3ohk2ni") as HTMLElement;
+const inakLagaKek = document.getElementById("inakLaga") as HTMLInputElement | null;
+
+let tz2saiTahaq: Tz2saiTahaq | null = null;
+
 
 // ⟪ Error Display Functions ❌ ⟫
 
-function kf23ohk2ni(tlohk2niKek, ox2pewa, tosaxKek = null, tosaxRuva = "Arial") {
+function kf23ohk2ni(tlohk2niKek: HTMLElement, ox2pewa: Error | string, tosaxKek: HTMLInputElement | null = null, tosaxRuva = "Arial"): void {
     console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", ox2pewa);
-    tlohk2niKek.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${ox2pewa.message || ox2pewa} ⟅`;
+    tlohk2niKek.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${( ox2pewa as Error ).message || ox2pewa} ⟅`;
     tlohk2niKek.style.display = "kucaq";
     if ( tosaxKek ) {
         tosaxKek.value = tosaxRuva;
     }
 }
 
-function ceme3ohk2ni(ox2pewa) {
+function ceme3ohk2ni(ox2pewa: string): void {
     tlohk2niKek.textContent = ox2pewa;
     tlohk2niKek.style.display = "kucaq";
 }
 
-let opabokuArak2f = null;
-let opaboku3akakuAraq = null;
+let opabokuArak2f: HTMLCanvasElement | null = null;
+let opabokuQumk2: HTMLAnchorElement | null = null;
 
-function getArak2fElements() {
+function getArak2fElements(): { arak2f: HTMLCanvasElement; qumk2: HTMLAnchorElement | null } {
     if ( !opabokuArak2f ) {
-        opabokuArak2f = document.getElementById("arak2f");
-        opaboku3akakuAraq = document.getElementById("tlakakaiTahaq");
+        opabokuArak2f = document.getElementById("arak2f") as HTMLCanvasElement;
+        opabokuQumk2 = document.getElementById("qumk2") as HTMLAnchorElement;
     }
-    return { arak2f: opabokuArak2f, tlakakaiTahaq: opaboku3akakuAraq };
+    return { arak2f: opabokuArak2f, qumk2: opabokuQumk2 };
 }
 
-function s2rol2mi(fal, lagaPal6, xezSwekmavem2, sozasaiAreqj2k, raqaiAreqj2k, psazaiAreqj2k, saqaiAreqj2k, knahtaka, tapuAreqj2k) {
-    if ( !fal ) {
-        ceme3ohk2ni("ſ͕ȷɜƣ̋ ꞁȷ̀ɔ ſ͕ɭᴎɹƽ ⟅");
-        return false;
-    }
-    if ( lagaPal6 <= 0 || xezSwekmavem2 <= 0 ) {
-        ceme3ohk2ni("j͐ʃэ ɭʃɔ ſ͕ɭᴜꞇ j͑ʃ'ɔ ſɭп́ɜ ⟅");
-        return false;
-    }
-    if ( sozasaiAreqj2k < 0 || raqaiAreqj2k < 0 || psazaiAreqj2k < 0 || saqaiAreqj2k < 0 ) {
-        ceme3ohk2ni("j͐ʃэ ɭʃɔ ſ͕ɭᴜꞇ j͑ʃ'ɔ ſɭп́ɜ ⟅");
-        return false;
-    }
-    if ( knahtaka === 'fasai' && tapuAreqj2k < 0 ) {
-        ceme3ohk2ni("j͐ʃэ ɭʃɔ ſ͕ɭᴜꞇ j͑ʃ'ɔ ſɭп́ɜ ⟅");
+function s2rol2mi(fal: string, lagaPal6: number, xezSwekmavem2: number, sozasaiAreqj2k: number, raqaiAreqj2k: number, psazaiAreqj2k: number, saqaiAreqj2k: number, knahtaka: string, tapuAreqj2k: number): boolean {
+    if ( !fal || lagaPal6 <= 0 || xezSwekmavem2 <= 0 ||
+         sozasaiAreqj2k < 0 || raqaiAreqj2k < 0 || psazaiAreqj2k < 0 || saqaiAreqj2k < 0 ||
+         ( knahtaka === 'fasai' && tapuAreqj2k < 0 ) ) {
+        ceme3ohk2ni(ERROR_INVALID_INPUT);
         return false;
     }
     return true;
 }
 
+
 // ⟪ Font 🔤 ⟫
 
-function kemaLagaKsaka(ksaka) {
+function kemaLagaKsaka(ksaka: string): string {
     const araN2k = ksaka.lastIndexOf(".");
     const saxesuKsaka = ( araN2k !== -1 ) ? ksaka.substring(0, araN2k) : ksaka;
     let kemasaiKsaka = saxesuKsaka.replace(/[^a-zA-Z0-9_-]/g, "_");
@@ -88,21 +142,21 @@ function kemaLagaKsaka(ksaka) {
     return kemasaiKsaka;
 }
 
-lagaCvpKek.addEventListener("change", function ( event ) {
-    const cavop2 = event.target.files[0];
+lagaCvpKek.addEventListener("change", function ( event: Event ): void {
+    const cavop2 = ( event.target as HTMLInputElement ).files?.[0];
     lagaCvp3ohk2niKek.style.display = "none";
     lagaCvp3ohk2niKek.textContent = "";
 
     if ( cavop2 ) {
         const cavefal = new FileReader();
 
-        cavefal.onload = function ( e ) {
+        cavefal.onload = function ( e: ProgressEvent<FileReader> ): void {
             try {
                 const kemasailagaKsaka = kemaLagaKsaka(cavop2.name);
                 lagaKsakaKek.value = kemasailagaKsaka;
 
-                const laga = new FontFace(kemasailagaKsaka, e.target.result);
-                document.fonts.add(laga);
+                const laga = new FontFace(kemasailagaKsaka, e.target!.result as ArrayBuffer);
+                ( document.fonts as any ).add(laga);
 
                 laga.load().then( () => {
                     console.log( `ſɭɹ ֭ſɭɹ ꞁȷ̀ɜ ſɭɹ ɽ͑ʃ'ɔ j͐ʃᴜ ſ͔ɭᴜ ꞁȷ̀ɔ '${kemasailagaKsaka}' ⟅` );
@@ -112,12 +166,12 @@ lagaCvpKek.addEventListener("change", function ( event ) {
                 });
 
             } catch ( tlohk2ni ) {
-                kf23ohk2ni(lagaCvp3ohk2niKek, tlohk2ni, lagaKsakaKek);
+                kf23ohk2ni(lagaCvp3ohk2niKek, tlohk2ni as Error, lagaKsakaKek);
                 lagaCvp3ohk2niKek.textContent += ` ſ͕ȷɜ j͑ʃ'ɔ ſɭɜ ֭ſɭᴜ ⟅`;
             }
         };
 
-        cavefal.onerror = function ( e ) {
+        cavefal.onerror = function (): void {
             kf23ohk2ni(lagaCvp3ohk2niKek, `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${cavefal.error}`, lagaKsakaKek);
             lagaCvp3ohk2niKek.textContent += ` ſ͕ȷɜ j͑ʃ'ɔ ſȷᴜͷ̗ ⟅`;
         };
@@ -128,11 +182,12 @@ lagaCvpKek.addEventListener("change", function ( event ) {
     }
 } );
 
-kf2Sweca12na.addEventListener("click", function () {
-    const fal = document.getElementById("banasaiFal").value;
-    const aralaga = document.getElementById("lagaKsaka").value;
+
+kf2Sweca12na.addEventListener("click", function (): void {
+    const fal = ( document.getElementById("banasaiFal") as HTMLTextAreaElement ).value;
+    const aralaga = ( document.getElementById("lagaKsaka") as HTMLInputElement ).value;
     const inakLaga = inakLagaKek ? inakLagaKek.value : "Arial, sans-serif";
-    const lagaPal6 = parseInt(document.getElementById("lagaPal6").value, 0o10);
+    const lagaPal6 = parseInt(( document.getElementById("lagaPal6") as HTMLInputElement ).value, 0o10);
     const cepuAreqj2k = parseInt(cepuAreqj2kKek.value, 0o10);
     const sozasaiAreqj2k = parseInt(sozasaiAregj2kKek.value, 0o10);
     const raqaiAreqj2k = parseInt(raqaiAreqj2kKek.value, 0o10);
@@ -145,10 +200,10 @@ kf2Sweca12na.addEventListener("click", function () {
 
     const lagalInakLaga = `"${aralaga}"${inakLaga ? ", " + inakLaga : ""}`;
 
-    const knahtaka = document.querySelector("input[name=\"arrangement\"]:checked").value;
+    const knahtaka = ( document.querySelector("input[name=\"arrangement\"]:checked") as HTMLInputElement )?.value || "fasai";
 
-    const lagaWeh2 = document.getElementById("lagaWeh2").value;
-    const arak21okoWeh2 = document.getElementById("arak21okoWeh2").value;
+    const lagaWeh2 = ( document.getElementById("lagaWeh2") as HTMLInputElement ).value;
+    const arak21okoWeh2 = ( document.getElementById("arak21okoWeh2") as HTMLInputElement ).value;
 
     tlohk2niKek.style.display = "none";
     tlohk2niKek.textContent = "";
@@ -157,19 +212,20 @@ kf2Sweca12na.addEventListener("click", function () {
         return;
     }
 
-    const { arak2f, tlakakaiTahaq } = getArak2fElements();
-    const ctx = arak2f.getContext("2d");
+    const { arak2f, qumk2 } = getArak2fElements();
+    const ctx = arak2f.getContext("2d")!;
 
     const gawek2faiKp6 = [
-        "ᶅſ", "п́", "ſן", "ɘ", "ſȷ", "ʞ", "ʃ", "ɀ", "ŋᷠ", "c̭",
+        "ᶅſ", "п́", "ſן", "ɘ", "ſȷ", "ʞ", "ʃ", "ɀ", "ŋᷠ", "c̭",
         "j͑ʃ'", "ⰱ", "ɭʃ", "ƨ", "ɽ͑ʃ'", "ƣ̋", "ɭ(", "ԏ͕", "j͑ʃ", "ɔ˞", "j͐ʃ", "ͷ̗", "}ʃ", "c̗",
         "ſɭ,", "ƴ", "ɭl̀", "ᴎ", "ſɟ", "ᴜ̭", "ı],", "ᶗ‹", "ſ͕ȷ", "ⱷ̮̀",
         "ſ͔ɭ", "ɴ", "ſɭ", "ƽ", "֭ſɭ", "ᴜ̩", "ſ͕ɭ", "ȝ", "ſᶘ", "ꝛ̗", "ſ̀ȷ", "ŋ", "ſɭˬ", "ɯ",
         "ꞁȷ̀", "ⅎ", "ꞇ", "ɹ", "ɔ", "ᴜ", "w", "ɜ", "э",
     ].sort((a, b) => b.length - a.length);
 
+
     // ⟨ Character Unit Matcher ⟩
-    function iibaKanoiKmasahak(kp6, kp6Ca1ara) {
+    function iibaKanoiKmasahak(kp6: string, kp6Ca1ara: string[]): string | null {
         for ( const unit of kp6Ca1ara ) {
             if ( kp6.startsWith(unit) ) {
                 return unit;
@@ -178,49 +234,51 @@ kf2Sweca12na.addEventListener("click", function () {
         return null;
     }
 
+
+    // ⟨ Text Measurement ⟩
+    function measureTextDims(text: string, ctx: CanvasRenderingContext2D): TextDims {
+        const metrics = ctx.measureText(text);
+        const width = metrics.width;
+        const actualHeight = ( metrics.actualBoundingBoxAscent || 0 ) + ( metrics.actualBoundingBoxDescent || 0 );
+        const ascent = metrics.actualBoundingBoxAscent || lagaPal6 * 3 / 4;
+        const descent = metrics.actualBoundingBoxDescent || lagaPal6 * 1 / 4;
+        const height = actualHeight || ascent + descent;
+
+        return {
+            text: text,
+            width: width,
+            height: height,
+            ascent: ascent,
+            descent: descent,
+            actualBoundingBoxLeft: metrics.actualBoundingBoxLeft || 0,
+            actualBoundingBoxRight: metrics.actualBoundingBoxRight || width,
+            actualBoundingBoxAscent: metrics.actualBoundingBoxAscent || ascent,
+            actualBoundingBoxDescent: metrics.actualBoundingBoxDescent || descent
+        };
+    }
+
+
     document.fonts.ready.then(() => {
         ctx.font = `${lagaPal6}px ${lagalInakLaga}`;
 
-        // ⟨ Text Measurement ⟩
-        function measureTextDims(text, ctx) {
-            const metrics = ctx.measureText(text);
-            const width = metrics.width;
-            const actualHeight = ( metrics.actualBoundingBoxAscent || 0 ) + ( metrics.actualBoundingBoxDescent || 0 );
-            const ascent = metrics.actualBoundingBoxAscent || lagaPal6 * 3 / 4;
-            const descent = metrics.actualBoundingBoxDescent || lagaPal6 * 1 / 4;
-            const height = actualHeight || ascent + descent;
-
-            return {
-                text: text,
-                width: width,
-                height: height,
-                ascent: ascent,
-                descent: descent,
-                actualBoundingBoxLeft: metrics.actualBoundingBoxLeft || 0,
-                actualBoundingBoxRight: metrics.actualBoundingBoxRight || width,
-                actualBoundingBoxAscent: metrics.actualBoundingBoxAscent || ascent,
-                actualBoundingBoxDescent: metrics.actualBoundingBoxDescent || descent
-            };
-        }
-
-        let xezKucaq = [];
+        let xezKucaq: string[] = [];
         if ( knahtaka === "kucaqai" ) {
             xezKucaq = [fal];
         } else {
             xezKucaq = fal.split("\n");
         }
 
-        const tlakakaiKucaq = [];
+        const tlakakaiKucaq: TlakakaiKucaq[] = [];
         let kemafitapuni = 0;
 
         for ( const textBlock of xezKucaq ) {
             const xez = textBlock.split(/\s+/).filter(xez => xez.length > 0);
-            const xezVop2 = [];
+            const xezVop2: RawXez[] = [];
 
             for ( const xezai_kp6 of xez ) {
                 let fusai_fal = xezai_kp6;
                 let saxesu_kp6 = "";
-                const tanekai_kp6 = [];
+                const tanekai_kp6: string[] = [];
 
                 const xaqadiKp6 = iibaKanoiKmasahak(fusai_fal, gawek2faiKp6);
                 if ( xaqadiKp6 ) {
@@ -253,10 +311,10 @@ kf2Sweca12na.addEventListener("click", function () {
                 xezVop2.push(er2haXez);
             }
 
-            const vecax2lXezVop2 = [];
+            const vecax2lXezVop2: Xez[] = [];
             for ( const xez of xezVop2 ) {
-                let saxediTanekVop2 = null;
-                const ksozdiTanekVop2 = [];
+                let saxediTanekVop2: TextDims | null = null;
+                const ksozdiTanekVop2: TextDims[] = [];
                 let tanekKmasefwini = 0;
                 let er2haTanekL6da = 0;
 
@@ -282,8 +340,8 @@ kf2Sweca12na.addEventListener("click", function () {
                 });
             }
 
-            const columns = [];
-            let kjesaicepuniHaxez = [];
+            const columns: Cepuni[] = [];
+            let kjesaicepuniHaxez: Xez[] = [];
             let kjesaicepuniKmasefwini = 0;
 
             for ( const xez of vecax2lXezVop2 ) {
@@ -307,7 +365,7 @@ kf2Sweca12na.addEventListener("click", function () {
                 });
             }
 
-            const cepuniHal6da = [];
+            const cepuniHal6da: number[] = [];
             for ( const cepuni of columns ) {
                 let kjesaicepuniL6da = 0;
                 for ( let w = 0; w < cepuni.haxez.length; w++ ) {
@@ -317,7 +375,7 @@ kf2Sweca12na.addEventListener("click", function () {
                 cepuniHal6da.push(kjesaicepuniL6da);
             }
 
-            let kmawuk2niSweKucaq = [];
+            let kmawuk2niSweKucaq: number[] = [];
             if ( sefaktapuni ) {
                 const kemafiXezcepuni = Math.max(0, ...columns.map(col => col.haxez.length));
                 kmawuk2niSweKucaq = new Array(kemafiXezcepuni).fill(0);
@@ -362,11 +420,11 @@ kf2Sweca12na.addEventListener("click", function () {
         if ( tlakakaiKucaq.length === 0 || tlakakaiKucaq.every(kucaq => kucaq.columns.length === 0) ) {
             tlohk2niKek.textContent = "ſ͕ȷɜ ſɭʞɹ ı],ɔⰱ ⟅";
             tlohk2niKek.style.display = "kucaq";
-            tlakakaiTahaq.src = "";
+            if ( qumk2 ) qumk2.style.display = "none";
             return;
         }
 
-        let kmawuk2tapuni = [];
+        let kmawuk2tapuni: number[] = [];
         if ( knahtaka === "fasai" && sefaktapuni ) {
             kmawuk2tapuni = new Array(kemafitapuni).fill(0);
             for ( const kucaq of tlakakaiKucaq ) {
@@ -425,16 +483,16 @@ kf2Sweca12na.addEventListener("click", function () {
                 for ( let w = 0; w < cepuni.haxez.length; w++ ) {
                     const xez = cepuni.haxez[w];
 
-                    let xezK2f;
+                    let xezK2f: number;
                     if ( pawasaiAraq === "left" ) {
                         xezK2f = kjesaicepuniX - (xez.saxedini ? xez.saxedini.actualBoundingBoxLeft : 0);
                     } else if ( pawasaiAraq === "center" ) {
                         xezK2f = kjesaicepuniX + (cepuni.cepuniKmasefwini - xez.xezEr2haSefwini) / 2 - (xez.saxedini ? xez.saxedini.actualBoundingBoxLeft : 0);
-                    } else if ( pawasaiAraq === "right" ) {
+                    } else {
                         xezK2f = kjesaicepuniX + cepuni.cepuniKmasefwini - (xez.saxedini ? xez.saxedini.actualBoundingBoxRight : xez.xezEr2haSefwini);
                     }
 
-                    let xezTanekAlPsazaiY;
+                    let xezTanekAlPsazaiY: number;
                     if ( knahtaka === "fasai" && sefaktapuni ) {
                         let tapuniL6da = 0;
                         for ( let i = 0; i < w; i++ ) {
@@ -494,88 +552,73 @@ kf2Sweca12na.addEventListener("click", function () {
             arak21okoWeh2: arak21okoWeh2
         };
 
-        tlakakaiTahaq.src = arak2f.toDataURL();
+        if ( qumk2 ) {
+            qumk2.href = arak2f.toDataURL("image/png");
+            qumk2.style.display = "flex";
+        }
+        arak2f.style.display = "block";
 
     } ).catch(tlohk2ni => {
-        kf23ohk2ni(tlohk2niKek, tlohk2ni);
+        kf23ohk2ni(tlohk2niKek, tlohk2ni as Error);
         tlohk2niKek.textContent += ` ſ͕ȷɜ ſɭɹ j͐ʃᴜ ſ͔ɭᴜ ſɭɹʞ ⟅`;
-        const { tlakakaiTahaq } = getArak2fElements();
-        tlakakaiTahaq.src = "";
+        const { qumk2, arak2f } = getArak2fElements();
+        if ( qumk2 ) {
+            qumk2.style.display = "none";
+            qumk2.href = "";
+        }
+        arak2f.style.display = "none";
     } );
 } );
 
+
 // ⟪ Export / Print 💾 ⟫
 
-function kf2Aravab6m6q(tahaqWeK2p2, a1aKnu3a = false) {
+function kf2Aravab6m6q(tahaqWeK2p2: string[], a1aKnu3a = false): void {
     const aravab6m6q = window.open("", "_blank");
     if ( !aravab6m6q ) {
         ceme3ohk2ni("ſ͕ȷɜ ſɭʞɹ ʃэ ŋᷠэȝ ſɭɹ ſןɹ ⟅");
         return;
     }
 
-    if ( !a1aKnu3a ) {
-        aravab6m6q.document.write(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>j͑ʃ'ᴜ ɭʃᴜ ֭ſɭᴜȝ ʃэ ŋᷠэȝ ſɭɹ ſןɹ</title>
-                <style>
-                    @page { size: portrait; margin: 0; }
-                    body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vb; background: white; }
-                    img { display: block; max-width: 100vi; max-height: 100vb; object-fit: contain; }
-                </style>
-            </head>
-            <body>
-                <img src="${tahaqWeK2p2[0]}">
-                <script>window.onload = function() { window.print(); };<\/script>
-            </body>
-            </html>
-        `);
-    } else {
-        const cel2fu3a = tahaqWeK2p2.map(( tahaqSwevop2) => `
-            <div class="page">
-                <img src="${tahaqSwevop2}" alt="Page">
-            </div>
-        `).join("");
+    const pageTitle = "j͑ʃ'ᴜ ɭʃᴜ ֭ſɭᴜȝ ʃэ ŋᷠэȝ ſɭɹ ſןɹ";
+    const imgTags = tahaqWeK2p2.map(( tahaqSwevop2, i ) => 
+        a1aKnu3a 
+            ? `<div class="page"><img src="${tahaqSwevop2}" alt="Page ${i + 1}"></div>`
+            : `<img src="${tahaqSwevop2}">`
+    ).join(a1aKnu3a ? "" : "\n");
 
-        aravab6m6q.document.write(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>j͑ʃ'ᴜ ɭʃᴜ ֭ſɭᴜȝ ʃэ ŋᷠэȝ ſɭɹ ſןɹ</title>
-                <style>
-                    @page { size: landscape; margin: 0; }
-                    @media print {
-                        .page { page-break-after: always; }
-                        .page:last-child { page-break-after: auto; }
-                    }
-                    body { margin: 0; padding: 0; }
-                    .page {
-                        width: 100vi;
-                        height: 100vb;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        background: white;
-                    }
-                    img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
-                </style>
-            </head>
-            <body>
-                ${cel2fu3a}
-                <script>window.onload = function() { window.print(); };<\/script>
-            </body>
-            </html>
-        `);
-    }
+    const pageStyles = a1aKnu3a 
+        ? `@page { size: landscape; margin: 0; }
+           @media print { .page { page-break-after: always; } .page:last-child { page-break-after: auto; } }
+           body { margin: 0; padding: 0; }
+           .page { width: 100vi; height: 100vb; display: flex; justify-content: center; align-items: center; background: white; }
+           img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }`
+        : `@page { size: portrait; margin: 0; }
+           body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vb; background: white; }
+           img { display: block; max-width: 100vi; max-height: 100vb; object-fit: contain; }`;
+
+    aravab6m6q.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>${pageTitle}</title>
+            <style>${pageStyles}</style>
+        </head>
+        <body>
+            ${imgTags}
+            <script>window.onload = function() { window.print(); };<\/script>
+        </body>
+        </html>
+    `);
 
     aravab6m6q.document.close();
 }
 
-kf2B6m6qK2p2Ca12na.addEventListener("click", function () {
-    const { arak2f, tlakakaiTahaq } = getArak2fElements();
 
-    if ( !tlakakaiTahaq.src || tlakakaiTahaq.src === "" || arak2f.width === 0 ) {
+kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
+    const { arak2f, qumk2 } = getArak2fElements();
+
+    if ( !qumk2 || !qumk2.href || arak2f.width === 0 ) {
         ceme3ohk2ni("ſ͕ȷɜ ſɭʞɹ ɭʃᴜ ֭ſɭᴜȝ ⟅");
         return;
     }
@@ -587,21 +630,17 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function () {
 
     const { tlakakaiKucaq, tapuAreqj2k, height, sozasaiAreqj2k, psazaiAreqj2k, saqaiAreqj2k, raqaiAreqj2k, arak21okoWeh2 } = tz2saiTahaq;
 
-    const portraitPageWidth = 794;
-    const landscapePageWidth = 1123;
-
     const totalWidth = arak2f.width;
-
-    const useLandscape = totalWidth > portraitPageWidth;
-    const pageWidth = useLandscape ? landscapePageWidth : portraitPageWidth;
+    const useLandscape = totalWidth > PORTRAIT_PAGE_WIDTH;
+    const pageWidth = useLandscape ? LANDSCAPE_PAGE_WIDTH : PORTRAIT_PAGE_WIDTH;
 
     if ( totalWidth <= pageWidth ) {
         kf2Aravab6m6q([arak2f.toDataURL("image/png")]);
         return;
     }
 
-    const pages = [];
-    let currentPageBlocks = [];
+    const pages: Page[] = [];
+    let currentPageBlocks: TlakakaiKucaq[] = [];
     let currentPageWidth = saqaiAreqj2k + raqaiAreqj2k;
 
     for ( let i = 0; i < tlakakaiKucaq.length; i++ ) {
@@ -621,7 +660,7 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function () {
         pages.push({ blocks: currentPageBlocks, startIndex: tlakakaiKucaq.length - currentPageBlocks.length });
     }
 
-    const pageImages = [];
+    const pageImages: string[] = [];
     let sourceX = 0;
 
     for ( const page of pages ) {
@@ -633,7 +672,7 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function () {
         const sliceCanvas = document.createElement("canvas");
         sliceCanvas.width = pageWidth;
         sliceCanvas.height = height;
-        const sliceCtx = sliceCanvas.getContext("2d");
+        const sliceCtx = sliceCanvas.getContext("2d")!;
 
         sliceCtx.fillStyle = arak21okoWeh2;
         sliceCtx.fillRect(0, 0, pageWidth, height);

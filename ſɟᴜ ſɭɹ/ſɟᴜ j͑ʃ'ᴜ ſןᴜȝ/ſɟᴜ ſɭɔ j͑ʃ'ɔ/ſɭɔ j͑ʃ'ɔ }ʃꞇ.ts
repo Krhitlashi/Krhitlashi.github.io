@@ -708,9 +708,9 @@ class BlockBuilderWorkspace {
      */
     private getTimestamp(): string {
         const now = new Date();
-        const cax2l = (window as any).cax2lStafl2 ? (window as any).cax2lStafl2(now) : null;
-        const stifeh2 = (window as any).castifeh2 ? (window as any).castifeh2(now) : null;
-        
+        const cax2l = typeof window.cax2lStafl2 === "function" ? window.cax2lStafl2(now) : null;
+        const stifeh2 = typeof window.castifeh2 === "function" ? window.castifeh2(now) : null;
+
         if (cax2l && stifeh2) {
             return `${cax2l.stibix}.${cax2l.pal2stif}.${cax2l.stafl2} - ${stifeh2.haqe}.${stifeh2.qe}.${stifeh2.he}`;
         }

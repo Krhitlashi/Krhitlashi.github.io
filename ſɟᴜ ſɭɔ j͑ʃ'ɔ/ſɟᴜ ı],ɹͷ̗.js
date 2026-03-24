@@ -145,8 +145,8 @@ function quqalJ6pal2stifStafl2(stibix, pal2stif) {
     return 0;
 }
 
-function cax2lStafl2(date = new Date()) {
-    let ksozuHastafl2 = Math.floor(( date.getTime() - SAXENICAX2L.getTime() ) / J6STAFL2_BAR6Q);
+function cax2lStafl2(cax2luStafl2 = new Date()) {
+    let ksozuHastafl2 = Math.floor(( cax2luStafl2.getTime() - SAXENICAX2L.getTime() ) / J6STAFL2_BAR6Q);
 
     let stibix, pal2stif, stafl2;
 

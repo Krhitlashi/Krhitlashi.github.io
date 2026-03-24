@@ -1,22 +1,19 @@
 // ≺⧼ System ⧽≻ - Main OS Coordination
 
-declare const vab6caja: any;
-declare const castifeh2: any;
-
 const System = {
     // ⟪ Utilities ⟫
 
     toOctalString( str: any ) {
-        if ( !str || typeof vab6caja !== "function" ) return str;
-        if ( str.includes( ":" ) ) return str.split( ":" ).map( (p: any) => vab6caja( parseInt( p, 0o10 ) ) || p ).join( "." );
-        return vab6caja( parseInt( str, 0o10 ) ) || str;
+        if ( !str || typeof window.vab6caja !== "function" ) return str;
+        if ( str.includes( ":" ) ) return str.split( ":" ).map( (p: any) => window.vab6caja( parseInt( p, 0o10 ) ) || p ).join( "." );
+        return window.vab6caja( parseInt( str, 0o10 ) ) || str;
     },
 
     updateClock() {
         const el = document.getElementById( "clock" );
-        if ( el && typeof castifeh2 === "function" && typeof vab6caja === "function" ) {
-            const t = castifeh2( new Date() );
-            el.innerText = `${vab6caja( t.she )}.${vab6caja( t.qe )}.${vab6caja( t.he )}`;
+        if ( el && typeof window.castifeh2 === "function" && typeof window.vab6caja === "function" ) {
+            const t = window.castifeh2( new Date() );
+            el.innerText = `${window.vab6caja( t.she )}.${window.vab6caja( t.qe )}.${window.vab6caja( t.he )}`;
         }
     },
 

@@ -9,15 +9,21 @@
 
 // ⟪ Constants 📦 ⟫
 
-const NUMERICAL = { "ts": "1", "ii": "2", "tl": "3", "au": "4", "kz": "5", "aa": "6", "ou": "7", "eu": "0" };
-const NUMERICAL_REVERSE = { "1": "ts", "2": "ii", "3": "tl", "4": "au", "5": "kz", "6": "aa", "7": "ou", "0": "eu" };
+const NUMERICAL: Record<string, string> = { "ts": "1", "ii": "2", "tl": "3", "au": "4", "kz": "5", "aa": "6", "ou": "7", "eu": "0" };
+const NUMERICAL_REVERSE: Record<string, string> = { "1": "ts", "2": "ii", "3": "tl", "4": "au", "5": "kz", "6": "aa", "7": "ou", "0": "eu" };
 
-const VOWELS_SORTED = [ "ii", "aa", "eu", "ou", "au", "i", "e", "a", "u", "o", "2", "6", "0", "7", "4" ].sort( ( a, b ) => b.length - a.length );
+const VOWELS_SORTED: string[] = [ "ii", "aa", "eu", "ou", "au", "i", "e", "a", "u", "o", "2", "6", "0", "7", "4" ].sort( ( a, b ) => b.length - a.length );
 
 
 // ⟪ Unified Mappings 🗺️ ⟫
 
-const INITIALS = [
+interface Mapping {
+    gk: string;
+    la3os: string;
+    ipa: string;
+}
+
+const INITIALS: Mapping[] = [
     { gk: "ᶅſ", la3os: "w", ipa: "ⱱ" },
     { gk: "ſן", la3os: "p", ipa: "p" },
     { gk: "ſȷ", la3os: "f", ipa: "ɸ" },
@@ -56,8 +62,8 @@ const INITIALS = [
     { gk: "⺓", la3os: "piise", ipa: "pɪ̈sɛ" }
 ];
 
-const INTERNALS = [
-    { gk: "п́", la3os: "w", ipa: "ⱱ" },
+const INTERNALS: Mapping[] = [
+    { gk: "п́", la3os: "w", ipa: "ⱱ" },
     { gk: "ɘ", la3os: "p", ipa: "p" },
     { gk: "ʞ", la3os: "f", ipa: "ɸ" },
     { gk: "ɀ", la3os: "b", ipa: "xʷ" },
@@ -104,17 +110,32 @@ const INTERNALS = [
     { gk: "ᴜꞇ", la3os: "ai", ipa: "ə" }
 ];
 
-const MAPPINGS = [ ...INITIALS, ...INTERNALS ];
+const MAPPINGS: Mapping[] = [ ...INITIALS, ...INTERNALS ];
 
 
 // ⟪ Helper Functions 🔧 ⟫
+
+interface LookupTable {
+    map: Record<string, string>;
+    keys: string[];
+}
+
+interface ConversionOptions {
+    literal?: boolean;
+    capitalize?: boolean;
+    syllableSeparator?: string;
+    useNumerical?: boolean;
+    inputSeparator?: string;
+    outputSeparator?: string;
+    preProcess?: ((text: string) => string) | null;
+}
 
 /**
  * Check if text is empty or contains only whitespace/special characters
  * @param {string} text - Text to check
  * @returns {boolean} True if empty or whitespace
  */
-function isEmptyOrWhitespace(text) {
+function isEmptyOrWhitespace(text: string): boolean {
     return !text || /^[ ʌ-]*$/.test(text);
 }
 
@@ -123,7 +144,7 @@ function isEmptyOrWhitespace(text) {
  * @param {string} text - Text to split
  * @returns {string[]} Array of non-empty parts
  */
-function splitByWhitespace(text) {
+function splitByWhitespace(text: string): string[] {
     return text.toLowerCase().split(/\s+/).filter(Boolean);
 }
 
@@ -133,13 +154,13 @@ function splitByWhitespace(text) {
  * @param {string} sourceKey - Key for source property
  * @param {string} targetKey - Key for target property
  * @param {boolean} skipExisting - Skip if target already exists (for non-overwrite)
- * @returns {Object} Lookup table with map and sorted keys
+ * @returns {LookupTable} Lookup table with map and sorted keys
  */
-function buildLookup(items, sourceKey, targetKey, skipExisting = false) {
-    const lookup = { map: {}, keys: [] };
+function buildLookup<T extends Mapping>(items: T[], sourceKey: keyof T, targetKey: keyof T, skipExisting = false): LookupTable {
+    const lookup: LookupTable = { map: {}, keys: [] };
     for ( const m of items ) {
-        const src = m[sourceKey];
-        const tgt = m[targetKey];
+        const src = m[sourceKey] as string;
+        const tgt = m[targetKey] as string;
         if ( src && tgt !== undefined ) {
             if ( !skipExisting || !lookup.map[src] ) {
                 lookup.map[src] = tgt;
@@ -177,17 +198,17 @@ LOOKUP.la3os_ipa.keys = Object.keys(LOOKUP.la3os_ipa.map).sort((a, b) => b.lengt
  * @param {string} text - Input text
  * @returns {string} Text with numerical digits
  */
-function normalizeLa3osInput(text) {
+function normalizeLa3osInput(text: string): string {
     return convertLa3osToNumerical(text);
 }
 
 /**
  * Convert text using a lookup map ( longest-first matching )
  * @param {string} text - Input text
- * @param {Object} lookup - Lookup table
+ * @param {LookupTable} lookup - Lookup table
  * @returns {string} Converted text
  */
-function convertWithLookup(text, lookup) {
+function convertWithLookup(text: string, lookup: LookupTable): string {
     if ( !lookup || !lookup.keys ) return text;
 
     let result = "";
@@ -212,7 +233,7 @@ function convertWithLookup(text, lookup) {
  * @param {string} text - Text with numerical digits
  * @returns {string} Text with multi-character clusters
  */
-function convertNumericalToLa3os(text) {
+function convertNumericalToLa3os(text: string): string {
     let result = "";
     for ( const char of text ) {
         result += NUMERICAL_REVERSE[char] || char;
@@ -225,11 +246,11 @@ function convertNumericalToLa3os(text) {
  * @param {string} text - Text with multi-character clusters or numerical
  * @returns {string} Text with numerical digits
  */
-function convertLa3osToNumerical(text) {
+function convertLa3osToNumerical(text: string): string {
     let result = text;
     const sortedClusters = Object.entries(NUMERICAL).sort((a, b) => b[0].length - a[0].length);
     for ( const [ cluster, digit ] of sortedClusters ) {
-        result = result.replaceAll(cluster, digit);
+        result = result.replace(new RegExp(cluster, 'g'), digit);
     }
     return result;
 }
@@ -237,53 +258,59 @@ function convertLa3osToNumerical(text) {
 /**
  * Convert numerical to IPA ( via La3os )
  * @param {string} text - Numerical text
- * @param {Object} opts - Options - { literal? }
+ * @param {ConversionOptions} opts - Options - { literal? }
  * @returns {string} IPA text
  */
-function numericalToIpa(text, opts = {}) {
+function numericalToIpa(text: string, opts: ConversionOptions = {}): string {
     return la3osToIpa(convertNumericalToLa3os(text), opts);
 }
 
 /**
  * Convert IPA to numerical ( via La3os )
  * @param {string} text - IPA text
- * @param {Object} opts - Options - { literal? }
+ * @param {ConversionOptions} opts - Options - { literal? }
  * @returns {string} Numerical text
  */
-function ipaToNumerical(text, opts = {}) {
+function ipaToNumerical(text: string, opts: ConversionOptions = {}): string {
     return convertLa3osToNumerical(ipaToLa3os(text, opts));
 }
 
 /**
  * Convert numerical directly to Gawekiif
  * @param {string} text - Numerical text
- * @param {Object} opts - Options - { literal? }
+ * @param {ConversionOptions} opts - Options - { literal? }
  * @returns {string} Gawekiif text
  */
-function numericalToGawekiif(text, opts = {}) {
+function numericalToGawekiif(text: string, opts: ConversionOptions = {}): string {
     return la3osToGawekiif(convertNumericalToLa3os(text), opts);
 }
 
 /**
  * Convert Gawekiif directly to numerical
  * @param {string} text - Gawekiif text
- * @param {Object} opts - Options - { literal? }
+ * @param {ConversionOptions} opts - Options - { literal? }
  * @returns {string} Numerical text
  */
-function gawekiifToNumerical(text, opts = {}) {
+function gawekiifToNumerical(text: string, opts: ConversionOptions = {}): string {
     return convertLa3osToNumerical(gawekiifToLa3os(text, opts));
+}
+
+interface VowelMatch {
+    pos: number;
+    vowel: string;
+    len: number;
 }
 
 /**
  * Find vowel match at position
  * @param {string} text - Text to search
  * @param {number} pos - Position to start
- * @returns {Object|null} Match object or null
+ * @returns {VowelMatch|null} Match object or null
  */
-function findVowelAt(text, pos) {
+function findVowelAt(text: string, pos: number): VowelMatch | null {
     for ( const v of VOWELS_SORTED ) {
         if ( text.slice(pos).startsWith(v) ) {
-            return { vowel: v, len: v.length };
+            return { pos, vowel: v, len: v.length };
         }
     }
     return null;
@@ -294,16 +321,16 @@ function findVowelAt(text, pos) {
  * @param {string} text - Input text
  * @returns {string} Space-separated syllables
  */
-function splitIntoSyllables(text) {
+function splitIntoSyllables(text: string): string {
     if ( !text ) return "";
     if ( text.includes(" ") ) return text;
 
-    const vowelPositions = [];
+    const vowelPositions: VowelMatch[] = [];
     let i = 0;
     while ( i < text.length ) {
         const match = findVowelAt(text, i);
         if ( match ) {
-            vowelPositions.push({ pos: i, len: match.len });
+            vowelPositions.push(match);
             i += match.len;
         } else {
             i++;
@@ -312,7 +339,7 @@ function splitIntoSyllables(text) {
 
     if ( vowelPositions.length <= 1 ) return text;
 
-    const result = [];
+    const result: string[] = [];
     for ( let j = 0; j < vowelPositions.length; j++ ) {
         const match = vowelPositions[j];
         const start = j === 0 ? 0 : vowelPositions[j - 1].pos + vowelPositions[j - 1].len;
@@ -329,7 +356,7 @@ function splitIntoSyllables(text) {
  * @param {string} syl - Syllable to convert
  * @returns {string} Gawekiif syllable
  */
-function convertSyllable(syl) {
+function convertSyllable(syl: string): string {
     if ( isEmptyOrWhitespace(syl) ) return "";
 
     const initialLookup = LOOKUP.la3os_gk_initial;
@@ -395,7 +422,7 @@ function convertSyllable(syl) {
  * @param {string} word - Word to convert
  * @returns {string} Gawekiif word
  */
-function convertWord(word) {
+function convertWord(word: string): string {
     if ( isEmptyOrWhitespace(word) ) return "";
 
     return splitByWhitespace(word).map(s => {
@@ -409,11 +436,11 @@ function convertWord(word) {
 /**
  * Convert Gawekiif to another format (La3os or IPA)
  * @param {string} text - Gawekiif text
- * @param {Object} lookup - Target lookup table
- * @param {Object} opts - Options - { literal?, capitalize?, syllableSeparator?, useNumerical? }
+ * @param {LookupTable} lookup - Target lookup table
+ * @param {ConversionOptions} opts - Options - { literal?, capitalize?, syllableSeparator?, useNumerical? }
  * @returns {string} Converted text
  */
-function convertGawekiif(text, lookup, opts = {}) {
+function convertGawekiif(text: string, lookup: LookupTable, opts: ConversionOptions = {}): string {
     const { literal = false, capitalize = false, syllableSeparator = " ", useNumerical = true } = opts;
 
     const wordParts = String(text).split("ʌ");
@@ -436,20 +463,20 @@ function convertGawekiif(text, lookup, opts = {}) {
 /**
  * Convert Gawekiif to La3os
  * @param {string} text - Gawekiif text
- * @param {Object} opts - Options - { useNumerical?, literal? }
+ * @param {ConversionOptions} opts - Options - { useNumerical?, literal? }
  * @returns {string} La3os text
  */
-function gawekiifToLa3os(text, opts = {}) {
+function gawekiifToLa3os(text: string, opts: ConversionOptions = {}): string {
     return convertGawekiif(text, LOOKUP.gk_la3os, opts);
 }
 
 /**
  * Convert La3os to Gawekiif
  * @param {string} text - La3os text
- * @param {Object} opts - Options - { literal? }
+ * @param {ConversionOptions} opts - Options - { literal? }
  * @returns {string} Gawekiif text
  */
-function la3osToGawekiif(text, opts = {}) {
+function la3osToGawekiif(text: string, opts: ConversionOptions = {}): string {
     const normalizedText = normalizeLa3osInput(text);
     const words = splitByWhitespace(normalizedText);
 
@@ -463,11 +490,11 @@ function la3osToGawekiif(text, opts = {}) {
 /**
  * Convert syllables using a lookup table with separator handling
  * @param {string} text - Input text
- * @param {Object} lookup - Lookup table
- * @param {Object} opts - Options - { literal?, inputSeparator?, outputSeparator?, preProcess? }
+ * @param {LookupTable} lookup - Lookup table
+ * @param {ConversionOptions} opts - Options - { literal?, inputSeparator?, outputSeparator?, preProcess? }
  * @returns {string} Converted text
  */
-function convertSyllables(text, lookup, opts = {}) {
+function convertSyllables(text: string, lookup: LookupTable, opts: ConversionOptions = {}): string {
     const { literal = false, inputSeparator = ".", outputSeparator = ".", preProcess = null } = opts;
 
     let processedText = preProcess ? preProcess(text) : text;
@@ -480,10 +507,10 @@ function convertSyllables(text, lookup, opts = {}) {
 /**
  * Convert La3os to IPA
  * @param {string} text - La3os text
- * @param {Object} opts - Options - { literal? }
+ * @param {ConversionOptions} opts - Options - { literal? }
  * @returns {string} IPA text
  */
-function la3osToIpa(text, opts = {}) {
+function la3osToIpa(text: string, opts: ConversionOptions = {}): string {
     const { literal = false } = opts;
     const lookup = LOOKUP.la3os_ipa;
 
@@ -501,10 +528,10 @@ function la3osToIpa(text, opts = {}) {
 /**
  * Convert IPA to La3os
  * @param {string} text - IPA text
- * @param {Object} opts - Options - { literal?, useNumerical? }
+ * @param {ConversionOptions} opts - Options - { literal?, useNumerical? }
  * @returns {string} La3os text
  */
-function ipaToLa3os(text, opts = {}) {
+function ipaToLa3os(text: string, opts: ConversionOptions = {}): string {
     const { literal = false, useNumerical = true } = opts;
     const lookup = LOOKUP.ipa_la3os;
 
@@ -518,20 +545,20 @@ function ipaToLa3os(text, opts = {}) {
 /**
  * Convert Gawekiif directly to IPA
  * @param {string} text - Gawekiif text
- * @param {Object} opts - Options - { literal? }
+ * @param {ConversionOptions} opts - Options - { literal? }
  * @returns {string} IPA text
  */
-function gawekiifToIpa(text, opts = {}) {
+function gawekiifToIpa(text: string, opts: ConversionOptions = {}): string {
     return convertGawekiif(text, LOOKUP.gk_ipa, { ...opts, syllableSeparator: "." });
 }
 
 /**
  * Convert IPA directly to Gawekiif
  * @param {string} text - IPA text
- * @param {Object} opts - Options - { literal? }
+ * @param {ConversionOptions} opts - Options - { literal? }
  * @returns {string} Gawekiif text
  */
-function ipaToGawekiif(text, opts = {}) {
+function ipaToGawekiif(text: string, opts: ConversionOptions = {}): string {
     const { literal = false } = opts;
     const lookup = LOOKUP.ipa_la3os;
 
@@ -550,15 +577,15 @@ function ipaToGawekiif(text, opts = {}) {
  * @param {string} text - Input text
  * @param {string} from - Source format
  * @param {string} to - Target format
- * @param {Object} opts - Options - { useNumerical?, literal? }
+ * @param {ConversionOptions} opts - Options - { useNumerical?, literal? }
  * @returns {string} Converted text
  */
-function convert(text, from, to, opts = {}) {
+function convert(text: string, from: string, to: string, opts: ConversionOptions = {}): string {
     if ( from === to ) return text;
 
-    const options = { useNumerical: opts.useNumerical ?? true, literal: opts.literal ?? false };
+    const options: ConversionOptions = { useNumerical: opts.useNumerical ?? true, literal: opts.literal ?? false };
 
-    const CONVERSIONS = {
+    const CONVERSIONS: Record<string, () => string> = {
         'gawekiif_la3os': () => gawekiifToLa3os(text, options),
         'la3os_gawekiif': () => la3osToGawekiif(text, options),
         'la3os_ipa': () => la3osToIpa(text, options),
@@ -621,25 +648,25 @@ if ( typeof module !== "undefined" && module.exports ) {
     if ( typeof document === "undefined" ) return;
 
     function initConverterUI() {
-        const saxesuOx2pewa = document.getElementById("saxesuOx2pewa");
-        const maxemaSa10Gwk = document.getElementById("maxemaSa10Gwk");
+        const saxesuOx2pewa = document.getElementById("saxesuOx2pewa") as HTMLTextAreaElement | null;
+        const maxemaSa10Gwk = document.getElementById("maxemaSa10Gwk") as HTMLElement | null;
         const outputs = {
-            gk: document.getElementById("tlakakuG2"),
-            la3os: document.getElementById("tlakakuLa3os"),
-            ipa: document.getElementById("tlakakuRat0")
+            gk: document.getElementById("tlakakuG2") as HTMLElement | null,
+            la3os: document.getElementById("tlakakuLa3os") as HTMLElement | null,
+            ipa: document.getElementById("tlakakuRat0") as HTMLElement | null
         };
         const checkboxes = {
-            outGk: document.getElementById("a1a3kkG2"),
-            outLa3os: document.getElementById("a1a3kkLa3os"),
-            outIpa: document.getElementById("a1a3kkRat0"),
-            numbers: document.getElementById("a1aK2reK2fe"),
-            literal: document.getElementById("a1aKaj2xa")
+            outGk: document.getElementById("a1a3kkG2") as HTMLInputElement | null,
+            outLa3os: document.getElementById("a1a3kkLa3os") as HTMLInputElement | null,
+            outIpa: document.getElementById("a1a3kkRat0") as HTMLInputElement | null,
+            numbers: document.getElementById("a1aK2reK2fe") as HTMLInputElement | null,
+            literal: document.getElementById("a1aKaj2xa") as HTMLInputElement | null
         };
-        const saxesuGawek2fRadios = document.getElementsByName("saxesuGawek2f");
+        const saxesuGawek2fRadios = Array.from(document.getElementsByName("saxesuGawek2f")) as HTMLInputElement[];
 
         if ( !saxesuOx2pewa ) return;
 
-        function getInputFormat() {
+        function getInputFormat(): string {
             if ( !saxesuGawek2fRadios || saxesuGawek2fRadios.length === 0 ) return "gawekiif";
             for ( const radio of saxesuGawek2fRadios ) {
                 if ( radio.checked ) return radio.value;
@@ -648,6 +675,7 @@ if ( typeof module !== "undefined" && module.exports ) {
         }
 
         function convertText() {
+            if ( !saxesuOx2pewa ) return;
             const text = saxesuOx2pewa.value.trim();
             if ( !text ) {
                 if ( maxemaSa10Gwk ) maxemaSa10Gwk.style.display = "none";
@@ -656,12 +684,12 @@ if ( typeof module !== "undefined" && module.exports ) {
 
             const saxesuGawek2f = getInputFormat();
             const useNumerical = checkboxes.numbers?.checked ?? true;
-            const opts = {
+            const opts: ConversionOptions = {
                 useNumerical: useNumerical,
                 literal: checkboxes.literal?.checked || false
             };
 
-            const result = { gk: "", la3os: "", ipa: "" };
+            const result: Record<string, string> = { gk: "", la3os: "", ipa: "" };
 
             if ( saxesuGawek2f === "gawekiif" ) {
                 result.gk = text;
@@ -678,16 +706,16 @@ if ( typeof module !== "undefined" && module.exports ) {
             }
 
             const outputKeys = [ "gk", "la3os", "ipa" ];
-            const outputNames = { gk: "Gk", la3os: "La3os", ipa: "Ipa" };
+            const outputNames: Record<string, string> = { gk: "Gk", la3os: "La3os", ipa: "Ipa" };
             for ( const key of outputKeys ) {
-                const checkbox = checkboxes[`out${outputNames[key]}`];
-                const output = outputs[key];
-                const title = document.querySelector(`.ksakap2sa[data-output="${key}"]`);
+                const checkbox = checkboxes[`out${outputNames[key]}` as keyof typeof checkboxes];
+                const output = outputs[key as keyof typeof outputs];
+                const title = document.querySelector(`.ksakap2sa[data-output="${key}"]`) as HTMLElement | null;
                 const ciihii = output?.parentElement;
                 if ( checkbox && output && ciihii ) {
                     output.textContent = result[key] || "";
-                    if ( key === "gk" && typeof window.vacepu === "function" ) {
-                        window.vacepu("ox2pewa");
+                    if ( key === "gk" && typeof vacepu === "function" ) {
+                        vacepu("ox2pewa");
                     }
                     const isVisible = checkbox.checked;
                     if ( title ) {
@@ -700,12 +728,12 @@ if ( typeof module !== "undefined" && module.exports ) {
             if ( maxemaSa10Gwk ) maxemaSa10Gwk.style.display = "block";
         }
 
-        const allElements = [
+        const allElements: Element[] = [
             saxesuOx2pewa,
             ...saxesuGawek2fRadios,
             checkboxes.outGk, checkboxes.outLa3os, checkboxes.outIpa,
             checkboxes.numbers, checkboxes.literal
-        ].filter(Boolean);
+        ].filter(Boolean) as Element[];
 
         for ( const el of allElements ) {
             const eventType = el === saxesuOx2pewa ? "input" : "change";

@@ -39,7 +39,7 @@ export function renderHtmlTextToCanvas( obj: WhiteboardObject ): HTMLCanvasEleme
     const tempContainer = createTempTextContainer( obj, uniqueClass );
 
     document.body.appendChild( tempContainer );
-    ( window as any ).vacepu( uniqueClass );
+    window.vacepu( uniqueClass );
 
     const dimensions = measureTextContainer( tempContainer, obj.size! );
     const offscreen = createOffscreenCanvas( dimensions );

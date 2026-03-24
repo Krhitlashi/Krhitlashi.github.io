@@ -116,7 +116,7 @@ export function initSizeSlider(): void {
 export function initToolbar(): void {
     const toolbar = document.getElementById( "toolbarContainer" );
     initButton( "toolbarToggle", () => {
-        if ( toolbar ) ( window as any ).a3esoza( toolbar );
+        if ( toolbar ) window.a3esoza( toolbar );
     } );
 }
 

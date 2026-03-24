@@ -11,7 +11,6 @@ declare const AnimationManager: any;
 declare const getStrings: any;
 declare const APPS: any;
 declare const updateDock: any;
-declare const k2regawe: any;
 
 class WindowManager {
     static zIndex: number = CONSTANTS.WM.BASE_Z_INDEX;
@@ -652,8 +651,8 @@ class WindowManager {
     // ⟪ Set Language ⟫
 
     static setLanguage( val: string ): void {
-        if ( typeof k2regawe === "function" ) {
-            k2regawe( val );
+        if ( typeof window.k2regawe === "function" ) {
+            window.k2regawe( val );
         }
     }
 

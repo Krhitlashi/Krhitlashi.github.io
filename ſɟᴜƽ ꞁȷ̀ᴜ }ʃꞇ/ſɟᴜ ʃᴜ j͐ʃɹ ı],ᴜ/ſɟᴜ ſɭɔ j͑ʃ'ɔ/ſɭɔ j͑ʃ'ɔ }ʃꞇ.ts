@@ -3,9 +3,6 @@
 // ⟪ External Declarations 🔌 ⟫
 
 declare const L: any;
-declare const vacepu: ( className: string ) => void;
-declare const skakefK2fe: ( text: string ) => string;
-declare const vab6caja: ( num: number ) => string;
 declare const vab6k2fekp6: ( text: string ) => number;
 declare const K2FE: string[];
 
@@ -696,10 +693,10 @@ function update(): void {
     if ( useBase10 ) {
         coords = `${v1} ${h1} - ${v2} ${h2} - ${v3} ${h3} - ${v4} ${h4}`;
     } else {
-        coords = `${vab6caja( v1 )} ${vab6caja( h1 )} - ${vab6caja( v2 )} ${vab6caja( h2 )} - ${vab6caja( v3 )} ${vab6caja( h3 )} - ${vab6caja( v4 )} ${vab6caja( h4 )}`;
+        coords = `${window.vab6caja( v1 )} ${window.vab6caja( h1 )} - ${window.vab6caja( v2 )} ${window.vab6caja( h2 )} - ${window.vab6caja( v3 )} ${window.vab6caja( h3 )} - ${window.vab6caja( v4 )} ${window.vab6caja( h4 )}`;
     }
 
-    outputCoords.textContent = skakefK2fe( coords );
+    outputCoords.textContent = window.skakefK2fe( coords );
 
     const names = getNamesForCoords( [ v1, v2, v3, v4 ], [ h1, h2, h3, h4 ] );
     kefAraq.innerHTML = names.ksakaName;
