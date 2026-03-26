@@ -16,6 +16,7 @@
   "dependencies": {
     "heic2any": "^0.0.4",
     "qrcode": "^1.5.4",
+    "simplex-noise": "^4.0.3",
     "three": "^0.183.1"
   },
   "devDependencies": {

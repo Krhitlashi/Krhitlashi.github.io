@@ -263,7 +263,7 @@ function vac2ta_p0(p0) { return p0 * P0 / C2TA_L6XA3ENI; }
 
 const SACA = 1.602176634e-19;
 const K_BOLTZMANN = 1.380649e-23;
-const HI_L6RAK2K2H2 = SACA * Math.pow(2, 0o14) / K_BOLTZMANN;
+const HI_L6RAK2K2H2 = ( SACA / Math.pow(2, 0o14) ) / K_BOLTZMANN;
 
 function vahi_ak2k2h2(ak2k2h2) {
     return ak2k2h2 / HI_L6RAK2K2H2;

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="aih">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="inline-size=device-inline-size, initial-scale=1">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+
+    <title data-oskakefani="ſɟᴜ j͑ʃ'ᴜ ŋᷠw ɭʃэȝ"></title>
+    <link rel="icon" type="image/x-icon" href="../../j͑ʃɹ ɭʃᴜɔ˞ ɭl̀ɔ j͑ʃᴜꞇ.ico">
+
+    <link rel="manifest" href="../../ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.json">
+    <link rel="stylesheet" href="../../֭ſɭᴜ ı],ɔ.css">
+</head>
+<body class="cepufal">
+    <h1 data-oskakefani="ſɟᴜ j͑ʃ'ᴜ ŋᷠw ɭʃэȝ"></h1>
+
+    <thala class="cakaxa">
+        <a href="../../index.html" data-oskakefani="ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ"></a>
+        <a href="../../ſ͔ɭᴜ ᶅſɔ.html" data-oskakefani="ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ"></a>
+        <a href="../../ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ.html" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ"></a>
+        <a href="../../ꞁȷ̀ꞇ }ʃᴜƽ.html" data-oskakefani="ꞁȷ̀ꞇ }ʃᴜƽ"></a>
+    </thala>
+
+    <thala>
+        <canvas id="map-canvas" style="block-size: 512px;"></canvas>
+        <ciihii>
+            <sabosuc2w2q>
+                <label>
+                    <p data-oskakefani="ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ ı"></p>
+                    <input type="radio" name="projection" value="equirectangular" checked>
+                </label>
+                <label>
+                    <p data-oskakefani="ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ ɿ"></p>
+                    <input type="radio" name="projection" value="mercator">
+                </label>
+                <label>
+                    <p data-oskakefani="ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ ц"></p>
+                    <input type="radio" name="projection" value="mollweide">
+                </label>
+                <label>
+                    <p data-oskakefani="ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ э"></p>
+                    <input type="radio" name="projection" value="orthographic">
+                </label>
+            </sabosuc2w2q>
+        </ciihii>
+    </thala>
+
+    <thala>
+        <p class="ksakap2sa" data-oskakefani="ſןэ ſɭɘw ʃᴜ j͐ʃɹ ı],ᴜ"></p>
+        <div id="globe-container" style="block-size: 512px;"></div>
+        <label>
+            <span data-oskakefani="ɭʃᴜɔ˞ ꞁȷ̀ᴜꞇ j͑ʃᴜ ʃɜ }ʃꞇ"></span>
+            <input type="checkbox" id="rotate-toggle">
+        </label>
+    </thala>
+
+    <thala>
+        <p class="ksakap2sa" data-oskakefani="j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃꞇ"></p>
+        <ciihii>
+            <p data-oskakefani="ɽ͑ʃ'w j͑ʃ'ᴜ"></p>
+            <input type="text" id="seed" value="42">
+            <p id="seed-val" class="kefhuruq"></p>
+        </ciihii>
+        <ciihii>
+            <p data-oskakefani="ſᶘᴜ j͑ʃп́ɔ j͑ʃ'ɔ ŋᷠɹ"></p>
+            <input type="range" id="water" class="k6tani" min="0" max="64" value="40">
+            <p id="water-val" class="kefhuruq"></p>
+        </ciihii>
+        <ciihii>
+            <p data-oskakefani="ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ"></p>
+            <input type="range" id="temp" class="k6tani" min="0" max="64" value="32">
+            <p id="temp-val" class="kefhuruq"></p>
+        </ciihii>
+        <ciihii>
+            <p data-oskakefani="ɭʃw ɭʃᴜͷ̗ j͑ʃп́ɔ ſɭɹ ſȷɔ"></p>
+            <input type="range" id="continents" class="k6tani" min="1" max="8" value="4">
+            <p id="continents-val" class="kefhuruq"></p>
+        </ciihii>
+        <ciihii>
+            <p data-oskakefani="ɭl̀ᴜ ſ͕ɭɜ j͑ʃп́ɔ j͐ʃэ ɭ(ᴜ"></p>
+            <input type="range" id="mountains" class="k6tani" min="0" max="64" value="24">
+            <p id="mountains-val" class="kefhuruq"></p>
+        </ciihii>
+        <ciihii>
+            <p data-oskakefani="ſןw ſɟᴜ }ʃᴜ j͑ʃп́ɔ ſɭw ʃᴜ }ʃꞇ"></p>
+            <input type="range" id="atmosphere" class="k6tani" min="0" max="64" value="38">
+            <p id="atmosphere-val" class="kefhuruq"></p>
+        </ciihii>
+        <button id="randomize-btn" data-oskakefani="ꞁȷ̀ɜ j͑ʃᴜ ſɭᴜ ɭl̀ɜ"></button>
+    </thala>
+
+    <button id="generate-btn" data-oskakefani="ſɭʞɹ"></button>
+
+    <sak></sak>
+
+    <thala>
+        <p class="ksakap2sa" data-oskakefani="ſ͕ɭwc̭ ſɭɹ"></p>
+        <button id="download-2d" data-oskakefani="ſ͕ɭwc̭ ſɭɹ ɭʃᴜ ſןɹ }ʃꞇ"></button>
+        <button id="download-3d" data-oskakefani="ſ͕ɭwc̭ ſɭɹ ſןэ ſɭɘw }ʃꞇ"></button>
+    </thala>
+
+    <thala>
+        <p class="ksakap2sa" data-oskakefani="j͑ʃ'ɜ ſןɹ"></p>
+        <ciihii>
+            <p data-oskakefani="ꞁȷ̀ɜƴ"></p>
+            <p id="stat-land" class="kefhuruq" ></p>
+        </ciihii>
+        <ciihii>
+            <p data-oskakefani="ſᶘᴜ"></p>
+            <p id="stat-water" class="kefhuruq"></p>
+        </ciihii>
+        <ciihii>
+            <p data-oskakefani="ſןͷ̗ɜ j͑ʃƨɔȝ"></p>
+            <p id="stat-elevation" class="kefhuruq"></p>
+        </ciihii>
+        <ciihii>
+            <p data-oskakefani="ſɭɜ ı],ɹ ֭ſɭᴜ ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ"></p>
+            <p id="stat-temp" class="kefhuruq"></p>
+        </ciihii>
+        <ciihii>
+            <p data-oskakefani="ꞁȷ̀ɜ j͑ʃ'ᴜ ɭ(ᴜͷ̗ ꞁȷ̀ᴜ }ʃꞇ"></p>
+            <p id="stat-habitability" class="kefhuruq"></p>
+        </ciihii>
+    </thala>
+
+</body>
+
+<script>
+    const skakefani = {
+        aih: {
+            "ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ": "ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ",
+            "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ": "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ",
+            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ",
+            "ꞁȷ̀ꞇ }ʃᴜƽ": "ꞁȷ̀ꞇ }ʃᴜƽ",
+
+            "ſɟᴜ j͑ʃ'ᴜ ŋᷠw ɭʃэȝ": "ſɟᴜ j͑ʃ'ᴜ ŋᷠw ɭʃэȝ",
+            "ſןэ ſɭɘw ʃᴜ j͐ʃɹ ı],ᴜ": "ſןэ ſɭɘw ʃᴜ j͐ʃɹ ı],ᴜ",
+
+            "j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃꞇ": "j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃꞇ ⚙️",
+            "j͑ʃ'ɜ ſןɹ": "j͑ʃ'ɜ ſןɹ 📊",
+
+            "ſ͕ɭwc̭ ſɭɹ": "ſ͕ɭwc̭ ſɭɹ",
+
+            "ɽ͑ʃ'w j͑ʃ'ᴜ": "ɽ͑ʃ'w j͑ʃ'ᴜ",
+            "ſᶘᴜ j͑ʃп́ɔ j͑ʃ'ɔ ŋᷠɹ": "ſᶘᴜ j͑ʃп́ɔ j͑ʃ'ɔ ŋᷠɹ",
+            "ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ": "ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ",
+            "ɭʃw ɭʃᴜͷ̗ j͑ʃп́ɔ ſɭɹ ſȷɔ": "ɭʃw ɭʃᴜͷ̗ j͑ʃп́ɔ ſɭɹ ſȷɔ",
+            "ɭl̀ᴜ ſ͕ɭɜ j͑ʃп́ɔ j͐ʃэ ɭ(ᴜ": "ɭl̀ᴜ ſ͕ɭɜ j͑ʃп́ɔ j͐ʃэ ɭ(ᴜ",
+            "ſןw ſɟᴜ }ʃᴜ j͑ʃп́ɔ ſɭw ʃᴜ }ʃꞇ": "ſןw ſɟᴜ }ʃᴜ j͑ʃп́ɔ ſɭw ʃᴜ }ʃꞇ",
+            "ɭʃᴜɔ˞ ꞁȷ̀ᴜꞇ j͑ʃᴜ ʃɜ }ʃꞇ": "ɭʃᴜɔ˞ ꞁȷ̀ᴜꞇ j͑ʃᴜ ʃɜ }ʃꞇ",
+
+            "ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ ı": "ſɭ,ɔƴ",
+            "ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ ɿ": "ɭʃᴜ ſןɹ",
+            "ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ ц": "j͑ʃᴜ ֭ſɭᴜƽ ſɟɹȝ",
+            "ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ э": "ſɟɹȝ",
+
+            "ſɭʞɹ": "ſɭʞɹ",
+            "ꞁȷ̀ɜ j͑ʃᴜ ſɭᴜ ɭl̀ɜ": "ꞁȷ̀ɜ j͑ʃᴜ ſɭᴜ ɭl̀ɜ",
+            "ſ͕ɭwc̭ ſɭɹ ɭʃᴜ ſןɹ }ʃꞇ": "ſ͕ɭwc̭ ſɭɹ ɭʃᴜ ſןɹ }ʃꞇ",
+            "ſ͕ɭwc̭ ſɭɹ ſןэ ſɭɘw }ʃꞇ": "ſ͕ɭwc̭ ſɭɹ ſןэ ſɭɘw }ʃꞇ",
+
+            "ꞁȷ̀ɜƴ": "ꞁȷ̀ɜƴ",
+            "ſᶘᴜ": "ſᶘᴜ",
+            "ſןͷ̗ɜ j͑ʃƨɔȝ": "ſןͷ̗ɜ j͑ʃƨɔȝ",
+            "ſɭɜ ı],ɹ ֭ſɭᴜ ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ": "ſɭɜ ı],ɹ ֭ſɭᴜ ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ",
+            "ꞁȷ̀ɜ j͑ʃ'ᴜ ɭ(ᴜͷ̗ ꞁȷ̀ᴜ }ʃꞇ": "ꞁȷ̀ɜ j͑ʃ'ᴜ ɭ(ᴜͷ̗ ꞁȷ̀ᴜ }ʃꞇ",
+            "ſןw ſɟᴜ }ʃᴜ": "ſןw ſɟᴜ }ʃᴜ",
+        },
+        en: {
+            "ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ": "Main",
+            "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ": "Iikrhia Language",
+            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ": "Arahashii",
+            "ꞁȷ̀ꞇ }ʃᴜƽ": "Other",
+
+            "ſɟᴜ j͑ʃ'ᴜ ŋᷠw ɭʃэȝ": "Habitable Planet Generator",
+            "j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃꞇ": "2D Map",
+            "ſןэ ſɭɘw ʃᴜ j͐ʃɹ ı],ᴜ": "3D Globe",
+
+            "j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃꞇ": "Settings Panel ⚙️",
+            "j͑ʃ'ɜ ſןɹ": "Statistics Panel 📊",
+
+            "ſ͕ɭwc̭ ſɭɹ": "Download",
+
+            "ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ ı": "Equirectangular",
+            "ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ ɿ": "Mercator",
+            "ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ ц": "Mollweide",
+            "ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ э": "Orthographic",
+
+            "ɽ͑ʃ'w j͑ʃ'ᴜ": "Seed",
+            "ſᶘᴜ j͑ʃп́ɔ j͑ʃ'ɔ ŋᷠɹ": "Water Level",
+            "ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ": "Temperature",
+            "ɭʃw ɭʃᴜͷ̗ j͑ʃп́ɔ ſɭɹ ſȷɔ": "Continents",
+            "ɭl̀ᴜ ſ͕ɭɜ j͑ʃп́ɔ j͐ʃэ ɭ(ᴜ": "Mountain Height",
+            "ſןw ſɟᴜ }ʃᴜ j͑ʃп́ɔ ſɭw ʃᴜ }ʃꞇ": "Atmosphere Density","ɭʃᴜɔ˞ ꞁȷ̀ᴜꞇ j͑ʃᴜ ʃɜ }ʃꞇ": "Auto Rotate",
+
+            "ſɭʞɹ": "Generate",
+            "ꞁȷ̀ɜ j͑ʃᴜ ſɭᴜ ɭl̀ɜ": "Randomize",
+            "ſ͕ɭwc̭ ſɭɹ ɭʃᴜ ſןɹ }ʃꞇ": "Download 2D",
+            "ſ͕ɭwc̭ ſɭɹ ſןэ ſɭɘw }ʃꞇ": "Download 3D",
+
+            "ꞁȷ̀ɜƴ": "Land",
+            "ſᶘᴜ": "Water",
+            "ſןͷ̗ɜ j͑ʃƨɔȝ": "Max Elevation",
+            "ſɭɜ ı],ɹ ֭ſɭᴜ ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ": "Mean Temperature",
+            "ꞁȷ̀ɜ j͑ʃ'ᴜ ɭ(ᴜͷ̗ ꞁȷ̀ᴜ }ʃꞇ": "Habitability",
+            "ſןw ſɟᴜ }ʃᴜ": "Atmosphere",
+        }
+    };
+</script>
+
+<script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃƽᴜ ſɭɔʞ.js"></script>
+<script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɟᴜ ı],ɹͷ̗.js"></script>
+<script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
+
+<script type="module" src="ſɭɔ j͑ʃ'ɔ }ʃꞇ.ts"></script>
+
+</html>

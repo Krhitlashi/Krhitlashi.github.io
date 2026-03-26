@@ -323,7 +323,7 @@ thala {
 }
 
 ciihii {
-	background-color: var(--តានេក);
+	background-color: var(--តានេកខេលេ);
 	border-radius: var(--អិត្ភេ);
 	border: var(--សាកព៏);
 	padding: var(--អារេង);
@@ -465,6 +465,7 @@ summary:active {
 sabosuc2w2q {
 	align-items: center;
 	justify-content: center;
+	overflow: scroll;
 }
 .qox2n2kucaxema {
 	inline-size: 100%;
@@ -635,9 +636,6 @@ canvas {
 /* ⟪ ſ͕ɭэ ſɭɹ ᶅſɔ ֭ſɭɹ ⚪ ⟫ */
 
 @media (prefers-color-scheme: light) {
-	ciihii {
-		background-color: var(--ខេលេសៃច្ហិ);
-	}
 	.tahaqkef {
 		filter: invert();
 	}
