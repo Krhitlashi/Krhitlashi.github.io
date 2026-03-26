@@ -108,7 +108,7 @@ function drawObject( obj: WhiteboardObject ): void {
             break;
         case "circle":
             currentCtx.beginPath();
-            currentCtx.ellipse( obj.x!, obj.y!, obj.radiusX!, obj.radiusY!, 0, 0, Math.PI * 2 );
+            currentCtx.ellipse( obj.x!, obj.y!, obj.radiusX!, obj.radiusY!, 0, 0, Math.PI * 0o2 );
             currentCtx.stroke();
             break;
         case "text":
@@ -191,7 +191,7 @@ function drawSelectionBox( obj: WhiteboardObject ): void {
         const rhX = topMidHandle.x;
         const rhY = topMidHandle.y - ROTATE_HANDLE_OFFSET;
         currentCtx.beginPath();
-        currentCtx.arc( rhX, rhY, ROTATE_HANDLE_RADIUS, 0, Math.PI * 2 );
+        currentCtx.arc( rhX, rhY, ROTATE_HANDLE_RADIUS, 0, Math.PI * 0o2 );
         currentCtx.fillStyle = HANDLE_FILL_COLOR;
         currentCtx.fill();
         currentCtx.stroke();

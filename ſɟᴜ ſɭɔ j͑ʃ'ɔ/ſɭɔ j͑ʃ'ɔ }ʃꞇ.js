@@ -135,7 +135,12 @@ function valas() {
 // ⟪ j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ ⟫
 
 function a3esoza(soza) {
-  soza.style.scale = soza.style.scale != 1 ? 1 : 0;
+  if ( soza.classList.contains("a3e") ) {
+    soza.classList.remove("a3e");
+  }
+  else {
+    soza.classList.add("a3e");
+  }
 }
 
 // ⟪ j͑ʃᴜ ı],ɔ j͑ʃw ſɭɔ j͑ʃ'ɔ ⟫
@@ -145,10 +150,3 @@ document.addEventListener("DOMContentLoaded", () => {
   vacepu("cepufal");
   valas();
 });
-
-// ⟪ }ʃɔ ſ͕ɭɹȝ 📤 ⟫
-
-if ( typeof window !== "undefined" ) {
-  window.vacepu = vacepu;
-  window.a3esoza = a3esoza;
-}

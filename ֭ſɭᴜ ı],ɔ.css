@@ -188,18 +188,6 @@ p:has(> .cepufalxez), h1:has(> .cepufalxez) {
 	align-self: stretch;
 	justify-content: center;
 }
-.tapufal .soza.ctama {
-	bottom: var(--អារេងព៏);
-	top: unset;
-	left: var(--អារេងព៏);
-	right: var(--អារេងព៏);
-}
-.tapufal .soza.psaz {
-	bottom: var(--អារេងព៏);
-	top: var(--អារេងព៏);
-	left: var(--អារេងព៏);
-	right: unset;
-}
 
 /* ⟪ ſɭɔ˞ᴜ ſɭᴜ 🎩 ⟫ */
 
@@ -352,33 +340,45 @@ button.n2tase:hover::after, button.n2tase[aria-pressed="true"]::after {
 	gap: var(--អារេងចិ);
 	transition: all 0.25s ease;
 }
-.soza.er2ha {
+.er2ha {
 	inset: var(--អារេងព៏);
 }
-.soza.scace {
+.scace {
 	inset-inline-start: var(--អារេងព៏);
 	inset-block: var(--អារេងព៏);
 	overflow: auto;
 }
-.soza.psaz {
+.psaz {
 	bottom: var(--អារេងព៏);
 	left: var(--អារេងព៏);
 	right: var(--អារេងព៏);
 }
-.soza.ctama {
+.ctama {
 	bottom: var(--អារេងព៏);
 	top: var(--អារេងព៏);
 	left: var(--អារេងព៏);
 }
-.soza.er2ha thala {
+.er2ha thala {
 	block-size: 100%;
+}
+.a3e {
+	scale: 1;
+}
+.onera3e {
+	max-block-size: calc(100vb - var(--អារេងព៏) * 2);
+	border-radius: var(--អិត្ភេពឺ);
+	position: absolute;
+}
+.onera3e.a3e {
+	position: unset;
 }
 maxema {
 	inline-size: 100%;
 	block-size: 100%;
 	display: flex;
 	flex-direction: column;
-	justify-content: end;
+	overflow: auto;
+	transition: all 0.25s ease;
 }
 ksaka {
 	border-radius: var(--ចិង);
@@ -453,6 +453,7 @@ summary:active {
 	border-radius: var(--អិត្ភេ);
 	display: flex;
 	flex-direction: row;
+	overflow: scroll;
 }
 .c2w2qkuba img,
 .c2w2qkuba iframe {
@@ -465,7 +466,7 @@ summary:active {
 sabosuc2w2q {
 	align-items: center;
 	justify-content: center;
-	overflow: scroll;
+	overflow: visible;
 }
 .qox2n2kucaxema {
 	inline-size: 100%;

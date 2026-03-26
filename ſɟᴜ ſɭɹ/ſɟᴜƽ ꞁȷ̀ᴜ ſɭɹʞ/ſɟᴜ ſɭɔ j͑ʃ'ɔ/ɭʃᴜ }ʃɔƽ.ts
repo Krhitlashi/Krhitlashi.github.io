@@ -250,13 +250,19 @@ export class PageManager extends BaseItemManager<Page> {
 
 export const pageManager = new PageManager();
 
+// ⟪ Shared Sync & Save Helper 📋 ⟫
+
+function syncAndSave( renderListFn: () => void ): void {
+    renderListFn();
+    redrawCanvas();
+    saveState();
+}
+
 // ⟪ Layer Management Functions 📚 ⟫
 
 export function syncLayersAndSave(): void {
     layerManager.syncToState();
-    renderLayerList();
-    redrawCanvas();
-    saveState();
+    syncAndSave( renderLayerList );
 }
 
 export function addLayer(): void {
@@ -290,9 +296,7 @@ export function selectLayer( layerId: number ): void {
 
 export function syncPagesAndSave(): void {
     pageManager.syncToState();
-    renderPageList();
-    redrawCanvas();
-    saveState();
+    syncAndSave( renderPageList );
 }
 
 export function addPage(): void {

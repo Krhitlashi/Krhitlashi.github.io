@@ -36,11 +36,11 @@ export const SELECTION_STROKE_COLOR = "#000000";
 
 // ⟪ Color & Brightness Constants 🎨 ⟫
 
-export const BRIGHTNESS_WEIGHT_R = 299;
-export const BRIGHTNESS_WEIGHT_G = 587;
-export const BRIGHTNESS_WEIGHT_B = 114;
+export const BRIGHTNESS_WEIGHT_R = 0o453;
+export const BRIGHTNESS_WEIGHT_G = 0o1113;
+export const BRIGHTNESS_WEIGHT_B = 0o162;
 export const BRIGHTNESS_DIVISOR = 0o1000;
-export const BRIGHTNESS_THRESHOLD = 128;
+export const BRIGHTNESS_THRESHOLD = 0o200;
 export const PREVIEW_ALPHA = 3 / 4;
 export const COVERAGE_THRESHOLD_FRACTION = 3 / 4;
 

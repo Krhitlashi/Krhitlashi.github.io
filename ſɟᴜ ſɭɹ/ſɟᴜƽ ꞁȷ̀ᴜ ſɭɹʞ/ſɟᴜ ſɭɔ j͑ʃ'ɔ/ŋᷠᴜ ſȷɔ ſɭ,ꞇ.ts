@@ -116,10 +116,6 @@ export function resetSelectionState( ): void {
     resetAllState( { selection: true, panning: false, drawing: false } );
 }
 
-export function stopPanning( ): void {
-    resetAllState( { selection: false, panning: true, drawing: false } );
-}
-
 // ⟪ Button Initialization Helpers 🎛️ ⟫
 
 export function setButtonPressed( groupSelector: string, btn: HTMLElement | null ): void {
@@ -182,27 +178,6 @@ export function finishTextEditCommon( ): void {
 }
 
 // ⟪ Object Bounds Helpers 📐 ⟫
-
-export function getBounds( obj: WhiteboardObject ): { x: number; y: number; width: number; height: number } {
-    if ( obj.useHtmlText && obj.cachedWidth && obj.cachedHeight ) {
-        return {
-            x: obj.x!,
-            y: obj.y! - obj.cachedHeight,
-            width: obj.cachedWidth,
-            height: obj.cachedHeight
-        };
-    }
-    ctx!.font = `${obj.size}px "ı],ᴜ }ʃᴜ", sans-serif`;
-    const metrics = ctx!.measureText( obj.text || "W" );
-    const width = Math.max( metrics.width, obj.size! * TEXT_MIN_WIDTH_MULTIPLIER );
-    const height = obj.size!;
-    return {
-        x: obj.x!,
-        y: obj.y! - height,
-        width: width,
-        height: height
-    };
-}
 
 export function getObjectBounds( obj: WhiteboardObject ): { x: number; y: number; width: number; height: number } {
     return getHandler( obj ).getBounds( obj );
@@ -482,7 +457,7 @@ export function drawPreviewShape( obj: WhiteboardObject, context: CanvasRenderin
             break;
         case "circle":
             ctxToUse.beginPath( );
-            ctxToUse.ellipse( obj.x!, obj.y!, obj.radiusX!, obj.radiusY!, 0, 0, Math.PI * 2 );
+            ctxToUse.ellipse( obj.x!, obj.y!, obj.radiusX!, obj.radiusY!, 0, 0, Math.PI * 0o2 );
             ctxToUse.stroke( );
             break;
         case "shape":
@@ -1132,7 +1107,7 @@ export function splitLineObject( obj: WhiteboardObject, eraserPath: Point[], era
 
 export function splitCircleObject( obj: WhiteboardObject, eraserPath: Point[], eraserRadius: number ): { newObjects: WhiteboardObject[] } {
     let anyPointErased = false;
-    const sampleAngles = [ 0, Math.PI / 4, Math.PI / 2, 3 * Math.PI / 4, Math.PI, 5 * Math.PI / 4, 3 * Math.PI / 2, 7 * Math.PI / 4 ];
+    const sampleAngles = [ 0, Math.PI / 0o4, Math.PI / 0o2, 3 * Math.PI / 0o4, Math.PI, 5 * Math.PI / 0o4, 3 * Math.PI / 0o2, 7 * Math.PI / 0o4 ];
     const survivingPoints: Array<{ angle: number; x: number; y: number }> = [];
 
     for ( const angle of sampleAngles ) {
@@ -1289,8 +1264,8 @@ export const OBJECT_HANDLERS: Record<string, ObjectHandler> = {
         },
         resize( obj, handle, localX, localY, init ) {
             const newLeft = localX, newTop = localY;
-            const newRight = init.x + ( init.radiusX * 2 );
-            const newBottom = init.y + ( init.radiusY * 2 );
+            const newRight = init.x + ( init.radiusX * 0o2 );
+            const newBottom = init.y + ( init.radiusY * 0o2 );
             obj.x = ( newLeft + newRight ) / 2;
             obj.y = ( newTop + newBottom ) / 2;
             obj.radiusX = Math.max( MIN_SIZE, newRight - newLeft ) / 2;

@@ -1,5 +1,9 @@
 /* ≺⧼ ſɟᴜ j͑ʃ'ᴜ ſןᴜȝ 🧱 ⧽≻ */
 
+.cepufal {
+    padding: var(--អារេងព៏);
+}
+
 .workspace-3d-container {
     position: fixed;
     inset: 0;
@@ -15,26 +19,10 @@
 
 /* ⟪ toolbar-wrapper 🧰 ⟫ */
 
-.toolbar-wrapper {
+#toolbarWrapper {
     display: flex;
     flex-direction: row;
-    position: fixed;
-    inset-block-start: 16px;
-    inset-inline-start: 16px;
     z-index: 128;
-}
-
-#toolbarContainer {
-    transition: all 0.25s ease;
-    display: flex;
-    flex-direction: column;
-    max-block-size: calc(100vb - var(--អារេងព៏) * 2);
-    overflow: auto;
-    border-radius: var(--អិត្ភេពឺ);
-}
-
-#toolbarContainer[style*="scale: 0"] {
-    position: absolute;
     pointer-events: none;
 }
 

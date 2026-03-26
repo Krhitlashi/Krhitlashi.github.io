@@ -8,11 +8,10 @@
 
 /* ⟪ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ ⬜ ⟫ */
 
-html, body {
-    overflow: hidden;
-    touch-action: manipulation;
-    overscroll-behavior: none;
+.cepufal {
+    padding: var(--អារេងព៏);
 }
+
 body.whiteboard-page {
     overflow: hidden;
     align-items: flex-start;
@@ -108,29 +107,11 @@ body.whiteboard-page {
 
 /* ⟪ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ 🧰 ⟫ */
 
-.toolbar-wrapper {
+#toolbarWrapper {
     display: flex;
     flex-direction: row;
     position: fixed;
-    inset-block-start: 16px;
-    inset-inline-start: 16px;
-    z-index: 64;
-    pointer-events: none;
-}
-#toolbarContainer {
-    transition: all 0.25s ease;
-    display: flex;
-    flex-direction: column;
-    max-block-size: calc( 100vb - var( --អារេងព៏ ) * 2 );
-    overflow: auto;
-    border-radius: var( --អិត្ភេពឺ );
-    pointer-events: auto;
-    touch-action: auto;
-    -webkit-overflow-scrolling: touch;
-}
-#toolbarContainer[style*="scale: 0"] {
-    position: absolute;
-    pointer-events: none;
+    z-index: 128;
 }
 .toolbar-toggle {
     inline-size: 48px;

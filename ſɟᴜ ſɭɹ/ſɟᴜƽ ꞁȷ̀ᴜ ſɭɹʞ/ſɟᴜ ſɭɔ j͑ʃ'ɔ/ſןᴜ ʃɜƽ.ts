@@ -71,7 +71,7 @@ function measureTextContainer( container: HTMLDivElement, minSize: number ): { w
     let width = container.offsetWidth;
     let height = container.offsetHeight;
 
-    width = Math.max( width, minSize * 2 );
+    width = Math.max( width, minSize * 0o2 );
     height = Math.max( height, minSize );
 
     return { width, height };
