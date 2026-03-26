@@ -3,9 +3,10 @@
 async function b6vegejexSakeveni() {
 	if ( "serviceWorker" in navigator ) {
 		try {
+			const b6vegejexRuva = new URL("/ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js", window.location.origin);
 			const b6vegejex = await navigator
 			.serviceWorker
-			.register("./ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js");
+			.register(b6vegejexRuva);
 			console.log("( ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀w ʃэ j͑ʃ'ɔ ɭl̀ɔᶗ‹ ⸙ j͑ʃᴜ ſɭɔ j͑ʃ'ɔ }ʃꞇ ⸙ ✔️ )", b6vegejex.scope);
 		}
 		catch ( e ) {
@@ -134,12 +135,12 @@ function valas() {
 
 // ⟪ j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ ⟫
 
-function a3esoza(soza) {
-  if ( soza.classList.contains("a3e") ) {
-    soza.classList.remove("a3e");
+function a3esoza(sozanu) {
+  if ( sozanu.classList.contains("a3e") ) {
+    sozanu.classList.remove("a3e");
   }
   else {
-    soza.classList.add("a3e");
+    sozanu.classList.add("a3e");
   }
 }
 

@@ -12,6 +12,8 @@ import {
     findObjectAtPoint, invalidateTextCaches
 } from "./ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
 
+import { isSharedUiElement } from "../../}ʃɹ ɭʃᴜ j͑ʃɔ }ʃw j͑ʃᴜ ſɭᴜ ŋᷠᴜ.js";
+
 import {
     layerManager, pageManager, renderLayerList, renderPageList
 } from "./ɭʃᴜ }ʃɔƽ.js";
@@ -139,7 +141,6 @@ function initCanvasEvents(): void {
     if ( !canvas ) return;
 
     canvas.addEventListener( "dblclick", handleDoubleClick );
-    initToolbarTouch();
 
     document.addEventListener( "touchstart", handleTouchStart, { passive: false } );
     document.addEventListener( "touchmove", handleTouchMove, { passive: false } );
@@ -163,25 +164,7 @@ function initCanvasEvents(): void {
 }
 
 function isUIElement( target: EventTarget | null ): boolean {
-    if ( !target || !( target instanceof HTMLElement ) ) return false;
-    return target.closest( ".n2tase, .toolbar-wrapper, .cakaxa" ) !== null;
-}
-
-function initToolbarTouch(): void {
-    const toolbar = document.getElementById( "toolbarContainer" );
-    if ( !toolbar ) return;
-
-    let startY = 0, startScroll = 0;
-    toolbar.addEventListener( "touchstart", ( e: TouchEvent ) => {
-        if ( e.touches.length !== 1 ) return;
-        startY = e.touches[ 0 ].clientY;
-        startScroll = toolbar.scrollTop;
-    }, { passive: true } );
-
-    toolbar.addEventListener( "touchmove", ( e: TouchEvent ) => {
-        if ( e.touches.length !== 1 ) return;
-        toolbar.scrollTop = startScroll + ( startY - e.touches[ 0 ].clientY );
-    }, { passive: true } );
+    return isSharedUiElement( target );
 }
 
 function handleDocumentMouseDown( e: MouseEvent ): void {

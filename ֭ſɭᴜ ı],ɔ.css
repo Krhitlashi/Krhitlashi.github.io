@@ -84,7 +84,7 @@
 	text-align: center;
 	scrollbar-width: thin;
 }
-*:not(.flak:not(.flak[open])):not(body):not(ariiba):not(.soza) {
+*:not(.flak:not(.flak[open])):not(body):not(ariiba):not(.sozanu) {
 	gap: var(--អារេង);
 }
 
@@ -130,6 +130,9 @@ sak {
 		opacity: 1;
 		transform: scale(1);
 	}
+}
+.kobe {
+	display: none !important;
 }
 
 /* ⟪ ſɭɘэ 📄 ⟫ */
@@ -331,9 +334,9 @@ ciihii {
 button.n2tase:hover::after, button.n2tase[aria-pressed="true"]::after {
 	background-color: var(--តានេក);
 }
-.soza {
-	border-radius: var(--អិត្ភេ);
+.sozanu {
 	scale: 0;
+	border-radius: var(--អិត្ភេ);
 	position: fixed;
 	display: flex;
 	flex-direction: column;
@@ -363,14 +366,6 @@ button.n2tase:hover::after, button.n2tase[aria-pressed="true"]::after {
 }
 .a3e {
 	scale: 1;
-}
-.onera3e {
-	max-block-size: calc(100vb - var(--អារេងព៏) * 2);
-	border-radius: var(--អិត្ភេពឺ);
-	position: absolute;
-}
-.onera3e.a3e {
-	position: unset;
 }
 maxema {
 	inline-size: 100%;

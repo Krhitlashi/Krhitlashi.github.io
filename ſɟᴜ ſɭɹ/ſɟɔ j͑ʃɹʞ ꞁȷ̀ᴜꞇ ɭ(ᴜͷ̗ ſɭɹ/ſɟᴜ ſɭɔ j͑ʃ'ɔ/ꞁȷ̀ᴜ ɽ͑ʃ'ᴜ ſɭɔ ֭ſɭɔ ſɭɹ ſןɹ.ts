@@ -65,7 +65,7 @@ class WindowManager {
                     const style = doc.createElement( "style" );
                     style.id = "injected-style";
                     style.textContent = `
-                        h1, .saxesukef, .cakaxa, .soza, nav, footer, header { display: none !important; }
+                        h1, .saxesukef, .cakaxa, .sozanu, nav, footer, header { display: none !important; }
                         body { background-color: transparent !important; padding: var(--អារេងព៏) !important; }
                         ciihii {
                         background-color: var(--តានេក) !important; }

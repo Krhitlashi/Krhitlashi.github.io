@@ -1,0 +1,57 @@
+/* ֭ſɭᴜ ı],ɔ 🎨 */
+
+.cepufal {
+    padding: var(--អារេងព៏);
+}
+
+/* ⟪ }ʃɹ ɭʃᴜ j͑ʃɔ }ʃw j͑ʃᴜ ſɭᴜ ŋᷠᴜ 🌱 ⟫ */
+
+.n2tasenusakama {
+    display: flex;
+    flex-direction: row;
+    z-index: 128;
+    position: fixed;
+}
+.n2tasenusakama-canera3e {
+    inline-size: 48px;
+    block-size: 48px;
+    pointer-events: auto;
+    transition: margin-inline-start 0.25s ease;
+}
+.n2tasenusakama-canera3e::after {
+    content: "<";
+    transition: transform 0.25s ease;
+}
+.onera3e {
+	max-block-size: calc(100vb - var(--អារេងព៏) * 2);
+	border-radius: var(--អិត្ភេពឺ);
+	position: absolute;
+}
+.onera3e.a3e {
+	position: unset;
+}
+.onera3e:not(.a3e) ~ .n2tasenusakama-canera3e::after {
+    transform: rotate(180deg);
+}
+
+/* ⟪ j͑ʃɜ ſɭ,ᴜ }ʃw 🪽 ⟫ */
+
+.sozanukara {
+    position: fixed;
+    flex-direction: row;
+    z-index: 128;
+}
+.cpsx-tp3k {
+    inset-block-start: var(--អារេងព៏);
+    inset-inline-end: var(--អារេងព៏);
+}
+.cp3k-tpst {
+    inset-block-end: var(--អារេងព៏);
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75em;
+}
+.cp3k-tp3k {
+    inset-block-end: var(--អារេងព៏);
+    inset-inline-end: var(--អារេងព៏);
+}

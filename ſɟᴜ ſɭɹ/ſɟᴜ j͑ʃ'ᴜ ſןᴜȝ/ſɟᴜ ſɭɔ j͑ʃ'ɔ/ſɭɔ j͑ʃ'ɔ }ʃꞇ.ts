@@ -6,6 +6,7 @@
 
 import * as THREE from "three";
 import { OrbitControls } from "three/addons";
+import { initSharedToolbar } from "../../}ʃɹ ɭʃᴜ j͑ʃɔ }ʃw j͑ʃᴜ ſɭᴜ ŋᷠᴜ.js";
 
 /**
  * Block data structure
@@ -164,6 +165,8 @@ class BlockBuilderWorkspace {
      * Setup UI controls
      */
     private setupUI(): void {
+        initSharedToolbar();
+
         const toolButtons = document.querySelectorAll("#toolsPanel button[data-tool]");
         toolButtons.forEach((btn) => {
             btn.addEventListener("click", (e) => {
@@ -274,33 +277,27 @@ class BlockBuilderWorkspace {
             });
         }
         
-        const undoBtn = document.getElementById("undoBtn");
-        const redoBtn = document.getElementById("redoBtn");
-        const clearBtn = document.getElementById("clearBtn");
-        
-        if (undoBtn) undoBtn.addEventListener("click", () => this.undo());
-        if (redoBtn) redoBtn.addEventListener("click", () => this.redo());
-        if (clearBtn) clearBtn.addEventListener("click", () => this.clearAll());
-        
-        const saveBtn = document.getElementById("saveBtn");
-        const loadBtn = document.getElementById("loadBtn");
-        const export3DBtn = document.getElementById("export3DBtn");
         const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+        const bindClick = (id: string, handler: () => void): void => {
+            document.getElementById(id)?.addEventListener("click", handler);
+        };
 
-        if (saveBtn) saveBtn.addEventListener("click", () => this.save());
-        if (loadBtn) loadBtn.addEventListener("click", () => fileInput.click());
-        if (fileInput) fileInput.addEventListener("change", (e) => this.load(e));
-        if (export3DBtn) export3DBtn.addEventListener("click", () => this.exportOBJ());
-        
-        const quickUndo = document.getElementById("quickUndo");
-        const quickRedo = document.getElementById("quickRedo");
-        const quickClear = document.getElementById("quickClear");
-        const quickSave = document.getElementById("quickSave");
-        
-        if (quickUndo) quickUndo.addEventListener("click", () => this.undo());
-        if (quickRedo) quickRedo.addEventListener("click", () => this.redo());
-        if (quickClear) quickClear.addEventListener("click", () => this.clearAll());
-        if (quickSave) quickSave.addEventListener("click", () => this.save());
+        const actionBindings: Array<[string, () => void]> = [
+            ["undoBtn", () => this.undo()],
+            ["quickUndo", () => this.undo()],
+            ["redoBtn", () => this.redo()],
+            ["quickRedo", () => this.redo()],
+            ["clearBtn", () => this.clearAll()],
+            ["quickClear", () => this.clearAll()],
+            ["saveBtn", () => this.save()],
+            ["quickSave", () => this.save()],
+            ["loadBtn", () => fileInput?.click()],
+            ["export3DBtn", () => this.exportOBJ()]
+        ];
+
+        actionBindings.forEach(([id, handler]) => bindClick(id, handler));
+
+        fileInput?.addEventListener("change", (e) => this.load(e));
     }
 
     /**

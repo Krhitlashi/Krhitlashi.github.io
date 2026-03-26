@@ -6,12 +6,6 @@
     --pan-y: 0px;
 }
 
-/* ⟪ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ ⬜ ⟫ */
-
-.cepufal {
-    padding: var(--អារេងព៏);
-}
-
 body.whiteboard-page {
     overflow: hidden;
     align-items: flex-start;
@@ -71,26 +65,9 @@ body.whiteboard-page {
 
 /* ⟪ }ʃɹ ɭʃᴜ j͑ʃɔ j͑ʃᴜꞇ ſɟᴜ ſɭᴜ ŋᷠᴜ 🧱 ⟫ */
 
-.zoom-controls, .quick-actions, .status-bar, #transformControls {
-    position: fixed;
-    z-index: 128;
-}
-.zoom-controls {
-    inset-block-end: var(--អារេងព៏);
-    inset-inline-end: var(--អារេងព៏);
-}
-.quick-actions {
-    inset-block-start: var(--អារេងព៏);
-    inset-inline-end: var(--អារេងព៏);
-}
-.status-bar {
-    inset-block-end: var(--អារេងព៏);
-    inset-inline-start: 50%;
-    font-size: 0.75em;
-}
-
 #transformControls {
     position: fixed;
+    z-index: 128;
     inset-inline-end: var(--អារេងព៏);
     inset-block: 50%;
     opacity: 0;
@@ -103,41 +80,6 @@ body.whiteboard-page {
 }
 #transformControls:not(.has-text) #editSelected {
     display: none;
-}
-
-/* ⟪ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ 🧰 ⟫ */
-
-#toolbarWrapper {
-    display: flex;
-    flex-direction: row;
-    position: fixed;
-    z-index: 128;
-}
-.toolbar-toggle {
-    inline-size: 48px;
-    block-size: 48px;
-    transition: margin-inline-start 0.25s ease;
-    pointer-events: auto;
-}
-.toolbar-toggle::after {
-    content: "<";
-    transition: transform 0.25s ease;
-}
-#toolbarContainer[style*="scale: 0"] ~ .toolbar-toggle::after {
-    transform: rotate(180deg);
-}
-.custom-color {
-    display: flex;
-    inline-size: 100%;
-}
-.custom-color input[type="color"] {
-    inline-size: 32px;
-    block-size: 100%;
-    padding: 0;
-    background: none;
-}
-.custom-color input[type="text"] {
-    text-transform: uppercase;
 }
 
 /* ⟪ ɭʃᴜ }ʃɔƽ 📚 ⟫ */

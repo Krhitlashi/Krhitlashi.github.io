@@ -1,9 +1,5 @@
 /* ≺⧼ ſɟᴜ j͑ʃ'ᴜ ſןᴜȝ 🧱 ⧽≻ */
 
-.cepufal {
-    padding: var(--អារេងព៏);
-}
-
 .workspace-3d-container {
     position: fixed;
     inset: 0;
@@ -15,47 +11,4 @@
     inline-size: 100%;
     block-size: 100%;
     touch-action: none;
-}
-
-/* ⟪ toolbar-wrapper 🧰 ⟫ */
-
-#toolbarWrapper {
-    display: flex;
-    flex-direction: row;
-    z-index: 128;
-    pointer-events: none;
-}
-
-.toolbar-toggle {
-    inline-size: 48px;
-    block-size: 48px;
-    transition: margin-inline-start 0.25s ease;
-    pointer-events: auto;
-}
-
-.toolbar-toggle::after {
-    content: "<";
-    transition: transform 0.25s ease;
-}
-
-#toolbarContainer[style*="scale: 0"] ~ .toolbar-toggle::after {
-    transform: rotate(180deg);
-}
-
-/* ⟪ quick-actions & status-bar ⟫ */
-
-.quick-actions {
-    position: fixed;
-    inset-block-start: var(--អារេងព៏);
-    inset-inline-end: var(--អារេងព៏);
-    z-index: 128;
-}
-
-.status-bar {
-    position: fixed;
-    inset-block-end: var(--អារេងព៏);
-    inset-inline-start: 50%;
-    transform: translateX(-50%);
-    z-index: 128;
-    font-size: 0.75em;
 }

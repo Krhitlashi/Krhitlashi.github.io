@@ -4,7 +4,7 @@
 declare global {
   // ⟨ ſɭɔ j͑ʃ'ɔ }ʃꞇ.js ⟩ - Text Processing
   function vacepu(className: string): void;
-  function a3esoza(soza: HTMLElement): void;
+  function a3esoza(sozanu: HTMLElement): void;
   function valas(): void;
   function b6vegejexSakeveni(): Promise<void>;
 

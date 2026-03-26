@@ -11,16 +11,17 @@
     <link rel="icon" type="image/x-icon" href="../../j͑ʃɹ ɭʃᴜɔ˞ ɭl̀ɔ j͑ʃᴜꞇ.ico">
     <link rel="manifest" href="../../ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.json">
     <link rel="stylesheet" href="../../֭ſɭᴜ ı],ɔ.css">
+    <link rel="stylesheet" href="../֭ſɭᴜ ı],ɔ.css">
     <link rel="stylesheet" href="֭ſɭᴜ ı],ɔ.css">
 </head>
 
-<body class="cepufal workspace-3d-page">
+<body class="cepufal">
     <div class="workspace-3d-container" id="workspace3dContainer">
         <canvas id="workspace3dCanvas"></canvas>
     </div>
 
-    <div id="toolbarWrapper">
-        <div id="toolbarContainer" class="soza onera3e scace a3e">
+    <div id="toolbarWrapper" class="n2tasenusakama">
+        <div id="toolbarContainer" class="sozanu onera3e scace a3e">
             <thala class="n2tase" id="toolsPanel">
                 <p class="ksakap2sa"><span data-oskakefani="ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ"></span> 🧱</p>
                 <button data-tool="select" aria-pressed="true"><span data-oskakefani="j͑ʃw ſɭʞɹȝ"></span> 🖱️</button>
@@ -32,7 +33,7 @@
             <thala class="n2tase" id="colorsPanel">
                 <p class="ksakap2sa"><span data-oskakefani="ᶅſɔ ֭ſɭɹ"></span> 🎨</p>
                 <div class="qox2n2kucaxema" id="colorGrid"></div>
-                <div class="custom-color">
+                <div>
                     <input type="color" id="customColor" value="#000000">
                     <input type="text" id="hexColor" placeholder="#000000" maxlength="7">
                 </div>
@@ -87,17 +88,17 @@
                 </a>
             </thala>
         </div>
-        <button class="n2tase toolbar-toggle" id="toolbarToggle" onclick="a3esoza(document.getElementById('toolbarContainer'))"></button>
+        <button class="n2tase n2tasenusakama-canera3e" id="toolbarToggle"></button>
     </div>
 
-    <thala class="cakaxa n2tase quick-actions">
+    <thala class="sozanukara a3e cpsx-tp3k n2tase">
         <button id="quickUndo">↩️</button>
         <button id="quickRedo">↪️</button>
         <button id="quickClear">🗑️</button>
         <button id="quickSave">💾</button>
     </thala>
 
-    <thala class="cakaxa n2tase status-bar">
+    <thala class="sozanukara a3e cp3k-tpst n2tase">
         <p><span data-oskakefani="ſɭw ʃᴜ"></span><span id="blockCount">0</span></p>
         <p><span data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ"></span><span id="cursorPos">0, 0, 0</span></p>
         <p><span data-oskakefani="ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ"></span><span id="cameraInfo">0°, 0°, 0°</span></p>

@@ -412,14 +412,14 @@ async function k6liq_tahaq(
         // Make it square by cropping to center
         const kmam2_pal6 = Math.min( sf, ld );
         const ctamani = neq2qCepu( sf, kmam2_pal6 );
-        const soza = neq2qCepu( ld, kmam2_pal6 );
+        const sozanu = neq2qCepu( ld, kmam2_pal6 );
 
         // Create canvas for cropping
         const canvas = k2falTahaq( kmam2_pal6, kmam2_pal6 );
         const kumukalasu = canvas.getContext( "2d" );
         if ( !kumukalasu ) return null;
 
-        kumukalasu.drawImage( tahaq, ctamani, soza, kmam2_pal6, kmam2_pal6, 0, 0, kmam2_pal6, kmam2_pal6 );
+        kumukalasu.drawImage( tahaq, ctamani, sozanu, kmam2_pal6, kmam2_pal6, 0, 0, kmam2_pal6, kmam2_pal6 );
 
         const pal6 = pal6_l6kanaz ?? kmam2_pal6;
         const k6liqani = kf2_k6liqani_2tbesu( pal6 );

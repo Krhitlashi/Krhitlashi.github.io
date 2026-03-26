@@ -7,8 +7,10 @@ import {
 
 import {
     normalizeHexColor, isValidHexColor,
-    setButtonPressed, initButtonGroup, initButton, initButtons
+    setButtonPressed, initButtonGroup, initButtons
     } from "./ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
+
+import { initSharedToolbar } from "../../}ʃɹ ɭʃᴜ j͑ʃɔ }ʃw j͑ʃᴜ ſɭᴜ ŋᷠᴜ.js";
 
 import {
     pageManager,
@@ -114,10 +116,7 @@ export function initSizeSlider(): void {
 }
 
 export function initToolbar(): void {
-    const toolbar = document.getElementById( "toolbarContainer" );
-    initButton( "toolbarToggle", () => {
-        if ( toolbar ) window.a3esoza( toolbar );
-    } );
+    initSharedToolbar();
 }
 
 // ⟪ History & Undo/Redo 📚 ⟫

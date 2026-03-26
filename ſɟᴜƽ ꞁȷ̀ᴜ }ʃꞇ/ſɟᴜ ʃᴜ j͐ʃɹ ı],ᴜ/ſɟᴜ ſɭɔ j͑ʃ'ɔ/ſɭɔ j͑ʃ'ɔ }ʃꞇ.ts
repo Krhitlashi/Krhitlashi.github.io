@@ -419,13 +419,13 @@ function switchMode( mode: "decimal" | "dms" ): void {
     if ( mode === "decimal" ) {
         tabDecimal.setAttribute( "aria-pressed", "true" );
         tabDMS.setAttribute( "aria-pressed", "false" );
-        decimalControls.classList.remove( "hidden" );
-        dmsControls.classList.add( "hidden" );
+        decimalControls.classList.remove( "kobe" );
+        dmsControls.classList.add( "kobe" );
     } else {
         tabDMS.setAttribute( "aria-pressed", "true" );
         tabDecimal.setAttribute( "aria-pressed", "false" );
-        dmsControls.classList.remove( "hidden" );
-        decimalControls.classList.add( "hidden" );
+        dmsControls.classList.remove( "kobe" );
+        decimalControls.classList.add( "kobe" );
     }
 }
 
@@ -918,7 +918,7 @@ function search( query: string ): SearchReturn | null {
 function displaySearchResults( result: SearchReturn | null ): void {
     if ( !result ) {
         searchResults.innerHTML = "<p>֭ſɭɹ ſɟɔ j͐ʃɹʞ ⟅</p>";
-        searchResults.classList.remove( "hidden" );
+        searchResults.classList.remove( "kobe" );
         return;
     }
 
@@ -929,17 +929,17 @@ function displaySearchResults( result: SearchReturn | null ): void {
     if ( !showList && results.length === 1 ) {
         const r = results[ 0 ];
         updateMapPosition( r.lat, r.lon, zoom || ZOOM_LEVEL_2 );
-        searchResults.classList.add( "hidden" );
+        searchResults.classList.add( "kobe" );
         return;
     }
 
     createResultButtons("#searchResults", results, zoom || ZOOM_LEVEL_2, (lat, lon, targetZoom) => {
         updateMapPosition(lat, lon, targetZoom);
-        searchResults.classList.add("hidden");
+        searchResults.classList.add("kobe");
         searchInput.value = "";
     });
 
-    searchResults.classList.remove( "hidden" );
+    searchResults.classList.remove( "kobe" );
 }
 
 async function searchAddress(): Promise<void> {
@@ -953,7 +953,7 @@ async function searchAddress(): Promise<void> {
     }
 
     searchResults.innerHTML = "<p>ſɭᴎɔ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ</p>";
-    searchResults.classList.remove( "hidden" );
+    searchResults.classList.remove( "kobe" );
 
     try {
         const response = await fetch( `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent( query )}&limit=5` );
@@ -977,7 +977,7 @@ async function searchAddress(): Promise<void> {
 
         createResultButtons("#searchResults", osmResults, 0o20, (lat, lon) => {
             updateMapPosition(lat, lon, 0o20);
-            searchResults.classList.add("hidden");
+            searchResults.classList.add("kobe");
             searchInput.value = "";
         });
 

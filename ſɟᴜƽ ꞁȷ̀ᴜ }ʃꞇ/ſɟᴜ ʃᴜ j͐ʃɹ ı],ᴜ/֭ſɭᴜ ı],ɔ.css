@@ -22,10 +22,6 @@
     z-index: 512;
     pointer-events: none;
 }
-.hidden {
-    display: none !important;
-}
-
 /* ≺⧼ Leaflet 🥬 ⧽≻ */
 
 .leaflet-control-zoom {
