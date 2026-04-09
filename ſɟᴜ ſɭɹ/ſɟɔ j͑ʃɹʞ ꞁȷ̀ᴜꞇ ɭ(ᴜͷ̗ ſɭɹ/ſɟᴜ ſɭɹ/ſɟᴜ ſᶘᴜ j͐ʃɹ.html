@@ -13,18 +13,45 @@
 </head>
 
 <body class="cepufal">
+    <thala>
+        <maxema class="c2w2qkuba">
+            <button onclick="wrapText('≺⧼ ',' ⧽≻')">≺⧼ ⧽≻</button>
+            <button onclick="wrapText('⟪ ',' ⟫')">⟪ ⟫</button>
+            <button onclick="wrapText('⟨ ',' ⟩')">⟨ ⟩</button>
+            <sak></sak>
+            <button onclick="wrapText('≺ ',' ≻')">≺ ≻</button>
+            <button onclick="wrapText('• ',' •')">• •</button>
+        </maxema>
+    </thala>
     <textarea id="notepad" data-oskakefani="ph_start_typing"></textarea>
     <button onclick="saveNotes()" data-oskakefani="cmd_save"></button>
     <p id="status" style="opacity: 0; transition: opacity 0.25s;" data-oskakefani="msg_saved"></p>
 </body>
 <script>
-    const pad = document.getElementById('notepad');
-    const status = document.getElementById('status');
-    pad.value = localStorage.getItem('notetaker-notes') || '';
+    const pad = document.getElementById("notepad");
+    const status = document.getElementById("status");
+    pad.value = localStorage.getItem("notetaker-notes") || "";
     function saveNotes() {
-        localStorage.setItem('notetaker-notes', pad.value);
-        status.style.opacity = '1';
+        const blob = new Blob([pad.value], { type: "text/plain" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "ſᶘᴜ j͐ʃɹ.txt";
+        a.click();
+        URL.revokeObjectURL(a.href);
+        status.style.opacity = "1";
         setTimeout(() => status.style.opacity = '0', 0o3000);
+    }
+    function wrapText(before, after) {
+        const start = pad.selectionStart;
+        const end = pad.selectionEnd;
+        const selected = pad.value.substring(start, end);
+        const wrapped = before + selected + after;
+        pad.setRangeText(wrapped, start, end, "select");
+        pad.focus();
+        if ( selected.length === 0 ) {
+            const cursorPos = start + before.length;
+            pad.setSelectionRange(cursorPos, cursorPos);
+        }
     }
 
     const skakefani = {
