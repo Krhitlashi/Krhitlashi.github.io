@@ -6,7 +6,7 @@
 // ⟪ External Declarations 🔌 ⟫
 
 async function tem2Vefal(): Promise<void> {
-    const cakavop2 = "ſɟᴜ j͑ʃ'ɜ ſןɹ.txt";
+    const cakavop2 = new URL("./ſɟᴜ j͑ʃ'ɜ ſןɹ.txt", import.meta.url).href;
     const gelesuThala = document.getElementById("gelesuthala");
 
     if ( !gelesuThala ) {
