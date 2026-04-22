@@ -44,6 +44,7 @@ interface Xez {
     ksozdini: TextDims[];
     xezEr2haSefwini: number;
     xezEr2haL6da: number;
+    verticalScale: number;
 }
 
 interface TextDims {
@@ -80,6 +81,7 @@ const psazaiAreqj2kKek = document.getElementById("psazaiAreqj2k") as HTMLInputEl
 const saqaiAreqj2kKek = document.getElementById("saqaiAreqj2k") as HTMLInputElement;
 const pawasaiAraqKek = (): HTMLInputElement | null => document.querySelector('input[name="pawasaiAraq"]:checked');
 const sefaktapuniKek = document.getElementById("sefaktapuni") as HTMLInputElement;
+const squeezeVerticalKek = document.getElementById("vac2w2k") as HTMLInputElement;
 const xezSwekmavem2Kek = document.getElementById("xezSwekmavem2") as HTMLInputElement;
 const tapuAreqj2kKek = document.getElementById("tapuAreqj2k") as HTMLInputElement;
 
@@ -195,6 +197,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
     const saqaiAreqj2k = parseInt(saqaiAreqj2kKek.value, 0o10);
     const pawasaiAraq = pawasaiAraqKek()?.value || "left";
     const sefaktapuni = sefaktapuniKek.checked;
+    const vac2w2k = squeezeVerticalKek.checked;
     const xezSwekmavem2 = parseInt(xezSwekmavem2Kek.value, 0o10);
     const tapuAreqj2k = parseInt(tapuAreqj2kKek.value, 0o10);
 
@@ -221,6 +224,12 @@ kf2Sweca12na.addEventListener("click", function (): void {
         "ſɭ,", "ƴ", "ɭl̀", "ᴎ", "ſɟ", "ᴜ̭", "ı],", "ᶗ‹", "ſ͕ȷ", "ⱷ̮̀",
         "ſ͔ɭ", "ɴ", "ſɭ", "ƽ", "֭ſɭ", "ᴜ̩", "ſ͕ɭ", "ȝ", "ſᶘ", "ꝛ̗", "ſ̀ȷ", "ŋ", "ſɭˬ", "ɯ",
         "ꞁȷ̀", "ⅎ", "ꞇ", "ɹ", "ɔ", "ᴜ", "w", "ɜ", "э",
+        "ȏſן", "ɘȏ", "ȏŋᷠ", "c̭ȏ",
+        "ȏɭʃ'", "ⱷ᷐ȏ", "ȏ}ʃ'", "c̏ȏ",
+        "ȏɭʃ", "ƨȏ", "ȏ}ʃ", "c̗ȏ",
+        "ȏſ̀ȷ", "ŋȏ", "ȏoͩſ̀ȷ", "ŋoͩȏ",
+        "ȏſɟ", "ᴜ̭ȏ", "ȏſ͕ȷ", "ⱷ̮̀ȏ",
+        "ꞙɭ"
     ].sort((a, b) => b.length - a.length);
 
 
@@ -259,9 +268,10 @@ kf2Sweca12na.addEventListener("click", function (): void {
 
 
     document.fonts.ready.then(() => {
-        ctx.font = `${lagaPal6}px ${lagalInakLaga}`;
+    ctx.font = `${lagaPal6}px ${lagalInakLaga}`;
+    ctx.textRendering = "optimizeLegibility";
 
-        let xezKucaq: string[] = [];
+    let xezKucaq: string[] = [];
         if ( knahtaka === "kucaqai" ) {
             xezKucaq = [fal];
         } else {
@@ -329,14 +339,22 @@ kf2Sweca12na.addEventListener("click", function (): void {
                     er2haTanekL6da += kantoni.height;
                 }
 
-                const xezEr2haL6da = Math.max((saxediTanekVop2 ? saxediTanekVop2.height : 0), er2haTanekL6da);
+                let xezEr2haL6da = Math.max((saxediTanekVop2 ? saxediTanekVop2.height : 0), er2haTanekL6da);
+                let verticalScale = 1;
+                
+                if (vac2w2k && saxediTanekVop2 && er2haTanekL6da > saxediTanekVop2.height) {
+                    verticalScale = saxediTanekVop2.height / er2haTanekL6da;
+                    xezEr2haL6da = saxediTanekVop2.height;
+                }
+                
                 const xezEr2haSefwini = (saxediTanekVop2 ? saxediTanekVop2.width : 0) + tanekKmasefwini;
 
                 vecax2lXezVop2.push({
                     saxedini: saxediTanekVop2,
                     ksozdini: ksozdiTanekVop2,
                     xezEr2haSefwini: xezEr2haSefwini,
-                    xezEr2haL6da: xezEr2haL6da
+                    xezEr2haL6da: xezEr2haL6da,
+                    verticalScale: verticalScale
                 });
             }
 
@@ -466,9 +484,12 @@ kf2Sweca12na.addEventListener("click", function (): void {
         ctx.fillStyle = arak21okoWeh2;
         ctx.fillRect(0, 0, arak2f.width, arak2f.height);
 
-        ctx.font = `${lagaPal6}px ${lagalInakLaga}`;
-        ctx.fillStyle = lagaWeh2;
-        ctx.textBaseline = "alphabetic";
+    ctx.font = `${lagaPal6}px ${lagalInakLaga}`;
+    ctx.fillStyle = lagaWeh2;
+    ctx.textBaseline = "alphabetic";
+    ctx.textRendering = "optimizeLegibility";
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
 
         let kjesaiKucaqX = saqaiAreqj2k;
 
@@ -485,11 +506,11 @@ kf2Sweca12na.addEventListener("click", function (): void {
 
                     let xezK2f: number;
                     if ( pawasaiAraq === "left" ) {
-                        xezK2f = kjesaicepuniX - (xez.saxedini ? xez.saxedini.actualBoundingBoxLeft : 0);
+                        xezK2f = kjesaicepuniX;
                     } else if ( pawasaiAraq === "center" ) {
-                        xezK2f = kjesaicepuniX + (cepuni.cepuniKmasefwini - xez.xezEr2haSefwini) / 2 - (xez.saxedini ? xez.saxedini.actualBoundingBoxLeft : 0);
+                        xezK2f = kjesaicepuniX + (cepuni.cepuniKmasefwini - xez.xezEr2haSefwini) / 2;
                     } else {
-                        xezK2f = kjesaicepuniX + cepuni.cepuniKmasefwini - (xez.saxedini ? xez.saxedini.actualBoundingBoxRight : xez.xezEr2haSefwini);
+                        xezK2f = kjesaicepuniX + cepuni.cepuniKmasefwini - xez.xezEr2haSefwini;
                     }
 
                     let xezTanekAlPsazaiY: number;
@@ -524,12 +545,18 @@ kf2Sweca12na.addEventListener("click", function (): void {
 
                     for ( let i = 0; i < xez.ksozdini.length; i++ ) {
                         const ksozdiTanekVop2 = xez.ksozdini[i];
-                        const tanekY = kjesaiKucaqY + ksozdiTanekVop2.actualBoundingBoxAscent;
-                        const tanekX = tanekSaxeX + (ksozdiTanekVop2.actualBoundingBoxLeft < 0 ? Math.abs(ksozdiTanekVop2.actualBoundingBoxLeft) : 0);
+                        const scaledHeight = ksozdiTanekVop2.height * xez.verticalScale;
+                        const scaledAscent = ksozdiTanekVop2.actualBoundingBoxAscent * xez.verticalScale;
+                        const tanekY = kjesaiKucaqY + scaledAscent;
+                        const tanekX = tanekSaxeX;
 
-                        ctx.fillText(ksozdiTanekVop2.text, tanekX, tanekY);
+                        ctx.save();
+                        ctx.translate(tanekX, tanekY);
+                        ctx.scale(1, xez.verticalScale);
+                        ctx.fillText(ksozdiTanekVop2.text, 0, 0);
+                        ctx.restore();
 
-                        kjesaiKucaqY += ksozdiTanekVop2.height;
+                        kjesaiKucaqY += scaledHeight;
                     }
 
                     if ( !sefaktapuni || knahtaka === "kucaqai" ) {
