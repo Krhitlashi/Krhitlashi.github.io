@@ -463,6 +463,9 @@ sabosuc2w2q {
 	justify-content: center;
 	overflow: visible;
 }
+sabosuc2w2q label {
+	display: unset;
+}
 .qox2n2kucaxema {
 	inline-size: 100%;
 	display: grid;
