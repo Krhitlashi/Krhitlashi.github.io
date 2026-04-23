@@ -231,7 +231,7 @@ export const DesktopIconManager = {
                 <ciihii class="">
                     <span class="label" data-oskakefani="${s.string}">${s.label}</span>
                     <span class="icon">${s.icon}</span>
-                    <input type="range" class="k6tani" min="0" max="${s.max}" value="${s.value}" oninput="if ( window.updateSlider ) updateSlider( '${s.handler}' , this.value )">
+                    <input type="range" min="0" max="${s.max}" value="${s.value}" oninput="if ( window.updateSlider ) updateSlider( '${s.handler}' , this.value )">
                 </ciihii>
                 <button class="qs-remove-btn" onclick="event.stopPropagation(); window.DesktopIconManager._removeQSItem( event , 'qs-slider-order' , '${s.id}' )">/</button>
             </div>

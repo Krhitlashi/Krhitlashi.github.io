@@ -562,7 +562,7 @@ label {
 	align-self: center;
 	align-items: center;
 }
-.k6tani {
+input[type="range"] {
 	appearance: none;
 	background-color: var(--តានេក);
 	border-radius: var(--ចិង);
@@ -570,7 +570,7 @@ label {
 	padding: var(--អារេងមិ);
     cursor: pointer;
 }
-.k6tani::-webkit-slider-thumb, .k6tani::-moz-range-thumb {
+input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb {
 	appearance: none;
 	inline-size: 16px;
 	block-size: 16px;
@@ -579,7 +579,7 @@ label {
 	border: 2px solid var(--ខេលេសៃ);
 	transition: 0.25s;
 }
-.k6tani::-webkit-slider-thumb:hover, .k6tani::-moz-range-thumb:hover {
+input[type="range"]::-webkit-slider-thumb:hover, input[type="range"]::-moz-range-thumb:hover {
 	transform: scale(1.25);
 }
 

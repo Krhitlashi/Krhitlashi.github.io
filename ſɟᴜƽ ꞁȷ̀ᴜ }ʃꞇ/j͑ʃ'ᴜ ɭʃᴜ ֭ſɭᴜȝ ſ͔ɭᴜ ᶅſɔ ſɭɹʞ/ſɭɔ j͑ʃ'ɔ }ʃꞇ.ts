@@ -206,7 +206,11 @@ kf2Sweca12na.addEventListener("click", function (): void {
     const knahtaka = ( document.querySelector("input[name=\"arrangement\"]:checked") as HTMLInputElement )?.value || "fasai";
 
     const lagaWeh2 = ( document.getElementById("lagaWeh2") as HTMLInputElement ).value;
-    const arak21okoWeh2 = ( document.getElementById("arak21okoWeh2") as HTMLInputElement ).value;
+    const arak21okoWeh2Color = ( document.getElementById("arak21okoWeh2") as HTMLInputElement ).value;
+    const arak21okoWeh2Ch2ni = parseFloat(( document.getElementById("arak21okoWeh2Ch2ni") as HTMLInputElement ).value);
+    const arak21okoWeh2 = arak21okoWeh2Ch2ni < 1
+        ? `rgba(${parseInt(arak21okoWeh2Color.slice(1,3),16)},${parseInt(arak21okoWeh2Color.slice(3,5),16)},${parseInt(arak21okoWeh2Color.slice(5,7),16)},${arak21okoWeh2Ch2ni})`
+        : arak21okoWeh2Color;
 
     tlohk2niKek.style.display = "none";
     tlohk2niKek.textContent = "";
