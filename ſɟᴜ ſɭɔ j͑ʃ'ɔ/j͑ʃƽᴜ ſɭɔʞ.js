@@ -9,7 +9,8 @@ function k2regawe(gawe) {
     document.documentElement.setAttribute("lang", gawe)
     oskakefani.forEach(kek => {
         const kef = kek.dataset.oskakefani;
-        kek.textContent = skakefani[gawe][kef] || skakefani["aih"][kef] || kef;
+        const skakef = skakefani[gawe]?.[kef];
+        kek.textContent = skakef === "" ? skakefani["aih"]?.[kef] || kef : skakef || skakefani["aih"]?.[kef] || kef;
     });
     if ( gawe != "aih" ) {
         document.querySelectorAll("a").forEach(cel2f => {
