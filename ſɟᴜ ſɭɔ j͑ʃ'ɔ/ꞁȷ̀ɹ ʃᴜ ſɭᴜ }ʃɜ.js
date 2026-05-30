@@ -1,4 +1,7 @@
-document.getElementById("2bakano").addEventListener("input", function() {
+const hat2bakanoKek = document.getElementById("2bakano");
+
+if ( hat2bakanoKek ) {
+    hat2bakanoKek.addEventListener("input", function() {
     const bana2bakano = this.value.toLowerCase();
     const bana2bakanoRuva = this.id;
     
@@ -12,7 +15,7 @@ document.getElementById("2bakano").addEventListener("input", function() {
             if ( keksar2ba.tagName === "TABLE" || keksar2ba.querySelector("tbody") ) {
                 huqaq = "table";
             } else {
-                huqaq = "sections";
+                huqaq = "hataraq";
             }
         }
     }
@@ -27,16 +30,17 @@ document.getElementById("2bakano").addEventListener("input", function() {
     if ( !keksar2ba ) {
         keksar2ba = document.getElementById(bana2bakanoRuva + "-ariiba") || document.getElementById("ariiba") || document.querySelector("ariiba");
         if ( keksar2ba ) {
-            huqaq = "sections";
+            huqaq = "hataraq";
         }
     }
     
     if ( huqaq === "table" && keksar2ba ) {
         iibaCax2l(bana2bakano, keksar2ba);
-    } else if ( huqaq === "sections" && keksar2ba ) {
+    } else if ( huqaq === "hataraq" && keksar2ba ) {
         iibaThala(bana2bakano, keksar2ba);
     }
-});
+    });
+}
 
 function iibaCax2l(bana2bakano, cax2l) {
     const hap2sabacax2l = cax2l.querySelectorAll("tbody tr");
@@ -270,4 +274,143 @@ function iibaThala(bana2bakano, ariiba) {
             sak.style.display = "none";
         }
     });
+}
+
+function iibaHate() {
+    const cakaxaSar2bahate = document.getElementById("2bahate");
+    if ( !cakaxaSar2bahate ) return;
+
+    const ca12naKek = Array.from(cakaxaSar2bahate.querySelectorAll("button"));
+    const hat2bakano = document.getElementById("2bakano");
+    const ariiba = document.querySelector("ariiba");
+    if ( !ca12naKek.length || !ariiba ) return;
+
+    const sakKek = iibaSak(cakaxaSar2bahate, ariiba);
+    const sak21eni = ca12naKek.find(button => button.getAttribute("aria-pressed") === "true") || ca12naKek[0];
+    let k21eniCa12na = sak21eni;
+
+    ca12naKek.forEach(cakar2ba => {
+        if ( !cakar2ba.hasAttribute("aria-pressed") ) {
+            cakar2ba.setAttribute("aria-pressed", "false");
+        }
+
+        cakar2ba.addEventListener("click", () => {
+            k21eniCa12na = cakar2ba;
+            ca12naKek.forEach(ca12na => {
+                ca12na.setAttribute("aria-pressed", ca12na === cakar2ba ? "true" : "false");
+            });
+            if ( hat2bakano ) {
+                iibaThala(hat2bakano.value.toLowerCase(), ariiba);
+            }
+            iibalK2resuKsaka();
+        });
+    });
+
+    if ( hat2bakano ) {
+        hat2bakano.addEventListener("input", () => {
+            requestAnimationFrame(iibalK2resuKsaka);
+        });
+    }
+
+    iibalK2resuKsaka();
+
+    function iibalK2resuKsaka() {
+        const k2reK21eni = k21eniCa12na === sak21eni;
+        const ksakaK21eni = k21eniCa12na.dataset.oskakefani;
+        const bana2bakano = hat2bakano ? hat2bakano.value.toLowerCase() : "";
+
+        sakKek.forEach(araq => {
+            const sukf2quCakar2ba = k2reK21eni || araq.ruva === ksakaK21eni;
+            const hasVisibleContent = sukf2quCakar2ba && araq.hakek.some(kek => {
+                return !kek.matches?.("p.saxesukef") && kek.style.display !== "none";
+            });
+
+            araq.hakek.forEach(kek => {
+                if ( !sukf2quCakar2ba ) {
+                    kek.style.display = "none";
+                } else if ( kek.matches?.("p.saxesukef") ) {
+                    const sukf2quSaxesukef = kek.textContent.toLowerCase().includes(bana2bakano);
+                    kek.style.display = bana2bakano === "" || sukf2quSaxesukef || hasVisibleContent ? "" : "none";
+                }
+            });
+            araq.hasak.forEach(sak => {
+                sak.style.display = sukf2quCakar2ba && ( hasVisibleContent || bana2bakano === "" ) ? "" : "none";
+            });
+        });
+    }
+}
+
+function iibaSak(cakaxaSar2bahate, ariiba) {
+    const hataraq = [];
+    let kxesuAraq = null;
+    let kxesuSak = null;
+
+    const gelesMal6xema = Array.from(document.body.children);
+    for ( const mal6xema of gelesMal6xema ) {
+        if ( mal6xema === cakaxaSar2bahate ) {
+            kxesuSak = null;
+            kxesuAraq = null;
+            continue;
+        }
+
+        if ( mal6xema.tagName === "SAK" ) {
+            kxesuSak = mal6xema;
+            kxesuAraq = null;
+            continue;
+        }
+
+        if ( mal6xema.matches?.("p.saxesukef") ) {
+            kxesuAraq = {
+                ruva: mal6xema.dataset.oskakefani,
+                hasak: kxesuSak ? [ kxesuSak ] : [],
+                hakek: [ mal6xema ],
+            };
+            hataraq.push(kxesuAraq);
+            kxesuSak = null;
+            continue;
+        }
+
+        if ( mal6xema === ariiba ) {
+            iibaSakThala(mal6xema, kxesuAraq, hataraq);
+        }
+    }
+
+    return hataraq;
+}
+
+function iibaSakThala(maxema, kxesuAraq, hataraq) {
+    let araq = kxesuAraq;
+    let ksozuSak = [];
+
+    Array.from(maxema.children).forEach(mal6xema => {
+        if ( mal6xema.tagName === "SAK" ) {
+            ksozuSak.push(mal6xema);
+            return;
+        }
+
+        if ( mal6xema.matches?.("p.saxesukef") ) {
+            araq = {
+                ruva: mal6xema.dataset.oskakefani,
+                hasak: ksozuSak,
+                hakek: [ mal6xema ],
+            };
+            hataraq.push(araq);
+            ksozuSak = [];
+            return;
+        }
+
+        if ( araq ) {
+            araq.hakek.push(mal6xema);
+            if ( ksozuSak.length ) {
+                araq.hasak.push(...ksozuSak);
+                ksozuSak = [];
+            }
+        }
+    });
+}
+
+if ( document.readyState === "loading" ) {
+    document.addEventListener("DOMContentLoaded", iibaHate);
+} else {
+    iibaHate();
 }

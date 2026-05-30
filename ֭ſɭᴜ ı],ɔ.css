@@ -27,7 +27,7 @@
 	--ចិង: 64px;
 
 	--តានេកខេលេ: #ffffff10;
-	--តានេក: #ffffff10;
+	--តានេក: #ffffff18;
 	--តានេក២: #ffffff20;
 	--តានេក៣: #ffffff30;
 
@@ -300,14 +300,12 @@ thala {
 	align-items: stretch;
 	justify-content: center;
 }
-.cakaxa, .cepufal .cakaxa {
+.cakaxa {
 	align-self: stretch;
 	justify-content: center;
 	flex-direction: row;
+	flex-flow: wrap;
 	padding: var(--អារេង);
-}
-.cakaxa *:has(> .cepufalxez) {
-	display: flex;
 }
 
 ciihii {
