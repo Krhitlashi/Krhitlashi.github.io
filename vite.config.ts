@@ -10,13 +10,13 @@ const __dirname = dirname(__filename);
 function getHtmlEntries(dir: string, allFiles: Record<string, string> = {}) {
   const files = readdirSync(dir);
 
-  files.forEach((file) => {
+  files.forEach(( file ) => {
     const filePath = resolve(dir, file);
-    if (statSync(filePath).isDirectory()) {
-      if (file !== "node_modules" && file !== "dist" && file !== ".git") {
+    if ( statSync(filePath).isDirectory() ) {
+      if ( file !== "node_modules" && file !== "dist" && file !== ".git" ) {
         getHtmlEntries(filePath, allFiles);
       }
-    } else if (file.endsWith(".html")) {
+    } else if ( file.endsWith(".html" )) {
       const relativePath = relative(__dirname, filePath);
       const name = relativePath.replace(/\.html$/, "").replace(/[\\\/]/g, "_");
       allFiles[name] = filePath;
@@ -37,17 +37,17 @@ const copyStaticFilesPlugin = {
     function findStaticFiles(dir: string, files: string[] = []): string[] {
       const entries = readdirSync(dir, { withFileTypes: true });
       
-      for (const entry of entries) {
+      for ( const entry of entries ) {
         const fullPath = join(dir, entry.name);
         
         // Skip excluded directories
-        if (entry.isDirectory() && excludedDirs.includes(entry.name)) {
+        if ( entry.isDirectory() && excludedDirs.includes(entry.name) ) {
           continue;
         }
         
-        if (entry.isDirectory()) {
+        if ( entry.isDirectory() ) {
           findStaticFiles(fullPath, files);
-        } else if (entry.isFile() && (entry.name.endsWith(".js"))) {
+        } else if ( entry.isFile() && (entry.name.endsWith(".js") || entry.name.endsWith(".txt")) ) {
           files.push(fullPath);
         }
       }
@@ -58,13 +58,13 @@ const copyStaticFilesPlugin = {
     const staticFiles = findStaticFiles(__dirname);
     let copiedCount = 0;
     
-    staticFiles.forEach((srcPath) => {
+    staticFiles.forEach(( srcPath ) => {
       // Get relative path from project root
       const relativePath = relative(__dirname, srcPath);
       const destPath = join(distDir, relativePath);
       const destDirPath = dirname(destPath);
       
-      if (!existsSync(destDirPath)) {
+      if ( !existsSync(destDirPath) ) {
         mkdirSync(destDirPath, { recursive: true });
       }
       copyFileSync(srcPath, destPath);
