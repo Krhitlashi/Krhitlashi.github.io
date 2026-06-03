@@ -42,7 +42,7 @@ const FILENAMES = [
 	"ȏɭʃ", "ƨȏ", "ȏ}ʃ", "c̗ȏ",
 	"ȏſ̀ȷ", "ŋȏ", "ȏoͩſ̀ȷ", "ŋoͩȏ",
 	"ȏſɟ", "ᴜ̭ȏ", "ȏſ͕ȷ", "ⱷ̮̀ȏ",
-	"ꞙɭ"
+	"ꞙɭ", "｡", "⟅", "ʌ", "v", "⺓"
 ];
 
 // Map of character name to its loaded glyph data
