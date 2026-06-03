@@ -76,7 +76,18 @@ function vefal(kp6: string): HTMLElement[] {
         const n2k = han2k[i];
         const l6catasuN2k = n2k.trim();
 
-        const a1aKsaka = l6catasuN2k.match(/^<ſɭɔ˞>>(.+?)<<ſɭɔ˞>$/);
+        // Strip insignificant prefix tokens that may appear at the start of a line
+        // alongside a meaningful token (e.g. "<j͑ʃı],> <ſɭɔ˞>> Title <<ſɭɔ˞>")
+        const strippedN2k = l6catasuN2k
+            .replace(/^<ʃ}ʃ>\s*/, "")
+            .replace(/^<ſᶘ>\s*/, "")
+            .replace(/^<j͑ʃı],>\s*/, "");
+
+        if ( strippedN2k === "" ) {
+            continue;
+        }
+
+        const a1aKsaka = strippedN2k.match(/^<ſɭɔ˞>>(.+?)<<ſɭɔ˞>$/);
         if ( a1aKsaka ) {
             tlunakJ2qewa("saxesukef", a1aKsaka[0o1]);
             continue;
@@ -117,10 +128,6 @@ function vefal(kp6: string): HTMLElement[] {
         const a1aCa1ara = l6catasuN2k.match(/^<ſɟſᶘ>>(.+?)<<ſɟſᶘ>$/);
         if ( a1aCa1ara ) {
             kxesuXemani.push("- " + a1aCa1ara[0o1]);
-            continue;
-        }
-
-        if ( l6catasuN2k.startsWith("<ʃ}ʃ>") || l6catasuN2k.startsWith("<ſᶘ>") ) {
             continue;
         }
 

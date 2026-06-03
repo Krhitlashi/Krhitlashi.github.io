@@ -219,7 +219,6 @@ p:has(> .cepufalxez), h1:has(> .cepufalxez) {
 }
 .kefhuruq {
 	background-color: transparent;
-	padding: var(--អារេង);
 	margin-inline: 0;
 	text-align: left;
 	align-self: center;
@@ -449,10 +448,9 @@ summary:active {
 sabosuc2w2q {
 	align-items: center;
 	justify-content: center;
-	overflow: visible;
 }
-sabosuc2w2q label {
-	display: unset;
+.c2w2qkuba label {
+	display: block;
 }
 .qox2n2kucaxema {
 	inline-size: 100%;
