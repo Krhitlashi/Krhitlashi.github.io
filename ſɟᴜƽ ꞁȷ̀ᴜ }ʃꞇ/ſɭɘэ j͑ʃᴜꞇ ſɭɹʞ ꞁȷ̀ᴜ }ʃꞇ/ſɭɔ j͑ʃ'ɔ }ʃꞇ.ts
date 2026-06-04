@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 // ≺⧼ ſɭɘэ j͑ʃᴜꞇ ſɭɹʞ ꞁȷ̀ᴜ }ʃꞇ - Text Art Generator 🎨 ⧽≻
 
 
@@ -31,40 +33,32 @@ interface ColumnData {
 
 // ⟪ Constants 📦 ⟫
 
-const FILENAMES = [
-	"ᶅſ", "п́", "ſן", "ɘ", "ſȷ", "ʞ", "ʃ", "ɀ", "ŋᷠ", "c̭",
-	"j͑ʃ'", "ⰱ", "ɭʃ", "ƨ", "ɽ͑ʃ'", "ƣ̋", "ɭ(", "ԏ͕", "j͑ʃ", "ɔ˞", "j͐ʃ", "ͷ̗", "}ʃ", "c̗",
-	"ſɭ,", "ƴ", "ɭl̀", "ᴎ", "ſɟ", "ᴜ̭", "ı],", "ᶗ‹", "ſ͕ȷ", "ⱷ̮̀",
-	"ſ͔ɭ", "ɴ", "ſɭ", "ƽ", "֭ſɭ", "ᴜ̩", "ſ͕ɭ", "ȝ", "ſᶘ", "ꝛ̗", "ſ̀ȷ", "ŋ", "ſɭˬ", "ɯ",
-	"ꞁȷ̀", "ⅎ", "ꞇ", "ɹ", "ɔ", "ᴜ", "w", "ɜ", "э",
-	"ȏſן", "ɘȏ", "ȏŋᷠ", "c̭ȏ",
-	"ȏɭʃ'", "ⱷ᷐ȏ", "ȏ}ʃ'", "c̏ȏ",
-	"ȏɭʃ", "ƨȏ", "ȏ}ʃ", "c̗ȏ",
-	"ȏſ̀ȷ", "ŋȏ", "ȏoͩſ̀ȷ", "ŋoͩȏ",
-	"ȏſɟ", "ᴜ̭ȏ", "ȏſ͕ȷ", "ⱷ̮̀ȏ",
-	"｡", "⟅", "ʌ", "v", "⺓",
-	"ꞙɭ", "ı", "ɿ", "ц", "ꞟ", "ɩ"
-];
-
 // Map of character name to its loaded glyph data
 const charMap = new Map<string, CharData>();
 
+const glyphFiles = import.meta.glob("./**/*.txt", {
+	query: "?raw",
+	import: "default",
+	eager: true
+}) as Record<string, string>;
+
 // Sorted names by length descending, for greedy matching
-const sortedNames = [ ...FILENAMES ].sort(( a, b ) => b.length - a.length);
+let sortedNames: string[] = [];
 
 
 // ⟪ Glyph Loading 📂 ⟫
 
 /**
-	Fetch and store glyph data for all known character filenames.
+	Store glyph data for every discovered txt file in this folder tree.
 */
 async function loadChars(): Promise<void> {
-	const promises = FILENAMES.map(async (name) => {
-		try {
-			const res = await fetch(`./ſ͔ɭᴜ ᶅſɔ ſɭɹʞ/${encodeURIComponent(name).replace(/%2C/g, ",")}.txt`);
-			if ( !res.ok ) return;
+	const entries = Object.entries(glyphFiles);
 
-			const text = await res.text();
+	for ( const [ path, text ] of entries ) {
+		try {
+			const name = path.split("/").pop()?.replace(/\.txt$/, "");
+			if ( !name ) continue;
+
 			const rawLines = text.replace(/\r/g, "").split("\n");
 
 			// Strip trailing empty line from files ending with a newline
@@ -79,11 +73,11 @@ async function loadChars(): Promise<void> {
 			charMap.set(name, { name, lines, width, height });
 
 		} catch ( e ) {
-			console.error(`( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Failed to load glyph. ${name}`, e);
+			console.error(`( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Failed to load glyph. ${path}`, e);
 		}
-	});
+	}
 
-	await Promise.all(promises);
+	sortedNames = [ ...charMap.keys() ].sort(( a, b ) => b.length - a.length);
 }
 
 
@@ -199,35 +193,46 @@ function renderSyllableBlock(syllable: string): string[] {
 		return;
 	}
 
-	// ⟨ Build syllable blocks ⟩
-	const syllables = text.split(" ");
-	const syllableBlocks: SyllableBlock[] = [];
-
-	for ( const syllable of syllables ) {
-		if ( syllable === "" ) {
-			// Empty syllable (consecutive spaces). insert a blank block
-			syllableBlocks.push({ lines: Array(0o7).fill(" "), height: 0o7, width: 1 });
-		} else {
-			const lines = renderSyllableBlock(syllable);
-			const height = lines.length;
-			const width = lines.length > 0 ? lines[0].length : 0;
-			syllableBlocks.push({ lines, height, width });
-		}
-	}
-
-	// ⟨ Group blocks into vertical columns ⟩
+	// ⟨ Build syllable blocks, treating newlines as forced column breaks ⟩
+	const inputLines = text.replace(/\r/g, "").split("\n");
 	const columnsBlocks: SyllableBlock[][] = [];
 	let currentColumn: SyllableBlock[] = [];
 
-	for ( const block of syllableBlocks ) {
-		if ( maxline > 0 && currentColumn.length >= maxline ) {
-			if ( currentColumn.length > 0 ) columnsBlocks.push(currentColumn);
-			currentColumn = [ block ];
-		} else {
-			currentColumn.push(block);
+	for ( const inputLine of inputLines ) {
+		// Newline → force a column break (flush whatever has accumulated)
+		if ( currentColumn.length > 0 ) {
+			columnsBlocks.push(currentColumn);
+			currentColumn = [];
+		}
+
+		const syllables = inputLine.split(" ");
+		for ( const syllable of syllables ) {
+			let block: SyllableBlock;
+			if ( syllable === "" ) {
+				// Empty syllable (consecutive spaces). insert a blank block
+				block = { lines: Array(0o7).fill(" "), height: 0o7, width: 1 };
+			} else {
+				const lines = renderSyllableBlock(syllable);
+				const height = lines.length;
+				const width = lines.length > 0 ? lines[0].length : 0;
+				block = { lines, height, width };
+			}
+
+			// Apply maxline limit within the current input line
+			if ( maxline > 0 && currentColumn.length >= maxline ) {
+				columnsBlocks.push(currentColumn);
+				currentColumn = [ block ];
+			} else {
+				currentColumn.push(block);
+			}
 		}
 	}
 	if ( currentColumn.length > 0 ) columnsBlocks.push(currentColumn);
+
+	if ( columnsBlocks.length === 0 ) {
+		preElement.textContent = "";
+		return;
+	}
 
 	// ⟨ Pad blocks within the same horizontal row to match the tallest block in that row ⟩
 	const maxBlocksInCol = Math.max(...columnsBlocks.map(col => col.length), 0);
