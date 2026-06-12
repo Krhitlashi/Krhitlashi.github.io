@@ -5,7 +5,7 @@ import {
     CANVAS_WIDTH, CANVAS_HEIGHT, Layer, Page
 } from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
 
-import { redrawCanvas, saveState, switchToPageCanvas } from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
+import { redrawCanvas, saveState, switchToPageCanvas, setCanvasSizeForPage } from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
 
 // ⟪ Base Item Manager Interface 📋 ⟫
 
@@ -137,7 +137,15 @@ export class PageManager extends BaseItemManager<Page> {
     }
 
     protected createItem( id: number, name: string ): Page {
-        const page: Page = { id, name, visible: true, objects: [] };
+        const activePage = this.getActive();
+        const page: Page = {
+            id,
+            name,
+            visible: true,
+            width: activePage?.width || CANVAS_WIDTH,
+            height: activePage?.height || CANVAS_HEIGHT,
+            objects: []
+        };
         this.pages.push( page );
         return page;
     }
@@ -233,8 +241,7 @@ export class PageManager extends BaseItemManager<Page> {
         const pageCanvas = document.createElement( "canvas" );
         pageCanvas.id = `pageCanvas-${page.id}`;
         pageCanvas.className = "whiteboard-canvas";
-        pageCanvas.width = CANVAS_WIDTH;
-        pageCanvas.height = CANVAS_HEIGHT;
+        setCanvasSizeForPage( pageCanvas, page );
 
         const ctx = pageCanvas.getContext( "2d" );
         if ( ctx ) {

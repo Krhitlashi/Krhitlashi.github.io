@@ -9,6 +9,14 @@ export const ctx = canvas?.getContext( "2d" ) as CanvasRenderingContext2D | null
 
 export const CANVAS_WIDTH = 0o3600;
 export const CANVAS_HEIGHT = 0o2400;
+export const PAGE_SIZE_PRESETS: Record<string, { width?: number; height?: number; infinite?: boolean }> = {
+    full: { infinite: true },
+    vertical: { width: 0o2416, height: 0o3625 },
+    horizontal: { width: 0o3625, height: 0o2416 },
+    square: { width: 0o2114, height: 0o2114 }
+};
+export const MIN_PAGE_SIZE = 0o100;
+export const MAX_PAGE_SIZE = 0o12000;
 
 export const MIN_SIZE = 0o10;
 export const HANDLE_SIZE = 0o20;
@@ -152,6 +160,9 @@ export interface Page {
     id: number;
     name: string;
     visible: boolean;
+    width?: number;
+    height?: number;
+    infinite?: boolean;
     objects: WhiteboardObject[];
 }
 

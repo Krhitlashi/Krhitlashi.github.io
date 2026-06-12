@@ -533,17 +533,18 @@ export function getContrastingColors( samplePoints: Point[] ): { stroke: string;
 // ⟪ Transform Utilities 🔄 ⟫
 
 export function getObjectInitialState( obj: WhiteboardObject ): any {
+    const bounds = getObjectBounds( obj );
     if ( obj.type === "line" ) {
-        return { x1: obj.x1, y1: obj.y1, x2: obj.x2, y2: obj.y2 };
+        return { bounds, x1: obj.x1, y1: obj.y1, x2: obj.x2, y2: obj.y2 };
     } else if ( obj.type === "circle" ) {
-        return { x: obj.x, y: obj.y, radiusX: obj.radiusX, radiusY: obj.radiusY };
+        return { bounds, x: obj.x, y: obj.y, radiusX: obj.radiusX, radiusY: obj.radiusY };
     } else if ( obj.type === "path" || obj.type === "smoothPath" ) {
         return {
             bounds: { ...obj.bounds },
             points: obj.points!.map( p => ( { x: p.x, y: p.y } ) )
         };
     } else {
-        return { x: obj.x, y: obj.y, width: obj.width, height: obj.height };
+        return { bounds, x: obj.x, y: obj.y, width: obj.width, height: obj.height };
     }
 }
 
@@ -719,22 +720,13 @@ export function resizeObject( obj: WhiteboardObject, x: number, y: number, handl
 
 export function resizeLineObject( obj: WhiteboardObject, handle: string, baseBounds: any, newLeft: number, newTop: number, newRight: number, newBottom: number, newWidth: number, newHeight: number ): void {
     const { scaleX, scaleY, originX, originY } = getResizeOriginAndScale( baseBounds, handle, newWidth, newHeight );
+    const objIndex = objectState.selected.indexOf( obj );
+    const init = objectState.initialObjectStates[ objIndex ] || { };
 
-    const originX_local = baseBounds.x + baseBounds.width / 2;
-    const originY_local = baseBounds.y + baseBounds.height / 2;
-
-    if ( handle.includes( "n" ) ) {
-        obj.y1 = originY_local + ( obj.y1! - originY_local ) * scaleY;
-    }
-    if ( handle.includes( "s" ) ) {
-        obj.y2 = originY_local + ( obj.y2! - originY_local ) * scaleY;
-    }
-    if ( handle.includes( "w" ) ) {
-        obj.x1 = originX_local + ( obj.x1! - originX_local ) * scaleX;
-    }
-    if ( handle.includes( "e" ) ) {
-        obj.x2 = originX_local + ( obj.x2! - originX_local ) * scaleX;
-    }
+    obj.x1 = originX + ( init.x1 - originX ) * scaleX;
+    obj.y1 = originY + ( init.y1 - originY ) * scaleY;
+    obj.x2 = originX + ( init.x2 - originX ) * scaleX;
+    obj.y2 = originY + ( init.y2 - originY ) * scaleY;
 }
 
 export function resizePathObject( obj: WhiteboardObject, handle: string, baseBounds: any, newLeft: number, newTop: number, newWidth: number, newHeight: number, init: any ): void {

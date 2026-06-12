@@ -1,0 +1,330 @@
+import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { fetchFile, toBlobURL } from "@ffmpeg/util";
+
+const TEXT = {
+  CHOOSE_FILE: "ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ ʌ j͑ʃw ſɭʞɹȝ ʌ ſɟᴜ j͑ʃ'ɜ ſןɹ ⟅",
+  CHOOSE_FORMAT: "ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ ʌ j͑ʃw ſɭʞɹȝ ʌ ſɭɔ ֭ſɭɔ }ʃꞇ ⟅",
+  READY: "ꞁȷ̀ᴜ ŋᷠᴜͷ̗ ꞁȷ̀ᴜꞇ ʌ ꞁȷ̀ɜ ɭʃɀɜ ⟅",
+  CONVERTING: (name: string) => `ſɭᶗ‹ɔ ʌ ɭʃɀɜ ⸙ ${name} ⸙ ⟅`,
+  LOADING_ENGINE: "ſɭᶗ‹ɔ ʌ ʃэ ɭʃɔ ŋᷠɹ ʌ ſɟᴜ ɭʃɀɜ ⟅",
+  LOADING_FONT_ENGINE: "ſɭᶗ‹ɔ ʌ ʃэ ɭʃɔ ŋᷠɹ ʌ ſɟᴜ ɭʃɀɜ ʌ ɭʃᴜ j͐ʃᴜ ſ͔ɭᴜ ⟅",
+  CONVERTING_FONT: "ſɭᶗ‹ɔ ʌ ɭʃɀɜ ʌ j͐ʃᴜ ſ͔ɭᴜ ⟅",
+  ENCODING: (msg: string) => `j͑ʃ'ᴜ ɽ͑ʃ'w ɭʃᴜ ${msg} ⟅`,
+  DONE: (fmt: string) => `ſ̀ȷᴜ ſɭᴜƽ ⟅ ${fmt} ⟅`,
+  FAILED: "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )",
+  DOWNLOAD_DEFAULT: "ſ͕ɭwc̭ ſɭɹ ⟅",
+  DOWNLOAD: (name: string) => `ſ͕ɭwc̭ ſɭɹ ⸙ ${name} ⸙ ⟅`,
+} as const;
+
+const FONT_CDN = "https://esm.sh/fontverter";
+const FFMPEG_CDN = "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm";
+
+const FORMAT_LABELS: Record<string, string> = {
+  mp3: "MP3 ( audio )",
+  wav: "WAV ( audio )",
+  m4a: "M4A ( audio )",
+  ogg: "OGG ( audio )",
+  aac: "AAC ( audio )",
+  flac: "FLAC ( audio )",
+  mp4: "MP4 ( video )",
+  webm: "WebM ( video )",
+  gif: "GIF ( video )",
+  png: "PNG ( image )",
+  jpeg: "JPEG ( image )",
+  webp: "WebP ( image )",
+  bmp: "BMP ( image )",
+  ico: "ICO ( image )",
+  tiff: "TIFF ( image )",
+  ttf: "TTF ( font )",
+  otf: "OTF ( font )",
+  woff: "WOFF ( font )",
+  woff2: "WOFF2 ( font )",
+};
+
+const FORMAT_OPTIONS: Record<"audio" | "video" | "image" | "font", string[]> = {
+  audio: ["mp3", "wav", "m4a", "ogg", "aac", "flac"],
+  video: ["mp4", "webm", "gif"],
+  image: ["png", "jpeg", "webp", "gif", "bmp", "ico", "tiff"],
+  font: ["ttf", "otf", "woff", "woff2"],
+};
+
+const MIME_TYPES: Record<string, string> = {
+  mp3: "audio/mpeg",
+  wav: "audio/wav",
+  m4a: "audio/mp4",
+  ogg: "audio/ogg",
+  aac: "audio/aac",
+  flac: "audio/flac",
+  mp4: "video/mp4",
+  webm: "video/webm",
+  png: "image/png",
+  jpeg: "image/jpeg",
+  webp: "image/webp",
+  gif: "image/gif",
+  bmp: "image/bmp",
+  ico: "image/x-icon",
+  tiff: "image/tiff",
+  ttf: "font/ttf",
+  otf: "font/otf",
+  woff: "font/woff",
+  woff2: "font/woff2",
+};
+
+const FILE_INPUT = document.getElementById("converter-file-input") as HTMLInputElement;
+const TARGET_CONTAINER = document.getElementById("converter-target-formats") as HTMLElement;
+const RUN_BUTTON = document.getElementById("converter-run") as HTMLButtonElement;
+const STATUS_TEXT = document.getElementById("converter-status") as HTMLParagraphElement;
+const RESULT_PANEL = document.getElementById("converter-result") as HTMLElement;
+const AUDIO_PREVIEW = document.getElementById("converter-preview-audio") as HTMLAudioElement;
+const VIDEO_PREVIEW = document.getElementById("converter-preview-video") as HTMLVideoElement;
+const IMAGE_PREVIEW = document.getElementById("converter-preview-image") as HTMLImageElement;
+const FONT_PREVIEW = document.getElementById("converter-preview-font") as HTMLParagraphElement;
+const DOWNLOAD_LINK = document.getElementById("converter-download") as HTMLAnchorElement;
+
+const ffmpeg = new FFmpeg();
+let ffmpegReady = false;
+
+function setStatus(message: string): void {
+  STATUS_TEXT.textContent = message;
+}
+
+function showPreview(element: HTMLMediaElement | HTMLImageElement, blobURL: string): void {
+  element.src = blobURL;
+  element.style.display = "";
+  if ("load" in element && typeof element.load === "function") {
+    element.load();
+  }
+}
+
+function presentResult(blobURL: string, outputName: string, targetFormat: string): void {
+  DOWNLOAD_LINK.href = blobURL;
+  DOWNLOAD_LINK.download = outputName;
+  DOWNLOAD_LINK.textContent = TEXT.DOWNLOAD(outputName);
+  RESULT_PANEL.style.display = "";
+  setStatus(TEXT.DONE(targetFormat.toUpperCase()));
+}
+
+function detectFileCategory(file: File): "audio" | "video" | "image" | "font" {
+  const type = file.type.toLowerCase();
+  if ( type.startsWith("video/") ) return "video";
+  if ( type.startsWith("audio/") ) return "audio";
+  if ( type.startsWith("image/") ) return "image";
+  if ( type.startsWith("font/") || type.includes("font") ) return "font";
+
+  const lowerName = file.name.toLowerCase();
+  if ( /\.(mov|mp4|m4v|webm|avi|mkv|ogv)$/i.test(lowerName) ) return "video";
+  if ( /\.(mp3|wav|m4a|ogg|aac|flac|wma)$/i.test(lowerName) ) return "audio";
+  if ( /\.(png|jpg|jpeg|webp|gif|bmp|ico|tiff)$/i.test(lowerName) ) return "image";
+  if ( /\.(ttf|otf|woff|woff2)$/i.test(lowerName) ) return "font";
+
+  return "audio";
+}
+
+function updateTargetFormats(category: "audio" | "video" | "image" | "font"): void {
+  TARGET_CONTAINER.innerHTML = "";
+  const options = FORMAT_OPTIONS[category];
+  options.forEach((format, idx) => {
+    const labelEl = document.createElement("label");
+    
+    const inputEl = document.createElement("input");
+    inputEl.type = "radio";
+    inputEl.name = "target-format";
+    inputEl.value = format;
+    if ( idx === 0 ) {
+      inputEl.checked = true;
+    }
+
+    const pEl = document.createElement("p");
+    pEl.className = "cepufalxez";
+    pEl.textContent = FORMAT_LABELS[format];
+
+    labelEl.appendChild(pEl);
+    labelEl.appendChild(inputEl);
+    TARGET_CONTAINER.appendChild(labelEl);
+  });
+}
+
+function getSelectedTargetFormat(): string {
+  const selectedRadio = TARGET_CONTAINER.querySelector("input[name='target-format']:checked") as HTMLInputElement | null;
+  return selectedRadio ? selectedRadio.value : "";
+}
+
+function getOutputMime(targetFormat: string): string {
+  return MIME_TYPES[targetFormat] ?? "application/octet-stream";
+}
+
+function getConversionArgs(inputName: string, outputName: string, category: "audio" | "video" | "image" | "font", targetFormat: string): string[] {
+  if ( category === "image" ) {
+    if ( targetFormat === "ico" ) {
+      return ["-y", "-i", inputName, "-s", "256x256", outputName];
+    }
+    return ["-y", "-i", inputName, outputName];
+  }
+
+  if ( category === "audio" ) {
+    if ( targetFormat === "wav" ) {
+      return ["-y", "-i", inputName, "-vn", "-c:a", "pcm_s16le", "-ar", "44100", outputName];
+    }
+    if ( targetFormat === "m4a" || targetFormat === "aac" ) {
+      return ["-y", "-i", inputName, "-vn", "-c:a", "aac", "-b:a", "192k", outputName];
+    }
+    if ( targetFormat === "ogg" ) {
+      return ["-y", "-i", inputName, "-vn", "-c:a", "libvorbis", "-q:a", "4", outputName];
+    }
+    if ( targetFormat === "flac" ) {
+      return ["-y", "-i", inputName, "-vn", "-c:a", "flac", outputName];
+    }
+    return ["-y", "-i", inputName, "-vn", "-c:a", "libmp3lame", "-q:a", "2", outputName];
+  }
+
+  // Video
+  if ( targetFormat === "webm" ) {
+    return ["-y", "-i", inputName, "-c:v", "libvpx-vp9", "-c:a", "libopus", outputName];
+  }
+  if ( targetFormat === "gif" ) {
+    return ["-y", "-i", inputName, "-vf", "fps=15,scale=320:-1:flags=lanczos", "-c:v", "gif", outputName];
+  }
+  return ["-y", "-i", inputName, "-c:v", "libx264", "-c:a", "aac", "-movflags", "+faststart", outputName];
+}
+
+async function ensureFFmpegLoaded(): Promise<void> {
+  if ( ffmpegReady ) return;
+  setStatus(TEXT.LOADING_ENGINE);
+  await ffmpeg.load({
+    coreURL: await toBlobURL(`${FFMPEG_CDN}/ffmpeg-core.js`, "text/javascript"),
+    wasmURL: await toBlobURL(`${FFMPEG_CDN}/ffmpeg-core.wasm`, "application/wasm"),
+  });
+
+  ffmpeg.on("log", ({ message }: { message: string }) => {
+    if ( message.includes("time=") ) {
+      setStatus(TEXT.ENCODING(message.trim()));
+    }
+  });
+
+  ffmpegReady = true;
+}
+
+function resetPreview(): void {
+  AUDIO_PREVIEW.pause();
+  VIDEO_PREVIEW.pause();
+  AUDIO_PREVIEW.removeAttribute("src");
+  VIDEO_PREVIEW.removeAttribute("src");
+  IMAGE_PREVIEW.removeAttribute("src");
+  AUDIO_PREVIEW.style.display = "none";
+  VIDEO_PREVIEW.style.display = "none";
+  IMAGE_PREVIEW.style.display = "none";
+  FONT_PREVIEW.style.display = "none";
+  RESULT_PANEL.style.display = "none";
+  DOWNLOAD_LINK.removeAttribute("href");
+  DOWNLOAD_LINK.textContent = TEXT.DOWNLOAD_DEFAULT;
+}
+
+async function convertSelectedFile(): Promise<void> {
+  const file = FILE_INPUT.files?.[0];
+  if ( !file ) {
+    setStatus(TEXT.CHOOSE_FILE);
+    return;
+  }
+
+  const category = detectFileCategory(file);
+  const targetFormat = getSelectedTargetFormat();
+  if ( !targetFormat ) {
+    setStatus(TEXT.CHOOSE_FORMAT);
+    return;
+  }
+
+  resetPreview();
+  setStatus(TEXT.CONVERTING(file.name));
+
+  const inputName = `input-${Date.now()}-${file.name.replace(/\s+/g, "_")}`;
+  const date = cax2lStafl2();
+  const baseName = file.name.replace(/\.[^.]+$/, "").replace(/\s+/g, "_");
+  const outputName = `${date.stibix}-${date.pal2stif}-${date.stafl2}_${baseName}.${targetFormat}`;
+  let blobURL: string;
+
+  try {
+    if ( category === "font" ) {
+      setStatus(TEXT.LOADING_FONT_ENGINE);
+      const fontverterModule = await import(/* @vite-ignore */ FONT_CDN) as any;
+      const fontverter = fontverterModule.convert ? fontverterModule : (fontverterModule.default || fontverterModule);
+      setStatus(TEXT.CONVERTING_FONT);
+
+      const arrayBuffer = await file.arrayBuffer();
+      const uint8Array = new Uint8Array(arrayBuffer);
+
+      let toFormat = targetFormat;
+      if ( targetFormat === "ttf" || targetFormat === "otf" ) {
+        toFormat = "sfnt";
+      }
+
+      const convertedBytes = await fontverter.convert(uint8Array, toFormat);
+      
+      const cleanFontBuffer = new ArrayBuffer(convertedBytes.byteLength);
+      new Uint8Array(cleanFontBuffer).set(convertedBytes);
+      
+      const blob = new Blob([cleanFontBuffer], {
+        type: getOutputMime(targetFormat),
+      });
+
+      blobURL = URL.createObjectURL(blob);
+
+      const fontName = `PreviewFont-${Date.now()}`;
+      const fontFace = new (window as any).FontFace(fontName, `url(${blobURL})`);
+      await fontFace.load();
+      (document as any).fonts.add(fontFace);
+
+      FONT_PREVIEW.style.fontFamily = fontName;
+      FONT_PREVIEW.style.display = "";
+    } else {
+      await ensureFFmpegLoaded();
+      await ffmpeg.writeFile(inputName, await fetchFile(file));
+
+      const args = getConversionArgs(inputName, outputName, category, targetFormat);
+      await ffmpeg.exec(args);
+
+      const data = await ffmpeg.readFile(outputName);
+      const bytes = data instanceof Uint8Array
+        ? data
+        : new Uint8Array(data as unknown as ArrayBuffer);
+        
+      const cleanBuffer = new ArrayBuffer(bytes.byteLength);
+      new Uint8Array(cleanBuffer).set(bytes);
+      
+      const blob = new Blob([cleanBuffer], {
+        type: getOutputMime(targetFormat),
+      });
+
+      blobURL = URL.createObjectURL(blob);
+
+      if ( category === "image" || targetFormat === "gif" ) {
+        showPreview(IMAGE_PREVIEW, blobURL);
+      } else if ( category === "audio" ) {
+        showPreview(AUDIO_PREVIEW, blobURL);
+      } else if ( category === "video" ) {
+        showPreview(VIDEO_PREVIEW, blobURL);
+      }
+    }
+
+    presentResult(blobURL, outputName, targetFormat);
+  } catch ( error ) {
+    console.error(error);
+    setStatus(TEXT.FAILED);
+  }
+}
+
+RUN_BUTTON.addEventListener("click", () => {
+  void convertSelectedFile();
+});
+
+FILE_INPUT.addEventListener("change", () => {
+  resetPreview();
+  const file = FILE_INPUT.files?.[0];
+  if ( file ) {
+    const category = detectFileCategory(file);
+    updateTargetFormats(category);
+    setStatus(TEXT.READY);
+  } else {
+    TARGET_CONTAINER.innerHTML = "";
+    setStatus(TEXT.CHOOSE_FILE);
+  }
+});

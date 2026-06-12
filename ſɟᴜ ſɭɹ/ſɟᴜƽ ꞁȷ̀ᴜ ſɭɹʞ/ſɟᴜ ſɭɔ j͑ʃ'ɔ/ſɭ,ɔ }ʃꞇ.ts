@@ -2,7 +2,7 @@
 
 import {
     canvas, state, spaceState, historyState, objectState, layerState, pageState, textState, eraserState,
-    CANVAS_WIDTH, CANVAS_HEIGHT
+    CANVAS_WIDTH, CANVAS_HEIGHT, PAGE_SIZE_PRESETS, MIN_PAGE_SIZE, MAX_PAGE_SIZE
     } from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
 
 import {
@@ -27,7 +27,7 @@ import {
 
 import {
     redrawCanvas, saveState,
-    getCurrentCanvas, getCurrentCtx, updateUndoRedoButtons
+    getCurrentCanvas, getCurrentCtx, updateUndoRedoButtons, resizeActivePage, updateCanvasSizeDisplay
 } from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
 
 import {
@@ -133,10 +133,22 @@ export function changeHistory( direction: number ): void {
     const stateData = JSON.parse( historyState.history[ historyState.index ] );
     layerState.layers = stateData.layers;
     pageState.pages = stateData.pages;
+    pageState.pages.forEach( page => {
+        if ( !page.infinite ) {
+            page.width = page.width || CANVAS_WIDTH;
+            page.height = page.height || CANVAS_HEIGHT;
+        }
+    } );
+    pageManager.pages = pageState.pages;
 
     const activePage = pageManager.getActive();
     if ( activePage ) {
         objectState.objects = activePage.objects;
+        if ( activePage.infinite ) {
+            resizeActivePage( window.innerWidth, window.innerHeight );
+        } else {
+            resizeActivePage( activePage.width || CANVAS_WIDTH, activePage.height || CANVAS_HEIGHT );
+        }
     }
 
     renderLayerList();
@@ -240,6 +252,90 @@ export function initPageControls(): void {
         { id: "movePageUpBtn", onClick: () => movePageAction( 1 ) },
         { id: "movePageDownBtn", onClick: () => movePageAction( -1 ) }
     ] );
+}
+
+function clampPageSize( value: number ): number {
+    if ( !Number.isFinite( value ) ) return MIN_PAGE_SIZE;
+    return Math.max( MIN_PAGE_SIZE, Math.min( MAX_PAGE_SIZE, Math.round( value ) ) );
+}
+
+function setPageSizeInputs( width: number, height: number ): void {
+    const widthInput = document.getElementById( "customPageWidth" ) as HTMLInputElement | null;
+    const heightInput = document.getElementById( "customPageHeight" ) as HTMLInputElement | null;
+    if ( widthInput ) widthInput.value = width.toString();
+    if ( heightInput ) heightInput.value = height.toString();
+}
+
+export function initPageSizeControls(): void {
+    const buttons = document.querySelectorAll<HTMLButtonElement>( "#pageSizePresetButtons button[data-preset]" );
+    const widthInput = document.getElementById( "customPageWidth" ) as HTMLInputElement | null;
+    const heightInput = document.getElementById( "customPageHeight" ) as HTMLInputElement | null;
+    const applyBtn = document.getElementById( "applyCustomPageSize" );
+    if ( buttons.length === 0 || !widthInput || !heightInput || !applyBtn ) return;
+
+    const activePage = pageManager.getActive();
+    setPageSizeInputs( activePage?.width || CANVAS_WIDTH, activePage?.height || CANVAS_HEIGHT );
+
+    buttons.forEach( btn => {
+        btn.addEventListener( "click", () => {
+            const preset = btn.dataset.preset!;
+            if ( preset === "custom" ) return;
+            const size = PAGE_SIZE_PRESETS[ preset ];
+            if ( !size ) return;
+            const activePage = pageManager.getActive();
+            if ( activePage ) {
+                activePage.infinite = size.infinite === true;
+                if ( !activePage.infinite ) {
+                    activePage.width = size.width;
+                    activePage.height = size.height;
+                }
+            }
+            if ( size.infinite ) {
+                resizeActivePage( window.innerWidth, window.innerHeight );
+                setPageSizeInputs( window.innerWidth, window.innerHeight );
+            } else {
+                resizeActivePage( size.width!, size.height! );
+                setPageSizeInputs( size.width!, size.height! );
+            }
+            saveState();
+            updatePresetButtons( preset );
+        } );
+    } );
+
+    applyBtn.addEventListener( "click", () => {
+        const width = clampPageSize( Number( widthInput.value ) );
+        const height = clampPageSize( Number( heightInput.value ) );
+        const activePage = pageManager.getActive();
+        if ( activePage ) {
+            activePage.infinite = false;
+            activePage.width = width;
+            activePage.height = height;
+        }
+        setPageSizeInputs( width, height );
+        resizeActivePage( width, height );
+        saveState();
+        updatePresetButtons( "custom" );
+    } );
+
+    window.addEventListener( "resize", () => {
+        const activePage = pageManager.getActive();
+        if ( activePage?.infinite ) {
+            const fullSize = { width: window.innerWidth, height: window.innerHeight };
+            resizeActivePage( fullSize.width, fullSize.height );
+            setPageSizeInputs( fullSize.width, fullSize.height );
+            updateCanvasSizeDisplay();
+        }
+    } );
+
+    updateCanvasSizeDisplay();
+}
+
+function updatePresetButtons( activePreset: string ): void {
+    const buttons = document.querySelectorAll<HTMLButtonElement>( "#pageSizePresetButtons button[data-preset]" );
+    buttons.forEach( btn => {
+        const isActive = btn.dataset.preset === activePreset;
+        btn.setAttribute( "aria-pressed", isActive.toString() );
+    } );
 }
 
 // ⟪ Transform Control Actions 🎛️ ⟫
@@ -349,15 +445,18 @@ export function saveCanvasAsPDF(): void {
         console.error( "jsPDF not loaded" );
         return;
     }
+    const currentCanvas = getCurrentCanvas()!;
+    const width = currentCanvas.width;
+    const height = currentCanvas.height;
 
     const doc = new pdfModule.jsPDF( {
-        orientation: CANVAS_WIDTH > CANVAS_HEIGHT ? "l" : "p",
+        orientation: width > height ? "l" : "p",
         unit: "px",
-        format: [ CANVAS_WIDTH, CANVAS_HEIGHT ]
+        format: [ width, height ]
     } );
 
-    const imgData = getCurrentCanvas()!.toDataURL( "image/jpeg", 0o1 );
-    doc.addImage( imgData, "JPEG", 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT );
+    const imgData = currentCanvas.toDataURL( "image/jpeg", 0o1 );
+    doc.addImage( imgData, "JPEG", 0, 0, width, height );
     doc.save( "whiteboard.pdf" );
 }
 

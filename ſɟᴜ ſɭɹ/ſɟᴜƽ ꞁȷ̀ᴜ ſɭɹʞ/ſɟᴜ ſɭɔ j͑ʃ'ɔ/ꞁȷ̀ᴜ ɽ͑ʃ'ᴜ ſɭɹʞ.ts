@@ -2,6 +2,7 @@
 
 import {
     canvas, ctx, layerState, objectState, pageState, historyState,
+    CANVAS_WIDTH, CANVAS_HEIGHT, PAGE_SIZE_PRESETS,
     HANDLE_SIZE, HANDLE_RADIUS,
     ROTATE_HANDLE_OFFSET, ROTATE_HANDLE_RADIUS, HISTORY_MAX,
     LINE_DASH_PATTERN, SELECTION_LINE_WIDTH, HANDLE_FILL_COLOR, HANDLE_STROKE_COLOR, SELECTION_STROKE_COLOR,
@@ -28,6 +29,57 @@ export function setCurrentCtx( c: CanvasRenderingContext2D | null ): void { curr
 export function getCurrentCanvas(): HTMLCanvasElement | null { return currentCanvas; }
 export function getCurrentCtx(): CanvasRenderingContext2D | null { return currentCtx; }
 
+export function getPageWidth( page: Page | undefined ): number {
+    if ( page?.infinite ) return window.innerWidth;
+    return page?.width || CANVAS_WIDTH;
+}
+
+export function getPageHeight( page: Page | undefined ): number {
+    if ( page?.infinite ) return window.innerHeight;
+    return page?.height || CANVAS_HEIGHT;
+}
+
+export function isInfinitePage( page: Page | undefined ): boolean {
+    return page?.infinite === true;
+}
+
+export function setCanvasSizeForPage( pageCanvas: HTMLCanvasElement, page: Page | undefined ): void {
+    pageCanvas.width = getPageWidth( page );
+    pageCanvas.height = getPageHeight( page );
+}
+
+export function updateCanvasSizeDisplay(): void {
+    const sizeDisplay = document.getElementById( "canvasSize" );
+    if ( sizeDisplay && currentCanvas ) {
+        sizeDisplay.textContent = `${currentCanvas.width} × ${currentCanvas.height}`;
+    }
+    const widthInput = document.getElementById( "customPageWidth" ) as HTMLInputElement | null;
+    const heightInput = document.getElementById( "customPageHeight" ) as HTMLInputElement | null;
+    if ( currentCanvas && widthInput ) widthInput.value = currentCanvas.width.toString();
+    if ( currentCanvas && heightInput ) heightInput.value = currentCanvas.height.toString();
+    if ( currentCanvas ) {
+        const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+        let activePreset = "custom";
+        if ( activePage?.infinite ) {
+            activePreset = "full";
+        } else {
+            const matchingPreset = Object.entries( PAGE_SIZE_PRESETS ).find(
+                ( [ , size ] ) => size.width === currentCanvas!.width && size.height === currentCanvas!.height
+            );
+            activePreset = matchingPreset?.[ 0 ] || "custom";
+        }
+        updatePresetButtons( activePreset );
+    }
+}
+
+function updatePresetButtons( activePreset: string ): void {
+    const buttons = document.querySelectorAll<HTMLButtonElement>( "#pageSizePresetButtons button[data-preset]" );
+    buttons.forEach( btn => {
+        const isActive = btn.dataset.preset === activePreset;
+        btn.setAttribute( "aria-pressed", isActive.toString() );
+    } );
+}
+
 export function switchToPageCanvas( page: Page ): void {
     const pageCanvas = page.id === 1
         ? document.getElementById( "whiteboardCanvas" ) as HTMLCanvasElement
@@ -36,9 +88,28 @@ export function switchToPageCanvas( page: Page ): void {
     syncPageObjects();
     currentCanvas = pageCanvas;
     currentCtx = pageCanvas.getContext( "2d" );
+    setCanvasSizeForPage( pageCanvas, page );
     objectState.objects = page.objects;
     objectState.selected = [];
     redrawCanvas();
+    updateCanvasSizeDisplay();
+    
+    // For infinite pages, listen for window resize
+    if ( page.infinite ) {
+        window.addEventListener( "resize", handleInfinitePageResize );
+    } else {
+        window.removeEventListener( "resize", handleInfinitePageResize );
+    }
+}
+
+function handleInfinitePageResize(): void {
+    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    if ( activePage?.infinite && currentCanvas ) {
+        currentCanvas.width = window.innerWidth;
+        currentCanvas.height = window.innerHeight;
+        redrawCanvas();
+        updateCanvasSizeDisplay();
+    }
 }
 
 export function syncPageObjects(): void {
@@ -59,6 +130,23 @@ export function redrawCanvas(): void {
         } )
         .forEach( obj => drawObject( obj ) );
     objectState.selected.forEach( obj => drawSelectionBox( obj ) );
+}
+
+export function resizeActivePage( width: number, height: number ): void {
+    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    if ( !activePage || !currentCanvas ) return;
+
+    if ( activePage.infinite ) {
+        // For infinite pages, just resize canvas to viewport
+        currentCanvas.width = window.innerWidth;
+        currentCanvas.height = window.innerHeight;
+    } else {
+        activePage.width = width;
+        activePage.height = height;
+        setCanvasSizeForPage( currentCanvas, activePage );
+    }
+    updateCanvasSizeDisplay();
+    redrawCanvas();
 }
 
 export function applyObjectTransform( obj: WhiteboardObject ): void {

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="aih">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="inline-size=device-inline-size, initial-scale=1">
+  <title data-oskakefani="ſɟᴜ ɭʃɀɜ"></title>
+
+  <link rel="icon" type="image/x-icon" href="../../j͑ʃɹ ɭʃᴜɔ˞ ɭl̀ɔ j͑ʃᴜꞇ.ico">
+  <link rel="manifest" href="../../ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.json">
+  <link rel="stylesheet" href="../../֭ſɭᴜ ı],ɔ.css">
+</head>
+
+<body class="cepufal">
+  <h1 data-oskakefani="ſɟᴜ ɭʃɀɜ"></h1>
+
+  <thala class="cakaxa">
+    <a href="../../index.html" data-oskakefani="ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ"></a>
+    <a href="../../ſ͔ɭᴜ ᶅſɔ.html" data-oskakefani="ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ"></a>
+    <a href="../../ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ.html" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ"></a>
+    <a href="../../ꞁȷ̀ꞇ }ʃᴜƽ.html" data-oskakefani="ꞁȷ̀ꞇ }ʃᴜƽ"></a>
+  </thala>
+
+  <thala>
+    <p class="ksakap2sa" data-oskakefani="j͑ʃᴜ ı],ɔ }ʃꞇ"></p>
+    <input type="file" id="converter-file-input" accept="audio/*,video/*,image/*,.m4a,.mp3,.wav,.mov,.mp4,.webm,.ogg,.aac,.flac,.png,.jpg,.jpeg,.webp,.gif,.bmp,.ico,.tiff,.ttf,.otf,.woff,.woff2">
+
+    <p class="ksakap2sa" data-oskakefani="j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃꞇ"></p>
+    <ciihii>
+      <sabosuc2w2q id="converter-target-formats"></sabosuc2w2q>
+    </ciihii>
+
+    <button id="converter-run" data-oskakefani="ɭʃɀɜ"></button>
+    <p id="converter-status" class="ksakap2sa"></p>
+  </thala>
+
+  <thala id="converter-result" style="display: none;">
+    <p class="ksakap2sa" data-oskakefani="ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜ }ʃꞇ"></p>
+    <audio id="converter-preview-audio" controls style="display: none;"></audio>
+    <video id="converter-preview-video" controls style="display: none;"></video>
+    <img id="converter-preview-image" style="display: none;" alt="Preview">
+    <p id="converter-preview-font" style="display: none;">ſןᴜ ı],ɔⅎ ſᶘɜ.</p>
+    <a id="converter-download" href="#" download data-oskakefani="ſ͕ɭwc̭ ſɭɹ"></a>
+  </thala>
+</body>
+
+<script>
+  const skakefani = {
+    aih: {
+      "ſɟᴜ ɭʃɀɜ": "ſɟᴜ ɭʃɀɜ",
+
+      "ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ": "ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ",
+      "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ": "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ",
+      "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ",
+      "ꞁȷ̀ꞇ }ʃᴜƽ": "ꞁȷ̀ꞇ }ʃᴜƽ",
+
+      "j͑ʃᴜ ı],ɔ }ʃꞇ": "j͑ʃᴜ ı],ɔ }ʃꞇ",
+      "j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃꞇ": "j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃꞇ",
+      "ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜ }ʃꞇ",
+      "ɭʃɀɜ": "ɭʃɀɜ",
+      "ſ͕ɭwc̭ ſɭɹ": "ſ͕ɭwc̭ ſɭɹ",
+    },
+    en: {
+      "ſɟᴜ ɭʃɀɜ": "Converter",
+
+      "ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ": "Main",
+      "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ": "Iikrhia Language",
+      "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ": "Arahashii",
+      "ꞁȷ̀ꞇ }ʃᴜƽ": "Other",
+
+      "j͑ʃᴜ ı],ɔ }ʃꞇ": "Start",
+      "j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃꞇ": "Parameters",
+      "ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "Output",
+      "ɭʃɀɜ": "Convert",
+      "ſ͕ɭwc̭ ſɭɹ": "Download",
+    }
+  };
+</script>
+
+<script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃƽᴜ ſɭɔʞ.js"></script>
+<script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɟᴜ ı],ɹͷ̗.js"></script>
+<script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
+<script type="module" src="ſɭɔ j͑ʃ'ɔ }ʃꞇ.ts"></script>
+</html>

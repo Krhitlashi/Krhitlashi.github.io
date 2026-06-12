@@ -1,16 +1,16 @@
 /* ⟪ j͐ʃᴜ ſ͔ɭᴜ 🔣 ⟫ */
 
 @font-face {
+	font-family: "ı],ᴜ }ʃᴜ";
+	src: url("j͐ʃᴜ ſ͔ɭᴜ/ı],ᴜ }ʃᴜ.ttf");
+}
+@font-face {
 	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	src: url("j͐ʃᴜ ſ͔ɭᴜ/ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ.ttf");
 }
 @font-face {
 	font-family: "ꞁȷ̀ɹ ſɭˬꞇᴜ ſ͔ɭɹ";
 	src: url("j͐ʃᴜ ſ͔ɭᴜ/ꞁȷ̀ɹ ſɭˬꞇᴜ ſ͔ɭɹ.ttf");
-}
-@font-face {
-	font-family: "ı],ᴜ }ʃᴜ";
-	src: url("j͐ʃᴜ ſ͔ɭᴜ/ı],ᴜ }ʃᴜ.ttf");
 }
 @font-face {
 	font-family: "ɭʃⲝ ɭʃᴜ oͮſɭᴜ";
@@ -466,7 +466,7 @@ ariiba {
 	flex-wrap: nowrap;
 	gap: var(--អារេងចិ);
 }
-input, textarea {
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), textarea {
 	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេចិ);
 	border: var(--សាកព៏);
@@ -480,6 +480,9 @@ input:focus {
 	outline:none;
 }
 input[type="file"] {
+	background-color: var(--តានេក);
+	border-radius: var(--អិត្ភេចិ);
+	border: var(--សាកព៏);
 	padding: var(--អារេង);
 }
 input[type="file"]::file-selector-button {

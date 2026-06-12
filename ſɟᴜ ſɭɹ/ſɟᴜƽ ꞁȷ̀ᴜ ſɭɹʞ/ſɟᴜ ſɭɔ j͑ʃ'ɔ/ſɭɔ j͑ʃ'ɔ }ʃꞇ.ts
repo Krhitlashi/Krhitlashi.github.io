@@ -26,7 +26,7 @@ import {
 import {
     initColors, initToolsAndShapes, initSizeSlider, initToolbar,
     handleKeyboard, initActions, initLayerControls, initPageControls,
-    initFileOperations
+    initFileOperations, initPageSizeControls
 } from "./ſɭ,ɔ }ʃꞇ.js";
 
 import {
@@ -42,8 +42,9 @@ let setZoomFn: ( zoom: number ) => void = () => { };
 
 function initCanvas(): void {
     if ( !getCurrentCanvas() ) return;
-    getCurrentCanvas()!.width = CANVAS_WIDTH;
-    getCurrentCanvas()!.height = CANVAS_HEIGHT;
+    const activePage = pageManager.getActive();
+    getCurrentCanvas()!.width = activePage?.width || CANVAS_WIDTH;
+    getCurrentCanvas()!.height = activePage?.height || CANVAS_HEIGHT;
 
     getCurrentCtx()!.fillStyle = "#ffffff";
     getCurrentCtx()!.fillRect( 0, 0, getCurrentCanvas()!.width, getCurrentCanvas()!.height );
@@ -387,6 +388,7 @@ initCanvasEvents();
 initActions();
 initLayerControls();
 initPageControls();
+initPageSizeControls();
 initZoom();
 initFileOperations();
 saveState();
