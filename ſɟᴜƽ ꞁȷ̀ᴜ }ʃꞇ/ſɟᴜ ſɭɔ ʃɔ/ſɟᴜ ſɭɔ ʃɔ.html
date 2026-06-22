@@ -27,7 +27,7 @@
 	<thala>
 		<p class="ksakap2sa" data-oskakefani="ʃɔ"></p>
 		<ariiba>
-			<input id="phonology-sound-input" type="text" autocomplete="off" data-oskakefani-placeholder="ʃɔ ı">
+			<input id="phonology-sound-input" type="text" autocomplete="off" data-oskakefani-placeholder="ʃɔ ʌ j͑ʃп́ɔ ſɭɔ˞ᴜ ſɭᴜ">
 			<button id="phonology-add-sound" data-oskakefani="ʃɔ ɿ"></button>
 		</ariiba>
 		<sabosuc2w2q id="phonology-sound-list"></sabosuc2w2q>
@@ -36,7 +36,7 @@
 	<thala>
 		<p class="ksakap2sa" data-oskakefani="֭ſɭᴜ ɭʃɔ"></p>
 		<ariiba>
-			<input id="phonology-group-input" type="text" autocomplete="off" data-oskakefani-placeholder="֭ſɭᴜ ɭʃɔ ı">
+			<input id="phonology-group-input" type="text" autocomplete="off" data-oskakefani-placeholder="֭ſɭᴜ ɭʃɔ ʌ j͑ʃп́ɔ ſɭɔ˞ᴜ ſɭᴜ">
 			<button id="phonology-add-group" data-oskakefani="֭ſɭᴜ ɭʃɔ ɿ"></button>
 		</ariiba>
 		<p class="ksakat2xa" data-oskakefani="֭ſɭᴜ ɭʃɔ ц"></p>
@@ -69,6 +69,33 @@
 		<ciihii id="phonology-output"></ciihii>
 	</thala>
 
+	<p class="saxesukef" data-oskakefani="j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭc̗ᴜ ʃɔ"></p>
+
+	<thala>
+		<p class="ksakap2sa" data-oskakefani="ſɭᴜc̗ ɭʃᴜ"></p>
+		<ariiba>
+			<textarea id="evolve-rules" placeholder="ſɭᴜc̗ ɭʃᴜ"></textarea>
+		</ariiba>
+	</thala>
+
+	<thala>
+		<p class="ksakap2sa" data-oskakefani="j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭɔʞ"></p>
+		<ariiba>
+			<label>
+				<input type="radio" name="evolve-source" id="evolve-source-generated" checked>
+				<span data-oskakefani="ſɭɹ ɽ͑ʃ'ɔ ſɭɔʞ j͐ʃэ ſɭʞɹ"></span>
+			</label>
+			<label>
+				<input type="radio" name="evolve-source" id="evolve-source-custom">
+				<span data-oskakefani="ꞁȷ̀ꞇ j͐ʃᴜƽ ſɭɔʞ"></span>
+			</label>
+			<textarea id="evolve-custom-words" rows="8" autocomplete="off" class="kobe" placeholder="ſɭɔʞ"></textarea>
+			<button id="evolve-run" data-oskakefani="j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ"></button>
+		</ariiba>
+		<p id="evolve-status" class="ksakat2xa" data-oskakefani="ꞁȷ̀ᴜ ŋᷠᴜͷ̗"></p>
+		<ciihii id="evolve-output"></ciihii>
+	</thala>
+
 </body>
 
 <script>
@@ -99,6 +126,13 @@
 			"ſɭʞɹ": "ſɭʞɹ",
 			"ſɭʞɹ ı": "ſɭʞɹ",
 			"ꞁȷ̀ᴜ ŋᷠᴜͷ̗": "ꞁȷ̀ᴜ ŋᷠᴜͷ̗",
+
+			"j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭc̗ᴜ ʃɔ": "j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭc̗ᴜ ʃɔ 🌱",
+			"ſɭᴜc̗ ɭʃᴜ": "ſɭᴜc̗ ɭʃᴜ",
+			"j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭɔʞ": "j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭɔʞ",
+			"ſɭɹ ɽ͑ʃ'ɔ ſɭɔʞ j͐ʃэ ſɭʞɹ": "ſɭɹ ɽ͑ʃ'ɔ ſɭɔʞ j͐ʃэ ſɭʞɹ",
+			"ꞁȷ̀ꞇ j͐ʃᴜƽ ſɭɔʞ": "ꞁȷ̀ꞇ j͐ʃᴜƽ ſɭɔʞ",
+			"j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ": "j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ",
         },
         en: {
             "ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ": "Main",
@@ -126,6 +160,13 @@
 			"ſɭʞɹ": "Generate",
 			"ſɭʞɹ ı": "Generate",
 			"ꞁȷ̀ᴜ ŋᷠᴜͷ̗": "Ready",
+
+			"j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭc̗ᴜ ʃɔ": "Evolve Phonology 🌱",
+			"ſɭᴜc̗ ɭʃᴜ": "Rules",
+			"j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭɔʞ": "Evolve Words",
+			"ſɭɹ ɽ͑ʃ'ɔ ſɭɔʞ j͐ʃэ ſɭʞɹ": "Use Generated Words",
+			"ꞁȷ̀ꞇ j͐ʃᴜƽ ſɭɔʞ": "Use Custom Words",
+			"j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ": "Evolve",
         }
     };
 </script>
@@ -133,5 +174,6 @@
 <script src="../../ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js"></script>
 
 <script type="module" src="ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɭʞɹ ſɭɔ ʃɔ.ts"></script>
+<script type="module" src="ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭc̗ᴜ ʃɔ.ts"></script>
 
 </html>
