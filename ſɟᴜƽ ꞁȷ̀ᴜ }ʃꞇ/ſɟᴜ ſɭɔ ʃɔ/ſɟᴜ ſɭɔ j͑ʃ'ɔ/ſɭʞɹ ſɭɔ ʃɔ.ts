@@ -49,11 +49,14 @@ const TEXT = {
     SELECT: "j͑ʃw ſɭʞɹȝ",
     DELETE: "j͑ʃ'ᴜ ᶅſɔ",
     REMOVE: "֭ſɭɹͷ̗",
+    EDIT: "j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ",
+    RENAME_GROUP: "j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ֭ſɭᴜ ɭʃɔ",
     NUMERATOR: "ſɭɹ ſȷɔ",
     DENOMINATOR: "ɭ(ɜ ŋᷠᴜ }ʃꞇ",
     ALWAYS: "ſɭᴜ ɽ͑ʃ'ᴜ",
     SAVE_STRUCTURE: "j͑ʃ'ɔ ſ̀ȷᴜȝ",
     CLEAR_STRUCTURE: "j͑ʃ'ᴜ ᶅſɔ",
+    EDIT_STRUCTURE: "j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ſɭc̗ᴜ ı],ɔƴ",
     NEED_GROUPS: "ɭʃɔ ſ͕ɭᴜƴ ʌ ֭ſɭᴜ ɭʃɔ ⟅",
     NEED_DRAFT: "ɭʃɔ ſ͕ɭᴜƴ ʌ ֭ſɭᴜ ɭʃɔ ⟅",
     NEED_STRUCTURE: "ɭʃɔ ſ͕ɭᴜƴ ʌ ſɭc̗ᴜ ı],ɔƴ ⟅",
@@ -76,11 +79,14 @@ const TEXT = {
     SELECT: "Select",
     DELETE: "Delete",
     REMOVE: "Remove",
+    EDIT: "Edit",
+    RENAME_GROUP: "Rename group",
     NUMERATOR: "Numerator",
     DENOMINATOR: "Denominator",
     ALWAYS: "Always",
     SAVE_STRUCTURE: "Saved structure",
     CLEAR_STRUCTURE: "Cleared structure",
+    EDIT_STRUCTURE: "Edit structure",
     NEED_GROUPS: "Add groups first",
     NEED_DRAFT: "Add groups to the current structure first",
     NEED_STRUCTURE: "Save at least one structure first",
@@ -390,6 +396,20 @@ function selectGroup(groupId: string): void {
   commit();
 }
 
+function editGroup(groupId: string, newName: string): void {
+  const trimmed = newName.trim();
+  if ( !trimmed ) return;
+  const duplicate = state.groups.some(g => g.name === trimmed && g.id !== groupId);
+  if ( duplicate ) {
+    setStatus(T.DUPLICATE_GROUP);
+    return;
+  }
+  const group = findGroup(groupId);
+  if ( !group ) return;
+  group.name = trimmed;
+  commit();
+}
+
 function toggleSoundAssignment(soundId: string, assigned: boolean): void {
   const group = state.groups.find((candidate) => candidate.id === state.activeGroupId);
   if ( !group ) return;
@@ -419,8 +439,32 @@ function renderGroups(): void {
     radio.checked = group.id === state.activeGroupId;
     radio.addEventListener("change", () => selectGroup(group.id));
 
+    const nameSpan = createTextElement("span", group.name);
+    nameSpan.style.cursor = "pointer";
+    nameSpan.title = T.EDIT;
+    nameSpan.addEventListener("click", () => {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.value = group.name;
+      nameSpan.replaceWith(input);
+      input.focus();
+      input.select();
+      const commitEdit = () => {
+        editGroup(group.id, input.value);
+      };
+      input.addEventListener("blur", commitEdit);
+      input.addEventListener("keydown", (e) => {
+        if ( e.key === "Enter" ) {
+          input.blur();
+        } else if ( e.key === "Escape" ) {
+          input.value = group.name;
+          input.blur();
+        }
+      });
+    });
+
     wrapper.appendChild(radio);
-    wrapper.appendChild(createTextElement("span", group.name));
+    wrapper.appendChild(nameSpan);
     wrapper.appendChild(createButton(T.DELETE, () => removeGroup(group.id)));
     GROUP_LIST.appendChild(wrapper);
   }
@@ -503,6 +547,15 @@ function removeStructure(structureId: string): void {
   commit();
 }
 
+function editStructure(structureId: string): void {
+  const structure = state.structures.find(s => s.id === structureId);
+  if ( !structure ) return;
+  state.draftParts = structure.parts.map(p => ({ ...p }));
+  state.structures = state.structures.filter(s => s.id !== structureId);
+  setStatus(T.EDIT_STRUCTURE);
+  commit();
+}
+
 function renderStructureGroupButtons(): void {
   resetChildren(STRUCTURE_GROUP_LIST);
   if ( state.groups.length === 0 ) {
@@ -563,6 +616,7 @@ function renderStructures(): void {
   state.structures.forEach((structure, index) => {
     const wrapper = document.createElement("ciihii");
     wrapper.appendChild(createTextElement("span", `${T.STRUCTURE} ${index + 1} ${describeStructure(structure)}`));
+    wrapper.appendChild(createButton(T.EDIT, () => editStructure(structure.id)));
     wrapper.appendChild(createButton(T.DELETE, () => removeStructure(structure.id)));
     STRUCTURE_LIST.appendChild(wrapper);
   });

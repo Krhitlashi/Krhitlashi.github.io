@@ -580,7 +580,7 @@ function runEvolve(): void {
     const evolvedStr = evolved.join("");
 
     const wrapper = document.createElement("ciihii");
-    wrapper.appendChild(createTextElement("span", `${word} → ${evolvedStr}`));
+    wrapper.appendChild(createTextElement("span", `${word} \n🔼\n ${evolvedStr}`));
     OUTPUT.appendChild(wrapper);
     count++;
   }
