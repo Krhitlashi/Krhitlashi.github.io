@@ -449,6 +449,9 @@ sabosuc2w2q {
 	align-items: center;
 	justify-content: center;
 }
+.c2w2qkuba {
+	justify-content: start;
+}
 .c2w2qkuba label {
 	display: block;
 }
@@ -465,7 +468,7 @@ ariiba {
 	flex-wrap: nowrap;
 	gap: var(--អារេងចិ);
 }
-input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), textarea {
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]), textarea {
 	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេចិ);
 	border: var(--សាកព៏);
