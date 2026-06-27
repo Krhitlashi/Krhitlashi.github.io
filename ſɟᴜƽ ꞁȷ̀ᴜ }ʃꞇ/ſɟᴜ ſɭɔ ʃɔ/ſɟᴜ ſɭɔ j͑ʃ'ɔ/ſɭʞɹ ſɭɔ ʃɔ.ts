@@ -16,7 +16,6 @@ interface SoundGroup {
 interface StructurePart {
   groupId: string;
   numerator: number;
-  denominator: number;
 }
 
 interface SyllableStructure {
@@ -24,15 +23,34 @@ interface SyllableStructure {
   parts: StructurePart[];
 }
 
-interface PhonologyState {
+interface EvolveSave {
+  id: string;
+  name: string;
+  rules: string;
+  customWords: string;
+  useGenerated: boolean;
+}
+
+interface GeneratorSave {
+  id: string;
+  name: string;
   sounds: SoundEntry[];
   groups: SoundGroup[];
   activeGroupId: string | null;
   draftParts: StructurePart[];
   structures: SyllableStructure[];
+  evolveSaves: EvolveSave[];
+  activeEvolveSaveId: string | null;
 }
 
-const STORAGE_KEY = "phonology-generator-state-v1";
+interface SavesState {
+  saves: GeneratorSave[];
+  activeSaveId: string | null;
+}
+
+const STORAGE_KEY_V1 = "phonology-generator-state-v1";
+const EVOLVE_STORAGE_KEY_V1 = "phonology-evolve-state-v1";
+const STORAGE_KEY_V2 = "phonology-generator-saves-v2";
 
 const TEXT = {
   aih: {
@@ -117,7 +135,13 @@ const GENERATE_BUTTON = getElement<HTMLButtonElement>("phonology-generate");
 const STATUS = getElement<HTMLParagraphElement>("phonology-status");
 const OUTPUT = getElement<HTMLElement>("phonology-output");
 
-let state: PhonologyState = loadState();
+const SAVES_LIST = getElement<HTMLElement>("phonology-saves-list");
+const SAVE_NAME_INPUT = getElement<HTMLInputElement>("phonology-save-name-input");
+const ADD_SAVE_BUTTON = getElement<HTMLButtonElement>("phonology-add-save");
+const DELETE_SAVE_BUTTON = getElement<HTMLButtonElement>("phonology-delete-save");
+
+let savesState: SavesState = { saves: [], activeSaveId: null };
+let state: GeneratorSave = loadState();
 
 // ⟪ ꞁȷ̀ɜ ʃэ ſɭɹ ⟫
 
@@ -141,99 +165,102 @@ function makeId(): string {
   return `${Date.now().toString(0o10)}-${Math.random().toString(0o10).slice(2)}`;
 }
 
-function loadState(): PhonologyState {
-  const emptyState: PhonologyState = {
+function migrateOrInitializeState(): GeneratorSave {
+  let migratedGen: any = null;
+  let migratedEvolve: any = null;
+
+  try {
+    const rawGen = localStorage.getItem(STORAGE_KEY_V1);
+    if ( rawGen ) {
+      migratedGen = JSON.parse(rawGen);
+    }
+  } catch {}
+
+  try {
+    const rawEvolve = localStorage.getItem(EVOLVE_STORAGE_KEY_V1);
+    if ( rawEvolve ) {
+      migratedEvolve = JSON.parse(rawEvolve);
+    }
+  } catch {}
+
+  const defaultEvolveSave: EvolveSave = {
+    id: makeId(),
+    name: "1",
+    rules: migratedEvolve?.rules || "",
+    customWords: migratedEvolve?.customWords || "",
+    useGenerated: typeof migratedEvolve?.useGenerated === "boolean" ? migratedEvolve.useGenerated : true,
+  };
+
+  const newSave: GeneratorSave = {
+    id: makeId(),
+    name: "1",
     sounds: [],
     groups: [],
     activeGroupId: null,
     draftParts: [],
     structures: [],
+    evolveSaves: [defaultEvolveSave],
+    activeEvolveSaveId: defaultEvolveSave.id,
   };
 
-  try {
-    const savedState = localStorage.getItem(STORAGE_KEY);
-    if ( !savedState ) return emptyState;
+  if ( migratedGen ) {
+    if ( Array.isArray(migratedGen.sounds) ) {
+      newSave.sounds = migratedGen.sounds;
+    }
+    if ( Array.isArray(migratedGen.groups) ) {
+      newSave.groups = migratedGen.groups;
+    }
+    newSave.activeGroupId = migratedGen.activeGroupId || null;
 
-    const parsedState = JSON.parse(savedState);
-    if ( !parsedState || typeof parsedState !== "object" ) return emptyState;
-
-    const sounds: SoundEntry[] = [];
-    if ( Array.isArray(parsedState.sounds) ) {
-      for ( const s of parsedState.sounds ) {
-        if ( s && typeof s === "object" && typeof s.id === "string" && typeof s.value === "string" ) {
-          sounds.push({ id: s.id, value: s.value });
-        }
-      }
+    if ( Array.isArray(migratedGen.draftParts) ) {
+      newSave.draftParts = migratedGen.draftParts.map((p: any) => ({
+        groupId: p.groupId,
+        numerator: Math.min(64, Math.max(0, Math.floor(p.numerator || 0))),
+      }));
     }
 
-    const groups: SoundGroup[] = [];
-    if ( Array.isArray(parsedState.groups) ) {
-      for ( const g of parsedState.groups ) {
-        if ( g && typeof g === "object" && typeof g.id === "string" && typeof g.name === "string" ) {
-          const soundIds: string[] = [];
-          if ( Array.isArray(g.soundIds) ) {
-            for ( const sid of g.soundIds ) {
-              if ( typeof sid === "string" ) {
-                soundIds.push(sid);
-              }
-            }
-          }
-          groups.push({ id: g.id, name: g.name, soundIds });
-        }
-      }
+    if ( Array.isArray(migratedGen.structures) ) {
+      newSave.structures = migratedGen.structures.map((s: any) => ({
+        id: s.id,
+        parts: Array.isArray(s.parts) ? s.parts.map((p: any) => ({
+          groupId: p.groupId,
+          numerator: Math.min(64, Math.max(0, Math.floor(p.numerator || 0))),
+        })) : [],
+      }));
     }
-
-    let activeGroupId: string | null = null;
-    if ( typeof parsedState.activeGroupId === "string" ) {
-      activeGroupId = parsedState.activeGroupId;
-    }
-
-    const draftParts: StructurePart[] = [];
-    if ( Array.isArray(parsedState.draftParts) ) {
-      for ( const p of parsedState.draftParts ) {
-        if ( p && typeof p === "object" && typeof p.groupId === "string" ) {
-          draftParts.push({
-            groupId: p.groupId,
-            numerator: typeof p.numerator === "number" ? p.numerator : 1,
-            denominator: typeof p.denominator === "number" ? p.denominator : 1,
-          });
-        }
-      }
-    }
-
-    const structures: SyllableStructure[] = [];
-    if ( Array.isArray(parsedState.structures) ) {
-      for ( const str of parsedState.structures ) {
-        if ( str && typeof str === "object" && typeof str.id === "string" && Array.isArray(str.parts) ) {
-          const parts: StructurePart[] = [];
-          for ( const p of str.parts ) {
-            if ( p && typeof p === "object" && typeof p.groupId === "string" ) {
-              parts.push({
-                groupId: p.groupId,
-                numerator: typeof p.numerator === "number" ? p.numerator : 1,
-                denominator: typeof p.denominator === "number" ? p.denominator : 1,
-              });
-            }
-          }
-          structures.push({ id: str.id, parts });
-        }
-      }
-    }
-
-    return {
-      sounds,
-      groups,
-      activeGroupId,
-      draftParts,
-      structures,
-    };
-  } catch {
-    return emptyState;
   }
+
+  savesState = {
+    saves: [newSave],
+    activeSaveId: newSave.id,
+  };
+
+  saveState();
+  return newSave;
+}
+
+function loadState(): GeneratorSave {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY_V2);
+    if ( saved ) {
+      const parsed = JSON.parse(saved);
+      if ( parsed && Array.isArray(parsed.saves) && parsed.saves.length > 0 ) {
+        savesState = parsed;
+        let active = savesState.saves.find(s => s.id === savesState.activeSaveId);
+        if ( !active ) {
+          active = savesState.saves[0];
+          savesState.activeSaveId = active.id;
+        }
+        return active;
+      }
+    }
+  } catch {}
+
+  return migrateOrInitializeState();
 }
 
 function saveState(): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  localStorage.setItem(STORAGE_KEY_V2, JSON.stringify(savesState));
 }
 
 function setStatus(message: string): void {
@@ -280,12 +307,10 @@ function findSound(soundId: string): SoundEntry | undefined {
 }
 
 function normalizeFraction(part: StructurePart): StructurePart {
-  const denominator = Math.max(1, Math.floor(part.denominator || 1));
-  const numerator = Math.min(denominator, Math.max(0, Math.floor(part.numerator || 0)));
+  const numerator = Math.min(64, Math.max(0, Math.floor(part.numerator || 0)));
   return {
     groupId: part.groupId,
     numerator,
-    denominator,
   };
 }
 
@@ -293,10 +318,10 @@ function describePart(part: StructurePart): string {
   const group = findGroup(part.groupId);
   const groupName = group ? group.name : "?";
   const normalizedPart = normalizeFraction(part);
-  if ( normalizedPart.numerator === normalizedPart.denominator ) {
+  if ( normalizedPart.numerator === 64 ) {
     return `${groupName} ${T.ALWAYS}`;
   }
-  return `${groupName} ${normalizedPart.numerator}/${normalizedPart.denominator}`;
+  return `${groupName} ${normalizedPart.numerator}/64`;
 }
 
 function describeStructure(structure: SyllableStructure): string {
@@ -497,22 +522,37 @@ function renderAssignments(): void {
 function addDraftPart(groupId: string): void {
   state.draftParts.push({
     groupId,
-    numerator: 1,
-    denominator: 1,
+    numerator: 64,
   });
   commit();
 }
 
-function updateDraftPart(index: number, key: "numerator" | "denominator", value: number): void {
+function updateDraftPart(index: number, value: number): void {
   const part = state.draftParts[index];
   if ( !part ) return;
 
   const nextPart = normalizeFraction({
     ...part,
-    [key]: value,
+    numerator: value,
   });
 
   state.draftParts[index] = nextPart;
+  commit();
+}
+
+function moveDraftPartUp(index: number): void {
+  if ( index <= 0 ) return;
+  const temp = state.draftParts[index];
+  state.draftParts[index] = state.draftParts[index - 1];
+  state.draftParts[index - 1] = temp;
+  commit();
+}
+
+function moveDraftPartDown(index: number): void {
+  if ( index >= state.draftParts.length - 1 ) return;
+  const temp = state.draftParts[index];
+  state.draftParts[index] = state.draftParts[index + 1];
+  state.draftParts[index + 1] = temp;
   commit();
 }
 
@@ -556,7 +596,7 @@ function editStructure(structureId: string): void {
   commit();
 }
 
-function renderStructureGroupButtons(): void {
+function renderStructureGrostartButtons(): void {
   resetChildren(STRUCTURE_GROUP_LIST);
   if ( state.groups.length === 0 ) {
     STRUCTURE_GROUP_LIST.appendChild(createEmptyMessage(T.NEED_GROUPS));
@@ -584,23 +624,29 @@ function renderDraftStructure(): void {
     const numeratorInput = document.createElement("input");
     numeratorInput.type = "number";
     numeratorInput.min = "0";
-    numeratorInput.max = `${normalizedPart.denominator}`;
+    numeratorInput.max = "64";
     numeratorInput.step = "1";
     numeratorInput.value = `${normalizedPart.numerator}`;
     numeratorInput.title = T.NUMERATOR;
-    numeratorInput.addEventListener("change", () => updateDraftPart(index, "numerator", Number(numeratorInput.value)));
+    numeratorInput.addEventListener("change", () => updateDraftPart(index, Number(numeratorInput.value)));
 
-    const denominatorInput = document.createElement("input");
-    denominatorInput.type = "number";
-    denominatorInput.min = "1";
-    denominatorInput.step = "1";
-    denominatorInput.value = `${normalizedPart.denominator}`;
-    denominatorInput.title = T.DENOMINATOR;
-    denominatorInput.addEventListener("change", () => updateDraftPart(index, "denominator", Number(denominatorInput.value)));
+    const staticDenominator = createTextElement("span", "/64");
 
     wrapper.appendChild(label);
     wrapper.appendChild(numeratorInput);
-    wrapper.appendChild(denominatorInput);
+    wrapper.appendChild(staticDenominator);
+
+    const startButton = createButton("<", () => moveDraftPartUp(index));
+    const endButton = createButton(">", () => moveDraftPartDown(index));
+    if ( index === 0 ) {
+      startButton.disabled = true;
+    }
+    if ( index === state.draftParts.length - 1 ) {
+      endButton.disabled = true;
+    }
+
+    wrapper.appendChild(startButton);
+    wrapper.appendChild(endButton);
     wrapper.appendChild(createButton(T.REMOVE, () => removeDraftPart(index)));
     DRAFT_STRUCTURE.appendChild(wrapper);
   });
@@ -632,8 +678,8 @@ function chooseRandom<TItem>(items: TItem[]): TItem | undefined {
 function shouldIncludePart(part: StructurePart): boolean {
   const normalizedPart = normalizeFraction(part);
   if ( normalizedPart.numerator <= 0 ) return false;
-  if ( normalizedPart.numerator >= normalizedPart.denominator ) return true;
-  return Math.random() < normalizedPart.numerator / normalizedPart.denominator;
+  if ( normalizedPart.numerator >= 64 ) return true;
+  return Math.random() < normalizedPart.numerator / 64;
 }
 
 function generateSyllable(): string | null {
@@ -695,15 +741,112 @@ function generateOutput(): void {
 
 // ⟪ j͑ʃᴜꞇ ⟫
 
+function renderSaves(): void {
+  resetChildren(SAVES_LIST);
+
+  savesState.saves.forEach((save) => {
+    const tabButton = document.createElement("button");
+    tabButton.type = "button";
+    tabButton.appendChild(createTextElement("span", save.name));
+    
+    if ( save.id === savesState.activeSaveId ) {
+      tabButton.setAttribute("aria-pressed", "true");
+    }
+    
+    tabButton.addEventListener("click", () => {
+      savesState.activeSaveId = save.id;
+      state = save;
+      commit();
+    });
+
+    SAVES_LIST.appendChild(tabButton);
+  });
+
+  const activeSave = savesState.saves.find(s => s.id === savesState.activeSaveId);
+  if ( activeSave ) {
+    SAVE_NAME_INPUT.value = activeSave.name;
+  }
+
+  if ( savesState.saves.length <= 1 ) {
+    DELETE_SAVE_BUTTON.style.display = "none";
+  } else {
+    DELETE_SAVE_BUTTON.style.display = "";
+  }
+}
+
+function addSave(): void {
+  let maxNum = 0;
+  for ( const s of savesState.saves ) {
+    const val = parseInt(s.name, 0o10);
+    if ( !isNaN(val) && val > maxNum ) {
+      maxNum = val;
+    }
+  }
+  const nextName = ( maxNum + 1 ).toString();
+
+  const defaultEvolveSave: EvolveSave = {
+    id: makeId(),
+    name: "ɔ",
+    rules: "",
+    customWords: "",
+    useGenerated: true,
+  };
+
+  const newSave: GeneratorSave = {
+    id: makeId(),
+    name: nextName,
+    sounds: [],
+    groups: [],
+    activeGroupId: null,
+    draftParts: [],
+    structures: [],
+    evolveSaves: [ defaultEvolveSave ],
+    activeEvolveSaveId: defaultEvolveSave.id,
+  };
+
+  savesState.saves.push(newSave);
+  savesState.activeSaveId = newSave.id;
+  state = newSave;
+  commit();
+
+  SAVE_NAME_INPUT.focus();
+  SAVE_NAME_INPUT.select();
+}
+
+function deleteSave(): void {
+  if ( savesState.saves.length <= 1 ) return;
+
+  const index = savesState.saves.findIndex(s => s.id === savesState.activeSaveId);
+  savesState.saves = savesState.saves.filter(s => s.id !== savesState.activeSaveId);
+
+  const nextActiveIndex = Math.min(index, savesState.saves.length - 1);
+  const nextActive = savesState.saves[nextActiveIndex];
+  savesState.activeSaveId = nextActive.id;
+  state = nextActive;
+  commit();
+}
+
+function renameSave(): void {
+  const newName = SAVE_NAME_INPUT.value.trim();
+  if ( !newName ) return;
+
+  const activeSave = savesState.saves.find(s => s.id === savesState.activeSaveId);
+  if ( activeSave ) {
+    activeSave.name = newName;
+    commit();
+  }
+}
+
 function renderAll(): void {
   if ( state.activeGroupId && !findGroup(state.activeGroupId) ) {
     state.activeGroupId = state.groups[0]?.id ?? null;
   }
 
+  renderSaves();
   renderSounds();
   renderGroups();
   renderAssignments();
-  renderStructureGroupButtons();
+  renderStructureGrostartButtons();
   renderDraftStructure();
   renderStructures();
 
@@ -714,17 +857,42 @@ function renderAll(): void {
 
 function commit(): void {
   saveState();
+  window.dispatchEvent(new CustomEvent("phonology-state-updated"));
   renderAll();
 }
+
+window.addEventListener("phonology-state-updated", () => {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY_V2);
+    if ( saved ) {
+      const parsed = JSON.parse(saved);
+      if ( parsed && Array.isArray(parsed.saves) && parsed.saves.length > 0 ) {
+        savesState = parsed;
+        const active = savesState.saves.find(s => s.id === savesState.activeSaveId);
+        if ( active ) {
+          state = active;
+        }
+      }
+    }
+  } catch {}
+  renderAll();
+});
 
 function setPlaceholders(): void {
   const placeholders = document.querySelectorAll<HTMLInputElement>("[data-oskakefani-placeholder]");
   placeholders.forEach((input) => {
     const key = input.dataset.oskakefaniPlaceholder;
     if ( !key ) return;
-    const text = language === "en"
-      ? ( key === "ʃɔ ı" ? "Sound string" : "Group name" )
-      : key;
+    let text = key;
+    if ( language === "en" ) {
+      if ( key.startsWith("ʃɔ ʌ j͑ʃп́ɔ ſɭɔ˞ᴜ ſɭᴜ") ) {
+        text = "Sound string";
+      } else if ( key.startsWith("֭ſɭᴜ ɭʃɔ ʌ j͑ʃп́ɔ ſɭɔ˞ᴜ ſɭᴜ") ) {
+        text = "Group name";
+      } else if ( key.startsWith("ſ̀ȷᴜȝ ʌ j͑ʃп́ɔ ſɭɔ˞ᴜ ſɭᴜ") ) {
+        text = "Save name";
+      }
+    }
     input.placeholder = text;
   });
 }
@@ -742,6 +910,15 @@ GROUP_INPUT.addEventListener("keydown", (event) => {
 CLEAR_DRAFT_BUTTON.addEventListener("click", clearDraft);
 SAVE_STRUCTURE_BUTTON.addEventListener("click", saveStructure);
 GENERATE_BUTTON.addEventListener("click", generateOutput);
+
+ADD_SAVE_BUTTON.addEventListener("click", addSave);
+DELETE_SAVE_BUTTON.addEventListener("click", deleteSave);
+SAVE_NAME_INPUT.addEventListener("input", renameSave);
+SAVE_NAME_INPUT.addEventListener("keydown", (e) => {
+  if ( e.key === "Enter" ) {
+    SAVE_NAME_INPUT.blur();
+  }
+});
 
 setPlaceholders();
 renderAll();

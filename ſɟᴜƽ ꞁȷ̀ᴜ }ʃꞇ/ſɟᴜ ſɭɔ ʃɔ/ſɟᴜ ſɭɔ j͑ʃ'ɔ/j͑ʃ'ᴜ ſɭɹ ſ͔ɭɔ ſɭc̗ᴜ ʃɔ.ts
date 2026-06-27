@@ -20,6 +20,41 @@ interface PhonologyState {
   groups: SoundGroup[];
 }
 
+interface StructurePart {
+  groupId: string;
+  numerator: number;
+}
+
+interface SyllableStructure {
+  id: string;
+  parts: StructurePart[];
+}
+
+interface EvolveSave {
+  id: string;
+  name: string;
+  rules: string;
+  customWords: string;
+  useGenerated: boolean;
+}
+
+interface GeneratorSave {
+  id: string;
+  name: string;
+  sounds: SoundEntry[];
+  groups: SoundGroup[];
+  activeGroupId: string | null;
+  draftParts: StructurePart[];
+  structures: SyllableStructure[];
+  evolveSaves: EvolveSave[];
+  activeEvolveSaveId: string | null;
+}
+
+interface SavesState {
+  saves: GeneratorSave[];
+  activeSaveId: string | null;
+}
+
 interface EvolveState {
   rules: string;
   customWords: string;
@@ -94,41 +129,77 @@ const RUN_BUTTON = getElement<HTMLButtonElement>("evolve-run");
 const STATUS = getElement<HTMLParagraphElement>("evolve-status");
 const OUTPUT = getElement<HTMLElement>("evolve-output");
 
+const EVOLVE_SAVES_LIST = getElement<HTMLElement>("evolve-saves-list");
+const EVOLVE_SAVE_NAME_INPUT = getElement<HTMLInputElement>("evolve-save-name-input");
+const EVOLVE_ADD_SAVE_BUTTON = getElement<HTMLButtonElement>("evolve-add-save");
+const EVOLVE_DELETE_SAVE_BUTTON = getElement<HTMLButtonElement>("evolve-delete-save");
+
 // ⟪ ꞁȷ̀ɜ ŋᷠᴜ ⟫
 
-function loadPhonologyState(): PhonologyState {
-  const empty: PhonologyState = { sounds: [], groups: [] };
+let savesState: SavesState = { saves: [], activeSaveId: null };
+
+function loadSavesState(): void {
   try {
-    const raw = localStorage.getItem(GENERATOR_STORAGE_KEY);
-    if ( !raw ) return empty;
-    const parsed = JSON.parse(raw);
-    if ( !parsed || typeof parsed !== "object" ) return empty;
+    const raw = localStorage.getItem("phonology-generator-saves-v2");
+    if ( raw ) {
+      const parsed = JSON.parse(raw);
+      if ( parsed && Array.isArray(parsed.saves) && parsed.saves.length > 0 ) {
+        savesState = parsed;
+        return;
+      }
+    }
+  } catch {}
+  savesState = { saves: [], activeSaveId: null };
+}
+
+function getActiveGeneratorSave(): GeneratorSave | undefined {
+  return savesState.saves.find(s => s.id === savesState.activeSaveId);
+}
+
+function getActiveEvolveSave(): EvolveSave | undefined {
+  const activeGen = getActiveGeneratorSave();
+  if ( !activeGen ) return undefined;
+  return activeGen.evolveSaves.find(e => e.id === activeGen.activeEvolveSaveId);
+}
+
+function loadPhonologyState(): PhonologyState {
+  loadSavesState();
+  const activeGen = getActiveGeneratorSave();
+  if ( activeGen ) {
     return {
-      sounds: Array.isArray(parsed.sounds) ? parsed.sounds : [],
-      groups: Array.isArray(parsed.groups) ? parsed.groups : [],
+      sounds: activeGen.sounds || [],
+      groups: activeGen.groups || [],
     };
-  } catch {
-    return empty;
   }
+  return { sounds: [], groups: [] };
 }
 
 function loadEvolveState(): EvolveState {
-  try {
-    const raw = localStorage.getItem(EVOLVE_STORAGE_KEY);
-    if ( !raw ) return { rules: "", customWords: "", useGenerated: true };
-    const parsed = JSON.parse(raw);
+  loadSavesState();
+  const activeEvolve = getActiveEvolveSave();
+  if ( activeEvolve ) {
     return {
-      rules: typeof parsed.rules === "string" ? parsed.rules : "",
-      customWords: typeof parsed.customWords === "string" ? parsed.customWords : "",
-      useGenerated: typeof parsed.useGenerated === "boolean" ? parsed.useGenerated : true,
+      rules: activeEvolve.rules || "",
+      customWords: activeEvolve.customWords || "",
+      useGenerated: typeof activeEvolve.useGenerated === "boolean" ? activeEvolve.useGenerated : true,
     };
-  } catch {
-    return { rules: "", customWords: "", useGenerated: true };
   }
+  return { rules: "", customWords: "", useGenerated: true };
 }
 
-function saveEvolveState(state: EvolveState): void {
-  localStorage.setItem(EVOLVE_STORAGE_KEY, JSON.stringify(state));
+function saveEvolveState(stateData: EvolveState): void {
+  loadSavesState();
+  const activeGen = getActiveGeneratorSave();
+  if ( activeGen ) {
+    const activeEvolve = activeGen.evolveSaves.find(e => e.id === activeGen.activeEvolveSaveId);
+    if ( activeEvolve ) {
+      activeEvolve.rules = stateData.rules;
+      activeEvolve.customWords = stateData.customWords;
+      activeEvolve.useGenerated = stateData.useGenerated;
+      localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(savesState));
+      window.dispatchEvent(new CustomEvent("phonology-state-updated"));
+    }
+  }
 }
 
 // ⟪ ʃɔ ſɭɹ j͑ʃ'ɔ ⟫ - Tokenizer
@@ -594,12 +665,10 @@ function runEvolve(): void {
 
 // ⟪ ꞁȷ̀ᴜ j͑ʃᴜ ⟫ - Initialization
 
-function initEvolve(): void {
+function renderEvolveState(): void {
   const state = loadEvolveState();
   RULES_TEXTAREA.value = state.rules;
   CUSTOM_WORDS_TEXTAREA.value = state.customWords;
-  RULES_TEXTAREA.placeholder = T.RULES_PLACEHOLDER;
-  CUSTOM_WORDS_TEXTAREA.placeholder = T.CUSTOM_PLACEHOLDER;
 
   if ( state.useGenerated ) {
     SOURCE_GENERATED.checked = true;
@@ -608,6 +677,128 @@ function initEvolve(): void {
   }
 
   toggleCustomWords();
+}
+
+function renderEvolveSaves(): void {
+  resetChildren(EVOLVE_SAVES_LIST);
+  
+  const activeGen = getActiveGeneratorSave();
+  if ( !activeGen ) return;
+
+  activeGen.evolveSaves.forEach((save) => {
+    const tabButton = document.createElement("button");
+    tabButton.type = "button";
+    tabButton.appendChild(createTextElement("span", save.name));
+    
+    if ( save.id === activeGen.activeEvolveSaveId ) {
+      tabButton.setAttribute("aria-pressed", "true");
+    }
+    
+     tabButton.addEventListener("click", () => {
+       const gen = savesState.saves.find(s => s.id === savesState.activeSaveId);
+       if ( gen ) {
+         gen.activeEvolveSaveId = save.id;
+       }
+       localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(savesState));
+       loadSavesState();
+       updateEvolveUI();
+     });
+
+    EVOLVE_SAVES_LIST.appendChild(tabButton);
+  });
+
+  const activeEvolve = getActiveEvolveSave();
+  if ( activeEvolve ) {
+    EVOLVE_SAVE_NAME_INPUT.value = activeEvolve.name;
+  }
+
+  if ( activeGen.evolveSaves.length <= 1 ) {
+    EVOLVE_DELETE_SAVE_BUTTON.style.display = "none";
+  } else {
+    EVOLVE_DELETE_SAVE_BUTTON.style.display = "";
+  }
+}
+
+function addEvolveSave(): void {
+  const activeGen = getActiveGeneratorSave();
+  if ( !activeGen ) return;
+
+  let maxNum = 0;
+  for ( const s of activeGen.evolveSaves ) {
+    const val = parseInt(s.name, 0o10);
+    if ( !isNaN(val) && val > maxNum ) {
+      maxNum = val;
+    }
+  }
+  const nextName = (maxNum + 1).toString();
+
+  const newSave: EvolveSave = {
+    id: makeId(),
+    name: nextName,
+    rules: "",
+    customWords: "",
+    useGenerated: true,
+  };
+
+  activeGen.evolveSaves.push(newSave);
+  activeGen.activeEvolveSaveId = newSave.id;
+  
+  localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(savesState));
+  window.dispatchEvent(new CustomEvent("phonology-state-updated"));
+
+  EVOLVE_SAVE_NAME_INPUT.focus();
+  EVOLVE_SAVE_NAME_INPUT.select();
+}
+
+function deleteEvolveSave(): void {
+  const activeGen = getActiveGeneratorSave();
+  if ( !activeGen || activeGen.evolveSaves.length <= 1 ) return;
+
+  const index = activeGen.evolveSaves.findIndex(e => e.id === activeGen.activeEvolveSaveId);
+  activeGen.evolveSaves = activeGen.evolveSaves.filter(e => e.id !== activeGen.activeEvolveSaveId);
+
+  const nextActiveIndex = Math.min(index, activeGen.evolveSaves.length - 1);
+  const nextActive = activeGen.evolveSaves[nextActiveIndex];
+  activeGen.activeEvolveSaveId = nextActive.id;
+
+  localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(savesState));
+  window.dispatchEvent(new CustomEvent("phonology-state-updated"));
+}
+
+function renameEvolveSave(): void {
+  const newName = EVOLVE_SAVE_NAME_INPUT.value.trim();
+  if ( !newName ) return;
+
+  const activeEvolve = getActiveEvolveSave();
+  if ( activeEvolve ) {
+    activeEvolve.name = newName;
+    localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(savesState));
+    window.dispatchEvent(new CustomEvent("phonology-state-updated"));
+  }
+}
+
+function resetChildren(element: HTMLElement): void {
+  element.replaceChildren();
+}
+
+function makeId(): string {
+  if ( typeof crypto !== "undefined" && "randomUUID" in crypto ) {
+    return crypto.randomUUID();
+  }
+  return `${Date.now().toString(0o10)}-${Math.random().toString(0o10).slice(2)}`;
+}
+
+function updateEvolveUI(): void {
+  renderEvolveSaves();
+  renderEvolveState();
+}
+
+function initEvolve(): void {
+  loadSavesState();
+  updateEvolveUI();
+
+  RULES_TEXTAREA.placeholder = T.RULES_PLACEHOLDER;
+  CUSTOM_WORDS_TEXTAREA.placeholder = T.CUSTOM_PLACEHOLDER;
 
   RUN_BUTTON.addEventListener("click", () => {
     saveCurrentState();
@@ -627,8 +818,22 @@ function initEvolve(): void {
   RULES_TEXTAREA.addEventListener("input", saveCurrentState);
   CUSTOM_WORDS_TEXTAREA.addEventListener("input", saveCurrentState);
 
+  EVOLVE_ADD_SAVE_BUTTON.addEventListener("click", addEvolveSave);
+  EVOLVE_DELETE_SAVE_BUTTON.addEventListener("click", deleteEvolveSave);
+  EVOLVE_SAVE_NAME_INPUT.addEventListener("input", renameEvolveSave);
+  EVOLVE_SAVE_NAME_INPUT.addEventListener("keydown", (e) => {
+    if ( e.key === "Enter" ) {
+      EVOLVE_SAVE_NAME_INPUT.blur();
+    }
+  });
+
   setStatus(T.READY);
 }
+
+window.addEventListener("phonology-state-updated", () => {
+  loadSavesState();
+  updateEvolveUI();
+});
 
 initEvolve();
 

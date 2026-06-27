@@ -25,20 +25,25 @@
     <p class="saxesukef" data-oskakefani="ſɭʞɹ ſɭɔ ʃɔ"></p>
 
 	<thala>
+		<sabosuc2w2q class="c2w2qkuba" id="phonology-saves-list"></sabosuc2w2q>
+		<input id="phonology-save-name-input" type="text" autocomplete="off" data-oskakefani-placeholder="j͑ʃɔ ſȷэⅎ ʌ ſ̀ȷᴜȝ">
+		<div class="xecax2l">
+			<button id="phonology-add-save" data-oskakefani="ȏoͩſ̀ȷᴜƽ ʌ ſ̀ȷᴜȝ"></button>
+			<button id="phonology-delete-save" data-oskakefani="j͑ʃ'ᴜ ᶅſɔ"></button>
+		</div>
+	</thala>
+
+	<thala>
 		<p class="ksakap2sa" data-oskakefani="ʃɔ"></p>
-		<ariiba>
-			<input id="phonology-sound-input" type="text" autocomplete="off" data-oskakefani-placeholder="ʃɔ ʌ j͑ʃп́ɔ ſɭɔ˞ᴜ ſɭᴜ">
-			<button id="phonology-add-sound" data-oskakefani="ʃɔ ɿ"></button>
-		</ariiba>
+		<input id="phonology-sound-input" type="text" autocomplete="off" data-oskakefani-placeholder="ʃɔ ʌ j͑ʃп́ɔ ſɭɔ˞ᴜ ſɭᴜ">
+		<button id="phonology-add-sound" data-oskakefani="ʃɔ ɿ"></button>
 		<sabosuc2w2q class="c2w2qkuba" id="phonology-sound-list"></sabosuc2w2q>
 	</thala>
 
 	<thala>
 		<p class="ksakap2sa" data-oskakefani="֭ſɭᴜ ɭʃɔ"></p>
-		<ariiba>
-			<input id="phonology-group-input" type="text" autocomplete="off" data-oskakefani-placeholder="֭ſɭᴜ ɭʃɔ ʌ j͑ʃп́ɔ ſɭɔ˞ᴜ ſɭᴜ">
-			<button id="phonology-add-group" data-oskakefani="֭ſɭᴜ ɭʃɔ ɿ"></button>
-		</ariiba>
+		<input id="phonology-group-input" type="text" autocomplete="off" data-oskakefani-placeholder="֭ſɭᴜ ɭʃɔ ʌ j͑ʃп́ɔ ſɭɔ˞ᴜ ſɭᴜ">
+		<button id="phonology-add-group" data-oskakefani="֭ſɭᴜ ɭʃɔ ɿ"></button>
 		<p class="ksakat2xa" data-oskakefani="֭ſɭᴜ ɭʃɔ ц"></p>
 		<sabosuc2w2q class="c2w2qkuba" id="phonology-group-list"></sabosuc2w2q>
 		<p class="ksakat2xa" data-oskakefani="֭ſɭᴜ ɭʃɔ э"></p>
@@ -61,15 +66,22 @@
 
 	<thala>
 		<p class="ksakap2sa" data-oskakefani="ſɭʞɹ"></p>
-		<ariiba>
-			<input id="phonology-generate-count" type="number" min="1" max="64" step="1" value="16">
-			<button id="phonology-generate" data-oskakefani="ſɭʞɹ ı"></button>
-		</ariiba>
+		<input id="phonology-generate-count" type="number" min="1" max="64" step="1" value="16">
+		<button id="phonology-generate" data-oskakefani="ſɭʞɹ ı"></button>
 		<p id="phonology-status" class="ksakat2xa" data-oskakefani="ꞁȷ̀ᴜ ŋᷠᴜͷ̗"></p>
-		<ciihii id="phonology-output" class="qox2n2kucaxema"></ciihii>
+		<div id="phonology-output" class="qox2n2kucaxema"></div>
 	</thala>
 
 	<p class="saxesukef" data-oskakefani="j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭc̗ᴜ ʃɔ"></p>
+
+	<thala>
+		<sabosuc2w2q class="c2w2qkuba" id="evolve-saves-list"></sabosuc2w2q>
+		<input id="evolve-save-name-input" type="text" autocomplete="off" data-oskakefani-placeholder="j͑ʃɔ ſȷэⅎ ʌ ſ̀ȷᴜȝ">
+		<div class="xecax2l">
+			<button id="evolve-add-save" data-oskakefani="ȏoͩſ̀ȷᴜƽ ʌ ſ̀ȷᴜȝ"></button>
+			<button id="evolve-delete-save" data-oskakefani="j͑ʃ'ᴜ ᶅſɔ"></button>
+		</div>
+	</thala>
 
 	<thala>
 		<p class="ksakap2sa" data-oskakefani="ſɭᴜc̗ ɭʃᴜ"></p>
@@ -80,20 +92,18 @@
 
 	<thala>
 		<p class="ksakap2sa" data-oskakefani="j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭɔʞ"></p>
-		<ariiba>
-			<label>
-				<input type="radio" name="evolve-source" id="evolve-source-generated" checked>
-				<span data-oskakefani="ſɭɹ ɽ͑ʃ'ɔ ſɭɔʞ j͐ʃэ ſɭʞɹ"></span>
-			</label>
-			<label>
-				<input type="radio" name="evolve-source" id="evolve-source-custom">
-				<span data-oskakefani="ꞁȷ̀ꞇ j͐ʃᴜƽ ſɭɔʞ"></span>
-			</label>
-			<textarea id="evolve-custom-words" class="kobe" placeholder="ſɭɔʞ"></textarea>
-			<button id="evolve-run" data-oskakefani="j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ"></button>
-		</ariiba>
+		<label>
+			<input type="radio" name="evolve-source" id="evolve-source-generated" checked>
+			<span data-oskakefani="ſɭɹ ɽ͑ʃ'ɔ ſɭɔʞ j͐ʃэ ſɭʞɹ"></span>
+		</label>
+		<label>
+			<input type="radio" name="evolve-source" id="evolve-source-custom">
+			<span data-oskakefani="ꞁȷ̀ꞇ j͐ʃᴜƽ ſɭɔʞ"></span>
+		</label>
+		<textarea id="evolve-custom-words" class="kobe" placeholder="ſɭɔʞ"></textarea>
+		<button id="evolve-run" data-oskakefani="j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ"></button>
 		<p id="evolve-status" class="ksakat2xa" data-oskakefani="ꞁȷ̀ᴜ ŋᷠᴜͷ̗"></p>
-		<ciihii id="evolve-output" class="qox2n2kucaxema"></ciihii>
+		<div id="evolve-output" class="qox2n2kucaxema"></div>
 	</thala>
 
 </body>
@@ -107,6 +117,9 @@
             "ꞁȷ̀ꞇ }ʃᴜƽ": "ꞁȷ̀ꞇ }ʃᴜƽ",
 
             "ſɟᴜ ſɭɔ ʃɔ": "ſɟᴜ ſɭɔ ʃɔ",
+
+			"j͑ʃɔ ſȷэⅎ ʌ ſ̀ȷᴜȝ": "j͑ʃɔ ſȷэⅎ ʌ ſ̀ȷᴜȝ",
+			"ȏoͩſ̀ȷᴜƽ ʌ ſ̀ȷᴜȝ": "ȏoͩſ̀ȷᴜƽ ʌ ſ̀ȷᴜȝ",
 
             "ſɭʞɹ ſɭɔ ʃɔ": "ſɭʞɹ ſɭɔ ʃɔ 🈚",
 			"ʃɔ": "ʃɔ",
@@ -141,6 +154,9 @@
             "ꞁȷ̀ꞇ }ʃᴜƽ": "Other",
 
             "ſɟᴜ ſɭɔ ʃɔ": "Phonology Tools",
+
+			"j͑ʃɔ ſȷэⅎ ʌ ſ̀ȷᴜȝ": "New Save",
+			"ȏoͩſ̀ȷᴜƽ ʌ ſ̀ȷᴜȝ": "Add Save",
 
             "ſɭʞɹ ſɭɔ ʃɔ": "Generate Phonology 🈚",
 			"ʃɔ": "Sounds",
