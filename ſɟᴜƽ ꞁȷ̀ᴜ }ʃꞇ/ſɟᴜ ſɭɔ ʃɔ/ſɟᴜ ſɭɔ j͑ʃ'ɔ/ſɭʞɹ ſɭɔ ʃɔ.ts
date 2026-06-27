@@ -742,25 +742,54 @@ function generateOutput(): void {
 // ⟪ j͑ʃᴜꞇ ⟫
 
 function renderSaves(): void {
-  resetChildren(SAVES_LIST);
+   resetChildren(SAVES_LIST);
 
-  savesState.saves.forEach((save) => {
-    const tabButton = document.createElement("button");
-    tabButton.type = "button";
-    tabButton.appendChild(createTextElement("span", save.name));
-    
-    if ( save.id === savesState.activeSaveId ) {
-      tabButton.setAttribute("aria-pressed", "true");
-    }
-    
-    tabButton.addEventListener("click", () => {
-      savesState.activeSaveId = save.id;
-      state = save;
-      commit();
-    });
+   savesState.saves.forEach((save) => {
+     const tabButton = document.createElement("button");
+     tabButton.type = "button";
+     const tabLabel = createTextElement("span", save.name);
+     tabButton.appendChild(tabLabel);
+     
+     if ( save.id === savesState.activeSaveId ) {
+       tabButton.setAttribute("aria-pressed", "true");
+     }
+     
+     tabButton.addEventListener("click", () => {
+       savesState.activeSaveId = save.id;
+       state = save;
+       commit();
+     });
 
-    SAVES_LIST.appendChild(tabButton);
-  });
+     tabButton.addEventListener("contextmenu", (e) => {
+       e.preventDefault();
+       const input = document.createElement("input");
+       input.type = "text";
+       input.value = save.name;
+       tabLabel.replaceWith(input);
+       input.focus();
+       input.select();
+       const finish = () => {
+         const newName = input.value.trim();
+         if ( newName && newName !== save.name ) {
+           save.name = newName;
+           commit();
+         } else {
+           input.replaceWith(tabLabel);
+         }
+       };
+       input.addEventListener("blur", finish);
+       input.addEventListener("keydown", (ke) => {
+         if ( ke.key === "Enter" ) {
+           input.blur();
+         } else if ( ke.key === "Escape" ) {
+           input.value = save.name;
+           input.blur();
+         }
+       });
+     });
+
+     SAVES_LIST.appendChild(tabButton);
+   });
 
   const activeSave = savesState.saves.find(s => s.id === savesState.activeSaveId);
   if ( activeSave ) {

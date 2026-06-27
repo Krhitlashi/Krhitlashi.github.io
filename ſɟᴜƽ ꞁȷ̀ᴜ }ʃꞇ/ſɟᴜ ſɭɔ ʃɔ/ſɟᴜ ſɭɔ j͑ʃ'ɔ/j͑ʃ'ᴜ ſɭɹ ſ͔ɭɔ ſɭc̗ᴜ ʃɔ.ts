@@ -685,27 +685,58 @@ function renderEvolveSaves(): void {
   const activeGen = getActiveGeneratorSave();
   if ( !activeGen ) return;
 
-  activeGen.evolveSaves.forEach((save) => {
-    const tabButton = document.createElement("button");
-    tabButton.type = "button";
-    tabButton.appendChild(createTextElement("span", save.name));
-    
-    if ( save.id === activeGen.activeEvolveSaveId ) {
-      tabButton.setAttribute("aria-pressed", "true");
-    }
-    
-     tabButton.addEventListener("click", () => {
-       const gen = savesState.saves.find(s => s.id === savesState.activeSaveId);
-       if ( gen ) {
-         gen.activeEvolveSaveId = save.id;
-       }
-       localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(savesState));
-       loadSavesState();
-       updateEvolveUI();
-     });
+    activeGen.evolveSaves.forEach((save) => {
+      const tabButton = document.createElement("button");
+      tabButton.type = "button";
+      const tabLabel = createTextElement("span", save.name);
+      tabButton.appendChild(tabLabel);
+      
+      if ( save.id === activeGen.activeEvolveSaveId ) {
+        tabButton.setAttribute("aria-pressed", "true");
+      }
+      
+      tabButton.addEventListener("click", () => {
+        const gen = savesState.saves.find(s => s.id === savesState.activeSaveId);
+        if ( gen ) {
+          gen.activeEvolveSaveId = save.id;
+        }
+        localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(savesState));
+        loadSavesState();
+        updateEvolveUI();
+      });
 
-    EVOLVE_SAVES_LIST.appendChild(tabButton);
-  });
+      tabButton.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = save.name;
+        tabLabel.replaceWith(input);
+        input.focus();
+        input.select();
+        const finish = () => {
+          const newName = input.value.trim();
+          if ( newName && newName !== save.name ) {
+            save.name = newName;
+            localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(savesState));
+            loadSavesState();
+            updateEvolveUI();
+          } else {
+            input.replaceWith(tabLabel);
+          }
+        };
+        input.addEventListener("blur", finish);
+        input.addEventListener("keydown", (ke) => {
+          if ( ke.key === "Enter" ) {
+            input.blur();
+          } else if ( ke.key === "Escape" ) {
+            input.value = save.name;
+            input.blur();
+          }
+        });
+      });
+
+      EVOLVE_SAVES_LIST.appendChild(tabButton);
+    });
 
   const activeEvolve = getActiveEvolveSave();
   if ( activeEvolve ) {
