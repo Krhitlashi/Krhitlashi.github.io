@@ -761,7 +761,7 @@ function addEvolveSave(): void {
       maxNum = val;
     }
   }
-  const nextName = (maxNum + 1).toString();
+  const nextName = ( maxNum + 1 ).toString();
 
   const newSave: EvolveSave = {
     id: makeId(),
