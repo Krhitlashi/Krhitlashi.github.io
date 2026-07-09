@@ -1,6 +1,10 @@
 /* ⟪ j͐ʃᴜ ſ͔ɭᴜ 🔣 ⟫ */
 
 @font-face {
+	font-family: "j͑ʃꞇȝ";
+	src: url("j͐ʃᴜ ſ͔ɭᴜ/j͑ʃꞇȝ.ttf");
+}
+@font-face {
 	font-family: "ı],ᴜ }ʃᴜ";
 	src: url("j͐ʃᴜ ſ͔ɭᴜ/ı],ᴜ }ʃᴜ.ttf");
 }
@@ -70,7 +74,7 @@
 /* ⟪ ſɭɹ ſᶘɔ *️⃣ ⟫ */
 
 * {
-	font-family: "ı],ᴜ }ʃᴜ", "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
+	font-family: "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ", "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	font-size-adjust: 0.5;
 	color: var(--កេភ);
 	text-align: center;
@@ -133,7 +137,7 @@ h1 {
 	margin: var(--អារេងព៏);
 	text-align: center;
 	font-weight: unset;
-	font-family: "ı],ᴜ }ʃᴜ";
+	font-family: "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ";
 }
 p {
 	margin: 0;
@@ -147,13 +151,13 @@ p {
 	flex-direction: column;
 	align-items: stretch;
 	overflow-inline: hidden;
-	font-family: "ı],ᴜ }ʃᴜ";
+	font-family: "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ";
 }
 .cepufalxez:not(.kosabo span) {
 	display: inline-block;
 	writing-mode: lr;
 	white-space: nowrap;
-	line-height: 1;
+	line-height: 1.25;
 }
 p:has(> .cepufalxez), h1:has(> .cepufalxez) {
 	display: flex;
@@ -176,8 +180,8 @@ p:has(> .cepufalxez), h1:has(> .cepufalxez) {
 	padding: var(--អារេងព៏);
 	writing-mode: horizontal-tb;
 }
-.tapufal * {
-	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, "ı],ᴜ }ʃᴜ";
+.tapufal *:not(.powukcax2l *) {
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ";
 }
 
 /* ⟪ ſɭɔ˞ᴜ ſɭᴜ 🎩 ⟫ */
@@ -199,23 +203,22 @@ p:has(> .cepufalxez), h1:has(> .cepufalxez) {
 	font-size-adjust: 0.625;
 }
 .saxesukef .cepufalxez {
-	align-self: center;
 	font-size-adjust: 0.75;
-	line-height: 1.5 !important;
+	line-height: 1.75 !important;
 }
 .ksakap2sa .cepufalxez {
 	align-self: center;
 	font-size-adjust: 0.625;
-	line-height: 1.25 !important;
+	line-height: 1.5 !important;
 }
 .ksakat2xa {
 	font-size-adjust: 0.5625;
-	line-height: 1.25;
+	line-height: 1.5;
 }
 .ksakat2xa .cepufalxez {
 	align-self: center;
 	font-size-adjust: 0.5625;
-	line-height: 1.25 !important;
+	line-height: 1.5 !important;
 }
 .kefhuruq {
 	background-color: transparent;
@@ -591,7 +594,7 @@ thead, tfoot {
 td {
 	background-color: var(--តានេក);
 	border: var(--សាកព៏);
-	font-family: "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ", "ı],ᴜ }ʃᴜ";
+	font-family: "j͑ʃꞇȝ", "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ", "ı],ᴜ }ʃᴜ";
 }
 th, td {
 	border-radius: var(--អិត្ភេចិ);

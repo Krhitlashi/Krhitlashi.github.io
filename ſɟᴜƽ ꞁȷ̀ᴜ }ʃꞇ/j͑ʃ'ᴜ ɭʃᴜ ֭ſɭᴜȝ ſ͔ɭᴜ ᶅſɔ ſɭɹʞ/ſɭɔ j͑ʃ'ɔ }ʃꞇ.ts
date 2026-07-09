@@ -13,6 +13,8 @@ const PORTRAIT_PAGE_WIDTH = 794;
 const LANDSCAPE_PAGE_WIDTH = 1123;
 const ERROR_INVALID_INPUT = "j͐ʃэ ɭʃɔ ſ͕ɭᴜꞇ j͑ʃ'ɔ ſɭп́ɜ ⟅";
 
+const KSOZDI_PAL6 = 0o10 / 0o100;
+
 
 // ⟪ Types 📐 ⟫
 
@@ -343,6 +345,11 @@ kf2Sweca12na.addEventListener("click", function (): void {
                     er2haTanekL6da += kantoni.height;
                 }
 
+                const ksozdiLineHeight = lagaPal6 * KSOZDI_PAL6;
+                if ( ksozdiTanekVop2.length > 1 ) {
+                    er2haTanekL6da += (ksozdiTanekVop2.length - 1) * ksozdiLineHeight;
+                }
+
                 let xezEr2haL6da = Math.max((saxediTanekVop2 ? saxediTanekVop2.height : 0), er2haTanekL6da);
                 let verticalScale = 1;
                 
@@ -547,6 +554,8 @@ kf2Sweca12na.addEventListener("click", function (): void {
                     const tanekSaxeX = xezK2f + (xez.saxedini ? xez.saxedini.width : 0);
                     let kjesaiKucaqY = xezTanekAlPsazaiY - xez.xezEr2haL6da;
 
+                    const ksozdiLineHeight = lagaPal6 * KSOZDI_PAL6;
+
                     for ( let i = 0; i < xez.ksozdini.length; i++ ) {
                         const ksozdiTanekVop2 = xez.ksozdini[i];
                         const scaledHeight = ksozdiTanekVop2.height * xez.verticalScale;
@@ -560,7 +569,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
                         ctx.fillText(ksozdiTanekVop2.text, 0, 0);
                         ctx.restore();
 
-                        kjesaiKucaqY += scaledHeight;
+                        kjesaiKucaqY += scaledHeight + (i < xez.ksozdini.length - 1 ? ksozdiLineHeight * xez.verticalScale : 0);
                     }
 
                     if ( !sefaktapuni || knahtaka === "kucaqai" ) {
