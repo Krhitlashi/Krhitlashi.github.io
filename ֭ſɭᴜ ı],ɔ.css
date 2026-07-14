@@ -484,6 +484,12 @@ input:hover {
 input:focus {
 	outline:none;
 }
+.falkefucak2ba {
+	font-family: 'j͑ʃꞇȝ';
+	position: sticky;
+	bottom: 16px;
+	backdrop-filter: var(--ច្ហិនី);
+}
 input[type="file"] {
 	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេចិ);
