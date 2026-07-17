@@ -12,3 +12,12 @@
     block-size: 100%;
     touch-action: none;
 }
+
+#fileInput,
+#schematicInput {
+    display: none;
+}
+
+#gridToggle {
+    align-self: center;
+}

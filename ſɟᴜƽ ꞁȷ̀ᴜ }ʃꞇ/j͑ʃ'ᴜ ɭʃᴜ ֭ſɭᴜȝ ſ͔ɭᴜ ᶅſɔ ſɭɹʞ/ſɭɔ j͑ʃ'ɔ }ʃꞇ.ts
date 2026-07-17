@@ -12,7 +12,8 @@ const ERROR_INVALID_INPUT = "j͐ʃэ ɭʃɔ ſ͕ɭᴜꞇ j͑ʃ'ɔ ſɭп́ɜ ⟅
 
 const KSOZDI_PAL6 = 0o10 / 0o100;
 
-const STACK_VERTICAL_MARGIN = 1 / 2;
+const STACK_VERTICAL_MARGIN_TOP = 0;
+const STACK_VERTICAL_MARGIN_BOTTOM = 1 / 2;
 
 const AUTO_FALLBACK_FONTS = '"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", "Noto Emoji", system-ui, sans-serif';
 
@@ -390,7 +391,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
                     er2haTanekL6da += (ksozdiTanekVop2.length - 1) * ksozdiLineHeight;
                 }
                 if ( ksozdiTanekVop2.length > 0 ) {
-                    er2haTanekL6da += 2 * STACK_VERTICAL_MARGIN;
+                    er2haTanekL6da += STACK_VERTICAL_MARGIN_TOP + STACK_VERTICAL_MARGIN_BOTTOM;
                 }
 
                 let xezEr2haL6da = Math.max((saxediTanekVop2 ? saxediTanekVop2.height : 0), er2haTanekL6da);
@@ -627,7 +628,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
                     const tanekSaxeX = xezK2f + (xez.saxedini ? xez.saxedini.width : 0);
                     let kjesaiKucaqY = xezTanekAlPsazaiY - xez.xezEr2haL6da;
                     if ( xez.ksozdini.length > 0 ) {
-                        kjesaiKucaqY += STACK_VERTICAL_MARGIN * xez.verticalScale;
+                        kjesaiKucaqY += STACK_VERTICAL_MARGIN_TOP * xez.verticalScale;
                     }
 
                     const ksozdiLineHeight = lagaPal6 * KSOZDI_PAL6;

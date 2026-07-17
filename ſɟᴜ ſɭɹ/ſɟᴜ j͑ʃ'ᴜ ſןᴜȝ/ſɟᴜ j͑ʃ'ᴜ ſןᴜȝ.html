@@ -22,41 +22,65 @@
 
     <div id="toolbarWrapper" class="n2tasenusakama">
         <div id="toolbarContainer" class="sozanu onera3e scace a3e">
+            <thala class="n2tase" id="modePanel">
+                <p class="ksakap2sa"><span data-oskakefani="֭ſɭᴜ ı],ɔ"></span> 🗂️</p>
+                <button data-mode="minecraft" aria-pressed="true"><span data-oskakefani="ſɭэ ſᶘɹ ſɭ,ɹ"></span> 🧱</button>
+                <button data-mode="general" aria-pressed="false"><span data-oskakefani="ſןэ ſɭɘw }ʃꞇ"></span> 🎨</button>
+            </thala>
+
             <thala class="n2tase" id="toolsPanel">
                 <p class="ksakap2sa"><span data-oskakefani="ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ"></span> 🧱</p>
                 <button data-tool="select" aria-pressed="true"><span data-oskakefani="j͑ʃw ſɭʞɹȝ"></span> 🖱️</button>
                 <button data-tool="add" aria-pressed="false"><span data-oskakefani="ȏoͩſ̀ȷᴜƽ ſɭw ʃᴜ"></span> ➕</button>
                 <button data-tool="remove" aria-pressed="false"><span data-oskakefani="֭ſɭɹͷ̗ ſɭw ʃᴜ"></span> 🗑️</button>
+                <button data-tool="rotate" aria-pressed="false"><span data-oskakefani="j͑ʃɹ j͑ʃᴜ ʃɜ ſɭw ʃᴜ"></span> 🔄</button>
                 <button data-tool="paint" aria-pressed="false"><span data-oskakefani="j͑ʃ'ᴜ ᶅſɔ ֭ſɭɹ ſɭw ʃᴜ"></span> 🎨</button>
+                <button data-tool="picker" id="colorPickerTool" aria-pressed="false"><span data-oskakefani="j͑ʃw ſɭʞɹȝ ꞁȷ̀ɔƽ ᶅſɔ ֭ſɭɹ ſɭw ʃᴜ"></span> 💉</button>
+            </thala>
+
+            <thala class="n2tase" id="shapesPanel" style="display:none">
+                <p class="ksakap2sa"><span data-oskakefani="}ʃᴜ ſɭɜ ı],ᴜ"></span> 🔷</p>
+                <button data-shape="cube" aria-pressed="true"><span data-oskakefani="ſɭw ʃᴜ"></span> 🟦</button>
+                <button data-shape="slab" aria-pressed="false"><span data-oskakefani="ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ ſɭw ʃᴜ"></span> 🟫</button>
+                <button data-shape="panel" aria-pressed="false"><span data-oskakefani="ſɟɔ ſןw ſɭw ʃᴜ"></span> 🟧</button>
+                <button data-shape="pillar" aria-pressed="false"><span data-oskakefani="ſɟɔ }ʃw"></span> 🟩</button>
+                <button data-shape="wedge" aria-pressed="false"><span data-oskakefani="ſȷɹƽ"></span> 🔺</button>
             </thala>
 
             <thala class="n2tase" id="colorsPanel">
+                <p class="ksakap2sa"><span data-oskakefani="ſɭw ʃᴜ"></span> 🧱</p>
+                <label class="ksakat2xa" for="blockIdInput" data-oskakefani="ſɭw ʃᴜ j͑ʃп́ɔ ɽ͑ʃ'w j͑ʃ'ᴜ"></label>
+                <input type="number" id="blockIdInput" min="0" max="255" value="1" list="blockIdList">
+                <datalist id="blockIdList"></datalist>
+                <p class="ksakat2xa" id="selectedBlockLabel"></p>
+                <p class="ksakat2xa" id="selectedBlockColor"></p>
+            </thala>
+
+            <thala class="n2tase" id="generalColorsPanel" style="display:none">
                 <p class="ksakap2sa"><span data-oskakefani="ᶅſɔ ֭ſɭɹ"></span> 🎨</p>
-                <div class="qox2n2kucaxema" id="colorGrid"></div>
-                <div>
-                    <input type="color" id="customColor" value="#000000">
-                    <input type="text" id="hexColor" placeholder="#000000" maxlength="7">
-                </div>
+                <label class="ksakat2xa" for="colorInput" data-oskakefani="ꞁȷ̀ꞇ }ʃᴜƽ ᶅſɔ ֭ſɭɹ"></label>
+                <input type="color" id="colorInput" value="#888888">
+                <input type="text" id="colorTextInput" value="#888888" maxlength="9" spellcheck="false">
+                <p class="ksakat2xa" id="selectedBlockColorGeneral"></p>
             </thala>
 
             <thala class="n2tase" id="cameraPanel">
                 <p class="ksakap2sa"><span data-oskakefani="ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ"></span> 📷</p>
                 <button id="resetCameraBtn" data-oskakefani="ɭʃɜ j͑ʃᴜᶗ‹ ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ"></button>
                 <p class="ksakat2xa" data-oskakefani="ꞁȷ̀ɹ ʃᴜ j͑ʃп́ɔ ſןᴜ j͐ʃэ"></p>
-                <input type="range" id="zoomSlider" min="0o40" max="0o400" value="0o200">
+                <input type="range" id="zoomSlider" min="20" max="100" value="64">
                 <p class="ksakat2xa" data-oskakefani="j͑ʃɹ j͑ʃᴜ ʃɜ"></p>
-                <input type="range" id="rotateSlider" min="0" max="0o700" value="0o40">
+                <input type="range" id="rotateSlider" min="0" max="360" value="45">
             </thala>
 
             <thala class="n2tase" id="gridPanel">
                 <p class="ksakap2sa"><span data-oskakefani="ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ"></span> ⬜</p>
                 <label>
                     <p data-oskakefani="ſɟɔ ŋᷠɔ"></p>
-                    <input type="checkbox" id="gridToggle" style="align-self: center;" checked>
+                    <input type="checkbox" id="gridToggle" checked>
                 </label>
                 <p class="ksakat2xa" data-oskakefani="ſןᴜ j͐ʃэ"></p>
-                <input type="range" id="gridSizeSlider" min="0o10" max="0o100" value="0o40">
-            </thala>
+                <input type="range" id="gridSizeSlider" min="8" max="64" value="32">            </thala>
 
             <thala class="n2tase" id="actionsPanel">
                 <p class="ksakap2sa"><span data-oskakefani="ſɭ,ɔ }ʃꞇ"></span> 📋</p>
@@ -70,6 +94,15 @@
                 <button id="saveBtn"><span data-oskakefani="j͑ʃ'ɔ ſ̀ȷᴜȝ"></span> 💾</button>
                 <button id="loadBtn"><span data-oskakefani="j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ"></span> 📂</button>
                 <button id="export3DBtn"><span data-oskakefani="j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭw ʃᴜ"></span> 📦</button>
+                <button id="importSchematicBtn"><span data-oskakefani="ſ͕ɭɹȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )"></span> 🧱</button>
+                <button id="exportSchematicBtn"><span data-oskakefani="j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )"></span> 🧱</button>
+                <label class="ksakat2xa" for="schematicFormat" data-oskakefani="ſɭc̗ᴜ ſɭɔ ֭ſɭɔ j͑ʃɔ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ"></label>
+                <select id="schematicFormat">
+                    <option value="schem">.schem</option>
+                    <option value="mcstructure">.mcstructure</option>
+                </select>
+                <input type="file" id="fileInput" accept=".json">
+                <input type="file" id="schematicInput" accept=".schem,.mcstructure">
             </thala>
 
             <thala class="n2tase" id="navPanel">
@@ -113,11 +146,25 @@
 
             "ſɟᴜ j͑ʃ'ᴜ ſןᴜȝ": "ſɟᴜ j͑ʃ'ᴜ ſןᴜȝ 🧱",
             "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ",
+            "֭ſɭᴜ ı],ɔ": "֭ſɭᴜ ı],ɔ",
+            "ſɭэ ſᶘɹ ſɭ,ɹ": "ſɭэ ſᶘɹ ſɭ,ɹ",
+            "ſןэ ſɭɘw }ʃꞇ": "ſןэ ſɭɘw }ʃꞇ",
+            "}ʃᴜ ſɭɜ ı],ᴜ": "}ʃᴜ ſɭɜ ı],ᴜ",
+            "ſɭw ʃᴜ": "ſɭw ʃᴜ",
+            "ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ ſɭw ʃᴜ": "ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ ſɭw ʃᴜ",
+            "ſɟɔ ſןw ſɭw ʃᴜ": "ſɟɔ ſןw ſɭw ʃᴜ",
+            "ſɟɔ }ʃw": "ſɟɔ }ʃw",
+            "ſȷɹƽ": "ſȷɹƽ",
+            "j͑ʃw ſɭʞɹȝ ꞁȷ̀ɔƽ ᶅſɔ ֭ſɭɹ ſɭw ʃᴜ": "j͑ʃw ſɭʞɹȝ ꞁȷ̀ɔƽ ᶅſɔ ֭ſɭɹ ſɭw ʃᴜ",
+            "ᶅſɔ ֭ſɭɹ": "ᶅſɔ ֭ſɭɹ",
+            "ꞁȷ̀ꞇ }ʃᴜƽ ᶅſɔ ֭ſɭɹ": "ꞁȷ̀ꞇ }ʃᴜƽ ᶅſɔ ֭ſɭɹ",
             "j͑ʃw ſɭʞɹȝ": "j͑ʃw ſɭʞɹȝ",
             "ȏoͩſ̀ȷᴜƽ ſɭw ʃᴜ": "ȏoͩſ̀ȷᴜƽ ſɭw ʃᴜ",
             "֭ſɭɹͷ̗ ſɭw ʃᴜ": "֭ſɭɹͷ̗ ſɭw ʃᴜ",
             "j͑ʃ'ᴜ ᶅſɔ ֭ſɭɹ ſɭw ʃᴜ": "j͑ʃ'ᴜ ᶅſɔ ֭ſɭɹ ſɭw ʃᴜ",
-            "ᶅſɔ ֭ſɭɹ": "ᶅſɔ ֭ſɭɹ",
+            "j͑ʃɹ j͑ʃᴜ ʃɜ ſɭw ʃᴜ": "j͑ʃɹ j͑ʃᴜ ʃɜ ſɭw ʃᴜ",
+            "ſɭw ʃᴜ": "ſɭw ʃᴜ",
+            "ſɭw ʃᴜ j͑ʃп́ɔ ɽ͑ʃ'w j͑ʃ'ᴜ": "ſɭw ʃᴜ j͑ʃп́ɔ ɽ͑ʃ'w j͑ʃ'ᴜ",
             "ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ": "ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ",
             "ɭʃɜ j͑ʃᴜᶗ‹ ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ": "ɭʃɜ j͑ʃᴜᶗ‹ ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ",
             "ꞁȷ̀ɹ ʃᴜ j͑ʃп́ɔ ſןᴜ j͐ʃэ": "ꞁȷ̀ɹ ʃᴜ j͑ʃп́ɔ ſןᴜ j͐ʃэ",
@@ -132,6 +179,9 @@
             "j͑ʃ'ɔ ſ̀ȷᴜȝ": "j͑ʃ'ɔ ſ̀ȷᴜȝ",
             "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ": "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ",
             "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭw ʃᴜ": "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭw ʃᴜ",
+            "ſ͕ɭɹȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )": "ſ͕ɭɹȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )",
+            "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )": "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )",
+            "ſɭc̗ᴜ ſɭɔ ֭ſɭɔ j͑ʃɔ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ": "ſɭc̗ᴜ ſɭɔ ֭ſɭɔ j͑ʃɔ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ",
             "j͑ʃɹ ſɟɔ j͐ʃɹʞ": "j͑ʃɹ ſɟɔ j͐ʃɹʞ",
             "ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ": "ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ",
@@ -145,11 +195,26 @@
 
             "ſɟᴜ j͑ʃ'ᴜ ſןᴜȝ": "3D Build 🧱",
             "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "Block Tools",
+            "֭ſɭᴜ ı],ɔ": "Mode",
+            "ſɭэ ſᶘɹ ſɭ,ɹ": "Minecraft",
+            "ſןэ ſɭɘw }ʃꞇ": "General 3D",
+            "}ʃᴜ ſɭɜ ı],ᴜ": "Shapes",
+            "ſɭw ʃᴜ": "Cube",
+            "ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ ſɭw ʃᴜ": "Slab",
+            "ſɟɔ ſןw ſɭw ʃᴜ": "Panel",
+            "ſɟɔ }ʃw": "Pillar",
+            "ſȷɹƽ": "Wedge",
+            "j͑ʃw ſɭʞɹȝ ꞁȷ̀ɔƽ ᶅſɔ ֭ſɭɹ ſɭw ʃᴜ": "Color / Block Picker",
+            "ſɭw ʃᴜ": "Blocks",
+            "ꞁȷ̀ꞇ }ʃᴜƽ ᶅſɔ ֭ſɭɹ": "Custom Color",
+            "ſ͕ɭɹȝ j͑ʃ'ᴜ ꞁȷ̀ꞇ }ʃᴜƽ ᶅſɔ ֭ſɭɹ": "Type Color",
             "j͑ʃw ſɭʞɹȝ": "Select",
             "ȏoͩſ̀ȷᴜƽ ſɭw ʃᴜ": "Add Block",
             "֭ſɭɹͷ̗ ſɭw ʃᴜ": "Remove Block",
             "j͑ʃ'ᴜ ᶅſɔ ֭ſɭɹ ſɭw ʃᴜ": "Paint Block",
+            "j͑ʃɹ j͑ʃᴜ ʃɜ ſɭw ʃᴜ": "Rotate Block",
             "ᶅſɔ ֭ſɭɹ": "Colors",
+            "ſɭw ʃᴜ j͑ʃп́ɔ ɽ͑ʃ'w j͑ʃ'ᴜ": "Block ID",
             "ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ": "Camera",
             "ɭʃɜ j͑ʃᴜᶗ‹ ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ": "Reset Camera",
             "ꞁȷ̀ɹ ʃᴜ j͑ʃп́ɔ ſןᴜ j͐ʃэ": "Zoom",
@@ -163,7 +228,10 @@
             "ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ": "File",
             "j͑ʃ'ɔ ſ̀ȷᴜȝ": "Save",
             "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ": "Load",
-            "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭw ʃᴜ": "Export Image",
+            "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭw ʃᴜ": "Export Object",
+            "ſ͕ɭɹȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )": "Import Schematic",
+            "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )": "Export Schematic",
+            "ſɭc̗ᴜ ſɭɔ ֭ſɭɔ j͑ʃɔ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ": "Schematic format",
             "j͑ʃɹ ſɟɔ j͐ʃɹʞ": "Navigation",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "Position",
             "ſɭw ʃᴜ": "Blocks",

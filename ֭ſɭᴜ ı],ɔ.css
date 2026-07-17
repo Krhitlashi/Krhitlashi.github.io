@@ -581,6 +581,12 @@ input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb
 input[type="range"]::-webkit-slider-thumb:hover, input[type="range"]::-moz-range-thumb:hover {
 	transform: scale(1.25);
 }
+select {
+	background-color: var(--តានេក);
+	border-radius: var(--អិត្ភេចិ);
+	border: var(--សាកព៏);
+	padding: var(--អារេង);
+}
 
 /* ⟪ ſɟᴜ ı],ɹͷ̗ 🗃️ ⟫ */
 
