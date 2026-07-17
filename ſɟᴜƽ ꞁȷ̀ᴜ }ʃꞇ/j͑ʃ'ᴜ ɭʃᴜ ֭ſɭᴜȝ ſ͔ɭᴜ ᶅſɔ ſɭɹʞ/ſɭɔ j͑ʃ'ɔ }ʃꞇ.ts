@@ -22,12 +22,7 @@ const SABOSU_KP6 = new Set<string>([
 
 function isEmojiCluster(str: string): boolean {
     if ( !str ) return false;
-    try {
-        return /^\p{RGI_Emoji}$/v.test(str);
-    } catch {
-        // Fallback for engines without the `v` flag / RGI_Emoji property.
-        return /\p{Extended_Pictographic}/u.test(str);
-    }
+    return /\p{Extended_Pictographic}/u.test(str);
 }
 
 function splitGraphemes(str: string): string[] {
