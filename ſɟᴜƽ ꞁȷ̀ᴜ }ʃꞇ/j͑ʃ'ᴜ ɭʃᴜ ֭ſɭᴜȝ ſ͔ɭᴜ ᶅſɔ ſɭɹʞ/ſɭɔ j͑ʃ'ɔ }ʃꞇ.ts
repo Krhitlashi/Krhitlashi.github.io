@@ -6,14 +6,37 @@
  * - Export to PNG with print functionality
  */
 
-
 // ⟪ Constants 📦 ⟫
 
-const PORTRAIT_PAGE_WIDTH = 794;
-const LANDSCAPE_PAGE_WIDTH = 1123;
 const ERROR_INVALID_INPUT = "j͐ʃэ ɭʃɔ ſ͕ɭᴜꞇ j͑ʃ'ɔ ſɭп́ɜ ⟅";
 
 const KSOZDI_PAL6 = 0o10 / 0o100;
+
+const STACK_VERTICAL_MARGIN = 1 / 2;
+
+const AUTO_FALLBACK_FONTS = '"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", "Noto Emoji", system-ui, sans-serif';
+
+const SABOSU_KP6 = new Set<string>([
+    "⟨", "⟩", "⟪", "⟫", "≺⧼", "⧽≻",
+]);
+
+function isEmojiCluster(str: string): boolean {
+    if ( !str ) return false;
+    try {
+        return /^\p{RGI_Emoji}$/v.test(str);
+    } catch {
+        // Fallback for engines without the `v` flag / RGI_Emoji property.
+        return /\p{Extended_Pictographic}/u.test(str);
+    }
+}
+
+function splitGraphemes(str: string): string[] {
+    if ( typeof Intl !== "undefined" && ( Intl as any ).Segmenter ) {
+        const seg = new ( Intl as any ).Segmenter(undefined, { granularity: "grapheme" });
+        return Array.from(seg.segment(str), (s: any) => s.segment);
+    }
+    return Array.from(str);
+}
 
 
 // ⟪ Types 📐 ⟫
@@ -27,6 +50,8 @@ interface Tz2saiTahaq {
     saqaiAreqj2k: number;
     raqaiAreqj2k: number;
     arak21okoWeh2: string;
+    blockX: number[];
+    lineY: number[];
 }
 
 interface TlakakaiKucaq {
@@ -59,11 +84,8 @@ interface TextDims {
     actualBoundingBoxRight: number;
     actualBoundingBoxAscent: number;
     actualBoundingBoxDescent: number;
-}
-
-interface Page {
-    blocks: TlakakaiKucaq[];
-    startIndex: number;
+    isEmoji: boolean;
+    rotate: boolean;
 }
 
 interface RawXez {
@@ -203,7 +225,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
     const xezSwekmavem2 = parseInt(xezSwekmavem2Kek.value, 0o10);
     const tapuAreqj2k = parseInt(tapuAreqj2kKek.value, 0o10);
 
-    const lagalInakLaga = `"${aralaga}"${inakLaga ? ", " + inakLaga : ""}`;
+    const lagalInakLaga = `"${aralaga}"${inakLaga ? ", " + inakLaga : ""}, ${AUTO_FALLBACK_FONTS}`;
 
     const knahtaka = ( document.querySelector("input[name=\"arrangement\"]:checked") as HTMLInputElement )?.value || "fasai";
 
@@ -225,17 +247,18 @@ kf2Sweca12na.addEventListener("click", function (): void {
     const ctx = arak2f.getContext("2d")!;
 
     const gawek2faiKp6 = [
-        "ᶅſ", "п́", "ſן", "ɘ", "ſȷ", "ʞ", "ʃ", "ɀ", "ŋᷠ", "c̭",
+        "ᶅſ", "п́", "ſן", "ſꟾ", "ɘ", "ſȷ", "ʞ", "ʃ", "ɀ", "ŋᷠ", "c̭",
         "j͑ʃ'", "ⰱ", "ɭʃ", "ƨ", "ɽ͑ʃ'", "ƣ̋", "ɭ(", "ԏ͕", "j͑ʃ", "ɔ˞", "j͐ʃ", "ͷ̗", "}ʃ", "c̗",
         "ſɭ,", "ƴ", "ɭl̀", "ᴎ", "ſɟ", "ᴜ̭", "ı],", "ᶗ‹", "ſ͕ȷ", "ⱷ̮̀",
-        "ſ͔ɭ", "ɴ", "ſɭ", "ƽ", "֭ſɭ", "ᴜ̩", "ſ͕ɭ", "ȝ", "ſᶘ", "ꝛ̗", "ſ̀ȷ", "ŋ", "ſɭˬ", "ɯ",
+        "ſ͔ɭ", "ɴ", "ſɭ", "ƽ", "֭ſɭ", "ſͅɭ", "ᴜ̩", "ſ͕ɭ", "ȝ", "ſᶘ", "ꝛ̗", "ſ̀ȷ", "ŋ", "ſɭˬ", "ɯ",
         "ꞁȷ̀", "ⅎ", "ꞇ", "ɹ", "ɔ", "ᴜ", "w", "ɜ", "э",
         "ȏſן", "ɘȏ", "ȏŋᷠ", "c̭ȏ",
         "ȏɭʃ'", "ⱷ᷐ȏ", "ȏ}ʃ'", "c̏ȏ",
         "ȏɭʃ", "ƨȏ", "ȏ}ʃ", "c̗ȏ",
         "ȏſ̀ȷ", "ŋȏ", "ȏoͩſ̀ȷ", "ŋoͩȏ",
         "ȏſɟ", "ᴜ̭ȏ", "ȏſ͕ȷ", "ⱷ̮̀ȏ",
-        "ꞙɭ"
+        "ꞙɭ",
+        "≺⧼", "⧽≻"
     ].sort((a, b) => b.length - a.length);
 
 
@@ -268,7 +291,9 @@ kf2Sweca12na.addEventListener("click", function (): void {
             actualBoundingBoxLeft: metrics.actualBoundingBoxLeft || 0,
             actualBoundingBoxRight: metrics.actualBoundingBoxRight || width,
             actualBoundingBoxAscent: metrics.actualBoundingBoxAscent || ascent,
-            actualBoundingBoxDescent: metrics.actualBoundingBoxDescent || descent
+            actualBoundingBoxDescent: metrics.actualBoundingBoxDescent || descent,
+            isEmoji: isEmojiCluster(text),
+            rotate: SABOSU_KP6.has(text)
         };
     }
 
@@ -288,10 +313,28 @@ kf2Sweca12na.addEventListener("click", function (): void {
         let kemafitapuni = 0;
 
         for ( const textBlock of xezKucaq ) {
-            const xez = textBlock.split(/\s+/).filter(xez => xez.length > 0);
+            const rawXez = textBlock.split(/\s+/).filter(xez => xez.length > 0);
+            const xez: string[] = [];
+            for ( const kp6 of rawXez ) {
+                let buf = "";
+                for ( const grapheme of splitGraphemes(kp6) ) {
+                    if ( isEmojiCluster(grapheme) ) {
+                        if ( buf ) { xez.push(buf); buf = ""; }
+                        xez.push(grapheme);
+                    } else {
+                        buf += grapheme;
+                    }
+                }
+                if ( buf ) xez.push(buf);
+            }
             const xezVop2: RawXez[] = [];
 
             for ( const xezai_kp6 of xez ) {
+                if ( isEmojiCluster(xezai_kp6) ) {
+                    xezVop2.push({ saxedini: xezai_kp6, ksozdini: [] });
+                    continue;
+                }
+
                 let fusai_fal = xezai_kp6;
                 let saxesu_kp6 = "";
                 const tanekai_kp6: string[] = [];
@@ -301,8 +344,9 @@ kf2Sweca12na.addEventListener("click", function (): void {
                     saxesu_kp6 = xaqadiKp6;
                     fusai_fal = fusai_fal.substring(xaqadiKp6.length);
                 } else if ( fusai_fal.length > 0 ) {
-                    saxesu_kp6 = fusai_fal[0];
-                    fusai_fal = fusai_fal.substring(1);
+                    const araGrapheme = splitGraphemes(fusai_fal)[0];
+                    saxesu_kp6 = araGrapheme;
+                    fusai_fal = fusai_fal.substring(araGrapheme.length);
                 } else {
                     console.warn(`( ʃэ ɭʃɔ }ʃᴜ }ʃꞇ ) ſ͕ȷɜ ſɭɹ ɽ͑ʃ'ɔ ı],ɔⰱ ꞁȷ̀ɔ '${xezai_kp6}' ⟅`);
                     continue;
@@ -315,8 +359,9 @@ kf2Sweca12na.addEventListener("click", function (): void {
                         tanekai_kp6.push(k2h2Tanek);
                         fusaini = fusaini.substring(k2h2Tanek.length);
                     } else {
-                        tanekai_kp6.push(fusaini[0]);
-                        fusaini = fusaini.substring(1);
+                        const grapheme = splitGraphemes(fusaini)[0];
+                        tanekai_kp6.push(grapheme);
+                        fusaini = fusaini.substring(grapheme.length);
                     }
                 }
 
@@ -349,11 +394,18 @@ kf2Sweca12na.addEventListener("click", function (): void {
                 if ( ksozdiTanekVop2.length > 1 ) {
                     er2haTanekL6da += (ksozdiTanekVop2.length - 1) * ksozdiLineHeight;
                 }
+                if ( ksozdiTanekVop2.length > 0 ) {
+                    er2haTanekL6da += 2 * STACK_VERTICAL_MARGIN;
+                }
 
                 let xezEr2haL6da = Math.max((saxediTanekVop2 ? saxediTanekVop2.height : 0), er2haTanekL6da);
                 let verticalScale = 1;
                 
-                if (vac2w2k && saxediTanekVop2 && er2haTanekL6da > saxediTanekVop2.height) {
+                if (saxediTanekVop2 && ksozdiTanekVop2.length === 2 && er2haTanekL6da > 0) {
+                    const targetHeight = Math.max(saxediTanekVop2.height, lagaPal6);
+                    verticalScale = targetHeight / er2haTanekL6da;
+                    xezEr2haL6da = targetHeight;
+                } else if (vac2w2k && saxediTanekVop2 && er2haTanekL6da > saxediTanekVop2.height) {
                     verticalScale = saxediTanekVop2.height / er2haTanekL6da;
                     xezEr2haL6da = saxediTanekVop2.height;
                 }
@@ -504,8 +556,14 @@ kf2Sweca12na.addEventListener("click", function (): void {
 
         let kjesaiKucaqX = saqaiAreqj2k;
 
+        const blockX: number[] = [];
+        const lineYPerBlock: number[][] = [];
+
         for ( const kucaq of tlakakaiKucaq ) {
             const psazaiY = tlakakaiL6da - psazaiAreqj2k;
+
+            blockX.push(kjesaiKucaqX);
+            const thisLineY: number[] = [];
 
             let kjesaicepuniX = kjesaiKucaqX;
 
@@ -544,32 +602,69 @@ kf2Sweca12na.addEventListener("click", function (): void {
                         xezTanekAlPsazaiY = psazaiKucaqY - er2haL6daLPsazaicepuni;
                     }
 
+                    if ( w >= thisLineY.length ) {
+                        thisLineY[w] = xezTanekAlPsazaiY - xez.xezEr2haL6da;
+                    } else {
+                        thisLineY[w] = Math.min(thisLineY[w], xezTanekAlPsazaiY - xez.xezEr2haL6da);
+                    }
+
                     if ( xez.saxedini ) {
                         const saxediTanekVop2 = xez.saxedini;
                         const saxediTanekK2fY = xezTanekAlPsazaiY - saxediTanekVop2.actualBoundingBoxDescent;
 
-                        ctx.fillText(saxediTanekVop2.text, xezK2f, saxediTanekK2fY);
+                        if ( saxediTanekVop2.rotate ) {
+                            const cx = xezK2f + saxediTanekVop2.width / 2;
+                            const cy = saxediTanekK2fY - saxediTanekVop2.actualBoundingBoxAscent / 2;
+                            ctx.save();
+                            ctx.translate(cx, cy);
+                            ctx.rotate(-Math.PI / 2);
+                            ctx.textAlign = "center";
+                            ctx.textBaseline = "middle";
+                            ctx.fillText(saxediTanekVop2.text, 0, 0);
+                            ctx.restore();
+                            ctx.textAlign = "left";
+                            ctx.textBaseline = "alphabetic";
+                        } else {
+                            ctx.fillText(saxediTanekVop2.text, xezK2f, saxediTanekK2fY);
+                        }
                     }
 
                     const tanekSaxeX = xezK2f + (xez.saxedini ? xez.saxedini.width : 0);
                     let kjesaiKucaqY = xezTanekAlPsazaiY - xez.xezEr2haL6da;
+                    if ( xez.ksozdini.length > 0 ) {
+                        kjesaiKucaqY += STACK_VERTICAL_MARGIN * xez.verticalScale;
+                    }
 
                     const ksozdiLineHeight = lagaPal6 * KSOZDI_PAL6;
 
                     for ( let i = 0; i < xez.ksozdini.length; i++ ) {
                         const ksozdiTanekVop2 = xez.ksozdini[i];
-                        const scaledHeight = ksozdiTanekVop2.height * xez.verticalScale;
-                        const scaledAscent = ksozdiTanekVop2.actualBoundingBoxAscent * xez.verticalScale;
+                        const unitScale = ksozdiTanekVop2.isEmoji ? 1 : xez.verticalScale;
+                        const scaledHeight = ksozdiTanekVop2.height * unitScale;
+                        const scaledAscent = ksozdiTanekVop2.actualBoundingBoxAscent * unitScale;
                         const tanekY = kjesaiKucaqY + scaledAscent;
                         const tanekX = tanekSaxeX;
 
                         ctx.save();
-                        ctx.translate(tanekX, tanekY);
-                        ctx.scale(1, xez.verticalScale);
-                        ctx.fillText(ksozdiTanekVop2.text, 0, 0);
+                        if ( ksozdiTanekVop2.rotate ) {
+                            const rotatedOnScreenWidth = ksozdiTanekVop2.actualBoundingBoxAscent + ksozdiTanekVop2.actualBoundingBoxDescent;
+                            const fitScale = rotatedOnScreenWidth > 0
+                                ? ksozdiTanekVop2.width / rotatedOnScreenWidth
+                                : 1;
+                            ctx.translate(tanekX + ksozdiTanekVop2.width / 2, kjesaiKucaqY + scaledHeight / 2);
+                            ctx.rotate(-Math.PI / 2);
+                            ctx.scale(unitScale, fitScale);
+                            ctx.textAlign = "center";
+                            ctx.textBaseline = "middle";
+                            ctx.fillText(ksozdiTanekVop2.text, 0, 0);
+                        } else {
+                            ctx.translate(tanekX, tanekY);
+                            ctx.scale(1, unitScale);
+                            ctx.fillText(ksozdiTanekVop2.text, 0, 0);
+                        }
                         ctx.restore();
 
-                        kjesaiKucaqY += scaledHeight + (i < xez.ksozdini.length - 1 ? ksozdiLineHeight * xez.verticalScale : 0);
+                        kjesaiKucaqY += scaledHeight + (i < xez.ksozdini.length - 1 ? ksozdiLineHeight * unitScale : 0);
                     }
 
                     if ( !sefaktapuni || knahtaka === "kucaqai" ) {
@@ -578,6 +673,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
                 }
                 kjesaicepuniX += cepuni.cepuniKmasefwini;
             }
+            lineYPerBlock.push(thisLineY);
             kjesaiKucaqX += kucaq.kucaqEr2haSefwini + tapuAreqj2k;
         }
 
@@ -589,7 +685,14 @@ kf2Sweca12na.addEventListener("click", function (): void {
             psazaiAreqj2k: psazaiAreqj2k,
             saqaiAreqj2k: saqaiAreqj2k,
             raqaiAreqj2k: raqaiAreqj2k,
-            arak21okoWeh2: arak21okoWeh2
+            arak21okoWeh2: arak21okoWeh2,
+            blockX: blockX,
+            lineY: lineYPerBlock.reduce((acc, arr) => {
+                for ( let i = 0; i < arr.length; i++ ) {
+                    acc[i] = Math.min(acc[i] ?? Infinity, arr[i]);
+                }
+                return acc;
+            }, [] as number[])
         };
 
         if ( qumk2 ) {
@@ -613,7 +716,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
 
 // ⟪ Export / Print 💾 ⟫
 
-function kf2Aravab6m6q(tahaqWeK2p2: string[], a1aKnu3a = false): void {
+function kf2Aravab6m6q(tahaqWeK2p2: HTMLCanvasElement[], a1aKnu3a = false): void {
     const aravab6m6q = window.open("", "_blank");
     if ( !aravab6m6q ) {
         ceme3ohk2ni("ſ͕ȷɜ ſɭʞɹ ʃэ ŋᷠэȝ ſɭɹ ſןɹ ⟅");
@@ -621,19 +724,22 @@ function kf2Aravab6m6q(tahaqWeK2p2: string[], a1aKnu3a = false): void {
     }
 
     const pageTitle = "j͑ʃ'ᴜ ɭʃᴜ ֭ſɭᴜȝ ʃэ ŋᷠэȝ ſɭɹ ſןɹ";
-    const imgTags = tahaqWeK2p2.map(( tahaqSwevop2, i ) => 
-        a1aKnu3a 
-            ? `<div class="page"><img src="${tahaqSwevop2}" alt="Page ${i + 1}"></div>`
-            : `<img src="${tahaqSwevop2}">`
-    ).join(a1aKnu3a ? "" : "\n");
 
-    const pageStyles = a1aKnu3a 
+    const pages = tahaqWeK2p2.map((c, i) => {
+        const src = c.toDataURL("image/png");
+        const aspect = c.width && c.height ? `${c.width} / ${c.height}` : "auto";
+        return a1aKnu3a
+            ? `<div class="page" style="--ar: ${aspect};"><img src="${src}" alt="Page ${i + 1}"></div>`
+            : `<img src="${src}">`;
+    }).join(a1aKnu3a ? "" : "\n");
+
+    const pageStyles = a1aKnu3a
         ? `@page { size: landscape; margin: 0; }
            @media print { .page { page-break-after: always; } .page:last-child { page-break-after: auto; } }
            body { margin: 0; padding: 0; }
-           .page { width: 100vi; height: 100vb; display: flex; justify-content: center; align-items: center; background: white; }
-           img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }`
-        : `@page { size: portrait; margin: 0; }
+           .page { width: 100vi; max-height: 100vb; aspect-ratio: var(--ar, auto); margin: 0 auto; display: flex; justify-content: center; align-items: center; background: white; }
+           img { display: block; width: 100%; height: 100%; object-fit: contain; }`
+        : `@page { size: landscape; margin: 0; }
            body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vb; background: white; }
            img { display: block; max-width: 100vi; max-height: 100vb; object-fit: contain; }`;
 
@@ -645,7 +751,7 @@ function kf2Aravab6m6q(tahaqWeK2p2: string[], a1aKnu3a = false): void {
             <style>${pageStyles}</style>
         </head>
         <body>
-            ${imgTags}
+            ${pages}
             <script>window.onload = function() { window.print(); };<\/script>
         </body>
         </html>
@@ -664,65 +770,115 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
     }
 
     if ( !tz2saiTahaq || !tz2saiTahaq.tlakakaiKucaq ) {
-        kf2Aravab6m6q([arak2f.toDataURL("image/png")]);
+        kf2Aravab6m6q([arak2f]);
         return;
     }
 
     const { tlakakaiKucaq, tapuAreqj2k, height, sozasaiAreqj2k, psazaiAreqj2k, saqaiAreqj2k, raqaiAreqj2k, arak21okoWeh2 } = tz2saiTahaq;
 
     const totalWidth = arak2f.width;
-    const useLandscape = totalWidth > PORTRAIT_PAGE_WIDTH;
-    const pageWidth = useLandscape ? LANDSCAPE_PAGE_WIDTH : PORTRAIT_PAGE_WIDTH;
 
-    if ( totalWidth <= pageWidth ) {
-        kf2Aravab6m6q([arak2f.toDataURL("image/png")]);
+    const marginTotalY = sozasaiAreqj2k + psazaiAreqj2k;
+    const contentHeight = height - marginTotalY;
+
+    // ⟨ Page height is the full height of the canvas (the max syllable stack height) ⟩
+    const pageHeight = height;
+    const maxPageHeight = height;
+
+    // ⟨ Page width is landscape-proportioned from that height ⟩
+    const LANDSCAPE_RATIO = 11 / 8.5; // US Letter landscape
+    const pageWidth = pageHeight * LANDSCAPE_RATIO;
+
+    if ( totalWidth <= pageWidth && contentHeight <= maxPageHeight ) {
+        kf2Aravab6m6q([arak2f]);
         return;
     }
 
-    const pages: Page[] = [];
-    let currentPageBlocks: TlakakaiKucaq[] = [];
-    let currentPageWidth = saqaiAreqj2k + raqaiAreqj2k;
+    const pageImages: HTMLCanvasElement[] = [];
 
-    for ( let i = 0; i < tlakakaiKucaq.length; i++ ) {
-        const block = tlakakaiKucaq[i];
-        const blockWidth = block.kucaqEr2haSefwini + (currentPageBlocks.length > 0 ? tapuAreqj2k : 0);
-
-        if ( currentPageWidth + blockWidth > pageWidth && currentPageBlocks.length > 0 ) {
-            pages.push({ blocks: currentPageBlocks, startIndex: i - currentPageBlocks.length });
-            currentPageBlocks = [block];
-            currentPageWidth = saqaiAreqj2k + raqaiAreqj2k + block.kucaqEr2haSefwini;
-        } else {
-            currentPageBlocks.push(block);
-            currentPageWidth += blockWidth;
-        }
+    // ⟨ Block x-boundaries (in canvas coords) so horizontal cuts fall BETWEEN
+    //   blocks and never slice a glyph in half. ⟩
+    const blockBoundaries: number[] = [];
+    let bx = saqaiAreqj2k; // blocks start at the left margin
+    for ( const kucaq of tlakakaiKucaq ) {
+        blockBoundaries.push(bx);
+        bx += kucaq.kucaqEr2haSefwini + tapuAreqj2k;
     }
-    if ( currentPageBlocks.length > 0 ) {
-        pages.push({ blocks: currentPageBlocks, startIndex: tlakakaiKucaq.length - currentPageBlocks.length });
+    blockBoundaries.push(bx); // trailing edge
+
+    // ⟨ Per-line y-boundaries so vertical cuts fall BETWEEN lines. ⟩
+    const cepuAreqj2k = parseInt(cepuAreqj2kKek.value, 0o10);
+    const maxLines = tlakakaiKucaq.reduce((max, kucaq) =>
+        Math.max(max, ...kucaq.columns.map(col => col.haxez.length), 0), 0);
+    const lineBoundaries: number[] = [];
+    let by = sozasaiAreqj2k; // content starts at the top margin
+    for ( let li = 0; li < maxLines; li++ ) {
+        let lineHeight = 0;
+        for ( const kucaq of tlakakaiKucaq ) {
+            const perTapu = kucaq.kmawuk2niSweKucaq;
+            lineHeight = Math.max(lineHeight, (li < perTapu.length ? perTapu[li] : 0) + (li < maxLines - 1 ? cepuAreqj2k : 0));
+        }
+        lineBoundaries.push(by);
+        by += lineHeight;
     }
+    lineBoundaries.push(by); // trailing edge
 
-    const pageImages: string[] = [];
-    let sourceX = 0;
+    const snapLE = (val: number, edges: number[]): number => {
+        let best = edges[0];
+        for ( const e of edges ) {
+            if ( e <= val ) best = e;
+            else break;
+        }
+        return best;
+    };
 
-    for ( const page of pages ) {
-        let pageContentWidth = saqaiAreqj2k + raqaiAreqj2k;
-        for ( let i = 0; i < page.blocks.length; i++ ) {
-            pageContentWidth += page.blocks[i].kucaqEr2haSefwini + (i > 0 ? tapuAreqj2k : 0);
+    // ⟨ Paginate. Width is cut at the nearest block boundary ≤ pageWidth;
+    //   lines that overflow the landscape page width split onto additional pages.
+    //   Each page canvas has the exact same dimensions (pageWidth x pageHeight)
+    //   so they render at a consistent scale in print previews. ⟩
+    const PAD = tapuAreqj2k + 1;
+
+    const contentRight = totalWidth - raqaiAreqj2k;
+    const contentBottom = height - psazaiAreqj2k;
+
+    let sourceY = sozasaiAreqj2k;
+    while ( sourceY < contentBottom ) {
+        const maxY = Math.min(sourceY + maxPageHeight, contentBottom);
+        const cutY = snapLE(maxY, lineBoundaries);
+        const sliceH = cutY - sourceY;
+        if ( sliceH <= 0 ) break;
+
+        let sourceX = saqaiAreqj2k;
+        while ( sourceX < contentRight ) {
+            const maxX = Math.min(sourceX + pageWidth, contentRight);
+            const cutX = snapLE(maxX, blockBoundaries);
+            const sliceW = cutX - sourceX;
+            if ( sliceW <= 0 ) break;
+
+            const drawX = Math.max(0, sourceX - PAD);
+            const drawY = Math.max(0, sourceY - PAD);
+            
+            const copyW = Math.min(sliceW + (sourceX - drawX), totalWidth - drawX);
+            const copyH = Math.min(sliceH + (sourceY - drawY), height - drawY);
+
+            const destX = saqaiAreqj2k - (sourceX - drawX);
+            const destY = sozasaiAreqj2k - (sourceY - drawY);
+
+            const sliceCanvas = document.createElement("canvas");
+            sliceCanvas.width = pageWidth;
+            sliceCanvas.height = pageHeight;
+            const sliceCtx = sliceCanvas.getContext("2d")!;
+
+            sliceCtx.fillStyle = arak21okoWeh2;
+            sliceCtx.fillRect(0, 0, pageWidth, pageHeight);
+            sliceCtx.drawImage(arak2f, drawX, drawY, copyW, copyH, destX, destY, copyW, copyH);
+
+            pageImages.push(sliceCanvas);
+
+            sourceX = cutX;
         }
 
-        const sliceCanvas = document.createElement("canvas");
-        sliceCanvas.width = pageWidth;
-        sliceCanvas.height = height;
-        const sliceCtx = sliceCanvas.getContext("2d")!;
-
-        sliceCtx.fillStyle = arak21okoWeh2;
-        sliceCtx.fillRect(0, 0, pageWidth, height);
-
-        const offsetX = (pageWidth - pageContentWidth) / 2;
-        sliceCtx.drawImage(arak2f, sourceX, 0, pageContentWidth, height, offsetX, 0, pageContentWidth, height);
-
-        sourceX += pageContentWidth - saqaiAreqj2k - raqaiAreqj2k + tapuAreqj2k;
-
-        pageImages.push(sliceCanvas.toDataURL("image/png"));
+        sourceY = cutY;
     }
 
     kf2Aravab6m6q(pageImages, true);
