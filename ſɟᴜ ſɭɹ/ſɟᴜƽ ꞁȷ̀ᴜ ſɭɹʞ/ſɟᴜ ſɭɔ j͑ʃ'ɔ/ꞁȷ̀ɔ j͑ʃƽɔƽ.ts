@@ -2,21 +2,26 @@
 
 // ⟪ Canvas Elements 🎨 ⟫
 
-export const canvas = document.getElementById( "whiteboardCanvas" ) as HTMLCanvasElement | null;
-export const ctx = canvas?.getContext( "2d" ) as CanvasRenderingContext2D | null;
+export let canvas = document.getElementById( "whiteboardCanvas" ) as HTMLCanvasElement | null;
+export let ctx = canvas?.getContext( "2d" ) as CanvasRenderingContext2D | null;
+
+export function setActiveCanvas( c: HTMLCanvasElement | null ): void {
+    canvas = c;
+    ctx = c?.getContext( "2d" ) || null;
+}
 
 // ⟪ Constants 🔢 ⟫
 
-export const CANVAS_WIDTH = 0o3600;
-export const CANVAS_HEIGHT = 0o2400;
+export const CANVAS_WIDTH = 0o3000;
+export const CANVAS_HEIGHT = 0o2000;
 export const PAGE_SIZE_PRESETS: Record<string, { width?: number; height?: number; infinite?: boolean }> = {
     full: { infinite: true },
     vertical: { width: 0o2416, height: 0o3625 },
     horizontal: { width: 0o3625, height: 0o2416 },
-    square: { width: 0o2114, height: 0o2114 }
+    square: { width: 0o2000, height: 0o2000 }
 };
 export const MIN_PAGE_SIZE = 0o100;
-export const MAX_PAGE_SIZE = 0o12000;
+export const MAX_PAGE_SIZE = 0o10000;
 
 export const MIN_SIZE = 0o10;
 export const HANDLE_SIZE = 0o20;
@@ -25,7 +30,7 @@ export const CORNER_RADIUS = 0o20;
 export const ROTATE_HANDLE_OFFSET = 0o20;
 export const ROTATE_HANDLE_RADIUS = 0o30;
 export const RESIZE_HANDLE_HITBOX = 0o30;
-export const MIN_ZOOM = 0o1 / 0o4;
+export const MIN_ZOOM = 0o2 / 0o10;
 export const MAX_ZOOM = 0o4;
 export const ZOOM_STEP_NUM = 0o41;
 export const ZOOM_STEP_DEN = 0o40;
@@ -49,8 +54,8 @@ export const BRIGHTNESS_WEIGHT_G = 0o1113;
 export const BRIGHTNESS_WEIGHT_B = 0o162;
 export const BRIGHTNESS_DIVISOR = 0o1000;
 export const BRIGHTNESS_THRESHOLD = 0o200;
-export const PREVIEW_ALPHA = 3 / 4;
-export const COVERAGE_THRESHOLD_FRACTION = 3 / 4;
+export const PREVIEW_ALPHA = 0o6 / 0o10;
+export const COVERAGE_THRESHOLD_FRACTION = 0o6 / 0o10;
 
 // ⟪ Tool Cursors 🖰 ⟫
 
@@ -139,7 +144,6 @@ export interface Layer {
     id: number;
     name: string;
     visible: boolean;
-    objects?: WhiteboardObject[];
 }
 
 export interface LayerState {

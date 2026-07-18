@@ -3,7 +3,7 @@
 import {
     canvas, state, spaceState, historyState, objectState, layerState, pageState, textState, eraserState,
     CANVAS_WIDTH, CANVAS_HEIGHT, PAGE_SIZE_PRESETS, MIN_PAGE_SIZE, MAX_PAGE_SIZE
-    } from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
+} from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
 
 import {
     normalizeHexColor, isValidHexColor,
@@ -26,8 +26,9 @@ import {
 } from "./ɭʃᴜ }ʃɔƽ.js";
 
 import {
-    redrawCanvas, saveState,
-    getCurrentCanvas, getCurrentCtx, updateUndoRedoButtons, resizeActivePage, updateCanvasSizeDisplay
+    redrawCanvas, saveState, drawWhiteboardGrid,
+    getCurrentCanvas, getCurrentCtx, updateUndoRedoButtons, resizeActivePage, updateCanvasSizeDisplay,
+    updatePresetButtons
 } from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
 
 import {
@@ -317,25 +318,7 @@ export function initPageSizeControls(): void {
         updatePresetButtons( "custom" );
     } );
 
-    window.addEventListener( "resize", () => {
-        const activePage = pageManager.getActive();
-        if ( activePage?.infinite ) {
-            const fullSize = { width: window.innerWidth, height: window.innerHeight };
-            resizeActivePage( fullSize.width, fullSize.height );
-            setPageSizeInputs( fullSize.width, fullSize.height );
-            updateCanvasSizeDisplay();
-        }
-    } );
-
     updateCanvasSizeDisplay();
-}
-
-function updatePresetButtons( activePreset: string ): void {
-    const buttons = document.querySelectorAll<HTMLButtonElement>( "#pageSizePresetButtons button[data-preset]" );
-    buttons.forEach( btn => {
-        const isActive = btn.dataset.preset === activePreset;
-        btn.setAttribute( "aria-pressed", isActive.toString() );
-    } );
 }
 
 // ⟪ Transform Control Actions 🎛️ ⟫
@@ -487,11 +470,12 @@ export function initFileOperations(): void {
 
 export function clearCanvas(): void {
     if ( !getCurrentCtx() || !getCurrentCanvas() ) return;
-    getCurrentCtx()!.fillStyle = "#ffffff";
-    getCurrentCtx()!.fillRect( 0, 0, getCurrentCanvas()!.width, getCurrentCanvas()!.height );
+    const ctx = getCurrentCtx()!;
+    const cvs = getCurrentCanvas()!;
     objectState.objects = [];
     objectState.selected = [];
     updateTransformControls();
+    // redrawCanvas will fill the appropriate background
     redrawCanvas();
     saveState();
 }

@@ -1,7 +1,7 @@
 // ≺⧼ Tool Logic & Drawing ⧽≻
 
 import {
-    canvas, ctx, state, objectState, pathState, textState, eraserState, connectionState, clipboardState, layerState,
+    canvas, state, panState, pageState, objectState, pathState, textState, eraserState, connectionState, clipboardState, layerState,
     CORNER_RADIUS,
     TEXT_SIZE_MULTIPLIER, LINE_DASH_PATTERN, SELECTION_LINE_WIDTH,
     SMOOTHING_FACTOR,
@@ -22,7 +22,7 @@ import {
 
 import {
     redrawCanvas, applyObjectTransform, saveState,
-    getCurrentCtx
+    getCurrentCtx, beginPanTranslation, endPanTranslation
 } from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
 
 export function updateTransformControls(): void {
@@ -149,10 +149,18 @@ export function getCanvasCoords( e: TouchOrMouseEvent ): Point {
     const scaleY = canvas.height / rect.height;
     const coords = getClientCoords( e );
 
-    return {
-        x: ( coords.x - rect.left ) * scaleX,
-        y: ( coords.y - rect.top ) * scaleY
-    };
+    // Canvas-pixel coordinates (relative to the viewport/canvas)
+    const cpX = ( coords.x - rect.left ) * scaleX;
+    const cpY = ( coords.y - rect.top ) * scaleY;
+    
+    // For infinite pages, convert from canvas-pixel to world coordinates
+    // (since redrawCanvas translates context by +pan when drawing objects)
+    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    if ( activePage?.infinite ) {
+        return { x: cpX - panState.offsetX, y: cpY - panState.offsetY };
+    }
+    
+    return { x: cpX, y: cpY };
 }
 
 // ⟪ Drawing Start ✏️ ⟫
@@ -319,7 +327,11 @@ export function draw( e: TouchOrMouseEvent ): void {
         const hoveredHandle = findResizeHandle( coords.x, coords.y );
         const hoveredRotate = findRotateHandle( coords.x, coords.y );
         redrawCanvas();
-        if ( hoveredObject && !objectState.selected.includes( hoveredObject ) ) drawHoverEffect( hoveredObject );
+        if ( hoveredObject && !objectState.selected.includes( hoveredObject ) ) {
+            beginPanTranslation();
+            drawHoverEffect( hoveredObject );
+            endPanTranslation();
+        }
         if ( hoveredHandle ) setCursor( getResizeCursor( hoveredHandle ) );
         else if ( hoveredRotate ) setCursor( "pointer" );
         else if ( hoveredObject ) setCursor( "move" );
@@ -344,7 +356,9 @@ export function draw( e: TouchOrMouseEvent ): void {
             objectState.selectionRect!.width = coords.x - state.startX;
             objectState.selectionRect!.height = coords.y - state.startY;
             redrawCanvas();
+            beginPanTranslation();
             drawSelectionRect();
+            endPanTranslation();
         }
         return;
     }
@@ -352,13 +366,17 @@ export function draw( e: TouchOrMouseEvent ): void {
     if ( state.tool === "pen" ) {
         pathState.current.push( { x: coords.x, y: coords.y } );
         redrawCanvas();
+        beginPanTranslation();
         drawPathPreview( pathState.current, state.color, state.size, getCurrentCtx() );
+        endPanTranslation();
     } else if ( state.tool === "smooth" ) {
         pathState.smoothX += ( coords.x - pathState.smoothX ) * SMOOTHING_FACTOR;
         pathState.smoothY += ( coords.y - pathState.smoothY ) * SMOOTHING_FACTOR;
         pathState.smooth.push( { x: pathState.smoothX, y: pathState.smoothY } );
         redrawCanvas();
+        beginPanTranslation();
         drawPathPreview( pathState.smooth, state.color, state.size, getCurrentCtx() );
+        endPanTranslation();
     } else if ( state.tool === "eraser" ) {
         pathState.current.push( { x: coords.x, y: coords.y } );
         redrawCanvas();
@@ -366,22 +384,29 @@ export function draw( e: TouchOrMouseEvent ): void {
         redrawCanvas();
     } else if ( state.tool === "connect" && connectionState.startObj ) {
         redrawCanvas();
-        ctx!.save();
-        ctx!.strokeStyle = state.color;
-        ctx!.lineWidth = state.size;
-        ctx!.setLineDash( LINE_DASH_PATTERN );
-        ctx!.beginPath();
-        const startC = getCenter( connectionState.startObj );
-        ctx!.moveTo( startC.x, startC.y );
-        ctx!.lineTo( coords.x, coords.y );
-        ctx!.stroke();
-        ctx!.restore();
+        beginPanTranslation();
+        const connectCtx = getCurrentCtx();
+        if ( connectCtx ) {
+            connectCtx.save();
+            connectCtx.strokeStyle = state.color;
+            connectCtx.lineWidth = state.size;
+            connectCtx.setLineDash( LINE_DASH_PATTERN );
+            connectCtx.beginPath();
+            const startC = getCenter( connectionState.startObj );
+            connectCtx.moveTo( startC.x, startC.y );
+            connectCtx.lineTo( coords.x, coords.y );
+            connectCtx.stroke();
+            connectCtx.restore();
+        }
+        endPanTranslation();
     }
 
     if ( state.tool === "shape" && state.shape ) {
         pathState.preview = createShapeObject( state.shape, state.startX, state.startY, coords.x, coords.y );
         redrawCanvas();
+        beginPanTranslation();
         if ( pathState.preview ) drawPreviewShape( pathState.preview, getCurrentCtx() );
+        endPanTranslation();
     }
 
     state.lastX = coords.x;

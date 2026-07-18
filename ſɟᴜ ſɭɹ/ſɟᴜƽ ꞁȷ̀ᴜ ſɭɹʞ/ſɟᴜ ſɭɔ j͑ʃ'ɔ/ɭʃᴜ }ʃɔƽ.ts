@@ -5,7 +5,7 @@ import {
     CANVAS_WIDTH, CANVAS_HEIGHT, Layer, Page
 } from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
 
-import { redrawCanvas, saveState, switchToPageCanvas, setCanvasSizeForPage } from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
+import { redrawCanvas, saveState, switchToPageCanvas, setCanvasSizeForPage, drawWhiteboardGrid } from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
 
 // ⟪ Base Item Manager Interface 📋 ⟫
 
@@ -108,7 +108,7 @@ export class LayerManager extends BaseItemManager<Layer> {
     }
 
     protected createItem( id: number, name: string ): Layer {
-        const layer: Layer = { id, name, visible: true, objects: [] };
+        const layer: Layer = { id, name, visible: true };
         this.layers.push( layer );
         return layer;
     }
@@ -144,6 +144,7 @@ export class PageManager extends BaseItemManager<Page> {
             visible: true,
             width: activePage?.width || CANVAS_WIDTH,
             height: activePage?.height || CANVAS_HEIGHT,
+            infinite: true,  // Default to full/whiteboard mode
             objects: []
         };
         this.pages.push( page );
@@ -232,6 +233,7 @@ export class PageManager extends BaseItemManager<Page> {
         const pageContainer = document.createElement( "div" );
         pageContainer.id = `page-${page.id}`;
         pageContainer.className = "whiteboard-container";
+        pageContainer.classList.toggle( "infinite-container", page.infinite );
         pageContainer.dataset.pageId = page.id.toString();
         pageContainer.style.display = "none";
 
@@ -241,12 +243,18 @@ export class PageManager extends BaseItemManager<Page> {
         const pageCanvas = document.createElement( "canvas" );
         pageCanvas.id = `pageCanvas-${page.id}`;
         pageCanvas.className = "whiteboard-canvas";
+        pageCanvas.classList.toggle( "bordered-canvas", !page.infinite );
+        pageCanvas.classList.toggle( "infinite-canvas", page.infinite );
         setCanvasSizeForPage( pageCanvas, page );
 
         const ctx = pageCanvas.getContext( "2d" );
         if ( ctx ) {
-            ctx.fillStyle = "#ffffff";
-            ctx.fillRect( 0, 0, pageCanvas.width, pageCanvas.height );
+            if ( page.infinite ) {
+                drawWhiteboardGrid( ctx, pageCanvas.width, pageCanvas.height );
+            } else {
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect( 0, 0, pageCanvas.width, pageCanvas.height );
+            }
         }
 
         canvasWrapper.appendChild( pageCanvas );

@@ -1,7 +1,7 @@
 // ≺⧼ Whiteboard Application - Main Entry Point ⧽≻
 
 import {
-    canvas, state, panState, spaceState, objectState, touchGestureState,
+    canvas, state, panState, pageState, spaceState, objectState, touchGestureState,
     CANVAS_WIDTH, CANVAS_HEIGHT,
     ZOOM_STEP_NUM, ZOOM_STEP_DEN, ZOOM_BASE,
     MIN_ZOOM, MAX_ZOOM
@@ -19,8 +19,8 @@ import {
 } from "./ɭʃᴜ }ʃɔƽ.js";
 
 import {
-    getCurrentCanvas, getCurrentCtx, redrawCanvas, saveState,
-    switchToPageCanvas
+    getCurrentCanvas, getCurrentCtx, redrawCanvas, saveState, drawWhiteboardGrid,
+    switchToPageCanvas, syncPanToCSS, resizeActivePage, updateCanvasSizeDisplay
 } from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
 
 import {
@@ -43,13 +43,21 @@ let setZoomFn: ( zoom: number ) => void = () => { };
 function initCanvas(): void {
     if ( !getCurrentCanvas() ) return;
     const activePage = pageManager.getActive();
-    getCurrentCanvas()!.width = activePage?.width || CANVAS_WIDTH;
-    getCurrentCanvas()!.height = activePage?.height || CANVAS_HEIGHT;
+    const w = activePage?.width || CANVAS_WIDTH;
+    const h = activePage?.height || CANVAS_HEIGHT;
+    getCurrentCanvas()!.width = activePage?.infinite ? window.innerWidth : w;
+    getCurrentCanvas()!.height = activePage?.infinite ? window.innerHeight : h;
 
-    getCurrentCtx()!.fillStyle = "#ffffff";
-    getCurrentCtx()!.fillRect( 0, 0, getCurrentCanvas()!.width, getCurrentCanvas()!.height );
+    const ctx = getCurrentCtx()!;
+    const curCanvas = getCurrentCanvas()!;
+    if ( activePage?.infinite ) {
+        drawWhiteboardGrid( ctx, curCanvas.width, curCanvas.height );
+    } else {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect( 0, 0, curCanvas.width, curCanvas.height );
+    }
 
-    document.getElementById( "canvasSize" )!.textContent = `${getCurrentCanvas()!.width} × ${getCurrentCanvas()!.height}`;
+    document.getElementById( "canvasSize" )!.textContent = `${curCanvas.width} × ${curCanvas.height}`;
 }
 
 function initLayers(): void {
@@ -79,19 +87,22 @@ function initZoom(): void {
     function updateZoom(): void {
         const zoom = state.zoomNum / state.zoomDen;
         document.documentElement.style.setProperty( "--zoom", zoom.toString() );
-        document.documentElement.style.setProperty( "--pan-x", panState.offsetX + "px" );
-        document.documentElement.style.setProperty( "--pan-y", panState.offsetY + "px" );
         if ( zoomLevel ) zoomLevel.textContent = `${Math.round( state.zoomNum )}/${state.zoomDen}x`;
         invalidateTextCaches();
         redrawCanvas();
     }
 
     function setZoom( newZoom: number ): void {
-        if ( newZoom <= MIN_ZOOM ) {
-            state.zoomNum = MIN_ZOOM * ZOOM_BASE;
+        const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+        // Infinite pages cannot zoom out below 1x — the canvas always fills the screen
+        const minZoom = activePage?.infinite ? 0o1 : MIN_ZOOM;
+        const maxZoom = MAX_ZOOM;
+        
+        if ( newZoom <= minZoom ) {
+            state.zoomNum = minZoom * ZOOM_BASE;
             state.zoomDen = ZOOM_BASE;
-        } else if ( newZoom >= MAX_ZOOM ) {
-            state.zoomNum = MAX_ZOOM * ZOOM_BASE;
+        } else if ( newZoom >= maxZoom ) {
+            state.zoomNum = maxZoom * ZOOM_BASE;
             state.zoomDen = ZOOM_BASE;
         } else {
             state.zoomNum = newZoom * ZOOM_BASE;
@@ -113,25 +124,34 @@ function initZoom(): void {
     initButton( "zoomReset", () => {
         state.zoomNum = 1; state.zoomDen = 1;
         panState.offsetX = 0; panState.offsetY = 0;
+        syncPanToCSS();
         updateZoom();
     } );
 
     document.addEventListener( "wheel", ( e: WheelEvent ) => {
         if ( isUIElement( e.target ) ) return;
+        
+        const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+        
+        // Ctrl+wheel zoom works on ALL pages (both infinite and non-infinite)
         if ( e.ctrlKey ) {
             e.preventDefault();
             const currentZoom = state.zoomNum / state.zoomDen;
             const zoomFactor = Math.exp( -e.deltaY * 0o2 / 0o1000 );
             const newZoom = currentZoom * zoomFactor;
             setZoom( newZoom );
-        } else if ( isScrollableElement( e.target ) ) {
             return;
+        }
+        
+        // Pan with the wheel
+        e.preventDefault();
+        const panSpeed = 0o2;
+        panState.offsetX -= e.deltaX * panSpeed;
+        panState.offsetY -= e.deltaY * panSpeed;
+        if ( activePage?.infinite ) {
+            updateZoom();  // redraws with canvas context translate
         } else {
-            e.preventDefault();
-            const panSpeed = 0o2;
-            panState.offsetX -= e.deltaX * panSpeed;
-            panState.offsetY -= e.deltaY * panSpeed;
-            updateZoom();
+            syncPanToCSS();  // shift via CSS translate
         }
     }, { passive: false } );
 
@@ -156,12 +176,6 @@ function initCanvasEvents(): void {
     document.addEventListener( "keyup", handleKeyup, { passive: false } );
     window.addEventListener( "blur", handleBlur );
 
-    window.addEventListener( "resize", () => {
-        document.documentElement.style.setProperty( "--zoom", ( state.zoomNum / state.zoomDen ).toString() );
-        document.documentElement.style.setProperty( "--pan-x", panState.offsetX + "px" );
-        document.documentElement.style.setProperty( "--pan-y", panState.offsetY + "px" );
-        redrawCanvas();
-    } );
 }
 
 function isUIElement( target: EventTarget | null ): boolean {
@@ -170,6 +184,9 @@ function isUIElement( target: EventTarget | null ): boolean {
 
 function handleDocumentMouseDown( e: MouseEvent ): void {
     if ( e.button !== 0 || isUIElement( e.target ) ) return;
+    
+    // Space+drag panning works on all pages
+    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
     if ( spaceState.isPressed ) {
         panState.isPanning = true;
         panState.startX = e.clientX - panState.offsetX;
@@ -177,6 +194,7 @@ function handleDocumentMouseDown( e: MouseEvent ): void {
         if ( canvas ) canvas.dataset.cursor = "grabbing";
         return;
     }
+    
     startDrawing( e );
 }
 
@@ -185,8 +203,12 @@ function handleDocumentMouseMove( e: MouseEvent ): void {
         e.preventDefault();
         panState.offsetX = e.clientX - panState.startX;
         panState.offsetY = e.clientY - panState.startY;
-        document.documentElement.style.setProperty( "--pan-x", panState.offsetX + "px" );
-        document.documentElement.style.setProperty( "--pan-y", panState.offsetY + "px" );
+        const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+        if ( activePage?.infinite ) {
+            redrawCanvas();  // redraw with canvas context translate
+        } else {
+            syncPanToCSS();  // shift via CSS translate
+        }
         return;
     }
     if ( state.isDrawing ) draw( e );
@@ -232,7 +254,11 @@ function getTouchDistance( e: TouchEvent ): number {
 function handleTouchStart( e: TouchEvent ): void {
     if ( e.touches.length > 2 || isUIElement( e.target ) ) return;
 
+    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    const isInfinite = activePage?.infinite === true;
+
     if ( e.touches.length === 2 ) {
+        if ( !isInfinite ) return;  // Let browser handle 2-finger scroll natively
         e.preventDefault();
         // Start pinch-to-zoom
         touchGestureState.isPinching = true;
@@ -249,6 +275,7 @@ function handleTouchStart( e: TouchEvent ): void {
     }
 
     if ( spaceState.isPressed ) {
+        if ( !isInfinite ) return;  // Let browser handle space+scroll natively
         e.preventDefault();
         panState.isPanning = true;
         panState.startX = e.touches[ 0 ].clientX - panState.offsetX;
@@ -265,7 +292,10 @@ function handleTouchStart( e: TouchEvent ): void {
 function handleTouchMove( e: TouchEvent ): void {
     if ( e.touches.length > 2 ) return;
 
-    if ( e.touches.length === 2 && touchGestureState.isPinching ) {
+    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    const isInfinite = activePage?.infinite === true;
+
+    if ( e.touches.length === 2 && touchGestureState.isPinching && isInfinite ) {
         e.preventDefault();
 
         // Handle pinch-to-zoom
@@ -280,18 +310,16 @@ function handleTouchMove( e: TouchEvent ): void {
         const center = getTouchCenter( e );
         panState.offsetX = center.x - panState.startX;
         panState.offsetY = center.y - panState.startY;
-        document.documentElement.style.setProperty( "--pan-x", panState.offsetX + "px" );
-        document.documentElement.style.setProperty( "--pan-y", panState.offsetY + "px" );
+        redrawCanvas();
         return;
     }
 
-    if ( panState.isPanning ) {
+    if ( panState.isPanning && isInfinite ) {
         e.preventDefault();
         const center = getTouchCenter( e );
         panState.offsetX = center.x - panState.startX;
         panState.offsetY = center.y - panState.startY;
-        document.documentElement.style.setProperty( "--pan-x", panState.offsetX + "px" );
-        document.documentElement.style.setProperty( "--pan-y", panState.offsetY + "px" );
+        redrawCanvas();
         return;
     }
 
@@ -374,6 +402,20 @@ function handleBlur(): void {
     resetCursor();
 }
 
+// ⟪ Window Resize (unified single handler) 🪟 ⟫
+
+function initWindowResize(): void {
+    window.addEventListener( "resize", () => {
+        const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+        document.documentElement.style.setProperty( "--zoom", ( state.zoomNum / state.zoomDen ).toString() );
+        if ( activePage?.infinite ) {
+            resizeActivePage( window.innerWidth, window.innerHeight );
+        } else {
+            redrawCanvas();
+        }
+    } );
+}
+
 // ⟪ Initialize Application 🚀 ⟫
 
 initCanvas();
@@ -385,6 +427,7 @@ initToolsAndShapes();
 initSizeSlider();
 initToolbar();
 initCanvasEvents();
+initWindowResize();
 initActions();
 initLayerControls();
 initPageControls();

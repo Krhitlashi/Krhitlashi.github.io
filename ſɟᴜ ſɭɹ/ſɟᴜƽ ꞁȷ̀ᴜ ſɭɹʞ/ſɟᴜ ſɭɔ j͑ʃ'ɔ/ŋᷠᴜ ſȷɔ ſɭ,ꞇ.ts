@@ -581,14 +581,12 @@ export interface Handle {
     localY: number;
 }
 
-export function getHandles( obj: WhiteboardObject ): Handle[] {
-    const bounds = getObjectBounds( obj );
-    const cx = getCenterX( obj );
-    const cy = getCenterY( obj );
-    const rotation = obj.rotation || 0;
-    const c = Math.cos( rotation ), s = Math.sin( rotation );
-
-    const localHandles = [
+/**
+ * Generate the 8 standard resize-handle positions from object bounds.
+ * Returns positions in local (un-rotated) coordinates.
+ */
+function getLocalHandlePositions( bounds: { x: number; y: number; width: number; height: number } ): Array<{ x: number; y: number; name: string }> {
+    return [
         { x: bounds.x, y: bounds.y, name: "nw" },
         { x: bounds.x + bounds.width, y: bounds.y, name: "ne" },
         { x: bounds.x + bounds.width, y: bounds.y + bounds.height, name: "se" },
@@ -598,6 +596,16 @@ export function getHandles( obj: WhiteboardObject ): Handle[] {
         { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height, name: "s" },
         { x: bounds.x, y: bounds.y + bounds.height / 2, name: "w" }
     ];
+}
+
+export function getHandles( obj: WhiteboardObject ): Handle[] {
+    const bounds = getObjectBounds( obj );
+    const cx = getCenterX( obj );
+    const cy = getCenterY( obj );
+    const rotation = obj.rotation || 0;
+    const c = Math.cos( rotation ), s = Math.sin( rotation );
+
+    const localHandles = getLocalHandlePositions( bounds );
 
     return localHandles.map( h => ( {
         x: cx + ( h.x - cx ) * c - ( h.y - cy ) * s,
@@ -621,16 +629,7 @@ export function findResizeHandle( x: number, y: number ): string | null {
     const localY = cy + ( x - cx ) * s + ( y - cy ) * c;
 
     const bounds = getObjectBounds( obj );
-    const localHandles = [
-        { x: bounds.x, y: bounds.y, name: "nw" },
-        { x: bounds.x + bounds.width, y: bounds.y, name: "ne" },
-        { x: bounds.x + bounds.width, y: bounds.y + bounds.height, name: "se" },
-        { x: bounds.x, y: bounds.y + bounds.height, name: "sw" },
-        { x: bounds.x + bounds.width / 2, y: bounds.y, name: "n" },
-        { x: bounds.x + bounds.width, y: bounds.y + bounds.height / 2, name: "e" },
-        { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height, name: "s" },
-        { x: bounds.x, y: bounds.y + bounds.height / 2, name: "w" }
-    ];
+    const localHandles = getLocalHandlePositions( bounds );
 
     for ( const h of localHandles ) {
         if ( Math.abs( localX - h.x ) < RESIZE_HANDLE_HITBOX &&

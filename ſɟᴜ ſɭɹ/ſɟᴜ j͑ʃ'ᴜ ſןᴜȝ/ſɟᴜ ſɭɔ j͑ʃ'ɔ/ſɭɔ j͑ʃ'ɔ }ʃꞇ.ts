@@ -82,17 +82,25 @@ class BlockBuilderWorkspace {
     private currentColor: string;
     private currentShape: ShapeId;
     private currentMode: EditMode;
-    private currentHeight: number;
     private gridSize: number;
     private showGrid: boolean;
     private snapToGrid: boolean;
-    private selectedBlock: THREE.Mesh | null;
+    private selectedBlocks: THREE.Mesh[];
+    private selectionGroup!: THREE.Group;
     private selectionBox!: THREE.LineSegments;
+    private selectStartPos: THREE.Vector3 | null;
+    private selectEndPos: THREE.Vector3 | null;
+    private isAreaSelecting: boolean;
+    private selectRectMesh: THREE.LineSegments | null;
     private isDragging: boolean;
-    private dragPlane: THREE.Plane;
+    private dragStarted: boolean;
+    private dragStartMouse: THREE.Vector2 | null;
+    private dragStartPosition: THREE.Vector3;
     private dragOffset: THREE.Vector3;
+    private dragStartPositions: Map<string, THREE.Vector3>;
     private backgroundGroup: THREE.Group;
     private backgroundTemplate: ParsedSchematicBlock[] = [];
+    private verticalGridGroup!: THREE.Group;
 
     constructor() {
         this.canvas = document.getElementById("workspace3dCanvas") as HTMLCanvasElement;
@@ -113,6 +121,7 @@ class BlockBuilderWorkspace {
         this.controls = new OrbitControls(this.camera, this.canvas);
         this.controls.enableDamping = true;
         this.controls.dampingFactor = ( 1 / 0o20 );
+        this.controls.zoomToCursor = true;
         this.controls.mouseButtons = {
             LEFT: THREE.MOUSE.ROTATE,
             MIDDLE: THREE.MOUSE.DOLLY,
@@ -132,19 +141,28 @@ class BlockBuilderWorkspace {
         this.currentBlock = MINECRAFT_BLOCKS[0];
         this.currentColor = MINECRAFT_BLOCKS[0].color;
         this.currentShape = "cube";
-        this.currentMode = "minecraft";
-        this.currentHeight = 0;
+        this.currentMode = "general";
         this.gridSize = 0o40;
         this.showGrid = true;
         this.snapToGrid = true;
-        this.selectedBlock = null;
+        this.selectedBlocks = [];
+        this.selectStartPos = null;
+        this.selectEndPos = null;
+        this.isAreaSelecting = false;
+        this.selectRectMesh = null;
         this.isDragging = false;
-        this.dragPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+        this.dragStarted = false;
+        this.dragStartMouse = null;
+        this.dragStartPosition = new THREE.Vector3();
         this.dragOffset = new THREE.Vector3();
+        this.dragStartPositions = new Map();
         this.backgroundGroup = new THREE.Group();
         this.backgroundGroup.name = "backgroundBuildings";
 
         this.setupScene();
+
+        // Default tool is "select", so show vertical grid initially
+        this.verticalGridGroup.visible = true;
         this.setupEventListeners();
         this.setupUI();
         this.updateCameraInfo();
@@ -186,6 +204,11 @@ class BlockBuilderWorkspace {
 
         const selectionBoxGeometry = new THREE.EdgesGeometry(new THREE.BoxGeometry(( 1 + ( 1 / 0o100 ) ), ( 1 + ( 1 / 0o100 ) ), ( 1 + ( 1 / 0o100 ) )));
         const selectionBoxMaterial = new THREE.LineBasicMaterial({ color: "#FFFFFF", linewidth: 0o10 });
+        this.selectionGroup = new THREE.Group();
+        this.selectionGroup.name = "selectionGroup";
+        this.scene.add(this.selectionGroup);
+
+        // Keep one reusable selection box wireframe for drag-follow in move tool
         this.selectionBox = new THREE.LineSegments(selectionBoxGeometry, selectionBoxMaterial);
         this.selectionBox.visible = false;
         this.scene.add(this.selectionBox);
@@ -204,6 +227,14 @@ class BlockBuilderWorkspace {
         hoverGroup.visible = false;
         this.hoverBox = hoverGroup;
         this.scene.add(this.hoverBox);
+
+        this.verticalGridGroup = this.createVerticalGrid();
+        // Fix the grid to the positive-Z wall of the workspace so it stays
+        // in a constant position as the user orbits the camera.
+        const hg = this.gridSize / 2;
+        this.verticalGridGroup.position.set( 0, hg, hg );
+        this.verticalGridGroup.rotation.y = Math.PI;
+        this.scene.add( this.verticalGridGroup );
 
         this.scatterBackgroundBuildings();
     }
@@ -287,6 +318,63 @@ class BlockBuilderWorkspace {
         const mesh = new THREE.Mesh(buildShapeGeometry(shape), material);
         mesh.rotation.y = rotation;
         return mesh;
+    }
+
+    /**
+     * Build a 2D reference grid on a vertical plane used as a visual aid for
+     * vertical selection.  The group is repositioned and rotated each frame to
+     * face the camera at the far edge of the workspace.
+     * Returns Group.
+     */
+    private createVerticalGrid(): THREE.Group {
+        const group = new THREE.Group();
+        group.name = "verticalGrid";
+
+        const material = new THREE.LineBasicMaterial({
+            color: "#384838",
+            transparent: true,
+            opacity: ( 2 / 8 ),
+            depthWrite: false
+        });
+
+        const half = this.gridSize / 2;
+        const step = 0o4;
+        const positions: number[] = [];
+
+        // Vertical lines ( parallel to the y-axis ) in local xy-plane
+        for ( let gx = -half; gx <= half; gx += step ) {
+            positions.push( gx, -half, 0 );
+            positions.push( gx, half, 0 );
+        }
+
+        // Horizontal lines ( parallel to the x-axis ) in local xy-plane
+        for ( let gy = -half; gy <= half; gy += step ) {
+            positions.push( -half, gy, 0 );
+            positions.push( half, gy, 0 );
+        }
+
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute( "position", new THREE.Float32BufferAttribute( positions, 3 ) );
+        const mesh = new THREE.LineSegments( geometry, material );
+        group.add( mesh );
+
+        // Flat translucent surface so the raycaster can hit it, allowing the
+        // select tool to start / end a drag on the vertical grid plane and
+        // capture the y-coordinate for a vertical slice selection.
+        const planeGeo = new THREE.PlaneGeometry( this.gridSize, this.gridSize );
+        const planeMat = new THREE.MeshBasicMaterial({
+            color: "#384838",
+            transparent: true,
+            opacity: ( 1 / 8 ),
+            depthWrite: false,
+            side: THREE.DoubleSide
+        });
+        const plane = new THREE.Mesh( planeGeo, planeMat );
+        plane.name = "verticalGrid";
+        group.add( plane );
+
+        group.visible = false;
+        return group;
     }
 
     /**
@@ -378,11 +466,19 @@ class BlockBuilderWorkspace {
     private setupEventListeners(): void {
 
         window.addEventListener("resize", () => this.onWindowResize());
-        window.addEventListener("mouseup", () => this.onMouseUp());
+        window.addEventListener("mouseup", (e) => this.onMouseUp(e));
         this.canvas.addEventListener("mousedown", (e) => this.onMouseDown(e));
         this.canvas.addEventListener("mousemove", (e) => this.onMouseMove(e));
-        this.canvas.addEventListener("mouseup", () => this.onMouseUp());
-        this.canvas.addEventListener("mouseleave", () => { this.hoverBox.visible = false; });
+        this.canvas.addEventListener("mouseleave", () => {
+            this.hoverBox.visible = false;
+            if ( this.isAreaSelecting ) {
+                this.hideSelectRect();
+                this.isAreaSelecting = false;
+                this.selectStartPos = null;
+                this.selectEndPos = null;
+                this.controls.enabled = true;
+            }
+        });
         this.canvas.addEventListener("contextmenu", (e) => e.preventDefault());
 
         document.addEventListener("keydown", (e) => this.onKeyDown(e));
@@ -397,6 +493,9 @@ class BlockBuilderWorkspace {
         this.bindToggleGroup("#toolsPanel button[data-tool]", "data-tool", (value) => this.setTool(value));
         this.bindToggleGroup("button[data-mode]", "data-mode", (value) => this.setMode(value as EditMode));
         this.bindToggleGroup("#shapesPanel button[data-shape]", "data-shape", (value) => this.setShape(value as ShapeId));
+
+        // Initialize mode panels to match default currentMode ( "general" )
+        this.setMode( this.currentMode );
 
         const blockIdInput = this.el<HTMLInputElement>("blockIdInput");
         const blockIdList = document.getElementById("blockIdList");
@@ -425,10 +524,7 @@ class BlockBuilderWorkspace {
         if (colorInput) {
             colorInput.value = this.currentColor;
             colorInput.addEventListener("input", (e) => {
-                this.currentColor = (e.target as HTMLInputElement).value;
-                if (this.currentMode === "general") {
-                    this.currentBlock = { id: 0, name: "Custom", color: this.currentColor, transparent: false };
-                }
+                this.setCurrentColor((e.target as HTMLInputElement).value);
                 this.syncColorTextInput(this.currentColor);
                 this.updateSelectedBlockInfo();
             });
@@ -439,12 +535,9 @@ class BlockBuilderWorkspace {
             colorTextInput.value = this.currentColor;
             const applyTextColor = (): void => {
                 const value = colorTextInput.value.trim();
-                if (value && /^#?[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/.test(value)) {
+                if ( value && /^#?[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/.test(value) ) {
                     const normalized = value.startsWith("#") ? value : "#" + value;
-                    this.currentColor = normalized;
-                    if (this.currentMode === "general") {
-                        this.currentBlock = { id: 0, name: "Custom", color: this.currentColor, transparent: false };
-                    }
+                    this.setCurrentColor(normalized);
                     colorInput!.value = normalized;
                     this.updateSelectedBlockInfo();
                 }
@@ -460,7 +553,7 @@ class BlockBuilderWorkspace {
         if (zoomSlider) {
             zoomSlider.addEventListener("input", (e) => {
                 const value = parseInt((e.target as HTMLInputElement).value, 10);
-                this.camera.fov = Math.min(Math.max(value, 0o14), 0o144);
+                this.camera.fov = Math.min(Math.max(value, 0o14), 0o140);
                 this.camera.updateProjectionMatrix();
                 this.updateCameraInfo();
             });
@@ -524,6 +617,17 @@ class BlockBuilderWorkspace {
                 }
                 if (this.backgroundTemplate.length > 0) {
                     this.rebuildBackground(this.backgroundTemplate);
+                }
+                // Rebuild vertical grid to match new size
+                if ( this.verticalGridGroup ) {
+                    const wasVisible = this.verticalGridGroup.visible;
+                    this.scene.remove( this.verticalGridGroup );
+                    this.verticalGridGroup = this.createVerticalGrid();
+                    const hg = this.gridSize / 2;
+                    this.verticalGridGroup.position.set( 0, hg, hg );
+                    this.verticalGridGroup.rotation.y = Math.PI;
+                    this.verticalGridGroup.visible = wasVisible;
+                    this.scene.add( this.verticalGridGroup );
                 }
             });
         }
@@ -603,6 +707,17 @@ class BlockBuilderWorkspace {
     }
 
     /**
+     * Update the current color, switching to a custom block in general mode.
+     *     color ( string ) - hex color string.
+     */
+    private setCurrentColor(color: string): void {
+        this.currentColor = color;
+        if ( this.currentMode === "general" ) {
+            this.currentBlock = { id: 0, name: "Custom", color, transparent: false };
+        }
+    }
+
+    /**
      * Set current block by Minecraft block definition.
      *     block ( MinecraftBlock ) - block definition.
      */
@@ -658,6 +773,22 @@ class BlockBuilderWorkspace {
     }
 
     /**
+     * Resolve the display name for the current shape.
+     * Returns shape name string.
+     */
+    private getCurrentShapeName(): string {
+        return SHAPES.find((s) => s.id === this.getCurrentShape())?.name ?? "Cube";
+    }
+
+    /**
+     * Resolve the effective color based on editing mode.
+     * Returns hex color string.
+     */
+    private getEffectiveColor(): string {
+        return this.currentMode === "general" ? this.currentColor : this.currentBlock.color;
+    }
+
+    /**
      * Sync the shape selector buttons to the active shape.
      */
     private updateShapeButtons(): void {
@@ -674,12 +805,12 @@ class BlockBuilderWorkspace {
     private updateSelectedBlockInfo(): void {
         const label = document.getElementById("selectedBlockLabel");
         if (label) {
-            const shapeName = SHAPES.find((s) => s.id === this.getCurrentShape())?.name ?? "Cube";
+            const shapeName = this.getCurrentShapeName();
             label.textContent = `${this.currentBlock.name} ( id.${this.currentBlock.id} ) - ${shapeName}`;
         }
         const colorEl = document.getElementById("selectedBlockColor");
         if (colorEl) {
-            const display = this.currentMode === "general" ? this.currentColor : this.currentBlock.color;
+            const display = this.getEffectiveColor();
             colorEl.textContent = display;
             (colorEl as HTMLElement).style.color = display;
         }
@@ -696,7 +827,17 @@ class BlockBuilderWorkspace {
      */
     private setTool(tool: string): void {
         this.currentTool = tool;
-        this.canvas.style.cursor = tool === "select" ? "default" : "crosshair";
+        if (tool === "select") {
+            this.canvas.style.cursor = "crosshair";
+        } else if (tool === "move") {
+            this.canvas.style.cursor = "move";
+        } else if (tool === "add" || tool === "paint") {
+            this.canvas.style.cursor = "crosshair";
+        } else {
+            this.canvas.style.cursor = "default";
+        }
+        // Show vertical grid only in select mode to help with vertical selection
+        this.verticalGridGroup.visible = ( tool === "select" );
         if (tool !== "add" && tool !== "paint") {
             this.hoverBox.visible = false;
         }
@@ -764,11 +905,13 @@ class BlockBuilderWorkspace {
     private onMouseDown(event: MouseEvent): void {
         this.updateMouseFromEvent(event);
 
-        const { blockIntersects, groundIntersects } = this.getIntersections();
+        const { blockIntersects, groundIntersects, gridIntersects } = this.getIntersections();
 
         let intersect: THREE.Intersection | null = null;
         if (blockIntersects.length > 0) {
             intersect = blockIntersects[0];
+        } else if (gridIntersects.length > 0 && this.currentTool === "select") {
+            intersect = gridIntersects[0];
         } else if (groundIntersects.length > 0) {
             intersect = groundIntersects[0];
         }
@@ -808,16 +951,48 @@ class BlockBuilderWorkspace {
                 // Don't allow painting on ground.
             } else if (this.currentTool === "rotate" && intersect.object instanceof THREE.Mesh && intersect.object.name === "block") {
                 this.rotateBlock(intersect.object);
-            } else if (this.currentTool === "select" && intersect.object instanceof THREE.Mesh && intersect.object.name === "block") {
-                this.selectBlock(intersect.object);
-                this.isDragging = true;
-                this.dragOffset.copy(intersect.object.position).sub(intersect.point);
+            } else if (this.currentTool === "select" && ( intersect.object.name === "block" || intersect.object.name === "ground" || intersect.object.name === "verticalGrid" ) ) {
+                // Area select: start selection from any surface ( ground or block face )
+                this.selectStartPos = intersect.point.clone();
+                this.selectEndPos = intersect.point.clone();
+                this.isAreaSelecting = true;
+                this.dragStartMouse = new THREE.Vector2( this.mouse.x, this.mouse.y );
                 this.controls.enabled = false;
-            } else if (this.currentTool === "select" && intersect.object.name === "ground") {
+            } else if (this.currentTool === "move" && intersect.object instanceof THREE.Mesh && intersect.object.name === "block") {
+                const clickedBlock = intersect.object;
+                // Ctrl / Shift: modify the selection without starting a drag.
+                if ( event.ctrlKey || event.shiftKey ) {
+                    if ( event.ctrlKey ) {
+                        this.toggleSelectBlock( clickedBlock );
+                    } else {
+                        this.addSelectBlock( clickedBlock );
+                    }
+                    return;
+                }
+                // If the clicked block is already in the selection, keep all
+                // selected blocks and move them together. Otherwise, select
+                // only the clicked block.
+                if ( this.selectedBlocks.includes( clickedBlock ) && this.selectedBlocks.length > 1 ) {
+                    this.dragStartPositions.clear();
+                    for ( const block of this.selectedBlocks ) {
+                        this.dragStartPositions.set( block.uuid, block.position.clone() );
+                    }
+                } else {
+                    this.clearSelection();
+                    this.selectBlock( clickedBlock );
+                    this.dragStartPositions.clear();
+                    this.dragStartPositions.set( clickedBlock.uuid, clickedBlock.position.clone() );
+                }
+                this.dragStartMouse = new THREE.Vector2(this.mouse.x, this.mouse.y);
+                this.dragStartPosition.copy(clickedBlock.position);
+                this.dragOffset.copy(clickedBlock.position).sub(intersect.point);
+                this.dragStarted = false;
+                this.controls.enabled = false;
+            } else if (this.currentTool === "move" && intersect.object.name === "ground") {
                 this.clearSelection();
             }
         } else {
-            if (this.currentTool === "select") {
+            if (this.currentTool === "select" || this.currentTool === "move") {
                 this.clearSelection();
             }
         }
@@ -832,7 +1007,22 @@ class BlockBuilderWorkspace {
 
         this.raycaster.setFromCamera(this.mouse, this.camera);
 
-        if (this.isDragging && this.selectedBlock) {
+        // Check drag threshold — don't start dragging until the mouse moves
+        // at least 4px so a simple click-to-select doesn't trigger a move.
+        if ( this.selectedBlocks.length > 0 && !this.isDragging && this.dragStartMouse ) {
+            const dx = this.mouse.x - this.dragStartMouse.x;
+            const dy = this.mouse.y - this.dragStartMouse.y;
+            const cw = this.canvas.clientWidth || window.innerWidth;
+            const ch = this.canvas.clientHeight || window.innerHeight;
+            const pxDist = Math.sqrt((dx * cw / 2) ** 2 + (dy * ch / 2) ** 2);
+            if (pxDist > 4) {
+                this.isDragging = true;
+                this.dragStarted = true;
+            }
+        }
+
+        if (this.isDragging && this.selectedBlocks.length > 0) {
+            // Drag all selected blocks together
             const intersects = this.raycaster.intersectObjects([this.scene.getObjectByName("ground")!]);
             if (intersects.length > 0) {
                 const point = intersects[0].point.clone().add(this.dragOffset);
@@ -841,18 +1031,45 @@ class BlockBuilderWorkspace {
                     point.y = Math.max(( 1 / 2 ), Math.floor(point.y) + ( 1 / 2 ));
                     point.z = Math.floor(point.z) + ( 1 / 2 );
                 }
-                this.selectedBlock.position.copy(point);
-                this.updateCursorPosition(point);
+                // Compute the delta from the clicked block's original start position
+                const deltaX = point.x - this.dragStartPosition.x;
+                const deltaY = point.y - this.dragStartPosition.y;
+                const deltaZ = point.z - this.dragStartPosition.z;
+                // Apply the same delta to all selected blocks
+                for ( const block of this.selectedBlocks ) {
+                    const start = this.dragStartPositions.get( block.uuid );
+                    if ( start ) {
+                        block.position.set(
+                            start.x + deltaX,
+                            start.y + deltaY,
+                            start.z + deltaZ
+                        );
+                    }
+                }
+                this.updateCursorPosition( point );
+            }
+        } else if (this.isAreaSelecting && this.selectStartPos) {
+            // Area select in progress: track end pos from nearest surface
+            const { blockIntersects, groundIntersects, gridIntersects } = this.getIntersections();
+            if ( blockIntersects.length > 0 ) {
+                this.selectEndPos = blockIntersects[0].point.clone();
+                this.showSelectRect( this.selectStartPos, this.selectEndPos );
+            } else if ( gridIntersects.length > 0 ) {
+                this.selectEndPos = gridIntersects[0].point.clone();
+                this.showSelectRect( this.selectStartPos, this.selectEndPos );
+            } else if ( groundIntersects.length > 0 ) {
+                this.selectEndPos = groundIntersects[0].point.clone();
+                this.showSelectRect( this.selectStartPos, this.selectEndPos );
             }
         } else {
             const { blockIntersects, groundIntersects } = this.getIntersections();
 
-            if (blockIntersects.length > 0) {
-                this.updateCursorPosition(blockIntersects[0].point);
-                this.updateHoverBox(blockIntersects[0].point, this.currentTool);
-            } else if (groundIntersects.length > 0) {
-                this.updateCursorPosition(groundIntersects[0].point);
-                this.updateHoverBox(groundIntersects[0].point, this.currentTool);
+            if ( blockIntersects.length > 0 ) {
+                this.updateCursorPosition( blockIntersects[0].point );
+                this.updateHoverBox( blockIntersects[0].point, this.currentTool, blockIntersects[0].object );
+            } else if ( groundIntersects.length > 0 ) {
+                this.updateCursorPosition( groundIntersects[0].point );
+                this.updateHoverBox( groundIntersects[0].point, this.currentTool, groundIntersects[0].object );
             } else {
                 this.hoverBox.visible = false;
             }
@@ -864,12 +1081,14 @@ class BlockBuilderWorkspace {
      * both intersection lists.
      * Returns block and ground intersections.
      */
-    private getIntersections(): { blockIntersects: THREE.Intersection[]; groundIntersects: THREE.Intersection[] } {
+    private getIntersections(): { blockIntersects: THREE.Intersection[]; groundIntersects: THREE.Intersection[]; gridIntersects: THREE.Intersection[] } {
         const blockMeshes = Array.from(this.blocks.values());
         const ground = this.scene.getObjectByName("ground")!;
+        const vg = this.scene.getObjectByName( "verticalGrid" );
         return {
             blockIntersects: this.raycaster.intersectObjects(blockMeshes, false),
-            groundIntersects: this.raycaster.intersectObjects([ground])
+            groundIntersects: this.raycaster.intersectObjects([ground]),
+            gridIntersects: vg ? this.raycaster.intersectObjects( [vg] ) : []
         };
     }
 
@@ -907,24 +1126,66 @@ class BlockBuilderWorkspace {
      *     point ( THREE.Vector3 ) - raw intersection point.
      *     tool ( string ) - name of the active tool.
      */
-    private updateHoverBox(point: THREE.Vector3, tool: string): void {
+    private updateHoverBox(point: THREE.Vector3, tool: string, hitObject?: THREE.Object3D): void {
+        if ( tool === "select" || tool === "move" ) {
+            // Show hover outline on the block itself
+            if ( hitObject && hitObject.name === "block" ) {
+                const mesh = hitObject as THREE.Mesh;
+                this.refreshHoverGeometry();
+                this.hoverBox.position.copy( mesh.position );
+                this.hoverBox.visible = true;
+            } else {
+                this.hoverBox.visible = false;
+            }
+            return;
+        }
+
         const show = tool === "add" || tool === "paint";
-        if (!show) {
+        if ( !show ) {
             this.hoverBox.visible = false;
             return;
         }
-        const x = Math.floor(point.x) + ( 1 / 2 );
-        const y = tool === "paint" ? point.y : (this.snapToGrid ? ( 1 / 2 ) : point.y);
-        const z = Math.floor(point.z) + ( 1 / 2 );
 
-        if (!this.isWithinGrid(x, y, z)) {
+        let x: number, y: number, z: number;
+
+        if ( hitObject && hitObject.name === "block" ) {
+            const mesh = hitObject as THREE.Mesh;
+            if ( tool === "add" ) {
+                // Hovering over a block with add tool: snap to adjacent grid cell
+                const center = mesh.position;
+                const dx = point.x - center.x;
+                const dy = point.y - center.y;
+                const dz = point.z - center.z;
+                const ax = Math.abs( dx ), ay = Math.abs( dy ), az = Math.abs( dz );
+                let ox = 0, oy = 0, oz = 0;
+                if ( ax >= ay && ax >= az ) ox = Math.sign( dx );
+                else if ( ay >= ax && ay >= az ) oy = Math.sign( dy );
+                else oz = Math.sign( dz );
+                const pos = center.clone().add( new THREE.Vector3( ox, oy, oz ) );
+                x = Math.floor( pos.x ) + ( 1 / 2 );
+                y = Math.floor( pos.y ) + ( 1 / 2 );
+                z = Math.floor( pos.z ) + ( 1 / 2 );
+            } else {
+                // Paint tool: show hover on the block itself
+                x = mesh.position.x;
+                y = mesh.position.y;
+                z = mesh.position.z;
+            }
+        } else {
+            // Hovering over ground: snap to grid
+            x = Math.floor( point.x ) + ( 1 / 2 );
+            y = tool === "paint" ? point.y : ( this.snapToGrid ? ( 1 / 2 ) : point.y );
+            z = Math.floor( point.z ) + ( 1 / 2 );
+        }
+
+        if ( !this.isWithinGrid( x, y, z ) ) {
             this.hoverBox.visible = false;
             return;
         }
 
         this.refreshHoverGeometry();
         this.updateHoverShapeLabel();
-        this.hoverBox.position.set(x, y, z);
+        this.hoverBox.position.set( x, y, z );
         this.hoverBox.visible = true;
     }
 
@@ -934,26 +1195,112 @@ class BlockBuilderWorkspace {
     private updateHoverShapeLabel(): void {
         const el = document.getElementById("hoverShapeLabel");
         if (el) {
-            const shapeName = SHAPES.find((s) => s.id === this.getCurrentShape())?.name ?? "Cube";
-            el.textContent = shapeName;
+            el.textContent = this.getCurrentShapeName();
         }
     }
 
     /**
      * Handle mouse up.
      */
-    private onMouseUp(): void {
-        if (this.isDragging && this.selectedBlock) {
-            const block = this.selectedBlock;
+    private onMouseUp(event?: MouseEvent): void {
+        if (this.isAreaSelecting && this.selectStartPos) {
+            // Check if mouse barely moved — treat as click-to-select on the
+            // intersected object rather than a drag-area-select.
+            const startMouse = this.dragStartMouse;
+            const dx = startMouse ? this.mouse.x - startMouse.x : 0;
+            const dy = startMouse ? this.mouse.y - startMouse.y : 0;
+            const cw = this.canvas.clientWidth || window.innerWidth;
+            const ch = this.canvas.clientHeight || window.innerHeight;
+            const pxDist = Math.sqrt((dx * cw / 2) ** 2 + (dy * ch / 2) ** 2);
+            const isClick = pxDist < 4;
+
+            if ( isClick ) {
+                // Simple click: select the block under the cursor ( if any )
+                const { blockIntersects } = this.getIntersections();
+                if ( blockIntersects.length > 0 && blockIntersects[0].object.name === "block" ) {
+                    const block = blockIntersects[0].object as THREE.Mesh;
+                    if ( event && event.ctrlKey ) {
+                        this.toggleSelectBlock( block );
+                    } else if ( event && event.shiftKey ) {
+                        this.addSelectBlock( block );
+                    } else {
+                        this.clearSelection();
+                        this.selectBlock( block );
+                    }
+                } else {
+                    this.clearSelection();
+                }
+            } else {
+                // Drag: finalize area selection.
+                const endPos = this.selectEndPos;
+                const start = this.selectStartPos;
+                if ( endPos ) {
+                    const minX = Math.min( start.x, endPos.x );
+                    const maxX = Math.max( start.x, endPos.x );
+                    const minZ = Math.min( start.z, endPos.z );
+                    const maxZ = Math.max( start.z, endPos.z );
+                    // When start or end is on a block face ( not ground ),
+                    // use the y-range from start to end to select a vertical
+                    // slice. Otherwise ( both on ground ), select the full
+                    // column at all heights.
+                    const onGround = ( obj: THREE.Vector3 ): boolean =>
+                        Math.abs( obj.y - ( 1 / 0o100 ) ) < 0.1 || Math.abs( obj.y + ( 1 / 0o100 ) ) < 0.1;
+                    const bothOnGround = onGround( start ) && onGround( endPos );
+                    const minY = bothOnGround ? -Infinity : Math.min( start.y, endPos.y );
+                    const maxY = bothOnGround ? Infinity : Math.max( start.y, endPos.y );
+
+                    this.clearSelection();
+                    for ( const block of this.blocks.values() ) {
+                        const p = block.position;
+                        if (
+                            p.x >= minX && p.x <= maxX &&
+                            p.z >= minZ && p.z <= maxZ &&
+                            p.y >= minY && p.y <= maxY
+                        ) {
+                            this.selectedBlocks.push( block );
+                        }
+                    }
+                    this.updateSelectionVisuals();
+                }
+            }
+            this.hideSelectRect();
+            this.isAreaSelecting = false;
+            this.selectStartPos = null;
+            this.selectEndPos = null;
+            this.dragStartMouse = null;
+            this.controls.enabled = true;
+            return;
+        }
+
+        if (this.isDragging && this.selectedBlocks.length > 0 && this.dragStarted) {
+            const block = this.selectedBlocks[0];
             const pos = block.position;
-            const oldPos = { x: pos.x - this.dragOffset.x, y: pos.y - this.dragOffset.y, z: pos.z - this.dragOffset.z };
+            const oldPos = this.dragStartPosition;
             const newPos = { x: pos.x, y: pos.y, z: pos.z };
 
-            if (oldPos.x !== newPos.x || oldPos.y !== newPos.y || oldPos.z !== newPos.z) {
-                this.addToHistory("move", this.readBlockData(block), null);
+            // Only record a move when the block actually changed position.
+            const moved = Math.abs(oldPos.x - newPos.x) > 0.01
+                || Math.abs(oldPos.y - newPos.y) > 0.01
+                || Math.abs(oldPos.z - newPos.z) > 0.01;
+            if (moved) {
+                this.addToHistory("move", this.readBlockData(block), {
+                    position: { x: oldPos.x, y: oldPos.y, z: oldPos.z },
+                    color: this.getBlockColor(block),
+                    id: this.blockKey(oldPos),
+                    blockId: block.userData.blockId as number,
+                    name: block.userData.blockName as string,
+                    shape: block.userData.shape as ShapeId,
+                    rotation: block.userData.rotation as number
+                });
             }
         }
+        if ( this.selectionBox ) {
+            this.selectionBox.visible = false;
+        }
+        this.dragStartPositions.clear();
         this.isDragging = false;
+        this.dragStarted = false;
+        this.dragStartMouse = null;
         this.controls.enabled = true;
     }
 
@@ -975,15 +1322,21 @@ class BlockBuilderWorkspace {
                 this.redo();
             }
         } else if (event.key === "Delete" || event.key === "Backspace") {
-            if (this.selectedBlock) {
-                this.removeBlock(this.selectedBlock);
+            if (this.selectedBlocks.length > 0) {
+                // Remove all selected blocks
+                const toRemove = [ ...this.selectedBlocks ];
+                this.clearSelection();
+                for ( const block of toRemove ) {
+                    this.removeBlock(block);
+                }
             }
         } else if (event.key === "1") this.setTool("select");
-        else if (event.key === "2") this.setTool("add");
-        else if (event.key === "3") this.setTool("remove");
-        else if (event.key === "4") this.setTool("paint");
-        else if (event.key === "5") this.setTool("picker");
-        else if (event.key === "6") this.setTool("rotate");
+        else if (event.key === "2") this.setTool("move");
+        else if (event.key === "3") this.setTool("add");
+        else if (event.key === "4") this.setTool("remove");
+        else if (event.key === "5") this.setTool("paint");
+        else if (event.key === "6") this.setTool("picker");
+        else if (event.key === "7") this.setTool("rotate");
     }
 
     /**
@@ -1026,10 +1379,10 @@ class BlockBuilderWorkspace {
     private addBlock(x: number, y: number, z: number): void {
         if (!this.isWithinGrid(x, y, z)) return;
 
-        const key = `${x},${y},${z}`;
+        const key = this.blockKey({ x, y, z });
         if (this.blocks.has(key)) return;
 
-        const color = this.currentMode === "general" ? this.currentColor : this.currentBlock.color;
+        const color = this.getEffectiveColor();
         const shape = this.getCurrentShape();
         const block = this.createBlock(this.currentBlock, color, shape, x, y, z);
 
@@ -1051,8 +1404,10 @@ class BlockBuilderWorkspace {
         this.scene.remove(block);
         this.blocks.delete(key);
 
-        if (this.selectedBlock === block) {
-            this.clearSelection();
+        const idx = this.selectedBlocks.indexOf(block);
+        if (idx !== -1) {
+            this.selectedBlocks.splice(idx, 1);
+            this.updateSelectionVisuals();
         }
 
         this.addToHistory("remove", null, data);
@@ -1079,7 +1434,7 @@ class BlockBuilderWorkspace {
      */
     private paintBlock(block: THREE.Mesh): void {
         const previous = this.readBlockData(block);
-        const color = this.currentMode === "general" ? this.currentColor : this.currentBlock.color;
+        const color = this.getEffectiveColor();
         const shape = this.getCurrentShape();
         this.updateBlock(block, this.currentBlock.id, color, shape, this.currentBlock.name);
 
@@ -1116,19 +1471,56 @@ class BlockBuilderWorkspace {
      *     block ( THREE.Mesh ) - block to select.
      */
     private selectBlock(block: THREE.Mesh): void {
-        this.selectedBlock = block;
-        this.updateSelectionBox();
+        this.selectedBlocks = [ block ];
+        this.updateSelectionVisuals();
     }
 
     /**
-     * Update selection box position.
+     * Toggle a block in the current selection — if already selected, remove
+     * it; otherwise add it.
+     *     block ( THREE.Mesh ) - block to toggle.
      */
-    private updateSelectionBox(): void {
-        if (this.selectedBlock) {
-            this.selectionBox.position.copy(this.selectedBlock.position);
-            this.selectionBox.visible = true;
+    private toggleSelectBlock(block: THREE.Mesh): void {
+        const idx = this.selectedBlocks.indexOf( block );
+        if ( idx !== -1 ) {
+            this.selectedBlocks.splice( idx, 1 );
         } else {
-            this.selectionBox.visible = false;
+            this.selectedBlocks.push( block );
+        }
+        this.updateSelectionVisuals();
+    }
+
+    /**
+     * Add a block to the current selection without clearing it.
+     *     block ( THREE.Mesh ) - block to add.
+     */
+    private addSelectBlock(block: THREE.Mesh): void {
+        if ( !this.selectedBlocks.includes( block ) ) {
+            this.selectedBlocks.push( block );
+            this.updateSelectionVisuals();
+        }
+    }
+
+    /**
+     * Rebuild the selection wireframe visuals for all selected blocks.
+     */
+    private updateSelectionVisuals(): void {
+        // Clear old visuals
+        while ( this.selectionGroup.children.length > 0 ) {
+            const child = this.selectionGroup.children[0];
+            this.selectionGroup.remove(child);
+            if ( child instanceof THREE.LineSegments ) {
+                child.geometry.dispose();
+            }
+        }
+        // Rebuild for each selected block
+        for ( const block of this.selectedBlocks ) {
+            const box = new THREE.LineSegments(
+                new THREE.EdgesGeometry( new THREE.BoxGeometry(( 1 + ( 1 / 0o100 ) ), ( 1 + ( 1 / 0o100 ) ), ( 1 + ( 1 / 0o100 ) ) ) ),
+                new THREE.LineBasicMaterial({ color: "#FFFFFF", linewidth: 0o10 })
+            );
+            box.position.copy( block.position );
+            this.selectionGroup.add( box );
         }
     }
 
@@ -1136,8 +1528,8 @@ class BlockBuilderWorkspace {
      * Clear selection.
      */
     private clearSelection(): void {
-        this.selectedBlock = null;
-        this.updateSelectionBox();
+        this.selectedBlocks = [];
+        this.updateSelectionVisuals();
     }
 
     /**
@@ -1227,15 +1619,6 @@ class BlockBuilderWorkspace {
     }
 
     /**
-     * Whether a block id or name is transparent.
-     *     idOrName ( number | string ) - block id or name.
-     * Returns boolean.
-     */
-    private isTransparent(idOrName: number | string): boolean {
-        return this.getBlockById(idOrName, "#888888").transparent;
-    }
-
-    /**
      * Apply a block's material color and transparency from a block id and
      * color, restoring the previous look during undo/redo.
      *     block ( THREE.Mesh ) - block to update.
@@ -1246,7 +1629,7 @@ class BlockBuilderWorkspace {
         const material = block.material as THREE.MeshLambertMaterial;
         material.color.set(color);
         block.userData.blockId = blockId;
-        material.transparent = this.isTransparent(blockId);
+        material.transparent = MINECRAFT_BLOCKS.find((b) => b.id === blockId)?.transparent ?? false;
         material.opacity = material.transparent ? ( 5 / 8 ) : 1;
         material.needsUpdate = true;
     }
@@ -1331,6 +1714,14 @@ class BlockBuilderWorkspace {
                 block.rotation.y = rotation;
                 block.userData.rotation = rotation;
             }
+        } else if (entry.action === "move" && entry.block && entry.previousData && typeof entry.previousData !== "string") {
+            const block = this.getBlockAt(entry.previousData as BlockData);
+            if (block) {
+                // Undo a move: put the block back to its original position.
+                // The map key is still the old position (never updated during drag),
+                // so we only need to move the visual position.
+                block.position.set(entry.previousData.position.x, entry.previousData.position.y, entry.previousData.position.z);
+            }
         }
 
         this.historyIndex--;
@@ -1361,6 +1752,13 @@ class BlockBuilderWorkspace {
                 block.rotation.y = entry.block.rotation;
                 block.userData.rotation = entry.block.rotation;
             }
+        } else if (entry.action === "move" && entry.block && entry.previousData && typeof entry.previousData !== "string") {
+            const block = this.getBlockAt(entry.previousData as BlockData);
+            if (block) {
+                // Redo a move: move the block to its dragged position.
+                // Map key stays at previousData.position so undo always finds it.
+                block.position.set(entry.block.position.x, entry.block.position.y, entry.block.position.z);
+            }
         }
 
         this.updateBlockCount();
@@ -1377,18 +1775,35 @@ class BlockBuilderWorkspace {
         this.history = [];
         this.historyIndex = -1;
         this.clearSelection();
+        this.isDragging = false;
+        this.dragStarted = false;
+        this.dragStartMouse = null;
+        this.dragStartPositions.clear();
+        this.isAreaSelecting = false;
+        this.selectStartPos = null;
+        this.selectEndPos = null;
+        this.hideSelectRect();
+        this.controls.enabled = true;
         this.updateBlockCount();
+    }
+
+    /**
+     * Collect all placed blocks as an array of BlockData snapshots.
+     * Returns BlockData array.
+     */
+    private getAllBlockData(): BlockData[] {
+        const data: BlockData[] = [];
+        for (const block of this.blocks.values()) {
+            data.push(this.readBlockData(block));
+        }
+        return data;
     }
 
     /**
      * Save structure to JSON file.
      */
     private save(): void {
-        const data: BlockData[] = [];
-        for (const block of this.blocks.values()) {
-            data.push(this.readBlockData(block));
-        }
-
+        const data = this.getAllBlockData();
         const json = JSON.stringify(data, null, 2);
         const timestamp = this.getTimestamp();
         downloadText(`ſןᴜȝ - ${timestamp}.json`, json, "application/json");
@@ -1396,6 +1811,11 @@ class BlockBuilderWorkspace {
 
     /**
      * Get timestamp using custom clock system.
+     */
+    /**
+     * Get a timestamp string using the provided custom clock functions.
+     * Falls back to ISO date string when the clock system is unavailable.
+     * Returns timestamp string.
      */
     private getTimestamp(): string {
         const now = new Date();
@@ -1406,7 +1826,8 @@ class BlockBuilderWorkspace {
             return `${cax2l.stibix}.${cax2l.pal2stif}.${cax2l.stafl2} - ${stifeh2.haqe}.${stifeh2.qe}.${stifeh2.he}`;
         }
 
-        return ``;
+        const p = (n: number) => String(n).padStart(2, "0");
+        return `${now.getFullYear()}-${p(now.getMonth() + 1)}-${p(now.getDate())} ${p(now.getHours())}.${p(now.getMinutes())}.${p(now.getSeconds())}`;
     }
 
     /**
@@ -1552,6 +1973,79 @@ class BlockBuilderWorkspace {
     }
 
     /**
+     * Show a rectangle preview on the ground during area selection.
+     *     start ( THREE.Vector3 ) - start corner in world coords.
+     *     end ( THREE.Vector3 ) - current mouse corner in world coords.
+     */
+    private showSelectRect( start: THREE.Vector3, end: THREE.Vector3 ): void {
+        if ( !this.selectRectMesh ) {
+            const material = new THREE.LineBasicMaterial({ color: "#FFFFFF", transparent: true, opacity: ( 1 / 2 ) });
+            const geometry = new THREE.BufferGeometry();
+            const vertices = new Float32Array( 0o30 * 3 );
+            geometry.setAttribute( "position", new THREE.BufferAttribute( vertices, 3 ) );
+            this.selectRectMesh = new THREE.LineSegments( geometry, material );
+            this.scene.add( this.selectRectMesh );
+        }
+        const minX = Math.min( start.x, end.x );
+        const maxX = Math.max( start.x, end.x );
+        const minZ = Math.min( start.z, end.z );
+        const maxZ = Math.max( start.z, end.z );
+        // 3D box showing the actual vertical range being dragged, from the
+        // lowest of start.y / end.y to the highest, with at least a one-block
+        // visible minimum so ground-level drags do not produce a zero-height
+        // invisible box.
+        let bottomY = Math.min( start.y, end.y );
+        let topY = Math.max( start.y, end.y );
+        const minHeight = ( 1 / 2 );
+        if ( topY - bottomY < minHeight ) {
+            const mid = ( bottomY + topY ) / 2;
+            bottomY = mid - minHeight / 2;
+            topY = mid + minHeight / 2;
+        }
+        const positions = new Float32Array([
+            // Bottom rectangle
+            minX, bottomY, minZ,
+            maxX, bottomY, minZ,
+            maxX, bottomY, minZ,
+            maxX, bottomY, maxZ,
+            maxX, bottomY, maxZ,
+            minX, bottomY, maxZ,
+            minX, bottomY, maxZ,
+            minX, bottomY, minZ,
+            // Top rectangle
+            minX, topY, minZ,
+            maxX, topY, minZ,
+            maxX, topY, minZ,
+            maxX, topY, maxZ,
+            maxX, topY, maxZ,
+            minX, topY, maxZ,
+            minX, topY, maxZ,
+            minX, topY, minZ,
+            // Vertical pillars ( 4 corners )
+            minX, bottomY, minZ,
+            minX, topY, minZ,
+            maxX, bottomY, minZ,
+            maxX, topY, minZ,
+            maxX, bottomY, maxZ,
+            maxX, topY, maxZ,
+            minX, bottomY, maxZ,
+            minX, topY, maxZ
+        ]);
+        this.selectRectMesh.geometry.setAttribute( "position", new THREE.BufferAttribute( positions, 3 ) );
+        this.selectRectMesh.geometry.setDrawRange( 0, 0o30 );
+        this.selectRectMesh.visible = true;
+    }
+
+    /**
+     * Hide the area selection rectangle preview.
+     */
+    private hideSelectRect(): void {
+        if ( this.selectRectMesh ) {
+            this.selectRectMesh.visible = false;
+        }
+    }
+
+    /**
      * Update cursor position display.
      *     point ( THREE.Vector3 ) - 3D point.
      */
@@ -1566,7 +2060,7 @@ class BlockBuilderWorkspace {
         const infoEl = document.getElementById("cameraInfo");
         if (infoEl) {
             const fov = Math.round(this.camera.fov);
-            const angle = Math.round((Math.atan2(this.camera.position.x, this.camera.position.z) * 0o264) / Math.PI);
+            const angle = Math.round((Math.atan2(this.camera.position.x, this.camera.position.z) * 0o260) / Math.PI);
             infoEl.textContent = `${fov}°, ${angle}°`;
         }
     }
@@ -1577,9 +2071,18 @@ class BlockBuilderWorkspace {
     private animate(): void {
         requestAnimationFrame(() => this.animate());
         this.controls.update();
-        if (this.selectedBlock) {
-            this.selectionBox.position.copy(this.selectedBlock.position);
+        // Keep selection visuals synced to block positions ( in case of drag )
+        if ( this.selectedBlocks.length > 0 ) {
+            for ( let i = 0; i < this.selectedBlocks.length; i++ ) {
+                const block = this.selectedBlocks[i];
+                const child = this.selectionGroup.children[i];
+                if ( child && child instanceof THREE.LineSegments ) {
+                    child.position.copy( block.position );
+                }
+            }
         }
+        // The vertical reference grid is fixed at the positive-Z wall of the
+        // workspace ( set in setupScene ) and does not move with the camera.
         this.renderer.render(this.scene, this.camera);
     }
 }

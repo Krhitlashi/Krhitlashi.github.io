@@ -24,6 +24,7 @@ export interface MinecraftBlock {
  * Colors use the #n0n0n0 or #n8n8n8 format ( n is any 0-f digit ).
  */
 export const MINECRAFT_BLOCKS: MinecraftBlock[] = [
+    { id: 0, name: "Air", color: "#d0d0d0", transparent: true },
     { id: 1, name: "Stone", color: "#888888", transparent: false },
     { id: 2, name: "Grass", color: "#788858", transparent: false },
     { id: 3, name: "Dirt", color: "#888838", transparent: false },
@@ -44,6 +45,7 @@ export const MINECRAFT_BLOCKS: MinecraftBlock[] = [
     { id: 22, name: "Lapis Block", color: "#280880", transparent: false },
     { id: 24, name: "Sandstone", color: "#d8c898", transparent: false },
     { id: 35, name: "Wool", color: "#e8e8e8", transparent: false },
+    { id: 36, name: "Piston Extension", color: "#808088", transparent: false },
     { id: 41, name: "Gold Block", color: "#f8d848", transparent: false },
     { id: 42, name: "Iron Block", color: "#e8e8e8", transparent: false },
     { id: 43, name: "Slab", color: "#988888", transparent: false },
@@ -65,6 +67,7 @@ export const MINECRAFT_BLOCKS: MinecraftBlock[] = [
     { id: 84, name: "Netherrack", color: "#680828", transparent: false },
     { id: 86, name: "Pumpkin", color: "#e08818", transparent: false },
     { id: 87, name: "Soul Sand", color: "#584838", transparent: false },
+    { id: 88, name: "Soul Sand", color: "#584838", transparent: false },
     { id: 89, name: "Glowstone", color: "#f8e888", transparent: false },
     { id: 98, name: "Stone Bricks", color: "#808080", transparent: false },
     { id: 103, name: "Melon", color: "#588838", transparent: false },
@@ -89,7 +92,9 @@ export const MINECRAFT_BLOCKS: MinecraftBlock[] = [
     { id: 201, name: "Purpur Block", color: "#c888c8", transparent: false },
     { id: 202, name: "Purpur Pillar", color: "#c888c8", transparent: false },
     { id: 206, name: "End Stone Bricks", color: "#e8e8b8", transparent: false },
+    { id: 207, name: "Beetroots", color: "#880828", transparent: true },
     { id: 213, name: "Magma Block", color: "#a83818", transparent: false },
+    { id: 214, name: "Nether Wart Block", color: "#880828", transparent: false },
     { id: 216, name: "Bone Block", color: "#e8d8c8", transparent: false },
     { id: 241, name: "Blue Ice", color: "#6888f8", transparent: false },
     { id: 8, name: "Water", color: "#2080f8", transparent: true },
@@ -118,10 +123,13 @@ export const MINECRAFT_BLOCKS: MinecraftBlock[] = [
     { id: 59, name: "Wheat", color: "#c8c848", transparent: true },
     { id: 61, name: "Furnace", color: "#888888", transparent: false },
     { id: 62, name: "Burning Furnace", color: "#888888", transparent: false },
+    { id: 63, name: "Standing Sign", color: "#a87848", transparent: true },
+    { id: 64, name: "Oak Door", color: "#a87848", transparent: false },
     { id: 65, name: "Ladder", color: "#a87848", transparent: true },
     { id: 66, name: "Rail", color: "#888888", transparent: false },
     { id: 67, name: "Cobblestone Stairs", color: "#888888", transparent: false },
     { id: 68, name: "Wall Sign", color: "#a87848", transparent: true },
+    { id: 69, name: "Lever", color: "#888888", transparent: false },
     { id: 70, name: "Stone Pressure Plate", color: "#888888", transparent: false },
     { id: 71, name: "Iron Door", color: "#e8e8e8", transparent: false },
     { id: 72, name: "Wooden Pressure Plate", color: "#a87848", transparent: false },
@@ -224,6 +232,7 @@ export const MINECRAFT_BLOCKS: MinecraftBlock[] = [
     { id: 197, name: "End Rod", color: "#f8f8f8", transparent: true },
     { id: 198, name: "Chorus Plant", color: "#a088b8", transparent: false },
     { id: 199, name: "Chorus Flower", color: "#a088b8", transparent: true },
+    { id: 200, name: "Chorus Flower", color: "#a088b8", transparent: true },
     { id: 203, name: "Purpur Slab", color: "#c888c8", transparent: false },
     { id: 204, name: "Purpur Stairs", color: "#c888c8", transparent: false },
     { id: 205, name: "Purpur Double Slab", color: "#c888c8", transparent: false },
@@ -232,7 +241,6 @@ export const MINECRAFT_BLOCKS: MinecraftBlock[] = [
     { id: 210, name: "End Gateway", color: "#8808a8", transparent: true },
     { id: 211, name: "Repeating Command Block", color: "#280858", transparent: false },
     { id: 212, name: "Chain Command Block", color: "#280858", transparent: false },
-    { id: 214, name: "Bone Block", color: "#e8d8c8", transparent: false },
     { id: 215, name: "Structure Void", color: "#888888", transparent: true },
     { id: 217, name: "Shulker Box", color: "#a888c8", transparent: false },
     { id: 218, name: "White Glazed Terracotta", color: "#e8e8e8", transparent: false },
@@ -271,5 +279,66 @@ export const MINECRAFT_BLOCKS: MinecraftBlock[] = [
     { id: 252, name: "Cyan Concrete", color: "#58c0c0", transparent: false },
     { id: 253, name: "Purple Concrete", color: "#8848b8", transparent: false },
     { id: 254, name: "Blue Concrete", color: "#4858b8", transparent: false },
-    { id: 255, name: "Brown Concrete", color: "#884818", transparent: false }
+    { id: 255, name: "Brown Concrete", color: "#884818", transparent: false },
+
+    // ── Wool Colors ( ID 35 data values 0-15 ) ──
+    { id: 256, name: "White Wool", color: "#e8e8e8", transparent: false },
+    { id: 257, name: "Orange Wool", color: "#d89048", transparent: false },
+    { id: 258, name: "Magenta Wool", color: "#b848a8", transparent: false },
+    { id: 259, name: "Light Blue Wool", color: "#68a8d8", transparent: false },
+    { id: 260, name: "Yellow Wool", color: "#d8c848", transparent: false },
+    { id: 261, name: "Lime Wool", color: "#88c848", transparent: false },
+    { id: 262, name: "Pink Wool", color: "#d888b8", transparent: false },
+    { id: 263, name: "Gray Wool", color: "#888888", transparent: false },
+    { id: 264, name: "Light Gray Wool", color: "#c0c0c0", transparent: false },
+    { id: 265, name: "Cyan Wool", color: "#58c0c0", transparent: false },
+    { id: 266, name: "Purple Wool", color: "#8848b8", transparent: false },
+    { id: 267, name: "Blue Wool", color: "#4858b8", transparent: false },
+    { id: 268, name: "Brown Wool", color: "#884818", transparent: false },
+    { id: 269, name: "Green Wool", color: "#488818", transparent: false },
+    { id: 270, name: "Red Wool", color: "#b81818", transparent: false },
+    { id: 271, name: "Black Wool", color: "#282828", transparent: false },
+
+    // ── Wood Planks ( ID 5 data values ) ──
+    { id: 272, name: "Spruce Planks", color: "#788848", transparent: false },
+    { id: 273, name: "Birch Planks", color: "#d8c898", transparent: false },
+    { id: 274, name: "Jungle Planks", color: "#688848", transparent: false },
+    { id: 275, name: "Acacia Planks", color: "#b88858", transparent: false },
+    { id: 276, name: "Dark Oak Planks", color: "#588838", transparent: false },
+
+    // ── Logs ( ID 17 data values ) ──
+    { id: 277, name: "Spruce Log", color: "#483828", transparent: false },
+    { id: 278, name: "Birch Log", color: "#d8d8c8", transparent: false },
+    { id: 279, name: "Jungle Log", color: "#688848", transparent: false },
+    { id: 280, name: "Acacia Log", color: "#585858", transparent: false },
+    { id: 281, name: "Dark Oak Log", color: "#483818", transparent: false },
+
+    // ── Stained Glass Colors ( ID 95 data values 0-15 ) ──
+    { id: 282, name: "White Stained Glass", color: "#e8e8e8", transparent: true },
+    { id: 283, name: "Orange Stained Glass", color: "#d89048", transparent: true },
+    { id: 284, name: "Magenta Stained Glass", color: "#b848a8", transparent: true },
+    { id: 285, name: "Light Blue Stained Glass", color: "#68a8d8", transparent: true },
+    { id: 286, name: "Yellow Stained Glass", color: "#d8c848", transparent: true },
+    { id: 287, name: "Lime Stained Glass", color: "#88c848", transparent: true },
+    { id: 288, name: "Pink Stained Glass", color: "#d888b8", transparent: true },
+    { id: 289, name: "Gray Stained Glass", color: "#888888", transparent: true },
+    { id: 290, name: "Light Gray Stained Glass", color: "#c0c0c0", transparent: true },
+    { id: 291, name: "Cyan Stained Glass", color: "#58c0c0", transparent: true },
+    { id: 292, name: "Purple Stained Glass", color: "#8848b8", transparent: true },
+    { id: 293, name: "Blue Stained Glass", color: "#4858b8", transparent: true },
+    { id: 294, name: "Brown Stained Glass", color: "#884818", transparent: true },
+    { id: 295, name: "Green Stained Glass", color: "#488818", transparent: true },
+    { id: 296, name: "Red Stained Glass", color: "#b81818", transparent: true },
+    { id: 297, name: "Black Stained Glass", color: "#282828", transparent: true },
+
+    // ── Saplings ( ID 6 data values ) ──
+    { id: 298, name: "Spruce Sapling", color: "#488848", transparent: true },
+    { id: 299, name: "Birch Sapling", color: "#588848", transparent: true },
+    { id: 300, name: "Jungle Sapling", color: "#388848", transparent: true },
+    { id: 301, name: "Acacia Sapling", color: "#588848", transparent: true },
+
+    // ── Leaves ( ID 18 data values ) ──
+    { id: 302, name: "Spruce Leaves", color: "#287828", transparent: true },
+    { id: 303, name: "Birch Leaves", color: "#489848", transparent: true },
+    { id: 304, name: "Jungle Leaves", color: "#388838", transparent: true }
 ];

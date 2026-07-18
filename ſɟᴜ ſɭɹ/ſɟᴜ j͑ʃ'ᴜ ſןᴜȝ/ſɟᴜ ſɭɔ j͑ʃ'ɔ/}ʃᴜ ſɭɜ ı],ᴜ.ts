@@ -43,16 +43,16 @@ export const SHAPES: ShapeDef[] = [
 export function shapeForBlockId(id: number): ShapeId {
     if (id >= 44 && id <= 57 && (id - 44) % 2 === 0) return "slab";
     if (id >= 125 && id <= 127) return "slab";
-    if (id >= 181 && id <= 181) return "slab";
+    if (id === 181) return "slab";
     if (id >= 203 && id <= 205) return "slab";
     if (id === 53 || (id >= 134 && id <= 136 && (id - 134) % 2 === 0)) return "wedge";
-    if (id >= 67 && id <= 67) return "wedge";
+    if (id === 67) return "wedge";
     if (id >= 108 && id <= 109) return "wedge";
-    if (id >= 114 && id <= 114) return "wedge";
+    if (id === 114) return "wedge";
     if (id >= 126 && id <= 128) return "wedge";
-    if (id >= 156 && id <= 156) return "wedge";
-    if (id >= 180 && id <= 180) return "wedge";
-    if (id >= 204 && id <= 204) return "wedge";
+    if (id === 156) return "wedge";
+    if (id === 180) return "wedge";
+    if (id === 204) return "wedge";
     if (id === 155 || id === 202 || id === 203) return "pillar";
     return "cube";
 }
