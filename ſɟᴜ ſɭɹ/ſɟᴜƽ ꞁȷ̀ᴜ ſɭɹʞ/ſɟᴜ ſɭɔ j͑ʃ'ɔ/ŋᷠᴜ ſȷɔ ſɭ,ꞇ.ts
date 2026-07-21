@@ -330,6 +330,19 @@ export function drawAsymmetricalSquarePath( x: number, y: number, width: number,
     ctx!.closePath( );
 }
 
+/**
+ * Compute the two rounded-corner radii used by the asymmetric-square shape
+ * and the selection rectangle from a single minimum dimension.
+ *     minDimension ( number ) - the smaller of width / height.
+ * Returns both large and small corner radii.
+ */
+export function computeShapeRadii( minDimension: number ): { largeRadius: number; smallRadius: number } {
+    return {
+        largeRadius: minDimension / 0o3,
+        smallRadius: minDimension / 0o14
+    };
+}
+
 export function drawShapePath( x: number, y: number, width: number, height: number, shape: string ): void {
     switch ( shape ) {
         case "triangle":
@@ -339,9 +352,7 @@ export function drawShapePath( x: number, y: number, width: number, height: numb
             ctx!.closePath( );
             break;
         case "square":
-            const minDimension = Math.min( width, height );
-            const largeRadius = minDimension / 0o3;
-            const smallRadius = minDimension / 0o14;
+            const { largeRadius, smallRadius } = computeShapeRadii( Math.min( width, height ) );
             drawAsymmetricalSquarePath( x, y, width, height, largeRadius, smallRadius );
             break;
     }
@@ -1274,7 +1285,7 @@ export const OBJECT_HANDLERS: Record<string, ObjectHandler> = {
                     height: obj.cachedHeight
                 };
             }
-            ctx!.font = `${obj.size}px "ı],ᴜ }ʃᴜ", sans-serif`;
+            ctx!.font = `${obj.size}px "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ", sans-serif`;
             const metrics = ctx!.measureText( obj.text || "W" );
             const width = Math.max( metrics.width, obj.size! * TEXT_MIN_WIDTH_MULTIPLIER );
             const height = obj.size!;

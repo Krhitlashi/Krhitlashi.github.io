@@ -24,8 +24,8 @@
         <div id="toolbarContainer" class="sozanu onera3e scace a3e">
             <thala class="n2tase" id="modePanel">
                 <p class="ksakap2sa"><span data-oskakefani="֭ſɭᴜ ı],ɔ"></span> 🗂️</p>
-                <button data-mode="minecraft" aria-pressed="false"><span data-oskakefani="ſɭэ ſᶘɹ ſɭ,ɹ"></span> 🧱</button>
                 <button data-mode="general" aria-pressed="true"><span data-oskakefani="ſןэ ſɭɘw }ʃꞇ"></span> 🎨</button>
+                <button data-mode="minecraft" aria-pressed="false"><span data-oskakefani="ſɭэ ſᶘɹ ſɭ,ɹ"></span> 🧱</button>
             </thala>
 
             <thala class="n2tase" id="toolsPanel">
@@ -83,6 +83,12 @@
                 <p class="ksakat2xa" data-oskakefani="ſןᴜ j͐ʃэ"></p>
                 <input type="range" id="gridSizeSlider" min="8" max="64" value="32">            </thala>
 
+            <thala class="n2tase" id="backgroundPanel">
+                <p class="ksakap2sa"><span data-oskakefani="ꞁȷ̀ɹ ɭʃɹͷ̗"></span> 🌄</p>
+                <button data-background="ring" aria-pressed="true"><span data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɟɔ"></span> 🏗️</button>
+                <button data-background="islands" aria-pressed="false"><span data-oskakefani="ſɟᴜ }ʃᴜ"></span> 🏝️</button>
+            </thala>
+
             <thala class="n2tase" id="actionsPanel">
                 <p class="ksakap2sa"><span data-oskakefani="ſɭ,ɔ }ʃꞇ"></span> 📋</p>
                 <button id="undoBtn"><span data-oskakefani="}ʃɔ ſɭᴜ j͐ʃᴜ"></span> ↩️</button>
@@ -95,15 +101,15 @@
                 <button id="saveBtn"><span data-oskakefani="j͑ʃ'ɔ ſ̀ȷᴜȝ"></span> 💾</button>
                 <button id="loadBtn"><span data-oskakefani="j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ"></span> 📂</button>
                 <button id="export3DBtn"><span data-oskakefani="j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭw ʃᴜ"></span> 📦</button>
-                <button id="importSchematicBtn"><span data-oskakefani="ſ͕ɭɹȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )"></span> 🧱</button>
-                <button id="exportSchematicBtn"><span data-oskakefani="j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )"></span> 🧱</button>
-                <label class="ksakat2xa" for="schematicFormat" data-oskakefani="ſɭc̗ᴜ ſɭɔ ֭ſɭɔ j͑ʃɔ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ"></label>
-                <select id="schematicFormat">
-                    <option value="schem">.schem</option>
-                    <option value="mcstructure">.mcstructure</option>
-                </select>
-                <input type="file" id="fileInput" accept=".json">
-                <input type="file" id="schematicInput" accept=".schem,.mcstructure">
+                <thala id="schematicPanel">
+                    <button id="exportSchematicBtn"><span data-oskakefani="j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ"></span> 🧱</button>
+                    <label class="ksakat2xa" for="schematicFormat" data-oskakefani="ſɭc̗ᴜ ſɭɔ ֭ſɭɔ j͑ʃɔ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ"></label>
+                    <select id="schematicFormat">
+                        <option value="schem">.schem</option>
+                        <option value="mcstructure">.mcstructure</option>
+                    </select>
+                </thala>
+                <input type="file" id="fileInput" accept=".json,.schem,.mcstructure">
             </thala>
 
             <thala class="n2tase" id="navPanel">
@@ -144,6 +150,9 @@
             "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ": "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ",
             "ꞁȷ̀ꞇ }ʃᴜƽ": "ꞁȷ̀ꞇ }ʃᴜƽ",
+            "ꞁȷ̀ɹ ɭʃɹͷ̗": "ꞁȷ̀ɹ ɭʃɹͷ̗",
+            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɟɔ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɟɔ",
+            "ſɟᴜ }ʃᴜ": "ſɟᴜ }ʃᴜ",
 
             "ſɟᴜ j͑ʃ'ᴜ ſןᴜȝ": "ſɟᴜ j͑ʃ'ᴜ ſןᴜȝ 🧱",
             "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ",
@@ -181,8 +190,7 @@
             "j͑ʃ'ɔ ſ̀ȷᴜȝ": "j͑ʃ'ɔ ſ̀ȷᴜȝ",
             "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ": "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ",
             "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭw ʃᴜ": "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭw ʃᴜ",
-            "ſ͕ɭɹȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )": "ſ͕ɭɹȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )",
-            "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )": "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )",
+            "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ": "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ",
             "ſɭc̗ᴜ ſɭɔ ֭ſɭɔ j͑ʃɔ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ": "ſɭc̗ᴜ ſɭɔ ֭ſɭɔ j͑ʃɔ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ",
             "j͑ʃɹ ſɟɔ j͐ʃɹʞ": "j͑ʃɹ ſɟɔ j͐ʃɹʞ",
             "ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ": "ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ",
@@ -194,6 +202,9 @@
             "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ": "Iikrhia Language",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ": "Arahashii",
             "ꞁȷ̀ꞇ }ʃᴜƽ": "Other",
+            "ꞁȷ̀ɹ ɭʃɹͷ̗": "Background",
+            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɟɔ": "Forest",
+            "ſɟᴜ }ʃᴜ": "Sky",
 
             "ſɟᴜ j͑ʃ'ᴜ ſןᴜȝ": "3D Build 🧱",
             "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "Block Tools",
@@ -232,8 +243,7 @@
             "j͑ʃ'ɔ ſ̀ȷᴜȝ": "Save",
             "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ": "Load",
             "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭw ʃᴜ": "Export Object",
-            "ſ͕ɭɹȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )": "Import Schematic",
-            "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ ( ſɭэ ſᶘɹ ſɭ,ɹ )": "Export Schematic",
+            "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ": "Export Schematic",
             "ſɭc̗ᴜ ſɭɔ ֭ſɭɔ j͑ʃɔ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ": "Schematic format",
             "j͑ʃɹ ſɟɔ j͐ʃɹʞ": "Navigation",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "Position",

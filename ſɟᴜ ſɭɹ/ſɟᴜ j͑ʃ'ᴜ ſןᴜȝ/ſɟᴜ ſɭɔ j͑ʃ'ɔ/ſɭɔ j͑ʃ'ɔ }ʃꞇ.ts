@@ -18,6 +18,7 @@ import {
     type ParsedSchematicBlock
 } from "./ſ̀ȷᴜȝ.js";
 import { SHAPES, buildShapeGeometry, shapeForBlockId, type ShapeId } from "./}ʃᴜ ſɭɜ ı],ᴜ.js";
+import { BackgroundManager, type BackgroundMode } from "./ꞁȷ̀ɹ ɭʃɹͷ̗.js";
 
 /**
  * Editing mode.
@@ -98,14 +99,16 @@ class BlockBuilderWorkspace {
     private dragStartPosition: THREE.Vector3;
     private dragOffset: THREE.Vector3;
     private dragStartPositions: Map<string, THREE.Vector3>;
-    private backgroundGroup: THREE.Group;
-    private backgroundTemplate: ParsedSchematicBlock[] = [];
     private verticalGridGroup!: THREE.Group;
+    private pendingToolAction: { tool: string; block?: THREE.Mesh; x?: number; y?: number; z?: number } | null;
+    private toolMouseDownPos: { x: number; y: number } | null;
+    private pendingRotation: number;
+    private sceneryMesh!: THREE.Mesh;
+    private backgroundManager: BackgroundManager;
 
     constructor() {
         this.canvas = document.getElementById("workspace3dCanvas") as HTMLCanvasElement;
         this.scene = new THREE.Scene();
-        this.scene.background = this.createSkyTexture();
 
         const width = this.canvas.clientWidth || window.innerWidth;
         const height = this.canvas.clientHeight || window.innerHeight;
@@ -156,8 +159,16 @@ class BlockBuilderWorkspace {
         this.dragStartPosition = new THREE.Vector3();
         this.dragOffset = new THREE.Vector3();
         this.dragStartPositions = new Map();
-        this.backgroundGroup = new THREE.Group();
-        this.backgroundGroup.name = "backgroundBuildings";
+        this.pendingToolAction = null;
+        this.toolMouseDownPos = null;
+        this.pendingRotation = 0;
+
+        // Initialise background manager ( scene background set inside )
+        this.backgroundManager = new BackgroundManager(
+            this.scene,
+            this.gridSize,
+            ( color, shape, rotation ) => this.createBackgroundBlock( color, shape, rotation )
+        );
 
         this.setupScene();
 
@@ -167,6 +178,13 @@ class BlockBuilderWorkspace {
         this.setupUI();
         this.updateCameraInfo();
         this.animate();
+
+        // Load background template asynchronously
+        this.backgroundManager.loadTemplate().then( ( loaded ) => {
+            if ( loaded ) {
+                this.backgroundManager.setMode( "ring", this.sceneryMesh, this.scene.fog as THREE.Fog );
+            }
+        } );
     }
 
     /**
@@ -190,11 +208,11 @@ class BlockBuilderWorkspace {
 
         const sceneryGeometry = new THREE.CircleGeometry(this.gridSize * 0o10, 0o60);
         const sceneryMaterial = new THREE.MeshLambertMaterial({ color: "#688858" });
-        const scenery = new THREE.Mesh(sceneryGeometry, sceneryMaterial);
-        scenery.rotation.x = -Math.PI / 2;
-        scenery.position.y = -( 5 / 8 );
-        scenery.name = "scenery";
-        this.scene.add(scenery);
+        this.sceneryMesh = new THREE.Mesh(sceneryGeometry, sceneryMaterial);
+        this.sceneryMesh.rotation.x = -Math.PI / 2;
+        this.sceneryMesh.position.y = -( 5 / 8 );
+        this.sceneryMesh.name = "scenery";
+        this.scene.add(this.sceneryMesh);
 
         const baseplate = this.createBaseplate(this.gridSize + 0o10, ( 1 / 2 ), ( 1 / 2 ));
         baseplate.position.y = -( 1 / 0o100 );
@@ -235,30 +253,9 @@ class BlockBuilderWorkspace {
         this.verticalGridGroup.position.set( 0, hg, hg );
         this.verticalGridGroup.rotation.y = Math.PI;
         this.scene.add( this.verticalGridGroup );
-
-        this.scatterBackgroundBuildings();
     }
 
-    /**
-     * Create a soft vertical sky-gradient texture used as the scene background.
-     * Returns CanvasTexture.
-     */
-    private createSkyTexture(): THREE.CanvasTexture {
-        const canvas = document.createElement("canvas");
-        canvas.width = 0o20;
-        canvas.height = 0o400;
-        const ctx = canvas.getContext("2d")!;
-        const gradient = ctx.createLinearGradient(0, 0, 0, 0o400);
-        gradient.addColorStop(0, "#58a8e8");
-        gradient.addColorStop(( 4 / 8 ), "#98c8e8");
-        gradient.addColorStop(( 6 / 8 ), "#d8f0f8");
-        gradient.addColorStop(1, "#e8f8f8");
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, 0o20, 0o400);
-        const texture = new THREE.CanvasTexture(canvas);
-        texture.colorSpace = THREE.SRGBColorSpace;
-        return texture;
-    }
+
 
     /**
      * Create a grid helper sized to the current grid size.
@@ -377,88 +374,7 @@ class BlockBuilderWorkspace {
         return group;
     }
 
-    /**
-     * Fetch and parse the shared building template, then scatter dimmed,
-     * non-interactive copies of it around the background ring of the grid.
-     */
-    private async scatterBackgroundBuildings(): Promise<void> {
-        let blocks: ParsedSchematicBlock[] = [];
-        try {
-            const url = new URL("./ſןᴜȝ/j͑ʃᴜ ɭʃᴜͷ̗.json", import.meta.url);
-            const res = await fetch(url);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            blocks = parseJSONBlocks(await res.text());
-        } catch (err) {
-            console.warn("ſ͕ȷɜ ſɭʞɹ j͑ʃɔ j͑ʃ'ᴜ ɭʃᴜͷ̗ ꞁȷ̀ɔ ƽᶗ‹ ᶅſɔ j͐ʃэ ⟅", err);
-            return;
-        }
-        if (blocks.length === 0) return;
 
-        this.backgroundTemplate = blocks;
-        this.rebuildBackground(blocks);
-    }
-
-    /**
-     * ( Re ) build the scattered background buildings from a parsed template.
-     *     template ( ParsedSchematicBlock[] ) - building block list in grid cells.
-     */
-    private rebuildBackground(template: ParsedSchematicBlock[]): void {
-        if (this.backgroundGroup.parent) {
-            this.scene.remove(this.backgroundGroup);
-        }
-        this.backgroundGroup = new THREE.Group();
-        this.backgroundGroup.name = "backgroundBuildings";
-
-        const minX = Math.min(...template.map((b) => b.x));
-        const maxX = Math.max(...template.map((b) => b.x));
-        const minY = Math.min(...template.map((b) => b.y));
-        const minZ = Math.min(...template.map((b) => b.z));
-        const maxZ = Math.max(...template.map((b) => b.z));
-        const cx = (minX + maxX) / 2;
-        const cz = (minZ + maxZ) / 2;
-
-        const scale = 1.6;
-        const rings = [
-            { count: 12, radius: this.gridSize * ( 5 / 4 ) },
-            { count: 16, radius: this.gridSize * 2 },
-            { count: 20, radius: this.gridSize * ( 11 / 4 ) }
-        ];
-        let ringIndex = 0;
-        let globalIndex = 0;
-
-        for (const ring of rings) {
-            const spacing = (Math.PI * 2) / ring.count;
-            for (let i = 0; i < ring.count; i++) {
-                const angle = i * spacing + ringIndex * (spacing / 2);
-                const offsetX = Math.cos(angle) * ring.radius;
-                const offsetZ = Math.sin(angle) * ring.radius;
-                const yaw = globalIndex * (Math.PI / 2);
-
-                const building = new THREE.Group();
-                for (const b of template) {
-                    const block = this.createBackgroundBlock(
-                        b.color || "#888888",
-                        (b.shape as ShapeId) ?? "cube",
-                        b.rotation ?? 0
-                    );
-                    block.position.set(
-                        (gridToWorld(b.x) - gridToWorld(cx)) * scale,
-                        (gridToWorld(b.y) - gridToWorld(minY)) * scale,
-                        (gridToWorld(b.z) - gridToWorld(cz)) * scale
-                    );
-                    block.scale.setScalar(scale);
-                    building.add(block);
-                }
-                building.rotation.y = yaw;
-                building.position.set(offsetX, 0, offsetZ);
-                this.backgroundGroup.add(building);
-                globalIndex++;
-            }
-            ringIndex++;
-        }
-
-        this.scene.add(this.backgroundGroup);
-    }
 
     /**
      * Setup mouse and keyboard event listeners.
@@ -476,7 +392,7 @@ class BlockBuilderWorkspace {
                 this.isAreaSelecting = false;
                 this.selectStartPos = null;
                 this.selectEndPos = null;
-                this.controls.enabled = true;
+                if ( !this.isColorInputFocused() ) this.controls.enabled = true;
             }
         });
         this.canvas.addEventListener("contextmenu", (e) => e.preventDefault());
@@ -493,6 +409,9 @@ class BlockBuilderWorkspace {
         this.bindToggleGroup("#toolsPanel button[data-tool]", "data-tool", (value) => this.setTool(value));
         this.bindToggleGroup("button[data-mode]", "data-mode", (value) => this.setMode(value as EditMode));
         this.bindToggleGroup("#shapesPanel button[data-shape]", "data-shape", (value) => this.setShape(value as ShapeId));
+        this.bindToggleGroup("button[data-background]", "data-background", (value) => {
+            this.backgroundManager.setMode(value as BackgroundMode, this.sceneryMesh, this.scene.fog as THREE.Fog);
+        });
 
         // Initialize mode panels to match default currentMode ( "general" )
         this.setMode( this.currentMode );
@@ -515,7 +434,7 @@ class BlockBuilderWorkspace {
                 if (block) {
                     this.setBlock(block);
                 } else {
-                    this.setBlock({ id, name: `Block ${id}`, color: "#888888", transparent: false });
+                    this.setBlock({ id, name: `Block ${id}`, color: "#888888" });
                 }
             });
         }
@@ -523,6 +442,8 @@ class BlockBuilderWorkspace {
         const colorInput = this.el<HTMLInputElement>("colorInput");
         if (colorInput) {
             colorInput.value = this.currentColor;
+            colorInput.addEventListener("focus", () => { this.controls.enabled = false; });
+            colorInput.addEventListener("blur", () => { this.controls.enabled = true; });
             colorInput.addEventListener("input", (e) => {
                 this.setCurrentColor((e.target as HTMLInputElement).value);
                 this.syncColorTextInput(this.currentColor);
@@ -533,6 +454,8 @@ class BlockBuilderWorkspace {
         const colorTextInput = this.el<HTMLInputElement>("colorTextInput");
         if (colorTextInput) {
             colorTextInput.value = this.currentColor;
+            colorTextInput.addEventListener("focus", () => { this.controls.enabled = false; });
+            colorTextInput.addEventListener("blur", () => { this.controls.enabled = true; });
             const applyTextColor = (): void => {
                 const value = colorTextInput.value.trim();
                 if ( value && /^#?[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/.test(value) ) {
@@ -615,9 +538,8 @@ class BlockBuilderWorkspace {
                     this.ground.name = "ground";
                     this.scene.add(this.ground);
                 }
-                if (this.backgroundTemplate.length > 0) {
-                    this.rebuildBackground(this.backgroundTemplate);
-                }
+                this.backgroundManager.setGridSize(size);
+                this.backgroundManager.rebuildCurrent(this.sceneryMesh, this.scene.fog as THREE.Fog);
                 // Rebuild vertical grid to match new size
                 if ( this.verticalGridGroup ) {
                     const wasVisible = this.verticalGridGroup.visible;
@@ -633,7 +555,6 @@ class BlockBuilderWorkspace {
         }
 
         const fileInput = this.el<HTMLInputElement>("fileInput");
-        const schematicInput = this.el<HTMLInputElement>("schematicInput");
         const bindClick = (id: string, handler: () => void): void => {
             this.el(id)?.addEventListener("click", handler);
         };
@@ -649,14 +570,12 @@ class BlockBuilderWorkspace {
             ["quickSave", () => this.save()],
             ["loadBtn", () => fileInput?.click()],
             ["export3DBtn", () => this.exportOBJ()],
-            ["exportSchematicBtn", () => this.exportSchematic()],
-            ["importSchematicBtn", () => schematicInput?.click()]
+            ["exportSchematicBtn", () => this.exportSchematic()]
         ];
 
         actionBindings.forEach(([id, handler]) => bindClick(id, handler));
 
         fileInput?.addEventListener("change", (e) => this.load(e));
-        schematicInput?.addEventListener("change", (e) => this.importSchematic(e));
     }
 
     /**
@@ -706,6 +625,11 @@ class BlockBuilderWorkspace {
         if (colorTextInput) colorTextInput.value = color;
     }
 
+    private isColorInputFocused(): boolean {
+        const active = document.activeElement;
+        return active === this.el( "colorInput" ) || active === this.el( "colorTextInput" );
+    }
+
     /**
      * Update the current color, switching to a custom block in general mode.
      *     color ( string ) - hex color string.
@@ -713,7 +637,7 @@ class BlockBuilderWorkspace {
     private setCurrentColor(color: string): void {
         this.currentColor = color;
         if ( this.currentMode === "general" ) {
-            this.currentBlock = { id: 0, name: "Custom", color, transparent: false };
+            this.currentBlock = { id: 0, name: "Custom", color };
         }
     }
 
@@ -740,9 +664,11 @@ class BlockBuilderWorkspace {
         const minecraftPanel = document.getElementById("colorsPanel");
         const generalPanel = document.getElementById("generalColorsPanel");
         const shapesPanel = document.getElementById("shapesPanel");
+        const schematicPanel = document.getElementById("schematicPanel");
         if (minecraftPanel) minecraftPanel.style.display = mode === "minecraft" ? "" : "none";
         if (generalPanel) generalPanel.style.display = mode === "general" ? "" : "none";
         if (shapesPanel) shapesPanel.style.display = mode === "general" ? "" : "none";
+        if (schematicPanel) schematicPanel.style.display = mode === "minecraft" ? "" : "none";
         if (mode === "minecraft") {
             this.currentShape = shapeForBlockId(this.currentBlock.id);
         }
@@ -831,15 +757,19 @@ class BlockBuilderWorkspace {
             this.canvas.style.cursor = "crosshair";
         } else if (tool === "move") {
             this.canvas.style.cursor = "move";
-        } else if (tool === "add" || tool === "paint") {
+        } else if (tool === "add" || tool === "paint" || tool === "remove") {
             this.canvas.style.cursor = "crosshair";
         } else {
             this.canvas.style.cursor = "default";
         }
         // Show vertical grid only in select mode to help with vertical selection
         this.verticalGridGroup.visible = ( tool === "select" );
-        if (tool !== "add" && tool !== "paint") {
+        if (tool !== "add" && tool !== "paint" && tool !== "remove") {
             this.hoverBox.visible = false;
+        }
+        // Reset pending rotation when leaving add tool
+        if ( tool !== "add" ) {
+            this.pendingRotation = 0;
         }
     }
 
@@ -925,7 +855,8 @@ class BlockBuilderWorkspace {
                 const x = Math.floor(point.x) + ( 1 / 2 );
                 const y = this.snapToGrid ? ( 1 / 2 ) : point.y;
                 const z = Math.floor(point.z) + ( 1 / 2 );
-                this.addBlock(x, y, z);
+                this.toolMouseDownPos = new THREE.Vector2(this.mouse.x, this.mouse.y);
+                this.pendingToolAction = { tool: "add", x, y, z };
             } else if (this.currentTool === "add" && intersect.object instanceof THREE.Mesh) {
                 this.clearSelection();
                 const center = intersect.object.position;
@@ -941,12 +872,15 @@ class BlockBuilderWorkspace {
                 const x = Math.floor(pos.x) + ( 1 / 2 );
                 const y = Math.floor(pos.y) + ( 1 / 2 );
                 const z = Math.floor(pos.z) + ( 1 / 2 );
-                this.addBlock(x, y, z);
+                this.toolMouseDownPos = new THREE.Vector2(this.mouse.x, this.mouse.y);
+                this.pendingToolAction = { tool: "add", x, y, z };
             } else if (this.currentTool === "remove" && intersect.object instanceof THREE.Mesh && intersect.object.name === "block") {
-                this.removeBlock(intersect.object);
+                this.toolMouseDownPos = new THREE.Vector2(this.mouse.x, this.mouse.y);
+                this.pendingToolAction = { tool: "remove", block: intersect.object as THREE.Mesh };
             } else if (this.currentTool === "paint" && intersect.object instanceof THREE.Mesh && intersect.object.name === "block") {
                 this.clearSelection();
-                this.paintBlock(intersect.object);
+                this.toolMouseDownPos = new THREE.Vector2(this.mouse.x, this.mouse.y);
+                this.pendingToolAction = { tool: "paint", block: intersect.object as THREE.Mesh };
             } else if (this.currentTool === "paint" && intersect.object.name === "ground") {
                 // Don't allow painting on ground.
             } else if (this.currentTool === "rotate" && intersect.object instanceof THREE.Mesh && intersect.object.name === "block") {
@@ -1061,17 +995,48 @@ class BlockBuilderWorkspace {
                 this.selectEndPos = groundIntersects[0].point.clone();
                 this.showSelectRect( this.selectStartPos, this.selectEndPos );
             }
-        } else {
-            const { blockIntersects, groundIntersects } = this.getIntersections();
+        } else if ( this.pendingToolAction && this.toolMouseDownPos ) {
+            // Check if mouse moved beyond threshold — if so, clear pending action ( user is dragging )
+            const dx = this.mouse.x - this.toolMouseDownPos.x;
+            const dy = this.mouse.y - this.toolMouseDownPos.y;
+            const cw = this.canvas.clientWidth || window.innerWidth;
+            const ch = this.canvas.clientHeight || window.innerHeight;
+            const pxDist = Math.sqrt((dx * cw / 2) ** 2 + (dy * ch / 2) ** 2);
+            if ( pxDist > 4 ) {
+                this.pendingToolAction = null;
+                this.toolMouseDownPos = null;
+            }
+        }
 
-            if ( blockIntersects.length > 0 ) {
-                this.updateCursorPosition( blockIntersects[0].point );
-                this.updateHoverBox( blockIntersects[0].point, this.currentTool, blockIntersects[0].object );
-            } else if ( groundIntersects.length > 0 ) {
-                this.updateCursorPosition( groundIntersects[0].point );
-                this.updateHoverBox( groundIntersects[0].point, this.currentTool, groundIntersects[0].object );
+        if ( !this.pendingToolAction ) {
+            if ( this.currentTool === "add" || this.currentTool === "paint" || this.currentTool === "remove" ) {
+                // For placement tools: check blocks first, then always project onto grid plane
+                const { blockIntersects } = this.getIntersections();
+                if ( blockIntersects.length > 0 ) {
+                    this.updateCursorPosition( blockIntersects[0].point );
+                    this.updateHoverBox( blockIntersects[0].point, this.currentTool, blockIntersects[0].object );
+                } else {
+                    // Project onto y=0 plane (grid surface level)
+                    const groundPoint = new THREE.Vector3();
+                    const groundPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
+                    if ( this.raycaster.ray.intersectPlane( groundPlane, groundPoint ) !== null ) {
+                        this.updateCursorPosition( groundPoint );
+                        this.updateHoverBox( groundPoint, this.currentTool, undefined );
+                    } else {
+                        this.hoverBox.visible = false;
+                    }
+                }
             } else {
-                this.hoverBox.visible = false;
+                const { blockIntersects, groundIntersects } = this.getIntersections();
+                if ( blockIntersects.length > 0 ) {
+                    this.updateCursorPosition( blockIntersects[0].point );
+                    this.updateHoverBox( blockIntersects[0].point, this.currentTool, blockIntersects[0].object );
+                } else if ( groundIntersects.length > 0 ) {
+                    this.updateCursorPosition( groundIntersects[0].point );
+                    this.updateHoverBox( blockIntersects[0].point, this.currentTool, groundIntersects[0].object );
+                } else {
+                    this.hoverBox.visible = false;
+                }
             }
         }
     }
@@ -1140,15 +1105,30 @@ class BlockBuilderWorkspace {
             return;
         }
 
-        const show = tool === "add" || tool === "paint";
+        const show = tool === "add" || tool === "paint" || tool === "remove";
         if ( !show ) {
             this.hoverBox.visible = false;
             return;
         }
 
+        // Update hover material colors based on tool
+        const fillMesh = this.hoverBox.children[0] as THREE.Mesh;
+        const fillMat = fillMesh.material as THREE.MeshBasicMaterial;
+        if ( tool === "remove" ) {
+            fillMat.color.setHex( 0xf82828 );
+        } else {
+            fillMat.color.setHex( 0x888888 );
+        }
+
         let x: number, y: number, z: number;
 
-        if ( hitObject && hitObject.name === "block" ) {
+        if ( tool === "remove" && hitObject && hitObject.name === "block" ) {
+            // Remove tool: show hover on the block itself
+            const mesh = hitObject as THREE.Mesh;
+            x = mesh.position.x;
+            y = mesh.position.y;
+            z = mesh.position.z;
+        } else if ( hitObject && hitObject.name === "block" ) {
             const mesh = hitObject as THREE.Mesh;
             if ( tool === "add" ) {
                 // Hovering over a block with add tool: snap to adjacent grid cell
@@ -1176,6 +1156,13 @@ class BlockBuilderWorkspace {
             x = Math.floor( point.x ) + ( 1 / 2 );
             y = tool === "paint" ? point.y : ( this.snapToGrid ? ( 1 / 2 ) : point.y );
             z = Math.floor( point.z ) + ( 1 / 2 );
+        }
+
+        // When hovering for add tool, apply pending rotation to hover preview
+        if ( tool === "add" && this.pendingRotation !== 0 ) {
+            this.hoverBox.rotation.y = this.pendingRotation;
+        } else {
+            this.hoverBox.rotation.y = 0;
         }
 
         if ( !this.isWithinGrid( x, y, z ) ) {
@@ -1268,7 +1255,7 @@ class BlockBuilderWorkspace {
             this.selectStartPos = null;
             this.selectEndPos = null;
             this.dragStartMouse = null;
-            this.controls.enabled = true;
+            if ( !this.isColorInputFocused() ) this.controls.enabled = true;
             return;
         }
 
@@ -1294,6 +1281,27 @@ class BlockBuilderWorkspace {
                 });
             }
         }
+        // Execute pending tool action if not a drag
+        if ( this.pendingToolAction && this.toolMouseDownPos ) {
+            const dx = this.mouse.x - this.toolMouseDownPos.x;
+            const dy = this.mouse.y - this.toolMouseDownPos.y;
+            const cw = this.canvas.clientWidth || window.innerWidth;
+            const ch = this.canvas.clientHeight || window.innerHeight;
+            const pxDist = Math.sqrt((dx * cw / 2) ** 2 + (dy * ch / 2) ** 2);
+            if ( pxDist < 4 ) {
+                const action = this.pendingToolAction;
+                if ( action.tool === "add" && action.x !== undefined && action.y !== undefined && action.z !== undefined ) {
+                    this.addBlock( action.x, action.y, action.z );
+                } else if ( action.tool === "remove" && action.block ) {
+                    this.removeBlock( action.block );
+                } else if ( action.tool === "paint" && action.block ) {
+                    this.paintBlock( action.block );
+                }
+            }
+            this.pendingToolAction = null;
+            this.toolMouseDownPos = null;
+        }
+
         if ( this.selectionBox ) {
             this.selectionBox.visible = false;
         }
@@ -1301,7 +1309,7 @@ class BlockBuilderWorkspace {
         this.isDragging = false;
         this.dragStarted = false;
         this.dragStartMouse = null;
-        this.controls.enabled = true;
+        if ( !this.isColorInputFocused() ) this.controls.enabled = true;
     }
 
     /**
@@ -1337,6 +1345,11 @@ class BlockBuilderWorkspace {
         else if (event.key === "5") this.setTool("paint");
         else if (event.key === "6") this.setTool("picker");
         else if (event.key === "7") this.setTool("rotate");
+        else if ( ( event.key === "r" || event.key === "R" ) && this.currentTool === "add" ) {
+            event.preventDefault();
+            this.pendingRotation = ( this.pendingRotation + Math.PI / 2 ) % ( Math.PI * 2 );
+            this.refreshHoverGeometry();
+        }
     }
 
     /**
@@ -1351,10 +1364,6 @@ class BlockBuilderWorkspace {
      */
     private createBlock(block: MinecraftBlock, color: string, shape: ShapeId, x: number, y: number, z: number, rotation: number = 0): THREE.Mesh {
         const materialOptions: THREE.MeshLambertMaterialParameters = { color };
-        if (block.transparent) {
-            materialOptions.transparent = true;
-            materialOptions.opacity = ( 5 / 8 );
-        }
         const material = new THREE.MeshLambertMaterial(materialOptions);
         const geometry = buildShapeGeometry(shape);
         const mesh = new THREE.Mesh(geometry, material);
@@ -1384,12 +1393,13 @@ class BlockBuilderWorkspace {
 
         const color = this.getEffectiveColor();
         const shape = this.getCurrentShape();
-        const block = this.createBlock(this.currentBlock, color, shape, x, y, z);
+        const rotation = this.pendingRotation;
+        const block = this.createBlock(this.currentBlock, color, shape, x, y, z, rotation);
 
         this.scene.add(block);
         this.blocks.set(key, block);
 
-        this.addToHistory("add", { position: { x, y, z }, color, id: key, blockId: this.currentBlock.id, name: this.currentBlock.name, shape, rotation: 0 }, null);
+        this.addToHistory("add", { position: { x, y, z }, color, id: key, blockId: this.currentBlock.id, name: this.currentBlock.name, shape, rotation }, null);
         this.updateBlockCount();
     }
 
@@ -1454,7 +1464,7 @@ class BlockBuilderWorkspace {
         const data = this.readBlockData(block);
 
         const found = MINECRAFT_BLOCKS.find((b) => b.id === data.blockId);
-        this.currentBlock = found ?? { id: data.blockId, name: data.name, color, transparent: material.transparent };
+        this.currentBlock = found ?? { id: data.blockId, name: data.name, color };
         this.currentColor = color;
         this.currentShape = data.shape;
 
@@ -1571,12 +1581,12 @@ class BlockBuilderWorkspace {
             return { numericId: idOrName, name: null };
         }
         const trimmed = idOrName.trim();
-        const parsed = parseInt(trimmed, 10);
+        const parsed = parseInt(trimmed, 0o12);
         if (!isNaN(parsed) && String(parsed) === trimmed) {
             return { numericId: parsed, name: null };
         }
         let name = trimmed.toLowerCase();
-        if (name.startsWith("minecraft:")) name = name.substring(10);
+        if (name.startsWith("minecraft:")) name = name.substring(0o12);
         if (name.includes("[")) name = name.split("[")[0];
         name = name.replace(/_/g, " ");
         return { numericId: null, name };
@@ -1608,14 +1618,14 @@ class BlockBuilderWorkspace {
         if (numericId !== null) {
             const found = MINECRAFT_BLOCKS.find((b) => b.id === numericId);
             if (found) return found;
-            return { id: numericId, name: `Block ${numericId}`, color, transparent: false };
+            return { id: numericId, name: `Block ${numericId}`, color };
         }
         if (name !== null) {
             const found = this.findBlockByName(name);
             if (found) return found;
-            return { id: 0, name: String(idOrName), color, transparent: false };
+            return { id: 0, name: String(idOrName), color };
         }
-        return { id: 0, name: "Unknown Block", color, transparent: false };
+        return { id: 0, name: "Unknown Block", color };
     }
 
     /**
@@ -1629,7 +1639,7 @@ class BlockBuilderWorkspace {
         const material = block.material as THREE.MeshLambertMaterial;
         material.color.set(color);
         block.userData.blockId = blockId;
-        material.transparent = MINECRAFT_BLOCKS.find((b) => b.id === blockId)?.transparent ?? false;
+        material.transparent = false;
         material.opacity = material.transparent ? ( 5 / 8 ) : 1;
         material.needsUpdate = true;
     }
@@ -1783,7 +1793,7 @@ class BlockBuilderWorkspace {
         this.selectStartPos = null;
         this.selectEndPos = null;
         this.hideSelectRect();
-        this.controls.enabled = true;
+        if ( !this.isColorInputFocused() ) this.controls.enabled = true;
         this.updateBlockCount();
     }
 
@@ -1839,19 +1849,43 @@ class BlockBuilderWorkspace {
         const file = input.files?.[0];
         if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            try {
-                const text = e.target?.result as string;
-                const parsedBlocks = parseJSONBlocks(text);
-                this.clearAll();
-                this.placeBlocks(parsedBlocks);
-                this.updateBlockCount();
-            } catch (err) {
-                console.error("ſ͕ȷɜ ɭʃɔ ŋᷠɹ ⟅", err);
-            }
-        };
-        reader.readAsText(file);
+        const fileName = file.name.toLowerCase();
+        const isSchematic = fileName.endsWith(".schem") || fileName.endsWith(".mcstructure");
+
+        if ( isSchematic ) {
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const arrayBuffer = e.target?.result as ArrayBuffer;
+                    if (!arrayBuffer) throw new Error("Could not read file data");
+                    const isMcstructure = fileName.endsWith(".mcstructure");
+                    const blocks = await parseSchematicOrStructure(arrayBuffer, isMcstructure);
+                    this.clearAll();
+                    this.placeBlocks(blocks);
+                    this.updateBlockCount();
+                } catch (err) {
+                    console.error("ſ͕ȷɜ ɭʃɔ ŋᷠɹ ⟅", err);
+                    if (typeof alert === "function" && fileName.endsWith(".schem")) {
+                        alert("Could not read schematic file. Ensure it is a valid Minecraft .schem or .mcstructure file.");
+                    }
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        } else {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const text = e.target?.result as string;
+                    const parsedBlocks = parseJSONBlocks(text);
+                    this.clearAll();
+                    this.placeBlocks(parsedBlocks);
+                    this.updateBlockCount();
+                } catch (err) {
+                    console.error("ſ͕ȷɜ ɭʃɔ ŋᷠɹ ⟅", err);
+                }
+            };
+            reader.readAsText(file);
+        }
         input.value = "";
     }
 

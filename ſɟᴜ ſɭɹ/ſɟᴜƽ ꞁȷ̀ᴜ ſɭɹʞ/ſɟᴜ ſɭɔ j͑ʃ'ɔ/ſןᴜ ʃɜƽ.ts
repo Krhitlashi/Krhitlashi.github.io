@@ -61,7 +61,7 @@ export function renderHtmlTextToCanvas( obj: WhiteboardObject ): HTMLCanvasEleme
 function createTempTextContainer( obj: WhiteboardObject, uniqueClass: string ): HTMLDivElement {
     const tempContainer = document.createElement( "div" );
     tempContainer.className = "cepufal cepufal-html-text-measure " + uniqueClass;
-    tempContainer.style.font = `${obj.size}px "ı],ᴜ }ʃᴜ", sans-serif`;
+    tempContainer.style.font = `${obj.size}px "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ", sans-serif`;
     tempContainer.style.color = obj.color!;
     tempContainer.appendChild( document.createTextNode( obj.text || " " ) );
     return tempContainer;

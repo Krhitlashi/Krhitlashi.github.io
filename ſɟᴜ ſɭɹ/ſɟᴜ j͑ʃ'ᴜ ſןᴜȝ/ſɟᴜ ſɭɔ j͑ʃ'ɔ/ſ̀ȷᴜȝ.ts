@@ -188,6 +188,24 @@ async function decompressGzip(arrayBuffer: ArrayBuffer): Promise<ArrayBuffer> {
 }
 
 /**
+ * Read a string-or-number field from an NBT compound, trying camelCase,
+ * snake_case, and PascalCase variants in that order before falling back to
+ * a numeric default.
+ *     obj ( any ) - compound tag (may be null ).
+ *     keys ( string[] ) - candidate keys to read, in priority order.
+ *     fallback ( number ) - value returned when none of the keys resolve.
+ * Returns coalesced numeric value.
+ */
+function readNumericField(obj: any, keys: readonly string[], fallback: number): number {
+    if (!obj) return fallback;
+    for (const key of keys) {
+        const v = obj[key];
+        if (v !== undefined && v !== null) return Number(v);
+    }
+    return fallback;
+}
+
+/**
  * Resolve the Bedrock block palette from a structure tag, checking the common
  * locations ( block_palette, palette.default, palettes.default ).
  *     structure ( any ) - structure compound from the NBT root.
@@ -259,16 +277,14 @@ export async function parseSchematicOrStructure(arrayBuffer: ArrayBuffer, isMcst
             blocks.push({ x, y, z, name: blockName, color: "#888888", shape: "cube", rotation: 0 });
         }
     } else {
-        const width = Number(data.Width !== undefined ? data.Width : (data.width !== undefined ? data.width : 0));
-        const height = Number(data.Height !== undefined ? data.Height : (data.height !== undefined ? data.height : 0));
-        const length = Number(data.Length !== undefined ? data.Length : (data.length !== undefined ? data.length : 0));
+        const width = readNumericField(data, [ "Width", "width" ], 0);
+        const height = readNumericField(data, [ "Height", "height" ], 0);
+        const length = readNumericField(data, [ "Length", "length" ], 0);
 
         if (!width || !height || !length) throw new Error("Invalid schematic dimensions");
 
         const paletteObj = data.Palette || data.palette;
-        if (!paletteObj) throw new Error("No Palette found");
-
-        const reversePalette: string[] = [];
+        if (!paletteObj) throw new Error("No Palette found");        const reversePalette: string[] = [];
         for (const [key, val] of Object.entries(paletteObj)) {
             reversePalette[Number(val)] = key;
         }
@@ -315,14 +331,39 @@ export function worldToGrid(value: number): number {
 }
 
 /**
+ * The 8-vertex offset pattern for an axis-aligned unit cube anchored at the
+ * block's lower-left-back corner ( 0,0,0 ). Each triple is a face triangle in
+ * OBJ index space ( 0..7, lifted to 1..N at write time by `vertexOffset` ).
+ *
+ * Two triangles per face x six faces = twelve triangles for a closed cube.
+ */
+const CUBE_FACE_TRIS: ReadonlyArray<readonly [ number, number, number ]> = [
+    [ 0, 1, 2 ], [ 0, 2, 3 ],   // back ( -Z )
+    [ 4, 7, 6 ], [ 4, 6, 5 ],   // front ( +Z )
+    [ 3, 2, 6 ], [ 3, 6, 7 ],   // top ( +Y )
+    [ 0, 5, 4 ], [ 0, 1, 5 ],   // bottom ( -Y )
+    [ 1, 5, 6 ], [ 1, 6, 2 ],   // right ( +X )
+    [ 0, 4, 7 ], [ 0, 7, 3 ]    // left ( -X )
+];
+
+/**
+ * The 8 local-space offsets that form the block's vertex cloud ( before the
+ * block's lower-back corner translation ). Index matches CUBE_FACE_TRIS.
+ */
+const CUBE_VERTEX_LOCAL_OFFSETS: ReadonlyArray<readonly [ number, number, number ]> = [
+    [ 0, 0, 0 ], [ 1, 0, 0 ], [ 1, 1, 0 ], [ 0, 1, 0 ],
+    [ 0, 0, 1 ], [ 1, 0, 1 ], [ 1, 1, 1 ], [ 0, 1, 1 ]
+];
+
+/**
  * Build the OBJ text body for a list of blocks, returning the OBJ string and
  * the MTL material string.
  *     blocks ( Array ) - blocks with position and color.
  * Returns object with obj and mtl strings.
  */
 export function buildOBJ(blocks: Array<{ position: THREE.Vector3Like; color: string }>): { obj: string; mtl: string } {
-    let obj = "# ſןᴜȝ j͑ʃп́ɔ ſ̀ȷᴜȝ\n";
-    let mat = "# ſןᴜȝ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ\n";
+    let obj = "# ſןᴜȝ j͑ʃп́ɔ ſ̀ȷᴜȝ\n";
+    let mat = "# ſןᴜȝ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ\n";
     const materials = new Map<string, number>();
     let matIndex = 0;
     let vertexOffset = 1;
@@ -343,28 +384,14 @@ export function buildOBJ(blocks: Array<{ position: THREE.Vector3Like; color: str
         const y = worldToGrid(block.position.y);
         const z = worldToGrid(block.position.z);
 
-        obj += `v ${x} ${y} ${z}\n`;
-        obj += `v ${x + 1} ${y} ${z}\n`;
-        obj += `v ${x + 1} ${y + 1} ${z}\n`;
-        obj += `v ${x} ${y + 1} ${z}\n`;
-        obj += `v ${x} ${y} ${z + 1}\n`;
-        obj += `v ${x + 1} ${y} ${z + 1}\n`;
-        obj += `v ${x + 1} ${y + 1} ${z + 1}\n`;
-        obj += `v ${x} ${y + 1} ${z + 1}\n`;
+        for (const [ox, oy, oz] of CUBE_VERTEX_LOCAL_OFFSETS) {
+            obj += `v ${x + ox} ${y + oy} ${z + oz}\n`;
+        }
 
         obj += `usemtl mat_${materials.get(color)}\n`;
-        obj += `f ${vertexOffset} ${vertexOffset + 1} ${vertexOffset + 2}\n`;
-        obj += `f ${vertexOffset} ${vertexOffset + 2} ${vertexOffset + 3}\n`;
-        obj += `f ${vertexOffset + 4} ${vertexOffset + 7} ${vertexOffset + 6}\n`;
-        obj += `f ${vertexOffset + 4} ${vertexOffset + 6} ${vertexOffset + 5}\n`;
-        obj += `f ${vertexOffset + 3} ${vertexOffset + 2} ${vertexOffset + 6}\n`;
-        obj += `f ${vertexOffset + 3} ${vertexOffset + 6} ${vertexOffset + 7}\n`;
-        obj += `f ${vertexOffset} ${vertexOffset + 5} ${vertexOffset + 4}\n`;
-        obj += `f ${vertexOffset} ${vertexOffset + 1} ${vertexOffset + 5}\n`;
-        obj += `f ${vertexOffset + 1} ${vertexOffset + 5} ${vertexOffset + 6}\n`;
-        obj += `f ${vertexOffset + 1} ${vertexOffset + 6} ${vertexOffset + 2}\n`;
-        obj += `f ${vertexOffset} ${vertexOffset + 4} ${vertexOffset + 7}\n`;
-        obj += `f ${vertexOffset} ${vertexOffset + 7} ${vertexOffset + 3}\n`;
+        for (const [a, b, c] of CUBE_FACE_TRIS) {
+            obj += `f ${vertexOffset + a} ${vertexOffset + b} ${vertexOffset + c}\n`;
+        }
 
         vertexOffset += 0o10;
     }
@@ -400,8 +427,8 @@ export function parseJSONBlocks(text: string): ParsedSchematicBlock[] {
 
     const blocks: ParsedSchematicBlock[] = [];
     list.forEach((sb: any) => {
-        const blockIdOrName = sb.blockId !== undefined ? sb.blockId : (sb.id !== undefined ? sb.id : sb.name);
-        let x = 0, y = 0, z = 0;
+        const blockIdOrName = sb.blockId ?? sb.id ?? sb.name;
+        let x: number, y: number, z: number;
         if (sb.position) {
             x = worldToGrid(Number(sb.position.x ?? 0));
             y = worldToGrid(Number(sb.position.y ?? 0));

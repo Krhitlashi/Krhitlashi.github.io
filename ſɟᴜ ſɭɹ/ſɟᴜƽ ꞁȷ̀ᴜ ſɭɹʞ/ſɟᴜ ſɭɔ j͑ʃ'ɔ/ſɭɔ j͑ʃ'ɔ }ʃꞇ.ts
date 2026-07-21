@@ -20,7 +20,8 @@ import {
 
 import {
     getCurrentCanvas, getCurrentCtx, redrawCanvas, saveState, drawWhiteboardGrid,
-    switchToPageCanvas, syncPanToCSS, resizeActivePage, updateCanvasSizeDisplay
+    switchToPageCanvas, syncPanToCSS, resizeActivePage, updateCanvasSizeDisplay,
+    getActivePage, isActivePageInfinite
 } from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
 
 import {
@@ -93,7 +94,7 @@ function initZoom(): void {
     }
 
     function setZoom( newZoom: number ): void {
-        const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+        const activePage = getActivePage();
         // Infinite pages cannot zoom out below 1x — the canvas always fills the screen
         const minZoom = activePage?.infinite ? 0o1 : MIN_ZOOM;
         const maxZoom = MAX_ZOOM;
@@ -129,9 +130,9 @@ function initZoom(): void {
     } );
 
     document.addEventListener( "wheel", ( e: WheelEvent ) => {
-        if ( isUIElement( e.target ) ) return;
+        if ( isSharedUiElement( e.target ) ) return;
         
-        const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+        const activePage = getActivePage();
         
         // Ctrl+wheel zoom works on ALL pages (both infinite and non-infinite)
         if ( e.ctrlKey ) {
@@ -178,15 +179,11 @@ function initCanvasEvents(): void {
 
 }
 
-function isUIElement( target: EventTarget | null ): boolean {
-    return isSharedUiElement( target );
-}
-
 function handleDocumentMouseDown( e: MouseEvent ): void {
-    if ( e.button !== 0 || isUIElement( e.target ) ) return;
+    if ( e.button !== 0 || isSharedUiElement( e.target ) ) return;
     
     // Space+drag panning works on all pages
-    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    const activePage = getActivePage();
     if ( spaceState.isPressed ) {
         panState.isPanning = true;
         panState.startX = e.clientX - panState.offsetX;
@@ -203,7 +200,7 @@ function handleDocumentMouseMove( e: MouseEvent ): void {
         e.preventDefault();
         panState.offsetX = e.clientX - panState.startX;
         panState.offsetY = e.clientY - panState.startY;
-        const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+        const activePage = getActivePage();
         if ( activePage?.infinite ) {
             redrawCanvas();  // redraw with canvas context translate
         } else {
@@ -214,24 +211,29 @@ function handleDocumentMouseMove( e: MouseEvent ): void {
     if ( state.isDrawing ) draw( e );
 }
 
+// ⟪ Cursor Reset Helpers 🖰 ⟫
+
+/**
+ * Restore the canvas cursor after a pan ends.
+ * Draws grab while space is held, otherwise restores the tool cursor
+ * and clears the dataset override.
+ */
+function resetPanCursor(): void {
+    if ( spaceState.isPressed ) {
+        if ( canvas ) canvas.dataset.cursor = "grab";
+    } else {
+        if ( canvas ) delete canvas.dataset.cursor;
+        setCursor( getToolCursor() );
+    }
+}
+
 function handleDocumentMouseUp( e: MouseEvent ): void {
     if ( panState.isPanning ) {
         panState.isPanning = false;
-        if ( spaceState.isPressed ) {
-            if ( canvas ) canvas.dataset.cursor = "grab";
-        } else {
-            if ( canvas ) delete canvas.dataset.cursor;
-            setCursor( getToolCursor() );
-        }
+        resetPanCursor();
         return;
     }
     if ( state.isDrawing ) stopDrawing( e );
-}
-
-function isScrollableElement( el: EventTarget | null ): boolean {
-    if ( !el || !( el instanceof HTMLElement ) ) return false;
-    const style = window.getComputedStyle( el );
-    return /auto|scroll/.test( style.overflowY ) || /auto|scroll/.test( style.overflowX );
 }
 
 function getTouchCenter( e: TouchEvent ): { x: number; y: number } {
@@ -252,9 +254,9 @@ function getTouchDistance( e: TouchEvent ): number {
 }
 
 function handleTouchStart( e: TouchEvent ): void {
-    if ( e.touches.length > 2 || isUIElement( e.target ) ) return;
+    if ( e.touches.length > 2 || isSharedUiElement( e.target ) ) return;
 
-    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    const activePage = getActivePage();
     const isInfinite = activePage?.infinite === true;
 
     if ( e.touches.length === 2 ) {
@@ -292,7 +294,7 @@ function handleTouchStart( e: TouchEvent ): void {
 function handleTouchMove( e: TouchEvent ): void {
     if ( e.touches.length > 2 ) return;
 
-    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    const activePage = getActivePage();
     const isInfinite = activePage?.infinite === true;
 
     if ( e.touches.length === 2 && touchGestureState.isPinching && isInfinite ) {
@@ -339,12 +341,7 @@ function handleTouchEnd( e: TouchEvent ): void {
 
     if ( panState.isPanning ) {
         panState.isPanning = false;
-        if ( spaceState.isPressed ) {
-            if ( canvas ) canvas.dataset.cursor = "grab";
-        } else {
-            if ( canvas ) delete canvas.dataset.cursor;
-            setCursor( getToolCursor() );
-        }
+        resetPanCursor();
         return;
     }
 
@@ -365,19 +362,14 @@ function handleTouchCancel( e: TouchEvent ): void {
 
     if ( panState.isPanning ) {
         panState.isPanning = false;
-        if ( spaceState.isPressed ) {
-            if ( canvas ) canvas.dataset.cursor = "grab";
-        } else {
-            if ( canvas ) delete canvas.dataset.cursor;
-            setCursor( getToolCursor() );
-        }
+        resetPanCursor();
         return;
     }
     handleTouchEnd( e );
 }
 
 function handleDoubleClick( e: MouseEvent ): void {
-    if ( isUIElement( e.target ) ) return;
+    if ( isSharedUiElement( e.target ) ) return;
     const coords = getCanvasCoords( e );
     const clickedObject = findObjectAtPoint( coords.x, coords.y );
     if ( clickedObject && clickedObject.type === "text" ) {
@@ -406,7 +398,7 @@ function handleBlur(): void {
 
 function initWindowResize(): void {
     window.addEventListener( "resize", () => {
-        const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+        const activePage = getActivePage();
         document.documentElement.style.setProperty( "--zoom", ( state.zoomNum / state.zoomDen ).toString() );
         if ( activePage?.infinite ) {
             resizeActivePage( window.innerWidth, window.innerHeight );

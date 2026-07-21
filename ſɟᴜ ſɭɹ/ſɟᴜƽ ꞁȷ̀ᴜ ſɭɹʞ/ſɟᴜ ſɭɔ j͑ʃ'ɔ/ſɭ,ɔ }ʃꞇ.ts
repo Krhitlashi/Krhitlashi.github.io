@@ -228,8 +228,8 @@ export function initActions(): void {
         { id: "clearSelected", onClick: clearSelected },
         { id: "rotateLeft", onClick: () => rotateSelected( -Math.PI / 0o12 ) },
         { id: "rotateRight", onClick: () => rotateSelected( Math.PI / 0o12 ) },
-        { id: "moveLayerUp", onClick: moveSelectedLayerUp },
-        { id: "moveLayerDown", onClick: moveSelectedLayerDown },
+        { id: "moveLayerUp", onClick: () => moveSelectedLayer( 1 ) },
+        { id: "moveLayerDown", onClick: () => moveSelectedLayer( -1 ) },
         { id: "flipH", onClick: () => flipSelected( "h" ) },
         { id: "flipV", onClick: () => flipSelected( "v" ) },
         { id: "bringFront", onClick: bringToFront },
@@ -348,28 +348,22 @@ function rotateSelected( angle: number ): void {
     saveState();
 }
 
-function moveSelectedLayerUp(): void {
+/**
+ * Move the sole selected object within the object list by one slot.
+ *     direction ( number ) - +1 swaps forward, -1 swaps backward.
+ * No-op when nothing / multi-selection or when already at the edge.
+ */
+function moveSelectedLayer( direction: number ): void {
     if ( objectState.selected.length !== 1 ) return;
     const obj = objectState.selected[ 0 ];
     const index = objectState.objects.indexOf( obj );
-    if ( index < objectState.objects.length - 1 ) {
-        [ objectState.objects[ index ], objectState.objects[ index + 1 ] ] =
-            [ objectState.objects[ index + 1 ], objectState.objects[ index ] ];
-        redrawCanvas();
-        saveState();
-    }
-}
+    const swapIndex = index + direction;
+    if ( swapIndex < 0 || swapIndex >= objectState.objects.length ) return;
 
-function moveSelectedLayerDown(): void {
-    if ( objectState.selected.length !== 1 ) return;
-    const obj = objectState.selected[ 0 ];
-    const index = objectState.objects.indexOf( obj );
-    if ( index > 0 ) {
-        [ objectState.objects[ index ], objectState.objects[ index - 1 ] ] =
-            [ objectState.objects[ index - 1 ], objectState.objects[ index ] ];
-        redrawCanvas();
-        saveState();
-    }
+    [ objectState.objects[ index ], objectState.objects[ swapIndex ] ] =
+        [ objectState.objects[ swapIndex ], objectState.objects[ index ] ];
+    redrawCanvas();
+    saveState();
 }
 
 function flipSelected( axis: "h" | "v" ): void {

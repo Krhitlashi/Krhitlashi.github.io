@@ -9,6 +9,8 @@ import {
     WhiteboardObject, Page, setActiveCanvas
 } from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
 
+import { pageManager } from "./ɭʃᴜ }ʃɔƽ.js";
+
 import {
     drawShapePath, drawPathSegments,
     getCenterX, getCenterY, getHandles,
@@ -25,6 +27,21 @@ import {
 // These lightweight wrappers provide backward compatibility.
 export function getCurrentCanvas(): HTMLCanvasElement | null { return canvas; }
 export function getCurrentCtx(): CanvasRenderingContext2D | null { return ctx; }
+
+/**
+ * Return the currently active page, or undefined if none exists.
+ * Wraps pageManager.getActive() so callers do not need to import PageManager directly.
+ */
+export function getActivePage(): Page | undefined {
+    return pageManager.getActive();
+}
+
+/**
+ * Return whether the currently active page is in infinite (full-whiteboard) mode.
+ */
+export function isActivePageInfinite(): boolean {
+    return getActivePage()?.infinite === true;
+}
 
 export function getPageWidth( page: Page | undefined ): number {
     if ( page?.infinite ) return window.innerWidth;
@@ -55,7 +72,7 @@ export function updateCanvasSizeDisplay(): void {
     if ( canvas && widthInput ) widthInput.value = canvas.width.toString();
     if ( canvas && heightInput ) heightInput.value = canvas.height.toString();
     if ( canvas ) {
-        const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+        const activePage = getActivePage();
         let activePreset = "custom";
         if ( activePage?.infinite ) {
             activePreset = "full";
@@ -121,7 +138,7 @@ export function switchToPageCanvas( page: Page ): void {
 }
 
 export function syncPageObjects(): void {
-    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    const activePage = getActivePage();
     if ( activePage ) activePage.objects = [ ...objectState.objects ];
 }
 
@@ -161,21 +178,13 @@ export function drawWhiteboardGrid( ctx: CanvasRenderingContext2D, width: number
 }
 
 /**
- * Check whether the active page is in full/whiteboard mode.
- */
-function isActivePageInfinite(): boolean {
-    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
-    return activePage?.infinite === true;
-}
-
-/**
  * Clamp pan offset for non-infinite pages so the canvas always stays
  * at least partially visible within the viewport.
  * When the canvas fits entirely, it stays fully visible.
  * When zoomed in past the viewport, limits the scroll extent.
  */
 function clampPanForPage( panX: number, panY: number ): { x: number; y: number } {
-    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    const activePage = getActivePage();
     if ( !activePage || activePage.infinite || !canvas ) return { x: panX, y: panY };
 
     const zoom = state.zoomNum / state.zoomDen;
@@ -244,7 +253,7 @@ export function syncPanToCSS(): void {
  * Call before draw calls, and finishPan after.
  */
 export function beginPanTranslation(): void {
-    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    const activePage = getActivePage();
     if ( activePage?.infinite && ctx && ( panState.offsetX !== 0 || panState.offsetY !== 0 ) ) {
         ctx.save();
         ctx.translate( panState.offsetX, panState.offsetY );
@@ -255,7 +264,7 @@ export function beginPanTranslation(): void {
  * End pan-aware drawing context.
  */
 export function endPanTranslation(): void {
-    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    const activePage = getActivePage();
     if ( activePage?.infinite && ctx && ( panState.offsetX !== 0 || panState.offsetY !== 0 ) ) {
         ctx.restore();
     }
@@ -266,7 +275,7 @@ export function endPanTranslation(): void {
 export function redrawCanvas(): void {
     if ( !ctx || !canvas ) return;
     
-    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    const activePage = getActivePage();
     if ( activePage?.infinite ) {
         drawWhiteboardGrid( ctx, canvas.width, canvas.height );
     } else {
@@ -288,7 +297,7 @@ export function redrawCanvas(): void {
 }
 
 export function resizeActivePage( width: number, height: number ): void {
-    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    const activePage = getActivePage();
     if ( !activePage || !canvas ) return;
 
     if ( activePage.infinite ) {
@@ -357,7 +366,7 @@ function drawObject( obj: WhiteboardObject ): void {
             ctx.stroke();
             break;
         case "text":
-            ctx.font = `${obj.size}px "ı],ᴜ }ʃᴜ", sans-serif`;
+            ctx.font = `${obj.size}px "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ", sans-serif`;
             if ( obj.useHtmlText ) drawCachedText( ctx, obj );
             else ctx.fillText( obj.text || "", obj.x!, obj.y! );
             break;

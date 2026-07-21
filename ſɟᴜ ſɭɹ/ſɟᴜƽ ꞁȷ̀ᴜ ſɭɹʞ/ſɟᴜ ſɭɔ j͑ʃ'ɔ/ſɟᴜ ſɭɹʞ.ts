@@ -22,8 +22,11 @@ import {
 
 import {
     redrawCanvas, applyObjectTransform, saveState,
-    getCurrentCtx, beginPanTranslation, endPanTranslation
+    getCurrentCtx, beginPanTranslation, endPanTranslation,
+    getActivePage
 } from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
+
+import { computeShapeRadii } from "./ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
 
 export function updateTransformControls(): void {
     const controls = document.getElementById( "transformControls" );
@@ -155,7 +158,7 @@ export function getCanvasCoords( e: TouchOrMouseEvent ): Point {
     
     // For infinite pages, convert from canvas-pixel to world coordinates
     // (since redrawCanvas translates context by +pan when drawing objects)
-    const activePage = pageState.pages.find( p => p.id === pageState.activeId );
+    const activePage = getActivePage();
     if ( activePage?.infinite ) {
         return { x: cpX - panState.offsetX, y: cpY - panState.offsetY };
     }
@@ -506,9 +509,7 @@ export function drawSelectionRect(): void {
         { x: rect.x + rect.width - 0o4, y: rect.y + rect.height - 0o4 }
     ] );
 
-    const minDimension = Math.min( rect.width, rect.height );
-    const largeRadius = minDimension / 0o3;
-    const smallRadius = minDimension / 0o14;
+    const { largeRadius, smallRadius } = computeShapeRadii( Math.min( rect.width, rect.height ) );
 
     ctx.save();
     ctx.strokeStyle = colors.stroke;
@@ -552,14 +553,16 @@ export function drawHoverEffect( obj: WhiteboardObject ): void {
 
 // ⟪ Duplicate, Copy, Paste 📋 ⟫
 
-export function duplicateSelectedObjects(): void {
-    if ( objectState.selected.length === 0 ) return;
-
-    const newObjects: WhiteboardObject[] = [];
-    const offset = 0o20;
-
-    objectState.selected.forEach( obj => {
-        const newObj = JSON.parse( JSON.stringify( obj ) );
+/**
+ * Deep-clone each object, assign a fresh id, and shift every coordinate by `offset`.
+ * Shared between duplicate and paste to keep offset behaviour in lock-step.
+ *     sources ( WhiteboardObject[] ) - objects to clone.
+ *     offset ( number ) - pixel offset along both axes.
+ * Returns array of new cloned objects ( not yet pushed ).
+ */
+function cloneAndOffsetObjects( sources: WhiteboardObject[], offset: number ): WhiteboardObject[] {
+    return sources.map( obj => {
+        const newObj: WhiteboardObject = JSON.parse( JSON.stringify( obj ) );
         newObj.id = generateId();
 
         if ( newObj.x !== undefined ) newObj.x += offset;
@@ -572,14 +575,25 @@ export function duplicateSelectedObjects(): void {
             newObj.points = newObj.points.map( ( p: Point ) => ( { x: p.x + offset, y: p.y + offset } ) );
         }
 
-        objectState.objects.push( newObj );
-        newObjects.push( newObj );
+        return newObj;
     } );
+}
 
+/**
+ * Push cloned objects into objectState.objects and select them.
+ * Centralises the duplicate/paste side-effects ( selection, redraw, save ).
+ */
+function commitClonedObjects( newObjects: WhiteboardObject[] ): void {
+    newObjects.forEach( obj => objectState.objects.push( obj ) );
     objectState.selected = newObjects;
     updateTransformControls();
     redrawCanvas();
     saveState();
+}
+
+export function duplicateSelectedObjects(): void {
+    if ( objectState.selected.length === 0 ) return;
+    commitClonedObjects( cloneAndOffsetObjects( objectState.selected, 0o20 ) );
 }
 
 export function copySelectedObjects(): void {
@@ -589,30 +603,5 @@ export function copySelectedObjects(): void {
 
 export function pasteObjects(): void {
     if ( clipboardState.objects.length === 0 ) return;
-
-    const newObjects: WhiteboardObject[] = [];
-    const offset = 0o20;
-
-    clipboardState.objects.forEach( obj => {
-        const newObj = JSON.parse( JSON.stringify( obj ) );
-        newObj.id = generateId();
-
-        if ( newObj.x !== undefined ) newObj.x += offset;
-        if ( newObj.y !== undefined ) newObj.y += offset;
-        if ( newObj.x1 !== undefined ) newObj.x1 += offset;
-        if ( newObj.y1 !== undefined ) newObj.y1 += offset;
-        if ( newObj.x2 !== undefined ) newObj.x2 += offset;
-        if ( newObj.y2 !== undefined ) newObj.y2 += offset;
-        if ( newObj.points ) {
-            newObj.points = newObj.points.map( ( p: Point ) => ( { x: p.x + offset, y: p.y + offset } ) );
-        }
-
-        objectState.objects.push( newObj );
-        newObjects.push( newObj );
-    } );
-
-    objectState.selected = newObjects;
-    updateTransformControls();
-    redrawCanvas();
-    saveState();
+    commitClonedObjects( cloneAndOffsetObjects( clipboardState.objects, 0o20 ) );
 }
