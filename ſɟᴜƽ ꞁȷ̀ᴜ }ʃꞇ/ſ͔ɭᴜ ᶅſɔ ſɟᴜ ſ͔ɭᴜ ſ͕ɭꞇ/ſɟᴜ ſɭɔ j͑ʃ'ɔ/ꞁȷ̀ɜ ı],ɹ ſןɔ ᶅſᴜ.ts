@@ -78,9 +78,9 @@ const SUFFIX_AFFIXES: Record<string, [string, string]> = {
     "SU": [ "j͑ʃᴜꞇ", "ꞁȷ̀ᴜꞇ" ],
     "AL": [ "j͐ʃ", "ꞁȷ̀ᴜͷ̗" ],
     "ANI": [ "}ʃꞇ", "ꞁȷ̀ᴜ }ʃꞇ" ],
-    "ANU": [ "}ʃᴜ", "ꞁȷ̀ᴜ }ʃᴜ" ],
+    "ANU": [ "}ʃw", "ꞁȷ̀ᴜ }ʃw" ],
     "KOZ": [ "ſɭɜƴ", "ꞁȷ̀ɜƴ" ],
-    "STIF": [ "j͑ʃƨꞇʞ", "j͑ʃƨꞇʞ" ],
+    "STIF": [ "j͑ʃƨꞇʞ", "ɭʃꞇʞ" ],
 };
 
 // ⟨ Affix Translations 🔤 ⟩
@@ -145,37 +145,33 @@ const registry = new StructureRegistry();
 
 // ⟪ Phonology Helpers 🔤 ⟫
 
-/**
- * Check if word is vowel-initial.
- * @param word - Word to check.
- * @returns True if vowel-initial.
- */
+/** Check if word is vowel-initial.
+ *     @param word ( string , required ) - Word to check.
+ * @returns boolean */
 function isVowelInitial(word: string): boolean {
-    if (!word || !word.trim()) {
+    if ( !word || !word.trim() ) {
         return false;
     }
     const stripped = word.trim();
-    if (stripped.startsWith("ꞁȷ̀")) {
+    if ( stripped.startsWith("ꞁȷ̀") ) {
         return true;
     }
     return IIKRHIA_VOWELS.includes(stripped[0]);
 }
 
-/**
- * Check if word ends with a vowel sound.
- * @param word - Word to check.
- * @returns True if vowel-final.
- */
+/** Check if word ends with a vowel sound.
+ *     @param word ( string , required ) - Word to check.
+ * @returns boolean */
 function isVowelFinal(word: string): boolean {
-    if (!word) {
+    if ( !word ) {
         return true;
     }
     const stripped = word.trimEnd();
-    if (!stripped) {
+    if ( !stripped ) {
         return true;
     }
-    for (const coda of CODAS) {
-        if (stripped.endsWith(coda)) {
+    for ( const coda of CODAS ) {
+        if ( stripped.endsWith(coda) ) {
             return false;
         }
     }
@@ -267,20 +263,18 @@ function applyVerbModifiers(verb: WordEntry, options: VerbModifierOptions = {}):
         }
     }
 
-    if (!appliedModality) {
-        if (affix) {
-            verbForm = applyAffix(verbForm, affix);
-            if (PREFIX_AFFIXES[affix]) {
-                appliedPrefix = affix;
-            } else if (SUFFIX_AFFIXES[affix]) {
-                appliedSuffix = affix;
-            }
-        } else if (randomAffix) {
-            const affixes = ["L6R", "B6N"];
-            const selectedAffix = affixes[Math.floor(Math.random() * affixes.length)];
-            verbForm = applyAffix(verbForm, selectedAffix);
-            appliedPrefix = selectedAffix;
+    if (affix) {
+        verbForm = applyAffix(verbForm, affix);
+        if (PREFIX_AFFIXES[affix]) {
+            appliedPrefix = affix;
+        } else if (SUFFIX_AFFIXES[affix]) {
+            appliedSuffix = affix;
         }
+    } else if (randomAffix) {
+        const affixes = ["L6R", "B6N"];
+        const selectedAffix = affixes[Math.floor(Math.random() * affixes.length)];
+        verbForm = applyAffix(verbForm, selectedAffix);
+        appliedPrefix = selectedAffix;
     }
 
     if (addIntensifier) {
@@ -312,15 +306,15 @@ function applyVerbModifiers(verb: WordEntry, options: VerbModifierOptions = {}):
  * @returns Word with affix applied.
  */
 function applyAffix(word: string, affixType: string): string {
-    if (!word) return word;
+    if ( !word ) return word;
 
-    if (PREFIX_AFFIXES[affixType]) {
+    if ( PREFIX_AFFIXES[affixType] ) {
         const [vowelForm, consonantForm] = PREFIX_AFFIXES[affixType];
         const form = isVowelInitial(word) ? vowelForm : consonantForm;
         return `${form} ${word}`;
     }
 
-    if (SUFFIX_AFFIXES[affixType]) {
+    if ( SUFFIX_AFFIXES[affixType] ) {
         const [vowelForm, consonantForm] = SUFFIX_AFFIXES[affixType];
         const form = isVowelFinal(word) ? vowelForm : consonantForm;
         return `${word} ${form}`;
@@ -348,11 +342,11 @@ function isAdjectivizingAffix(affixType: string): boolean {
  * @returns True if word has adjectivizing prefix.
  */
 function hasAdjectivizingPrefix(word: string, wordEntry: WordEntry | null = null): boolean {
-    if (!word) return false;
+    if ( !word ) return false;
 
-    for (const prefix of Object.keys(ADJECTIVIZING_PREFIXES)) {
+    for ( const prefix of Object.keys(ADJECTIVIZING_PREFIXES) ) {
         const [vowelForm, consonantForm] = PREFIX_AFFIXES[prefix];
-        if (word.startsWith(vowelForm + " ") || word.startsWith(consonantForm + " ")) {
+        if ( word.startsWith(vowelForm + " ") || word.startsWith(consonantForm + " ") ) {
             return true;
         }
     }
@@ -368,9 +362,9 @@ function hasAdjectivizingPrefix(word: string, wordEntry: WordEntry | null = null
  * @returns "passive" if on verb, "adjectivizer" if on non-verb, "none" if no L6R.
  */
 function getL6RUsage(word: string | null, wordEntry: WordEntry | null): string {
-    if (!word) return "none";
+    if ( !word ) return "none";
     const [l6rVowel, l6rConsonant] = PREFIX_AFFIXES["L6R"];
-    if (word.startsWith(l6rVowel + " ") || word.startsWith(l6rConsonant + " ")) {
+    if ( word.startsWith(l6rVowel + " ") || word.startsWith(l6rConsonant + " ") ) {
         return isVerb(wordEntry) ? "passive" : "adjectivizer";
     }
     return "none";
@@ -523,11 +517,11 @@ function selectNonIikrhiaTranslation(transParts: string[]): string {
  * @returns Normalized POS tag.
  */
 function determinePos(posText: string): string {
-    if (!posText) return "Noun";
+    if ( !posText ) return "Noun";
     const pos = posText.trim();
 
-    const match = pos.match(/\((\w+)\)$/);
-    if (match) {
+    const match = pos.match( /\((\w+)\)$/ );
+    if ( match ) {
         return match[1];
     }
 
@@ -539,8 +533,8 @@ function determinePos(posText: string): string {
         "Noun": "Noun"
     };
 
-    for (const [key, value] of Object.entries(POS_MAP)) {
-        if (pos === key || pos.endsWith(` (${key})`)) {
+    for ( const [ key, value ] of Object.entries(POS_MAP) ) {
+        if ( pos === key || pos.endsWith( ` (${key})` ) ) {
             return value;
         }
     }
@@ -557,7 +551,7 @@ function parseDictionaryFromHTML(htmlContent: string): WordEntry[] {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, "text/html");
     const table = doc.getElementById("kef");
-    if (!table) {
+    if ( !table ) {
         console.warn("Dictionary table not found");
         return [];
     }
@@ -565,22 +559,22 @@ function parseDictionaryFromHTML(htmlContent: string): WordEntry[] {
     const rows = table.querySelectorAll("tbody tr");
     const words: WordEntry[] = [];
 
-    rows.forEach((row, idx) => {
+    rows.forEach(( row, idx ) => {
         const cells = row.querySelectorAll("td");
-        if (cells.length < 3) return;
+        if ( cells.length < 3 ) return;
 
         const wordText = cells[0].textContent?.trim() || "";
         const translationText = cells[1].textContent?.trim() || "";
         const posText = cells[2].textContent?.trim() || "";
 
-        if (!wordText || wordText === "NaN") return;
+        if ( !wordText || wordText === "NaN" ) return;
 
-        const wordParts = wordText.split("｡").map(p => p.trim()).filter(p => p);
-        const transParts = translationText.split("｡").map(p => p.trim()).filter(p => p);
+        const        wordParts = wordText.split("｡").map(p => p.trim()).filter(p => p);
+        const        transParts = translationText.split("｡").map(p => p.trim()).filter(p => p);
 
         const pos = determinePos(posText);
 
-        wordParts.forEach((wordPart) => {
+        wordParts.forEach(( wordPart ) => {
             const trans = selectNonIikrhiaTranslation(transParts);
             words.push({
                 gawekiif: wordPart,
@@ -588,8 +582,8 @@ function parseDictionaryFromHTML(htmlContent: string): WordEntry[] {
                 pos,
                 row_index: idx
             });
-        });
-    });
+        } );
+    } );
 
     return words;
 }
@@ -1142,7 +1136,7 @@ function maybeApplyModifier(
     skipIfVerbAffix: boolean = false
 ): SentenceBuilder {
     if (Math.random() > 1 / 2) return builder;
-    if (skipIfVerbAffix && (builder.components.verbModifiers.modality || builder.components.verbModifiers.affix)) return builder;
+    if (skipIfVerbAffix && builder.components.verbModifiers.affix) return builder;
     return modifierFn(builder);
 }
 
@@ -1461,11 +1455,11 @@ function applyVerbAffixUnified(builder: SentenceBuilder, options: VerbAffixOptio
         skipIfVerbModified = true
     } = options;
 
-    if (skipIfVerbModified && (builder.components.verbModifiers.modality || builder.components.verbModifiers.affix)) {
+    if (skipIfVerbModified && builder.components.verbModifiers.affix) {
         return builder;
     }
 
-    builder.setVerb(builder.components.verb!, affixType);
+    builder.setVerb(builder.components.verb!, affixType, builder.components.verbModifiers.modality, builder.components.verbModifiers.negated);
     return builder;
 }
 
@@ -1553,7 +1547,7 @@ function maybeAddCoordinatedElementsUnified(builder: SentenceBuilder): SentenceB
 function maybeAddUnifiedVNModifier(builder: SentenceBuilder): SentenceBuilder {
     return maybeApplyModifier(builder, (b) => {
         const addVerbAffix = Math.random() > 1 / 2;
-        const addModality = !addVerbAffix && Math.random() > 1 / 2;
+        const addModality = Math.random() > 1 / 2;
         const addIntensifier = Math.random() > 1 / 2;
         const addVerbAdjectives = Math.random() > 1 / 2;
         const addNounAdjectives = Math.random() > 1 / 2;

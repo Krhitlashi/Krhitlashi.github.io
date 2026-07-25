@@ -127,7 +127,7 @@ sak {
 		transform: scale(1);
 	}
 }
-.kobe {
+.kobe, *[lang="aih"] .kogawee25e {
 	display: none !important;
 }
 

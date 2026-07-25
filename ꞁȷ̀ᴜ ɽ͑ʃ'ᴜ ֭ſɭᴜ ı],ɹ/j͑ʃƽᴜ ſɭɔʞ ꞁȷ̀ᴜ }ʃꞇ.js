@@ -10,7 +10,7 @@ skakefani.en = {
     "ſɭɹ ſᶘɔ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ": "All Sentences",
     "ſɭɹ ſᶘɔ }ʃꞇ": "Everything ❇️",
 
-    "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ j͑ʃ'ɜ ſןɹ": "Aravopii 📚",
+    "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ j͑ʃ'ɜ ſןɹ ( ſɭɔ˞ᴜ ſɭᴜ )": "Aravopii 📚",
     "ꞁȷ̀ɹ ſɭˬɔ": "Iikrhia ❄️",
     "ꞁȷ̀ᴜ ɭl̀ɹ j͑ʃᴜ ſɭˬꞇ": "Aisiakrhi",
     "ɭ(ᴜͷ̗ ſɭɹ ꞁȷ̀ɔ }ʃꞇ ſᶘɜ ֭ſɭꞇ": "Hashe Kiipii e Iikrhia ( Dalkii e Nitsohi OS )",
@@ -19,6 +19,7 @@ skakefani.en = {
     "ɭʃᴜ ֭ſɭᴜȝ ( ſɭɔ˞ᴜ ſɭᴜ )": "Images 🖼️",
     "ɭʃᴜ ֭ſɭᴜȝ": "Images",
     "j͐ʃᴜ ſɟᴜ": "Icons",
+    "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ j͑ʃ'ɜ ſןɹ": "Aravopii",
 
     "ꞁȷ̀ᴜ ſȷw": "Poems 📕",
     "ſןw ſȷᴜ ɭʃᴜ ꞁȷ̀ɹ ʃᴜ }ʃw ⚫ 👁️": "Close My Eyes ⚫ 👁️",
@@ -39,6 +40,7 @@ skakefani.en = {
     "֭ſɭɔ }ʃɔ ı],ɜ": "Introduction ⏺️",
     "ı],ɹ ŋᷠɔ ſɭᴜ ɭl̀ɹ }ʃɔ": "Shumekayne",
     "ſɭ,ɔ ŋᷠɹ ɽ͑ʃ'ꞇɔ˞": "Belief Systems",
+    "j͑ʃɔ ſȷэⅎ }ʃᴜ j͐ʃᴜ ( j͑ʃɜ ſɭ,ɜ ɭl̀ɜ )": "New World ( Soroyo )",
 
     "֭ſɭᴜ ɭʃɔ": "Groups 4️⃣",
     "j͑ʃᴜȝ": "West",
