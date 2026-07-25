@@ -121,6 +121,7 @@ function iibaThala(bana2bakano, ariiba) {
     const thalaKek = ariiba.querySelectorAll("thala");
     const huzKsakaKek = ariiba.querySelectorAll(":scope > p.ksakap2sa");
     const huzSakKek = ariiba.querySelectorAll(":scope > sak");
+    const huzCa12naKek = ariiba.querySelectorAll(":scope > a, :scope > button");
     
     if ( bana2bakano === "" ) {
         thalaKek.forEach(thala => {
@@ -139,6 +140,9 @@ function iibaThala(bana2bakano, ariiba) {
         });
         huzSakKek.forEach(sak => {
             sak.style.display = "";
+        });
+        huzCa12naKek.forEach(ca12na => {
+            ca12na.style.display = "";
         });
         return;
     }
@@ -208,6 +212,14 @@ function iibaThala(bana2bakano, ariiba) {
             thala.style.display = "";
         } else {
             thala.style.display = "none";
+        }
+    });
+    
+    huzCa12naKek.forEach(ca12na => {
+        if ( ca12na.textContent.toLowerCase().includes(bana2bakano) ) {
+            ca12na.style.display = "";
+        } else {
+            ca12na.style.display = "none";
         }
     });
     
