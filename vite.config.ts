@@ -47,7 +47,7 @@ const copyStaticFilesPlugin = {
         
         if ( entry.isDirectory() ) {
           findStaticFiles(fullPath, files);
-        } else if ( entry.isFile() && (entry.name.endsWith(".js") || entry.name.endsWith(".txt")) ) {
+        } else if ( entry.isFile() && (entry.name.endsWith(".js") || entry.name.endsWith(".txt") || entry.name.endsWith(".css")) ) {
           files.push(fullPath);
         }
       }
