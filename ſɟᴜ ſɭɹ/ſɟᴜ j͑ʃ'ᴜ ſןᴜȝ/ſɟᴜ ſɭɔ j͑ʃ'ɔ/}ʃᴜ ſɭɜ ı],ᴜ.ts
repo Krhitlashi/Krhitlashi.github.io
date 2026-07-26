@@ -10,12 +10,12 @@ import * as THREE from "three";
 /**
  * Identifier for each supported shape.
  */
-export type ShapeId = "cube" | "slab" | "wedge" | "panel" | "pillar";
+export type ShapeId = "cube" | "slab" | "wedge" | "panel" | "pillar" | "cylinder";
 
 /**
  * Description of a shape.
- *     id ( ShapeId ) - shape id.
- *     name ( string ) - display name.
+ *     @param id ( ShapeId ) - shape id.
+ *     @param name ( string ) - display name.
  */
 export interface ShapeDef {
     id: ShapeId;
@@ -31,7 +31,8 @@ export const SHAPES: ShapeDef[] = [
     { id: "slab", name: "Slab" },
     { id: "panel", name: "Panel" },
     { id: "pillar", name: "Pillar" },
-    { id: "wedge", name: "Wedge" }
+    { id: "wedge", name: "Wedge" },
+    { id: "cylinder", name: "Cylinder" }
 ];
 
 /**
@@ -68,8 +69,8 @@ const PILLAR_IDS: ReadonlySet<number> = new Set([
 /**
  * Map a Minecraft legacy numeric block id to the shape it should render with.
  * Blocks without a special shape fall back to the cube.
- *     id ( number ) - minecraft numeric block id.
- * Returns ShapeId.
+ *     @param id ( number ) - minecraft numeric block id.
+ * @returns ShapeId
  */
 export function shapeForBlockId( id: number ): ShapeId {
     if ( SLAB_IDS.has(id) ) return "slab";
@@ -81,19 +82,21 @@ export function shapeForBlockId( id: number ): ShapeId {
 /**
  * Build a geometry for the given shape, centered at the origin and sized to
  * fill a 1x1x1 cell ( half extents of 0.5 ).
- *     shape ( ShapeId ) - shape id.
- * Returns BufferGeometry.
+ *     @param shape ( ShapeId ) - shape id.
+ * @returns BufferGeometry
  */
 export function buildShapeGeometry(shape: ShapeId): THREE.BufferGeometry {
     switch (shape) {
         case "slab":
-            return new THREE.BoxGeometry(1, 0.5, 1).translate(0, -0.25, 0);
+            return new THREE.BoxGeometry(1, ( 1 / 2 ), 1).translate(0, -( 1 / 4 ), 0);
         case "panel":
-            return new THREE.BoxGeometry(1, 1, 0.125).translate(0, 0, 0.4375);
+            return new THREE.BoxGeometry(1, 1, ( 1 / 8 )).translate(0, 0, ( 7 / 16 ));
         case "pillar":
-            return new THREE.BoxGeometry(0.5, 1, 0.5);
+            return new THREE.BoxGeometry(( 1 / 2 ), 1, ( 1 / 2 ));
         case "wedge":
             return buildWedgeGeometry();
+        case "cylinder":
+            return new THREE.CylinderGeometry(( 1 / 2 ), ( 1 / 2 ), 1, 0o30);
         case "cube":
         default:
             return new THREE.BoxGeometry(1, 1, 1);
@@ -103,7 +106,7 @@ export function buildShapeGeometry(shape: ShapeId): THREE.BufferGeometry {
 /**
  * Build a triangular prism ( wedge / stairs ) that occupies the lower half on
  * one side and rises to the top on the opposite side.
- * Returns BufferGeometry.
+ * @returns BufferGeometry
  */
 function buildWedgeGeometry(): THREE.BufferGeometry {
     const shape = new THREE.Shape();

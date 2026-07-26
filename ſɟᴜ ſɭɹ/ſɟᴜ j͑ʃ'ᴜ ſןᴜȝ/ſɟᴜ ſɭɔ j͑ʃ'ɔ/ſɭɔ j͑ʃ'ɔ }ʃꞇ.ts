@@ -5,7 +5,7 @@
  */
 
 import * as THREE from "three";
-import { OrbitControls } from "three/addons";
+import { OrbitControls, TransformControls } from "three/addons";
 import { initSharedToolbar } from "../../}ʃɹ ɭʃᴜ j͑ʃɔ }ʃw j͑ʃᴜ ſɭᴜ ŋᷠᴜ.js";
 import { MINECRAFT_BLOCKS, type MinecraftBlock } from "./ſɭw ʃᴜ ɽ͑ʃ'w j͑ʃ'ᴜ.js";
 import {
@@ -22,20 +22,20 @@ import { BackgroundManager, type BackgroundMode } from "./ꞁȷ̀ɹ ɭʃɹͷ̗.j
 
 /**
  * Editing mode.
- *     minecraft ( string ) - restricted to minecraft blocks and their palette.
- *     general ( string ) - free 3D editing with custom colors.
+ *     @param minecraft ( string ) - restricted to minecraft blocks and their palette.
+ *     @param general ( string ) - free 3D editing with custom colors.
  */
 type EditMode = "minecraft" | "general";
 
 /**
  * Block data structure
- *     position ( object ) - x, y, z coordinates.
- *     color ( string ) - hex color ( fallback / display ).
- *     id ( string ) - unique identifier.
- *     blockId ( number ) - minecraft numeric block id.
- *     name ( string ) - minecraft block name.
- *     shape ( string ) - shape id.
- * Returns block.
+ *     @param position ( object ) - x, y, z coordinates.
+ *     @param color ( string ) - hex color ( fallback / display ).
+ *     @param id ( string ) - unique identifier.
+ *     @param blockId ( number ) - minecraft numeric block id.
+ *     @param name ( string ) - minecraft block name.
+ *     @param shape ( string ) - shape id.
+ * @returns block
  */
 interface BlockData {
     position: { x: number; y: number; z: number };
@@ -45,18 +45,28 @@ interface BlockData {
     name: string;
     shape: ShapeId;
     rotation: number;
+    // Per-axis scale. Defaults to {1, 1, 1}; persisted so save/load round
+    // trips preserve resized blocks. Optional so legacy snapshots without
+    // the field keep working.
+    scale?: { x: number; y: number; z: number };
 }
 
 /**
  * History entry for undo/redo
- *     action ( string ) - add, remove, paint, move.
- *     block ( BlockData | null ) - block data.
- *     previousData ( BlockData | string | null ) - previous color for paint or previous position for move.
+ *     @param action ( string ) - add, remove, paint, paint-group, group, move, rotate.
+ *     @param block ( BlockData | null ) - block data.
+ *     @param previousData ( BlockData | BlockData[] | string | null ) - previous block data
+ *         for paint or move, or an array of snapshots for group operations.
  */
 interface HistoryEntry {
     action: string;
     block: BlockData | null;
-    previousData: BlockData | string | null;
+    previousData: BlockData | BlockData[] | string | null;
+    // Multi-block history entries ( gizmo-transform ) need somewhere to
+    // stash the post-transform state. We deliberately keep `block` typed
+    // as `BlockData | null` so the legacy `paint` / `move` handlers keep
+    // their narrow type assumption.
+    newData?: BlockData[];
 }
 
 /**
@@ -71,8 +81,8 @@ class BlockBuilderWorkspace {
     private raycaster: THREE.Raycaster;
     private mouse: THREE.Vector2;
     private gridHelper!: THREE.GridHelper;
-    private ground!: THREE.Mesh;
-    private blocks: Map<string, THREE.Mesh>;
+    private ground!: THREE.Mesh;    private blocks: Map<string, THREE.Mesh>;
+
     private borderGeometry: THREE.EdgesGeometry;
     private borderMaterial: THREE.LineBasicMaterial;
     private hoverBox!: THREE.Group;
@@ -105,6 +115,51 @@ class BlockBuilderWorkspace {
     private pendingRotation: number;
     private sceneryMesh!: THREE.Mesh;
     private backgroundManager: BackgroundManager;
+    private autoRotate: boolean;
+    private rotateSpeed: number;
+    private zoomSpeed: number;
+    private panSpeed: number;
+    private stepSize: number;
+    private groups: Map<string, THREE.Group>;
+    private groupCounter: number;
+    private selectionBounds: THREE.LineSegments | null;
+    private keysPressed: Set<string>;
+    private wasdSpeed: number;
+    // ── 3D gizmo (TransformControls) ────────────────────────────────
+    // A proxy Object3D that the gizmo attaches to. The gizmo can only
+    // manipulate one target, but selection is often many blocks. We park
+    // the proxy at the selection's bounding-box centre and translate /
+    // rotate each selected block relative to that centre when the gizmo
+    // changes.
+    // Three TransformControls attached to the same selection proxy; all
+    // three helpers ( translate / rotate / scale ) are shown
+    // simultaneously so the user can drag, rotate, and scale without
+    // mode-switching hotkeys. `dragging-changed` on any active TC
+    // suspends OrbitControls and snapshots selection state so each drag
+    // is one undoable multi-block operation.
+    private tcTranslate: TransformControls | null;
+    private tcRotate: TransformControls | null;
+    private tcScale: TransformControls | null;
+    // TransformControls itself is a Controls instance, not an Object3D, so
+    // it has no `.visible` flag. Each TC's helper Object3D IS in the
+    // scene graph, and we toggle THAT to show / hide the gizmo bundle.
+    private tcHelpers: Map<"translate" | "rotate" | "scale", THREE.Object3D>;
+    private selectionProxy!: THREE.Group;
+    private gizmoDragging: boolean;
+    private gizmoMode: "translate" | "rotate" | "scale";  // preserved for serialisation compat
+    // Snapshot of selection state captured the moment a gizmo drag
+    // begins, used both to compute incremental transforms while the
+    // user pulls the handle and to drive undo once the drag ends.
+    private gizmoDragStart: {
+        proxyPosition: THREE.Vector3;
+        proxyQuaternion: THREE.Quaternion;
+        blocks: Array<{ block: THREE.Mesh; position: THREE.Vector3; rotation: number; quaternion: THREE.Quaternion }>;
+    } | null;
+    // The screen-space drag plane used by the move / select tool. Built
+    // perpendicular to the camera at the moment of click, so dragging
+    // feels like the block is glued to the cursor (POV-based) instead of
+    // sliding along the world ground plane.
+    private dragPlane: THREE.Plane | null;
 
     constructor() {
         this.canvas = document.getElementById("workspace3dCanvas") as HTMLCanvasElement;
@@ -125,6 +180,11 @@ class BlockBuilderWorkspace {
         this.controls.enableDamping = true;
         this.controls.dampingFactor = ( 1 / 0o20 );
         this.controls.zoomToCursor = true;
+        this.controls.rotateSpeed = 1.0;
+        this.controls.zoomSpeed = 1.0;
+        this.controls.panSpeed = 1.0;
+        this.controls.autoRotate = false;
+        this.controls.autoRotateSpeed = 0;
         this.controls.mouseButtons = {
             LEFT: THREE.MOUSE.ROTATE,
             MIDDLE: THREE.MOUSE.DOLLY,
@@ -162,6 +222,33 @@ class BlockBuilderWorkspace {
         this.pendingToolAction = null;
         this.toolMouseDownPos = null;
         this.pendingRotation = 0;
+        this.autoRotate = false;
+        this.rotateSpeed = 1.0;
+        this.zoomSpeed = 1.0;
+        this.panSpeed = 1.0;
+        this.stepSize = 1;
+        this.groups = new Map();
+        this.groupCounter = 0;
+        this.selectionBounds = null;
+        this.keysPressed = new Set();
+        this.wasdSpeed = 5;
+        // Make sure dampingFactor lines up with the damping slider default
+        // ( slider value 10 / 0o100 = 0.15625 ) instead of the previous
+        // 1 / 0o20 = 0.0625 so tuned values do not jump at startup.
+        this.controls.dampingFactor = 0o10 / 0o100;
+
+        // Gizmo state defaults. The actual TransformControls instance and
+        // selection proxy are created in setupGizmo() once the scene exists,
+        // because TransformControls attaches pointer listeners to a DOM
+        // element and we want to do that in one tidy block.
+        this.tcTranslate = null;
+        this.tcRotate = null;
+        this.tcScale = null;
+        this.tcHelpers = new Map();
+        this.gizmoDragging = false;
+        this.gizmoMode = "translate";
+        this.gizmoDragStart = null;
+        this.dragPlane = null;
 
         // Initialise background manager ( scene background set inside )
         this.backgroundManager = new BackgroundManager(
@@ -174,6 +261,7 @@ class BlockBuilderWorkspace {
 
         // Default tool is "select", so show vertical grid initially
         this.verticalGridGroup.visible = true;
+        this.setupGizmo();
         this.setupEventListeners();
         this.setupUI();
         this.updateCameraInfo();
@@ -198,7 +286,7 @@ class BlockBuilderWorkspace {
         directionalLight.position.set(0o14, 0o20, 0o10);
         this.scene.add(directionalLight);
 
-        const skyLight = new THREE.HemisphereLight("#b0d8e0", "#608850", ( 5 / 8 ));
+        const skyLight = new THREE.HemisphereLight("#b0d8e0", "#608858", ( 5 / 8 ));
         this.scene.add(skyLight);
 
         this.scene.fog = new THREE.Fog("#b0d8e0", this.gridSize * ( 3 / 2 ), this.gridSize * ( 9 / 2 ));
@@ -253,13 +341,529 @@ class BlockBuilderWorkspace {
         this.verticalGridGroup.position.set( 0, hg, hg );
         this.verticalGridGroup.rotation.y = Math.PI;
         this.scene.add( this.verticalGridGroup );
+
+        // Selection proxy — the gizmo attaches to this group so multi-block
+        // selections can be transformed as one. We never add the proxy to
+        // `this.blocks`, so it stays purely a UI helper.
+        this.selectionProxy = new THREE.Group();
+        this.selectionProxy.name = "selectionProxy";
+        this.scene.add( this.selectionProxy );
     }
+
+    /**
+     * Create the TransformControls instance and wire up its events. The gizmo
+     * is invisible until something is selected AND the active tool is one
+     * where manipulation makes sense ( select / move ). `dragging-changed`
+     * suspends OrbitControls and snapshots selection state so the drag can be
+     * undone as a single multi-block entry. `objectChange` re-projects each
+     * selected block relative to the proxy so dragging a 3D handle moves or
+     * rotates every member of the selection around the proxy centre.
+     */
+    private setupGizmo(): void {
+        // Three TransformControls instances attached to the same
+        // `selectionProxy`. Only ONE helper is visible at a time, switched
+        // All three helpers are shown simultaneously; the active
+        // TC's `dragging-changed` pauses OrbitControls and snapshots
+        // selection state so each drag is one undoable operation.
+        const tcTranslate = new TransformControls( this.camera, this.renderer.domElement );
+        const tcRotate = new TransformControls( this.camera, this.renderer.domElement );
+        const tcScale = new TransformControls( this.camera, this.renderer.domElement );
+        tcTranslate.setMode( "translate" );
+        tcRotate.setMode( "rotate" );
+        tcScale.setMode( "scale" );
+        const tcs: TransformControls[] = [ tcTranslate, tcRotate, tcScale ];
+        for ( const tc of tcs ) {
+            const helper = ( tc as unknown as { getHelper?: () => THREE.Object3D } ).getHelper?.()
+                ?? ( tc as unknown as THREE.Object3D );
+            // Give each gizmo a distinct size so the handles do not
+            // visually overlap when stacked at the proxy centre.
+            // Translate ( arrows ) gets the largest, rotate ( rings )
+            // a step smaller, and scale ( cube ) the smallest.
+            const gizmoSize =
+                tc === tcTranslate ? ( 8 / 8 )
+                : tc === tcRotate ? ( 5 / 8 )
+                : ( 3 / 8 );
+            tc.setSize( gizmoSize );
+            tc.enabled = false;
+            helper.visible = false;
+            tc.attach( this.selectionProxy );
+            const mode: "translate" | "rotate" | "scale" =
+                tc === tcTranslate ? "translate"
+                : tc === tcRotate ? "rotate"
+                : "scale";
+            this.tcHelpers.set( mode, helper as THREE.Object3D );
+            this.scene.add( helper as THREE.Object3D );
+            tc.addEventListener( "dragging-changed", ( event: { value: unknown } ) => {
+                const dragging = event.value === true;
+                this.gizmoDragging = dragging;
+                if ( dragging ) {
+                    if ( !this.isColorInputFocused() ) {
+                        this.controls.enabled = false;
+                    }
+                    this.gizmoDragStart = this.snapshotSelectionForGizmo();
+                } else {
+                    if ( !this.isColorInputFocused() ) {
+                        this.controls.enabled = true;
+                    }
+                    if ( this.gizmoDragStart ) {
+                        this.commitGizmoTransform( this.gizmoDragStart );
+                        this.gizmoDragStart = null;
+                        // Re-sync the selection outlines and all three
+                        // helpers after the drag ends. The TC internals
+                        // may have detached or hidden some helpers during
+                        // the drag cycle, so we re-assert the expected
+                        // state here in the same frame. Centre the proxy
+                        // first so the TCs attach at the correct position.
+                        this.updateSelectionVisuals();
+                        this.attachAllGizmos();
+                    }
+                }
+            } );
+            tc.addEventListener( "change", () => {
+                // While the gizmo is being dragged, re-project selected
+                // blocks so the preview tracks the handle in real time.
+                if ( this.gizmoDragging ) {
+                    this.applyGizmoTransformLive();
+                }
+            } );
+        }
+        this.tcTranslate = tcTranslate;
+        this.tcRotate = tcRotate;
+        this.tcScale = tcScale;
+        // Default mode plus snap wiring so the gizmo is ready before the
+        // first selection appears.
+        this.attachAllGizmos();
+        this.updateGizmoSnaps();
+    }
+
+    /**
+     * Show all three TransformControls ( translate + rotate + scale )
+     * simultaneously on the selection proxy so the user can drag, rotate,
+     * and scale in one interaction without mode-switching hotkeys.
+     */
+    private attachAllGizmos(): void {
+        const hasSelection = this.selectedBlocks.length > 0;
+        for ( const [ mode, tc ] of [
+            [ "translate", this.tcTranslate ],
+            [ "rotate", this.tcRotate ],
+            [ "scale", this.tcScale ]
+        ] as Array<[ "translate" | "rotate" | "scale", TransformControls | null ]> ) {
+            if ( !tc ) continue;
+            const helper = this.tcHelpers.get( mode );
+            if ( hasSelection ) {
+                if ( helper ) helper.visible = true;
+                tc.enabled = true;
+                tc.attach( this.selectionProxy );
+            } else {
+                if ( helper ) helper.visible = false;
+                tc.enabled = false;
+                tc.detach();
+            }
+        }
+    }
+
+    /**
+     * Sync the active gizmo's snap step with the workspace's snap-toggle
+     * and step-size. The rotation and scale TCs get a direct snap value;
+     * the translation TC gets `null` because `setTranslationSnap` rounds
+     * the proxy's absolute position to multiples of the snap value, but
+     * blocks sit at half-integer grid centres ( 0.5, 1.5, 2.5… ) — the
+     * rounding produces integer positions, introducing a 0.5 offset.
+     * Instead we snap block positions manually inside
+     * `applyGizmoTransformLive` using the same `applySnap` helper that
+     * block-placement already uses.
+     */
+    private updateGizmoSnaps(): void {
+        // Rotation snap ( 45° ) and scale snap ( subdivision step ) can
+        // use the TC's built-in snap. Translation snap is handled in
+        // `applyGizmoTransformLive` to preserve the 0.5 cell offset.
+        const rotSnap = this.snapToGrid ? Math.PI / 4 : null;
+        const scSnap = this.snapToGrid ? 1 / Math.max( 0o1, this.stepSize ) : null;
+        if ( this.tcTranslate ) this.tcTranslate.setTranslationSnap( null );
+        if ( this.tcRotate ) this.tcRotate.setRotationSnap( rotSnap );
+        if ( this.tcScale ) this.tcScale.setScaleSnap( scSnap );
+    }
+
+    /**
+     * Capture the selection's pose just before a gizmo drag begins. We keep
+     * each member's position, rotation, quaternion, and scale so the live
+     * preview and the eventual history entry can replay the exact
+     * transform.
+     *     @returns snapshot for use during drag
+     */
+    private snapshotSelectionForGizmo(): {
+        proxyPosition: THREE.Vector3;
+        proxyQuaternion: THREE.Quaternion;
+        blocks: Array<{ block: THREE.Mesh; position: THREE.Vector3; rotation: number; quaternion: THREE.Quaternion }>;
+    } {
+        const blocks = this.selectedBlocks.map( ( block ) => ( {
+            block,
+            position: block.position.clone(),
+            rotation: ( block.userData.rotation as number ) ?? 0,
+            quaternion: block.quaternion.clone()
+        } ) );
+        return {
+            proxyPosition: this.selectionProxy.position.clone(),
+            proxyQuaternion: this.selectionProxy.quaternion.clone(),
+            blocks
+        };
+    }
+
+    /**
+     * Project the proxy's current transform onto each selected block while a
+     * gizmo drag is in progress. Translation simply offsets every block by
+     * the proxy's positional delta; rotation orbits each block's local
+     * offset around the proxy centre using the proxy's quaternion delta;
+     * scaling multiplies each block's offset by the proxy's per-axis
+     * scale and applies the same multiplier to the block's own scale.
+     *
+     * When `snapToGrid` is enabled the block's final position is rounded to
+     * the nearest valid grid position using `gizmoGridSnap`, which preserves
+     * the 0.5 cell-centre offset that `setTranslationSnap` cannot ( since
+     * the TC snap rounds to absolute multiples, producing integer positions
+     * that are 0.5 off from where blocks actually sit ).
+     *
+     * Important: this does NOT call `updateSelectionVisuals()`. That would
+     * be expensive (disposing/rebuilding edge geometries per frame) and it
+     * would also re-anchor the gizmo proxy, cancelling the user's drag.
+     * Instead the per-frame visual follow happens in `animate()`, which
+     * already slides the existing outline LineSegments to block positions.
+     */
+    private applyGizmoTransformLive(): void {
+        const start = this.gizmoDragStart;
+        if ( !start ) return;
+        const deltaPos = new THREE.Vector3().subVectors( this.selectionProxy.position, start.proxyPosition );
+        const deltaQuat = new THREE.Quaternion().copy( this.selectionProxy.quaternion ).multiply(
+            new THREE.Quaternion().copy( start.proxyQuaternion ).invert()
+        );
+        for ( const snap of start.blocks ) {
+            // Rotate the block's offset relative to the proxy centre by the
+            // proxy's rotation delta, then re-add the translated centre.
+            const offset = snap.position.clone().sub( start.proxyPosition );
+            offset.applyQuaternion( deltaQuat );
+            const desired = start.proxyPosition.clone().add( offset ).add( deltaPos );
+            // Manual grid snap that accounts for the 0.5 cell-centre offset
+            // that blocks always sit at. TC's built-in setTranslationSnap
+            // snaps to multiples of the snap value ( producing integer
+            // positions ), which is why we do it ourselves here.
+            if ( this.snapToGrid ) {
+                desired.x = this.gizmoGridSnap( desired.x );
+                desired.y = this.gizmoGridSnap( desired.y );
+                desired.z = this.gizmoGridSnap( desired.z );
+            }
+            snap.block.position.copy( desired );
+            snap.block.quaternion.copy( deltaQuat ).multiply( snap.quaternion );
+            snap.block.userData.rotation = this.extractYRotation( snap.block.quaternion );
+        }
+    }
+
+    /**
+     * Snap a coordinate to the nearest valid grid position for blocks.
+     * Blocks sit at cell centres, which are offset by 0.5 from integer grid
+     * lines.  The subdivision granularity is `1/stepSize`, so stepSize=1
+     * produces positions at 0.5, 1.5, 2.5… and stepSize=2 produces 0.5, 1.0,
+     * 1.5, 2.0, 2.5… ( half-grid precision ).
+     *     value ( number ) - world-space coordinate to snap.
+     * Returns snapped coordinate.
+     */
+    private gizmoGridSnap( value: number ): number {
+        const step = Math.max( 0o1, this.stepSize );
+        // Shift value by 0.5 so the rounded result lands on a half-grid
+        // centre, then shift back.
+        return Math.round( ( value - ( 1 / 2 ) ) * step ) / step + ( 1 / 2 );
+    }
+
+    /**
+     * Reduce a quaternion to a scalar rotation around the world Y axis. We
+     * only ever rotate cubic blocks in integer multiples of π/2, so a single
+     * scalar is enough to reconstruct the look during undo / redo.
+     *     @returns rotation in radians
+     */
+    private extractYRotation( quaternion: THREE.Quaternion ): number {
+        // Convert quaternion to Euler using YXZ order so the primary Y axis
+        // value stays the meaningful one even after small roll/pitch caused
+        // by quaternion normalisation drift.
+        const euler = new THREE.Euler().setFromQuaternion( quaternion, "YXZ" );
+        return euler.y;
+    }
+
+    /**
+     * Finalise a gizmo drag: push a single multi-block history entry so the
+     * user can undo the entire translation / rotation / scale in one step.
+     *     @param start ( snapshot ) - snapshot taken at the start of the drag.
+     */
+    private commitGizmoTransform( start: NonNullable<typeof this.gizmoDragStart> ): void {
+        // Determine which selection members actually changed so we avoid
+        // polluting history when the drag did not move anything ( e.g. user
+        // grabbed a handle but let go without dragging ).
+        const oldSnapshots: BlockData[] = [];
+        const newSnapshots: BlockData[] = [];
+        const threshold = 0.001;
+        for ( const snap of start.blocks ) {
+            // Skip members that were deleted mid-drag so we never reach
+            // into a freed mesh for material / userData. If the block is
+            // orphaned ( removed from the scene ) we simply skip it.
+            if ( !snap.block.parent ) continue;
+            const newPos = snap.block.position;
+            const moved = Math.abs( newPos.x - snap.position.x ) > threshold
+                || Math.abs( newPos.y - snap.position.y ) > threshold
+                || Math.abs( newPos.z - snap.position.z ) > threshold;
+            const oldRot = snap.rotation;
+            const newRot = ( snap.block.userData.rotation as number ) ?? oldRot;
+            const rotated = Math.abs( newRot - oldRot ) > 0.01;
+            if ( !moved && !rotated ) {
+                continue;
+            }
+            oldSnapshots.push( {
+                position: { x: snap.position.x, y: snap.position.y, z: snap.position.z },
+                color: this.getBlockColor( snap.block ),
+                id: this.blockKey( snap.position ),
+                blockId: snap.block.userData.blockId as number,
+                name: snap.block.userData.blockName as string,
+                shape: snap.block.userData.shape as ShapeId,
+                rotation: oldRot
+            } );
+            const p = snap.block.position;
+            newSnapshots.push( {
+                position: { x: p.x, y: p.y, z: p.z },
+                color: this.getBlockColor( snap.block ),
+                id: this.blockKey( p ),
+                blockId: snap.block.userData.blockId as number,
+                name: snap.block.userData.blockName as string,
+                shape: snap.block.userData.shape as ShapeId,
+                rotation: newRot
+            } );
+            // Mirror the rotation back into mesh.rotation.y ( which the rest
+            // of the renderer reads ) AND keep block.quaternion strictly in
+            // sync with the scalar rotation. Without the quaternion sync,
+            // the next gizmo drag would compile its delta from an outdated,
+            // drifted quaternion and visibly diverge from the cleaner Y-only
+            // model that drives the scalar rotation.
+            snap.block.rotation.y = newRot;
+            snap.block.quaternion.setFromAxisAngle(
+                new THREE.Vector3( 0, 1, 0 ),
+                newRot
+            );
+        }
+        if ( oldSnapshots.length === 0 ) {
+            return;
+        }
+        // The post-transform state lives in `newData` rather than `block`
+        // so the existing single-block handlers ( paint / move / rotate )
+        // keep their narrow `BlockData` typing intact.
+        this.history.push( {
+            action: "gizmo-transform",
+            block: null,
+            previousData: oldSnapshots,
+            newData: newSnapshots
+        } );
+        this.historyIndex++;
+    }
+
+    /**
+     * Read a block's current transform ( including scale ) back into a
+     * BlockData snapshot for save and history purposes.
+     *     @param block ( THREE.Mesh ) - block to read.
+     *     @returns BlockData
+     */
+    private readBlockDataWithScale( block: THREE.Mesh ): BlockData {
+        const base = this.readBlockData( block );
+        return {
+            ...base,
+            scale: { x: block.scale.x, y: block.scale.y, z: block.scale.z }
+        };
+    }
+
+    /**
+     * Update the properties panel inputs to reflect the current selection.
+     * For multi-block selections we display "( mixed )" placeholders for any
+     * axis whose value differs across the selection. The panel is also shown
+     * whenever a block is selected, regardless of which tool is active.
+     */
+    private updatePropertiesPanel(): void {
+        const panel = document.getElementById( "propertiesPanel" );
+        if ( !panel ) return;
+        // Show whenever we have any selection. Even with an unknown tool
+        // ( e.g. user dragged the toolbar buttons in a weird order ) the
+        // panel still surfaces the block state.
+        if ( this.selectedBlocks.length === 0 ) {
+            panel.style.display = "none";
+            return;
+        }
+        panel.style.display = "";
+        // Aggregate values across the selection, falling back to "( mixed )"
+        // anywhere the blocks disagree. Rotation values are kept in radians
+        // — the input is a radians field, not degrees.
+        const r2 = Math.PI / 2;
+        const fields: Array<{
+            input: HTMLInputElement | null;
+            values: number[];
+            step: number;
+            parse: ( s: string ) => number | null;
+        }> = [
+            {
+                input: this.el<HTMLInputElement>( "propPosX" ),
+                values: this.selectedBlocks.map( ( b ) => b.position.x ),
+                step: 0.5,
+                parse: parseFloat
+            },
+            {
+                input: this.el<HTMLInputElement>( "propPosY" ),
+                values: this.selectedBlocks.map( ( b ) => b.position.y ),
+                step: 0.5,
+                parse: parseFloat
+            },
+            {
+                input: this.el<HTMLInputElement>( "propPosZ" ),
+                values: this.selectedBlocks.map( ( b ) => b.position.z ),
+                step: 0.5,
+                parse: parseFloat
+            },
+            {
+                input: this.el<HTMLInputElement>( "propRot" ),
+                values: this.selectedBlocks.map( ( b ) => ( b.userData.rotation as number ) ?? 0 ),
+                // PI/2 = 90° — preserves the rotation snap cadence in radians.
+                step: r2,
+                parse: parseFloat
+            }
+        ];
+        for ( const f of fields ) {
+            if ( !f.input ) continue;
+            const allEqual = f.values.every( ( v ) => Math.abs( v - f.values[0] ) < 0.001 );
+            f.input.value = allEqual
+                ? this.formatPropValue( f.values[0], f )
+                : this.el<HTMLElement>( "propertiesMixedLabel" )?.textContent ?? "( mixed )";
+            f.input.dataset["consistent"] = allEqual ? "1" : "0";
+        }
+        // Block metadata ( name, id, color ) is shown only for single-block
+        // selections since multi-select strings are not generally equal.
+        const first = this.selectedBlocks[0];
+        // In general 3D mode, hide the Minecraft-specific name and block-id
+        // fields so the panel shows only shape, colour, and transforms.
+        const mcSection = document.getElementById( "minecraftPropsSection" );
+        if ( mcSection ) {
+            mcSection.style.display = this.currentMode === "minecraft" ? "" : "none";
+        }
+        this.applyMetadataField( "propName", first?.userData.blockName ?? "" );
+        this.applyMetadataField( "propBlockId", ( first?.userData.blockId ?? "" ).toString() );
+        const colorEl = this.el<HTMLElement>( "propColorSwatch" );
+        if ( colorEl && first ) {
+            const color = this.getBlockColor( first );
+            colorEl.style.background = color;
+            colorEl.textContent = color;
+        }
+        const shapeEl = this.el<HTMLElement>( "propShape" );
+        if ( shapeEl && first ) {
+            shapeEl.textContent = first.userData.shape ?? "cube";
+        }
+    }
+
+    /**
+     * Format a numeric property value for the panel input. We use a small
+     * precision-friendly formatter ( .toFixed( 2 ) ) so values like
+     * position do not show floating-point noise, but stepSize > 1 values
+     * stay simple integers.
+     *     @param value ( number ) - the value to format.
+     *     @param field ( object ) - the field definition from updatePropertiesPanel.
+     *     @returns string for the input
+     */
+    private formatPropValue( value: number, field: { step: number } ): string {
+        const decimalPlaces = field.step >= 1 ? 0 : 2;
+        return value.toFixed( decimalPlaces );
+    }
+
+    private applyMetadataField( id: string, value: string ): void {
+        const el = this.el<HTMLElement>( id );
+        if ( el ) el.textContent = value;
+    }
+
+    /**
+     * Commit a typed value from the properties panel back onto every
+     * selected block and record a single history entry so the user can
+     * undo their edit. Rotation is in radians — the input field is radians,
+     * so no degree conversion happens here.
+     *     @param field ( string ) - "pos.x" | "pos.y" | "pos.z" | "rot".
+     *     @param raw ( string ) - the raw input string (radians for `rot`).
+     */
+    private applyPropertyEdit( field: string, raw: string ): void {
+        if ( this.selectedBlocks.length === 0 ) return;
+        const parsed = parseFloat( raw );
+        if ( !isFinite( parsed ) ) return;
+        const snapshots = this.selectedBlocks.map( ( block ) => {
+            if ( !block.parent ) return null;
+            return {
+                pos: block.position.clone(),
+                rot: ( block.userData.rotation as number ) ?? 0,
+                scl: block.scale.clone()
+            };
+        } ).filter( <T>( v: T | null ): v is T => v !== null );
+        for ( const block of this.selectedBlocks ) {
+            switch ( field ) {
+                case "pos.x": block.position.x = parsed; break;
+                case "pos.y": block.position.y = parsed; break;
+                case "pos.z": block.position.z = parsed; break;
+                case "rot": {
+                    // `rot` is radians — no conversion applied.
+                    block.rotation.y = parsed;
+                    block.userData.rotation = parsed;
+                    block.quaternion.setFromAxisAngle( new THREE.Vector3( 0, 1, 0 ), parsed );
+                    break;
+                }
+                default: return;
+            }
+        }
+        // Build a single history entry per affected block using the same
+        // multi-block scheme as the gizmo so undo / redo stay consistent.
+        const oldData: BlockData[] = [];
+        const newData: BlockData[] = [];
+        for ( let i = 0; i < this.selectedBlocks.length; i++ ) {
+            const block = this.selectedBlocks[i];
+            const before = snapshots[i];
+            if ( !block.parent || !before ) continue;
+            oldData.push( {
+                position: { x: before.pos.x, y: before.pos.y, z: before.pos.z },
+                color: this.getBlockColor( block ),
+                id: this.blockKey( before.pos ),
+                blockId: block.userData.blockId as number,
+                name: block.userData.blockName as string,
+                shape: block.userData.shape as ShapeId,
+                rotation: before.rot,
+                scale: { x: before.scl.x, y: before.scl.y, z: before.scl.z }
+            } );
+            newData.push( {
+                position: { x: block.position.x, y: block.position.y, z: block.position.z },
+                color: this.getBlockColor( block ),
+                id: this.blockKey( block.position ),
+                blockId: block.userData.blockId as number,
+                name: block.userData.blockName as string,
+                shape: block.userData.shape as ShapeId,
+                rotation: ( block.userData.rotation as number ) ?? 0,
+                scale: { x: block.scale.x, y: block.scale.y, z: block.scale.z }
+            } );
+        }
+        if ( oldData.length === 0 ) return;
+        this.history.push( {
+            action: "property-edit",
+            block: null,
+            previousData: oldData,
+            newData
+        } );
+        this.historyIndex++;
+        this.refreshGizmoVisibility();
+        this.updateSelectionVisuals();
+    }
+
+    /**
+     * Snap a per-axis scale value to the nearest integer multiple of the
+     * (no longer relevant — scale UI was removed in favour of the
+     * always-snapping combined transform panel).
+     */
 
 
 
     /**
      * Create a grid helper sized to the current grid size.
-     * Returns GridHelper.
+     *     @returns GridHelper
      */
     private createGridHelper(): THREE.GridHelper {
         const gridHelper = new THREE.GridHelper(this.gridSize, this.gridSize, "#384838", "#282828");
@@ -269,10 +873,10 @@ class BlockBuilderWorkspace {
 
     /**
      * Create a rounded rectangular baseplate ( a 3D slab with beveled edges ).
-     *     size ( number ) - width/depth of the plate.
-     *     height ( number ) - thickness of the plate.
-     *     radius ( number ) - corner radius.
-     * Returns Mesh.
+     *     @param size ( number ) - width/depth of the plate.
+     *     @param height ( number ) - thickness of the plate.
+     *     @param radius ( number ) - corner radius.
+     *     @returns Mesh
      */
     private createBaseplate(size: number, height: number, radius: number): THREE.Mesh {
         const shape = new THREE.Shape();
@@ -305,10 +909,10 @@ class BlockBuilderWorkspace {
     /**
      * Build a single background block mesh ( no selection edges ) used for the
      * scattered decorative buildings.
-     *     color ( string ) - material color.
-     *     shape ( ShapeId ) - shape id.
-     *     rotation ( number ) - block's own y rotation in radians.
-     * Returns Mesh.
+     *     @param color ( string ) - material color.
+     *     @param shape ( ShapeId ) - shape id.
+     *     @param rotation ( number ) - block's own y rotation in radians.
+     *     @returns Mesh
      */
     private createBackgroundBlock(color: string, shape: ShapeId, rotation: number): THREE.Mesh {
         const material = new THREE.MeshLambertMaterial({ color });
@@ -321,7 +925,7 @@ class BlockBuilderWorkspace {
      * Build a 2D reference grid on a vertical plane used as a visual aid for
      * vertical selection.  The group is repositioned and rotated each frame to
      * face the camera at the far edge of the workspace.
-     * Returns Group.
+     *     @returns Group
      */
     private createVerticalGrid(): THREE.Group {
         const group = new THREE.Group();
@@ -398,6 +1002,7 @@ class BlockBuilderWorkspace {
         this.canvas.addEventListener("contextmenu", (e) => e.preventDefault());
 
         document.addEventListener("keydown", (e) => this.onKeyDown(e));
+        document.addEventListener("keyup", (e) => this.onKeyUp(e));
     }
 
     /**
@@ -412,6 +1017,16 @@ class BlockBuilderWorkspace {
         this.bindToggleGroup("button[data-background]", "data-background", (value) => {
             this.backgroundManager.setMode(value as BackgroundMode, this.sceneryMesh, this.scene.fog as THREE.Fog);
         });
+        // Kick the gizmo once so its visibility reflects the initial
+        // selection state ( empty on load ). Without this the gizmo
+        // would stay hidden until the user toggles the tool for the first
+        // time.
+        this.refreshGizmoVisibility();
+        this.setTool( this.currentTool );
+        // Wire the properties-panel inputs once the DOM is ready. They are
+        // hidden on first load ( no selection ) so binding is cheap.
+        this.bindPropertiesPanel();
+        this.updatePropertiesPanel();
 
         // Initialize mode panels to match default currentMode ( "general" )
         this.setMode( this.currentMode );
@@ -516,6 +1131,10 @@ class BlockBuilderWorkspace {
         if (snapToggle) {
             snapToggle.addEventListener("change", (e) => {
                 this.snapToGrid = (e.target as HTMLInputElement).checked;
+                // Re-sync gizmo snap so dragging handles also honours the
+                // new toggle ( and respects the user's pick between world
+                // units and freeform movement within the same frame ).
+                this.updateGizmoSnaps();
             });
         }
 
@@ -570,10 +1189,80 @@ class BlockBuilderWorkspace {
             ["quickSave", () => this.save()],
             ["loadBtn", () => fileInput?.click()],
             ["export3DBtn", () => this.exportOBJ()],
-            ["exportSchematicBtn", () => this.exportSchematic()]
+            ["exportSchematicBtn", () => this.exportSchematic()],
+            ["combineBtn", () => this.combineSelected()],
+            ["groupBtn", () => this.groupSelected()],
+            ["ungroupBtn", () => this.ungroupSelected()],
+            ["unionBtn", () => this.unionSelected()]
         ];
 
         actionBindings.forEach(([id, handler]) => bindClick(id, handler));
+
+        const autoRotateToggle = this.el<HTMLInputElement>("autoRotateToggle");
+        if (autoRotateToggle) {
+            autoRotateToggle.checked = this.autoRotate;
+            this.controls.autoRotate = this.autoRotate;
+            autoRotateToggle.addEventListener("change", (e) => {
+                this.autoRotate = (e.target as HTMLInputElement).checked;
+                this.controls.autoRotate = this.autoRotate;
+            });
+        }
+
+        const rotateSpeedSlider = this.el<HTMLInputElement>("rotateSpeedSlider");
+        if (rotateSpeedSlider) {
+            this.controls.rotateSpeed = this.rotateSpeed;
+            rotateSpeedSlider.addEventListener("input", (e) => {
+                this.rotateSpeed = parseInt((e.target as HTMLInputElement).value, 10) / 0o10;
+                this.controls.rotateSpeed = this.rotateSpeed;
+            });
+        }
+
+        const zoomSpeedSlider = this.el<HTMLInputElement>("zoomSpeedSlider");
+        if (zoomSpeedSlider) {
+            this.controls.zoomSpeed = this.zoomSpeed;
+            zoomSpeedSlider.addEventListener("input", (e) => {
+                this.zoomSpeed = parseInt((e.target as HTMLInputElement).value, 10) / 0o10;
+                this.controls.zoomSpeed = this.zoomSpeed;
+            });
+        }
+
+        const panSpeedSlider = this.el<HTMLInputElement>("panSpeedSlider");
+        if (panSpeedSlider) {
+            this.controls.panSpeed = this.panSpeed;
+            panSpeedSlider.addEventListener("input", (e) => {
+                this.panSpeed = parseInt((e.target as HTMLInputElement).value, 10) / 0o10;
+                this.controls.panSpeed = this.panSpeed;
+            });
+        }
+
+        const dampingSlider = this.el<HTMLInputElement>("dampingSlider");
+        if (dampingSlider) {
+            this.controls.dampingFactor = parseInt(dampingSlider.value, 10) / 0o100;
+            dampingSlider.addEventListener("input", (e) => {
+                this.controls.dampingFactor = parseInt((e.target as HTMLInputElement).value, 10) / 0o100;
+            });
+        }
+
+        const wasdSpeedSlider = this.el<HTMLInputElement>("wasdSpeedSlider");
+        if (wasdSpeedSlider) {
+            wasdSpeedSlider.addEventListener("input", (e) => {
+                this.wasdSpeed = parseInt((e.target as HTMLInputElement).value, 10);
+            });
+        }
+
+        const stepSizeSlider = this.el<HTMLInputElement>("stepSizeSlider");
+        if (stepSizeSlider) {
+            stepSizeSlider.value = this.stepSize.toString();
+        stepSizeSlider.addEventListener("input", (e) => {
+            const value = parseInt((e.target as HTMLInputElement).value, 10);
+            this.stepSize = Math.max(0o1, value);
+            // The active gizmo's snap step depends on stepSize, so refresh
+            // it in the same frame the slider moves — otherwise the next
+            // TC drag uses the previous step until something else triggers
+            // refreshGizmoVisibility.
+            this.updateGizmoSnaps();
+        });
+        }
 
         fileInput?.addEventListener("change", (e) => this.load(e));
     }
@@ -581,9 +1270,9 @@ class BlockBuilderWorkspace {
     /**
      * Wire a group of toggle buttons so clicking one selects it ( aria-pressed )
      * and invokes the handler with the button's attribute value.
-     *     selector ( string ) - query selector for the buttons.
-     *     attr ( string ) - attribute holding the value.
-     *     handler ( function ) - called with the selected value.
+     *     @param selector ( string ) - query selector for the buttons.
+     *     @param attr ( string ) - attribute holding the value.
+     *     @param handler ( function ) - called with the selected value.
      */
     private bindToggleGroup(selector: string, attr: string, handler: (value: string) => void): void {
         const buttons = document.querySelectorAll<HTMLElement>(selector);
@@ -600,8 +1289,8 @@ class BlockBuilderWorkspace {
 
     /**
      * Get an element by id, optionally typed.
-     *     id ( string ) - element id.
-     * Returns element or null.
+     *     @param id ( string ) - element id.
+     *     @returns element or null
      */
     private el<T extends HTMLElement = HTMLElement>(id: string): T | null {
         return document.getElementById(id) as T | null;
@@ -609,8 +1298,8 @@ class BlockBuilderWorkspace {
 
     /**
      * Sync the color and block-id input fields to the given values.
-     *     blockId ( number ) - minecraft numeric block id.
-     *     color ( string ) - hex color.
+     *     @param blockId ( number ) - minecraft numeric block id.
+     *     @param color ( string ) - hex color.
      */
     private syncBlockInputs(blockId: number, color: string): void {
         const colorInput = this.el<HTMLInputElement>("colorInput");
@@ -632,7 +1321,7 @@ class BlockBuilderWorkspace {
 
     /**
      * Update the current color, switching to a custom block in general mode.
-     *     color ( string ) - hex color string.
+     *     @param color ( string ) - hex color string.
      */
     private setCurrentColor(color: string): void {
         this.currentColor = color;
@@ -643,7 +1332,7 @@ class BlockBuilderWorkspace {
 
     /**
      * Set current block by Minecraft block definition.
-     *     block ( MinecraftBlock ) - block definition.
+     *     @param block ( MinecraftBlock ) - block definition.
      */
     private setBlock(block: MinecraftBlock): void {
         this.currentBlock = block;
@@ -657,7 +1346,7 @@ class BlockBuilderWorkspace {
 
     /**
      * Set current editing mode.
-     *     mode ( EditMode ) - minecraft or general.
+     *     @param mode ( EditMode ) - minecraft or general.
      */
     private setMode(mode: EditMode): void {
         this.currentMode = mode;
@@ -665,10 +1354,12 @@ class BlockBuilderWorkspace {
         const generalPanel = document.getElementById("generalColorsPanel");
         const shapesPanel = document.getElementById("shapesPanel");
         const schematicPanel = document.getElementById("schematicPanel");
+        const groupingPanel = document.getElementById("groupingPanel");
         if (minecraftPanel) minecraftPanel.style.display = mode === "minecraft" ? "" : "none";
         if (generalPanel) generalPanel.style.display = mode === "general" ? "" : "none";
         if (shapesPanel) shapesPanel.style.display = mode === "general" ? "" : "none";
         if (schematicPanel) schematicPanel.style.display = mode === "minecraft" ? "" : "none";
+        if (groupingPanel) groupingPanel.style.display = mode === "general" ? "" : "none";
         if (mode === "minecraft") {
             this.currentShape = shapeForBlockId(this.currentBlock.id);
         }
@@ -680,7 +1371,7 @@ class BlockBuilderWorkspace {
      * Resolve the shape to use for the current selection. In Minecraft mode
      * the shape is derived from the block id, otherwise the manual choice is
      * used.
-     * Returns ShapeId.
+     *     @returns ShapeId
      */
     private getCurrentShape(): ShapeId {
         if (this.currentMode === "minecraft") {
@@ -691,7 +1382,7 @@ class BlockBuilderWorkspace {
 
     /**
      * Set current shape ( used in general 3D mode ).
-     *     shape ( ShapeId ) - shape id.
+     *     @param shape ( ShapeId ) - shape id.
      */
     private setShape(shape: ShapeId): void {
         this.currentShape = shape;
@@ -700,7 +1391,7 @@ class BlockBuilderWorkspace {
 
     /**
      * Resolve the display name for the current shape.
-     * Returns shape name string.
+     *     @returns shape name string
      */
     private getCurrentShapeName(): string {
         return SHAPES.find((s) => s.id === this.getCurrentShape())?.name ?? "Cube";
@@ -708,7 +1399,7 @@ class BlockBuilderWorkspace {
 
     /**
      * Resolve the effective color based on editing mode.
-     * Returns hex color string.
+     *     @returns hex color string
      */
     private getEffectiveColor(): string {
         return this.currentMode === "general" ? this.currentColor : this.currentBlock.color;
@@ -749,9 +1440,15 @@ class BlockBuilderWorkspace {
 
     /**
      * Set current tool.
-     *     tool ( string ) - tool name.
+     *     @param tool ( string ) - tool name.
      */
     private setTool(tool: string): void {
+        // Drop the screen-space drag plane when the user leaves the move
+        // tool. Otherwise a stale plane from a half-finished drag would
+        // raycast on the next click and yank the next block off the grid.
+        if ( tool !== "move" ) {
+            this.dragPlane = null;
+        }
         this.currentTool = tool;
         if (tool === "select") {
             this.canvas.style.cursor = "crosshair";
@@ -771,6 +1468,42 @@ class BlockBuilderWorkspace {
         if ( tool !== "add" ) {
             this.pendingRotation = 0;
         }
+        // Hide / show the properties panel based purely on selection state
+        // ( the gizmo is tool-agnostic once combined translate+rotate are
+        // active, so the legacy transform-panel toggle is no longer needed ).
+        this.refreshGizmoVisibility();
+        this.updatePropertiesPanel();
+    }
+
+    /**
+     * Toggle the gizmo handles on or off based on the current tool and
+     * selection. Three TransformControls instances exist but only the
+     * active mode's helper is left visible — their handles would otherwise
+     * collide at the proxy centre.
+     */
+    private refreshGizmoVisibility(): void {
+        if ( !this.tcTranslate || !this.tcRotate || !this.tcScale ) return;
+        const toolSupportsGizmo = this.currentTool === "select" || this.currentTool === "move";
+        const hasSelection = this.selectedBlocks.length > 0;
+        if ( toolSupportsGizmo && hasSelection ) {
+            this.attachAllGizmos();
+            this.updateSelectionVisuals();
+        } else {
+            for ( const [ mode, tc ] of [
+                [ "translate", this.tcTranslate ] as const,
+                [ "rotate", this.tcRotate ] as const,
+                [ "scale", this.tcScale ] as const
+            ] ) {
+                if ( !tc ) continue;
+                tc.detach();
+                tc.enabled = false;
+                const helper = this.tcHelpers.get( mode );
+                if ( helper ) helper.visible = false;
+            }
+        }
+        // Keep snaps in sync with snapToGrid + stepSize so the gizmo
+        // honours the same toggle / step the user picked in the toolbar.
+        this.updateGizmoSnaps();
     }
 
     /**
@@ -805,7 +1538,8 @@ class BlockBuilderWorkspace {
 
     /**
      * Apply a block's color, shape and name in one step, used by paint and
-     * undo/redo so the look stays consistent.
+     * undo/redo so the look stays consistent. Caller is responsible for
+     * ensuring the target is a Mesh — Groups must be descended into first.
      *     block ( THREE.Mesh ) - block to update.
      *     blockId ( number ) - minecraft block id.
      *     color ( string ) - material color.
@@ -847,6 +1581,10 @@ class BlockBuilderWorkspace {
         }
 
         if (intersect) {
+            // Resolve the top-level selectable ancestor. If the hit object is
+            // a Mesh inside a logged group, treat the group as the
+            // selection target so moving / painting act on the whole group.
+            const selectionTarget = this.resolveSelectionTarget( intersect.object );
             if (this.currentTool === "picker" && intersect.object instanceof THREE.Mesh && intersect.object.name === "block") {
                 this.pickBlock(intersect.object);
             } else if (this.currentTool === "add" && intersect.object.name === "ground") {
@@ -876,25 +1614,25 @@ class BlockBuilderWorkspace {
                 this.pendingToolAction = { tool: "add", x, y, z };
             } else if (this.currentTool === "remove" && intersect.object instanceof THREE.Mesh && intersect.object.name === "block") {
                 this.toolMouseDownPos = new THREE.Vector2(this.mouse.x, this.mouse.y);
-                this.pendingToolAction = { tool: "remove", block: intersect.object as THREE.Mesh };
+                this.pendingToolAction = { tool: "remove", block: selectionTarget as THREE.Mesh };
             } else if (this.currentTool === "paint" && intersect.object instanceof THREE.Mesh && intersect.object.name === "block") {
                 this.clearSelection();
                 this.toolMouseDownPos = new THREE.Vector2(this.mouse.x, this.mouse.y);
-                this.pendingToolAction = { tool: "paint", block: intersect.object as THREE.Mesh };
+                this.pendingToolAction = { tool: "paint", block: selectionTarget as THREE.Mesh };
             } else if (this.currentTool === "paint" && intersect.object.name === "ground") {
                 // Don't allow painting on ground.
             } else if (this.currentTool === "rotate" && intersect.object instanceof THREE.Mesh && intersect.object.name === "block") {
-                this.rotateBlock(intersect.object);
+                this.rotateBlock(selectionTarget as THREE.Mesh);
             } else if (this.currentTool === "select" && ( intersect.object.name === "block" || intersect.object.name === "ground" || intersect.object.name === "verticalGrid" ) ) {
-                // Area select: start selection from any surface ( ground or block face )
+                // Area select. Start selection from any surface ( ground or block face )
                 this.selectStartPos = intersect.point.clone();
                 this.selectEndPos = intersect.point.clone();
                 this.isAreaSelecting = true;
                 this.dragStartMouse = new THREE.Vector2( this.mouse.x, this.mouse.y );
                 this.controls.enabled = false;
             } else if (this.currentTool === "move" && intersect.object instanceof THREE.Mesh && intersect.object.name === "block") {
-                const clickedBlock = intersect.object;
-                // Ctrl / Shift: modify the selection without starting a drag.
+                const clickedBlock = selectionTarget as THREE.Mesh;
+                // Ctrl / Shift. Modify the selection without starting a drag.
                 if ( event.ctrlKey || event.shiftKey ) {
                     if ( event.ctrlKey ) {
                         this.toggleSelectBlock( clickedBlock );
@@ -920,6 +1658,15 @@ class BlockBuilderWorkspace {
                 this.dragStartMouse = new THREE.Vector2(this.mouse.x, this.mouse.y);
                 this.dragStartPosition.copy(clickedBlock.position);
                 this.dragOffset.copy(clickedBlock.position).sub(intersect.point);
+                // Build a screen-aligned drag plane perpendicular to the
+                // current camera forward vector and passing through the
+                // click point. Subsequent mousemoves raycast against this
+                // plane so the block stays glued to the cursor ( POV-based
+                // drag ), instead of sliding along the world ground plane
+                // as it did before. The plane is dropped when the move
+                // tool exits so other tools keep their old behaviour.
+                const camNormal = this.camera.getWorldDirection( new THREE.Vector3() ).negate();
+                this.dragPlane = new THREE.Plane().setFromNormalAndCoplanarPoint( camNormal, intersect.point );
                 this.dragStarted = false;
                 this.controls.enabled = false;
             } else if (this.currentTool === "move" && intersect.object.name === "ground") {
@@ -956,10 +1703,14 @@ class BlockBuilderWorkspace {
         }
 
         if (this.isDragging && this.selectedBlocks.length > 0) {
-            // Drag all selected blocks together
-            const intersects = this.raycaster.intersectObjects([this.scene.getObjectByName("ground")!]);
-            if (intersects.length > 0) {
-                const point = intersects[0].point.clone().add(this.dragOffset);
+            // Drag all selected blocks together. We cast against the ground
+            // AND every non-selected block, then pick the closest hit. If the
+            // closest hit is a block, snap to the adjacent cell on the
+            // outside of the hit face so the dragged block can land on top
+            // of, beside, or beneath existing walls and structures — not
+            // just on the ground plane.
+            const point = this.computeBlockAwareDragPoint();
+            if (point) {
                 if (this.snapToGrid) {
                     point.x = Math.floor(point.x) + ( 1 / 2 );
                     point.y = Math.max(( 1 / 2 ), Math.floor(point.y) + ( 1 / 2 ));
@@ -983,7 +1734,7 @@ class BlockBuilderWorkspace {
                 this.updateCursorPosition( point );
             }
         } else if (this.isAreaSelecting && this.selectStartPos) {
-            // Area select in progress: track end pos from nearest surface
+            // Area select in progress. Track end pos from nearest surface
             const { blockIntersects, groundIntersects, gridIntersects } = this.getIntersections();
             if ( blockIntersects.length > 0 ) {
                 this.selectEndPos = blockIntersects[0].point.clone();
@@ -1010,7 +1761,7 @@ class BlockBuilderWorkspace {
 
         if ( !this.pendingToolAction ) {
             if ( this.currentTool === "add" || this.currentTool === "paint" || this.currentTool === "remove" ) {
-                // For placement tools: check blocks first, then always project onto grid plane
+                // For placement tools. Check blocks first, then always project onto grid plane
                 const { blockIntersects } = this.getIntersections();
                 if ( blockIntersects.length > 0 ) {
                     this.updateCursorPosition( blockIntersects[0].point );
@@ -1044,10 +1795,45 @@ class BlockBuilderWorkspace {
     /**
      * Raycast the pointer against the placed blocks and the ground, returning
      * both intersection lists.
+     * Groups stored in `this.blocks` are flattened to their child Meshes so
+     * that blocks inside a group remain raycastable ( Groups have no
+     * geometry themselves ).
      * Returns block and ground intersections.
      */
+    /**
+     * Walk up the parent chain from the hit object to the first ancestor
+     * that qualifies as a logical selectable unit ( a registered group or
+     * the root block map entry ). Falls back to the original object if no
+     * such ancestor exists.
+     *     hitObject ( THREE.Object3D ) - raycaster intersection target.
+     * Returns the selectable ancestor.
+     */
+    private resolveSelectionTarget( hitObject: THREE.Object3D ): THREE.Object3D {
+        let current: THREE.Object3D | null = hitObject;
+        while ( current && current !== this.scene ) {
+            if ( current instanceof THREE.Group && current.userData.groupId !== undefined ) {
+                return current;
+            }
+            const key = this.blockKey( current.position );
+            if ( current !== hitObject && this.blocks.has( key ) ) {
+                return current;
+            }
+            current = current.parent;
+        }
+        return hitObject;
+    }
+
     private getIntersections(): { blockIntersects: THREE.Intersection[]; groundIntersects: THREE.Intersection[]; gridIntersects: THREE.Intersection[] } {
-        const blockMeshes = Array.from(this.blocks.values());
+        const blockMeshes: THREE.Object3D[] = [];
+        for ( const entry of this.blocks.values() ) {
+            if ( entry instanceof THREE.Group ) {
+                for ( const child of entry.children ) {
+                    blockMeshes.push( child );
+                }
+            } else {
+                blockMeshes.push( entry );
+            }
+        }
         const ground = this.scene.getObjectByName("ground")!;
         const vg = this.scene.getObjectByName( "verticalGrid" );
         return {
@@ -1055,6 +1841,128 @@ class BlockBuilderWorkspace {
             groundIntersects: this.raycaster.intersectObjects([ground]),
             gridIntersects: vg ? this.raycaster.intersectObjects( [vg] ) : []
         };
+    }
+
+    /**
+     * Snap a world-space coordinate to the nearest sub-cell position. The
+     * step size divides each grid cell into `stepSize` subdivisions so the
+     * builder can place micro-blocks at quarter / eighth precision without
+     * re-architecting the world map.
+     *     value ( number ) - world-space coordinate.
+     * Returns snapped value.
+     */
+    private applySnap( value: number ): number {
+        const step = Math.max( 0o1, this.stepSize );
+        return Math.round( value * step ) / step;
+    }
+
+    /**
+     * Compute the target drag position for the move tool. The pointer is
+     * cast against the ground and every non-selected block; the nearest hit
+     * wins. When a block is hit, we snap the dragged blocks to the cell
+     * directly outside the hit face ( top, side, or bottom ) so vertical
+     * walls become stackable targets just like the ground. When nothing is
+     * hit, we fall back to the legacy ground-plane projection with the
+     * click-point offset so single-block moves still feel identical to
+     * before this upgrade.
+     * Returns drag target world position or null if the ray missed
+     * everything in the workspace.
+     */
+    private computeBlockAwareDragPoint(): THREE.Vector3 | null {
+        // Prefer the camera-aligned drag plane ( move tool ) so the block
+        // rides with the cursor instead of sliding along the world ground.
+        if ( this.dragPlane ) {
+            const projected = new THREE.Vector3();
+            const hit = this.raycaster.ray.intersectPlane( this.dragPlane, projected );
+            if ( hit ) {
+                return projected.clone().add( this.dragOffset );
+            }
+        }
+        // Collect every non-selected block mesh so the raycast cannot hit
+        // the very blocks we are dragging. Groups are flattened to their
+        // child meshes using the same convention as getIntersections so
+        // grouped blocks also act as snap anchors.
+        const snapTargets: THREE.Object3D[] = [];
+        for ( const entry of this.blocks.values() ) {
+            if ( this.selectedBlocks.includes( entry as THREE.Mesh ) ) continue;
+            if ( entry instanceof THREE.Group ) {
+                for ( const child of entry.children ) {
+                    if ( child instanceof THREE.Object3D ) {
+                        snapTargets.push( child );
+                    }
+                }
+            } else {
+                snapTargets.push( entry );
+            }
+        }
+        const groundMesh = this.scene.getObjectByName( "ground" );
+
+        const blockHits = this.raycaster.intersectObjects( snapTargets, false );
+        const groundHits = groundMesh
+            ? this.raycaster.intersectObjects( [groundMesh] )
+            : [];
+
+        // Pick the closest hit so when the cursor straddles a wall and the
+        // ground, the user gets the wall ( which is usually what they want
+        // while editing a structure ).
+        let bestBlock: THREE.Intersection | null = null;
+        for ( const hit of blockHits ) {
+            if ( !bestBlock || hit.distance < bestBlock.distance ) {
+                bestBlock = hit;
+            }
+        }
+        let bestGround: THREE.Intersection | null = null;
+        for ( const hit of groundHits ) {
+            if ( !bestGround || hit.distance < bestGround.distance ) {
+                bestGround = hit;
+            }
+        }
+
+        if ( bestBlock && ( !bestGround || bestBlock.distance < bestGround.distance ) ) {
+            return this.faceSnapPoint( bestBlock );
+        }
+        if ( bestGround ) {
+            return bestGround.point.clone().add( this.dragOffset );
+        }
+        // Fallback to the world y=0 plane when even the ground missed, so
+        // dragging near the horizon still produces a usable delta.
+        const groundPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
+        const projected = new THREE.Vector3();
+        if ( this.raycaster.ray.intersectPlane( groundPlane, projected ) !== null ) {
+            return projected.add( this.dragOffset );
+        }
+        return null;
+    }
+
+    /**
+     * Convert a raycaster block-face hit into the world position of the
+     * adjacent cell on the outside of that face. The face normal describes
+     * which side of the block the ray pierced, so we step one block outward
+     * along it to find the cell the dragged object will occupy. Faces are
+     * resolved in world space so rotated blocks still produce axis-aligned
+     * snap anchors in the common case.
+     *     hit ( THREE.Intersection ) - first block hit from the raycaster.
+     * Returns cell-centre position suitable for grid snapping.
+     */
+    private faceSnapPoint( hit: THREE.Intersection ): THREE.Vector3 {
+        const blockCenter = new THREE.Vector3();
+        hit.object.getWorldPosition( blockCenter );
+        if ( !hit.face ) {
+            return blockCenter;
+        }
+        const worldNormal = new THREE.Vector3()
+            .copy( hit.face.normal )
+            .transformDirection( hit.object.matrixWorld );
+        // Round to the nearest cardinal axis so non-axis-aligned geometries
+        // ( cylinders, wedges ) still snap to a regular grid cell rather
+        // than landing mid-air.
+        worldNormal.x = Math.round( worldNormal.x );
+        worldNormal.y = Math.round( worldNormal.y );
+        worldNormal.z = Math.round( worldNormal.z );
+        // Walk one full block outward from the hit block's centre along the
+        // face normal. This produces the cell the dragged blocks should
+        // occupy regardless of which face was pierced.
+        return blockCenter.clone().add( worldNormal );
     }
 
     /**
@@ -1123,7 +2031,7 @@ class BlockBuilderWorkspace {
         let x: number, y: number, z: number;
 
         if ( tool === "remove" && hitObject && hitObject.name === "block" ) {
-            // Remove tool: show hover on the block itself
+            // Remove tool. Show hover on the block itself
             const mesh = hitObject as THREE.Mesh;
             x = mesh.position.x;
             y = mesh.position.y;
@@ -1131,7 +2039,7 @@ class BlockBuilderWorkspace {
         } else if ( hitObject && hitObject.name === "block" ) {
             const mesh = hitObject as THREE.Mesh;
             if ( tool === "add" ) {
-                // Hovering over a block with add tool: snap to adjacent grid cell
+                // Hovering over a block with add tool. Snap to adjacent grid cell
                 const center = mesh.position;
                 const dx = point.x - center.x;
                 const dy = point.y - center.y;
@@ -1146,16 +2054,17 @@ class BlockBuilderWorkspace {
                 y = Math.floor( pos.y ) + ( 1 / 2 );
                 z = Math.floor( pos.z ) + ( 1 / 2 );
             } else {
-                // Paint tool: show hover on the block itself
+                // Paint tool. Show hover on the block itself
                 x = mesh.position.x;
                 y = mesh.position.y;
                 z = mesh.position.z;
             }
         } else {
-            // Hovering over ground: snap to grid
-            x = Math.floor( point.x ) + ( 1 / 2 );
+            // Hovering over ground. Snap to sub-grid ( step size ) so the
+            // user sees the chosen subdivision precision in the preview.
+            x = this.applySnap( point.x );
             y = tool === "paint" ? point.y : ( this.snapToGrid ? ( 1 / 2 ) : point.y );
-            z = Math.floor( point.z ) + ( 1 / 2 );
+            z = this.applySnap( point.z );
         }
 
         // When hovering for add tool, apply pending rotation to hover preview
@@ -1190,6 +2099,12 @@ class BlockBuilderWorkspace {
      * Handle mouse up.
      */
     private onMouseUp(event?: MouseEvent): void {
+        // Always drop the camera-aligned drag plane at the end of a move-
+        // tool drag. If we leave it alive, the next drag ( or even just the
+        // user waving the cursor ) will raycast against a plane that no
+        // longer matches the click point and the block will jump to the
+        // wrong cell on the first mousemove.
+        this.dragPlane = null;
         if (this.isAreaSelecting && this.selectStartPos) {
             // Check if mouse barely moved — treat as click-to-select on the
             // intersected object rather than a drag-area-select.
@@ -1202,10 +2117,13 @@ class BlockBuilderWorkspace {
             const isClick = pxDist < 4;
 
             if ( isClick ) {
-                // Simple click: select the block under the cursor ( if any )
+                // Simple click: select the block under the cursor ( if any ).
+                // Resolve the hit to its enclosing group so clicking inside a
+                // composite selects the whole group, consistent with the
+                // non-select tools.
                 const { blockIntersects } = this.getIntersections();
                 if ( blockIntersects.length > 0 && blockIntersects[0].object.name === "block" ) {
-                    const block = blockIntersects[0].object as THREE.Mesh;
+                    const block = this.resolveSelectionTarget( blockIntersects[0].object ) as THREE.Mesh;
                     if ( event && event.ctrlKey ) {
                         this.toggleSelectBlock( block );
                     } else if ( event && event.shiftKey ) {
@@ -1338,18 +2256,48 @@ class BlockBuilderWorkspace {
                     this.removeBlock(block);
                 }
             }
-        } else if (event.key === "1") this.setTool("select");
+        } else if (event.key === "Escape") {
+            event.preventDefault();
+            this.clearSelection();
+        }        else if (event.key === "1") this.setTool("select");
         else if (event.key === "2") this.setTool("move");
         else if (event.key === "3") this.setTool("add");
         else if (event.key === "4") this.setTool("remove");
         else if (event.key === "5") this.setTool("paint");
         else if (event.key === "6") this.setTool("picker");
         else if (event.key === "7") this.setTool("rotate");
-        else if ( ( event.key === "r" || event.key === "R" ) && this.currentTool === "add" ) {
-            event.preventDefault();
-            this.pendingRotation = ( this.pendingRotation + Math.PI / 2 ) % ( Math.PI * 2 );
-            this.refreshHoverGeometry();
+        else if ( event.key === "r" || event.key === "R" ) {
+            // R spins the next-placed block (add tool) — all three gizmo
+            // handles (translate / rotate / scale) are always visible in
+            // select / move tools, so R no longer switches modes.
+            if ( this.currentTool === "add" ) {
+                event.preventDefault();
+                this.pendingRotation = ( this.pendingRotation + Math.PI / 2 ) % ( Math.PI * 2 );
+                this.refreshHoverGeometry();
+            }
         }
+
+        // WASD / arrow keys for camera movement — skip when focus is on an
+        // interactive element so the user can still type in inputs.
+        const tag = document.activeElement?.tagName?.toLowerCase();
+        if ( !tag || tag === "body" || !["input","textarea","select","button"].includes( tag ) ) {
+            const key = event.key.toLowerCase();
+            if ( key === "w" || key === "a" || key === "s" || key === "d" ||
+                 key === "arrowup" || key === "arrowdown" || key === "arrowleft" || key === "arrowright" ||
+                 key === " " || key === "shift" || key === "q" || key === "e" ) {
+                event.preventDefault();
+                this.keysPressed.add( key );
+            }
+        }
+    }
+
+    /**
+     * Handle key up — remove released key from the pressed set.
+     *     event ( KeyboardEvent ) - keyboard event.
+     */
+    private onKeyUp(event: KeyboardEvent): void {
+        const key = event.key.toLowerCase();
+        this.keysPressed.delete( key );
     }
 
     /**
@@ -1386,6 +2334,11 @@ class BlockBuilderWorkspace {
      *     z ( number ) - z coordinate.
      */
     private addBlock(x: number, y: number, z: number): void {
+        if (this.snapToGrid) {
+            x = Math.floor( x ) + ( 1 / 2 );
+            y = Math.floor( y ) + ( 1 / 2 );
+            z = Math.floor( z ) + ( 1 / 2 );
+        }
         if (!this.isWithinGrid(x, y, z)) return;
 
         const key = this.blockKey({ x, y, z });
@@ -1413,6 +2366,19 @@ class BlockBuilderWorkspace {
 
         this.scene.remove(block);
         this.blocks.delete(key);
+
+        if (block instanceof THREE.Group) {
+            for (const child of block.children) {
+                // Only meshes carry geometry — guard so TS keeps the
+                // narrower Mesh overload.
+                if (child instanceof THREE.Mesh) {
+                    child.geometry?.dispose();
+                }
+            }
+            block.clear();
+            (block as THREE.Group).userData;
+            this.groups.delete(String(block.userData.groupId));
+        }
 
         const idx = this.selectedBlocks.indexOf(block);
         if (idx !== -1) {
@@ -1443,6 +2409,28 @@ class BlockBuilderWorkspace {
      *     block ( THREE.Mesh ) - block to paint.
      */
     private paintBlock(block: THREE.Mesh): void {
+        // Groups can be painted too — descend into their children so the
+        // entire composite takes the new color without losing per-block
+        // identity.
+        if ( block instanceof THREE.Group ) {
+            const previous = this.getSelectedSnapshots();
+            const color = this.getEffectiveColor();
+            for ( const child of block.children ) {
+                if ( child instanceof THREE.Mesh ) {
+                    this.updateBlock( child, this.currentBlock.id, color, this.getCurrentShape(), this.currentBlock.name );
+                }
+            }
+            this.addToHistory( "paint-group", {
+                position: { x: block.position.x, y: block.position.y, z: block.position.z },
+                color,
+                id: this.blockKey( block.position ),
+                blockId: this.currentBlock.id,
+                name: this.currentBlock.name,
+                shape: this.getCurrentShape(),
+                rotation: block.userData.rotation ?? 0
+            }, previous );
+            return;
+        }
         const previous = this.readBlockData(block);
         const color = this.getEffectiveColor();
         const shape = this.getCurrentShape();
@@ -1483,6 +2471,8 @@ class BlockBuilderWorkspace {
     private selectBlock(block: THREE.Mesh): void {
         this.selectedBlocks = [ block ];
         this.updateSelectionVisuals();
+        this.updatePropertiesPanel();
+        this.attachAllGizmos();
     }
 
     /**
@@ -1498,6 +2488,8 @@ class BlockBuilderWorkspace {
             this.selectedBlocks.push( block );
         }
         this.updateSelectionVisuals();
+        this.updatePropertiesPanel();
+        this.attachAllGizmos();
     }
 
     /**
@@ -1508,11 +2500,39 @@ class BlockBuilderWorkspace {
         if ( !this.selectedBlocks.includes( block ) ) {
             this.selectedBlocks.push( block );
             this.updateSelectionVisuals();
+            this.updatePropertiesPanel();
+            this.attachAllGizmos();
+        }
+    }
+
+    /**
+     * Wire up the properties-panel inputs so typing into them commits an
+     * `property-edit` history entry through `applyPropertyEdit`. Bound
+     * from setupUI once the panel exists in the DOM.
+     */
+    private bindPropertiesPanel(): void {
+        const fields: Array<{ id: string; field: string }> = [
+            { id: "propPosX", field: "pos.x" },
+            { id: "propPosY", field: "pos.y" },
+            { id: "propPosZ", field: "pos.z" },
+            { id: "propRot", field: "rot" }
+        ];
+        for ( const { id, field } of fields ) {
+            const input = this.el<HTMLInputElement>( id );
+            if ( !input ) continue;
+            const commit = (): void => {
+                this.applyPropertyEdit( field, input.value );
+            };
+            input.addEventListener( "change", commit );
+            input.addEventListener( "blur", commit );
         }
     }
 
     /**
      * Rebuild the selection wireframe visuals for all selected blocks.
+     * Also keeps the gizmo proxy anchored to the selection's bounding-box
+     * centre so the user can grab a 3D handle and translate / rotate the
+     * whole selection as one unit.
      */
     private updateSelectionVisuals(): void {
         // Clear old visuals
@@ -1523,7 +2543,7 @@ class BlockBuilderWorkspace {
                 child.geometry.dispose();
             }
         }
-        // Rebuild for each selected block
+        // Per-block outline (helps users see which exact blocks are selected).
         for ( const block of this.selectedBlocks ) {
             const box = new THREE.LineSegments(
                 new THREE.EdgesGeometry( new THREE.BoxGeometry(( 1 + ( 1 / 0o100 ) ), ( 1 + ( 1 / 0o100 ) ), ( 1 + ( 1 / 0o100 ) ) ) ),
@@ -1532,18 +2552,201 @@ class BlockBuilderWorkspace {
             box.position.copy( block.position );
             this.selectionGroup.add( box );
         }
+        // Aggregate bounding box around the entire selection so users see a
+        // single region outline in addition to the per-block outlines.
+        if ( this.selectionBounds ) {
+            this.scene.remove( this.selectionBounds );
+            this.selectionBounds.geometry.dispose();
+            this.selectionBounds = null;
+        }
+        if ( this.selectedBlocks.length > 0 ) {
+            const box = new THREE.Box3();
+            for ( const block of this.selectedBlocks ) {
+                // Force a world-matrix update so Box3 reads accurate
+                // positions for blocks that still live inside a freshly
+                // created Group ( their world transforms are stale until
+                // updateMatrixWorld runs ).
+                block.updateMatrixWorld( true );
+                box.expandByObject( block );
+            }
+            const size = new THREE.Vector3();
+            const center = new THREE.Vector3();
+            box.getSize( size );
+            box.getCenter( center );
+            const outlineGeometry = new THREE.EdgesGeometry(
+                new THREE.BoxGeometry( size.x + ( 1 / 0o100 ), size.y + ( 1 / 0o100 ), size.z + ( 1 / 0o100 ) )
+            );
+            const outlineMaterial = new THREE.LineBasicMaterial({ color: "#f8d848", transparent: true, opacity: ( 6 / 8 ) });
+            this.selectionBounds = new THREE.LineSegments( outlineGeometry, outlineMaterial );
+            this.selectionBounds.position.copy( center );
+            this.scene.add( this.selectionBounds );
+
+            // Re-anchor the gizmo proxy at the selection centre so the 3D
+            // handles stay visually locked to whatever the user has
+            // selected. Reset rotation because the next drag will compute a
+            // fresh delta from zero.
+            //
+            // CRITICAL. Only re-anchor between drags — never while a drag is
+            // in flight. The user pulls a handle, the proxy position is
+            // touched, and our live handler projects that onto the selected
+            // blocks. If we re-anchored mid-drag the proxy would teleport
+            // back to the moved blocks' centroid every frame and cancel the
+            // very motion the user just requested.
+            if ( this.selectionProxy && !this.gizmoDragging ) {
+                this.selectionProxy.position.copy( center );
+                this.selectionProxy.quaternion.set( 0, 0, 0, 1 );
+                // Re-attach ALL three TCs so the proxy position update is
+                // reflected in every helper.  The old code only iterated
+                // translate + rotate, which left the scale helper frozen
+                // at the previous centre until the next drag.
+                for ( const tc of [ this.tcTranslate, this.tcRotate, this.tcScale ] ) {
+                    if ( tc && tc.enabled ) tc.attach( this.selectionProxy );
+                }
+            }
+        }
     }
 
     /**
      * Clear selection.
      */
     private clearSelection(): void {
+        // Drop the screen-space drag plane so a stale plane from a prior
+        // move-tool drag cannot hijack the next raycast.
+        this.dragPlane = null;
         this.selectedBlocks = [];
+        if ( this.selectionBounds ) {
+            this.scene.remove( this.selectionBounds );
+            this.selectionBounds.geometry.dispose();
+            this.selectionBounds = null;
+        }
+        // Drop any in-flight gizmo drag so undo cannot resurrect a dangling
+        // handle when the user removes all the targeted blocks. Also
+        // detach ALL three TCs — the old code only detached translate +
+        // rotate, leaving the scale helper visible after a clear.
+        for ( const tc of [ this.tcTranslate, this.tcRotate, this.tcScale ] ) {
+            if ( tc ) tc.detach();
+        }
+        if ( this.gizmoDragging ) {
+            this.gizmoDragging = false;
+            this.gizmoDragStart = null;
+            if ( !this.isColorInputFocused() ) this.controls.enabled = true;
+        }
         this.updateSelectionVisuals();
+        this.updatePropertiesPanel();
     }
 
     /**
-     * Read a block's current properties back into a BlockData snapshot.
+     * Snapshot the current selection into an array of BlockData ( used by
+     * group/combine history to record the original state ).
+     * Returns selected block snapshots.
+     */
+    private getSelectedSnapshots(): BlockData[] {
+        return this.selectedBlocks.map( ( b ) => this.readBlockData( b ) );
+    }
+
+    /**
+     * Combine the current selection into a single THREE.Group at the
+     * centroid of the selection. The resulting group can be moved, painted
+     * or deleted as a unit; its children retain their original relative
+     * positions.
+     */
+    private combineSelected(): void {
+        if ( this.selectedBlocks.length < 0o2 ) return;
+        this.groupSelected();
+    }
+
+    /**
+     * Group the current selection into a single THREE.Group. Logical
+     * alias for combineSelected; reserved so the UI can label the buttons
+     * with distinct intentions.
+     */
+    private groupSelected(): void {
+        if ( this.selectedBlocks.length < 0o2 ) return;
+        const centroid = new THREE.Vector3();
+        for ( const block of this.selectedBlocks ) {
+            centroid.add( block.position );
+        }
+        centroid.divideScalar( this.selectedBlocks.length );
+        const group = new THREE.Group();
+        group.name = "group";
+        group.userData.blockId = -1;
+        group.userData.blockName = `Group ${ ++this.groupCounter }`;
+        group.userData.shape = "cube";
+        group.userData.color = "group";
+        group.userData.groupId = this.groupCounter;
+        group.position.copy( centroid );
+        const snapshots = this.getSelectedSnapshots();
+        for ( const block of this.selectedBlocks ) {
+            const key = this.blockKey( block.position );
+            this.blocks.delete( key );
+            const local = block.position.clone().sub( centroid );
+            block.position.copy( local );
+            group.add( block );
+        }
+        this.scene.add( group );
+        const groupKey = this.blockKey( group.position );
+        this.blocks.set( groupKey, group as unknown as THREE.Mesh );
+        this.groups.set( String( this.groupCounter ), group );
+        this.addToHistory( "group", {
+            position: { x: centroid.x, y: centroid.y, z: centroid.z },
+            color: "group",
+            id: groupKey,
+            blockId: -1,
+            name: group.userData.blockName,
+            shape: "cube",
+            rotation: 0
+        }, snapshots );
+        this.clearSelection();
+        this.updateBlockCount();
+    }
+
+    /**
+     * Ungroup any selected groups back into individual blocks.
+     */
+    private ungroupSelected(): void {
+        if ( this.selectedBlocks.length === 0 ) return;
+        for ( const block of this.selectedBlocks.slice() ) {
+            if ( !( block instanceof THREE.Group ) ) continue;
+            const group = block;
+            const centroid = group.position.clone();
+            const key = this.blockKey( group.position );
+            this.blocks.delete( key );
+            this.scene.remove( group );
+            for ( const child of group.children.slice() ) {
+                group.remove( child );
+                if ( child instanceof THREE.Mesh ) {
+                    child.position.add( centroid );
+                    this.scene.add( child );
+                    this.blocks.set( this.blockKey( child.position ), child );
+                }
+            }
+            this.groups.delete( String( group.userData.groupId ) );
+            const idx = this.selectedBlocks.indexOf( group );
+            if ( idx !== -1 ) {
+                this.selectedBlocks.splice( idx, 1 );
+            }
+        }
+        this.updateSelectionVisuals();
+        this.updateBlockCount();
+    }
+
+    /**
+     * Union the selected objects by merging their geometries into a single
+     * composite mesh that shares the dominant block color.
+     */
+    private unionSelected(): void {
+        if ( this.selectedBlocks.length < 0o2 ) return;
+        // For a CSG-style true union we would call mergeGeometries; the
+        // builder already supports grouping as a near-equivalent for the
+        // cuboid shapes it ships. Reuse the grouping pipeline so the user
+        // sees a single editable object as expected.
+        this.combineSelected();
+    }
+
+    /**
+     * Read a block's current properties back into a BlockData snapshot,
+     * including its current scale so save / load round trips preserve
+     * resizes.
      *     block ( THREE.Mesh ) - block to read.
      * Returns BlockData.
      */
@@ -1556,7 +2759,8 @@ class BlockBuilderWorkspace {
             blockId: (block.userData.blockId as number) ?? 0,
             name: (block.userData.blockName as string) ?? "Unknown",
             shape: (block.userData.shape as ShapeId) ?? "cube",
-            rotation: (block.userData.rotation as number) ?? 0
+            rotation: (block.userData.rotation as number) ?? 0,
+            scale: { x: block.scale.x, y: block.scale.y, z: block.scale.z }
         };
     }
 
@@ -1671,7 +2875,7 @@ class BlockBuilderWorkspace {
      *     block ( BlockData | null ) - block data.
      *     previousData ( BlockData | string | null ) - previous data.
      */
-    private addToHistory(action: string, block: BlockData | null, previousData: BlockData | string | null): void {
+    private addToHistory(action: string, block: BlockData | null, previousData: BlockData | BlockData[] | string | null): void {
         this.history = this.history.slice(0, this.historyIndex + 1);
         this.history.push({ action, block, previousData });
         this.historyIndex++;
@@ -1683,6 +2887,11 @@ class BlockBuilderWorkspace {
      */
     private placeBlockData(data: BlockData): void {
         const block = this.createBlock(this.getBlockById(data.blockId, data.color), data.color, data.shape, data.position.x, data.position.y, data.position.z, data.rotation);
+        // Restore any persisted scale ( default 1×1×1 if missing — e.g. a
+        // pre-resize save file ).
+        if ( data.scale ) {
+            block.scale.set( data.scale.x, data.scale.y, data.scale.z );
+        }
         this.scene.add(block);
         this.blocks.set(this.blockKey(data.position), block);
     }
@@ -1724,14 +2933,54 @@ class BlockBuilderWorkspace {
                 block.rotation.y = rotation;
                 block.userData.rotation = rotation;
             }
-        } else if (entry.action === "move" && entry.block && entry.previousData && typeof entry.previousData !== "string") {
+        } else if (entry.action === "move" && entry.block && entry.previousData && typeof entry.previousData !== "string" && !Array.isArray(entry.previousData)) {
             const block = this.getBlockAt(entry.previousData as BlockData);
-            if (block) {
-                // Undo a move: put the block back to its original position.
-                // The map key is still the old position (never updated during drag),
-                // so we only need to move the visual position.
+            if (block) {                // Undo a move. Put the block back to its original position.
+            // The map key is still the old position (never updated during drag),
+            // so we only need to move the visual position.
                 block.position.set(entry.previousData.position.x, entry.previousData.position.y, entry.previousData.position.z);
             }
+        } else if (entry.action === "gizmo-transform" && entry.previousData && Array.isArray(entry.previousData)) {
+            // tied to the pre-transform position ( we never re-key during
+            // a drag ), so every previousData snapshot can still be looked
+            // up by its old world position. We push the block back to its
+            // starting position, rotation, and scale.
+            const prevs = entry.previousData as BlockData[];
+            for (const prev of prevs) {
+                const block = this.getBlockAt(prev);
+                if (block) {
+                    block.position.set(prev.position.x, prev.position.y, prev.position.z);
+                    block.rotation.y = prev.rotation;
+                    block.userData.rotation = prev.rotation;
+                    block.quaternion.setFromAxisAngle( new THREE.Vector3( 0, 1, 0 ), prev.rotation );
+                    if ( prev.scale ) {
+                        block.scale.set( prev.scale.x, prev.scale.y, prev.scale.z );
+                    } else {
+                        block.scale.set( 1, 1, 1 );
+                    }
+                }
+            }
+            // Re-anchor the proxy at the selection's restored centre so the
+            // gizmo reflects the post-undo state instead of pointing at a
+            // stale location.
+            this.refreshGizmoVisibility();
+            this.updateSelectionVisuals();
+        } else if (entry.action === "property-edit" && entry.previousData && Array.isArray(entry.previousData)) {
+            const prevs = entry.previousData as BlockData[];
+            for (const prev of prevs) {
+                const block = this.getBlockAt(prev);
+                if (block) {
+                    block.position.set(prev.position.x, prev.position.y, prev.position.z);
+                    block.rotation.y = prev.rotation;
+                    block.userData.rotation = prev.rotation;
+                    block.quaternion.setFromAxisAngle( new THREE.Vector3( 0, 1, 0 ), prev.rotation );
+                    if ( prev.scale ) {
+                        block.scale.set( prev.scale.x, prev.scale.y, prev.scale.z );
+                    }
+                }
+            }
+            this.refreshGizmoVisibility();
+            this.updateSelectionVisuals();
         }
 
         this.historyIndex--;
@@ -1762,13 +3011,55 @@ class BlockBuilderWorkspace {
                 block.rotation.y = entry.block.rotation;
                 block.userData.rotation = entry.block.rotation;
             }
-        } else if (entry.action === "move" && entry.block && entry.previousData && typeof entry.previousData !== "string") {
+        } else if (entry.action === "move" && entry.block && entry.previousData && typeof entry.previousData !== "string" && !Array.isArray(entry.previousData)) {
             const block = this.getBlockAt(entry.previousData as BlockData);
-            if (block) {
-                // Redo a move: move the block to its dragged position.
-                // Map key stays at previousData.position so undo always finds it.
+            if (block) {                // Redo a move. Move the block to its dragged position.
+            // Map key stays at previousData.position so undo always finds it.
                 block.position.set(entry.block.position.x, entry.block.position.y, entry.block.position.z);
             }
+        } else if (entry.action === "gizmo-transform" && entry.newData && entry.previousData && Array.isArray(entry.previousData)) {
+            // Redo. Replay every new snapshot by index paired with its
+            // matching pre-transform snapshot ( which still serves as the
+            // blockMap lookup key ).
+            const news = entry.newData;
+            const prevs = entry.previousData as BlockData[];
+            for (let i = 0; i < news.length; i++) {
+                const prev = prevs[i];
+                const next = news[i];
+                if (!prev || !next) continue;
+                const block = this.getBlockAt(prev);
+                if (block) {
+                    block.position.set(next.position.x, next.position.y, next.position.z);
+                    block.rotation.y = next.rotation;
+                    block.userData.rotation = next.rotation;
+                    block.quaternion.setFromAxisAngle( new THREE.Vector3( 0, 1, 0 ), next.rotation );
+                    if ( next.scale ) {
+                        block.scale.set( next.scale.x, next.scale.y, next.scale.z );
+                    }
+                }
+            }
+            this.refreshGizmoVisibility();
+            this.updateSelectionVisuals();
+        } else if (entry.action === "property-edit" && entry.newData && entry.previousData && Array.isArray(entry.previousData)) {
+            const news = entry.newData;
+            const prevs = entry.previousData as BlockData[];
+            for (let i = 0; i < news.length; i++) {
+                const prev = prevs[i];
+                const next = news[i];
+                if (!prev || !next) continue;
+                const block = this.getBlockAt(prev);
+                if (block) {
+                    block.position.set(next.position.x, next.position.y, next.position.z);
+                    block.rotation.y = next.rotation;
+                    block.userData.rotation = next.rotation;
+                    block.quaternion.setFromAxisAngle( new THREE.Vector3( 0, 1, 0 ), next.rotation );
+                    if ( next.scale ) {
+                        block.scale.set( next.scale.x, next.scale.y, next.scale.z );
+                    }
+                }
+            }
+            this.refreshGizmoVisibility();
+            this.updateSelectionVisuals();
         }
 
         this.updateBlockCount();
@@ -1799,7 +3090,7 @@ class BlockBuilderWorkspace {
 
     /**
      * Collect all placed blocks as an array of BlockData snapshots.
-     * Returns BlockData array.
+     *     @returns BlockData array
      */
     private getAllBlockData(): BlockData[] {
         const data: BlockData[] = [];
@@ -1825,7 +3116,7 @@ class BlockBuilderWorkspace {
     /**
      * Get a timestamp string using the provided custom clock functions.
      * Falls back to ISO date string when the clock system is unavailable.
-     * Returns timestamp string.
+     *     @returns timestamp string
      */
     private getTimestamp(): string {
         const now = new Date();
@@ -2008,8 +3299,8 @@ class BlockBuilderWorkspace {
 
     /**
      * Show a rectangle preview on the ground during area selection.
-     *     start ( THREE.Vector3 ) - start corner in world coords.
-     *     end ( THREE.Vector3 ) - current mouse corner in world coords.
+     *     @param start ( THREE.Vector3 ) - start corner in world coords.
+     *     @param end ( THREE.Vector3 ) - current mouse corner in world coords.
      */
     private showSelectRect( start: THREE.Vector3, end: THREE.Vector3 ): void {
         if ( !this.selectRectMesh ) {
@@ -2081,7 +3372,7 @@ class BlockBuilderWorkspace {
 
     /**
      * Update cursor position display.
-     *     point ( THREE.Vector3 ) - 3D point.
+     *     @param point ( THREE.Vector3 ) - 3D point.
      */
     private updateCursorPosition(point: THREE.Vector3): void {
         const posEl = document.getElementById("cursorPos");
@@ -2090,7 +3381,83 @@ class BlockBuilderWorkspace {
         }
     }
 
+    /**
+     * Apply WASD / arrow key / space / shift / Q / E movement to the camera
+     * and orbit target each frame.  Horizontal movement ( forward/back/strafe )
+     * is always relative to the camera's current facing direction projected
+     * onto the XZ plane so orbiting while moving behaves intuitively.  Space
+     * moves the camera upward, shift moves it downward.  Q and E orbit the
+     * camera left / right around the target point.
+     */
+    private updateWASDMovement(): void {
+        if ( this.keysPressed.size === 0 ) return;
+
+        const speed = this.wasdSpeed * 0.05;
+        const forward = new THREE.Vector3();
+        this.camera.getWorldDirection( forward );
+        forward.y = 0;
+        forward.normalize();
+
+        const right = new THREE.Vector3();
+        right.crossVectors( forward, new THREE.Vector3( 0, 1, 0 ) ).normalize();
+
+        const movement = new THREE.Vector3();
+
+        if ( this.keysPressed.has( "w" ) || this.keysPressed.has( "arrowup" ) ) {
+            movement.add( forward );
+        }
+        if ( this.keysPressed.has( "s" ) || this.keysPressed.has( "arrowdown" ) ) {
+            movement.sub( forward );
+        }
+        if ( this.keysPressed.has( "a" ) || this.keysPressed.has( "arrowleft" ) ) {
+            movement.sub( right );
+        }
+        if ( this.keysPressed.has( "d" ) || this.keysPressed.has( "arrowright" ) ) {
+            movement.add( right );
+        }
+
+        // Vertical movement ( space = up, shift = down ) — applied
+        // independently so the vertical speed stays consistent regardless of
+        // horizontal-direction normalization.
+        if ( this.keysPressed.has( " " ) ) {
+            this.camera.position.y += speed;
+            this.controls.target.y += speed;
+            this.updateCameraInfo();
+        }
+        if ( this.keysPressed.has( "shift" ) ) {
+            this.camera.position.y -= speed;
+            this.controls.target.y -= speed;
+            this.updateCameraInfo();
+        }
+
+        // Q / E orbit rotation around the Y axis — rotates the camera
+        // position around the controls target so the view orbits left ( Q )
+        // or right ( E ) without moving the camera closer or farther.
+        // This runs after controls.update() so the manual lookAt overrides
+        // the controls rotation for this frame, which is what we want.
+        if ( this.keysPressed.has( "q" ) || this.keysPressed.has( "e" ) ) {
+            const rotSpeed = this.wasdSpeed * 0.005;
+            const dir = ( this.keysPressed.has( "q" ) ? 1 : 0 ) + ( this.keysPressed.has( "e" ) ? -1 : 0 );
+            const offset = new THREE.Vector3().subVectors( this.camera.position, this.controls.target );
+            offset.applyEuler( new THREE.Euler( 0, rotSpeed * dir, 0 ) );
+            this.camera.position.copy( this.controls.target ).add( offset );
+            this.camera.lookAt( this.controls.target );
+            this.updateCameraInfo();
+        }
+
+        if ( movement.length() > 0 ) {
+            movement.normalize().multiplyScalar( speed );
+            this.camera.position.add( movement );
+            this.controls.target.add( movement );
+            this.updateCameraInfo();
+        }
+    }
+
+    /**
+     * Update camera status info display.
+     */
     private updateCameraInfo(): void {
+        // Rest of existing method...
         const infoEl = document.getElementById("cameraInfo");
         if (infoEl) {
             const fov = Math.round(this.camera.fov);
@@ -2105,14 +3472,31 @@ class BlockBuilderWorkspace {
     private animate(): void {
         requestAnimationFrame(() => this.animate());
         this.controls.update();
-        // Keep selection visuals synced to block positions ( in case of drag )
+        this.updateWASDMovement();
+        // Keep selection visuals synced to block positions ( in case of drag ).
+        // The aggregate selectionBounds lives one index past the per-block
+        // outlines so it must be tracked here too — it represents the
+        // bounding region of all selected objects and must follow when the
+        // selection is dragged.
         if ( this.selectedBlocks.length > 0 ) {
             for ( let i = 0; i < this.selectedBlocks.length; i++ ) {
                 const block = this.selectedBlocks[i];
                 const child = this.selectionGroup.children[i];
                 if ( child && child instanceof THREE.LineSegments ) {
                     child.position.copy( block.position );
+                    child.scale.copy( block.scale );
+                    child.quaternion.copy( block.quaternion );
                 }
+            }
+            if ( this.selectionBounds ) {
+                const box = new THREE.Box3();
+                for ( const block of this.selectedBlocks ) {
+                    block.updateMatrixWorld( true );
+                    box.expandByObject( block );
+                }
+                const center = new THREE.Vector3();
+                box.getCenter( center );
+                this.selectionBounds.position.copy( center );
             }
         }
         // The vertical reference grid is fixed at the positive-Z wall of the

@@ -46,6 +46,7 @@
                 <button data-shape="panel" aria-pressed="false"><span data-oskakefani="ſɟɔ ſןw ſɭw ʃᴜ"></span> 🟧</button>
                 <button data-shape="pillar" aria-pressed="false"><span data-oskakefani="ſɟɔ }ʃw"></span> 🟩</button>
                 <button data-shape="wedge" aria-pressed="false"><span data-oskakefani="ſȷɹƽ"></span> 🔺</button>
+                <button data-shape="cylinder" aria-pressed="false"><span data-oskakefani="ſɭw ſɟɹ }ʃᴜ"></span> 🥫</button>
             </thala>
 
             <thala class="n2tase" id="colorsPanel">
@@ -74,6 +75,24 @@
                 <input type="range" id="rotateSlider" min="0" max="360" value="45">
             </thala>
 
+            <thala class="n2tase" id="orbitPanel">
+                <p class="ksakap2sa"><span data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭɹ j͑ʃɔ"></span> 🛰️</p>
+                <label>
+                    <p data-oskakefani="ɭʃᴜɔ˞ ֭ſɭɹ j͑ʃɔ"></p>
+                    <input type="checkbox" id="autoRotateToggle">
+                </label>
+                <p class="ksakat2xa" data-oskakefani="j͑ʃɹ j͑ʃᴜ ʃɜ j͑ʃп́ɔ j͑ʃɔ ֭ſɭɔ }ʃꞇ"></p>
+                <input type="range" id="rotateSpeedSlider" min="0" max="20" value="0">
+                <p class="ksakat2xa" data-oskakefani="ꞁȷ̀ɹ ʃᴜ j͑ʃп́ɔ j͑ʃɔ ֭ſɭɔ }ʃꞇ"></p>
+                <input type="range" id="zoomSpeedSlider" min="2" max="40" value="10">
+                <p class="ksakat2xa" data-oskakefani="j͑ʃ'ᴜ ı],ᴜ ʃꞇ j͑ʃɔ ֭ſɭɔ }ʃꞇ"></p>
+                <input type="range" id="panSpeedSlider" min="2" max="40" value="10">
+                <p class="ksakat2xa" data-oskakefani="ſɭw ı],ᴜ }ʃꞇ"></p>
+                <input type="range" id="dampingSlider" min="0" max="100" value="10">
+                <p class="ksakat2xa" data-oskakefani="ſɟw ʃɹ j͑ʃᴜꞇ j͑ʃɔ ֭ſɭɔ }ʃꞇ"></p>
+                <input type="range" id="wasdSpeedSlider" min="1" max="20" value="5">
+            </thala>
+
             <thala class="n2tase" id="gridPanel">
                 <p class="ksakap2sa"><span data-oskakefani="ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ"></span> ⬜</p>
                 <label>
@@ -81,7 +100,50 @@
                     <input type="checkbox" id="gridToggle" checked>
                 </label>
                 <p class="ksakat2xa" data-oskakefani="ſןᴜ j͐ʃэ"></p>
-                <input type="range" id="gridSizeSlider" min="8" max="64" value="32">            </thala>
+                <input type="range" id="gridSizeSlider" min="8" max="64" value="32">
+                <p class="ksakat2xa" data-oskakefani="j͑ʃɹ ſןᴜ ɭʃэ j͑ʃп́ɔ ſןᴜ j͐ʃэ"></p>
+                <input type="range" id="stepSizeSlider" min="1" max="8" value="1">
+                <label>
+                    <p data-oskakefani="j͑ʃ'ᴜ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ ſɭw ʃᴜ"></p>
+                    <input type="checkbox" id="snapToggle" checked>
+                </label>            </thala>
+
+            <thala class="n2tase" id="groupingPanel" style="display:none">
+                <p class="ksakap2sa"><span data-oskakefani="֭ſɭᴜ ɭʃɔ"></span> 🤝</p>
+                <button id="combineBtn"><span data-oskakefani="ſɭɜ ı],ɹȝ j͑ʃw ſɭʞɹȝ ꞁȷ̀ᴜ }ʃꞇ"></span> 🧬</button>
+                <button id="groupBtn"><span data-oskakefani="j͑ʃ'ᴜ ֭ſɭᴜ ɭʃɔ"></span> 🧺</button>
+                <button id="ungroupBtn"><span data-oskakefani="ɭl̀э ֭ſɭᴜ ɭʃɔ ֭ſɭɹͷ̗"></span> 📤</button>
+                <button id="unionBtn"><span data-oskakefani="ʃэ ɭʃᴜ ʃɜƽ ꞁȷ̀ᴜ }ʃꞇ"></span> ⚛️</button>
+            </thala>
+
+            <thala class="n2tase" id="propertiesPanel" style="display:none">
+                <p class="ksakap2sa"><span data-oskakefani="j͑ʃɹ ֭ſɭᴜ ʃᴜ"></span> 🔍</p>
+                <div id="minecraftPropsSection">
+                    <p class="ksakat2xa"><span data-oskakefani="j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ"></span> <span id="propName">-</span></p>
+                    <p class="ksakat2xa"><span data-oskakefani="ſɭw ʃᴜ j͑ʃп́ɔ ɽ͑ʃ'w j͑ʃ'ᴜ"></span> <span id="propBlockId">-</span></p>
+                </div>
+                <p class="ksakat2xa"><span data-oskakefani="}ʃᴜ ſɭɜ ı],ᴜ"></span> <span id="propShape">cube</span></p>
+                <p class="ksakat2xa" style="display:flex;align-items:center;gap:6px">
+                    <span data-oskakefani="ᶅſɔ ֭ſɭɹ"></span>
+                    <span id="propColorSwatch" style="display:inline-block;width:0.9em;height:0.9em;border:1px solid #ffffff"></span>
+                </p>
+                <sak></sak>
+                <p class="ksakat2xa"><span data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ"></span> · <span data-oskakefani="ſɭᴜc̗ ɭʃɜ }ʃꞇ"></span></p>
+                <label style="display:flex;gap:4px;align-items:center">
+                    X<input type="number" id="propPosX" step="0.5" style="flex:1">
+                </label>
+                <label style="display:flex;gap:4px;align-items:center">
+                    Y<input type="number" id="propPosY" step="0.5" style="flex:1">
+                </label>
+                <label style="display:flex;gap:4px;align-items:center">
+                    Z<input type="number" id="propPosZ" step="0.5" style="flex:1">
+                </label>
+                <p class="ksakat2xa"><span data-oskakefani="j͑ʃɹ j͑ʃᴜ ʃɜ"></span> · <span data-oskakefani="ʃᴜ ſɭэ ֭ſɭэ"></span></p>
+                <label style="display:flex;gap:4px;align-items:center">
+                    Y<input type="number" id="propRot" step="0.0174533" style="flex:1">
+                </label>
+                <p class="ksakat2xa" data-oskakefani="ſɭɜ ı],ɹȝ ꞁȷ̀ᴜꞇ" style="font-style:italic;opacity:0.7"></p>
+            </thala>
 
             <thala class="n2tase" id="backgroundPanel">
                 <p class="ksakap2sa"><span data-oskakefani="ꞁȷ̀ɹ ɭʃɹͷ̗"></span> 🌄</p>
@@ -146,108 +208,199 @@
 </body><script>
     const skakefani = {
         aih: {
+            // ── Navigation ──
             "ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ": "ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ",
             "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ": "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ",
             "ꞁȷ̀ꞇ }ʃᴜƽ": "ꞁȷ̀ꞇ }ʃᴜƽ",
+
+            // ── Background ──
             "ꞁȷ̀ɹ ɭʃɹͷ̗": "ꞁȷ̀ɹ ɭʃɹͷ̗",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɟɔ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɟɔ",
             "ſɟᴜ }ʃᴜ": "ſɟᴜ }ʃᴜ",
 
+            // ── Page & Mode ──
             "ſɟᴜ j͑ʃ'ᴜ ſןᴜȝ": "ſɟᴜ j͑ʃ'ᴜ ſןᴜȝ 🧱",
-            "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ",
             "֭ſɭᴜ ı],ɔ": "֭ſɭᴜ ı],ɔ",
-            "ſɭэ ſᶘɹ ſɭ,ɹ": "ſɭэ ſᶘɹ ſɭ,ɹ",
             "ſןэ ſɭɘw }ʃꞇ": "ſןэ ſɭɘw }ʃꞇ",
+            "ſɭэ ſᶘɹ ſɭ,ɹ": "ſɭэ ſᶘɹ ſɭ,ɹ",
+
+            // ── Tools ──
+            "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ",
+            "j͑ʃw ſɭʞɹȝ": "j͑ʃw ſɭʞɹȝ",
+            "j͑ʃ'ᴜ ı],ᴜ ſɭw ʃᴜ": "j͑ʃ'ᴜ ı],ᴜ ſɭw ʃᴜ",
+            "ȏoͩſ̀ȷᴜƽ ſɭw ʃᴜ": "ȏoͩſ̀ȷᴜƽ ſɭw ʃᴜ",
+            "֭ſɭɹͷ̗ ſɭw ʃᴜ": "֭ſɭɹͷ̗ ſɭw ʃᴜ",
+            "j͑ʃɹ j͑ʃᴜ ʃɜ ſɭw ʃᴜ": "j͑ʃɹ j͑ʃᴜ ʃɜ ſɭw ʃᴜ",
+            "j͑ʃ'ᴜ ᶅſɔ ֭ſɭɹ ſɭw ʃᴜ": "j͑ʃ'ᴜ ᶅſɔ ֭ſɭɹ ſɭw ʃᴜ",
+            "j͑ʃw ſɭʞɹȝ ᶅſɔ ֭ſɭɹ": "j͑ʃw ſɭʞɹȝ ᶅſɔ ֭ſɭɹ",
+
+            // ── Shapes ──
             "}ʃᴜ ſɭɜ ı],ᴜ": "}ʃᴜ ſɭɜ ı],ᴜ",
             "ſɭw ʃᴜ": "ſɭw ʃᴜ",
             "ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ ſɭw ʃᴜ": "ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ ſɭw ʃᴜ",
             "ſɟɔ ſןw ſɭw ʃᴜ": "ſɟɔ ſןw ſɭw ʃᴜ",
             "ſɟɔ }ʃw": "ſɟɔ }ʃw",
             "ſȷɹƽ": "ſȷɹƽ",
-            "j͑ʃw ſɭʞɹȝ ᶅſɔ ֭ſɭɹ": "j͑ʃw ſɭʞɹȝ ᶅſɔ ֭ſɭɹ",
+            "ſɭw ſɟɹ }ʃᴜ": "ſɭw ſɟɹ }ʃᴜ",
+
+            // ── Colors ──
+            "ſɭw ʃᴜ j͑ʃп́ɔ ɽ͑ʃ'w j͑ʃ'ᴜ": "ſɭw ʃᴜ j͑ʃп́ɔ ɽ͑ʃ'w j͑ʃ'ᴜ",
             "ᶅſɔ ֭ſɭɹ": "ᶅſɔ ֭ſɭɹ",
             "ꞁȷ̀ꞇ }ʃᴜƽ ᶅſɔ ֭ſɭɹ": "ꞁȷ̀ꞇ }ʃᴜƽ ᶅſɔ ֭ſɭɹ",
-            "j͑ʃw ſɭʞɹȝ": "j͑ʃw ſɭʞɹȝ",
-            "j͑ʃ'ᴜ ı],ᴜ ſɭw ʃᴜ": "j͑ʃ'ᴜ ı],ᴜ ſɭw ʃᴜ",
-            "ȏoͩſ̀ȷᴜƽ ſɭw ʃᴜ": "ȏoͩſ̀ȷᴜƽ ſɭw ʃᴜ",
-            "֭ſɭɹͷ̗ ſɭw ʃᴜ": "֭ſɭɹͷ̗ ſɭw ʃᴜ",
-            "j͑ʃ'ᴜ ᶅſɔ ֭ſɭɹ ſɭw ʃᴜ": "j͑ʃ'ᴜ ᶅſɔ ֭ſɭɹ ſɭw ʃᴜ",
-            "j͑ʃɹ j͑ʃᴜ ʃɜ ſɭw ʃᴜ": "j͑ʃɹ j͑ʃᴜ ʃɜ ſɭw ʃᴜ",
-            "ſɭw ʃᴜ": "ſɭw ʃᴜ",
-            "ſɭw ʃᴜ j͑ʃп́ɔ ɽ͑ʃ'w j͑ʃ'ᴜ": "ſɭw ʃᴜ j͑ʃп́ɔ ɽ͑ʃ'w j͑ʃ'ᴜ",
+            "ʃᴜ }ʃᴜ ᶅſɔ ֭ſɭɹ": "ʃᴜ }ʃᴜ ᶅſɔ ֭ſɭɹ",
+
+            // ── Camera ──
             "ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ": "ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ",
             "ɭʃɜ j͑ʃᴜᶗ‹ ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ": "ɭʃɜ j͑ʃᴜᶗ‹ ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ",
             "ꞁȷ̀ɹ ʃᴜ j͑ʃп́ɔ ſןᴜ j͐ʃэ": "ꞁȷ̀ɹ ʃᴜ j͑ʃп́ɔ ſןᴜ j͐ʃэ",
             "j͑ʃɹ j͑ʃᴜ ʃɜ": "j͑ʃɹ j͑ʃᴜ ʃɜ",
+
+            // ── Orbit Controls ──
+            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭɹ j͑ʃɔ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭɹ j͑ʃɔ",
+            "ɭʃᴜɔ˞ ֭ſɭɹ j͑ʃɔ": "ɭʃᴜɔ˞ ֭ſɭɹ j͑ʃɔ",
+            "j͑ʃɹ j͑ʃᴜ ʃɜ j͑ʃп́ɔ j͑ʃɔ ֭ſɭɔ }ʃꞇ": "j͑ʃɹ j͑ʃᴜ ʃɜ j͑ʃп́ɔ j͑ʃɔ ֭ſɭɔ }ʃꞇ",
+            "ꞁȷ̀ɹ ʃᴜ j͑ʃп́ɔ j͑ʃɔ ֭ſɭɔ }ʃꞇ": "ꞁȷ̀ɹ ʃᴜ j͑ʃп́ɔ j͑ʃɔ ֭ſɭɔ }ʃꞇ",
+            "j͑ʃ'ᴜ ı],ᴜ ʃꞇ j͑ʃɔ ֭ſɭɔ }ʃꞇ": "j͑ʃ'ᴜ ı],ᴜ ʃꞇ j͑ʃɔ ֭ſɭɔ }ʃꞇ",
+            "ſɭw ı],ᴜ }ʃꞇ": "ſɭw ı],ᴜ }ʃꞇ",
+            "ſɟw ʃɹ j͑ʃᴜꞇ j͑ʃɔ ֭ſɭɔ }ʃꞇ": "ſɟw ʃɹ j͑ʃᴜꞇ j͑ʃɔ ֭ſɭɔ }ʃꞇ",
+
+            // ── Grid ──
             "ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ": "ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ",
             "ſɟɔ ŋᷠɔ": "ſɟɔ ŋᷠɔ",
             "ſןᴜ j͐ʃэ": "ſןᴜ j͐ʃэ",
+            "j͑ʃɹ ſןᴜ ɭʃэ j͑ʃп́ɔ ſןᴜ j͐ʃэ": "j͑ʃɹ ſןᴜ ɭʃэ j͑ʃп́ɔ ſןᴜ j͐ʃэ",
+            "j͑ʃ'ᴜ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ ſɭw ʃᴜ": "j͑ʃ'ᴜ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ ſɭw ʃᴜ",
+
+            // ── Grouping ──
+            "֭ſɭᴜ ɭʃɔ": "֭ſɭᴜ ɭʃɔ",
+            "ſɭɜ ı],ɹȝ j͑ʃw ſɭʞɹȝ ꞁȷ̀ᴜ }ʃꞇ": "ſɭɜ ı],ɹȝ j͑ʃw ſɭʞɹȝ ꞁȷ̀ᴜ }ʃꞇ",
+            "j͑ʃ'ᴜ ֭ſɭᴜ ɭʃɔ": "j͑ʃ'ᴜ ֭ſɭᴜ ɭʃɔ",
+            "ɭl̀э ֭ſɭᴜ ɭʃɔ ֭ſɭɹͷ̗": "ɭl̀э ֭ſɭᴜ ɭʃɔ ֭ſɭɹͷ̗",
+            "ʃэ ɭʃᴜ ʃɜƽ ꞁȷ̀ᴜ }ʃꞇ": "ʃэ ɭʃᴜ ʃɜƽ ꞁȷ̀ᴜ }ʃꞇ",
+
+            // ── Properties Panel ──
+            "j͑ʃɹ ֭ſɭᴜ ʃᴜ": "j͑ʃɹ ֭ſɭᴜ ʃᴜ 🔍",
+            "ſɭᴜc̗ ɭʃɜ }ʃꞇ": "ſɭᴜc̗ ɭʃɜ }ʃꞇ",
+            "ʃᴜ ſɭэ ֭ſɭэ": "ʃᴜ ſɭэ ֭ſɭэ",
+            "ſɭɜ ı],ɹȝ ꞁȷ̀ᴜꞇ": "ſɭɜ ı],ɹȝ ꞁȷ̀ᴜꞇ",
+
+            // ── Actions ──
             "ſɭ,ɔ }ʃꞇ": "ſɭ,ɔ }ʃꞇ",
             "}ʃɔ ſɭᴜ j͐ʃᴜ": "}ʃɔ ſɭᴜ j͐ʃᴜ",
             "}ʃɔ }ʃɔ ſɭᴜ j͐ʃᴜ": "}ʃɔ }ʃɔ ſɭᴜ j͐ʃᴜ",
+
+            // ── File ──
             "ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ": "ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ",
             "j͑ʃ'ɔ ſ̀ȷᴜȝ": "j͑ʃ'ɔ ſ̀ȷᴜȝ",
             "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ": "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ",
             "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭw ʃᴜ": "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭw ʃᴜ",
             "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ": "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ",
             "ſɭc̗ᴜ ſɭɔ ֭ſɭɔ j͑ʃɔ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ": "ſɭc̗ᴜ ſɭɔ ֭ſɭɔ j͑ʃɔ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ",
+
+            // ── Navigation Links ──
             "j͑ʃɹ ſɟɔ j͐ʃɹʞ": "j͑ʃɹ ſɟɔ j͐ʃɹʞ",
-            "ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ": "ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ",
+
+            // ── Status Bar ──
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ",
-            "ſɭw ʃᴜ": "ſɭw ʃᴜ",
         },
         en: {
+            // ── Navigation ──
             "ſ͔ɭɔ j͐ʃɔ j͑ʃᴜꞇ": "Main",
             "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ": "Iikrhia Language",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ": "Arahashii",
             "ꞁȷ̀ꞇ }ʃᴜƽ": "Other",
+
+            // ── Background ──
             "ꞁȷ̀ɹ ɭʃɹͷ̗": "Background",
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɟɔ": "Forest",
             "ſɟᴜ }ʃᴜ": "Sky",
 
+            // ── Page & Mode ──
             "ſɟᴜ j͑ʃ'ᴜ ſןᴜȝ": "3D Build 🧱",
-            "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "Block Tools",
             "֭ſɭᴜ ı],ɔ": "Mode",
-            "ſɭэ ſᶘɹ ſɭ,ɹ": "Minecraft",
             "ſןэ ſɭɘw }ʃꞇ": "General 3D",
-            "}ʃᴜ ſɭɜ ı],ᴜ": "Shapes",
-            "ſɭw ʃᴜ": "Cube",
-            "ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ ſɭw ʃᴜ": "Slab",
-            "ſɟɔ ſןw ſɭw ʃᴜ": "Panel",
-            "ſɟɔ }ʃw": "Pillar",
-            "ſȷɹƽ": "Wedge",
-            "j͑ʃw ſɭʞɹȝ ᶅſɔ ֭ſɭɹ": "Color Picker",
-            "ſɭw ʃᴜ": "Blocks",
-            "ꞁȷ̀ꞇ }ʃᴜƽ ᶅſɔ ֭ſɭɹ": "Custom Color",
-            "ſ͕ɭɹȝ j͑ʃ'ᴜ ꞁȷ̀ꞇ }ʃᴜƽ ᶅſɔ ֭ſɭɹ": "Type Color",
+            "ſɭэ ſᶘɹ ſɭ,ɹ": "Minecraft",
+
+            // ── Tools ──
+            "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "Block Tools",
             "j͑ʃw ſɭʞɹȝ": "Select",
             "j͑ʃ'ᴜ ı],ᴜ ſɭw ʃᴜ": "Move Block",
             "ȏoͩſ̀ȷᴜƽ ſɭw ʃᴜ": "Add Block",
             "֭ſɭɹͷ̗ ſɭw ʃᴜ": "Remove Block",
-            "j͑ʃ'ᴜ ᶅſɔ ֭ſɭɹ ſɭw ʃᴜ": "Paint Block",
             "j͑ʃɹ j͑ʃᴜ ʃɜ ſɭw ʃᴜ": "Rotate Block",
-            "ᶅſɔ ֭ſɭɹ": "Colors",
+            "j͑ʃ'ᴜ ᶅſɔ ֭ſɭɹ ſɭw ʃᴜ": "Paint Block",
+            "j͑ʃw ſɭʞɹȝ ᶅſɔ ֭ſɭɹ": "Color Picker",
+
+            // ── Shapes ──
+            "}ʃᴜ ſɭɜ ı],ᴜ": "Shapes",
+            "ſɭw ʃᴜ": "Blocks",
+            "ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ ſɭw ʃᴜ": "Slab",
+            "ſɟɔ ſןw ſɭw ʃᴜ": "Panel",
+            "ſɟɔ }ʃw": "Pillar",
+            "ſȷɹƽ": "Wedge",
+            "ſɭw ſɟɹ }ʃᴜ": "Cylinder",
+
+            // ── Colors ──
             "ſɭw ʃᴜ j͑ʃп́ɔ ɽ͑ʃ'w j͑ʃ'ᴜ": "Block ID",
+            "ᶅſɔ ֭ſɭɹ": "Colors",
+            "ꞁȷ̀ꞇ }ʃᴜƽ ᶅſɔ ֭ſɭɹ": "Custom Color",
+            "ʃᴜ }ʃᴜ ᶅſɔ ֭ſɭɹ": "Type Color",
+
+            // ── Camera ──
             "ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ": "Camera",
             "ɭʃɜ j͑ʃᴜᶗ‹ ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ": "Reset Camera",
             "ꞁȷ̀ɹ ʃᴜ j͑ʃп́ɔ ſןᴜ j͐ʃэ": "Zoom",
             "j͑ʃɹ j͑ʃᴜ ʃɜ": "Rotate",
+
+            // ── Orbit Controls ──
+            "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭɹ j͑ʃɔ": "Orbit Controls",
+            "ɭʃᴜɔ˞ ֭ſɭɹ j͑ʃɔ": "Auto Rotate",
+            "j͑ʃɹ j͑ʃᴜ ʃɜ j͑ʃп́ɔ j͑ʃɔ ֭ſɭɔ }ʃꞇ": "Rotation Speed",
+            "ꞁȷ̀ɹ ʃᴜ j͑ʃп́ɔ j͑ʃɔ ֭ſɭɔ }ʃꞇ": "Zoom Speed",
+            "j͑ʃ'ᴜ ı],ᴜ ʃꞇ j͑ʃɔ ֭ſɭɔ }ʃꞇ": "Pan Speed",
+            "ſɭw ı],ᴜ }ʃꞇ": "Damping",
+            "ſɟw ʃɹ j͑ʃᴜꞇ j͑ʃɔ ֭ſɭɔ }ʃꞇ": "WASD Speed",
+
+            // ── Grid ──
             "ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ": "Grid",
             "ſɟɔ ŋᷠɔ": "Show Grid",
             "ſןᴜ j͐ʃэ": "Grid Size",
+            "j͑ʃɹ ſןᴜ ɭʃэ j͑ʃп́ɔ ſןᴜ j͐ʃэ": "Step Size",
+            "j͑ʃ'ᴜ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ ſɭw ʃᴜ": "Snap Blocks",
+
+            // ── Grouping ──
+            "֭ſɭᴜ ɭʃɔ": "Group",
+            "ſɭɜ ı],ɹȝ j͑ʃw ſɭʞɹȝ ꞁȷ̀ᴜ }ʃꞇ": "Combine Selection",
+            "j͑ʃ'ᴜ ֭ſɭᴜ ɭʃɔ": "Put Into Group",
+            "ɭl̀э ֭ſɭᴜ ɭʃɔ ֭ſɭɹͷ̗": "Remove From Group",
+            "ʃэ ɭʃᴜ ʃɜƽ ꞁȷ̀ᴜ }ʃꞇ": "Union",
+
+            // ── Properties Panel ──
+            "j͑ʃɹ ֭ſɭᴜ ʃᴜ": "Properties 🔍",
+            "ſɭᴜc̗ ɭʃɜ }ʃꞇ": "Axis",
+            "ʃᴜ ſɭэ ֭ſɭэ": "Radians",
+            "ſɭɜ ı],ɹȝ ꞁȷ̀ᴜꞇ": "( Mixed )",
+
+            // ── Actions ──
             "ſɭ,ɔ }ʃꞇ": "Actions",
             "}ʃɔ ſɭᴜ j͐ʃᴜ": "Undo",
             "}ʃɔ }ʃɔ ſɭᴜ j͐ʃᴜ": "Redo",
+
+            // ── File ──
             "ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ": "File",
             "j͑ʃ'ɔ ſ̀ȷᴜȝ": "Save",
             "j͑ʃ'ɔ }ʃɔ ſ̀ȷᴜȝ": "Load",
             "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭw ʃᴜ": "Export Object",
             "j͑ʃ'ɔ ſ̀ȷᴜȝ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ": "Export Schematic",
             "ſɭc̗ᴜ ſɭɔ ֭ſɭɔ j͑ʃɔ ſɭc̗ᴜ ֭ſɭƨᴜ ſɭᴜ": "Schematic format",
+
+            // ── Navigation Links ──
             "j͑ʃɹ ſɟɔ j͐ʃɹʞ": "Navigation",
+
+            // ── Status Bar ──
             "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "Position",
-            "ſɭw ʃᴜ": "Blocks",
+
         }
     };
 </script>
