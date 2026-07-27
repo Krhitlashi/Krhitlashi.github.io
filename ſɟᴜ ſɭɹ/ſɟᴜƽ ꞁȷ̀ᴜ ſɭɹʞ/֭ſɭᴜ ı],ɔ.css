@@ -108,13 +108,20 @@ body.whiteboard-page {
     inset-block-start: var(--text-y, 0);
     color: var(--text-color, #000);
     caret-color: var(--text-color, #000);
+    font-size: var(--text-size, 16px);
+    font-family: "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ", sans-serif;
     z-index: 8;
     display: none;
     line-height: 1;
     outline: none;
-    white-space: pre;
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-inline-size: 2em;
     background: transparent;
     border: none;
+    user-select: text;
+    -webkit-user-select: text;
+    cursor: text;
 }
 .text-edit-input.visible {
     display: block;

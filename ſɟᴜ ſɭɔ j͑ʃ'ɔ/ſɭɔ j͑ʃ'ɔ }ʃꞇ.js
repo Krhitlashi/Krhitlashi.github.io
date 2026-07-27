@@ -149,5 +149,6 @@ function a3esoza(sozanu) {
 document.addEventListener("DOMContentLoaded", () => {
   b6vegejexSakeveni();
   vacepu("cepufal");
+  vacepu("aih");
   valas();
 });

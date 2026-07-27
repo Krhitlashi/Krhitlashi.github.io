@@ -294,7 +294,7 @@ export const pathState: PathState = {
 
 export interface TextState {
     isEditing: boolean;
-    input: HTMLTextAreaElement | null;
+    input: HTMLDivElement | null;
     useHtml: boolean;
     editingIndex: number;
 }

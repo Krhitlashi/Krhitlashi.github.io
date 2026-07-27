@@ -10,7 +10,7 @@ import {
 import {
     getClientCoords, generateId, resetCursor, setCursor, 
     resetSelectionState,
-    startTextEdit, positionTextEditInput, getTextEditPosition, finishTextEditCommon,
+    positionTextEditInput, getTextEditPosition, finishTextEditCommon,
     getObjectBounds, getCenter, getCenterX, getCenterY,
     TouchOrMouseEvent, findObjectAtPoint,
     drawRoundedRectPath, createShapeObject,
@@ -50,11 +50,14 @@ export function removeEmptyTextObject( index: number ): void {
 }
 
 export function initTextEditInput(): void {
-    textState.input = document.createElement( "textarea" );
-    textState.input.className = "text-edit-input";
+    const input = document.createElement( "div" );
+    input.className = "text-edit-input";
+    input.contentEditable = "true";
+    input.setAttribute( "spellcheck", "false" );
+    textState.input = input;
 
-    textState.input.addEventListener( "blur", finishTextEditing );
-    textState.input.addEventListener( "keydown", ( e ) => {
+    input.addEventListener( "blur", finishTextEditing );
+    input.addEventListener( "keydown", ( e ) => {
         if ( e.key === "Escape" ) {
             e.preventDefault();
             cancelTextEditing();
@@ -63,10 +66,14 @@ export function initTextEditInput(): void {
             finishTextEditing();
         }
     } );
-    textState.input.addEventListener( "input", () => {
+    input.addEventListener( "input", () => {
+        // Run vacepu on the unique class so spans are live while editing
+        const uniqueClass = input.dataset.vacepuClass;
+        if ( uniqueClass ) window.vacepu( uniqueClass );
+
         if ( textState.editingIndex >= 0 && objectState.objects[ textState.editingIndex ] ) {
             const obj = objectState.objects[ textState.editingIndex ];
-            obj.text = textState.input!.value;
+            obj.text = input.innerText;
             obj.textDirty = true;
             obj.cachedCanvas = null;
             obj.cachedWidth = null;
@@ -75,13 +82,13 @@ export function initTextEditInput(): void {
         }
     } );
 
-    document.getElementById( "whiteboardContainer" )!.appendChild( textState.input );
+    document.getElementById( "whiteboardContainer" )!.appendChild( input );
 }
 
 export function finishTextEditing(): void {
     if ( !textState.isEditing || !textState.input ) return;
 
-    const text = textState.input.value;
+    const text = textState.input.innerText;
 
     if ( textState.editingIndex >= 0 && objectState.objects[ textState.editingIndex ] ) {
         const obj = objectState.objects[ textState.editingIndex ];
@@ -132,14 +139,28 @@ export function cancelTextEditing(): void {
 }
 
 export function editTextObject( obj: WhiteboardObject ): void {
-    startTextEdit();
+    if ( !textState.input ) return;
     textState.isEditing = true;
     textState.editingIndex = objectState.objects.indexOf( obj );
     positionTextEditInput( obj.x!, obj.y!, obj.size!, obj.color! );
-    textState.input!.value = obj.text || "";
-    textState.input!.classList.add( "visible" );
-    textState.input!.focus();
-    textState.input!.select();
+
+    // Assign a unique class so the input event handler can target it with vacepu
+    const uniqueClass = "text-edit-vacepu-" + Date.now();
+    textState.input.dataset.vacepuClass = uniqueClass;
+    textState.input.className = "text-edit-input visible " + uniqueClass;
+
+    textState.input.innerText = obj.text || "";
+    window.vacepu( uniqueClass );
+
+    textState.input.focus();
+    // Select all content in the contenteditable div
+    const sel = window.getSelection();
+    if ( sel ) {
+        const range = document.createRange();
+        range.selectNodeContents( textState.input );
+        sel.removeAllRanges();
+        sel.addRange( range );
+    }
 }
 
 // ⟪ Canvas Input Helpers 🖱️ ⟫

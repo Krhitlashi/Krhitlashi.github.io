@@ -454,8 +454,8 @@ function getConflictingPrefix(prefixType: string): string | null {
 // ⟪ Dictionary Loading 📖 ⟫
 
 const DICTIONARY_PATHS = [
-    "../../ſ͔ɭᴜ ᶅſɔ/ſȷſɭ ꞁȷ̀ɹ ſɭˬꞇᴜ.html",
-    "../ſ͔ɭᴜ ᶅſɔ/ſȷſɭ ꞁȷ̀ɹ ſɭˬꞇᴜ.html",
+    "../../ſ͔ɭᴜ ᶅſɔ/ſȷᴜͷ̗ ſɭɔʞ ꞁȷ̀ᴜꞇ/ſȷſɭ ꞁȷ̀ɹ ſɭˬꞇᴜ.html",
+    "../ſ͔ɭᴜ ᶅſɔ/ſȷᴜͷ̗ ſɭɔʞ ꞁȷ̀ᴜꞇ/ſȷſɭ ꞁȷ̀ɹ ſɭˬꞇᴜ.html",
     "ſȷſɭ ꞁȷ̀ɹ ſɭˬꞇᴜ.html"
 ];
 

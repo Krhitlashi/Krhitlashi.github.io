@@ -21,7 +21,7 @@ if ( hat2bakanoKek ) {
     }
     
     if ( !keksar2ba ) {
-        keksar2ba = document.getElementById(bana2bakanoRuva + "-kef") || document.getElementById("kef");
+        keksar2ba = document.getElementById(bana2bakanoRuva + "-kef") || document.getElementById("falkefu");
         if ( keksar2ba ) {
             huqaq = "table";
         }

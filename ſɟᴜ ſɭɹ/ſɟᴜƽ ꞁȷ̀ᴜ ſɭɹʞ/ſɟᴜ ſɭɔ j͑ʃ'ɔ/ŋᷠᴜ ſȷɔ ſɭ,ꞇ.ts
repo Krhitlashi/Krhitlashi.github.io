@@ -145,13 +145,6 @@ export function initButtons( buttonConfigs: Array<{ id: string; onClick: ( ) => 
 
 // ⟪ Text Edit Helpers 📝 ⟫
 
-export function startTextEdit( ): void {
-    if ( !textState.input ) {
-        textState.input = document.createElement( "textarea" );
-        textState.input.className = "text-edit-input";
-    }
-}
-
 export function positionTextEditInput( x: number, y: number, size: number, color: string ): void {
     const zoom = state.zoomNum / state.zoomDen;
 
@@ -172,7 +165,7 @@ export function getTextEditPosition( ): { textX: number; textY: number } {
 
 export function finishTextEditCommon( ): void {
     textState.input!.classList.remove( "visible" );
-    textState.input!.value = "";
+    textState.input!.innerText = "";
     textState.isEditing = false;
     textState.editingIndex = -1;
 }
