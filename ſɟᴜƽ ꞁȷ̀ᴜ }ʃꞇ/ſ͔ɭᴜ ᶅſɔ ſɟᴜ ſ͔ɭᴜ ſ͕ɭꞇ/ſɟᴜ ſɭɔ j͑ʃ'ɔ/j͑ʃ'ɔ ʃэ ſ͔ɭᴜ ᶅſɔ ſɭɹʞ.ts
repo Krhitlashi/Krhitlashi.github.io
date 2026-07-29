@@ -1,29 +1,29 @@
-// ≺⧼ Iikze Writing System Converter 📜 ⧽≻
+// ≺⧼ Iikze Skribsistema Konvertilo 📜 ⧽≻
 /**
- * Converts between Gawekiif, La3os, and IPA writing systems
- * - Gawekiif - Native script with initial and internal forms
- * - La3os - Romanized transcription (uses numerical shorthand: 1=ts, 2=ii, 3=tl, 4=au, 5=kz, 6=aa, 7=ou, 0=eu)
- * - IPA - International Phonetic Alphabet
+ * Konvertas inter Gawekiif, La3os, kaj IPA skribsistemoj.
+ * - Gawekiif - Denaska skribo kun komencaj kaj internaj formoj
+ * - La3os - Romanigita transskribo (uzas numeralan stenografion. 1=ts, 2=ii, 3=tl, 4=au, 5=kz, 6=aa, 7=ou, 0=eu)
+ * - IPA - Internacia Fonetika Alfabeto
  */
 
 
-// ⟪ Constants 📦 ⟫
+// ⟪ Konstantoj 📦 ⟫
 
-const NUMERICAL: Record<string, string> = { "ts": "1", "ii": "2", "tl": "3", "au": "4", "kz": "5", "aa": "6", "ou": "7", "eu": "0" };
-const NUMERICAL_REVERSE: Record<string, string> = { "1": "ts", "2": "ii", "3": "tl", "4": "au", "5": "kz", "6": "aa", "7": "ou", "0": "eu" };
+const NUMERIKA: Record<string, string> = { "ts": "1", "ii": "2", "tl": "3", "au": "4", "kz": "5", "aa": "6", "ou": "7", "eu": "0" };
+const NUMERIKA_MALO: Record<string, string> = { "1": "ts", "2": "ii", "3": "tl", "4": "au", "5": "kz", "6": "aa", "7": "ou", "0": "eu" };
 
-const VOWELS_SORTED: string[] = [ "ii", "aa", "eu", "ou", "au", "i", "e", "a", "u", "o", "2", "6", "0", "7", "4" ].sort( ( a, b ) => b.length - a.length );
+const VOKALOJ_ORDIGITAJ: string[] = [ "ii", "aa", "eu", "ou", "au", "i", "e", "a", "u", "o", "2", "6", "0", "7", "4" ].sort( ( a, b ) => b.length - a.length );
 
 
-// ⟪ Unified Mappings 🗺️ ⟫
+// ⟪ Unuigitaj Mapoj 🗺️ ⟫
 
-interface Mapping {
+interface Mapo {
     gk: string;
     la3os: string;
     ipa: string;
 }
 
-const INITIALS: Mapping[] = [
+const KOMENCAJ: Mapo[] = [
     { gk: "ᶅſ", la3os: "w", ipa: "ⱱ" },
     { gk: "ſן", la3os: "p", ipa: "p" },
     { gk: "ſȷ", la3os: "f", ipa: "ɸ" },
@@ -62,7 +62,7 @@ const INITIALS: Mapping[] = [
     { gk: "⺓", la3os: "piise", ipa: "pɪ̈sɛ" }
 ];
 
-const INTERNALS: Mapping[] = [
+const INTERNAJ: Mapo[] = [
     { gk: "п́", la3os: "w", ipa: "ⱱ" },
     { gk: "ɘ", la3os: "p", ipa: "p" },
     { gk: "ʞ", la3os: "f", ipa: "ɸ" },
@@ -110,544 +110,544 @@ const INTERNALS: Mapping[] = [
     { gk: "ᴜꞇ", la3os: "ai", ipa: "ə" }
 ];
 
-const MAPPINGS: Mapping[] = [ ...INITIALS, ...INTERNALS ];
+const MAPOJ: Mapo[] = [ ...KOMENCAJ, ...INTERNAJ ];
 
 
-// ⟪ Helper Functions 🔧 ⟫
+// ⟪ Helpaj Funkcioj 🔧 ⟫
 
-interface LookupTable {
+interface Serxtabelo {
     map: Record<string, string>;
     keys: string[];
 }
 
-interface ConversionOptions {
-    literal?: boolean;
-    capitalize?: boolean;
-    syllableSeparator?: string;
-    useNumerical?: boolean;
-    inputSeparator?: string;
-    outputSeparator?: string;
-    preProcess?: ((text: string) => string) | null;
+interface KonvertajOpcioj {
+    laŭlitera?: boolean;
+    majuskligi?: boolean;
+    silabaDisigilo?: string;
+    uziNumerikan?: boolean;
+    enigaDisigilo?: string;
+    eligaDisigilo?: string;
+    antaŭprilabori?: ((teksto: string) => string) | null;
 }
 
 /**
- * Check if text is empty or contains only whitespace/special characters
- * @param {string} text - Text to check
- * @returns {boolean} True if empty or whitespace
+ * Check if text is empty or contains only whitespace/special characters.
+ * @param teksto ( string , required ) - Text to check.
+ * @returns boolean
  */
-function isEmptyOrWhitespace(text: string): boolean {
-    return !text || /^[ ʌ-]*$/.test(text);
+function cxuMalplenaAUBlanko(teksto: string): boolean {
+    return !teksto || /^[ ʌ-]*$/.test(teksto);
 }
 
 /**
- * Split text by whitespace into non-empty parts
- * @param {string} text - Text to split
- * @returns {string[]} Array of non-empty parts
+ * Split text by whitespace into non-empty parts.
+ * @param teksto ( string , required ) - Text to split.
+ * @returns string[]
  */
-function splitByWhitespace(text: string): string[] {
-    return text.toLowerCase().split(/\s+/).filter(Boolean);
+function disigiPerSpacoj(teksto: string): string[] {
+    return teksto.toLowerCase().split(/\s+/).filter(Boolean);
 }
 
 /**
- * Build a lookup table from an array of mapping objects
- * @param {Array} items - Array of mapping objects
- * @param {string} sourceKey - Key for source property
- * @param {string} targetKey - Key for target property
- * @param {boolean} skipExisting - Skip if target already exists (for non-overwrite)
- * @returns {LookupTable} Lookup table with map and sorted keys
+ * Build a serxtabelo table from an array of mapping objects.
+ * @param eroj ( T[] , required ) - Array of mapping objects.
+ * @param fontoKlavo ( keyof T , required ) - Key for source property.
+ * @param celoKlavo ( keyof T , required ) - Key for target property.
+ * @param saltiEkzistantan ( boolean , optional ) - Skip if target already exists.
+ * @returns Serxtabelo
  */
-function buildLookup<T extends Mapping>(items: T[], sourceKey: keyof T, targetKey: keyof T, skipExisting = false): LookupTable {
-    const lookup: LookupTable = { map: {}, keys: [] };
-    for ( const m of items ) {
-        const src = m[sourceKey] as string;
-        const tgt = m[targetKey] as string;
-        if ( src && tgt !== undefined ) {
-            if ( !skipExisting || !lookup.map[src] ) {
-                lookup.map[src] = tgt;
+function konstruiSerxtabelon<T extends Mapo>(eroj: T[], fontoKlavo: keyof T, celoKlavo: keyof T, saltiEkzistantan = false): Serxtabelo {
+    const serxtabelo: Serxtabelo = { map: {}, keys: [] };
+    for ( const m of eroj ) {
+        const fonto = m[fontoKlavo] as string;
+        const celo = m[celoKlavo] as string;
+        if ( fonto && celo !== undefined ) {
+            if ( !saltiEkzistantan || !serxtabelo.map[fonto] ) {
+                serxtabelo.map[fonto] = celo;
             }
         }
     }
-    lookup.keys = Object.keys(lookup.map).sort((a, b) => b.length - a.length);
-    return lookup;
+    serxtabelo.keys = Object.keys(serxtabelo.map).sort((a, b) => b.length - a.length);
+    return serxtabelo;
 }
 
 
-// ⟪ Lookup Tables 🔍 ⟫
+// ⟪ Serxtabeloj 🔍 ⟫
 
-const LOOKUP = {
-    gk_la3os: buildLookup(MAPPINGS, 'gk', 'la3os'),
-    gk_ipa: buildLookup(MAPPINGS, 'gk', 'ipa'),
-    la3os_gk_initial: buildLookup(INITIALS, 'la3os', 'gk'),
-    la3os_gk_internal: buildLookup(INTERNALS, 'la3os', 'gk'),
-    la3os_ipa: buildLookup(INITIALS, 'la3os', 'ipa'),
-    ipa_la3os: buildLookup([...INITIALS, ...INTERNALS], 'ipa', 'la3os')
+const SERXTABELO = {
+    gk_la3os: konstruiSerxtabelon(MAPOJ, "gk", "la3os"),
+    gk_ipa: konstruiSerxtabelon(MAPOJ, "gk", "ipa"),
+    la3os_gk_initial: konstruiSerxtabelon(KOMENCAJ, "la3os", "gk"),
+    la3os_gk_internal: konstruiSerxtabelon(INTERNAJ, "la3os", "gk"),
+    la3os_ipa: konstruiSerxtabelon(KOMENCAJ, "la3os", "ipa"),
+    ipa_la3os: konstruiSerxtabelon([...KOMENCAJ, ...INTERNAJ], "ipa", "la3os")
 };
 
-for ( const m of INTERNALS ) {
-    if ( m.la3os && m.ipa && !LOOKUP.la3os_ipa.map[m.la3os] ) {
-        LOOKUP.la3os_ipa.map[m.la3os] = m.ipa;
+for ( const m of INTERNAJ ) {
+    if ( m.la3os && m.ipa && !SERXTABELO.la3os_ipa.map[m.la3os] ) {
+        SERXTABELO.la3os_ipa.map[m.la3os] = m.ipa;
     }
 }
-LOOKUP.la3os_ipa.keys = Object.keys(LOOKUP.la3os_ipa.map).sort((a, b) => b.length - a.length);
+SERXTABELO.la3os_ipa.keys = Object.keys(SERXTABELO.la3os_ipa.map).sort((a, b) => b.length - a.length);
 
 
-// ⟪ Helper Functions (continued) 🔧 ⟫
+// ⟪ Helpaj Funkcioj (daŭrigo) 🔧 ⟫
 
 /**
- * Normalize La3os input to numerical shorthand
- * @param {string} text - Input text
- * @returns {string} Text with numerical digits
+ * Normalize La3os input to numerical shorthand.
+ * @param teksto ( string , required ) - Input text.
+ * @returns string
  */
-function normalizeLa3osInput(text: string): string {
-    return convertLa3osToNumerical(text);
+function normigiLa3osEnigon(teksto: string): string {
+    return konvertiLa3osAlNumerika(teksto);
 }
 
 /**
- * Convert text using a lookup map ( longest-first matching )
- * @param {string} text - Input text
- * @param {LookupTable} lookup - Lookup table
- * @returns {string} Converted text
+ * Convert text using a serxtabelo map ( longest-first matching ).
+ * @param teksto ( string , required ) - Input text.
+ * @param serxtabelo ( Serxtabelo , required ) - Lookup table.
+ * @returns string
  */
-function convertWithLookup(text: string, lookup: LookupTable): string {
-    if ( !lookup || !lookup.keys ) return text;
+function konvertiPerSerxtabelo(teksto: string, serxtabelo: Serxtabelo): string {
+    if ( !serxtabelo || !serxtabelo.keys ) return teksto;
 
-    let result = "";
+    let rezulto = "";
     let i = 0;
-    while ( i < text.length ) {
-        let matched = false;
-        for ( const key of lookup.keys ) {
-            if ( text.slice(i, i + key.length) === key ) {
-                result += lookup.map[key];
-                i += key.length;
-                matched = true;
+    while ( i < teksto.length ) {
+        let kongruis = false;
+        for ( const klavo of serxtabelo.keys ) {
+            if ( teksto.slice(i, i + klavo.length) === klavo ) {
+                rezulto += serxtabelo.map[klavo];
+                i += klavo.length;
+                kongruis = true;
                 break;
             }
         }
-        if ( !matched ) { result += text[i]; i++; }
+        if ( !kongruis ) { rezulto += teksto[i]; i++; }
     }
-    return result;
+    return rezulto;
 }
 
 /**
- * Convert numerical shorthand to multi-character La3os
- * @param {string} text - Text with numerical digits
- * @returns {string} Text with multi-character clusters
+ * Convert numerical shorthand to multi-character La3os.
+ * @param teksto ( string , required ) - Text with numerical digits.
+ * @returns string
  */
-function convertNumericalToLa3os(text: string): string {
-    let result = "";
-    for ( const char of text ) {
-        result += NUMERICAL_REVERSE[char] || char;
+function konvertiNumerikanAlLa3os(teksto: string): string {
+    let rezulto = "";
+    for ( const char of teksto ) {
+        rezulto += NUMERIKA_MALO[char] || char;
     }
-    return result;
+    return rezulto;
 }
 
 /**
- * Convert multi-character La3os to numerical shorthand
- * @param {string} text - Text with multi-character clusters or numerical
- * @returns {string} Text with numerical digits
+ * Convert multi-character La3os to numerical shorthand.
+ * @param teksto ( string , required ) - Text with multi-character clusters or numerical.
+ * @returns string
  */
-function convertLa3osToNumerical(text: string): string {
-    let result = text;
-    const sortedClusters = Object.entries(NUMERICAL).sort((a, b) => b[0].length - a[0].length);
-    for ( const [ cluster, digit ] of sortedClusters ) {
-        result = result.replace(new RegExp(cluster, 'g'), digit);
+function konvertiLa3osAlNumerika(teksto: string): string {
+    let rezulto = teksto;
+    const ordigitajGrupoj = Object.entries(NUMERIKA).sort((a, b) => b[0].length - a[0].length);
+    for ( const [ grupo, cifero ] of ordigitajGrupoj ) {
+        rezulto = rezulto.replace(new RegExp(grupo, "g"), cifero);
     }
-    return result;
+    return rezulto;
 }
 
 /**
- * Convert numerical to IPA ( via La3os )
- * @param {string} text - Numerical text
- * @param {ConversionOptions} opts - Options - { literal? }
- * @returns {string} IPA text
+ * Convert numerical to IPA ( via La3os ).
+ * @param teksto ( string , required ) - Numerical text.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Options - { laŭlitera? }.
+ * @returns string
  */
-function numericalToIpa(text: string, opts: ConversionOptions = {}): string {
-    return la3osToIpa(convertNumericalToLa3os(text), opts);
+function numerikaAlIpa(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    return la3osAlIpa(konvertiNumerikanAlLa3os(teksto), opcioj);
 }
 
 /**
- * Convert IPA to numerical ( via La3os )
- * @param {string} text - IPA text
- * @param {ConversionOptions} opts - Options - { literal? }
- * @returns {string} Numerical text
+ * Convert IPA to numerical ( via La3os ).
+ * @param teksto ( string , required ) - IPA text.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Options - { laŭlitera? }.
+ * @returns string
  */
-function ipaToNumerical(text: string, opts: ConversionOptions = {}): string {
-    return convertLa3osToNumerical(ipaToLa3os(text, opts));
+function ipaAlNumerika(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    return konvertiLa3osAlNumerika(ipaAlLa3os(teksto, opcioj));
 }
 
 /**
- * Convert numerical directly to Gawekiif
- * @param {string} text - Numerical text
- * @param {ConversionOptions} opts - Options - { literal? }
- * @returns {string} Gawekiif text
+ * Convert numerical directly to Gawekiif.
+ * @param teksto ( string , required ) - Numerical text.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Options - { laŭlitera? }.
+ * @returns string
  */
-function numericalToGawekiif(text: string, opts: ConversionOptions = {}): string {
-    return la3osToGawekiif(convertNumericalToLa3os(text), opts);
+function numerikaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    return la3osAlGawekiif(konvertiNumerikanAlLa3os(teksto), opcioj);
 }
 
 /**
- * Convert Gawekiif directly to numerical
- * @param {string} text - Gawekiif text
- * @param {ConversionOptions} opts - Options - { literal? }
- * @returns {string} Numerical text
+ * Convert Gawekiif directly to numerical.
+ * @param teksto ( string , required ) - Gawekiif text.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Options - { laŭlitera? }.
+ * @returns string
  */
-function gawekiifToNumerical(text: string, opts: ConversionOptions = {}): string {
-    return convertLa3osToNumerical(gawekiifToLa3os(text, opts));
+function gawekiifAlNumerika(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    return konvertiLa3osAlNumerika(gawekiifAlLa3os(teksto, opcioj));
 }
 
-interface VowelMatch {
-    pos: number;
-    vowel: string;
-    len: number;
+interface VokalaKongruo {
+    pozicio: number;
+    vokalo: string;
+    longo: number;
 }
 
 /**
- * Find vowel match at position
- * @param {string} text - Text to search
- * @param {number} pos - Position to start
- * @returns {VowelMatch|null} Match object or null
+ * Find vowel match at position.
+ * @param teksto ( string , required ) - Text to search.
+ * @param pozicio ( number , required ) - Position to start.
+ * @returns VokalaKongruo | null
  */
-function findVowelAt(text: string, pos: number): VowelMatch | null {
-    for ( const v of VOWELS_SORTED ) {
-        if ( text.slice(pos).startsWith(v) ) {
-            return { pos, vowel: v, len: v.length };
+function troviVokalonJe(teksto: string, pozicio: number): VokalaKongruo | null {
+    for ( const v of VOKALOJ_ORDIGITAJ ) {
+        if ( teksto.slice(pozicio).startsWith(v) ) {
+            return { pozicio, vokalo: v, longo: v.length };
         }
     }
     return null;
 }
 
 /**
- * Split a La3os string into syllables based on vowel positions
- * @param {string} text - Input text
- * @returns {string} Space-separated syllables
+ * Split a La3os string into syllables based on vowel positions.
+ * @param teksto ( string , required ) - Input text.
+ * @returns string
  */
-function splitIntoSyllables(text: string): string {
-    if ( !text ) return "";
-    if ( text.includes(" ") ) return text;
+function disigiEnSilabojn(teksto: string): string {
+    if ( !teksto ) return "";
+    if ( teksto.includes(" ") ) return teksto;
 
-    const vowelPositions: VowelMatch[] = [];
+    const vokalajPozicioj: VokalaKongruo[] = [];
     let i = 0;
-    while ( i < text.length ) {
-        const match = findVowelAt(text, i);
-        if ( match ) {
-            vowelPositions.push(match);
-            i += match.len;
+    while ( i < teksto.length ) {
+        const kongruo = troviVokalonJe(teksto, i);
+        if ( kongruo ) {
+            vokalajPozicioj.push(kongruo);
+            i += kongruo.longo;
         } else {
             i++;
         }
     }
 
-    if ( vowelPositions.length <= 1 ) return text;
+    if ( vokalajPozicioj.length <= 1 ) return teksto;
 
-    const result: string[] = [];
-    for ( let j = 0; j < vowelPositions.length; j++ ) {
-        const match = vowelPositions[j];
-        const start = j === 0 ? 0 : vowelPositions[j - 1].pos + vowelPositions[j - 1].len;
-        const end = j < vowelPositions.length - 1 ? match.pos + match.len : text.length;
-        const syllable = text.slice(start, end);
-        if ( syllable ) result.push(syllable);
+    const rezulto: string[] = [];
+    for ( let j = 0; j < vokalajPozicioj.length; j++ ) {
+        const kongruo = vokalajPozicioj[j];
+        const start = j === 0 ? 0 : vokalajPozicioj[j - 1].pozicio + vokalajPozicioj[j - 1].longo;
+        const end = j < vokalajPozicioj.length - 1 ? kongruo.pozicio + kongruo.longo : teksto.length;
+        const silabo = teksto.slice(start, end);
+        if ( silabo ) rezulto.push(silabo);
     }
 
-    return result.join(" ");
+    return rezulto.join(" ");
 }
 
 /**
- * Convert a single La3os syllable to Gawekiif
- * @param {string} syl - Syllable to convert
- * @returns {string} Gawekiif syllable
+ * Convert a single La3os syllable to Gawekiif.
+ * @param silabo ( string , required ) - Syllable to convert.
+ * @returns string
  */
-function convertSyllable(syl: string): string {
-    if ( isEmptyOrWhitespace(syl) ) return "";
+function konvertiSilabon(silabo: string): string {
+    if ( cxuMalplenaAUBlanko(silabo) ) return "";
 
-    const initialLookup = LOOKUP.la3os_gk_initial;
-    const internalLookup = LOOKUP.la3os_gk_internal;
+    const komencaSerxtabelo = SERXTABELO.la3os_gk_initial;
+    const internaSerxtabelo = SERXTABELO.la3os_gk_internal;
 
-    if ( !initialLookup?.map || !internalLookup?.map ) return "ꞁȷ̀";
-    if ( internalLookup.map[syl] ) return internalLookup.map[syl];
+    if ( !komencaSerxtabelo?.map || !internaSerxtabelo?.map ) return "ꞁȷ̀";
+    if ( internaSerxtabelo.map[silabo] ) return internaSerxtabelo.map[silabo];
 
-    let result = "";
+    let rezulto = "";
     let i = 0;
-    let isFirstConsonant = true;
+    let cxuUnuaKonsonanto = true;
 
-    while ( i < syl.length ) {
-        if ( findVowelAt(syl, i) ) break;
+    while ( i < silabo.length ) {
+        if ( troviVokalonJe(silabo, i) ) break;
 
-        let matched = false;
-        const lookup = isFirstConsonant ? initialLookup : internalLookup;
+        let kongruis = false;
+        const serxtabelo = cxuUnuaKonsonanto ? komencaSerxtabelo : internaSerxtabelo;
 
-        for ( const key of lookup.keys ) {
-            if ( syl.slice(i).startsWith(key) ) {
-                result += lookup.map[key];
-                i += key.length;
-                isFirstConsonant = false;
-                matched = true;
+        for ( const klavo of serxtabelo.keys ) {
+            if ( silabo.slice(i).startsWith(klavo) ) {
+                rezulto += serxtabelo.map[klavo];
+                i += klavo.length;
+                cxuUnuaKonsonanto = false;
+                kongruis = true;
                 break;
             }
         }
-        if ( !matched ) break;
+        if ( !kongruis ) break;
     }
 
-    const vowelMatch = findVowelAt(syl, i);
-    if ( vowelMatch ) {
-        const vowelGk = internalLookup.map[vowelMatch.vowel];
-        if ( vowelGk ) result += vowelGk;
-        i += vowelMatch.len;
+    const vokalaKongruo = troviVokalonJe(silabo, i);
+    if ( vokalaKongruo ) {
+        const vokalaGk = internaSerxtabelo.map[vokalaKongruo.vokalo];
+        if ( vokalaGk ) rezulto += vokalaGk;
+        i += vokalaKongruo.longo;
     }
 
-    if ( internalLookup.keys ) {
-        while ( i < syl.length ) {
-            let matched = false;
-            for ( const key of internalLookup.keys ) {
-                if ( VOWELS_SORTED.includes(key) ) continue;
-                if ( syl.slice(i).startsWith(key) ) {
-                    result += internalLookup.map[key];
-                    i += key.length;
-                    matched = true;
+    if ( internaSerxtabelo.keys ) {
+        while ( i < silabo.length ) {
+            let kongruis = false;
+            for ( const klavo of internaSerxtabelo.keys ) {
+                if ( VOKALOJ_ORDIGITAJ.includes(klavo) ) continue;
+                if ( silabo.slice(i).startsWith(klavo) ) {
+                    rezulto += internaSerxtabelo.map[klavo];
+                    i += klavo.length;
+                    kongruis = true;
                     break;
                 }
             }
-            if ( !matched ) i++;
+            if ( !kongruis ) i++;
         }
     }
 
-    if ( result && findVowelAt(syl, 0) && !result.startsWith("ꞁȷ̀") ) {
-        result = "ꞁȷ̀" + result;
+    if ( rezulto && troviVokalonJe(silabo, 0) && !rezulto.startsWith("ꞁȷ̀") ) {
+        rezulto = "ꞁȷ̀" + rezulto;
     }
 
-    return result || "ꞁȷ̀";
+    return rezulto || "ꞁȷ̀";
 }
 
 /**
- * Convert a La3os word to Gawekiif
- * @param {string} word - Word to convert
- * @returns {string} Gawekiif word
+ * Convert a La3os word to Gawekiif.
+ * @param vorto ( string , required ) - Word to convert.
+ * @returns string
  */
-function convertWord(word: string): string {
-    if ( isEmptyOrWhitespace(word) ) return "";
+function konvertiVorton(vorto: string): string {
+    if ( cxuMalplenaAUBlanko(vorto) ) return "";
 
-    return splitByWhitespace(word).map(s => {
-        return splitIntoSyllables(s).split(/\s+/).map(convertSyllable).join(" ");
+    return disigiPerSpacoj(vorto).map(s => {
+        return disigiEnSilabojn(s).split(/\s+/).map(konvertiSilabon).join(" ");
     }).join(" ");
 }
 
 
-// ⟪ Conversion Functions 🔄 ⟫
+// ⟪ Konvertaj Funkcioj 🔄 ⟫
 
 /**
- * Convert Gawekiif to another format (La3os or IPA)
- * @param {string} text - Gawekiif text
- * @param {LookupTable} lookup - Target lookup table
- * @param {ConversionOptions} opts - Options - { literal?, capitalize?, syllableSeparator?, useNumerical? }
- * @returns {string} Converted text
+ * Convert Gawekiif to another format (La3os or IPA).
+ * @param teksto ( string , required ) - Gawekiif text.
+ * @param serxtabelo ( Serxtabelo , required ) - Target serxtabelo table.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Options - { laŭlitera?, majuskligi?, silabaDisigilo?, uziNumerikan? }.
+ * @returns string
  */
-function convertGawekiif(text: string, lookup: LookupTable, opts: ConversionOptions = {}): string {
-    const { literal = false, capitalize = false, syllableSeparator = " ", useNumerical = true } = opts;
+function konvertiGawekiif(teksto: string, serxtabelo: Serxtabelo, opcioj: KonvertajOpcioj = {}): string {
+    const { laŭlitera = false, majuskligi = false, silabaDisigilo = " ", uziNumerikan = true } = opcioj;
 
-    const wordParts = String(text).split("ʌ");
+    const vortajPartoj = String(teksto).split("ʌ");
 
-    const converted = wordParts.map(word => {
-        const syllables = splitByWhitespace(word);
-        const convertedSyllables = syllables.map(syll => {
-            let converted = convertWithLookup(syll, lookup);
-            if ( capitalize ) converted = converted.replace(/^./, c => c.toUpperCase());
-            return converted;
+    const konvertitaj = vortajPartoj.map(vorto => {
+        const silaboj = disigiPerSpacoj(vorto);
+        const konvertitajSilaboj = silaboj.map(silabo => {
+            let konvertita = konvertiPerSerxtabelo(silabo, serxtabelo);
+            if ( majuskligi ) konvertita = konvertita.replace(/^./, c => c.toUpperCase());
+            return konvertita;
         });
-        const separator = literal ? syllableSeparator : "";
-        return convertedSyllables.join(separator);
+        const disigilo = laŭlitera ? silabaDisigilo : "";
+        return konvertitajSilaboj.join(disigilo);
     });
 
-    const result = converted.join(" ");
-    return useNumerical ? result : convertNumericalToLa3os(result);
+    const rezulto = konvertitaj.join(" ");
+    return uziNumerikan ? rezulto : konvertiNumerikanAlLa3os(rezulto);
 }
 
 /**
- * Convert Gawekiif to La3os
- * @param {string} text - Gawekiif text
- * @param {ConversionOptions} opts - Options - { useNumerical?, literal? }
- * @returns {string} La3os text
+ * Convert Gawekiif to La3os.
+ * @param teksto ( string , required ) - Gawekiif text.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Options - { uziNumerikan?, laŭlitera? }.
+ * @returns string
  */
-function gawekiifToLa3os(text: string, opts: ConversionOptions = {}): string {
-    return convertGawekiif(text, LOOKUP.gk_la3os, opts);
+function gawekiifAlLa3os(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    return konvertiGawekiif(teksto, SERXTABELO.gk_la3os, opcioj);
 }
 
 /**
- * Convert La3os to Gawekiif
- * @param {string} text - La3os text
- * @param {ConversionOptions} opts - Options - { literal? }
- * @returns {string} Gawekiif text
+ * Convert La3os to Gawekiif.
+ * @param teksto ( string , required ) - La3os text.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Options - { laŭlitera? }.
+ * @returns string
  */
-function la3osToGawekiif(text: string, opts: ConversionOptions = {}): string {
-    const normalizedText = normalizeLa3osInput(text);
-    const words = splitByWhitespace(normalizedText);
+function la3osAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    const normaligitaTeksto = normigiLa3osEnigon(teksto);
+    const vortoj = disigiPerSpacoj(normaligitaTeksto);
 
-    const result = words.map(w => {
-        return convertWord(w);
+    const rezulto = vortoj.map(w => {
+        return konvertiVorton(w);
     }).join("ʌ");
 
-    return result;
+    return rezulto;
 }
 
 /**
- * Convert syllables using a lookup table with separator handling
- * @param {string} text - Input text
- * @param {LookupTable} lookup - Lookup table
- * @param {ConversionOptions} opts - Options - { literal?, inputSeparator?, outputSeparator?, preProcess? }
- * @returns {string} Converted text
+ * Convert syllables using a serxtabelo table with separator handling.
+ * @param teksto ( string , required ) - Input text.
+ * @param serxtabelo ( Serxtabelo , required ) - Lookup table.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Options - { laŭlitera?, enigaDisigilo?, eligaDisigilo?, antaŭprilabori? }.
+ * @returns string
  */
-function convertSyllables(text: string, lookup: LookupTable, opts: ConversionOptions = {}): string {
-    const { literal = false, inputSeparator = ".", outputSeparator = ".", preProcess = null } = opts;
+function konvertiSilabojn(teksto: string, serxtabelo: Serxtabelo, opcioj: KonvertajOpcioj = {}): string {
+    const { laŭlitera = false, enigaDisigilo = ".", eligaDisigilo = ".", antaŭprilabori = null } = opcioj;
 
-    let processedText = preProcess ? preProcess(text) : text;
-    const syllables = processedText.split(inputSeparator).map(s => s.trim()).filter(Boolean);
-    const converted = syllables.map(syl => convertWithLookup(syl, lookup));
+    let prilaboritaTeksto = antaŭprilabori ? antaŭprilabori(teksto) : teksto;
+    const silaboj = prilaboritaTeksto.split(enigaDisigilo).map(s => s.trim()).filter(Boolean);
+    const konvertitaj = silaboj.map(silabo => konvertiPerSerxtabelo(silabo, serxtabelo));
 
-    return literal ? converted.join(outputSeparator) : converted.join("");
+    return laŭlitera ? konvertitaj.join(eligaDisigilo) : konvertitaj.join("");
 }
 
 /**
- * Convert La3os to IPA
- * @param {string} text - La3os text
- * @param {ConversionOptions} opts - Options - { literal? }
- * @returns {string} IPA text
+ * Convert La3os to IPA.
+ * @param teksto ( string , required ) - La3os text.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Options - { laŭlitera? }.
+ * @returns string
  */
-function la3osToIpa(text: string, opts: ConversionOptions = {}): string {
-    const { literal = false } = opts;
-    const lookup = LOOKUP.la3os_ipa;
+function la3osAlIpa(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    const { laŭlitera = false } = opcioj;
+    const serxtabelo = SERXTABELO.la3os_ipa;
 
-    const normalizedText = normalizeLa3osInput(text);
-    const words = splitByWhitespace(normalizedText);
-    const converted = words.map(word => {
-        const syllables = splitByWhitespace(splitIntoSyllables(word));
-        const ipaSyllables = syllables.map(syl => convertWithLookup(syl, lookup));
-        return literal ? ipaSyllables.join(".") : ipaSyllables.join("");
+    const normaligitaTeksto = normigiLa3osEnigon(teksto);
+    const vortoj = disigiPerSpacoj(normaligitaTeksto);
+    const konvertitaj = vortoj.map(vorto => {
+        const silaboj = disigiPerSpacoj(disigiEnSilabojn(vorto));
+        const ipaSilaboj = silaboj.map(silabo => konvertiPerSerxtabelo(silabo, serxtabelo));
+        return laŭlitera ? ipaSilaboj.join(".") : ipaSilaboj.join("");
     });
 
-    return converted.join(" ");
+    return konvertitaj.join(" ");
 }
 
 /**
- * Convert IPA to La3os
- * @param {string} text - IPA text
- * @param {ConversionOptions} opts - Options - { literal?, useNumerical? }
- * @returns {string} La3os text
+ * Convert IPA to La3os.
+ * @param teksto ( string , required ) - IPA text.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Options - { laŭlitera?, uziNumerikan? }.
+ * @returns string
  */
-function ipaToLa3os(text: string, opts: ConversionOptions = {}): string {
-    const { literal = false, useNumerical = true } = opts;
-    const lookup = LOOKUP.ipa_la3os;
+function ipaAlLa3os(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    const { laŭlitera = false, uziNumerikan = true } = opcioj;
+    const serxtabelo = SERXTABELO.ipa_la3os;
 
-    const syllables = text.split(".").map(s => s.trim()).filter(Boolean);
-    const converted = syllables.map(syl => convertWithLookup(syl, lookup));
+    const silaboj = teksto.split(".").map(s => s.trim()).filter(Boolean);
+    const konvertitaj = silaboj.map(silabo => konvertiPerSerxtabelo(silabo, serxtabelo));
 
-    const joined = literal ? converted.join(".") : converted.join("");
-    return useNumerical ? joined : convertNumericalToLa3os(joined);
+    const kunigita = laŭlitera ? konvertitaj.join(".") : konvertitaj.join("");
+    return uziNumerikan ? kunigita : konvertiNumerikanAlLa3os(kunigita);
 }
 
 /**
- * Convert Gawekiif directly to IPA
- * @param {string} text - Gawekiif text
- * @param {ConversionOptions} opts - Options - { literal? }
- * @returns {string} IPA text
+ * Convert Gawekiif directly to IPA.
+ * @param teksto ( string , required ) - Gawekiif text.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Options - { laŭlitera? }.
+ * @returns string
  */
-function gawekiifToIpa(text: string, opts: ConversionOptions = {}): string {
-    return convertGawekiif(text, LOOKUP.gk_ipa, { ...opts, syllableSeparator: "." });
+function gawekiifAlIpa(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    return konvertiGawekiif(teksto, SERXTABELO.gk_ipa, { ...opcioj, silabaDisigilo: "." });
 }
 
 /**
- * Convert IPA directly to Gawekiif
- * @param {string} text - IPA text
- * @param {ConversionOptions} opts - Options - { literal? }
- * @returns {string} Gawekiif text
+ * Convert IPA directly to Gawekiif.
+ * @param teksto ( string , required ) - IPA text.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Options - { laŭlitera? }.
+ * @returns string
  */
-function ipaToGawekiif(text: string, opts: ConversionOptions = {}): string {
-    const { literal = false } = opts;
-    const lookup = LOOKUP.ipa_la3os;
+function ipaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    const { laŭlitera = false } = opcioj;
+    const serxtabelo = SERXTABELO.ipa_la3os;
 
-    const words = literal ? text.split(".").map(s => s.trim()).filter(Boolean) : [text];
+    const vortoj = laŭlitera ? teksto.split(".").map(s => s.trim()).filter(Boolean) : [teksto];
 
-    const result = words.map(word => {
-        const la3osSyl = convertWithLookup(word, lookup);
-        return convertSyllable(la3osSyl);
+    const rezulto = vortoj.map(vorto => {
+        const la3osSilabo = konvertiPerSerxtabelo(vorto, serxtabelo);
+        return konvertiSilabon(la3osSilabo);
     }).join("ʌ");
 
-    return result;
+    return rezulto;
 }
 
 /**
- * Convert between formats
- * @param {string} text - Input text
- * @param {string} from - Source format
- * @param {string} to - Target format
- * @param {ConversionOptions} opts - Options - { useNumerical?, literal? }
- * @returns {string} Converted text
+ * Convert between formats.
+ * @param teksto ( string , required ) - Input text.
+ * @param de ( string , required ) - Source format.
+ * @param al ( string , required ) - Target format.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Options - { uziNumerikan?, laŭlitera? }.
+ * @returns string
  */
-function convert(text: string, from: string, to: string, opts: ConversionOptions = {}): string {
-    if ( from === to ) return text;
+function konverti(teksto: string, de: string, al: string, opcioj: KonvertajOpcioj = {}): string {
+    if ( de === al ) return teksto;
 
-    const options: ConversionOptions = { useNumerical: opts.useNumerical ?? true, literal: opts.literal ?? false };
+    const opciojLokala: KonvertajOpcioj = { uziNumerikan: opcioj.uziNumerikan ?? true, laŭlitera: opcioj.laŭlitera ?? false };
 
-    const CONVERSIONS: Record<string, () => string> = {
-        'gawekiif_la3os': () => gawekiifToLa3os(text, options),
-        'la3os_gawekiif': () => la3osToGawekiif(text, options),
-        'la3os_ipa': () => la3osToIpa(text, options),
-        'ipa_la3os': () => ipaToLa3os(text, options),
-        'gawekiif_ipa': () => gawekiifToIpa(text, options),
-        'ipa_gawekiif': () => ipaToGawekiif(text, options),
-        'numerical_la3os': () => convertNumericalToLa3os(text),
-        'la3os_numerical': () => convertLa3osToNumerical(text),
-        'numerical_ipa': () => numericalToIpa(text, options),
-        'ipa_numerical': () => ipaToNumerical(text, options),
-        'numerical_gawekiif': () => numericalToGawekiif(text, options),
-        'gawekiif_numerical': () => gawekiifToNumerical(text, options)
+    const KONVERTOJ: Record<string, () => string> = {
+        "gawekiif_la3os": () => gawekiifAlLa3os(teksto, opciojLokala),
+        "la3os_gawekiif": () => la3osAlGawekiif(teksto, opciojLokala),
+        "la3os_ipa": () => la3osAlIpa(teksto, opciojLokala),
+        "ipa_la3os": () => ipaAlLa3os(teksto, opciojLokala),
+        "gawekiif_ipa": () => gawekiifAlIpa(teksto, opciojLokala),
+        "ipa_gawekiif": () => ipaAlGawekiif(teksto, opciojLokala),
+        "numerical_la3os": () => konvertiNumerikanAlLa3os(teksto),
+        "la3os_numerical": () => konvertiLa3osAlNumerika(teksto),
+        "numerical_ipa": () => numerikaAlIpa(teksto, opciojLokala),
+        "ipa_numerical": () => ipaAlNumerika(teksto, opciojLokala),
+        "numerical_gawekiif": () => numerikaAlGawekiif(teksto, opciojLokala),
+        "gawekiif_numerical": () => gawekiifAlNumerika(teksto, opciojLokala)
     };
 
-    const directKey = `${from}_${to}`;
+    const rektaKlavo = `${de}_${al}`;
 
-    if ( CONVERSIONS[directKey] ) {
-        return CONVERSIONS[directKey]();
+    if ( KONVERTOJ[rektaKlavo] ) {
+        return KONVERTOJ[rektaKlavo]();
     }
 
-    return text;
+    return teksto;
 }
 
 
-// ⟪ Exports 📤 ⟫
+// ⟪ Elportoj 📤 ⟫
 
 if ( typeof module !== "undefined" && module.exports ) {
     module.exports = {
-        MAPPINGS,
-        INITIALS,
-        INTERNALS,
-        NUMERICAL,
-        NUMERICAL_REVERSE,
-        LOOKUP,
-        convertWithLookup,
-        convertNumericalToLa3os,
-        convertLa3osToNumerical,
-        numericalToIpa,
-        ipaToNumerical,
-        findVowelAt,
-        splitIntoSyllables,
-        convertSyllable,
-        convertWord,
-        gawekiifToLa3os,
-        la3osToGawekiif,
-        la3osToIpa,
-        ipaToLa3os,
-        gawekiifToIpa,
-        ipaToGawekiif,
-        numericalToGawekiif,
-        gawekiifToNumerical,
-        convert
+        MAPOJ,
+        KOMENCAJ,
+        INTERNAJ,
+        NUMERIKA,
+        NUMERIKA_MALO,
+        SERXTABELO,
+        konvertiPerSerxtabelo,
+        konvertiNumerikanAlLa3os,
+        konvertiLa3osAlNumerika,
+        numerikaAlIpa,
+        ipaAlNumerika,
+        troviVokalonJe,
+        disigiEnSilabojn,
+        konvertiSilabon,
+        konvertiVorton,
+        gawekiifAlLa3os,
+        la3osAlGawekiif,
+        la3osAlIpa,
+        ipaAlLa3os,
+        gawekiifAlIpa,
+        ipaAlGawekiif,
+        numerikaAlGawekiif,
+        gawekiifAlNumerika,
+        konverti
     };
 }
 
 
-// ⟪ UI Initialization ( Browser ) 🖥️ ⟫
+// ⟪ UI Inicialigo ( Retumilo ) 🖥️ ⟫
 
 (function() {
     if ( typeof document === "undefined" ) return;
 
-    function initConverterUI() {
+    function iniciatiKonvertiloUI() {
         const saxesuOx2pewa = document.getElementById("saxesuOx2pewa") as HTMLTextAreaElement | null;
         const maxemaSa10Gwk = document.getElementById("maxemaSa10Gwk") as HTMLElement | null;
         const outputs = {
@@ -655,18 +655,17 @@ if ( typeof module !== "undefined" && module.exports ) {
             la3os: document.getElementById("tlakakuLa3os") as HTMLElement | null,
             ipa: document.getElementById("tlakakuRat0") as HTMLElement | null
         };
-        const checkboxes = {
-            outGk: document.getElementById("a1a3kkG2") as HTMLInputElement | null,
+        const checkboxes ={ outGk: document.getElementById("a1a3kkG2") as HTMLInputElement | null,
             outLa3os: document.getElementById("a1a3kkLa3os") as HTMLInputElement | null,
             outIpa: document.getElementById("a1a3kkRat0") as HTMLInputElement | null,
             numbers: document.getElementById("a1aK2reK2fe") as HTMLInputElement | null,
-            literal: document.getElementById("a1aKaj2xa") as HTMLInputElement | null
+            laŭlitera: document.getElementById("a1aKaj2xa") as HTMLInputElement | null
         };
         const saxesuGawek2fRadios = Array.from(document.getElementsByName("saxesuGawek2f")) as HTMLInputElement[];
 
         if ( !saxesuOx2pewa ) return;
 
-        function getInputFormat(): string {
+        function akiriEniganFormon(): string {
             if ( !saxesuGawek2fRadios || saxesuGawek2fRadios.length === 0 ) return "gawekiif";
             for ( const radio of saxesuGawek2fRadios ) {
                 if ( radio.checked ) return radio.value;
@@ -674,76 +673,76 @@ if ( typeof module !== "undefined" && module.exports ) {
             return "gawekiif";
         }
 
-        function convertText() {
+        function konvertiTekston() {
             if ( !saxesuOx2pewa ) return;
-            const text = saxesuOx2pewa.value.trim();
-            if ( !text ) {
+            const eniraTeksto = saxesuOx2pewa.value.trim();
+            if ( !eniraTeksto ) {
                 if ( maxemaSa10Gwk ) maxemaSa10Gwk.style.display = "none";
                 return;
             }
 
-            const saxesuGawek2f = getInputFormat();
-            const useNumerical = checkboxes.numbers?.checked ?? true;
-            const opts: ConversionOptions = {
-                useNumerical: useNumerical,
-                literal: checkboxes.literal?.checked || false
+            const fontaFormo = akiriEniganFormon();
+            const uziNumerikan = checkboxes.numbers?.checked ?? true;
+            const opcioj: KonvertajOpcioj = {
+                uziNumerikan: uziNumerikan,
+                laŭlitera: checkboxes.laŭlitera?.checked || false
             };
 
-            const result: Record<string, string> = { gk: "", la3os: "", ipa: "" };
+            const eligo: Record<string, string> = { gk: "", la3os: "", ipa: "" };
 
-            if ( saxesuGawek2f === "gawekiif" ) {
-                result.gk = text;
-                result.la3os = convert(result.gk, "gawekiif", "la3os", opts);
-                result.ipa = convert(result.gk, "gawekiif", "ipa", opts);
-            } else if ( saxesuGawek2f === "la3os" ) {
-                result.la3os = text;
-                result.gk = convert(result.la3os, "la3os", "gawekiif", opts);
-                result.ipa = convert(result.la3os, "la3os", "ipa", opts);
+            if ( fontaFormo === "gawekiif" ) {
+                eligo.gk = eniraTeksto;
+                eligo.la3os = konverti(eligo.gk, "gawekiif", "la3os", opcioj);
+                eligo.ipa = konverti(eligo.gk, "gawekiif", "ipa", opcioj);
+            } else if ( fontaFormo === "la3os" ) {
+                eligo.la3os = eniraTeksto;
+                eligo.gk = konverti(eligo.la3os, "la3os", "gawekiif", opcioj);
+                eligo.ipa = konverti(eligo.la3os, "la3os", "ipa", opcioj);
             } else {
-                result.ipa = text;
-                result.la3os = convert(result.ipa, "ipa", "la3os", opts);
-                result.gk = convert(result.la3os, "la3os", "gawekiif", opts);
+                eligo.ipa = eniraTeksto;
+                eligo.la3os = konverti(eligo.ipa, "ipa", "la3os", opcioj);
+                eligo.gk = konverti(eligo.la3os, "la3os", "gawekiif", opcioj);
             }
 
-            const outputKeys = [ "gk", "la3os", "ipa" ];
-            const outputNames: Record<string, string> = { gk: "Gk", la3os: "La3os", ipa: "Ipa" };
-            for ( const key of outputKeys ) {
-                const checkbox = checkboxes[`out${outputNames[key]}` as keyof typeof checkboxes];
-                const output = outputs[key as keyof typeof outputs];
-                const title = document.querySelector(`.ksakap2sa[data-output="${key}"]`) as HTMLElement | null;
-                const ciihii = output?.parentElement;
-                if ( checkbox && output && ciihii ) {
-                    output.textContent = result[key] || "";
-                    if ( key === "gk" && typeof vacepu === "function" ) {
+            const eligajKlavoj = [ "gk", "la3os", "ipa" ];
+            const eligajNomoj: Record<string, string> = { gk: "Gk", la3os: "La3os", ipa: "Ipa" };
+            for ( const klavo of eligajKlavoj ) {
+                const markobutono = checkboxes[`out${eligajNomoj[klavo]}` as keyof typeof checkboxes];
+                const eligaElemento = outputs[klavo as keyof typeof outputs];
+                const titolo = document.querySelector(`.ksakap2sa[data-output="${klavo}"]`) as HTMLElement | null;
+                const gepatro = eligaElemento?.parentElement;
+                if ( markobutono && eligaElemento && gepatro ) {
+                    eligaElemento.textContent = eligo[klavo] || "";
+                    if ( klavo === "gk" && typeof vacepu === "function" ) {
                         vacepu("ox2pewa");
                     }
-                    const isVisible = checkbox.checked;
-                    if ( title ) {
-                        title.style.display = isVisible ? "block" : "none";
+                    const videbla = markobutono.checked;
+                    if ( titolo ) {
+                        titolo.style.display = videbla ? "block" : "none";
                     }
-                    ciihii.style.display = isVisible ? "flex" : "none";
+                    gepatro.style.display = videbla ? "flex" : "none";
                 }
             }
 
             if ( maxemaSa10Gwk ) maxemaSa10Gwk.style.display = "block";
         }
 
-        const allElements: Element[] = [
+        const ciujElementoj: Element[] = [
             saxesuOx2pewa,
             ...saxesuGawek2fRadios,
             checkboxes.outGk, checkboxes.outLa3os, checkboxes.outIpa,
-            checkboxes.numbers, checkboxes.literal
+            checkboxes.numbers, checkboxes.laŭlitera
         ].filter(Boolean) as Element[];
 
-        for ( const el of allElements ) {
-            const eventType = el === saxesuOx2pewa ? "input" : "change";
-            el.addEventListener(eventType, convertText);
+        for ( const elemento of ciujElementoj ) {
+            const okazaTipo = elemento === saxesuOx2pewa ? "input" : "change";
+            elemento.addEventListener(okazaTipo, konvertiTekston);
         }
     }
 
     if ( document.readyState === "loading" ) {
-        document.addEventListener("DOMContentLoaded", initConverterUI);
+        document.addEventListener("DOMContentLoaded", iniciatiKonvertiloUI);
     } else {
-        initConverterUI();
+        iniciatiKonvertiloUI();
     }
 })();

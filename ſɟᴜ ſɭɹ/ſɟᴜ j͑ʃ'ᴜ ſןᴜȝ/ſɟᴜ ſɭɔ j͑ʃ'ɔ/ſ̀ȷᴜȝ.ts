@@ -15,130 +15,130 @@ import * as THREE from "three";
  *     name ( string | number ) - minecraft block name or numeric id.
  *     color ( string ) - fallback color when name is unknown.
  */
-export interface ParsedSchematicBlock {
+export interface AnalizitaSchematikaBloko {
     x: number;
     y: number;
     z: number;
     name: string | number;
     color: string;
-    shape?: string;
+    formo?: string;
     rotation?: number;
 }
 
 /**
  * NBT reader for binary schematic / mcstructure files.
  */
-class NBTReader {
-    private view: DataView;
-    private offset: number;
-    private isLittleEndian: boolean;
-
-    constructor(arrayBuffer: ArrayBuffer, isLittleEndian: boolean = false) {
-        this.view = new DataView(arrayBuffer);
-        this.offset = 0;
-        this.isLittleEndian = isLittleEndian;
+class NBTLegilo {
+    constructor(aperaBufro: ArrayBuffer, cxuMalgrandaEndo: boolean = false) {
+        this.vido = new DataView(aperaBufro);
+        this.movo = 0;
+        this.cxuMalgrandaEndo = cxuMalgrandaEndo;
     }
 
-    readByte(): number {
-        const val = this.view.getInt8(this.offset);
-        this.offset += 1;
+    private vido: DataView;
+    private movo: number;
+    private cxuMalgrandaEndo: boolean;
+
+    legiBajton(): number {
+        const val = this.vido.getInt8(this.movo);
+        this.movo += 1;
         return val;
     }
 
-    readShort(): number {
-        const val = this.view.getInt16(this.offset, this.isLittleEndian);
-        this.offset += 2;
+    legiMallongon(): number {
+        const val = this.vido.getInt16(this.movo, this.cxuMalgrandaEndo);
+        this.movo += 2;
         return val;
     }
 
-    readUShort(): number {
-        const val = this.view.getUint16(this.offset, this.isLittleEndian);
-        this.offset += 2;
+    legiNesignanMallongon(): number {
+        const val = this.vido.getUint16(this.movo, this.cxuMalgrandaEndo);
+        this.movo += 2;
         return val;
     }
 
-    readInt(): number {
-        const val = this.view.getInt32(this.offset, this.isLittleEndian);
-        this.offset += 4;
+    legiEntjeron(): number {
+        const val = this.vido.getInt32(this.movo, this.cxuMalgrandaEndo);
+        this.movo += 4;
         return val;
     }
 
-    readFloat(): number {
-        const val = this.view.getFloat32(this.offset, this.isLittleEndian);
-        this.offset += 4;
+    legiFlosanton(): number {
+        const val = this.vido.getFloat32(this.movo, this.cxuMalgrandaEndo);
+        this.movo += 4;
         return val;
     }
 
-    readDouble(): number {
-        const val = this.view.getFloat64(this.offset, this.isLittleEndian);
-        this.offset += 8;
+    legiDuoblon(): number {
+        const val = this.vido.getFloat64(this.movo, this.cxuMalgrandaEndo);
+        this.movo += 8;
         return val;
     }
 
-    readString(): string {
-        const length = this.readUShort();
-        const bytes = new Uint8Array(this.view.buffer, this.view.byteOffset + this.offset, length);
-        this.offset += length;
-        return new TextDecoder().decode(bytes);
+    legiStringon(): string {
+        const length = this.legiNesignanMallongon();
+        const bajtoj = new Uint8Array(this.vido.buffer, this.vido.byteOffset + this.movo, length);
+        this.movo += length;
+        return new TextDecoder().decode(bajtoj);
     }
 
-    readTag(typeId: number): any {
+    legiEtikedon(typeId: number): any {
         switch (typeId) {
             case 0: return null;
-            case 1: return this.readByte();
-            case 2: return this.readShort();
-            case 3: return this.readInt();
+            case 1: return this.legiBajton();
+            case 2: return this.legiMallongon();
+            case 3: return this.legiEntjeron();
             case 4: {
-                const val = this.view.getBigInt64(this.offset, this.isLittleEndian);
-                this.offset += 8;
+                const val = this.vido.getBigInt64(this.movo, this.cxuMalgrandaEndo);
+                this.movo += 8;
                 return val;
             }
-            case 5: return this.readFloat();
-            case 6: return this.readDouble();
+            case 5: return this.legiFlosanton();
+            case 6: return this.legiDuoblon();
             case 7: {
-                const length = this.readInt();
-                const bytes = new Uint8Array(this.view.buffer, this.view.byteOffset + this.offset, length);
-                this.offset += length;
-                return bytes;
+                const length = this.legiEntjeron();
+                const bajtoj = new Uint8Array(this.vido.buffer, this.vido.byteOffset + this.movo, length);
+                this.movo += length;
+                return bajtoj;
             }
-            case 8: return this.readString();
+            case 8: return this.legiStringon();
             case 9: {
-                const elementType = this.readByte();
-                const length = this.readInt();
-                const list = [];
+                const elementType = this.legiBajton();
+                const length = this.legiEntjeron();
+                const listo = [];
                 for (let i = 0; i < length; i++) {
-                    list.push(this.readTag(elementType));
+                    listo.push(this.legiEtikedon(elementType));
                 }
-                return list;
+                return listo;
             }
             case 10: {
-                const compound: Record<string, any> = {};
+                const komponajho: Record<string, any> = {};
                 while (true) {
-                    const tagType = this.readByte();
-                    if (tagType === 0) break;
-                    const tagName = this.readString();
-                    const tagValue = this.readTag(tagType);
-                    compound[tagName] = tagValue;
+                    const etikedaTipo = this.legiBajton();
+                    if (etikedaTipo === 0) break;
+                    const etikedaNomo = this.legiStringon();
+                    const etikedaValoro = this.legiEtikedon(etikedaTipo);
+                    komponajho[etikedaNomo] = etikedaValoro;
                 }
-                return compound;
+                return komponajho;
             }
             case 11: {
-                const length = this.readInt();
-                const array = [];
+                const length = this.legiEntjeron();
+                const tabelo = [];
                 for (let i = 0; i < length; i++) {
-                    array.push(this.readInt());
+                    tabelo.push(this.legiEntjeron());
                 }
-                return array;
+                return tabelo;
             }
             case 12: {
-                const length = this.readInt();
-                const array = [];
+                const length = this.legiEntjeron();
+                const tabelo = [];
                 for (let i = 0; i < length; i++) {
-                    const val = this.view.getBigInt64(this.offset, this.isLittleEndian);
-                    this.offset += 8;
-                    array.push(val);
+                    const val = this.vido.getBigInt64(this.movo, this.cxuMalgrandaEndo);
+                    this.movo += 8;
+                    tabelo.push(val);
                 }
-                return array;
+                return tabelo;
             }
             default:
                 throw new Error(`Unknown NBT tag type. ${typeId}`);
@@ -146,45 +146,45 @@ class NBTReader {
     }
 
     parse(): { name: string; value: any } {
-        const rootType = this.readByte();
+        const rootType = this.legiBajton();
         if (rootType !== 10) {
             throw new Error(`Expected root tag of TAG_Compound ( 10 ), got ${rootType}`);
         }
-        const name = this.readString();
-        const value = this.readTag(10);
+        const name = this.legiStringon();
+        const value = this.legiEtikedon(10);
         return { name, value };
     }
 }
 
-function decodeVarIntArray(byteArray: Uint8Array | number[]): number[] {
-    const result: number[] = [];
-    let index = 0;
-    while (index < byteArray.length) {
-        let value = 0;
-        let shift = 0;
+function malkodiVariantanEntjeranTabelon(bajtaTabelo: Uint8Array | number[]): number[] {
+    const rezulto: number[] = [];
+    let indekso = 0;
+    while (indekso < bajtaTabelo.length) {
+        let valoro = 0;
+        let sxtovo = 0;
         let b;
         do {
-            b = byteArray[index++];
-            value |= (b & 0o177) << shift;
-            shift += 7;
+            b = bajtaTabelo[indekso++];
+            valoro |= (b & 0o177) << sxtovo;
+            sxtovo += 7;
         } while (b & 0o200);
-        result.push(value);
+        rezulto.push(valoro);
     }
-    return result;
+    return rezulto;
 }
 
-async function decompressGzip(arrayBuffer: ArrayBuffer): Promise<ArrayBuffer> {
+async function malpremiGzip(aperaBufro: ArrayBuffer): Promise<ArrayBuffer> {
     const DecompressionStreamClass = (window as any).DecompressionStream;
     if (!DecompressionStreamClass) {
         throw new Error("DecompressionStream is not supported in this browser.");
     }
     const ds = new DecompressionStreamClass("gzip");
-    const response = new Response(arrayBuffer);
-    if (!response.body) {
+    const respondo = new Response(aperaBufro);
+    if (!respondo.body) {
         throw new Error("Response body is null");
     }
-    const stream = response.body.pipeThrough(ds);
-    return await new Response(stream).arrayBuffer();
+    const fluo = respondo.body.pipeThrough(ds);
+    return await new Response(fluo).arrayBuffer();
 }
 
 /**
@@ -196,13 +196,13 @@ async function decompressGzip(arrayBuffer: ArrayBuffer): Promise<ArrayBuffer> {
  *     fallback ( number ) - value returned when none of the keys resolve.
  * Returns coalesced numeric value.
  */
-function readNumericField(obj: any, keys: readonly string[], fallback: number): number {
-    if (!obj) return fallback;
-    for (const key of keys) {
-        const v = obj[key];
+function legiNombranKampon(obj: any, klavoj: readonly string[], defaŭlto: number): number {
+    if (!obj) return defaŭlto;
+    for (const klavo of klavoj) {
+        const v = obj[klavo];
         if (v !== undefined && v !== null) return Number(v);
     }
-    return fallback;
+    return defaŭlto;
 }
 
 /**
@@ -211,16 +211,16 @@ function readNumericField(obj: any, keys: readonly string[], fallback: number): 
  *     structure ( any ) - structure compound from the NBT root.
  * Returns palette array or null.
  */
-function resolveMcstructurePalette(structure: any): any[] | null {
-    const fromDefault = (container: any): any[] | null => {
-        const def = container?.default ?? container?.Default;
+function solviMcstructurePaletton(strukturo: any): any[] | null {
+    const deDefaŭlto = (containilo: any): any[] | null => {
+        const def = containilo?.default ?? containilo?.Default;
         return def ? (def.block_palette ?? def.blockPalette ?? null) : null;
     };
 
-    return structure.block_palette
-        ?? structure.blockPalette
-        ?? fromDefault(structure.palette ?? structure.Palette)
-        ?? fromDefault(structure.palettes ?? structure.Palettes)
+    return strukturo.block_palette
+        ?? strukturo.blockPalette
+        ?? deDefaŭlto(strukturo.palette ?? strukturo.Palette)
+        ?? deDefaŭlto(strukturo.palettes ?? strukturo.Palettes)
         ?? null;
 }
 
@@ -231,83 +231,83 @@ function resolveMcstructurePalette(structure: any): any[] | null {
  *     isMcstructure ( boolean ) - whether the file is a Bedrock .mcstructure.
  * Returns parsed blocks.
  */
-export async function parseSchematicOrStructure(arrayBuffer: ArrayBuffer, isMcstructure: boolean): Promise<ParsedSchematicBlock[]> {
-    let decompressed = arrayBuffer;
-    const uint8 = new Uint8Array(arrayBuffer);
+export async function analiziSchematikonAuStructure(aperaBufro: ArrayBuffer, cxuMcstructure: boolean): Promise<AnalizitaSchematikaBloko[]> {
+    let malpremita = aperaBufro;
+    const uint8 = new Uint8Array(aperaBufro);
     if (uint8[0] === 0o37 && uint8[1] === 0o213) {
-        decompressed = await decompressGzip(arrayBuffer);
+        malpremita = await malpremiGzip(aperaBufro);
     }
 
-    const reader = new NBTReader(decompressed, isMcstructure);
-    const root = reader.parse();
-    const data = root.value;
+    const legilo = new NBTLegilo(malpremita, cxuMcstructure);
+    const radiko = legilo.parse();
+    const datumoj = radiko.value;
 
-    const blocks: ParsedSchematicBlock[] = [];
+    const blokoj: AnalizitaSchematikaBloko[] = [];
 
-    if (isMcstructure) {
-        const size = data.size || data.Size;
-        if (!size || size.length < 3) throw new Error("Invalid structure size");
-        const width = Number(size[0]);
-        const height = Number(size[1]);
-        const length = Number(size[2]);
+    if (cxuMcstructure) {
+        const amplekso = datumoj.size || datumoj.Size;
+        if (!amplekso || amplekso.length < 3) throw new Error("Invalid structure size");
+        const larĝo = Number(amplekso[0]);
+        const alto = Number(amplekso[1]);
+        const longo = Number(amplekso[2]);
 
-        const structure = data.structure || data.Structure;
-        if (!structure) throw new Error("No structure tag found");
+        const strukturo = datumoj.structure || datumoj.Structure;
+        if (!strukturo) throw new Error("No structure tag found");
 
-        const blockIndicesList = structure.block_indices || structure.blockIndices;
-        if (!blockIndicesList || blockIndicesList.length === 0) throw new Error("No block_indices found");
-        const blockIndices = blockIndicesList[0];
+        const blokoIndeksojListo = strukturo.block_indices || strukturo.blockIndices;
+        if (!blokoIndeksojListo || blokoIndeksojListo.length === 0) throw new Error("No block_indices found");
+        const blokoIndeksoj = blokoIndeksojListo[0];
 
-        const blockPalette = resolveMcstructurePalette(structure);
-        if (!blockPalette) throw new Error("No block_palette found");
+        const blokaPaleto = solviMcstructurePaletton(strukturo);
+        if (!blokaPaleto) throw new Error("No block_palette found");
 
-        const reversePalette = blockPalette.map((entry: any) => entry.name || entry.Name || "minecraft:air");
+        const inversaPaleto = blokaPaleto.map((eniro: any) => eniro.name || eniro.Name || "minecraft:air");
 
-        for (let i = 0; i < blockIndices.length; i++) {
-            const paletteIndex = blockIndices[i];
-            if (paletteIndex === -1) continue;
+        for (let i = 0; i < blokoIndeksoj.length; i++) {
+            const paletaIndekso = blokoIndeksoj[i];
+            if (paletaIndekso === -1) continue;
 
-            const blockName = reversePalette[paletteIndex];
-            if (!blockName || blockName === "minecraft:air" || blockName === "minecraft:structure_void") continue;
+            const blokaNomo = inversaPaleto[paletaIndekso];
+            if (!blokaNomo || blokaNomo === "minecraft:air" || blokaNomo === "minecraft:structure_void") continue;
 
-            const x = Math.floor(i / (length * height));
-            const y = Math.floor((i / length) % height);
-            const z = i % length;
+            const x = Math.floor(i / (longo * alto));
+            const y = Math.floor((i / longo) % alto);
+            const z = i % longo;
 
-            blocks.push({ x, y, z, name: blockName, color: "#888888", shape: "cube", rotation: 0 });
+            blokoj.push({ x, y, z, name: blokaNomo, color: "#888888", formo: "cube", rotation: 0 });
         }
     } else {
-        const width = readNumericField(data, [ "Width", "width" ], 0);
-        const height = readNumericField(data, [ "Height", "height" ], 0);
-        const length = readNumericField(data, [ "Length", "length" ], 0);
+        const larĝo = legiNombranKampon(datumoj, [ "Width", "width" ], 0);
+        const alto = legiNombranKampon(datumoj, [ "Height", "height" ], 0);
+        const longo = legiNombranKampon(datumoj, [ "Length", "length" ], 0);
 
-        if (!width || !height || !length) throw new Error("Invalid schematic dimensions");
+        if (!larĝo || !alto || !longo) throw new Error("Invalid schematic dimensions");
 
-        const paletteObj = data.Palette || data.palette;
-        if (!paletteObj) throw new Error("No Palette found");        const reversePalette: string[] = [];
-        for (const [key, val] of Object.entries(paletteObj)) {
-            reversePalette[Number(val)] = key;
+        const paletaObjekto = datumoj.Palette || datumoj.palette;
+        if (!paletaObjekto) throw new Error("No Palette found");        const inversaPaleto: string[] = [];
+        for (const [klavo, val] of Object.entries(paletaObjekto)) {
+            inversaPaleto[Number(val)] = klavo;
         }
 
-        const blockDataBytes = data.BlockData || data.block_data || data.blockdata;
-        if (!blockDataBytes) throw new Error("No BlockData found");
+        const blokoDatumajBajtoj = datumoj.BlockData || datumoj.block_data || datumoj.blockdata;
+        if (!blokoDatumajBajtoj) throw new Error("No BlockData found");
 
-        const blockIndices = decodeVarIntArray(blockDataBytes);
+        const blokoIndeksoj = malkodiVariantanEntjeranTabelon(blokoDatumajBajtoj);
 
-        for (let i = 0; i < blockIndices.length; i++) {
-            const paletteIndex = blockIndices[i];
-            const blockName = reversePalette[paletteIndex];
-            if (!blockName || blockName === "minecraft:air" || blockName.startsWith("minecraft:air[")) continue;
+        for (let i = 0; i < blokoIndeksoj.length; i++) {
+            const paletaIndekso = blokoIndeksoj[i];
+            const blokaNomo = inversaPaleto[paletaIndekso];
+            if (!blokaNomo || blokaNomo === "minecraft:air" || blokaNomo.startsWith("minecraft:air[")) continue;
 
-            const y = Math.floor(i / (width * length));
-            const z = Math.floor((i % (width * length)) / width);
-            const x = i % width;
+            const y = Math.floor(i / (larĝo * longo));
+            const z = Math.floor((i % (larĝo * longo)) / larĝo);
+            const x = i % larĝo;
 
-            blocks.push({ x, y, z, name: blockName, color: "#888888", shape: "cube", rotation: 0 });
+            blokoj.push({ x, y, z, name: blokaNomo, color: "#888888", formo: "cube", rotation: 0 });
         }
     }
 
-    return blocks;
+    return blokoj;
 }
 
 /**
@@ -316,8 +316,8 @@ export async function parseSchematicOrStructure(arrayBuffer: ArrayBuffer, isMcst
  *     value ( number ) - grid coordinate.
  * Returns world coordinate.
  */
-export function gridToWorld(value: number): number {
-    return value + ( 1 / 2 );
+export function kradoAlMondo(valoro: number): number {
+    return valoro + ( 1 / 2 );
 }
 
 /**
@@ -326,8 +326,8 @@ export function gridToWorld(value: number): number {
  *     value ( number ) - world coordinate.
  * Returns grid coordinate.
  */
-export function worldToGrid(value: number): number {
-    return Math.round(value - ( 1 / 2 ));
+export function mondoAlKrado(valoro: number): number {
+    return Math.round(valoro - ( 1 / 2 ));
 }
 
 /**
@@ -337,7 +337,7 @@ export function worldToGrid(value: number): number {
  *
  * Two triangles per face x six faces = twelve triangles for a closed cube.
  */
-const CUBE_FACE_TRIS: ReadonlyArray<readonly [ number, number, number ]> = [
+const KUBAJ_VIZAGXOJ_TRIOJ: ReadonlyArray<readonly [ number, number, number ]> = [
     [ 0, 1, 2 ], [ 0, 2, 3 ],   // back ( -Z )
     [ 4, 7, 6 ], [ 4, 6, 5 ],   // front ( +Z )
     [ 3, 2, 6 ], [ 3, 6, 7 ],   // top ( +Y )
@@ -350,7 +350,7 @@ const CUBE_FACE_TRIS: ReadonlyArray<readonly [ number, number, number ]> = [
  * The 8 local-space offsets that form the block's vertex cloud ( before the
  * block's lower-back corner translation ). Index matches CUBE_FACE_TRIS.
  */
-const CUBE_VERTEX_LOCAL_OFFSETS: ReadonlyArray<readonly [ number, number, number ]> = [
+const KUBAJ_VERTEXOJ_LOKAJ_DEVIACIOJ: ReadonlyArray<readonly [ number, number, number ]> = [
     [ 0, 0, 0 ], [ 1, 0, 0 ], [ 1, 1, 0 ], [ 0, 1, 0 ],
     [ 0, 0, 1 ], [ 1, 0, 1 ], [ 1, 1, 1 ], [ 0, 1, 1 ]
 ];
@@ -361,39 +361,39 @@ const CUBE_VERTEX_LOCAL_OFFSETS: ReadonlyArray<readonly [ number, number, number
  *     blocks ( Array ) - blocks with position and color.
  * Returns object with obj and mtl strings.
  */
-export function buildOBJ(blocks: Array<{ position: THREE.Vector3Like; color: string }>): { obj: string; mtl: string } {
+export function konstruiOBJ(blokoj: Array<{ position: THREE.Vector3Like; color: string }>): { obj: string; mtl: string } {
     let obj = "# ſןᴜȝ j͑ʃп́ɔ ſ̀ȷᴜȝ\n";
     let mat = "# ſןᴜȝ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ\n";
-    const materials = new Map<string, number>();
-    let matIndex = 0;
-    let vertexOffset = 1;
+    const materialoj = new Map<string, number>();
+    let matIndekso = 0;
+    let verticaMovo = 1;
 
-    for (const block of blocks) {
-        const color = block.color;
+    for (const bloko of blokoj) {
+        const koloro = bloko.color;
 
-        if (!materials.has(color)) {
-            materials.set(color, matIndex++);
-            const r = parseInt(color.slice(1, 3), 0o20) / 255;
-            const g = parseInt(color.slice(3, 5), 0o20) / 255;
-            const b = parseInt(color.slice(5, 7), 0o20) / 255;
-            mat += `newmtl mat_${materials.get(color)}\n`;
+        if (!materialoj.has(koloro)) {
+            materialoj.set(koloro, matIndekso++);
+            const r = parseInt(koloro.slice(1, 3), 0o20) / 255;
+            const g = parseInt(koloro.slice(3, 5), 0o20) / 255;
+            const b = parseInt(koloro.slice(5, 7), 0o20) / 255;
+            mat += `newmtl mat_${materialoj.get(koloro)}\n`;
             mat += `Kd ${r} ${g} ${b}\n`;
         }
 
-        const x = worldToGrid(block.position.x);
-        const y = worldToGrid(block.position.y);
-        const z = worldToGrid(block.position.z);
+        const x = mondoAlKrado(bloko.position.x);
+        const y = mondoAlKrado(bloko.position.y);
+        const z = mondoAlKrado(bloko.position.z);
 
-        for (const [ox, oy, oz] of CUBE_VERTEX_LOCAL_OFFSETS) {
+        for (const [ox, oy, oz] of KUBAJ_VERTEXOJ_LOKAJ_DEVIACIOJ) {
             obj += `v ${x + ox} ${y + oy} ${z + oz}\n`;
         }
 
-        obj += `usemtl mat_${materials.get(color)}\n`;
-        for (const [a, b, c] of CUBE_FACE_TRIS) {
-            obj += `f ${vertexOffset + a} ${vertexOffset + b} ${vertexOffset + c}\n`;
+        obj += `usemtl mat_${materialoj.get(koloro)}\n`;
+        for (const [a, b, c] of KUBAJ_VIZAGXOJ_TRIOJ) {
+            obj += `f ${verticaMovo + a} ${verticaMovo + b} ${verticaMovo + c}\n`;
         }
 
-        vertexOffset += 0o10;
+        verticaMovo += 0o10;
     }
 
     return { obj, mtl: mat };
@@ -405,13 +405,13 @@ export function buildOBJ(blocks: Array<{ position: THREE.Vector3Like; color: str
  *     content ( string ) - file contents.
  *     mime ( string ) - mime type.
  */
-export function downloadText(filename: string, content: string, mime: string): void {
-    const blob = new Blob([content], { type: mime });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.download = filename;
-    link.href = url;
-    link.click();
+export function elŝutiTekston(dosierNomo: string, enhavo: string, mime: string): void {
+    const blobo = new Blob([enhavo], { type: mime });
+    const url = URL.createObjectURL(blobo);
+    const ligilo = document.createElement("a");
+    ligilo.download = dosierNomo;
+    ligilo.href = url;
+    ligilo.click();
     URL.revokeObjectURL(url);
 }
 
@@ -420,28 +420,28 @@ export function downloadText(filename: string, content: string, mime: string): v
  *     text ( string ) - file contents.
  * Returns parsed blocks.
  */
-export function parseJSONBlocks(text: string): ParsedSchematicBlock[] {
-    const parsed = JSON.parse(text);
-    const list = Array.isArray(parsed) ? parsed : (parsed.blocks ?? []);
-    if (!Array.isArray(list)) throw new Error("No blocks array found");
+export function analiziJSONBlokojn(teksto: string): AnalizitaSchematikaBloko[] {
+    const analizita = JSON.parse(teksto);
+    const listo = Array.isArray(analizita) ? analizita : (analizita.blocks ?? []);
+    if (!Array.isArray(listo)) throw new Error("No blocks array found");
 
-    const blocks: ParsedSchematicBlock[] = [];
-    list.forEach((sb: any) => {
-        const blockIdOrName = sb.blockId ?? sb.id ?? sb.name;
+    const blokoj: AnalizitaSchematikaBloko[] = [];
+    listo.forEach((sb: any) => {
+        const blokaIdAuNomo = sb.blockId ?? sb.id ?? sb.name;
         let x: number, y: number, z: number;
         if (sb.position) {
-            x = worldToGrid(Number(sb.position.x ?? 0));
-            y = worldToGrid(Number(sb.position.y ?? 0));
-            z = worldToGrid(Number(sb.position.z ?? 0));
+            x = mondoAlKrado(Number(sb.position.x ?? 0));
+            y = mondoAlKrado(Number(sb.position.y ?? 0));
+            z = mondoAlKrado(Number(sb.position.z ?? 0));
         } else {
             x = Number(sb.x ?? 0);
             y = Number(sb.y ?? 0);
             z = Number(sb.z ?? 0);
         }
-        const color = sb.color || "#888888";
-        const shape = sb.shape || "cube";
-        const rotation = Number(sb.rotation ?? 0);
-        blocks.push({ x, y, z, name: blockIdOrName, color, shape, rotation });
+        const koloro = sb.color || "#888888";
+        const formo = sb.shape || "cube";
+        const rotacio = Number(sb.rotation ?? 0);
+        blokoj.push({ x, y, z, name: blokaIdAuNomo, color: koloro, formo, rotation: rotacio });
     });
-    return blocks;
+    return blokoj;
 }

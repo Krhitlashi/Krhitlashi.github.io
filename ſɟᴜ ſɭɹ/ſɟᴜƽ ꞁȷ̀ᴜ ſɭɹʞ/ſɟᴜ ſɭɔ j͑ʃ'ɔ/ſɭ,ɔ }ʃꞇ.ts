@@ -1,34 +1,32 @@
 // ≺⧼ UI Handlers, Actions & File Operations ⧽≻
 
 import {
-    canvas, state, spaceState, historyState, objectState, layerState, pageState, textState, eraserState,
-    CANVAS_WIDTH, CANVAS_HEIGHT, PAGE_SIZE_PRESETS, MIN_PAGE_SIZE, MAX_PAGE_SIZE
+    canvas, stato, spacstato, historioStato, objektstato, tavolstato, paĝostato, tekststato, viŝilostato,
+    TABULA_LARGXO, TABULA_ALTO, PAGXGRANDO_PRETOJ, MIN_PAGXGRANDO, MAX_PAGXGRANDO
 } from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
 
 import {
-    normalizeHexColor, isValidHexColor,
-    setButtonPressed, initButtonGroup, initButtons
+    normaligiHexKoloron, cxuValidaHexKoloro,
+    agordiButononPremita, iniciiButonGrupon, iniciiButonojn
     } from "./ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
 
-import { initSharedToolbar } from "../../}ʃɹ ɭʃᴜ j͑ʃɔ }ʃw j͑ʃᴜ ſɭᴜ ŋᷠᴜ.js";
+import { iniciiKomunanIlaron } from "../../}ʃɹ ɭʃᴜ j͑ʃɔ }ʃw j͑ʃᴜ ſɭᴜ ŋᷠᴜ.js";
 
 import {
-    pageManager,
-    renderLayerList,
-    addLayer as addLayerAction,
-    deleteLayer as deleteLayerAction,
-    moveLayer as moveLayerAction,
-    syncLayersAndSave as syncLayersAndSaveAction,
-    addPage as addPageAction,
-    deletePage as deletePageAction,
-    movePage as movePageAction,
-    syncPagesAndSave as syncPagesAndSaveAction
-} from "./ɭʃᴜ }ʃɔƽ.js";
-
-import {
-    redrawCanvas, saveState, drawWhiteboardGrid,
-    getCurrentCanvas, getCurrentCtx, updateUndoRedoButtons, resizeActivePage, updateCanvasSizeDisplay,
-    updatePresetButtons
+    pagAdministranto,
+    renderiTavolojnListon,
+    aldoniTavolon as aldoniTavolon,
+    forigiTavolon as forigiTavolon,
+    moviTavolon as moviTavolon,
+    sinkronigiTavolojnKajKonservi as sinkronigiTavolojnKajKonservi,
+    aldoniPagon as aldoniPagon,
+    forigiPagon as forigiPagon,
+    moviPagon as moviPagon,
+    sinkronigiPagojnKajKonservi as sinkronigiPagojnKajKonservi
+} from "./ɭʃᴜ }ʃɔƽ.js";import {
+    redesegniTabulon, konserviStaton, desegniTabulanKradon,
+    akiriAktualanTabulon, akiriAktualanCtx, gxisdatigiMalfarRefarButonojn,
+    grandSxangxiAktivanPagon, gxisdatigiTabulanGrandanMontron, gxisdatigiPretajnButonojn
 } from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
 
 import {
@@ -42,8 +40,8 @@ export function initColors(): void {
     const colorGrid = document.getElementById( "colorGrid" );
     if ( !colorGrid ) return;
 
-    initButtonGroup( "#colorGrid button[data-color]", "#colorGrid button", ( btn ) => {
-        state.color = btn.dataset.color!;
+    iniciiButonGrupon( "#colorGrid button[data-color]", "#colorGrid button", ( btn ) => {
+        stato.color = btn.dataset.color!;
     } );
 
     initCustomColor();
@@ -58,51 +56,51 @@ function initCustomColor(): void {
     colorPicker.addEventListener( "input", () => {
         const color = colorPicker.value;
         hexInput.value = color.toUpperCase();
-        state.color = color;
-        setButtonPressed( "#colorGrid button", null );
+        stato.color = color;
+        agordiButononPremita( "#colorGrid button", null );
     } );
 
     hexInput.addEventListener( "input", () => {
-        const value = normalizeHexColor( hexInput.value );
-        if ( isValidHexColor( value ) ) {
+        const value = normaligiHexKoloron( hexInput.value );
+        if ( cxuValidaHexKoloro( value ) ) {
             colorPicker.value = value;
-            state.color = value;
-            setButtonPressed( "#colorGrid button", null );
+            stato.color = value;
+            agordiButononPremita( "#colorGrid button", null );
         }
     } );
 
     hexInput.addEventListener( "blur", () => {
-        const value = normalizeHexColor( hexInput.value );
-        if ( isValidHexColor( value ) ) {
+        const value = normaligiHexKoloron( hexInput.value );
+        if ( cxuValidaHexKoloro( value ) ) {
             hexInput.value = value.toUpperCase();
         }
     } );
 }
 
 export function initToolsAndShapes(): void {
-    initButtonGroup( "button[data-tool]", "button[data-tool]", ( btn ) => {
-        state.tool = btn.dataset.tool!;
-        if ( canvas ) canvas.dataset.tool = state.tool;
+    iniciiButonGrupon( "button[data-tool]", "button[data-tool]", ( btn ) => {
+        stato.tool = btn.dataset.tool!;
+        if ( canvas ) canvas.dataset.tool = stato.tool;
         updateTransformControls();
     } );
 
-    initButtonGroup( "button[data-shape]", "button[data-shape]", ( btn ) => {
-        state.shape = btn.dataset.shape!;
-        state.tool = "shape";
+    iniciiButonGrupon( "button[data-shape]", "button[data-shape]", ( btn ) => {
+        stato.shape = btn.dataset.shape!;
+        stato.tool = "shape";
         if ( canvas ) canvas.dataset.tool = "shape";
         updateTransformControls();
     } );
 
     const htmlTextCheckbox = document.getElementById( "htmlTextCheckbox" ) as HTMLInputElement | null;
     if ( htmlTextCheckbox ) {
-        textState.useHtml = htmlTextCheckbox.checked;
-        htmlTextCheckbox.addEventListener( "change", () => { textState.useHtml = htmlTextCheckbox.checked; } );
+        tekststato.useHtml = htmlTextCheckbox.checked;
+        htmlTextCheckbox.addEventListener( "change", () => { tekststato.useHtml = htmlTextCheckbox.checked; } );
     }
 
     const eraserModeCheckbox = document.getElementById( "eraserModeCheckbox" ) as HTMLInputElement | null;
     if ( eraserModeCheckbox ) {
-        eraserState.eraseObjects = eraserModeCheckbox.checked;
-        eraserModeCheckbox.addEventListener( "change", () => { eraserState.eraseObjects = eraserModeCheckbox.checked; } );
+        viŝilostato.eraseObjects = eraserModeCheckbox.checked;
+        eraserModeCheckbox.addEventListener( "change", () => { viŝilostato.eraseObjects = eraserModeCheckbox.checked; } );
     }
 }
 
@@ -111,13 +109,13 @@ export function initSizeSlider(): void {
     const valueDisplay = document.getElementById( "brushSizeValue" );
 
     slider.addEventListener( "input", () => {
-        state.size = parseInt( slider.value );
-        valueDisplay!.textContent = state.size.toString();
+        stato.size = parseInt( slider.value );
+        valueDisplay!.textContent = stato.size.toString();
     } );
 }
 
 export function initToolbar(): void {
-    initSharedToolbar();
+    iniciiKomunanIlaron();
 }
 
 // ⟪ History & Undo/Redo 📚 ⟫
@@ -127,34 +125,34 @@ export function undo(): void { changeHistory( -1 ); }
 export function redo(): void { changeHistory( 1 ); }
 
 export function changeHistory( direction: number ): void {
-    const newIndex = historyState.index + direction;
-    if ( newIndex < 0 || newIndex >= historyState.history.length ) return;
+    const newIndex = historioStato.index + direction;
+    if ( newIndex < 0 || newIndex >= historioStato.history.length ) return;
 
-    historyState.index = newIndex;
-    const stateData = JSON.parse( historyState.history[ historyState.index ] );
-    layerState.layers = stateData.layers;
-    pageState.pages = stateData.pages;
-    pageState.pages.forEach( page => {
+    historioStato.index = newIndex;
+    const stateData = JSON.parse( historioStato.history[ historioStato.index ] );
+    tavolstato.layers = stateData.layers;
+    paĝostato.pages = stateData.pages;
+    paĝostato.pages.forEach( page => {
         if ( !page.infinite ) {
-            page.width = page.width || CANVAS_WIDTH;
-            page.height = page.height || CANVAS_HEIGHT;
+            page.width = page.width || TABULA_LARGXO;
+            page.height = page.height || TABULA_ALTO;
         }
     } );
-    pageManager.pages = pageState.pages;
+    pagAdministranto.pages = paĝostato.pages;
 
-    const activePage = pageManager.getActive();
+    const activePage = pagAdministranto.getActive();
     if ( activePage ) {
-        objectState.objects = activePage.objects;
+        objektstato.objects = activePage.objects;
         if ( activePage.infinite ) {
-            resizeActivePage( window.innerWidth, window.innerHeight );
+            grandSxangxiAktivanPagon( window.innerWidth, window.innerHeight );
         } else {
-            resizeActivePage( activePage.width || CANVAS_WIDTH, activePage.height || CANVAS_HEIGHT );
+            grandSxangxiAktivanPagon( activePage.width || TABULA_LARGXO, activePage.height || TABULA_ALTO );
         }
     }
 
-    renderLayerList();
-    redrawCanvas();
-    updateUndoRedoButtons();
+    renderiTavolojnListon();
+    redesegniTabulon();
+    gxisdatigiMalfarRefarButonojn();
 }
 
 // ⟪ Actions & Keyboard Shortcuts ⌨️ ⟫
@@ -163,7 +161,7 @@ export function handleKeyboard( e: KeyboardEvent ): void {
     const target = e.target as HTMLElement;
     const isInput = target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable;
 
-    if ( isInput && target !== textState.input ) return;
+    if ( isInput && target !== tekststato.input ) return;
 
     if ( e.key === "z" && ( e.ctrlKey || e.metaKey ) && !e.shiftKey ) {
         e.preventDefault();
@@ -190,26 +188,26 @@ export function handleKeyboard( e: KeyboardEvent ): void {
         }
     } else if ( e.key === "Escape" ) {
         e.preventDefault();
-        objectState.selected = [];
+        objektstato.selected = [];
         updateTransformControls();
-        redrawCanvas();
-    } else if ( e.key === " " && !spaceState.isPressed ) {
-        spaceState.isPressed = true;
+        redesegniTabulon();
+    } else if ( e.key === " " && !spacstato.isPressed ) {
+        spacstato.isPressed = true;
         if ( canvas ) canvas.dataset.cursor = "grab";
     }
 }
 
 export function deleteSelectedObjects(): void {
-    if ( objectState.selected.length === 0 ) return;
-    objectState.objects = objectState.objects.filter( o => !objectState.selected.includes( o ) );
-    objectState.selected = [];
+    if ( objektstato.selected.length === 0 ) return;
+    objektstato.objects = objektstato.objects.filter( o => !objektstato.selected.includes( o ) );
+    objektstato.selected = [];
     updateTransformControls();
-    redrawCanvas();
-    saveState();
+    redesegniTabulon();
+    konserviStaton();
 }
 
 export function initActions(): void {
-    initButtons( [
+    iniciiButonojn( [
         { id: "undoBtn", onClick: undo },
         { id: "redoBtn", onClick: redo },
         { id: "quickUndo", onClick: undo },
@@ -238,26 +236,26 @@ export function initActions(): void {
 }
 
 export function initLayerControls(): void {
-    initButtons( [
-        { id: "addLayerBtn", onClick: addLayerAction },
-        { id: "deleteLayerBtn", onClick: deleteLayerAction },
-        { id: "moveLayerUpBtn", onClick: () => moveLayerAction( 1 ) },
-        { id: "moveLayerDownBtn", onClick: () => moveLayerAction( -1 ) }
+    iniciiButonojn( [
+        { id: "addLayerBtn", onClick: aldoniTavolon },
+        { id: "deleteLayerBtn", onClick: forigiTavolon },
+        { id: "moveLayerUpBtn", onClick: () => moviTavolon( 1 ) },
+        { id: "moveLayerDownBtn", onClick: () => moviTavolon( -1 ) }
     ] );
 }
 
 export function initPageControls(): void {
-    initButtons( [
-        { id: "addPageBtn", onClick: addPageAction },
-        { id: "deletePageBtn", onClick: deletePageAction },
-        { id: "movePageUpBtn", onClick: () => movePageAction( 1 ) },
-        { id: "movePageDownBtn", onClick: () => movePageAction( -1 ) }
+    iniciiButonojn( [
+        { id: "addPageBtn", onClick: aldoniPagon },
+        { id: "deletePageBtn", onClick: forigiPagon },
+        { id: "movePageUpBtn", onClick: () => moviPagon( 1 ) },
+        { id: "movePageDownBtn", onClick: () => moviPagon( -1 ) }
     ] );
 }
 
 function clampPageSize( value: number ): number {
-    if ( !Number.isFinite( value ) ) return MIN_PAGE_SIZE;
-    return Math.max( MIN_PAGE_SIZE, Math.min( MAX_PAGE_SIZE, Math.round( value ) ) );
+    if ( !Number.isFinite( value ) ) return MIN_PAGXGRANDO;
+    return Math.max( MIN_PAGXGRANDO, Math.min( MAX_PAGXGRANDO, Math.round( value ) ) );
 }
 
 function setPageSizeInputs( width: number, height: number ): void {
@@ -274,16 +272,16 @@ export function initPageSizeControls(): void {
     const applyBtn = document.getElementById( "applyCustomPageSize" );
     if ( buttons.length === 0 || !widthInput || !heightInput || !applyBtn ) return;
 
-    const activePage = pageManager.getActive();
-    setPageSizeInputs( activePage?.width || CANVAS_WIDTH, activePage?.height || CANVAS_HEIGHT );
+    const activePage = pagAdministranto.getActive();
+    setPageSizeInputs( activePage?.width || TABULA_LARGXO, activePage?.height || TABULA_ALTO );
 
     buttons.forEach( btn => {
         btn.addEventListener( "click", () => {
             const preset = btn.dataset.preset!;
             if ( preset === "custom" ) return;
-            const size = PAGE_SIZE_PRESETS[ preset ];
+            const size = PAGXGRANDO_PRETOJ[ preset ];
             if ( !size ) return;
-            const activePage = pageManager.getActive();
+            const activePage = pagAdministranto.getActive();
             if ( activePage ) {
                 activePage.infinite = size.infinite === true;
                 if ( !activePage.infinite ) {
@@ -292,60 +290,60 @@ export function initPageSizeControls(): void {
                 }
             }
             if ( size.infinite ) {
-                resizeActivePage( window.innerWidth, window.innerHeight );
+                grandSxangxiAktivanPagon( window.innerWidth, window.innerHeight );
                 setPageSizeInputs( window.innerWidth, window.innerHeight );
             } else {
-                resizeActivePage( size.width!, size.height! );
+                grandSxangxiAktivanPagon( size.width!, size.height! );
                 setPageSizeInputs( size.width!, size.height! );
             }
-            saveState();
-            updatePresetButtons( preset );
+            konserviStaton();
+            gxisdatigiPretajnButonojn( preset );
         } );
     } );
 
     applyBtn.addEventListener( "click", () => {
         const width = clampPageSize( Number( widthInput.value ) );
         const height = clampPageSize( Number( heightInput.value ) );
-        const activePage = pageManager.getActive();
+        const activePage = pagAdministranto.getActive();
         if ( activePage ) {
             activePage.infinite = false;
             activePage.width = width;
             activePage.height = height;
         }
         setPageSizeInputs( width, height );
-        resizeActivePage( width, height );
-        saveState();
-        updatePresetButtons( "custom" );
+        grandSxangxiAktivanPagon( width, height );
+        konserviStaton();
+        gxisdatigiPretajnButonojn( "custom" );
     } );
 
-    updateCanvasSizeDisplay();
+    gxisdatigiTabulanGrandanMontron();
 }
 
 // ⟪ Transform Control Actions 🎛️ ⟫
 
 function editSelectedText(): void {
-    if ( objectState.selected.length !== 1 || objectState.selected[ 0 ].type !== "text" ) return;
-    editTextObject( objectState.selected[ 0 ] );
+    if ( objektstato.selected.length !== 1 || objektstato.selected[ 0 ].type !== "text" ) return;
+    editTextObject( objektstato.selected[ 0 ] );
 }
 
 function clearSelected(): void {
-    if ( objectState.selected.length !== 1 ) return;
-    const obj = objectState.selected[ 0 ];
+    if ( objektstato.selected.length !== 1 ) return;
+    const obj = objektstato.selected[ 0 ];
     if ( obj.type === "text" ) {
         obj.text = "";
         obj.textDirty = true;
-        redrawCanvas();
-        saveState();
+        redesegniTabulon();
+        konserviStaton();
     }
 }
 
 function rotateSelected( angle: number ): void {
-    if ( objectState.selected.length === 0 ) return;
-    objectState.selected.forEach( obj => {
+    if ( objektstato.selected.length === 0 ) return;
+    objektstato.selected.forEach( obj => {
         obj.rotation = ( obj.rotation || 0 ) + angle;
     } );
-    redrawCanvas();
-    saveState();
+    redesegniTabulon();
+    konserviStaton();
 }
 
 /**
@@ -354,58 +352,58 @@ function rotateSelected( angle: number ): void {
  * No-op when nothing / multi-selection or when already at the edge.
  */
 function moveSelectedLayer( direction: number ): void {
-    if ( objectState.selected.length !== 1 ) return;
-    const obj = objectState.selected[ 0 ];
-    const index = objectState.objects.indexOf( obj );
+    if ( objektstato.selected.length !== 1 ) return;
+    const obj = objektstato.selected[ 0 ];
+    const index = objektstato.objects.indexOf( obj );
     const swapIndex = index + direction;
-    if ( swapIndex < 0 || swapIndex >= objectState.objects.length ) return;
+    if ( swapIndex < 0 || swapIndex >= objektstato.objects.length ) return;
 
-    [ objectState.objects[ index ], objectState.objects[ swapIndex ] ] =
-        [ objectState.objects[ swapIndex ], objectState.objects[ index ] ];
-    redrawCanvas();
-    saveState();
+    [ objektstato.objects[ index ], objektstato.objects[ swapIndex ] ] =
+        [ objektstato.objects[ swapIndex ], objektstato.objects[ index ] ];
+    redesegniTabulon();
+    konserviStaton();
 }
 
 function flipSelected( axis: "h" | "v" ): void {
-    if ( objectState.selected.length === 0 ) return;
-    objectState.selected.forEach( obj => {
+    if ( objektstato.selected.length === 0 ) return;
+    objektstato.selected.forEach( obj => {
         if ( axis === "h" ) obj.flipH = !obj.flipH;
         else obj.flipV = !obj.flipV;
     } );
-    redrawCanvas();
-    saveState();
+    redesegniTabulon();
+    konserviStaton();
 }
 
 function bringToFront(): void {
-    if ( objectState.selected.length === 0 ) return;
-    objectState.selected.forEach( obj => {
-        const index = objectState.objects.indexOf( obj );
+    if ( objektstato.selected.length === 0 ) return;
+    objektstato.selected.forEach( obj => {
+        const index = objektstato.objects.indexOf( obj );
         if ( index >= 0 ) {
-            objectState.objects.splice( index, 1 );
-            objectState.objects.push( obj );
+            objektstato.objects.splice( index, 1 );
+            objektstato.objects.push( obj );
         }
     } );
-    redrawCanvas();
-    saveState();
+    redesegniTabulon();
+    konserviStaton();
 }
 
 function sendToBack(): void {
-    if ( objectState.selected.length === 0 ) return;
-    objectState.selected.forEach( obj => {
-        const index = objectState.objects.indexOf( obj );
+    if ( objektstato.selected.length === 0 ) return;
+    objektstato.selected.forEach( obj => {
+        const index = objektstato.objects.indexOf( obj );
         if ( index >= 0 ) {
-            objectState.objects.splice( index, 1 );
-            objectState.objects.unshift( obj );
+            objektstato.objects.splice( index, 1 );
+            objektstato.objects.unshift( obj );
         }
     } );
-    redrawCanvas();
-    saveState();
+    redesegniTabulon();
+    konserviStaton();
 }
 
 // ⟪ File Operations 💾 ⟫
 
 export function saveCanvas(): void {
-    getCurrentCanvas()!.toBlob( ( blob: Blob | null ) => {
+    akiriAktualanTabulon()!.toBlob( ( blob: Blob | null ) => {
         if ( !blob ) return;
         const url = URL.createObjectURL( blob );
         const a = document.createElement( "a" );
@@ -422,7 +420,7 @@ export function saveCanvasAsPDF(): void {
         console.error( "jsPDF not loaded" );
         return;
     }
-    const currentCanvas = getCurrentCanvas()!;
+    const currentCanvas = akiriAktualanTabulon()!;
     const width = currentCanvas.width;
     const height = currentCanvas.height;
 
@@ -442,9 +440,9 @@ export function loadCanvas( file: File ): void {
     reader.onload = ( e ) => {
         const img = new Image();
         img.onload = () => {
-            getCurrentCtx()!.drawImage( img, 0, 0 );
-            redrawCanvas();
-            saveState();
+            akiriAktualanCtx()!.drawImage( img, 0, 0 );
+            redesegniTabulon();
+            konserviStaton();
         };
         img.src = e.target!.result as string;
     };
@@ -463,13 +461,13 @@ export function initFileOperations(): void {
 }
 
 export function clearCanvas(): void {
-    if ( !getCurrentCtx() || !getCurrentCanvas() ) return;
-    const ctx = getCurrentCtx()!;
-    const cvs = getCurrentCanvas()!;
-    objectState.objects = [];
-    objectState.selected = [];
+    if ( !akiriAktualanCtx() || !akiriAktualanTabulon() ) return;
+    const ctx = akiriAktualanCtx()!;
+    const cvs = akiriAktualanTabulon()!;
+    objektstato.objects = [];
+    objektstato.selected = [];
     updateTransformControls();
     // redrawCanvas will fill the appropriate background
-    redrawCanvas();
-    saveState();
+    redesegniTabulon();
+    konserviStaton();
 }

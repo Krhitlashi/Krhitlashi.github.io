@@ -1,57 +1,57 @@
 // ≺⧼ Context Menu Manager ⧽≻
 
 declare const CONSTANTS: any;
-declare const AnimationManager: any;
+declare const AnimacioAdministranto: any;
 declare const getStrings: any;
 declare const getWindowManager: any;
 
 import { AppData } from "./ꞁȷ̀ɜ ı],ɔ ŋᷠᴜ }ʃꞇ.js";
-import { getMaxPage } from "./ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ.js";
+import { akiriMaksimumanPaĝon } from "./ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ.js";
 
 let APPS: AppData[] = [];
 
 // ⟪ Context Menu Manager ⟫
 
-export const ContextMenuManager = {
-    menu: null as any,
-    desktop: null as any,
-    menuOpen: false,
-    currentTile: null as any,
+export const KuntekstaMenuoAdministranto = {
+    menuo: null as any,
+    labortablo: null as any,
+    menuoMalfermita: false,
+    nunaKahelo: null as any,
 
     init() {
-        this.menu = document.getElementById( "context-menu" );
-        this.desktop = document.getElementById( "desktop" );
-        if ( !this.menu || !this.desktop ) return;
+        this.menuo = document.getElementById( "context-menu" );
+        this.labortablo = document.getElementById( "desktop" );
+        if ( !this.menuo || !this.labortablo ) return;
 
-        this.desktop.addEventListener( "contextmenu", ( e: MouseEvent ) => {
+        this.labortablo.addEventListener( "contextmenu", ( e: MouseEvent ) => {
             if ( ( e.target as HTMLElement ).closest( ".app-tile" ) ) return;
             e.preventDefault();
             e.stopPropagation();
-            this.menuOpen = true;
+            this.menuoMalfermita = true;
             this.showForDesktop( e.clientX, e.clientY );
         } );
 
         // Hide menu on click outside (same pattern as PanelManager)
         document.addEventListener( "mousedown", ( e: MouseEvent ) => {
-            if ( !this.menuOpen ) return;
+            if ( !this.menuoMalfermita ) return;
             const selectors: string[] = [ "#context-menu" ];
             if ( !selectors.some( sel => ( e.target as HTMLElement ).closest( sel ) ) ) {
-                this.hide();
+                this.kaŝi();
             }
         } );
 
         // Hide menu on right click outside (to show new context menu)
         document.addEventListener( "contextmenu", ( e: MouseEvent ) => {
-            if ( !this.menuOpen ) return;
+            if ( !this.menuoMalfermita ) return;
             const inMenu = ( e.target as HTMLElement ).closest( "#context-menu" );
             if ( !inMenu ) {
-                this.hide();
+                this.kaŝi();
             }
         } );
     },
 
-    showForDesktop( x: number, y: number ) {
-        this.currentTile = null;
+     showForDesktop( x: number, y: number ) {
+        this.nunaKahelo = null;
         this._renderMenu( [
             { action: "edit-mode", label: "Edit Mode", icon: "✏️", i18n: "ctx_edit_mode" }
         ], [
@@ -61,12 +61,12 @@ export const ContextMenuManager = {
         ], x, y );
     },
 
-    showForTile( x: number, y: number, tileEl: HTMLElement ) {
-        this.currentTile = tileEl;
+     showForTile( x: number, y: number, tileEl: HTMLElement ) {
+        this.nunaKahelo = tileEl;
 
         // Build move page actions for mobile
         const movePageActions = [];
-        const maxPage = getMaxPage( APPS );
+        const maxPage = akiriMaksimumanPaĝon( APPS );
 
         if ( maxPage > 0 ) {
             for ( let i = 0; i <= maxPage; i++ ) {
@@ -113,36 +113,36 @@ export const ContextMenuManager = {
             return `<button data-action="${btn.action}"${i18nAttr} title="${label}">${labelHtml}<span>${btn.icon}</span></button>`;
         };
 
-        if ( this.menu ) {
-            this.menu.innerHTML = allActions.map( renderButton ).join( "" );
+        if ( this.menuo ) {
+            this.menuo.innerHTML = allActions.map( renderButton ).join( "" );
             this._bindMenuEvents();
-            this.show( x, y );
+             this.montri( x, y );
         }
     },
 
     _bindMenuEvents() {
-        if ( this.menu ) {
-            this.menu.querySelectorAll( "button" ).forEach( ( item: any ) => {
+        if ( this.menuo ) {
+            this.menuo.querySelectorAll( "button" ).forEach( ( item: any ) => {
                 ( item as HTMLElement ).onclick = ( e: MouseEvent ) => {
                     this.handleAction( ( e.currentTarget as HTMLElement ).dataset.action );
-                    this.hide();
+                    this.kaŝi();
                 };
             } );
         }
     },
 
-    show( x: number, y: number ) {
-        if ( this.menu ) {
-            this.menu.style.left = x + "px";
-            this.menu.style.top = y + "px";
-            this.menu.classList.add( "visible" );
+    montri( x: number, y: number ) {
+        if ( this.menuo ) {
+            this.menuo.style.left = x + "px";
+            this.menuo.style.top = y + "px";
+            this.menuo.classList.add( "visible" );
 
-            const rect = this.menu.getBoundingClientRect();
-            if ( rect.right > window.innerWidth ) this.menu.style.left = ( window.innerWidth - rect.width ) + "px";
-            if ( rect.bottom > window.innerHeight ) this.menu.style.top = ( window.innerHeight - rect.height ) + "px";
+            const rect = this.menuo.getBoundingClientRect();
+            if ( rect.right > window.innerWidth ) this.menuo.style.left = ( window.innerWidth - rect.width ) + "px";
+            if ( rect.bottom > window.innerHeight ) this.menuo.style.top = ( window.innerHeight - rect.height ) + "px";
 
-            if ( AnimationManager ) {
-                AnimationManager.popupIn( this.menu, {
+            if ( AnimacioAdministranto ) {
+                AnimacioAdministranto.popupIn( this.menuo, {
                     duration: CONSTANTS.ANIM_SETTINGS.popup.duration,
                     easing: CONSTANTS.ANIM_SETTINGS.popup.easing
                 } );
@@ -150,20 +150,20 @@ export const ContextMenuManager = {
         }
     },
 
-    hide() {
-        if ( this.menu ) {
-            if ( AnimationManager ) {
-                AnimationManager.popupOut( this.menu, {
+    kaŝi() {
+        if ( this.menuo ) {
+            if ( AnimacioAdministranto ) {
+                AnimacioAdministranto.popupOut( this.menuo, {
                     duration: CONSTANTS.ANIM_SETTINGS.popup.duration,
                     easing: CONSTANTS.ANIM_SETTINGS.popup.easing
                 } ).then( () => {
-                    this.menu?.classList.remove( "visible" );
+                    this.menuo?.classList.remove( "visible" );
                 } );
             } else {
-                this.menu?.classList.remove( "visible" );
+                this.menuo?.classList.remove( "visible" );
             }
         }
-        this.menuOpen = false;
+        this.menuoMalfermita = false;
     },
 
     handleAction( action: string | undefined ) {
@@ -173,8 +173,8 @@ export const ContextMenuManager = {
         // Handle move page actions for mobile
         if ( action.startsWith( "move-page-" ) ) {
             const targetPage = parseInt( action.replace( "move-page-", "" ) );
-            if ( this.currentTile && ( window as any ).DesktopIconManager?.desktop ) {
-                ( window as any ).DesktopIconManager.moveTileToPage( this.currentTile, targetPage );
+            if ( this.nunaKahelo && ( window as any ).DesktopIconManager?.desktop ) {
+                ( window as any ).DesktopIconManager.moveTileToPage( this.nunaKahelo, targetPage );
             }
             return;
         }
@@ -183,9 +183,9 @@ export const ContextMenuManager = {
             case "refresh": location.reload(); break;
             case "toggle-widget":
             case "toggle-live-tile":
-                if ( this.currentTile ) {
-                    this.currentTile.classList.toggle( "widget-mode", action === "toggle-widget" );
-                    this.currentTile.classList.toggle( "live-tile-mode", action === "toggle-live-tile" );
+                if ( this.nunaKahelo ) {
+                    this.nunaKahelo.classList.toggle( "widget-mode", action === "toggle-widget" );
+                    this.nunaKahelo.classList.toggle( "live-tile-mode", action === "toggle-live-tile" );
                 }
                 break;
             case "edit-mode": ( window as any ).DesktopIconManager?.desktop?.toggleEdit(); break;
@@ -196,4 +196,4 @@ export const ContextMenuManager = {
 };
 
 // Attach to window for global access
-( window as any ).ContextMenuManager = ContextMenuManager;
+( window as any ).KuntekstaMenuoAdministranto = KuntekstaMenuoAdministranto;

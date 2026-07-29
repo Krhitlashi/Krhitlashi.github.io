@@ -1,6 +1,7 @@
 // ≺⧼ HTML Text Cache Module ⧽≻
 
-import { WhiteboardObject } from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
+import { TabulObjekto } from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
+
 
 // ⟪ Cache Management 📦 ⟫
 
@@ -8,11 +9,11 @@ import { WhiteboardObject } from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
  * Invalidates text caches for the provided text objects.
  * @param objects - Array of whiteboard objects to process
  */
-export function invalidateTextCachesForObjects( objects: WhiteboardObject[] ): void {
-    objects.filter( obj => obj.type === "text" && obj.useHtmlText ).forEach( clearTextObjectCache );
+export function malvalidigiTekstajnKesxojnPorObjektoj( objects: TabulObjekto[] ): void {
+    objects.filter( obj => obj.type === "text" && obj.useHtmlText ).forEach( malplenigiTekstanObjektonKeson );
 }
 
-export function clearTextObjectCache( obj: WhiteboardObject ): void {
+export function malplenigiTekstanObjektonKeson( obj: TabulObjekto ): void {
     if ( obj.type === "text" ) {
         obj.textDirty = true;
         obj.cachedCanvas = null;
@@ -32,7 +33,7 @@ export interface HtmlTextRenderOptions {
     fontFamily?: string;
 }
 
-export function renderHtmlTextToCanvas( obj: WhiteboardObject ): HTMLCanvasElement | null {
+export function renderiHTMLTekstonAlCanvas( obj: TabulObjekto ): HTMLCanvasElement | null {
     if ( obj.type !== "text" || !obj.text ) return null;
 
     const uniqueClass = "cepufal-html-text-" + Date.now();
@@ -58,7 +59,7 @@ export function renderHtmlTextToCanvas( obj: WhiteboardObject ): HTMLCanvasEleme
     return offscreen;
 }
 
-function createTempTextContainer( obj: WhiteboardObject, uniqueClass: string ): HTMLDivElement {
+function createTempTextContainer( obj: TabulObjekto, uniqueClass: string ): HTMLDivElement {
     const tempContainer = document.createElement( "div" );
     tempContainer.className = "cepufal-html-text-measure " + uniqueClass;
     tempContainer.style.font = `${obj.size}px "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ", sans-serif`;
@@ -93,7 +94,7 @@ function renderTextNodesToCanvas(
     container: HTMLDivElement,
     ctx: CanvasRenderingContext2D,
     dimensions: { width: number; height: number },
-    obj: WhiteboardObject
+    obj: TabulObjekto
 ): void {
     ctx.clearRect( 0, 0, dimensions.width, dimensions.height );
     ctx.font = `${obj.size}px "ı],ᴜ }ʃᴜ", sans-serif`;
@@ -146,10 +147,10 @@ function renderTextNodeToCanvas(
 
 export function drawCachedText(
     ctx: CanvasRenderingContext2D,
-    obj: WhiteboardObject
+    obj: TabulObjekto
 ): void {
     if ( !obj.cachedCanvas || !obj.cachedWidth || !obj.cachedHeight ) {
-        renderHtmlTextToCanvas( obj );
+        renderiHTMLTekstonAlCanvas( obj );
     }
 
     if ( obj.cachedCanvas && obj.cachedWidth && obj.cachedHeight && !obj.textDirty ) {

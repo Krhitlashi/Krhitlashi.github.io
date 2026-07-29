@@ -1,15 +1,15 @@
 // ≺⧼ System ⧽≻ - Main OS Coordination
 
-const System = {
+const Sistemo = {
     // ⟪ Utilities ⟫
 
-    toOctalString( str: any ) {
+    alOktalaCxeno( str: any ) {
         if ( !str || typeof window.vab6caja !== "function" ) return str;
         if ( str.includes( ":" ) ) return str.split( ":" ).map( (p: any) => window.vab6caja( parseInt( p, 0o10 ) ) || p ).join( "." );
         return window.vab6caja( parseInt( str, 0o10 ) ) || str;
     },
 
-    updateClock() {
+    gxisdatigiHorlogxon() {
         const el = document.getElementById( "clock" );
         if ( el && typeof window.castifeh2 === "function" && typeof window.vab6caja === "function" ) {
             const t = window.castifeh2( new Date() );
@@ -21,18 +21,18 @@ const System = {
 
     init() {
         // 1. ⟨ Essential Managers ⟩
-        if ( (window as any).WindowManager ) (window as any).WindowManager.init();
+        if ( (window as any).WindowManager ) (window as any).WindowManager.inicii();
         if ( (window as any).ContextMenuManager ) (window as any).ContextMenuManager.init();
         if ( (window as any).PanelManager ) (window as any).PanelManager.initClickOutsideHandler();
         if ( (window as any).NotificationManager ) (window as any).NotificationManager.init();
         if ( (window as any).ClockManager ) (window as any).ClockManager.init();
 
         // 2. ⟨ Service Loops ⟩
-        setInterval( () => this.updateClock(), 0o2000 );
-        this.updateClock();
+        setInterval( () => this.gxisdatigiHorlogxon(), 0o2000 );
+        this.gxisdatigiHorlogxon();
 
         // 3. ⟨ Events ⟩
-        this.setupEvents();
+        this.agordiEventojn();
 
         // 4. ⟨ Final Rendering ⟩
         if ( (window as any).DesktopIconManager ) {
@@ -40,7 +40,7 @@ const System = {
         }
     },
 
-    setupEvents() {
+    agordiEventojn() {
         const hb = document.getElementById( "home-bar" );
         if ( hb ) hb.onclick = () => {
             if ( document.body.classList.contains( "start-menu-open" ) ) (window as any).PanelManager.closeAllPanels();
@@ -69,4 +69,4 @@ function updateSlider( type: any, val: any ) {
 // Attach to window for global access
 (window as any).toggleQsButton = toggleQsButton;
 (window as any).updateSlider = updateSlider;
-(window as any).System = System;
+(window as any).System = Sistemo;

@@ -1,38 +1,39 @@
 // ≺⧼ Tool Logic & Drawing ⧽≻
 
 import {
-    canvas, state, panState, pageState, objectState, pathState, textState, eraserState, connectionState, clipboardState, layerState,
-    CORNER_RADIUS,
-    TEXT_SIZE_MULTIPLIER, LINE_DASH_PATTERN, SELECTION_LINE_WIDTH,
-    SMOOTHING_FACTOR,
-    WhiteboardObject, Point} from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
+    canvas, stato, panstato, paĝostato, objektstato, vojstato, tekststato, viŝilostato, konektstato, poŝstato, tavolstato,
+    ANGULA_RADIUSO,
+    TEKSTGRANDA_MULTIPLIKANTO, LINIA_PUNKTO_PATRONO, SELEKTA_LINIO_LARGXO,
+    GLATIGA_FACTORO,
+    TabulObjekto, Punkto} from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
 
 import {
-    getClientCoords, generateId, resetCursor, setCursor, 
-    resetSelectionState,
-    positionTextEditInput, getTextEditPosition, finishTextEditCommon,
-    getObjectBounds, getCenter, getCenterX, getCenterY,
-    TouchOrMouseEvent, findObjectAtPoint,
-    drawRoundedRectPath, createShapeObject,
-    createPathObject, drawPathPreview,
-    drawPreviewShape, normalizeRect, isObjectInRect,
-    getContrastingColors, getObjectInitialState, 
-    findResizeHandle, findRotateHandle, getResizeCursor, resizeObject,
-    moveObjectByDelta, eraseObjectsAlongPath} from "./ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
+    akiriKlientajnKoordinatojn, generiId, restarigiKursoron, agordiKursoron, 
+    restarigiSelektanStaton,
+    poziciigiTekstanEnigon, akiriTekstanPozicion, finiTekstanRedaktadon,
+    akiriObjektonLimojn, akiriCentron, akiriCentronX, akiriCentronY,
+    TuŝaMusaEvento, troviObjektonCePunkto,
+    desegniRondigitanAngulanVojon, kreiFormanObjekton,
+    kreiVojojnObjekton, desegniVojojnAntaprezenton,
+    desegniAntaprezentanFormon, normaligiRectangulon, cxuObjektoEnRectangulo,
+    akiriKontrastajnKolorojn, akiriObjektonKomencanStaton, 
+    troviGrandSxangxanTenilon, troviRotacianTenilon, akiriGrandSxangxanKursoron, grandSxangxiObjekton,
+    moviObjektonPerDelta, forvisxiObjektojnLaute
+} from "./ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
 
 import {
-    redrawCanvas, applyObjectTransform, saveState,
-    getCurrentCtx, beginPanTranslation, endPanTranslation,
-    getActivePage
+    redesegniTabulon, aplikiObjektonTransformon, konserviStaton,
+    akiriAktualanCtx, komenciPanTradukon, finiPanTradukon,
+    akiriAktivanPagon
 } from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
 
-import { computeShapeRadii } from "./ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
+import { kalkuliFormajnRadiusojn } from "./ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
 
 export function updateTransformControls(): void {
     const controls = document.getElementById( "transformControls" );
     if ( controls ) {
-        const hasTextObject = objectState.selected.some( obj => obj.type === "text" );
-        controls.classList.toggle( "visible", objectState.selected.length > 0 );
+        const hasTextObject = objektstato.selected.some( obj => obj.type === "text" );
+        controls.classList.toggle( "visible", objektstato.selected.length > 0 );
         controls.classList.toggle( "has-text", hasTextObject );
     }
 }
@@ -40,12 +41,12 @@ export function updateTransformControls(): void {
 // ⟪ Text Editing 📝 ⟫
 
 export function removeEmptyTextObject( index: number ): void {
-    if ( index >= 0 && objectState.objects[ index ] ) {
-        objectState.objects.splice( index, 1 );
-        objectState.selected = [];
+    if ( index >= 0 && objektstato.objects[ index ] ) {
+        objektstato.objects.splice( index, 1 );
+        objektstato.selected = [];
         updateTransformControls();
-        redrawCanvas();
-        saveState();
+        redesegniTabulon();
+        konserviStaton();
     }
 }
 
@@ -54,7 +55,7 @@ export function initTextEditInput(): void {
     input.className = "text-edit-input";
     input.contentEditable = "true";
     input.setAttribute( "spellcheck", "false" );
-    textState.input = input;
+    tekststato.input = input;
 
     input.addEventListener( "blur", finishTextEditing );
     input.addEventListener( "keydown", ( e ) => {
@@ -71,14 +72,14 @@ export function initTextEditInput(): void {
         const uniqueClass = input.dataset.vacepuClass;
         if ( uniqueClass ) window.vacepu( uniqueClass );
 
-        if ( textState.editingIndex >= 0 && objectState.objects[ textState.editingIndex ] ) {
-            const obj = objectState.objects[ textState.editingIndex ];
+        if ( tekststato.editingIndex >= 0 && objektstato.objects[ tekststato.editingIndex ] ) {
+            const obj = objektstato.objects[ tekststato.editingIndex ];
             obj.text = input.innerText;
             obj.textDirty = true;
             obj.cachedCanvas = null;
             obj.cachedWidth = null;
             obj.cachedHeight = null;
-            redrawCanvas();
+            redesegniTabulon();
         }
     } );
 
@@ -86,78 +87,78 @@ export function initTextEditInput(): void {
 }
 
 export function finishTextEditing(): void {
-    if ( !textState.isEditing || !textState.input ) return;
+    if ( !tekststato.isEditing || !tekststato.input ) return;
 
-    const text = textState.input.innerText;
+    const text = tekststato.input.innerText;
 
-    if ( textState.editingIndex >= 0 && objectState.objects[ textState.editingIndex ] ) {
-        const obj = objectState.objects[ textState.editingIndex ];
+    if ( tekststato.editingIndex >= 0 && objektstato.objects[ tekststato.editingIndex ] ) {
+        const obj = objektstato.objects[ tekststato.editingIndex ];
 
         if ( text.trim() === "" ) {
-            removeEmptyTextObject( textState.editingIndex );
-            finishTextEditCommon();
+            removeEmptyTextObject( tekststato.editingIndex );
+            finiTekstanRedaktadon();
             return;
         }
 
         obj.text = text;
-        obj.color = state.color;
+        obj.color = stato.color;
         obj.textDirty = true;
         obj.cachedCanvas = null;
         obj.cachedWidth = null;
         obj.cachedHeight = null;
-        redrawCanvas();
+        redesegniTabulon();
     } else if ( text.trim() !== "" ) {
-        const { textX, textY } = getTextEditPosition();
-        objectState.objects.push( {
+        const { textX, textY } = akiriTekstanPozicion();
+        objektstato.objects.push( {
             type: "text",
             x: textX, y: textY,
             text: text,
-            color: state.color,
-            size: state.size * TEXT_SIZE_MULTIPLIER,
+            color: stato.color,
+            size: stato.size * TEKSTGRANDA_MULTIPLIKANTO,
             rotation: 0,
-            layerId: layerState.activeId,
-            useHtmlText: textState.useHtml,
+            layerId: tavolstato.activeId,
+            useHtmlText: tekststato.useHtml,
             textDirty: true,
             cachedWidth: null,
             cachedHeight: null
         } );
-        redrawCanvas();
+        redesegniTabulon();
     }
 
-    finishTextEditCommon();
-    saveState();
+    finiTekstanRedaktadon();
+    konserviStaton();
 }
 
 export function cancelTextEditing(): void {
-    if ( !textState.isEditing || !textState.input ) return;
+    if ( !tekststato.isEditing || !tekststato.input ) return;
 
-    if ( textState.editingIndex >= 0 && objectState.objects[ textState.editingIndex ]?.text?.trim() === "" ) {
-        removeEmptyTextObject( textState.editingIndex );
+    if ( tekststato.editingIndex >= 0 && objektstato.objects[ tekststato.editingIndex ]?.text?.trim() === "" ) {
+        removeEmptyTextObject( tekststato.editingIndex );
     } else {
-        finishTextEditCommon();
+        finiTekstanRedaktadon();
     }
 }
 
-export function editTextObject( obj: WhiteboardObject ): void {
-    if ( !textState.input ) return;
-    textState.isEditing = true;
-    textState.editingIndex = objectState.objects.indexOf( obj );
-    positionTextEditInput( obj.x!, obj.y!, obj.size!, obj.color! );
+export function editTextObject( obj: TabulObjekto ): void {
+    if ( !tekststato.input ) return;
+    tekststato.isEditing = true;
+    tekststato.editingIndex = objektstato.objects.indexOf( obj );
+    poziciigiTekstanEnigon( obj.x!, obj.y!, obj.size!, obj.color! );
 
     // Assign a unique class so the input event handler can target it with vacepu
     const uniqueClass = "text-edit-vacepu-" + Date.now();
-    textState.input.dataset.vacepuClass = uniqueClass;
-    textState.input.className = "text-edit-input visible " + uniqueClass;
+    tekststato.input.dataset.vacepuClass = uniqueClass;
+    tekststato.input.className = "text-edit-input visible " + uniqueClass;
 
-    textState.input.innerText = obj.text || "";
+    tekststato.input.innerText = obj.text || "";
     window.vacepu( uniqueClass );
 
-    textState.input.focus();
+    tekststato.input.focus();
     // Select all content in the contenteditable div
     const sel = window.getSelection();
     if ( sel ) {
         const range = document.createRange();
-        range.selectNodeContents( textState.input );
+        range.selectNodeContents( tekststato.input );
         sel.removeAllRanges();
         sel.addRange( range );
     }
@@ -165,13 +166,13 @@ export function editTextObject( obj: WhiteboardObject ): void {
 
 // ⟪ Canvas Input Helpers 🖱️ ⟫
 
-export function getCanvasCoords( e: TouchOrMouseEvent ): Point {
+export function akiriTabulajnKoordinatojn( e: TuŝaMusaEvento ): Punkto {
     if ( !canvas ) return { x: 0, y: 0 };
     const rect = canvas.getBoundingClientRect();
-    const zoom = state.zoomNum / state.zoomDen;
+    const zoom = stato.zoomNum / stato.zoomDen;
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
-    const coords = getClientCoords( e );
+    const coords = akiriKlientajnKoordinatojn( e );
 
     // Canvas-pixel coordinates (relative to the viewport/canvas)
     const cpX = ( coords.x - rect.left ) * scaleX;
@@ -179,9 +180,9 @@ export function getCanvasCoords( e: TouchOrMouseEvent ): Point {
     
     // For infinite pages, convert from canvas-pixel to world coordinates
     // (since redrawCanvas translates context by +pan when drawing objects)
-    const activePage = getActivePage();
+    const activePage = akiriAktivanPagon();
     if ( activePage?.infinite ) {
-        return { x: cpX - panState.offsetX, y: cpY - panState.offsetY };
+        return { x: cpX - panstato.offsetX, y: cpY - panstato.offsetY };
     }
     
     return { x: cpX, y: cpY };
@@ -189,136 +190,136 @@ export function getCanvasCoords( e: TouchOrMouseEvent ): Point {
 
 // ⟪ Drawing Start ✏️ ⟫
 
-export function startDrawing( e: TouchOrMouseEvent ): void {
+export function startDrawing( e: TuŝaMusaEvento ): void {
     e.preventDefault();
-    state.isDrawing = true;
+    stato.isDrawing = true;
 
-    const coords = getCanvasCoords( e );
-    state.startX = coords.x;
-    state.startY = coords.y;
-    state.lastX = coords.x;
-    state.lastY = coords.y;
+    const coords = akiriTabulajnKoordinatojn( e );
+    stato.startX = coords.x;
+    stato.startY = coords.y;
+    stato.lastX = coords.x;
+    stato.lastY = coords.y;
 
-    switch ( state.tool ) {
+    switch ( stato.tool ) {
         case "select":
             handleSelectToolClick( coords.x, coords.y, e );
             return;
         case "pen":
         case "eraser":
-            pathState.current = [ { x: coords.x, y: coords.y } ];
+            vojstato.current = [ { x: coords.x, y: coords.y } ];
             break;
         case "smooth":
-            pathState.smooth = [ { x: coords.x, y: coords.y } ];
-            pathState.smoothX = coords.x;
-            pathState.smoothY = coords.y;
+            vojstato.smooth = [ { x: coords.x, y: coords.y } ];
+            vojstato.smoothX = coords.x;
+            vojstato.smoothY = coords.y;
             break;
         case "shape":
-            if ( state.shape ) pathState.preview = createShapeObject( state.shape, state.startX, state.startY, coords.x, coords.y );
+            if ( stato.shape ) vojstato.preview = kreiFormanObjekton( stato.shape, stato.startX, stato.startY, coords.x, coords.y );
             break;
         case "text":
-            createTextBox( state.startX, state.startY );
-            state.isDrawing = false;
+            createTextBox( stato.startX, stato.startY );
+            stato.isDrawing = false;
             break;
         case "connect":
-            const clickedObject = findObjectAtPoint( coords.x, coords.y );
+            const clickedObject = troviObjektonCePunkto( coords.x, coords.y );
             if ( clickedObject ) {
-                if ( !clickedObject.id ) clickedObject.id = generateId();
-                connectionState.startObj = clickedObject;
+                if ( !clickedObject.id ) clickedObject.id = generiId();
+                konektstato.startObj = clickedObject;
             } else {
-                state.isDrawing = false;
+                stato.isDrawing = false;
             }
             break;
     }
 }
 
 function createTextBox( x: number, y: number ): void {
-    const textObj: WhiteboardObject = {
+    const textObj: TabulObjekto = {
         type: "text", x: x, y: y,
-        text: "", color: state.color,
-        size: state.size * TEXT_SIZE_MULTIPLIER,
-        rotation: 0, layerId: layerState.activeId,
-        useHtmlText: textState.useHtml,
+        text: "", color: stato.color,
+        size: stato.size * TEKSTGRANDA_MULTIPLIKANTO,
+        rotation: 0, layerId: tavolstato.activeId,
+        useHtmlText: tekststato.useHtml,
         textDirty: true, cachedWidth: null, cachedHeight: null
     };
-    objectState.objects.push( textObj );
-    objectState.selected = [ textObj ];
+    objektstato.objects.push( textObj );
+    objektstato.selected = [ textObj ];
     updateTransformControls();
-    redrawCanvas();
-    saveState();
+    redesegniTabulon();
+    konserviStaton();
 
     setTimeout( () => editTextObject( textObj ), 0o10 );
 }
 
-function handleSelectToolClick( x: number, y: number, e: TouchOrMouseEvent ): void {
+function handleSelectToolClick( x: number, y: number, e: TuŝaMusaEvento ): void {
     const coords = { x, y };
 
-    if ( objectState.selected.length > 0 && startRotation( coords.x, coords.y ) ) return;
+    if ( objektstato.selected.length > 0 && startRotation( coords.x, coords.y ) ) return;
 
-    const clickedObject = findObjectAtPoint( coords.x, coords.y );
+    const clickedObject = troviObjektonCePunkto( coords.x, coords.y );
 
     if ( clickedObject ) {
-        const wasAlreadySelected = objectState.selected.includes( clickedObject );
+        const wasAlreadySelected = objektstato.selected.includes( clickedObject );
 
         if ( !e.shiftKey && !wasAlreadySelected ) {
-            objectState.selected = [ clickedObject ];
+            objektstato.selected = [ clickedObject ];
             updateTransformControls();
-            redrawCanvas();
+            redesegniTabulon();
             if ( startRotation( coords.x, coords.y ) ) return;
-            objectState.isDragging = true;
-            objectState.dragStartX = coords.x;
-            objectState.dragStartY = coords.y;
-            objectState.initialObjectStates = objectState.selected.map( getObjectInitialState );
+            objektstato.isDragging = true;
+            objektstato.dragStartX = coords.x;
+            objektstato.dragStartY = coords.y;
+            objektstato.initialObjectStates = objektstato.selected.map( akiriObjektonKomencanStaton );
             return;
         }
         if ( e.shiftKey ) {
             if ( wasAlreadySelected ) {
-                objectState.selected = objectState.selected.filter( o => o !== clickedObject );
+                objektstato.selected = objektstato.selected.filter( o => o !== clickedObject );
                 updateTransformControls();
-                redrawCanvas();
+                redesegniTabulon();
                 return;
             }
-            objectState.selected.push( clickedObject );
+            objektstato.selected.push( clickedObject );
         }
 
-        if ( objectState.selected.length > 0 && startRotation( coords.x, coords.y ) ) return;
+        if ( objektstato.selected.length > 0 && startRotation( coords.x, coords.y ) ) return;
 
-        objectState.isDragging = true;
-        objectState.dragStartX = coords.x;
-        objectState.dragStartY = coords.y;
-        objectState.initialObjectStates = objectState.selected.map( getObjectInitialState );
+        objektstato.isDragging = true;
+        objektstato.dragStartX = coords.x;
+        objektstato.dragStartY = coords.y;
+        objektstato.initialObjectStates = objektstato.selected.map( akiriObjektonKomencanStaton );
     } else {
-        if ( !e.shiftKey ) objectState.selected = [];
-        objectState.isSelecting = true;
-        objectState.selectionRect = { x: state.startX, y: state.startY, width: 0, height: 0 };
+        if ( !e.shiftKey ) objektstato.selected = [];
+        objektstato.isSelecting = true;
+        objektstato.selectionRect = { x: stato.startX, y: stato.startY, width: 0, height: 0 };
     }
 
     updateTransformControls();
-    redrawCanvas();
+    redesegniTabulon();
 }
 
 function startRotation( x: number, y: number ): boolean {
-    if ( findRotateHandle( x, y ) ) {
-        objectState.isRotating = true;
-        const obj = objectState.selected[ 0 ];
-        const center = getCenter( obj );
+    if ( troviRotacianTenilon( x, y ) ) {
+        objektstato.isRotating = true;
+        const obj = objektstato.selected[ 0 ];
+        const center = akiriCentron( obj );
         const dx = x - center.x, dy = y - center.y;
-        objectState.initialRotationAngle = Math.atan2( dy, dx );
-        objectState.initialObjectRotations = objectState.selected.map( o => o.rotation || 0 );
-        redrawCanvas();
+        objektstato.initialRotationAngle = Math.atan2( dy, dx );
+        objektstato.initialObjectRotations = objektstato.selected.map( o => o.rotation || 0 );
+        redesegniTabulon();
         return true;
     }
 
-    const clickedHandle = findResizeHandle( x, y );
+    const clickedHandle = troviGrandSxangxanTenilon( x, y );
     if ( clickedHandle ) {
-        objectState.isResizing = true;
-        objectState.resizeHandle = clickedHandle;
-        const obj = objectState.selected[ 0 ];
-        objectState.initialBounds = getObjectBounds( obj );
-        objectState.initialCenterX = getCenterX( obj );
-        objectState.initialCenterY = getCenterY( obj );
-        objectState.initialRotation = obj.rotation || 0;
-        objectState.initialObjectStates = objectState.selected.map( getObjectInitialState );
-        redrawCanvas();
+        objektstato.isResizing = true;
+        objektstato.resizeHandle = clickedHandle;
+        const obj = objektstato.selected[ 0 ];
+        objektstato.initialBounds = akiriObjektonLimojn( obj );
+        objektstato.initialCenterX = akiriCentronX( obj );
+        objektstato.initialCenterY = akiriCentronY( obj );
+        objektstato.initialRotation = obj.rotation || 0;
+        objektstato.initialObjectStates = objektstato.selected.map( akiriObjektonKomencanStaton );
+        redesegniTabulon();
         return true;
     }
 
@@ -326,216 +327,216 @@ function startRotation( x: number, y: number ): boolean {
 }
 
 export function rotateSelectedObjects( x: number, y: number ): void {
-    const obj = objectState.selected[ 0 ];
-    const center = getCenter( obj );
+    const obj = objektstato.selected[ 0 ];
+    const center = akiriCentron( obj );
     const dx = x - center.x, dy = y - center.y;
     const currentAngle = Math.atan2( dy, dx );
-    const angleDelta = currentAngle - objectState.initialRotationAngle;
-    objectState.selected.forEach( ( o, i ) => {
-        o.rotation = ( objectState.initialObjectRotations[ i ] || 0 ) + angleDelta;
+    const angleDelta = currentAngle - objektstato.initialRotationAngle;
+    objektstato.selected.forEach( ( o, i ) => {
+        o.rotation = ( objektstato.initialObjectRotations[ i ] || 0 ) + angleDelta;
     } );
-    redrawCanvas();
+    redesegniTabulon();
 }
 
 // ⟪ Drawing Move 🖌️ ⟫
 
-export function draw( e: TouchOrMouseEvent ): void {
+export function draw( e: TuŝaMusaEvento ): void {
     e.preventDefault();
-    const coords = getCanvasCoords( e );
+    const coords = akiriTabulajnKoordinatojn( e );
 
     document.getElementById( "cursorPos" )!.textContent =
         `${Math.round( coords.x / 0o10 ) * 0o10}, ${Math.round( coords.y / 0o10 ) * 0o10}`;
 
-    if ( state.tool === "select" && !state.isDrawing ) {
-        const hoveredObject = findObjectAtPoint( coords.x, coords.y );
-        const hoveredHandle = findResizeHandle( coords.x, coords.y );
-        const hoveredRotate = findRotateHandle( coords.x, coords.y );
-        redrawCanvas();
-        if ( hoveredObject && !objectState.selected.includes( hoveredObject ) ) {
-            beginPanTranslation();
+    if ( stato.tool === "select" && !stato.isDrawing ) {
+        const hoveredObject = troviObjektonCePunkto( coords.x, coords.y );
+        const hoveredHandle = troviGrandSxangxanTenilon( coords.x, coords.y );
+        const hoveredRotate = troviRotacianTenilon( coords.x, coords.y );
+        redesegniTabulon();
+        if ( hoveredObject && !objektstato.selected.includes( hoveredObject ) ) {
+            komenciPanTradukon();
             drawHoverEffect( hoveredObject );
-            endPanTranslation();
+            finiPanTradukon();
         }
-        if ( hoveredHandle ) setCursor( getResizeCursor( hoveredHandle ) );
-        else if ( hoveredRotate ) setCursor( "pointer" );
-        else if ( hoveredObject ) setCursor( "move" );
-        else setCursor( "default" );
+        if ( hoveredHandle ) agordiKursoron( akiriGrandSxangxanKursoron( hoveredHandle ) );
+        else if ( hoveredRotate ) agordiKursoron( "pointer" );
+        else if ( hoveredObject ) agordiKursoron( "move" );
+        else agordiKursoron( "default" );
         return;
     }
 
-    if ( !state.isDrawing ) return;
+    if ( !stato.isDrawing ) return;
 
-    if ( state.tool === "select" ) {
-        if ( objectState.isResizing && objectState.resizeHandle && objectState.selected.length > 0 ) {
-            objectState.selected.forEach( obj => resizeObject( obj, coords.x, coords.y, objectState.resizeHandle! ) );
-            redrawCanvas();
-        } else if ( objectState.isRotating && objectState.selected.length > 0 ) {
+    if ( stato.tool === "select" ) {
+        if ( objektstato.isResizing && objektstato.resizeHandle && objektstato.selected.length > 0 ) {
+            objektstato.selected.forEach( obj => grandSxangxiObjekton( obj, coords.x, coords.y, objektstato.resizeHandle! ) );
+            redesegniTabulon();
+        } else if ( objektstato.isRotating && objektstato.selected.length > 0 ) {
             rotateSelectedObjects( coords.x, coords.y );
-        } else if ( objectState.isDragging && objectState.selected.length > 0 ) {
-            const dx = coords.x - objectState.dragStartX;
-            const dy = coords.y - objectState.dragStartY;
-            objectState.selected.forEach( ( obj, i ) => moveObjectByDelta( obj, dx, dy, objectState.initialObjectStates[ i ] || {} ) );
-            redrawCanvas();
-        } else if ( objectState.isSelecting ) {
-            objectState.selectionRect!.width = coords.x - state.startX;
-            objectState.selectionRect!.height = coords.y - state.startY;
-            redrawCanvas();
-            beginPanTranslation();
+        } else if ( objektstato.isDragging && objektstato.selected.length > 0 ) {
+            const dx = coords.x - objektstato.dragStartX;
+            const dy = coords.y - objektstato.dragStartY;
+            objektstato.selected.forEach( ( obj, i ) => moviObjektonPerDelta( obj, dx, dy, objektstato.initialObjectStates[ i ] || {} ) );
+            redesegniTabulon();
+        } else if ( objektstato.isSelecting ) {
+            objektstato.selectionRect!.width = coords.x - stato.startX;
+            objektstato.selectionRect!.height = coords.y - stato.startY;
+            redesegniTabulon();
+            komenciPanTradukon();
             drawSelectionRect();
-            endPanTranslation();
+            finiPanTradukon();
         }
         return;
     }
 
-    if ( state.tool === "pen" ) {
-        pathState.current.push( { x: coords.x, y: coords.y } );
-        redrawCanvas();
-        beginPanTranslation();
-        drawPathPreview( pathState.current, state.color, state.size, getCurrentCtx() );
-        endPanTranslation();
-    } else if ( state.tool === "smooth" ) {
-        pathState.smoothX += ( coords.x - pathState.smoothX ) * SMOOTHING_FACTOR;
-        pathState.smoothY += ( coords.y - pathState.smoothY ) * SMOOTHING_FACTOR;
-        pathState.smooth.push( { x: pathState.smoothX, y: pathState.smoothY } );
-        redrawCanvas();
-        beginPanTranslation();
-        drawPathPreview( pathState.smooth, state.color, state.size, getCurrentCtx() );
-        endPanTranslation();
-    } else if ( state.tool === "eraser" ) {
-        pathState.current.push( { x: coords.x, y: coords.y } );
-        redrawCanvas();
-        eraseObjectsAlongPath( pathState.current, state.size * TEXT_SIZE_MULTIPLIER, eraserState.eraseObjects );
-        redrawCanvas();
-    } else if ( state.tool === "connect" && connectionState.startObj ) {
-        redrawCanvas();
-        beginPanTranslation();
-        const connectCtx = getCurrentCtx();
+    if ( stato.tool === "pen" ) {
+        vojstato.current.push( { x: coords.x, y: coords.y } );
+        redesegniTabulon();
+        komenciPanTradukon();
+        desegniVojojnAntaprezenton( vojstato.current, stato.color, stato.size, akiriAktualanCtx() );
+        finiPanTradukon();
+    } else if ( stato.tool === "smooth" ) {
+        vojstato.smoothX += ( coords.x - vojstato.smoothX ) * GLATIGA_FACTORO;
+        vojstato.smoothY += ( coords.y - vojstato.smoothY ) * GLATIGA_FACTORO;
+        vojstato.smooth.push( { x: vojstato.smoothX, y: vojstato.smoothY } );
+        redesegniTabulon();
+        komenciPanTradukon();
+        desegniVojojnAntaprezenton( vojstato.smooth, stato.color, stato.size, akiriAktualanCtx() );
+        finiPanTradukon();
+    } else if ( stato.tool === "eraser" ) {
+        vojstato.current.push( { x: coords.x, y: coords.y } );
+        redesegniTabulon();
+        forvisxiObjektojnLaute( vojstato.current, stato.size * TEKSTGRANDA_MULTIPLIKANTO, viŝilostato.eraseObjects );
+        redesegniTabulon();
+    } else if ( stato.tool === "connect" && konektstato.startObj ) {
+        redesegniTabulon();
+        komenciPanTradukon();
+        const connectCtx = akiriAktualanCtx();
         if ( connectCtx ) {
             connectCtx.save();
-            connectCtx.strokeStyle = state.color;
-            connectCtx.lineWidth = state.size;
-            connectCtx.setLineDash( LINE_DASH_PATTERN );
+            connectCtx.strokeStyle = stato.color;
+            connectCtx.lineWidth = stato.size;
+            connectCtx.setLineDash( LINIA_PUNKTO_PATRONO );
             connectCtx.beginPath();
-            const startC = getCenter( connectionState.startObj );
+            const startC = akiriCentron( konektstato.startObj );
             connectCtx.moveTo( startC.x, startC.y );
             connectCtx.lineTo( coords.x, coords.y );
             connectCtx.stroke();
             connectCtx.restore();
         }
-        endPanTranslation();
+        finiPanTradukon();
     }
 
-    if ( state.tool === "shape" && state.shape ) {
-        pathState.preview = createShapeObject( state.shape, state.startX, state.startY, coords.x, coords.y );
-        redrawCanvas();
-        beginPanTranslation();
-        if ( pathState.preview ) drawPreviewShape( pathState.preview, getCurrentCtx() );
-        endPanTranslation();
+    if ( stato.tool === "shape" && stato.shape ) {
+        vojstato.preview = kreiFormanObjekton( stato.shape, stato.startX, stato.startY, coords.x, coords.y );
+        redesegniTabulon();
+        komenciPanTradukon();
+        if ( vojstato.preview ) desegniAntaprezentanFormon( vojstato.preview, akiriAktualanCtx() );
+        finiPanTradukon();
     }
 
-    state.lastX = coords.x;
-    state.lastY = coords.y;
+    stato.lastX = coords.x;
+    stato.lastY = coords.y;
 }
 
 // ⟪ Drawing Stop ✅ ⟫
 
-export function stopDrawing( e: TouchOrMouseEvent ): void {
-    if ( !state.isDrawing ) return;
+export function stopDrawing( e: TuŝaMusaEvento ): void {
+    if ( !stato.isDrawing ) return;
 
-    const coords = getCanvasCoords( e );
+    const coords = akiriTabulajnKoordinatojn( e );
 
-    if ( state.tool === "select" ) {
-        if ( objectState.isSelecting && objectState.selectionRect ) {
-            const rect = normalizeRect( objectState.selectionRect );
-            objectState.selected = objectState.objects.filter( obj => isObjectInRect( obj, rect ) );
+    if ( stato.tool === "select" ) {
+        if ( objektstato.isSelecting && objektstato.selectionRect ) {
+            const rect = normaligiRectangulon( objektstato.selectionRect );
+            objektstato.selected = objektstato.objects.filter( obj => cxuObjektoEnRectangulo( obj, rect ) );
             updateTransformControls();
-            redrawCanvas();
+            redesegniTabulon();
         }
-        resetSelectionState();
-        resetCursor();
-        state.isDrawing = false;
-        if ( objectState.selected.length > 0 ) saveState();
+        restarigiSelektanStaton();
+        restarigiKursoron();
+        stato.isDrawing = false;
+        if ( objektstato.selected.length > 0 ) konserviStaton();
         return;
     }
 
-    if ( state.tool === "shape" && state.shape && pathState.preview ) {
+    if ( stato.tool === "shape" && stato.shape && vojstato.preview ) {
         let shouldAdd = false;
-        if ( pathState.preview.type === "circle" ) {
-            shouldAdd = pathState.preview.radiusX! > 0o2 || pathState.preview.radiusY! > 0o2;
-        } else if ( pathState.preview.type === "line" ) {
-            shouldAdd = Math.abs( pathState.preview.x2! - pathState.preview.x1! ) > 0o4 ||
-                Math.abs( pathState.preview.y2! - pathState.preview.y1! ) > 0o4;
+        if ( vojstato.preview.type === "circle" ) {
+            shouldAdd = vojstato.preview.radiusX! > 0o2 || vojstato.preview.radiusY! > 0o2;
+        } else if ( vojstato.preview.type === "line" ) {
+            shouldAdd = Math.abs( vojstato.preview.x2! - vojstato.preview.x1! ) > 0o4 ||
+                Math.abs( vojstato.preview.y2! - vojstato.preview.y1! ) > 0o4;
         } else {
-            shouldAdd = pathState.preview.width! > 0o4 || pathState.preview.height! > 0o4;
+            shouldAdd = vojstato.preview.width! > 0o4 || vojstato.preview.height! > 0o4;
         }
 
         if ( shouldAdd ) {
-            objectState.objects.push( pathState.preview );
+            objektstato.objects.push( vojstato.preview );
         }
-        pathState.preview = null;
+        vojstato.preview = null;
     }
 
-    if ( state.tool === "pen" && pathState.current.length > 1 ) {
-        objectState.objects.push( createPathObject( pathState.current, state.color, state.size ) );
-        pathState.current = [];
+    if ( stato.tool === "pen" && vojstato.current.length > 1 ) {
+        objektstato.objects.push( kreiVojojnObjekton( vojstato.current, stato.color, stato.size ) );
+        vojstato.current = [];
     }
 
-    if ( state.tool === "smooth" && pathState.smooth.length > 1 ) {
-        const smoothObj = createPathObject( pathState.smooth, state.color, state.size );
+    if ( stato.tool === "smooth" && vojstato.smooth.length > 1 ) {
+        const smoothObj = kreiVojojnObjekton( vojstato.smooth, stato.color, stato.size );
         smoothObj.type = "smoothPath";
-        objectState.objects.push( smoothObj );
-        pathState.smooth = [];
+        objektstato.objects.push( smoothObj );
+        vojstato.smooth = [];
     }
 
-    if ( state.tool === "connect" && connectionState.startObj ) {
-        const targetObj = findObjectAtPoint( coords.x, coords.y );
-        if ( targetObj && targetObj !== connectionState.startObj ) {
-            if ( !targetObj.id ) targetObj.id = generateId();
-            objectState.objects.push( {
+    if ( stato.tool === "connect" && konektstato.startObj ) {
+        const targetObj = troviObjektonCePunkto( coords.x, coords.y );
+        if ( targetObj && targetObj !== konektstato.startObj ) {
+            if ( !targetObj.id ) targetObj.id = generiId();
+            objektstato.objects.push( {
                 type: "connection",
-                id: generateId(),
-                startId: connectionState.startObj.id!,
+                id: generiId(),
+                startId: konektstato.startObj.id!,
                 endId: targetObj.id,
-                color: state.color,
-                size: state.size,
-                layerId: layerState.activeId
+                color: stato.color,
+                size: stato.size,
+                layerId: tavolstato.activeId
             } );
         }
-        connectionState.startObj = null;
+        konektstato.startObj = null;
     }
 
-    if ( state.tool === "eraser" && pathState.current.length > 1 ) {
-        pathState.current = [];
+    if ( stato.tool === "eraser" && vojstato.current.length > 1 ) {
+        vojstato.current = [];
     }
 
-    state.isDrawing = false;
-    resetCursor();
+    stato.isDrawing = false;
+    restarigiKursoron();
 
-    if ( state.tool !== "text" ) {
-        redrawCanvas();
-        saveState();
+    if ( stato.tool !== "text" ) {
+        redesegniTabulon();
+        konserviStaton();
     }
 }
 
 // ⟪ Selection & Hover Effects 🎯 ⟫
 
 export function drawSelectionRect(): void {
-    if ( !objectState.selectionRect ) return;
-    const ctx = getCurrentCtx();
+    if ( !objektstato.selectionRect ) return;
+    const ctx = akiriAktualanCtx();
     if ( !ctx ) return;
 
-    const rect = normalizeRect( objectState.selectionRect );
-    const colors = getContrastingColors( [
+    const rect = normaligiRectangulon( objektstato.selectionRect );
+    const colors = akiriKontrastajnKolorojn( [
         { x: rect.x + 0o4, y: rect.y + 0o4 },
         { x: rect.x + rect.width - 0o4, y: rect.y + rect.height - 0o4 }
     ] );
 
-    const { largeRadius, smallRadius } = computeShapeRadii( Math.min( rect.width, rect.height ) );
+    const { largeRadius, smallRadius } = kalkuliFormajnRadiusojn( Math.min( rect.width, rect.height ) );
 
     ctx.save();
     ctx.strokeStyle = colors.stroke;
     ctx.lineWidth = 1;
-    ctx.setLineDash( LINE_DASH_PATTERN );
+    ctx.setLineDash( LINIA_PUNKTO_PATRONO );
     ctx.fillStyle = colors.fill;
     ctx.beginPath();
     ctx.moveTo( rect.x + largeRadius, rect.y );
@@ -553,21 +554,21 @@ export function drawSelectionRect(): void {
     ctx.restore();
 }
 
-export function drawHoverEffect( obj: WhiteboardObject ): void {
-    const ctx = getCurrentCtx();
+export function drawHoverEffect( obj: TabulObjekto ): void {
+    const ctx = akiriAktualanCtx();
     if ( !ctx ) return;
-    const colors = getContrastingColors( [ { x: getCenterX( obj ), y: getCenterY( obj ) } ] );
+    const colors = akiriKontrastajnKolorojn( [ { x: akiriCentronX( obj ), y: akiriCentronY( obj ) } ] );
 
     ctx.save();
-    applyObjectTransform( obj );
+    aplikiObjektonTransformon( obj );
     ctx.strokeStyle = colors.stroke;
     ctx.fillStyle = "rgba(0,0,0,0)";
-    ctx.lineWidth = SELECTION_LINE_WIDTH;
-    ctx.setLineDash( LINE_DASH_PATTERN );
+    ctx.lineWidth = SELEKTA_LINIO_LARGXO;
+    ctx.setLineDash( LINIA_PUNKTO_PATRONO );
 
-    const bounds = getObjectBounds( obj );
+    const bounds = akiriObjektonLimojn( obj );
     ctx.beginPath();
-    drawRoundedRectPath( bounds.x, bounds.y, bounds.width, bounds.height, CORNER_RADIUS, false );
+    desegniRondigitanAngulanVojon( bounds.x, bounds.y, bounds.width, bounds.height, ANGULA_RADIUSO, false );
     ctx.stroke();
     ctx.restore();
 }
@@ -577,14 +578,14 @@ export function drawHoverEffect( obj: WhiteboardObject ): void {
 /**
  * Deep-clone each object, assign a fresh id, and shift every coordinate by `offset`.
  * Shared between duplicate and paste to keep offset behaviour in lock-step.
- *     sources ( WhiteboardObject[] ) - objects to clone.
+ *     sources ( TabulObjekto[] ) - objects to clone.
  *     offset ( number ) - pixel offset along both axes.
  * Returns array of new cloned objects ( not yet pushed ).
  */
-function cloneAndOffsetObjects( sources: WhiteboardObject[], offset: number ): WhiteboardObject[] {
+function cloneAndOffsetObjects( sources: TabulObjekto[], offset: number ): TabulObjekto[] {
     return sources.map( obj => {
-        const newObj: WhiteboardObject = JSON.parse( JSON.stringify( obj ) );
-        newObj.id = generateId();
+        const newObj: TabulObjekto = JSON.parse( JSON.stringify( obj ) );
+        newObj.id = generiId();
 
         if ( newObj.x !== undefined ) newObj.x += offset;
         if ( newObj.y !== undefined ) newObj.y += offset;
@@ -593,7 +594,7 @@ function cloneAndOffsetObjects( sources: WhiteboardObject[], offset: number ): W
         if ( newObj.x2 !== undefined ) newObj.x2 += offset;
         if ( newObj.y2 !== undefined ) newObj.y2 += offset;
         if ( newObj.points ) {
-            newObj.points = newObj.points.map( ( p: Point ) => ( { x: p.x + offset, y: p.y + offset } ) );
+            newObj.points = newObj.points.map( ( p: Punkto ) => ( { x: p.x + offset, y: p.y + offset } ) );
         }
 
         return newObj;
@@ -601,28 +602,28 @@ function cloneAndOffsetObjects( sources: WhiteboardObject[], offset: number ): W
 }
 
 /**
- * Push cloned objects into objectState.objects and select them.
+ * Push cloned objects into objektstato.objects and select them.
  * Centralises the duplicate/paste side-effects ( selection, redraw, save ).
  */
-function commitClonedObjects( newObjects: WhiteboardObject[] ): void {
-    newObjects.forEach( obj => objectState.objects.push( obj ) );
-    objectState.selected = newObjects;
+function commitClonedObjects( newObjects: TabulObjekto[] ): void {
+    newObjects.forEach( obj => objektstato.objects.push( obj ) );
+    objektstato.selected = newObjects;
     updateTransformControls();
-    redrawCanvas();
-    saveState();
+    redesegniTabulon();
+    konserviStaton();
 }
 
 export function duplicateSelectedObjects(): void {
-    if ( objectState.selected.length === 0 ) return;
-    commitClonedObjects( cloneAndOffsetObjects( objectState.selected, 0o20 ) );
+    if ( objektstato.selected.length === 0 ) return;
+    commitClonedObjects( cloneAndOffsetObjects( objektstato.selected, 0o20 ) );
 }
 
 export function copySelectedObjects(): void {
-    if ( objectState.selected.length === 0 ) return;
-    clipboardState.objects = objectState.selected.map( obj => JSON.parse( JSON.stringify( obj ) ) );
+    if ( objektstato.selected.length === 0 ) return;
+    poŝstato.objects = objektstato.selected.map( obj => JSON.parse( JSON.stringify( obj ) ) );
 }
 
 export function pasteObjects(): void {
-    if ( clipboardState.objects.length === 0 ) return;
-    commitClonedObjects( cloneAndOffsetObjects( clipboardState.objects, 0o20 ) );
+    if ( poŝstato.objects.length === 0 ) return;
+    commitClonedObjects( cloneAndOffsetObjects( poŝstato.objects, 0o20 ) );
 }

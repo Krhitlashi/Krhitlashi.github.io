@@ -5,64 +5,64 @@ declare const DOMCache: any;
 declare const getStrings: any;
 declare const StorageUtil: any;
 
-class NotificationManager {
+class SciigoAdministranto {
     static #dismissed: Set<any> = new Set();
     static #notifications: any[] = [...CONSTANTS.NOTIFICATION_DEFAULTS];
 
     // ⟨ Load Dismissed From Storage ⟩
-    static loadFromStorage(): void {
+    static sxargiElStokejo(): void {
         const stored: number[] = StorageUtil.get(CONSTANTS.STORAGE_KEYS.dismissedNotifs, []);
         stored.forEach((id: number) => this.#dismissed.add(id));
     }
 
     // ⟨ Save To Storage ⟩
-    static saveToStorage(): void {
+    static konserviAlStokejo(): void {
         StorageUtil.set(CONSTANTS.STORAGE_KEYS.dismissedNotifs, Array.from(this.#dismissed));
     }
 
     // ⟨ Add Notification ⟩
     static add(notification: any): void {
         this.#notifications.push(notification);
-        this.render();
+        this.renderi();
     }
 
     // ⟨ Remove Notification ⟩
     static remove(index: number): void {
         this.#notifications.splice(index, 1);
-        this.render();
+        this.renderi();
     }
 
     // ⟨ Dismiss Notification ⟩
     static dismiss(index: number): void {
         this.#dismissed.add(index);
-        this.saveToStorage();
-        this.render();
+        this.konserviAlStokejo();
+        this.renderi();
     }
 
     // ⟨ Clear All Notifications ⟩
     static clear(): void {
         this.#notifications.forEach((_, i) => this.#dismissed.add(i));
-        this.saveToStorage();
-        this.render();
+        this.konserviAlStokejo();
+        this.renderi();
     }
 
     // ⟨ Get Active Notifications ⟩
-    static getActive(): any[] {
+    static akiriAktivajn(): any[] {
         return this.#notifications.filter((_, i) => !this.#dismissed.has(i));
     }
 
     // ⟨ Get Count ⟩
-    static getCount(): number {
-        return this.getActive().length;
+    static akiriNombron(): number {
+        return this.akiriAktivajn().length;
     }
 
     // ⟨ Render Notifications ⟩
-    static render(): void {
+    static renderi(): void {
         const list = DOMCache.get("notif-list");
         if (!list) return;
 
         const strings = getStrings();
-        const active = this.getActive();
+        const active = this.akiriAktivajn();
         const countSpan: any = document.querySelector(".notification-count");
 
         if (active.length === 0) {
@@ -83,20 +83,20 @@ class NotificationManager {
                     <div class="notif-desc">${desc}</div>
                 </div>
                 <div class="notif-icon">${n.icon}</div>
-                <button onclick="NotificationManager.dismiss(${origIdx})" style="margin-inline-start: auto;">/</button>
+                <button onclick="SciigoAdministranto.dismiss(${origIdx})" style="margin-inline-start: auto;">/</button>
             </ciihii>`;
         }).join("");
 
         const system = (window as any).System;
-        if (countSpan && system) countSpan.innerText = system.toOctalString(this.getCount().toString());
+        if (countSpan && system) countSpan.innerText = system.toOctalString(this.akiriNombron().toString());
     }
 
     // ⟨ Init ⟩
-    static init(): void {
-        this.loadFromStorage();
-        this.render();
+    static inicii(): void {
+        this.sxargiElStokejo();
+        this.renderi();
     }
 }
 
 // Attach to window for global access
-(window as any).NotificationManager = NotificationManager;
+(window as any).NotificationManager = SciigoAdministranto;

@@ -5,61 +5,61 @@
 export let canvas = document.getElementById( "whiteboardCanvas" ) as HTMLCanvasElement | null;
 export let ctx = canvas?.getContext( "2d" ) as CanvasRenderingContext2D | null;
 
-export function setActiveCanvas( c: HTMLCanvasElement | null ): void {
+export function aktivigiTabulon( c: HTMLCanvasElement | null ): void {
     canvas = c;
     ctx = c?.getContext( "2d" ) || null;
 }
 
 // ⟪ Constants 🔢 ⟫
 
-export const CANVAS_WIDTH = 0o3000;
-export const CANVAS_HEIGHT = 0o2000;
-export const PAGE_SIZE_PRESETS: Record<string, { width?: number; height?: number; infinite?: boolean }> = {
+export const TABULA_LARGXO = 0o3000;
+export const TABULA_ALTO = 0o2000;
+export const PAGXGRANDO_PRETOJ: Record<string, { width?: number; height?: number; infinite?: boolean }> = {
     full: { infinite: true },
     vertical: { width: 0o2416, height: 0o3625 },
     horizontal: { width: 0o3625, height: 0o2416 },
     square: { width: 0o2000, height: 0o2000 }
 };
-export const MIN_PAGE_SIZE = 0o100;
-export const MAX_PAGE_SIZE = 0o10000;
+export const MIN_PAGXGRANDO = 0o100;
+export const MAX_PAGXGRANDO = 0o10000;
 
-export const MIN_SIZE = 0o10;
-export const HANDLE_SIZE = 0o20;
-export const HANDLE_RADIUS = 0o6;
-export const CORNER_RADIUS = 0o20;
-export const ROTATE_HANDLE_OFFSET = 0o20;
-export const ROTATE_HANDLE_RADIUS = 0o30;
-export const RESIZE_HANDLE_HITBOX = 0o30;
-export const MIN_ZOOM = 0o2 / 0o10;
-export const MAX_ZOOM = 0o4;
-export const ZOOM_STEP_NUM = 0o41;
-export const ZOOM_STEP_DEN = 0o40;
-export const SMOOTHING_FACTOR = 0o1 / 0o10;
-export const TEXT_SIZE_MULTIPLIER = 0o4;
-export const TEXT_MIN_WIDTH_MULTIPLIER = 0o2;
-export const HISTORY_MAX = 0o40;
-export const INITIAL_BRUSH_SIZE = 0o4;
-export const ZOOM_BASE = 0o100;
+export const MIN_GRANDO = 0o10;
+export const TENILA_GRANDO = 0o20;
+export const TENILA_RADIUSO = 0o6;
+export const ANGULA_RADIUSO = 0o20;
+export const ROTACIA_TENILA_FORGXO = 0o20;
+export const ROTACIA_TENILA_RADIUSO = 0o30;
+export const GRANDA_TENILA_KONTAKTO = 0o30;
+export const MIN_PLIGRANDIGO = 0o2 / 0o10;
+export const MAX_PLIGRANDIGO = 0o4;
+export const PLIGRANDIGPAŜO_NUM = 0o41;
+export const PLIGRANDIGPAŜO_DEN = 0o40;
+export const GLATIGA_FACTORO = 0o1 / 0o10;
+export const TEKSTGRANDA_MULTIPLIKANTO = 0o4;
+export const TEKST_MINLARGXA_MULTIPLIKANTO = 0o2;
+export const HISTORIA_MAKS = 0o40;
+export const KOMENCIA_BROSO_GRANDO = 0o4;
+export const PLIGRANDIGBAZO = 0o100;
 
-export const LINE_DASH_PATTERN = [ 0o4, 0o4 ];
-export const SELECTION_LINE_WIDTH = 0o2;
-export const HANDLE_FILL_COLOR = "#181818";
-export const HANDLE_STROKE_COLOR = "#000000";
-export const SELECTION_STROKE_COLOR = "#000000";
+export const LINIA_PUNKTO_PATRONO = [ 0o4, 0o4 ];
+export const SELEKTA_LINIO_LARGXO = 0o2;
+export const TENILA_PLENIGA_KOLORO = "#181818";
+export const TENILA_TRABATA_KOLORO = "#000000";
+export const SELEKTA_TRABATA_KOLORO = "#000000";
 
 // ⟪ Color & Brightness Constants 🎨 ⟫
 
-export const BRIGHTNESS_WEIGHT_R = 0o453;
-export const BRIGHTNESS_WEIGHT_G = 0o1113;
-export const BRIGHTNESS_WEIGHT_B = 0o162;
-export const BRIGHTNESS_DIVISOR = 0o1000;
-export const BRIGHTNESS_THRESHOLD = 0o200;
-export const PREVIEW_ALPHA = 0o6 / 0o10;
-export const COVERAGE_THRESHOLD_FRACTION = 0o6 / 0o10;
+export const HELEGA_PEZO_R = 0o453;
+export const HELEGA_PEZO_G = 0o1113;
+export const HELEGA_PEZO_B = 0o162;
+export const HELEGA_DIVIDANTO = 0o1000;
+export const HELEGA_LIMVALORO = 0o200;
+export const ANTAPREZENTA_ALFA = 0o6 / 0o10;
+export const KOVRA_LIMVALORA_FRACIO = 0o6 / 0o10;
 
 // ⟪ Tool Cursors 🖰 ⟫
 
-export const TOOL_CURSORS: Record< string, string > = {
+export const ILAR_KURSOROJ: Record< string, string > = {
     pen: "crosshair",
     select: "default",
     pan: "grab",
@@ -70,11 +70,11 @@ export const TOOL_CURSORS: Record< string, string > = {
     connect: "crosshair"
 };
 
-export const CURSOR_CLASSES = [ "canvas-cursor-grab", "canvas-cursor-grabbing", "canvas-cursor-pointer", "canvas-cursor-move", "canvas-cursor-default", "canvas-cursor-crosshair", "canvas-cursor-cell", "canvas-cursor-text" ];
+export const KURSORAJ_KLASOJ = [ "canvas-cursor-grab", "canvas-cursor-grabbing", "canvas-cursor-pointer", "canvas-cursor-move", "canvas-cursor-default", "canvas-cursor-crosshair", "canvas-cursor-cell", "canvas-cursor-text" ];
 
 // ⟪ Application State 📊 ⟫
 
-export interface AppState {
+export interface AplikaStato {
     tool: string;
     color: string;
     size: number;
@@ -88,10 +88,10 @@ export interface AppState {
     zoomDen: number;
 }
 
-export const state: AppState = {
+export const stato: AplikaStato = {
     tool: "select",
     color: "#000000",
-    size: INITIAL_BRUSH_SIZE,
+    size: KOMENCIA_BROSO_GRANDO,
     shape: null,
     isDrawing: false,
     startX: 0,
@@ -102,7 +102,7 @@ export const state: AppState = {
     zoomDen: 0o1
 };
 
-export interface PanState {
+export interface Panstato {
     offsetX: number;
     offsetY: number;
     isPanning: boolean;
@@ -110,7 +110,7 @@ export interface PanState {
     startY: number;
 }
 
-export const panState: PanState = {
+export const panstato: Panstato = {
     offsetX: 0,
     offsetY: 0,
     isPanning: false,
@@ -118,41 +118,41 @@ export const panState: PanState = {
     startY: 0
 };
 
-export interface TouchGestureState {
+export interface TuŝaGeststato {
     isPinching: boolean;
     initialDistance: number;
     initialZoom: number;
 }
 
-export const touchGestureState: TouchGestureState = {
+export const tuŝaGeststato: TuŝaGeststato = {
     isPinching: false,
     initialDistance: 0,
     initialZoom: 0
 };
 
-export interface SpaceState {
+export interface Spacstato {
     isPressed: boolean;
 }
 
-export const spaceState: SpaceState = {
+export const spacstato: Spacstato = {
     isPressed: false
 };
 
 // ⟪ Layer State 📚 ⟫
 
-export interface Layer {
+export interface Tavolo {
     id: number;
     name: string;
     visible: boolean;
 }
 
-export interface LayerState {
-    layers: Layer[];
+export interface Tavolstato {
+    layers: Tavolo[];
     activeId: number;
     counter: number;
 }
 
-export const layerState: LayerState = {
+export const tavolstato: Tavolstato = {
     layers: [],
     activeId: 0,
     counter: 0
@@ -160,23 +160,23 @@ export const layerState: LayerState = {
 
 // ⟪ Page State 📄 ⟫
 
-export interface Page {
+export interface Paĝo {
     id: number;
     name: string;
     visible: boolean;
     width?: number;
     height?: number;
     infinite?: boolean;
-    objects: WhiteboardObject[];
+    objects: TabulObjekto[];
 }
 
-export interface PageState {
-    pages: Page[];
+export interface Paĝostato {
+    pages: Paĝo[];
     activeId: number;
     counter: number;
 }
 
-export const pageState: PageState = {
+export const paĝostato: Paĝostato = {
     pages: [],
     activeId: 0,
     counter: 0
@@ -184,7 +184,7 @@ export const pageState: PageState = {
 
 // ⟪ Object State 📐 ⟫
 
-export interface WhiteboardObject {
+export interface TabulObjekto {
     type: string;
     points?: { x: number; y: number }[];
     x?: number;
@@ -216,21 +216,21 @@ export interface WhiteboardObject {
     shape?: string;
 }
 
-export interface SelectionRect {
+export interface Selektangulo {
     x: number;
     y: number;
     width: number;
     height: number;
 }
 
-export interface ObjectState {
-    objects: WhiteboardObject[];
-    selected: WhiteboardObject[];
+export interface Objektstato {
+    objects: TabulObjekto[];
+    selected: TabulObjekto[];
     isDragging: boolean;
     isResizing: boolean;
     isRotating: boolean;
     isSelecting: boolean;
-    selectionRect: SelectionRect | null;
+    selectionRect: Selektangulo | null;
     resizeHandle: string | null;
     dragOffsetX: number;
     dragOffsetY: number;
@@ -245,7 +245,7 @@ export interface ObjectState {
     initialObjectStates: any[];
 }
 
-export const objectState: ObjectState = {
+export const objektstato: Objektstato = {
     objects: [],
     selected: [],
     isDragging: false,
@@ -269,20 +269,20 @@ export const objectState: ObjectState = {
 
 // ⟪ Path State 〰️ ⟫
 
-export interface Point {
+export interface Punkto {
     x: number;
     y: number;
 }
 
-export interface PathState {
-    current: Point[];
-    preview: WhiteboardObject | null;
-    smooth: Point[];
+export interface Vojstato {
+    current: Punkto[];
+    preview: TabulObjekto | null;
+    smooth: Punkto[];
     smoothX: number;
     smoothY: number;
 }
 
-export const pathState: PathState = {
+export const vojstato: Vojstato = {
     current: [],
     preview: null,
     smooth: [],
@@ -292,14 +292,14 @@ export const pathState: PathState = {
 
 // ⟪ Text State 📝 ⟫
 
-export interface TextState {
+export interface Tekststato {
     isEditing: boolean;
     input: HTMLDivElement | null;
     useHtml: boolean;
     editingIndex: number;
 }
 
-export const textState: TextState = {
+export const tekststato: Tekststato = {
     isEditing: false,
     input: null,
     useHtml: true,
@@ -308,52 +308,52 @@ export const textState: TextState = {
 
 // ⟪ Eraser State 🧹 ⟫
 
-export interface EraserState {
+export interface Viŝilostato {
     eraseObjects: boolean;
 }
 
-export const eraserState: EraserState = {
+export const viŝilostato: Viŝilostato = {
     eraseObjects: false
 };
 
 // ⟪ History State 📋 ⟫
 
-export interface HistoryState {
+export interface Historiostato {
     history: string[];
     index: number;
 }
 
-export const historyState: HistoryState = {
+export const historioStato: Historiostato = {
     history: [],
     index: -0o1
 };
 
 // ⟪ Connection State 🔗 ⟫
 
-export interface ConnectionState {
-    startObj: WhiteboardObject | null;
+export interface Konektstato {
+    startObj: TabulObjekto | null;
 }
 
-export const connectionState: ConnectionState = {
+export const konektstato: Konektstato = {
     startObj: null
 };
 
 // ⟪ Clipboard State 📋 ⟫
 
-export interface ClipboardState {
-    objects: WhiteboardObject[];
+export interface Poŝstato {
+    objects: TabulObjekto[];
 }
 
-export const clipboardState: ClipboardState = {
+export const poŝstato: Poŝstato = {
     objects: []
 };
 
 // ⟪ Object Handler Interface 📐 ⟫
 
-export interface ObjectHandler {
-    getBounds: ( obj: WhiteboardObject ) => { x: number; y: number; width: number; height: number };
-    getCenter: ( obj: WhiteboardObject ) => { x: number; y: number };
-    isPointInside: ( x: number, y: number, obj: WhiteboardObject ) => boolean;
-    getInitialBounds?: ( obj: WhiteboardObject ) => any;
-    resize?: ( obj: WhiteboardObject, handle: string, localX: number, localY: number, init: any ) => void;
+export interface Objektilo {
+    akiriLimojn: ( obj: TabulObjekto ) => { x: number; y: number; width: number; height: number };
+    akiriCentron: ( obj: TabulObjekto ) => { x: number; y: number };
+    cxuPunktoEnInterne: ( x: number, y: number, obj: TabulObjekto ) => boolean;
+    akiriKomencajnLimojn?: ( obj: TabulObjekto ) => any;
+    grandSxangxi?: ( obj: TabulObjekto, handle: string, localX: number, localY: number, init: any ) => void;
 }

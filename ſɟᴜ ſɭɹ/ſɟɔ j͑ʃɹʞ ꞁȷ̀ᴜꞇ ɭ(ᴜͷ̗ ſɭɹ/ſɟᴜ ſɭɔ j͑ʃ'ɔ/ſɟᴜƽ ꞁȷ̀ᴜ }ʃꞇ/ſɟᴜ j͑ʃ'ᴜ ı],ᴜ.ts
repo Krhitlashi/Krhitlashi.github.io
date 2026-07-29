@@ -1,6 +1,6 @@
 // ≺⧼ Event Utilities ⧽≻
 
-function addEventListeners(
+function aldoniEventajnAuskultantojn(
     elements: HTMLElement | HTMLElement[] | NodeList,
     event: string,
     handler: EventListenerOrEventListenerObject,
@@ -11,7 +11,7 @@ function addEventListeners(
     list.forEach( el => el?.addEventListener( event, handler, options ) );
 }
 
-function removeEventListeners(
+function forigiEventajnAuskultantojn(
     elements: HTMLElement | HTMLElement[] | NodeList,
     event: string,
     handler: EventListenerOrEventListenerObject,
@@ -23,5 +23,5 @@ function removeEventListeners(
 }
 
 // Attach to window for global access
-( window as any ).addEventListeners = addEventListeners;
-( window as any ).removeEventListeners = removeEventListeners;
+( window as any ).addEventListeners = aldoniEventajnAuskultantojn;
+( window as any ).removeEventListeners = forigiEventajnAuskultantojn;

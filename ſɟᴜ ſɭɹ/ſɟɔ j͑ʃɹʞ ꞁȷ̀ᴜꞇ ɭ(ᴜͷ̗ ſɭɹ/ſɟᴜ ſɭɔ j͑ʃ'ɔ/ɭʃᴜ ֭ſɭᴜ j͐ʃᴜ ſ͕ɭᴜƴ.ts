@@ -3,7 +3,7 @@
 declare const CONSTANTS: any;
 declare const getTaskbar: any;
 
-const AnimationManager: {
+const AnimacioAdministranto: {
     defaults: { duration: number; easing: string };
     easings: any;
     _positionConfigCache: { [key: string]: any };
@@ -59,7 +59,7 @@ const AnimationManager: {
 
     // All panels slide out from the taskbar edge
     getPanelDirection(panelId: string): { from: string; to: string } {
-        const { position } = this.getPositionConfig();
+        const { position } = this.akiriPozicianAgordon();
         // All panels share the same directional logic — slide from taskbar edge
         return { from: position, to: position };
     },
@@ -80,7 +80,7 @@ const AnimationManager: {
     // ⟪ Get Taskbar Edge Offset ⟫
 
     getTaskbarOffset(fraction: number = 1): { transform: string; inset: { [key: string]: string } } {
-        const { position, offsetTransform, insetProp } = this.getPositionConfig();
+        const { position, offsetTransform, insetProp } = this.akiriPozicianAgordon();
         const tbSize: number = parseInt(getComputedStyle(document.documentElement).getPropertyValue(CONSTANTS.CSS_VARS.taskbarSize)) || CONSTANTS.SYS.TASKBAR_SIZE;
         const offset: number = tbSize * fraction;
 
@@ -93,7 +93,7 @@ const AnimationManager: {
     // ⟪ Get Taskbar Size for Position ⟫
 
     getTaskbarSizeForPosition(pos: any = null, fraction: number = 1): { position: string; size: number; offset: number } {
-        const { position } = this.getPositionConfig(pos);
+        const { position } = this.akiriPozicianAgordon(pos);
         const tbSize: number = parseInt(getComputedStyle(document.documentElement).getPropertyValue(CONSTANTS.CSS_VARS.taskbarSize)) || CONSTANTS.SYS.TASKBAR_SIZE;
         return {
             position,
@@ -107,8 +107,8 @@ const AnimationManager: {
     fadeIn(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
-        const duration: number = options.duration ?? this.defaults.duration;
-        const easing: string = options.easing ?? this.defaults.easing;
+        const duration: number = options.duration ?? this.apriorajxoj.duration;
+        const easing: string = options.easing ?? this.apriorajxoj.easing;
 
         element.style.opacity = "0";
         element.style.display = options.display || "flex";
@@ -133,8 +133,8 @@ const AnimationManager: {
     fadeOut(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
-        const duration: number = options.duration ?? this.defaults.duration;
-        const easing: string = options.easing ?? this.defaults.easing;
+        const duration: number = options.duration ?? this.apriorajxoj.duration;
+        const easing: string = options.easing ?? this.apriorajxoj.easing;
 
         element.style.pointerEvents = "none";
 
@@ -162,11 +162,11 @@ const AnimationManager: {
         if (!element) return Promise.resolve();
 
         const { duration, easing, fraction = 1 } = options;
-        const direction = this.getPanelDirection(panelId);
+        const direction = this.akiriPanelanDirekton(panelId);
         const edge = isEntering ? direction.from : direction.to;
 
         const baseTransform: string = element.style.transform && element.style.transform !== "none" ? element.style.transform : "";
-        const slideTransform: string = this.getDirectionTransform(edge, fraction);
+        const slideTransform: string = this.akiriDirektanTransformon(edge, fraction);
         
         const startTransform: string = isEntering ? `${baseTransform} ${slideTransform}`.trim() : (baseTransform || "translate(0, 0)");
         const endTransform: string = isEntering ? (baseTransform || "translate(0, 0)") : `${baseTransform} ${slideTransform}`.trim();
@@ -197,11 +197,11 @@ const AnimationManager: {
     slideInFromTaskbar(element: HTMLElement, panelId: string, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
-        const duration: number = options.duration ?? this.defaults.duration;
-        const easing: string = options.easing ?? this.easings.easeOut;
+        const duration: number = options.duration ?? this.apriorajxoj.duration;
+        const easing: string = options.easing ?? this.mildigoj.easeOut;
         const fraction: number = options.fraction ?? 1;
 
-        return this.slidePanel(element, panelId, true, { duration, easing, fraction, display: options.display });
+        return this.glitiPanelon(element, panelId, true, { duration, easing, fraction, display: options.display });
     },
 
     // ⟪ Slide Out To Taskbar Edge ⟫
@@ -209,11 +209,11 @@ const AnimationManager: {
     slideOutToTaskbar(element: HTMLElement, panelId: string, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
-        const duration: number = options.duration ?? this.defaults.duration;
-        const easing: string = options.easing ?? this.easings.easeIn;
+        const duration: number = options.duration ?? this.apriorajxoj.duration;
+        const easing: string = options.easing ?? this.mildigoj.easeIn;
         const fraction: number = options.fraction ?? 1;
 
-        return this.slidePanel(element, panelId, false, { duration, easing, fraction, display: options.display });
+        return this.glitiPanelon(element, panelId, false, { duration, easing, fraction, display: options.display });
     },
 
     // ⟪ Slide In ( from edge ) ⟫
@@ -221,12 +221,12 @@ const AnimationManager: {
     slideIn(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
-        const duration: number = options.duration ?? this.defaults.duration;
-        const easing: string = options.easing ?? this.easings.easeOut;
+        const duration: number = options.duration ?? this.apriorajxoj.duration;
+        const easing: string = options.easing ?? this.mildigoj.easeOut;
         const fromEdge: string = options.fromEdge || "bottom";
         const distance: string = options.distance || "100%";
 
-        const startTransform: string = this.getDirectionTransform(fromEdge.replace("%", ""), 1);
+        const startTransform: string = this.akiriDirektanTransformon(fromEdge.replace("%", ""), 1);
 
         element.style.display = options.display || "flex";
         element.style.transform = startTransform;
@@ -253,12 +253,12 @@ const AnimationManager: {
     slideOut(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
-        const duration: number = options.duration ?? this.defaults.duration;
-        const easing: string = options.easing ?? this.easings.easeIn;
+        const duration: number = options.duration ?? this.apriorajxoj.duration;
+        const easing: string = options.easing ?? this.mildigoj.easeIn;
         const toEdge: string = options.toEdge || "bottom";
         const distance: string = options.distance || "100%";
 
-        const endTransform: string = this.getDirectionTransform(toEdge.replace("%", ""), 1);
+        const endTransform: string = this.akiriDirektanTransformon(toEdge.replace("%", ""), 1);
 
         element.style.pointerEvents = "none";
 
@@ -281,8 +281,8 @@ const AnimationManager: {
     scaleIn(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
-        const duration: number = options.duration ?? this.defaults.duration;
-        const easing: string = options.easing ?? this.easings.spring;
+        const duration: number = options.duration ?? this.apriorajxoj.duration;
+        const easing: string = options.easing ?? this.mildigoj.spring;
         const fromScale: number = options.fromScale ?? CONSTANTS.ANIM.FRACTIONS.sevenEighths;
 
         element.style.display = options.display || "flex";
@@ -310,8 +310,8 @@ const AnimationManager: {
     scaleOut(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
-        const duration: number = options.duration ?? this.defaults.duration;
-        const easing: string = options.easing ?? this.easings.easeIn;
+        const duration: number = options.duration ?? this.apriorajxoj.duration;
+        const easing: string = options.easing ?? this.mildigoj.easeIn;
         const toScale: number = options.toScale ?? CONSTANTS.ANIM.FRACTIONS.sevenEighths;
 
         element.style.pointerEvents = "none";
@@ -336,12 +336,12 @@ const AnimationManager: {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? CONSTANTS.ANIM.DURATION_LONG;
-        const easing: string = options.easing ?? this.easings.easeOut;
+        const easing: string = options.easing ?? this.mildigoj.easeOut;
         const fraction: number = options.fraction ?? CONSTANTS.ANIM.FRACTIONS.oneEighth;
         const scale: number = options.scale ?? CONSTANTS.ANIM.FRACTIONS.sevenEighths;
 
         // Get taskbar position and offset
-        const { position, offset } = this.getTaskbarSizeForPosition(null, fraction);
+        const { position, offset } = this.akiriTaskobretanGrandonPorPozicio(null, fraction);
 
         // Calculate offset based on taskbar position
         const offsets: { [key: string]: string } = {
@@ -377,12 +377,12 @@ const AnimationManager: {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? CONSTANTS.ANIM.DURATION_SHORT;
-        const easing: string = options.easing ?? this.easings.easeIn;
+        const easing: string = options.easing ?? this.mildigoj.easeIn;
         const fraction: number = options.fraction ?? CONSTANTS.ANIM.FRACTIONS.oneEighth;
         const scale: number = options.scale ?? CONSTANTS.ANIM.FRACTIONS.sevenEighths;
 
         // Get taskbar position and offset
-        const { position, offset } = this.getTaskbarSizeForPosition(null, fraction);
+        const { position, offset } = this.akiriTaskobretanGrandonPorPozicio(null, fraction);
 
         // Calculate end transform toward taskbar
         const offsets: { [key: string]: string } = {
@@ -420,7 +420,7 @@ const AnimationManager: {
         const scale: number = options.scale ?? CONSTANTS.ANIM_SETTINGS.windowMinimize.scale;
 
         // Get taskbar position and size
-        const { position } = this.getPositionConfig();
+        const { position } = this.akiriPozicianAgordon();
         const taskbar: HTMLElement | null = getTaskbar();
         const tbRect: DOMRect = taskbar?.getBoundingClientRect() || { left: 0, top: window.innerHeight, right: window.innerWidth, bottom: window.innerHeight, width: window.innerWidth, height: 0, x: 0, y: window.innerHeight, toJSON() { return {}; } };
         const winRect: DOMRect = element.getBoundingClientRect();
@@ -518,7 +518,7 @@ const AnimationManager: {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? CONSTANTS.ANIM.DURATION_DEFAULT;
-        const easing: string = options.easing ?? this.easings.spring;
+        const easing: string = options.easing ?? this.mildigoj.spring;
         const fraction: number = options.fraction ?? CONSTANTS.ANIM.FRACTIONS.oneEighth;
 
         element.style.display = "block";
@@ -553,7 +553,7 @@ const AnimationManager: {
         ripple.style.borderRadius = "50%";
         ripple.style.backgroundColor = color;
         ripple.style.transform = "scale(0)";
-        ripple.style.animation = `ripple ${duration}ms ${this.easings.easeOut}`;
+        ripple.style.animation = `ripple ${duration}ms ${this.mildigoj.easeOut}`;
         ripple.style.pointerEvents = "none";
 
         const rect: DOMRect = element.getBoundingClientRect();
@@ -581,7 +581,7 @@ const AnimationManager: {
                 const elapsed: number = currentTime - startTime;
                 const progress: number = Math.min(elapsed / duration, 1);
 
-                const easedProgress: number = this.parseEasing(this.easings.easeOut, progress);
+                const easedProgress: number = this.analiziMildigon(this.mildigoj.easeOut, progress);
 
                 const currentValue: number = start + (end - start) * easedProgress;
 
@@ -664,14 +664,14 @@ const AnimationManager: {
     // ⟪ Popup Animation ( for context menu ) - Legacy Alias ⟫
 
     popup(element: HTMLElement, options: any = {}): Promise<void> {
-        return this.popupIn(element, options);
+        return this.sxprucEn(element, options);
     },
 
     // ⟪ Full Screen App Fade In ⟫
 
     fullScreenApp(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
-        return this.fadeIn(element, options);
+        return this.malaperiEn(element, options);
     },
 
     // ⟪ Animate Panel Open ( from taskbar edge ) ⟫
@@ -683,7 +683,7 @@ const AnimationManager: {
         const duration: number = options.duration ?? CONSTANTS.ANIM_SETTINGS.panelSlide.duration;
         const easing: string = options.easing ?? CONSTANTS.ANIM_SETTINGS.panelSlide.easing;
 
-        return this.slideInFromTaskbar(element, panelId, {
+        return this.glitiEnElTaskobreto(element, panelId, {
             duration,
             easing,
             fraction
@@ -699,7 +699,7 @@ const AnimationManager: {
         const duration: number = options.duration ?? CONSTANTS.ANIM_SETTINGS.panelSlide.duration;
         const easing: string = options.easing ?? CONSTANTS.ANIM_SETTINGS.panelSlide.easing;
 
-        return this.slideOutToTaskbar(element, panelId, {
+        return this.glitiElAlTaskobreto(element, panelId, {
             duration,
             easing,
             fraction
@@ -708,4 +708,4 @@ const AnimationManager: {
 };
 
 // Attach to window for global access
-(window as any).AnimationManager = AnimationManager;
+(window as any).AnimationManager = AnimacioAdministranto;

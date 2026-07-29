@@ -1,39 +1,39 @@
-const TOOLBAR_CONTAINER_ID = "toolbarContainer";
-const TOOLBAR_TOGGLE_ID = "toolbarToggle";
+const ILARA_UJO_ID = "toolbarContainer";
+const ILARA_BASKULU_ID = "toolbarToggle";
 
-export function initSharedToolbar(): void {
-    initToolbarToggle();
-    initToolbarTouchScroll();
+export function iniciiKomunanIlaron(): void {
+    iniciiIlaranBaskuladon();
+    iniciiIlaranTuŝRulumadon();
 }
 
-export function isSharedUiElement(target: EventTarget | null): boolean {
+export function cxuKomunaUiElemento(target: EventTarget | null): boolean {
     return target instanceof HTMLElement
         && target.closest(".n2tase, .n2tasenusakama, .cakaxa") !== null;
 }
 
-function initToolbarToggle(): void {
-    const toolbar = document.getElementById(TOOLBAR_CONTAINER_ID);
-    const toggle = document.getElementById(TOOLBAR_TOGGLE_ID);
+function iniciiIlaranBaskuladon(): void {
+    const ilaro = document.getElementById(ILARA_UJO_ID);
+    const baskulo = document.getElementById(ILARA_BASKULU_ID);
 
-    if (!(toolbar instanceof HTMLElement) || !(toggle instanceof HTMLElement)) return;
-    toggle.addEventListener("click", () => window.a3esoza(toolbar));
+    if (!(ilaro instanceof HTMLElement) || !(baskulo instanceof HTMLElement)) return;
+    baskulo.addEventListener("click", () => window.a3esoza(ilaro));
 }
 
-function initToolbarTouchScroll(): void {
-    const toolbar = document.getElementById(TOOLBAR_CONTAINER_ID);
-    if (!(toolbar instanceof HTMLElement)) return;
+function iniciiIlaranTuŝRulumadon(): void {
+    const ilaro = document.getElementById(ILARA_UJO_ID);
+    if (!(ilaro instanceof HTMLElement)) return;
 
     let startY = 0;
-    let startScroll = 0;
+    let startRulumo = 0;
 
-    toolbar.addEventListener("touchstart", (event: TouchEvent) => {
+    ilaro.addEventListener("touchstart", (event: TouchEvent) => {
         if (event.touches.length !== 1) return;
         startY = event.touches[0].clientY;
-        startScroll = toolbar.scrollTop;
+        startRulumo = ilaro.scrollTop;
     }, { passive: true });
 
-    toolbar.addEventListener("touchmove", (event: TouchEvent) => {
+    ilaro.addEventListener("touchmove", (event: TouchEvent) => {
         if (event.touches.length !== 1) return;
-        toolbar.scrollTop = startScroll + (startY - event.touches[0].clientY);
+        ilaro.scrollTop = startRulumo + (startY - event.touches[0].clientY);
     }, { passive: true });
 }

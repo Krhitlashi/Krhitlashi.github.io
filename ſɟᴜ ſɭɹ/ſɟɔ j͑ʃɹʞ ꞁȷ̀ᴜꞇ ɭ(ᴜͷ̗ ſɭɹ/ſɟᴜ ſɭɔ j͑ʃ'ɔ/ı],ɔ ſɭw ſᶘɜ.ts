@@ -7,22 +7,22 @@ interface QSState {
     [ key: string ]: any;
 }
 
-const QSManager = ( function() {
+const RapidaAgordoAdministranto = ( function() {
     let state: QSState = { ...CONSTANTS.QS.DEFAULTS };
 
     // ⟪ Load From Storage ⟫
-    function loadFromStorage(): void {
+    function sxargiElStokejo(): void {
         state = StorageUtil.loadWithDefaults( CONSTANTS.STORAGE_KEYS.qsState, CONSTANTS.QS.DEFAULTS );
     }
 
     // ⟪ Save To Storage ⟫
-    function saveToStorage(): void {
+    function konserviAlStokejo(): void {
         StorageUtil.set( CONSTANTS.STORAGE_KEYS.qsState, state );
     }
 
     // ⟪ Dispatch Change Event ⟫
 
-    function dispatchChange( key: string, value: any ): void {
+    function sendiSxangxon( key: string, value: any ): void {
         const event = new CustomEvent( CONSTANTS.EVENT_NAMES.settingsChange, {
             detail: { key, value }
         } );
@@ -40,8 +40,8 @@ const QSManager = ( function() {
 
         set( key: string, value: any ): void {
             state[ key ] = value;
-            saveToStorage();
-            dispatchChange( key, value );
+            konserviAlStokejo();
+            sendiSxangxon( key, value );
         },
 
         // ⟪ Toggle State ⟫
@@ -62,7 +62,7 @@ const QSManager = ( function() {
 
         setAll( newState: QSState ): void {
             state = { ...state, ...newState };
-            saveToStorage();
+            konserviAlStokejo();
         },
 
         // ⟪ Update Brightness ⟫
@@ -98,14 +98,14 @@ const QSManager = ( function() {
 
         // ⟪ Init ⟫
 
-        init(): void {
-            loadFromStorage();
-            this.restoreUI();
+        inicii(): void {
+            sxargiElStokejo();
+            this.restaŭriUI();
         },
 
         // ⟪ Restore UI State ⟫
 
-        restoreUI(): void {
+        restaŭriUI(): void {
             // Restore toggle button states
             document.querySelectorAll( ".xeku1okek" ).forEach( ( btn: Element ) => {
                 const setting = ( btn as HTMLElement ).getAttribute( "data-setting" );
@@ -129,4 +129,4 @@ const QSManager = ( function() {
 
 // ⟪ Global Alias ⟫
 
-( window as any ).QSManager = QSManager;
+( window as any ).QSManager = RapidaAgordoAdministranto;

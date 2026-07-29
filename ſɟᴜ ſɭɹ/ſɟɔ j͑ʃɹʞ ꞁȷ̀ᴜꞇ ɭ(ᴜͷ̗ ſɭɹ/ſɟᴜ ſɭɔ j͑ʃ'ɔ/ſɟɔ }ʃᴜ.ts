@@ -13,7 +13,7 @@ import { CustomHTMLElement } from "./ꞁȷ̀ɜ ı],ɔ ŋᷠᴜ }ʃꞇ.js";
 /**
  * Setup pointer event listeners for drag/resize operations
  */
-function setupPointerEvents(
+function agordiMontrajnEventojn(
     onMove: ( ev: any ) => void,
     onEnd: () => void
 ): void {
@@ -27,7 +27,7 @@ function setupPointerEvents(
 /**
  * Remove pointer event listeners for drag/resize operations
  */
-function removePointerEvents(
+function forigiMontrajnEventojn(
     onMove: ( ev: any ) => void,
     onEnd: () => void
 ): void {
@@ -44,13 +44,13 @@ interface IconGridLike {
     container: HTMLElement | null;
     rows: number;
     cols: number;
-    fixedWidth: number | null;
-    fixedHeight: number | null;
-    isMobile: boolean;
-    snapAfterDrag( el: HTMLElement ): void;
-    isAreaOccupied( c: number, r: number, colSpan: number, rowSpan: number, excludeEl: HTMLElement | null ): boolean;
-    applyPosition( el: HTMLElement, c: number, r: number, xOffset?: number ): void;
-    updateAdaptiveOrientation( el: HTMLElement ): void;
+    fiksaLarĝo: number | null;
+    fiksaAlto: number | null;
+    estasPortebla: boolean;
+    alakrogiPostTrenado( el: HTMLElement ): void;
+    cxuAreoOkupita( c: number, r: number, colSpan: number, rowSpan: number, excludeEl: HTMLElement | null ): boolean;
+    aplikiPozicion( el: HTMLElement, c: number, r: number, xOffset?: number ): void;
+    gxisdatigiAdaptanOrientigon( el: HTMLElement ): void;
 }
 
 /**
@@ -61,7 +61,7 @@ interface IconGridLike {
  * @param {number} startY - Start Y position
  * @param {Function} onDragEnd - Callback when drag ends
  */
-export function setupTileDrag( grid: IconGridLike, el: HTMLElement, startX: number, startY: number, onDragEnd: (() => void) | null ): void {
+export function agordiKaheloTreni( grid: IconGridLike, el: HTMLElement, startX: number, startY: number, onDragEnd: (() => void) | null ): void {
     const startLeft = el.offsetLeft;
     const startTop = el.offsetTop;
     let startMenuClosed = false;
@@ -100,7 +100,7 @@ export function setupTileDrag( grid: IconGridLike, el: HTMLElement, startX: numb
             el.style.left = clientX - el.offsetWidth / 2 + "px";
             el.style.top = clientY - el.offsetHeight / 2 + "px";
         } else {
-            const { width: containerW, height: containerH } = getContainerDimensions( grid.fixedWidth, grid.fixedHeight, grid.container );
+            const { width: containerW, height: containerH } = getContainerDimensions( grid.fiksaLarĝo, grid.fiksaAlto, grid.container );
             const gap = CONSTANTS.DIM.GAP_SIZE;
             const cellW = ( containerW - ( grid.cols - 1 ) * gap ) / grid.cols;
             const cellH = ( containerH - ( grid.rows - 1 ) * gap ) / grid.rows;
@@ -142,10 +142,10 @@ export function setupTileDrag( grid: IconGridLike, el: HTMLElement, startX: numb
             if ( onDragEnd ) onDragEnd();
             if ( originalNextSibling ) originalParent.insertBefore( el, originalNextSibling );
             else originalParent.appendChild( el );
-            grid.snapAfterDrag( el );
+            grid.alakrogiPostTrenado( el );
         } else {
             if ( onDragEnd ) onDragEnd();
-            grid.snapAfterDrag( el );
+            grid.alakrogiPostTrenado( el );
         }
     };
 
@@ -157,11 +157,11 @@ export function setupTileDrag( grid: IconGridLike, el: HTMLElement, startX: numb
     };
 
     const onEnd = () => {
-        removePointerEvents( onMove, onEnd );
+        forigiMontrajnEventojn( onMove, onEnd );
         up();
     };
 
-    setupPointerEvents( onMove, onEnd );
+    agordiMontrajnEventojn( onMove, onEnd );
 }
 
 /**
@@ -171,10 +171,10 @@ export function setupTileDrag( grid: IconGridLike, el: HTMLElement, startX: numb
  * @param {number} startX - Start X position
  * @param {number} startY - Start Y position
  */
-export function setupTileResize( grid: IconGridLike, el: HTMLElement, startX: number, startY: number ): void {
+export function agordiKaheloGrandSxangxi( grid: IconGridLike, el: HTMLElement, startX: number, startY: number ): void {
     const startW = el.offsetWidth;
     const startH = el.offsetHeight;
-    const { width: containerW, height: containerH } = getContainerDimensions( grid.fixedWidth, grid.fixedHeight, grid.container );
+    const { width: containerW, height: containerH } = getContainerDimensions( grid.fiksaLarĝo, grid.fiksaAlto, grid.container );
     const gap = CONSTANTS.DIM.GAP_SIZE;
     const cellW = ( containerW - ( grid.cols - 1 ) * gap ) / grid.cols;
     const cellH = ( containerH - ( grid.rows - 1 ) * gap ) / grid.rows;
@@ -191,7 +191,7 @@ export function setupTileResize( grid: IconGridLike, el: HTMLElement, startX: nu
         if ( colSpan < 1 ) colSpan = 1;
         if ( rowSpan < 1 ) rowSpan = 1;
 
-        if ( grid.isAreaOccupied( parseInt( el.dataset.col || "0" ), parseInt( el.dataset.row || "0" ), colSpan, rowSpan, el ) ) return;
+        if ( grid.cxuAreoOkupita( parseInt( el.dataset.col || "0" ), parseInt( el.dataset.row || "0" ), colSpan, rowSpan, el ) ) return;
 
         el.style.width = `${cellW * colSpan + ( colSpan - 1 ) * gap}px`;
         el.style.height = `${cellH * rowSpan + ( rowSpan - 1 ) * gap}px`;
@@ -208,7 +208,7 @@ export function setupTileResize( grid: IconGridLike, el: HTMLElement, startX: nu
         if ( el.dataset.pendingColSpan ) {
             const newColSpan = parseInt( el.dataset.pendingColSpan );
             const newRowSpan = parseInt( el.dataset.pendingRowSpan || "1" );
-            if ( !grid.isAreaOccupied( parseInt( el.dataset.col || "0" ), parseInt( el.dataset.row || "0" ), newColSpan, newRowSpan, el ) ) {
+            if ( !grid.cxuAreoOkupita( parseInt( el.dataset.col || "0" ), parseInt( el.dataset.row || "0" ), newColSpan, newRowSpan, el ) ) {
                 el.dataset.colSpan = newColSpan.toString();
                 el.dataset.rowSpan = newRowSpan.toString();
             }
@@ -217,8 +217,8 @@ export function setupTileResize( grid: IconGridLike, el: HTMLElement, startX: nu
         }
 
         void el.offsetWidth;
-        grid.applyPosition( el, parseInt( el.dataset.col || "0" ), parseInt( el.dataset.row || "0" ) );
-        grid.updateAdaptiveOrientation( el );
+        grid.aplikiPozicion( el, parseInt( el.dataset.col || "0" ), parseInt( el.dataset.row || "0" ) );
+        grid.gxisdatigiAdaptanOrientigon( el );
 
         // Save tile layout to storage
         if ( grid.containerId === "desktop" ) ( window as any ).DesktopIconManager?._saveDesktopLayout();
@@ -231,9 +231,9 @@ export function setupTileResize( grid: IconGridLike, el: HTMLElement, startX: nu
     };
 
     const onEnd = () => {
-        removePointerEvents( onMove, onEnd );
+        forigiMontrajnEventojn( onMove, onEnd );
         up();
     };
 
-    setupPointerEvents( onMove, onEnd );
+    agordiMontrajnEventojn( onMove, onEnd );
 }

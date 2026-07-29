@@ -1,6 +1,6 @@
 // ≺⧼ Storage Utilities ⧽≻
 
-const StorageUtil = {
+const KonservejaUtilo = {
     /**
      * Get item from localStorage
      * @param {string} key
@@ -124,4 +124,4 @@ const StorageUtil = {
 };
 
 // Attach to window for global access - use StorageUtil to avoid conflict with native Storage
-( window as any ).StorageUtil = StorageUtil;
+( window as any ).StorageUtil = KonservejaUtilo;

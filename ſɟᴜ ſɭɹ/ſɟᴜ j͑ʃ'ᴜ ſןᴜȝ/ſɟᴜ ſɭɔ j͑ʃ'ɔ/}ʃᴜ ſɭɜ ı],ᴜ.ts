@@ -10,15 +10,15 @@ import * as THREE from "three";
 /**
  * Identifier for each supported shape.
  */
-export type ShapeId = "cube" | "slab" | "wedge" | "panel" | "pillar" | "cylinder";
+export type FormoId = "cube" | "slab" | "wedge" | "panel" | "pillar" | "cylinder";
 
 /**
  * Description of a shape.
- *     @param id ( ShapeId ) - shape id.
+ *     @param id ( FormoId ) - shape id.
  *     @param name ( string ) - display name.
  */
-export interface ShapeDef {
-    id: ShapeId;
+export interface FormoDifino {
+    id: FormoId;
     name: string;
 }
 
@@ -26,7 +26,7 @@ export interface ShapeDef {
  * All supported shapes. The stairs shape is folded into wedge ( a triangular
  * prism ) so Minecraft stairs and the free wedge share one geometry.
  */
-export const SHAPES: ShapeDef[] = [
+export const FORMOJ: FormoDifino[] = [
     { id: "cube", name: "Cube" },
     { id: "slab", name: "Slab" },
     { id: "panel", name: "Panel" },
@@ -39,7 +39,7 @@ export const SHAPES: ShapeDef[] = [
  * Block ids whose shape is the half-height "slab".
  * Unions of original numeric ranges: 44,46,48,50,52,54,56 — 125..127 — 181 — 203..205.
  */
-const SLAB_IDS: ReadonlySet<number> = new Set([
+const PLATAJ_IDOJ: ReadonlySet<number> = new Set([
     44, 46, 48, 50, 52, 54, 56,
     125, 126, 127,
     181,
@@ -49,7 +49,7 @@ const SLAB_IDS: ReadonlySet<number> = new Set([
 /**
  * Block ids whose shape is the triangular-prism "wedge" ( stairs share this ).
  */
-const WEDGE_IDS: ReadonlySet<number> = new Set([
+const KOJNOJ_IDOJ: ReadonlySet<number> = new Set([
     53, 67,
     108, 109, 114,
     126, 128,
@@ -62,7 +62,7 @@ const WEDGE_IDS: ReadonlySet<number> = new Set([
 /**
  * Block ids whose shape is the slim "pillar" ( half-width x 1 x half-depth ).
  */
-const PILLAR_IDS: ReadonlySet<number> = new Set([
+const PILIERAJ_IDOJ: ReadonlySet<number> = new Set([
     155, 202, 203
 ]);
 
@@ -70,23 +70,23 @@ const PILLAR_IDS: ReadonlySet<number> = new Set([
  * Map a Minecraft legacy numeric block id to the shape it should render with.
  * Blocks without a special shape fall back to the cube.
  *     @param id ( number ) - minecraft numeric block id.
- * @returns ShapeId
+ * @returns FormoId
  */
-export function shapeForBlockId( id: number ): ShapeId {
-    if ( SLAB_IDS.has(id) ) return "slab";
-    if ( WEDGE_IDS.has(id) ) return "wedge";
-    if ( PILLAR_IDS.has(id) ) return "pillar";
+export function formoPorBlokoId( id: number ): FormoId {
+    if ( PLATAJ_IDOJ.has(id) ) return "slab";
+    if ( KOJNOJ_IDOJ.has(id) ) return "wedge";
+    if ( PILIERAJ_IDOJ.has(id) ) return "pillar";
     return "cube";
 }
 
 /**
  * Build a geometry for the given shape, centered at the origin and sized to
  * fill a 1x1x1 cell ( half extents of 0.5 ).
- *     @param shape ( ShapeId ) - shape id.
+ *     @param formo ( FormoId ) - shape id.
  * @returns BufferGeometry
  */
-export function buildShapeGeometry(shape: ShapeId): THREE.BufferGeometry {
-    switch (shape) {
+export function konstruiFormonGeometrion(formo: FormoId): THREE.BufferGeometry {
+    switch (formo) {
         case "slab":
             return new THREE.BoxGeometry(1, ( 1 / 2 ), 1).translate(0, -( 1 / 4 ), 0);
         case "panel":
@@ -94,7 +94,7 @@ export function buildShapeGeometry(shape: ShapeId): THREE.BufferGeometry {
         case "pillar":
             return new THREE.BoxGeometry(( 1 / 2 ), 1, ( 1 / 2 ));
         case "wedge":
-            return buildWedgeGeometry();
+            return konstruiKojnonGeometrion();
         case "cylinder":
             return new THREE.CylinderGeometry(( 1 / 2 ), ( 1 / 2 ), 1, 0o30);
         case "cube":
@@ -108,7 +108,7 @@ export function buildShapeGeometry(shape: ShapeId): THREE.BufferGeometry {
  * one side and rises to the top on the opposite side.
  * @returns BufferGeometry
  */
-function buildWedgeGeometry(): THREE.BufferGeometry {
+function konstruiKojnonGeometrion(): THREE.BufferGeometry {
     const shape = new THREE.Shape();
     shape.moveTo(-0.5, -0.5);
     shape.lineTo(0.5, -0.5);

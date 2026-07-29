@@ -11,7 +11,7 @@
  *     name ( string ) - Minecraft block name
  *     color ( string ) - representative hex color
  */
-export interface MinecraftBlock {
+export interface MajnkraftaBloko {
     id: number;
     name: string;
     color: string;
@@ -23,7 +23,7 @@ export interface MinecraftBlock {
  *     [ 0 ] ( string ) - dye display name.
  *     [ 1 ] ( string ) - representative hex color.
  */
-const DYE_COLORS: ReadonlyArray<readonly [ string, string ]> = [
+const TINKOLOROJ: ReadonlyArray<readonly [ string, string ]> = [
     [ "White", "#e8e8e8" ],
     [ "Orange", "#d89048" ],
     [ "Magenta", "#b848a8" ],
@@ -48,10 +48,10 @@ const DYE_COLORS: ReadonlyArray<readonly [ string, string ]> = [
  *     startId ( number ) - first numeric block id of the family.
  *     family ( string ) - family suffix appended to each dye name.
  * Returns block list in order matching DYE_COLORS.
- * Example. buildDyeFamily( 256, "Wool" ) => [ { id:256,name:"White Wool",...}, ... ].
+ * Example. konstruiTinkolortanFamilion( 256, "Wool" ) => [ { id:256,name:"White Wool",...}, ... ].
  */
-function buildDyeFamily(startId: number, family: string): MinecraftBlock[] {
-    return DYE_COLORS.map(([dye, color], i) => ({
+function konstruiTinkolortanFamilion(startId: number, family: string): MajnkraftaBloko[] {
+    return TINKOLOROJ.map(([dye, color], i) => ({
         id: startId + i,
         name: `${dye} ${family}`,
         color
@@ -64,7 +64,7 @@ function buildDyeFamily(startId: number, family: string): MinecraftBlock[] {
  *     pair ( readonly [ name, color ] ) - human name plus hex.
  * Returns block.
  */
-function block(id: number, pair: readonly [ string, string ]): MinecraftBlock {
+function bloko(id: number, pair: readonly [ string, string ]): MajnkraftaBloko {
     return { id, name: pair[0], color: pair[1] };
 }
 
@@ -72,7 +72,7 @@ function block(id: number, pair: readonly [ string, string ]): MinecraftBlock {
  * Palette of Minecraft blocks with their legacy numeric ids and colors.
  * Colors use the #n0n0n0 or #n8n8n8 format ( n is any 0-f digit ).
  */
-export const MINECRAFT_BLOCKS: MinecraftBlock[] = [
+export const MAJNKRAFTAJ_BLOKOJ: MajnkraftaBloko[] = [
     { id: 0, name: "Air", color: "#d0d0d0" },
     { id: 1, name: "Stone", color: "#888888" },
     { id: 2, name: "Grass", color: "#788858" },
@@ -294,7 +294,7 @@ export const MINECRAFT_BLOCKS: MinecraftBlock[] = [
     { id: 217, name: "Shulker Box", color: "#a888c8" },
 
     // ── Glazed Terracotta ( IDs 218..233 — full 16-color palette ) ──
-    ...buildDyeFamily( 218, "Glazed Terracotta" ),
+    ...konstruiTinkolortanFamilion( 218, "Glazed Terracotta" ),
 
     { id: 234, name: "Concrete", color: "#c8c8c8" },
     { id: 235, name: "Concrete Powder", color: "#c8c8c8" },
@@ -307,49 +307,49 @@ export const MINECRAFT_BLOCKS: MinecraftBlock[] = [
     // ── Concrete ( IDs 242..255 — only the 14-entry subset used by the
     //    legacy palette: Black, White, Orange, Magenta, Light Blue, Yellow,
     //    Lime, Pink, Gray, Silver, Cyan, Purple, Blue, Brown ) ──
-    block( 242, [ "Black Concrete", "#282828" ] ),
-    block( 243, [ "White Concrete", "#e8e8e8" ] ),
-    block( 244, [ "Orange Concrete", "#d89048" ] ),
-    block( 245, [ "Magenta Concrete", "#b848a8" ] ),
-    block( 246, [ "Light Blue Concrete", "#68a8d8" ] ),
-    block( 247, [ "Yellow Concrete", "#d8c848" ] ),
-    block( 248, [ "Lime Concrete", "#88c848" ] ),
-    block( 249, [ "Pink Concrete", "#d888b8" ] ),
-    block( 250, [ "Gray Concrete", "#888888" ] ),
-    block( 251, [ "Silver Concrete", "#c0c0c0" ] ),
-    block( 252, [ "Cyan Concrete", "#58c0c0" ] ),
-    block( 253, [ "Purple Concrete", "#8848b8" ] ),
-    block( 254, [ "Blue Concrete", "#4858b8" ] ),
-    block( 255, [ "Brown Concrete", "#884818" ] ),
+    bloko( 242, [ "Black Concrete", "#282828" ] ),
+    bloko( 243, [ "White Concrete", "#e8e8e8" ] ),
+    bloko( 244, [ "Orange Concrete", "#d89048" ] ),
+    bloko( 245, [ "Magenta Concrete", "#b848a8" ] ),
+    bloko( 246, [ "Light Blue Concrete", "#68a8d8" ] ),
+    bloko( 247, [ "Yellow Concrete", "#d8c848" ] ),
+    bloko( 248, [ "Lime Concrete", "#88c848" ] ),
+    bloko( 249, [ "Pink Concrete", "#d888b8" ] ),
+    bloko( 250, [ "Gray Concrete", "#888888" ] ),
+    bloko( 251, [ "Silver Concrete", "#c0c0c0" ] ),
+    bloko( 252, [ "Cyan Concrete", "#58c0c0" ] ),
+    bloko( 253, [ "Purple Concrete", "#8848b8" ] ),
+    bloko( 254, [ "Blue Concrete", "#4858b8" ] ),
+    bloko( 255, [ "Brown Concrete", "#884818" ] ),
 
     // ── Wool Colors ( IDs 256..271 — full 16-color palette ) ──
-    ...buildDyeFamily( 256, "Wool" ),
+    ...konstruiTinkolortanFamilion( 256, "Wool" ),
 
     // ── Wood Planks ( IDs 272..276 — by wood type, not dye ) ──
-    block( 272, [ "Spruce Planks", "#788848" ] ),
-    block( 273, [ "Birch Planks", "#d8c898" ] ),
-    block( 274, [ "Jungle Planks", "#688848" ] ),
-    block( 275, [ "Acacia Planks", "#b88858" ] ),
-    block( 276, [ "Dark Oak Planks", "#588838" ] ),
+    bloko( 272, [ "Spruce Planks", "#788848" ] ),
+    bloko( 273, [ "Birch Planks", "#d8c898" ] ),
+    bloko( 274, [ "Jungle Planks", "#688848" ] ),
+    bloko( 275, [ "Acacia Planks", "#b88858" ] ),
+    bloko( 276, [ "Dark Oak Planks", "#588838" ] ),
 
     // ── Logs ( IDs 277..281 ) ──
-    block( 277, [ "Spruce Log", "#483828" ] ),
-    block( 278, [ "Birch Log", "#d8d8c8" ] ),
-    block( 279, [ "Jungle Log", "#688848" ] ),
-    block( 280, [ "Acacia Log", "#585858" ] ),
-    block( 281, [ "Dark Oak Log", "#483818" ] ),
+    bloko( 277, [ "Spruce Log", "#483828" ] ),
+    bloko( 278, [ "Birch Log", "#d8d8c8" ] ),
+    bloko( 279, [ "Jungle Log", "#688848" ] ),
+    bloko( 280, [ "Acacia Log", "#585858" ] ),
+    bloko( 281, [ "Dark Oak Log", "#483818" ] ),
 
     // ── Stained Glass Colors ( IDs 282..297 — full 16-color palette ) ──
-    ...buildDyeFamily( 282, "Stained Glass" ),
+    ...konstruiTinkolortanFamilion( 282, "Stained Glass" ),
 
     // ── Saplings ( IDs 298..301 ) ──
-    block( 298, [ "Spruce Sapling", "#488848" ] ),
-    block( 299, [ "Birch Sapling", "#588848" ] ),
-    block( 300, [ "Jungle Sapling", "#388848" ] ),
-    block( 301, [ "Acacia Sapling", "#588848" ] ),
+    bloko( 298, [ "Spruce Sapling", "#488848" ] ),
+    bloko( 299, [ "Birch Sapling", "#588848" ] ),
+    bloko( 300, [ "Jungle Sapling", "#388848" ] ),
+    bloko( 301, [ "Acacia Sapling", "#588848" ] ),
 
     // ── Leaves ( IDs 302..304 ) ──
-    block( 302, [ "Spruce Leaves", "#287828" ] ),
-    block( 303, [ "Birch Leaves", "#489848" ] ),
-    block( 304, [ "Jungle Leaves", "#388838" ] )
+    bloko( 302, [ "Spruce Leaves", "#287828" ] ),
+    bloko( 303, [ "Birch Leaves", "#489848" ] ),
+    bloko( 304, [ "Jungle Leaves", "#388838" ] )
 ];

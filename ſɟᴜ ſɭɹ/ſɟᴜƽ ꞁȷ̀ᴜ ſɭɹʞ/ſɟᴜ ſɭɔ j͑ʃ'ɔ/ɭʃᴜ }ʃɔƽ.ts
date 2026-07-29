@@ -1,11 +1,11 @@
 // ≺⧼ Layer & Page Managers ⧽≻
 
 import {
-    layerState, objectState, pageState,
-    CANVAS_WIDTH, CANVAS_HEIGHT, Layer, Page
-} from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
-
-import { redrawCanvas, saveState, switchToPageCanvas, setCanvasSizeForPage, drawWhiteboardGrid } from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
+    tavolstato, objektstato, paĝostato,
+    TABULA_LARGXO, TABULA_ALTO, Tavolo, Paĝo
+} from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";import {
+    redesegniTabulon, konserviStaton, sxangxiAlPagaTabulo, agordiTabulanGrandonPorPago, desegniTabulanKradon
+} from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
 
 // ⟪ Base Item Manager Interface 📋 ⟫
 
@@ -99,51 +99,51 @@ export abstract class BaseItemManager<T extends { id: number; name: string; visi
 
 // ⟪ Layer Manager Class 📚 ⟫
 
-export class LayerManager extends BaseItemManager<Layer> {
-    layers: Layer[];
+export class LayerManager extends BaseItemManager<Tavolo> {
+    layers: Tavolo[];
 
     constructor() {
         super( "ꞙɭ" );
         this.layers = [];
     }
 
-    protected createItem( id: number, name: string ): Layer {
-        const layer: Layer = { id, name, visible: true };
+    protected createItem( id: number, name: string ): Tavolo {
+        const layer: Tavolo = { id, name, visible: true };
         this.layers.push( layer );
         return layer;
     }
 
     syncToState(): void {
-        layerState.layers = this.layers;
-        layerState.activeId = this.activeId;
-        layerState.counter = this.counter;
+        tavolstato.layers = this.layers;
+        tavolstato.activeId = this.activeId;
+        tavolstato.counter = this.counter;
     }
 
-    protected override onItemDeleting( layer: Layer ): void {
-        objectState.objects = objectState.objects.filter( o => o.layerId !== layer.id );
+    protected override onItemDeleting( layer: Tavolo ): void {
+        objektstato.objects = objektstato.objects.filter( o => o.layerId !== layer.id );
     }
 }
 
-export const layerManager = new LayerManager();
+export const tavolAdministranto = new LayerManager();
 
 // ⟪ Page Manager Class 📄 ⟫
 
-export class PageManager extends BaseItemManager<Page> {
-    pages: Page[];
+export class PageManager extends BaseItemManager<Paĝo> {
+    pages: Paĝo[];
 
     constructor() {
         super( "ꞙɭ" );
         this.pages = [];
     }
 
-    protected createItem( id: number, name: string ): Page {
+    protected createItem( id: number, name: string ): Paĝo {
         const activePage = this.getActive();
-        const page: Page = {
+        const page: Paĝo = {
             id,
             name,
             visible: true,
-            width: activePage?.width || CANVAS_WIDTH,
-            height: activePage?.height || CANVAS_HEIGHT,
+            width: activePage?.width || TABULA_LARGXO,
+            height: activePage?.height || TABULA_ALTO,
             infinite: true,  // Default to full/whiteboard mode
             objects: []
         };
@@ -152,12 +152,12 @@ export class PageManager extends BaseItemManager<Page> {
     }
 
     syncToState(): void {
-        pageState.pages = this.pages;
-        pageState.activeId = this.activeId;
-        pageState.counter = this.counter;
+        paĝostato.pages = this.pages;
+        paĝostato.activeId = this.activeId;
+        paĝostato.counter = this.counter;
     }
 
-    override create( name?: string ): Page {
+    override create( name?: string ): Paĝo {
         const page = super.create( name );
 
         if ( this.counter > 1 ) {
@@ -216,7 +216,7 @@ export class PageManager extends BaseItemManager<Page> {
         } );
 
         if ( activePage ) {
-            switchToPageCanvas( activePage );
+            sxangxiAlPagaTabulo( activePage );
         }
     }
 
@@ -224,7 +224,7 @@ export class PageManager extends BaseItemManager<Page> {
         document.getElementById( `page-${pageId}` )?.remove();
     }
 
-    createPageContainer( page: Page ): void {
+    createPageContainer( page: Paĝo ): void {
         const mainContainer = document.getElementById( "whiteboardContainer" );
         if ( !mainContainer?.parentNode ) return;
 
@@ -245,12 +245,12 @@ export class PageManager extends BaseItemManager<Page> {
         pageCanvas.className = "whiteboard-canvas";
         pageCanvas.classList.toggle( "bordered-canvas", !page.infinite );
         pageCanvas.classList.toggle( "infinite-canvas", page.infinite );
-        setCanvasSizeForPage( pageCanvas, page );
+        agordiTabulanGrandonPorPago( pageCanvas, page );
 
         const ctx = pageCanvas.getContext( "2d" );
         if ( ctx ) {
             if ( page.infinite ) {
-                drawWhiteboardGrid( ctx, pageCanvas.width, pageCanvas.height );
+                desegniTabulanKradon( ctx, pageCanvas.width, pageCanvas.height );
             } else {
                 ctx.fillStyle = "#ffffff";
                 ctx.fillRect( 0, 0, pageCanvas.width, pageCanvas.height );
@@ -263,87 +263,87 @@ export class PageManager extends BaseItemManager<Page> {
     }
 }
 
-export const pageManager = new PageManager();
+export const pagAdministranto = new PageManager();
 
 // ⟪ Shared Sync & Save Helper 📋 ⟫
 
 function syncAndSave( renderListFn: () => void ): void {
     renderListFn();
-    redrawCanvas();
-    saveState();
+    redesegniTabulon();
+    konserviStaton();
 }
 
 // ⟪ Layer Management Functions 📚 ⟫
 
-export function syncLayersAndSave(): void {
-    layerManager.syncToState();
-    syncAndSave( renderLayerList );
+export function sinkronigiTavolojnKajKonservi(): void {
+    tavolAdministranto.syncToState();
+    syncAndSave( renderiTavolojnListon );
 }
 
-export function addLayer(): void {
-    layerManager.create();
-    syncLayersAndSave();
+export function aldoniTavolon(): void {
+    tavolAdministranto.create();
+    sinkronigiTavolojnKajKonservi();
 }
 
-export function deleteLayer(): void {
-    if ( layerManager.delete( layerState.activeId ) ) syncLayersAndSave();
+export function forigiTavolon(): void {
+    if ( tavolAdministranto.delete( tavolstato.activeId ) ) sinkronigiTavolojnKajKonservi();
 }
 
-export function moveLayer( direction: number ): void {
-    if ( layerManager.move( layerState.activeId, direction ) ) {
-        layerManager.syncToState();
-        renderLayerList();
-        saveState();
+export function moviTavolon( direction: number ): void {
+    if ( tavolAdministranto.move( tavolstato.activeId, direction ) ) {
+        tavolAdministranto.syncToState();
+        renderiTavolojnListon();
+        konserviStaton();
     }
 }
 
-export function toggleLayerVisibility( layerId: number ): void {
-    if ( layerManager.toggleVisibility( layerId ) ) syncLayersAndSave();
+export function baskuligiTavolanVideblon( layerId: number ): void {
+    if ( tavolAdministranto.toggleVisibility( layerId ) ) sinkronigiTavolojnKajKonservi();
 }
 
-export function selectLayer( layerId: number ): void {
-    layerManager.setActive( layerId );
-    layerManager.syncToState();
-    renderLayerList();
+export function elektiTavolon( layerId: number ): void {
+    tavolAdministranto.setActive( layerId );
+    tavolAdministranto.syncToState();
+    renderiTavolojnListon();
 }
 
 // ⟪ Page Management Functions 📄 ⟫
 
-export function syncPagesAndSave(): void {
-    pageManager.syncToState();
-    syncAndSave( renderPageList );
+export function sinkronigiPagojnKajKonservi(): void {
+    pagAdministranto.syncToState();
+    syncAndSave( renderiPagojnListon );
 }
 
-export function addPage(): void {
-    pageManager.create();
-    syncPagesAndSave();
+export function aldoniPagon(): void {
+    pagAdministranto.create();
+    sinkronigiPagojnKajKonservi();
 }
 
-export function deletePage(): void {
-    if ( pageManager.delete( pageState.activeId ) ) syncPagesAndSave();
+export function forigiPagon(): void {
+    if ( pagAdministranto.delete( paĝostato.activeId ) ) sinkronigiPagojnKajKonservi();
 }
 
-export function movePage( direction: number ): void {
-    if ( pageManager.move( pageState.activeId, direction ) ) {
-        pageManager.syncToState();
-        renderPageList();
-        saveState();
+export function moviPagon( direction: number ): void {
+    if ( pagAdministranto.move( paĝostato.activeId, direction ) ) {
+        pagAdministranto.syncToState();
+        renderiPagojnListon();
+        konserviStaton();
     }
 }
 
-export function togglePageVisibility( pageId: number ): void {
-    if ( pageManager.toggleVisibility( pageId ) ) syncPagesAndSave();
+export function baskuligiPaganVideblon( pageId: number ): void {
+    if ( pagAdministranto.toggleVisibility( pageId ) ) sinkronigiPagojnKajKonservi();
 }
 
-export function selectPage( pageId: number ): void {
-    pageManager.setActive( pageId );
-    pageManager.syncToState();
-    renderPageList();
+export function elektiPagon( pageId: number ): void {
+    pagAdministranto.setActive( pageId );
+    pagAdministranto.syncToState();
+    renderiPagojnListon();
 }
 
 // ⟪ Shared Item List Rendering 📋 ⟫
 
-export function renderItemList<T extends { id: number; name: string; visible: boolean }>(
+export function renderiObjektojnListon<T extends { id: number; name: string; visible: boolean }>(
     listId: string,
     items: T[],
     visibilityClass: string,
@@ -374,24 +374,24 @@ export function renderItemList<T extends { id: number; name: string; visible: bo
     } );
 }
 
-export function renderLayerList(): void {
-    renderItemList(
+export function renderiTavolojnListon(): void {
+    renderiObjektojnListon(
         "layerList",
-        layerState.layers.slice().reverse(),
+        tavolstato.layers.slice().reverse(),
         "layer-visibility",
-        layerState.activeId,
-        toggleLayerVisibility,
-        selectLayer
+        tavolstato.activeId,
+        baskuligiTavolanVideblon,
+        elektiTavolon
     );
 }
 
-export function renderPageList(): void {
-    renderItemList(
+export function renderiPagojnListon(): void {
+    renderiObjektojnListon(
         "pageList",
-        pageState.pages.slice().reverse(),
+        paĝostato.pages.slice().reverse(),
         "page-visibility",
-        pageState.activeId,
-        togglePageVisibility,
-        selectPage
+        paĝostato.activeId,
+        baskuligiPaganVideblon,
+        elektiPagon
     );
 }

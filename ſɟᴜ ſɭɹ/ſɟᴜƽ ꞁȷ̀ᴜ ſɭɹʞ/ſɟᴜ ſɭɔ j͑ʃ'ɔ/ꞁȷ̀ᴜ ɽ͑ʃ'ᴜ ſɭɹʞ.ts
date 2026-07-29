@@ -1,68 +1,68 @@
 // ≺⧼ Canvas Rendering & Management ⧽≻
 
 import {
-    canvas, ctx, state, layerState, objectState, pageState, panState, historyState,
-    CANVAS_WIDTH, CANVAS_HEIGHT, PAGE_SIZE_PRESETS,
-    HANDLE_SIZE, HANDLE_RADIUS,
-    ROTATE_HANDLE_OFFSET, ROTATE_HANDLE_RADIUS, HISTORY_MAX,
-    LINE_DASH_PATTERN, SELECTION_LINE_WIDTH, HANDLE_FILL_COLOR, HANDLE_STROKE_COLOR, SELECTION_STROKE_COLOR,
-    WhiteboardObject, Page, setActiveCanvas
+    canvas, ctx, stato, tavolstato, objektstato, paĝostato, panstato, historioStato,
+    TABULA_LARGXO, TABULA_ALTO, PAGXGRANDO_PRETOJ,
+    TENILA_GRANDO, TENILA_RADIUSO,
+    ROTACIA_TENILA_FORGXO, ROTACIA_TENILA_RADIUSO, HISTORIA_MAKS,
+    LINIA_PUNKTO_PATRONO, SELEKTA_LINIO_LARGXO, TENILA_PLENIGA_KOLORO, TENILA_TRABATA_KOLORO, SELEKTA_TRABATA_KOLORO,
+    TabulObjekto, Paĝo, aktivigiTabulon
 } from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
 
-import { pageManager } from "./ɭʃᴜ }ʃɔƽ.js";
+import { pagAdministranto } from "./ɭʃᴜ }ʃɔƽ.js";
 
 import {
-    drawShapePath, drawPathSegments,
-    getCenterX, getCenterY, getHandles,
-    getConnectionEndpoints
+    desegniFormanVojon, desegniVojojnSegmentojn,
+    akiriCentronX, akiriCentronY, akiriTenilojn,
+    akiriKonektajnFinpunktojn
 } from "./ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
 
 import {
-    drawCachedText, renderHtmlTextToCanvas
+    drawCachedText, renderiHTMLTekstonAlCanvas
 } from "./ſןᴜ ʃɜƽ.js";
 
 // ⟪ Canvas Elements 🎨 ⟫
 
-// Active canvas is managed by setActiveCanvas() in the constants module.
+// Active canvas is managed by aktivigiTabulon() in the constants module.
 // These lightweight wrappers provide backward compatibility.
-export function getCurrentCanvas(): HTMLCanvasElement | null { return canvas; }
-export function getCurrentCtx(): CanvasRenderingContext2D | null { return ctx; }
+export function akiriAktualanTabulon(): HTMLCanvasElement | null { return canvas; }
+export function akiriAktualanCtx(): CanvasRenderingContext2D | null { return ctx; }
 
 /**
  * Return the currently active page, or undefined if none exists.
- * Wraps pageManager.getActive() so callers do not need to import PageManager directly.
+ * Wraps pagAdministranto.getActive() so callers do not need to import PageManager directly.
  */
-export function getActivePage(): Page | undefined {
-    return pageManager.getActive();
+export function akiriAktivanPagon(): Paĝo | undefined {
+    return pagAdministranto.getActive();
 }
 
 /**
  * Return whether the currently active page is in infinite (full-whiteboard) mode.
  */
-export function isActivePageInfinite(): boolean {
-    return getActivePage()?.infinite === true;
+export function cxuAktivaPagoSenfina(): boolean {
+    return akiriAktivanPagon()?.infinite === true;
 }
 
-export function getPageWidth( page: Page | undefined ): number {
+export function akiriPaganLargxon( page: Paĝo | undefined ): number {
     if ( page?.infinite ) return window.innerWidth;
-    return page?.width || CANVAS_WIDTH;
+    return page?.width || TABULA_LARGXO;
 }
 
-export function getPageHeight( page: Page | undefined ): number {
+export function akiriPaganAlton( page: Paĝo | undefined ): number {
     if ( page?.infinite ) return window.innerHeight;
-    return page?.height || CANVAS_HEIGHT;
+    return page?.height || TABULA_ALTO;
 }
 
-export function isInfinitePage( page: Page | undefined ): boolean {
+export function cxuPagoSenfina( page: Paĝo | undefined ): boolean {
     return page?.infinite === true;
 }
 
-export function setCanvasSizeForPage( pageCanvas: HTMLCanvasElement, page: Page | undefined ): void {
-    pageCanvas.width = getPageWidth( page );
-    pageCanvas.height = getPageHeight( page );
+export function agordiTabulanGrandonPorPago( pageCanvas: HTMLCanvasElement, page: Paĝo | undefined ): void {
+    pageCanvas.width = akiriPaganLargxon( page );
+    pageCanvas.height = akiriPaganAlton( page );
 }
 
-export function updateCanvasSizeDisplay(): void {
+export function gxisdatigiTabulanGrandanMontron(): void {
     const sizeDisplay = document.getElementById( "canvasSize" );
     if ( sizeDisplay && canvas ) {
         sizeDisplay.textContent = `${canvas.width} × ${canvas.height}`;
@@ -72,21 +72,21 @@ export function updateCanvasSizeDisplay(): void {
     if ( canvas && widthInput ) widthInput.value = canvas.width.toString();
     if ( canvas && heightInput ) heightInput.value = canvas.height.toString();
     if ( canvas ) {
-        const activePage = getActivePage();
+        const activePage = akiriAktivanPagon();
         let activePreset = "custom";
         if ( activePage?.infinite ) {
             activePreset = "full";
         } else {
-            const matchingPreset = Object.entries( PAGE_SIZE_PRESETS ).find(
+            const matchingPreset = Object.entries( PAGXGRANDO_PRETOJ ).find(
                 ( [ , size ] ) => size.width === canvas!.width && size.height === canvas!.height
             );
             activePreset = matchingPreset?.[ 0 ] || "custom";
         }
-        updatePresetButtons( activePreset );
+        gxisdatigiPretajnButonojn( activePreset );
     }
 }
 
-export function updatePresetButtons( activePreset: string ): void {
+export function gxisdatigiPretajnButonojn( activePreset: string ): void {
     const buttons = document.querySelectorAll<HTMLButtonElement>( "#pageSizePresetButtons button[data-preset]" );
     buttons.forEach( btn => {
         const isActive = btn.dataset.preset === activePreset;
@@ -98,7 +98,7 @@ export function updatePresetButtons( activePreset: string ): void {
  * Update the border class on the canvas based on page type.
  * Infinite (full) pages have no border; other page sizes have a visible border.
  */
-function updateCanvasBorder( pageCanvas: HTMLCanvasElement, page: Page ): void {
+function updateCanvasBorder( pageCanvas: HTMLCanvasElement, page: Paĝo ): void {
     pageCanvas.classList.toggle( "bordered-canvas", !page.infinite );
     pageCanvas.classList.toggle( "infinite-canvas", page.infinite );
 }
@@ -108,38 +108,38 @@ function updateCanvasBorder( pageCanvas: HTMLCanvasElement, page: Page ): void {
  * Infinite pages fill the entire viewport behind the toolbar;
  * non-infinite pages stay in the normal flex layout and are scrollable.
  */
-function updateContainerMode( page: Page ): void {
+function updateContainerMode( page: Paĝo ): void {
     const container = document.getElementById( "whiteboardContainer" );
     if ( container ) {
         container.classList.toggle( "infinite-container", page.infinite );
     }
     // Reset pan offset when switching from infinite to non-infinite
     if ( !page.infinite ) {
-        panState.offsetX = 0;
-        panState.offsetY = 0;
-        syncPanToCSS();
+        panstato.offsetX = 0;
+        panstato.offsetY = 0;
+        sinkronigiPanAlCSS();
     }
 }
 
-export function switchToPageCanvas( page: Page ): void {
+export function sxangxiAlPagaTabulo( page: Paĝo ): void {
     const pageCanvas = page.id === 1
         ? document.getElementById( "whiteboardCanvas" ) as HTMLCanvasElement
         : document.getElementById( `pageCanvas-${page.id}` ) as HTMLCanvasElement;
     if ( !pageCanvas ) return;
-    syncPageObjects();
-    setActiveCanvas( pageCanvas );
-    setCanvasSizeForPage( pageCanvas, page );
+    sinkronigiPagajnObjektojn();
+    aktivigiTabulon( pageCanvas );
+    agordiTabulanGrandonPorPago( pageCanvas, page );
     updateCanvasBorder( pageCanvas, page );
     updateContainerMode( page );
-    objectState.objects = page.objects;
-    objectState.selected = [];
-    redrawCanvas();
-    updateCanvasSizeDisplay();
+    objektstato.objects = page.objects;
+    objektstato.selected = [];
+    redesegniTabulon();
+    gxisdatigiTabulanGrandanMontron();
 }
 
-export function syncPageObjects(): void {
-    const activePage = getActivePage();
-    if ( activePage ) activePage.objects = [ ...objectState.objects ];
+export function sinkronigiPagajnObjektojn(): void {
+    const activePage = akiriAktivanPagon();
+    if ( activePage ) activePage.objects = [ ...objektstato.objects ];
 }
 
 // ⟪ Whiteboard Grid Background 📐 ⟫
@@ -149,7 +149,7 @@ export function syncPageObjects(): void {
  * Small dots at regular intervals with slightly larger dots every 5th row/col.
  * Offset by pan position so the grid appears fixed in world space.
  */
-export function drawWhiteboardGrid( ctx: CanvasRenderingContext2D, width: number, height: number ): void {
+export function desegniTabulanKradon( ctx: CanvasRenderingContext2D, width: number, height: number ): void {
     const gridSpacing = 0o30;   // 24px — base-8 friendly
     const dotRadius = 0o1;
     const majorDotRadius = 1 + 0o7 / 0o10;  // 1.875px — base-8 fraction (7/8)
@@ -157,8 +157,8 @@ export function drawWhiteboardGrid( ctx: CanvasRenderingContext2D, width: number
     const majorDotColor = "#c0c0c0";
 
     // Offset grid dots by pan position so they stay fixed in world space
-    const offsetX = ( ( panState.offsetX % gridSpacing ) + gridSpacing ) % gridSpacing;
-    const offsetY = ( ( panState.offsetY % gridSpacing ) + gridSpacing ) % gridSpacing;
+    const offsetX = ( ( panstato.offsetX % gridSpacing ) + gridSpacing ) % gridSpacing;
+    const offsetY = ( ( panstato.offsetY % gridSpacing ) + gridSpacing ) % gridSpacing;
 
     ctx.save();
     ctx.fillStyle = "#ffffff";
@@ -184,10 +184,10 @@ export function drawWhiteboardGrid( ctx: CanvasRenderingContext2D, width: number
  * When zoomed in past the viewport, limits the scroll extent.
  */
 function clampPanForPage( panX: number, panY: number ): { x: number; y: number } {
-    const activePage = getActivePage();
+    const activePage = akiriAktivanPagon();
     if ( !activePage || activePage.infinite || !canvas ) return { x: panX, y: panY };
 
-    const zoom = state.zoomNum / state.zoomDen;
+    const zoom = stato.zoomNum / stato.zoomDen;
     const scaledW = canvas.width * zoom;
     const scaledH = canvas.height * zoom;
     const vw = window.innerWidth;
@@ -199,8 +199,8 @@ function clampPanForPage( panX: number, panY: number ): { x: number; y: number }
     const container = document.getElementById( "whiteboardContainer" );
     if ( !container ) return { x: panX, y: panY };
     const rect = container.getBoundingClientRect();
-    const naturalLeft = rect.left - panState.offsetX;
-    const naturalTop = rect.top - panState.offsetY;
+    const naturalLeft = rect.left - panstato.offsetX;
+    const naturalTop = rect.top - panstato.offsetY;
 
     // --- Horizontal clamp ---
     // Fit range: canvas fully visible within viewport
@@ -240,64 +240,64 @@ function clampPanForPage( panX: number, panY: number ): { x: number; y: number }
  * Also clamps the pan offset so the canvas stays within the viewport.
  * Infinite pages use canvas context translate instead.
  */
-export function syncPanToCSS(): void {
-    const clamped = clampPanForPage( panState.offsetX, panState.offsetY );
-    panState.offsetX = clamped.x;
-    panState.offsetY = clamped.y;
-    document.documentElement.style.setProperty( "--pan-x", `${panState.offsetX}px` );
-    document.documentElement.style.setProperty( "--pan-y", `${panState.offsetY}px` );
+export function sinkronigiPanAlCSS(): void {
+    const clamped = clampPanForPage( panstato.offsetX, panstato.offsetY );
+    panstato.offsetX = clamped.x;
+    panstato.offsetY = clamped.y;
+    document.documentElement.style.setProperty( "--pan-x", `${panstato.offsetX}px` );
+    document.documentElement.style.setProperty( "--pan-y", `${panstato.offsetY}px` );
 }
 
 /**
  * Begin pan-aware drawing context for infinite pages.
  * Call before draw calls, and finishPan after.
  */
-export function beginPanTranslation(): void {
-    const activePage = getActivePage();
-    if ( activePage?.infinite && ctx && ( panState.offsetX !== 0 || panState.offsetY !== 0 ) ) {
+export function komenciPanTradukon(): void {
+    const activePage = akiriAktivanPagon();
+    if ( activePage?.infinite && ctx && ( panstato.offsetX !== 0 || panstato.offsetY !== 0 ) ) {
         ctx.save();
-        ctx.translate( panState.offsetX, panState.offsetY );
+        ctx.translate( panstato.offsetX, panstato.offsetY );
     }
 }
 
 /**
  * End pan-aware drawing context.
  */
-export function endPanTranslation(): void {
-    const activePage = getActivePage();
-    if ( activePage?.infinite && ctx && ( panState.offsetX !== 0 || panState.offsetY !== 0 ) ) {
+export function finiPanTradukon(): void {
+    const activePage = akiriAktivanPagon();
+    if ( activePage?.infinite && ctx && ( panstato.offsetX !== 0 || panstato.offsetY !== 0 ) ) {
         ctx.restore();
     }
 }
 
 // ⟪ Canvas Rendering 🖼️ ⟫
 
-export function redrawCanvas(): void {
+export function redesegniTabulon(): void {
     if ( !ctx || !canvas ) return;
     
-    const activePage = getActivePage();
+    const activePage = akiriAktivanPagon();
     if ( activePage?.infinite ) {
-        drawWhiteboardGrid( ctx, canvas.width, canvas.height );
+        desegniTabulanKradon( ctx, canvas.width, canvas.height );
     } else {
         ctx.fillStyle = "#ffffff";
         ctx.fillRect( 0, 0, canvas.width, canvas.height );
     }
     
-    beginPanTranslation();
+    komenciPanTradukon();
     
-    objectState.objects
+    objektstato.objects
         .filter( obj => {
-            const layer = layerState.layers.find( l => l.id === obj.layerId );
+            const layer = tavolstato.layers.find( l => l.id === obj.layerId );
             return layer && layer.visible;
         } )
         .forEach( obj => drawObject( obj ) );
-    objectState.selected.forEach( obj => drawSelectionBox( obj ) );
+    objektstato.selected.forEach( obj => drawSelectionBox( obj ) );
     
-    endPanTranslation();
+    finiPanTradukon();
 }
 
-export function resizeActivePage( width: number, height: number ): void {
-    const activePage = getActivePage();
+export function grandSxangxiAktivanPagon( width: number, height: number ): void {
+    const activePage = akiriAktivanPagon();
     if ( !activePage || !canvas ) return;
 
     if ( activePage.infinite ) {
@@ -307,17 +307,17 @@ export function resizeActivePage( width: number, height: number ): void {
     } else {
         activePage.width = width;
         activePage.height = height;
-        setCanvasSizeForPage( canvas, activePage );
+        agordiTabulanGrandonPorPago( canvas, activePage );
     }
     updateCanvasBorder( canvas, activePage );
     updateContainerMode( activePage );
-    updateCanvasSizeDisplay();
-    redrawCanvas();
+    gxisdatigiTabulanGrandanMontron();
+    redesegniTabulon();
 }
 
-export function applyObjectTransform( obj: WhiteboardObject ): void {
+export function aplikiObjektonTransformon( obj: TabulObjekto ): void {
     if ( !ctx ) return;
-    const cx = getCenterX( obj ), cy = getCenterY( obj );
+    const cx = akiriCentronX( obj ), cy = akiriCentronY( obj );
     if ( obj.rotation !== undefined && obj.rotation !== 0 ) {
         ctx.translate( cx, cy );
         ctx.rotate( obj.rotation );
@@ -335,10 +335,10 @@ export function applyObjectTransform( obj: WhiteboardObject ): void {
     }
 }
 
-function drawObject( obj: WhiteboardObject ): void {
+function drawObject( obj: TabulObjekto ): void {
     if ( !ctx ) return;
     ctx.save();
-    applyObjectTransform( obj );
+    aplikiObjektonTransformon( obj );
     ctx.strokeStyle = obj.color!;
     ctx.fillStyle = obj.color!;
     ctx.lineWidth = obj.size || 2;
@@ -352,7 +352,7 @@ function drawObject( obj: WhiteboardObject ): void {
             ctx.stroke();
             break;
         case "connection":
-            const endpoints = getConnectionEndpoints( obj );
+            const endpoints = akiriKonektajnFinpunktojn( obj );
             if ( endpoints ) {
                 ctx.beginPath();
                 ctx.moveTo( endpoints.start.x, endpoints.start.y );
@@ -381,24 +381,24 @@ function drawObject( obj: WhiteboardObject ): void {
     ctx.restore();
 }
 
-function drawPath( obj: WhiteboardObject ): void {
+function drawPath( obj: TabulObjekto ): void {
     if ( !ctx || obj.points!.length < 2 ) return;
-    drawPathSegments( obj.points! );
+    desegniVojojnSegmentojn( obj.points! );
     ctx.stroke();
 }
 
-function drawShape( obj: WhiteboardObject ): void {
+function drawShape( obj: TabulObjekto ): void {
     if ( !ctx ) return;
     ctx.strokeStyle = obj.color!;
     ctx.lineWidth = obj.size!;
     ctx.beginPath();
-    drawShapePath( obj.x!, obj.y!, obj.width!, obj.height!, obj.shape! );
+    desegniFormanVojon( obj.x!, obj.y!, obj.width!, obj.height!, obj.shape! );
     ctx.stroke();
 }
 
-function drawSelectionBox( obj: WhiteboardObject ): void {
+function drawSelectionBox( obj: TabulObjekto ): void {
     if ( !ctx ) return;
-    const handles = getHandles( obj );
+    const handles = akiriTenilojn( obj );
     if ( handles.length < 4 ) return;
     
     // Get corner handles (nw, ne, se, sw are indices 0, 1, 2, 3)
@@ -408,10 +408,10 @@ function drawSelectionBox( obj: WhiteboardObject ): void {
     const sw = handles[ 3 ];
     
     ctx.save();
-    ctx.strokeStyle = SELECTION_STROKE_COLOR;
+    ctx.strokeStyle = SELEKTA_TRABATA_KOLORO;
     ctx.fillStyle = "rgba(0,0,0,0)";
-    ctx.lineWidth = SELECTION_LINE_WIDTH;
-    ctx.setLineDash( LINE_DASH_PATTERN );
+    ctx.lineWidth = SELEKTA_LINIO_LARGXO;
+    ctx.setLineDash( LINIA_PUNKTO_PATRONO );
     
     // Draw rotated rectangle connecting corner handles
     ctx.beginPath();
@@ -425,15 +425,15 @@ function drawSelectionBox( obj: WhiteboardObject ): void {
     ctx.restore();
     
     // Draw handles
-    ctx.fillStyle = HANDLE_FILL_COLOR;
-    ctx.strokeStyle = HANDLE_STROKE_COLOR;
+    ctx.fillStyle = TENILA_PLENIGA_KOLORO;
+    ctx.strokeStyle = TENILA_TRABATA_KOLORO;
     ctx.lineWidth = 2;
     ctx.setLineDash( [] );
     for ( let i = 0; i < handles.length && i < 0o10; i++ ) {
         const h = handles[ i ];
         if ( h ) {
             ctx.beginPath();
-            ctx.roundRect( h.x - HANDLE_SIZE / 2, h.y - HANDLE_SIZE / 2, HANDLE_SIZE, HANDLE_SIZE, HANDLE_RADIUS );
+            ctx.roundRect( h.x - TENILA_GRANDO / 2, h.y - TENILA_GRANDO / 2, TENILA_GRANDO, TENILA_GRANDO, TENILA_RADIUSO );
             ctx.fill();
             ctx.stroke();
         }
@@ -443,42 +443,42 @@ function drawSelectionBox( obj: WhiteboardObject ): void {
     const topMidHandle = handles[ 4 ]; // "n" handle
     if ( topMidHandle ) {
         const rhX = topMidHandle.x;
-        const rhY = topMidHandle.y - ROTATE_HANDLE_OFFSET;
+        const rhY = topMidHandle.y - ROTACIA_TENILA_FORGXO;
         ctx.beginPath();
-        ctx.arc( rhX, rhY, ROTATE_HANDLE_RADIUS, 0, Math.PI * 0o2 );
-        ctx.fillStyle = HANDLE_FILL_COLOR;
+        ctx.arc( rhX, rhY, ROTACIA_TENILA_RADIUSO, 0, Math.PI * 0o2 );
+        ctx.fillStyle = TENILA_PLENIGA_KOLORO;
         ctx.fill();
         ctx.stroke();
         ctx.beginPath();
         ctx.arc( rhX, rhY, 0o10, 0, Math.PI * ( 3 / 2 ) );
-        ctx.strokeStyle = HANDLE_STROKE_COLOR;
-        ctx.lineWidth = SELECTION_LINE_WIDTH;
+        ctx.strokeStyle = TENILA_TRABATA_KOLORO;
+        ctx.lineWidth = SELEKTA_LINIO_LARGXO;
         ctx.stroke();
     }
 }
 
 // ⟪ History & State 📚 ⟫
 
-export function saveState(): void {
-    historyState.history = historyState.history.slice( 0, historyState.index + 1 );
-    syncPageObjects();
+export function konserviStaton(): void {
+    historioStato.history = historioStato.history.slice( 0, historioStato.index + 1 );
+    sinkronigiPagajnObjektojn();
     const stateData = {
-        layers: JSON.parse( JSON.stringify( layerState.layers ) ),
-        pages: JSON.parse( JSON.stringify( pageState.pages ) )
+        layers: JSON.parse( JSON.stringify( tavolstato.layers ) ),
+        pages: JSON.parse( JSON.stringify( paĝostato.pages ) )
     };
-    historyState.history.push( JSON.stringify( stateData ) );
-    historyState.index++;
-    if ( historyState.history.length > HISTORY_MAX ) {
-        historyState.history.shift();
-        historyState.index--;
+    historioStato.history.push( JSON.stringify( stateData ) );
+    historioStato.index++;
+    if ( historioStato.history.length > HISTORIA_MAKS ) {
+        historioStato.history.shift();
+        historioStato.index--;
     }
-    updateUndoRedoButtons();
+    gxisdatigiMalfarRefarButonojn();
 }
 
-export function updateUndoRedoButtons(): void {
+export function gxisdatigiMalfarRefarButonojn(): void {
     const btnStates = [
-        { ids: [ "undoBtn", "quickUndo" ], disabled: historyState.index <= 0 },
-        { ids: [ "redoBtn", "quickRedo" ], disabled: historyState.index >= historyState.history.length - 1 }
+        { ids: [ "undoBtn", "quickUndo" ], disabled: historioStato.index <= 0 },
+        { ids: [ "redoBtn", "quickRedo" ], disabled: historioStato.index >= historioStato.history.length - 1 }
     ];
     btnStates.forEach( ( { ids, disabled } ) => {
         ids.forEach( id => {

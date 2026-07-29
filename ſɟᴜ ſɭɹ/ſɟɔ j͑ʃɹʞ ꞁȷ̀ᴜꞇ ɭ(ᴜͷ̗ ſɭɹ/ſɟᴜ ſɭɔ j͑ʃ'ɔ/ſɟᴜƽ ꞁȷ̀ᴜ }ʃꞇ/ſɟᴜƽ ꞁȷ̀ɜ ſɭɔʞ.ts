@@ -5,7 +5,7 @@
  * @param {string} str
  * @returns {string}
  */
-function escapeHtml( str: string ): string {
+function eskapiHtml( str: string ): string {
     if ( !str ) return "";
     const div = document.createElement( "div" );
     div.textContent = str;
@@ -18,7 +18,7 @@ function escapeHtml( str: string ): string {
  * @param {number} maxLength
  * @returns {string}
  */
-function truncate( str: string, maxLength: number = 0o40 ): string {
+function trancxi( str: string, maxLength: number = 0o40 ): string {
     if ( !str ) return "";
     return str.length > maxLength ? str.slice( 0, maxLength ) : str;
 }
@@ -29,12 +29,12 @@ function truncate( str: string, maxLength: number = 0o40 ): string {
  * @param {string[]} terms
  * @returns {boolean}
  */
-function containsAny( str: string, terms: string[] ): boolean {
+function cxuEnhavasIun( str: string, terms: string[] ): boolean {
     if ( !str ) return false;
     return terms.some( term => str.includes( term ) );
 }
 
 // Attach to window for global access
-( window as any ).escapeHtml = escapeHtml;
-( window as any ).truncate = truncate;
-( window as any ).containsAny = containsAny;
+( window as any ).escapeHtml = eskapiHtml;
+( window as any ).truncate = trancxi;
+( window as any ).containsAny = cxuEnhavasIun;

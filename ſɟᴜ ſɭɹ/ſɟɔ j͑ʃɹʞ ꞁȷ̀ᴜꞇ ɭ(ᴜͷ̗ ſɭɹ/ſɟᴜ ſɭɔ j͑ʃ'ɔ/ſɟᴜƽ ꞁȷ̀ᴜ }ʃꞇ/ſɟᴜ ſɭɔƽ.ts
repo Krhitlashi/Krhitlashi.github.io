@@ -9,7 +9,7 @@ declare const CONSTANTS: any;
  * @param {HTMLElement|null} container - Container element
  * @returns {{width: number, height: number}}
  */
-export function getContainerDimensions( fixedWidth: number | null, fixedHeight: number | null, container: HTMLElement | null ): { width: number; height: number } {
+export function akiriUjonGrandecojn( fixedWidth: number | null, fixedHeight: number | null, container: HTMLElement | null ): { width: number; height: number } {
     return {
         width: fixedWidth ?? ( container?.clientWidth || window.innerWidth ),
         height: fixedHeight ?? ( container?.clientHeight || window.innerHeight )
@@ -23,13 +23,13 @@ export function getContainerDimensions( fixedWidth: number | null, fixedHeight: 
  * @param {DOMRect} bounds
  * @returns {boolean}
  */
-export function isWithinBounds( x: number, y: number, bounds: DOMRect ): boolean {
+export function cxuEnLimoj( x: number, y: number, bounds: DOMRect ): boolean {
     return x >= bounds.left && x <= bounds.right && y >= bounds.top && y <= bounds.bottom;
 }
 
 // Attach to window for global access
-( window as any ).getContainerDimensions = getContainerDimensions;
-( window as any ).isWithinBounds = isWithinBounds;
+( window as any ).getContainerDimensions = akiriUjonGrandecojn;
+( window as any ).isWithinBounds = cxuEnLimoj;
 
 /**
  * Set aria-pressed state on a button
@@ -110,7 +110,7 @@ function forceReflow( el: HTMLElement ): void {
  * @param {HTMLElement} el
  * @returns {{col: number, row: number, colSpan: number, rowSpan: number}}
  */
-export function getElementPosition( el: HTMLElement ): { col: number; row: number; colSpan: number; rowSpan: number } {
+export function akiriElementanPozicion( el: HTMLElement ): { col: number; row: number; colSpan: number; rowSpan: number } {
     return {
         col: parseInt( el.dataset.col as string ) || 0,
         row: parseInt( el.dataset.row as string ) || 0,
@@ -166,7 +166,7 @@ function hasClass( el: HTMLElement | null | undefined, className: string ): bool
 ( window as any ).setElementSpans = setElementSpans;
 ( window as any ).setElementDragging = setElementDragging;
 ( window as any ).forceReflow = forceReflow;
-( window as any ).getElementPosition = getElementPosition;
+( window as any ).getElementPosition = akiriElementanPozicion;
 ( window as any ).toggleClass = toggleClass;
 ( window as any ).addClass = addClass;
 ( window as any ).removeClass = removeClass;

@@ -6,18 +6,18 @@
 
 import * as THREE from "three";
 import { OrbitControls, TransformControls } from "three/addons";
-import { initSharedToolbar } from "../../}ʃɹ ɭʃᴜ j͑ʃɔ }ʃw j͑ʃᴜ ſɭᴜ ŋᷠᴜ.js";
-import { MINECRAFT_BLOCKS, type MinecraftBlock } from "./ſɭw ʃᴜ ɽ͑ʃ'w j͑ʃ'ᴜ.js";
+import { iniciiKomunanIlaron } from "../../}ʃɹ ɭʃᴜ j͑ʃɔ }ʃw j͑ʃᴜ ſɭᴜ ŋᷠᴜ.js";
+import { MAJNKRAFTAJ_BLOKOJ, type MajnkraftaBloko } from "./ſɭw ʃᴜ ɽ͑ʃ'w j͑ʃ'ᴜ.js";
 import {
-    parseSchematicOrStructure,
-    buildOBJ,
-    downloadText,
-    parseJSONBlocks,
-    gridToWorld,
-    worldToGrid,
-    type ParsedSchematicBlock
+    analiziSchematikonAuStructure,
+    konstruiOBJ,
+    elŝutiTekston,
+    analiziJSONBlokojn,
+    kradoAlMondo,
+    mondoAlKrado,
+    type AnalizitaSchematikaBloko
 } from "./ſ̀ȷᴜȝ.js";
-import { SHAPES, buildShapeGeometry, shapeForBlockId, type ShapeId } from "./}ʃᴜ ſɭɜ ı],ᴜ.js";
+import { FORMOJ, konstruiFormonGeometrion, formoPorBlokoId, type FormoId } from "./}ʃᴜ ſɭɜ ı],ᴜ.js";
 import { BackgroundManager, type BackgroundMode } from "./ꞁȷ̀ɹ ɭʃɹͷ̗.js";
 
 /**
@@ -43,7 +43,7 @@ interface BlockData {
     id: string;
     blockId: number;
     name: string;
-    shape: ShapeId;
+    formo: FormoId;
     rotation: number;
     // Per-axis scale. Defaults to {1, 1, 1}; persisted so save/load round
     // trips preserve resized blocks. Optional so legacy snapshots without
@@ -89,9 +89,9 @@ class BlockBuilderWorkspace {
     private history: HistoryEntry[];
     private historyIndex: number;
     private currentTool: string;
-    private currentBlock: MinecraftBlock;
+    private currentBlock: MajnkraftaBloko;
     private currentColor: string;
-    private currentShape: ShapeId;
+    private currentShape: FormoId;
     private currentMode: EditMode;
     private gridSize: number;
     private showGrid: boolean;
@@ -201,8 +201,8 @@ class BlockBuilderWorkspace {
         this.historyIndex = -1;
 
         this.currentTool = "select";
-        this.currentBlock = MINECRAFT_BLOCKS[0];
-        this.currentColor = MINECRAFT_BLOCKS[0].color;
+        this.currentBlock = MAJNKRAFTAJ_BLOKOJ[0];
+        this.currentColor = MAJNKRAFTAJ_BLOKOJ[0].color;
         this.currentShape = "cube";
         this.currentMode = "general";
         this.gridSize = 0o40;
@@ -322,11 +322,11 @@ class BlockBuilderWorkspace {
         const hoverGroup = new THREE.Group();
         hoverGroup.name = "hoverBox";
         const hoverFill = new THREE.Mesh(
-            buildShapeGeometry(this.getCurrentShape()),
+            konstruiFormonGeometrion(this.getCurrentShape()),
             new THREE.MeshBasicMaterial({ color: "#888888", transparent: true, opacity: ( 2 / 8 ), depthWrite: false })
         );
         const hoverWire = new THREE.LineSegments(
-            new THREE.EdgesGeometry(buildShapeGeometry(this.getCurrentShape())),
+            new THREE.EdgesGeometry(konstruiFormonGeometrion(this.getCurrentShape())),
             new THREE.LineBasicMaterial({ color: "#888888" })
         );
         hoverGroup.add(hoverFill, hoverWire);
@@ -620,7 +620,7 @@ class BlockBuilderWorkspace {
                 id: this.blockKey( snap.position ),
                 blockId: snap.block.userData.blockId as number,
                 name: snap.block.userData.blockName as string,
-                shape: snap.block.userData.shape as ShapeId,
+                formo: snap.block.userData.shape as FormoId,
                 rotation: oldRot
             } );
             const p = snap.block.position;
@@ -630,7 +630,7 @@ class BlockBuilderWorkspace {
                 id: this.blockKey( p ),
                 blockId: snap.block.userData.blockId as number,
                 name: snap.block.userData.blockName as string,
-                shape: snap.block.userData.shape as ShapeId,
+                formo: snap.block.userData.shape as FormoId,
                 rotation: newRot
             } );
             // Mirror the rotation back into mesh.rotation.y ( which the rest
@@ -826,7 +826,7 @@ class BlockBuilderWorkspace {
                 id: this.blockKey( before.pos ),
                 blockId: block.userData.blockId as number,
                 name: block.userData.blockName as string,
-                shape: block.userData.shape as ShapeId,
+                formo: block.userData.shape as FormoId,
                 rotation: before.rot,
                 scale: { x: before.scl.x, y: before.scl.y, z: before.scl.z }
             } );
@@ -836,7 +836,7 @@ class BlockBuilderWorkspace {
                 id: this.blockKey( block.position ),
                 blockId: block.userData.blockId as number,
                 name: block.userData.blockName as string,
-                shape: block.userData.shape as ShapeId,
+                formo: block.userData.shape as FormoId,
                 rotation: ( block.userData.rotation as number ) ?? 0,
                 scale: { x: block.scale.x, y: block.scale.y, z: block.scale.z }
             } );
@@ -910,13 +910,13 @@ class BlockBuilderWorkspace {
      * Build a single background block mesh ( no selection edges ) used for the
      * scattered decorative buildings.
      *     @param color ( string ) - material color.
-     *     @param shape ( ShapeId ) - shape id.
+     *     @param shape ( FormoId ) - shape id.
      *     @param rotation ( number ) - block's own y rotation in radians.
      *     @returns Mesh
      */
-    private createBackgroundBlock(color: string, shape: ShapeId, rotation: number): THREE.Mesh {
+    private createBackgroundBlock(color: string, shape: FormoId, rotation: number): THREE.Mesh {
         const material = new THREE.MeshLambertMaterial({ color });
-        const mesh = new THREE.Mesh(buildShapeGeometry(shape), material);
+        const mesh = new THREE.Mesh(konstruiFormonGeometrion(shape), material);
         mesh.rotation.y = rotation;
         return mesh;
     }
@@ -1009,11 +1009,11 @@ class BlockBuilderWorkspace {
      * Setup UI controls.
      */
     private setupUI(): void {
-        initSharedToolbar();
+        iniciiKomunanIlaron();
 
         this.bindToggleGroup("#toolsPanel button[data-tool]", "data-tool", (value) => this.setTool(value));
         this.bindToggleGroup("button[data-mode]", "data-mode", (value) => this.setMode(value as EditMode));
-        this.bindToggleGroup("#shapesPanel button[data-shape]", "data-shape", (value) => this.setShape(value as ShapeId));
+        this.bindToggleGroup("#shapesPanel button[data-shape]", "data-shape", (value) => this.setShape(value as FormoId));
         this.bindToggleGroup("button[data-background]", "data-background", (value) => {
             this.backgroundManager.setMode(value as BackgroundMode, this.sceneryMesh, this.scene.fog as THREE.Fog);
         });
@@ -1034,7 +1034,7 @@ class BlockBuilderWorkspace {
         const blockIdInput = this.el<HTMLInputElement>("blockIdInput");
         const blockIdList = document.getElementById("blockIdList");
         if (blockIdList) {
-            MINECRAFT_BLOCKS.forEach((block) => {
+            MAJNKRAFTAJ_BLOKOJ.forEach((block) => {
                 const option = document.createElement("option");
                 option.value = block.id.toString();
                 option.label = `${block.id} - ${block.name}`;
@@ -1045,7 +1045,7 @@ class BlockBuilderWorkspace {
             blockIdInput.value = this.currentBlock.id.toString();
             blockIdInput.addEventListener("change", (e) => {
                 const id = parseInt((e.target as HTMLInputElement).value, 10);
-                const block = MINECRAFT_BLOCKS.find((b) => b.id === id);
+                const block = MAJNKRAFTAJ_BLOKOJ.find((b) => b.id === id);
                 if (block) {
                     this.setBlock(block);
                 } else {
@@ -1332,13 +1332,13 @@ class BlockBuilderWorkspace {
 
     /**
      * Set current block by Minecraft block definition.
-     *     @param block ( MinecraftBlock ) - block definition.
+     *     @param block ( MajnkraftaBloko ) - block definition.
      */
-    private setBlock(block: MinecraftBlock): void {
+    private setBlock(block: MajnkraftaBloko): void {
         this.currentBlock = block;
         this.currentColor = block.color;
         if (this.currentMode === "minecraft") {
-            this.currentShape = shapeForBlockId(block.id);
+            this.currentShape = formoPorBlokoId(block.id);
         }
         this.syncBlockInputs(block.id, block.color);
         this.updateSelectedBlockInfo();
@@ -1361,7 +1361,7 @@ class BlockBuilderWorkspace {
         if (schematicPanel) schematicPanel.style.display = mode === "minecraft" ? "" : "none";
         if (groupingPanel) groupingPanel.style.display = mode === "general" ? "" : "none";
         if (mode === "minecraft") {
-            this.currentShape = shapeForBlockId(this.currentBlock.id);
+            this.currentShape = formoPorBlokoId(this.currentBlock.id);
         }
         this.updateShapeButtons();
         this.updateSelectedBlockInfo();
@@ -1373,18 +1373,18 @@ class BlockBuilderWorkspace {
      * used.
      *     @returns ShapeId
      */
-    private getCurrentShape(): ShapeId {
+    private getCurrentShape(): FormoId {
         if (this.currentMode === "minecraft") {
-            return shapeForBlockId(this.currentBlock.id);
+            return formoPorBlokoId(this.currentBlock.id);
         }
         return this.currentShape;
     }
 
     /**
      * Set current shape ( used in general 3D mode ).
-     *     @param shape ( ShapeId ) - shape id.
+     *     @param shape ( FormoId ) - shape id.
      */
-    private setShape(shape: ShapeId): void {
+    private setShape(shape: FormoId): void {
         this.currentShape = shape;
         this.updateShapeButtons();
     }
@@ -1394,7 +1394,7 @@ class BlockBuilderWorkspace {
      *     @returns shape name string
      */
     private getCurrentShapeName(): string {
-        return SHAPES.find((s) => s.id === this.getCurrentShape())?.name ?? "Cube";
+        return FORMOJ.find((s) => s.id === this.getCurrentShape())?.name ?? "Cube";
     }
 
     /**
@@ -1543,10 +1543,10 @@ class BlockBuilderWorkspace {
      *     block ( THREE.Mesh ) - block to update.
      *     blockId ( number ) - minecraft block id.
      *     color ( string ) - material color.
-     *     shape ( ShapeId ) - shape id.
+     *     shape ( FormoId ) - shape id.
      *     name ( string ) - block display name.
      */
-    private updateBlock(block: THREE.Mesh, blockId: number, color: string, shape: ShapeId, name: string): void {
+    private updateBlock(block: THREE.Mesh, blockId: number, color: string, shape: FormoId, name: string): void {
         this.applyBlockMaterial(block, blockId, color);
         this.applyBlockShape(block, shape);
         block.userData.blockName = name;
@@ -1974,9 +1974,9 @@ class BlockBuilderWorkspace {
      */
     private isWithinGrid(x: number, y: number, z: number): boolean {
         const half = this.gridSize / 2;
-        const cx = worldToGrid(x);
-        const cy = worldToGrid(y);
-        const cz = worldToGrid(z);
+        const cx = mondoAlKrado(x);
+        const cy = mondoAlKrado(y);
+        const cz = mondoAlKrado(z);
         return cx >= -half && cx < half && cz >= -half && cz < half && cy >= 0 && cy < this.gridSize;
     }
 
@@ -1990,8 +1990,8 @@ class BlockBuilderWorkspace {
         const wire = this.hoverBox.children[1] as THREE.LineSegments;
         fill.geometry.dispose();
         wire.geometry.dispose();
-        fill.geometry = buildShapeGeometry(shape);
-        wire.geometry = new THREE.EdgesGeometry(buildShapeGeometry(shape));
+        fill.geometry = konstruiFormonGeometrion(shape);
+        wire.geometry = new THREE.EdgesGeometry(konstruiFormonGeometrion(shape));
     }
 
     /**
@@ -2194,7 +2194,7 @@ class BlockBuilderWorkspace {
                     id: this.blockKey(oldPos),
                     blockId: block.userData.blockId as number,
                     name: block.userData.blockName as string,
-                    shape: block.userData.shape as ShapeId,
+                    formo: block.userData.shape as FormoId,
                     rotation: block.userData.rotation as number
                 });
             }
@@ -2302,18 +2302,18 @@ class BlockBuilderWorkspace {
 
     /**
      * Create a block with the current shape and border edges.
-     *     block ( MinecraftBlock ) - block definition.
+     *     block ( MajnkraftaBloko ) - block definition.
      *     color ( string ) - color override.
-     *     shape ( ShapeId ) - shape id.
+     *     shape ( FormoId ) - shape id.
      *     x ( number ) - x coordinate.
      *     y ( number ) - y coordinate.
      *     z ( number ) - z coordinate.
      * Returns Mesh.
      */
-    private createBlock(block: MinecraftBlock, color: string, shape: ShapeId, x: number, y: number, z: number, rotation: number = 0): THREE.Mesh {
+    private createBlock(block: MajnkraftaBloko, color: string, shape: FormoId, x: number, y: number, z: number, rotation: number = 0): THREE.Mesh {
         const materialOptions: THREE.MeshLambertMaterialParameters = { color };
         const material = new THREE.MeshLambertMaterial(materialOptions);
-        const geometry = buildShapeGeometry(shape);
+        const geometry = konstruiFormonGeometrion(shape);
         const mesh = new THREE.Mesh(geometry, material);
         mesh.position.set(x, y, z);
         mesh.name = "block";
@@ -2352,7 +2352,7 @@ class BlockBuilderWorkspace {
         this.scene.add(block);
         this.blocks.set(key, block);
 
-        this.addToHistory("add", { position: { x, y, z }, color, id: key, blockId: this.currentBlock.id, name: this.currentBlock.name, shape, rotation }, null);
+        this.addToHistory("add", { position: { x, y, z }, color, id: key, blockId: this.currentBlock.id, name: this.currentBlock.name, formo: shape, rotation }, null);
         this.updateBlockCount();
     }
 
@@ -2426,7 +2426,7 @@ class BlockBuilderWorkspace {
                 id: this.blockKey( block.position ),
                 blockId: this.currentBlock.id,
                 name: this.currentBlock.name,
-                shape: this.getCurrentShape(),
+                formo: this.getCurrentShape(),
                 rotation: block.userData.rotation ?? 0
             }, previous );
             return;
@@ -2438,7 +2438,7 @@ class BlockBuilderWorkspace {
 
         const key = this.blockKey(block.position);
 
-        this.addToHistory("paint", { position: { x: block.position.x, y: block.position.y, z: block.position.z }, color, id: key, blockId: this.currentBlock.id, name: this.currentBlock.name, shape, rotation: previous.rotation }, previous);
+        this.addToHistory("paint", { position: { x: block.position.x, y: block.position.y, z: block.position.z }, color, id: key, blockId: this.currentBlock.id, name: this.currentBlock.name, formo: shape, rotation: previous.rotation }, previous);
     }
 
     /**
@@ -2451,10 +2451,10 @@ class BlockBuilderWorkspace {
         const color = "#" + material.color.getHexString();
         const data = this.readBlockData(block);
 
-        const found = MINECRAFT_BLOCKS.find((b) => b.id === data.blockId);
+        const found = MAJNKRAFTAJ_BLOKOJ.find((b) => b.id === data.blockId);
         this.currentBlock = found ?? { id: data.blockId, name: data.name, color };
         this.currentColor = color;
-        this.currentShape = data.shape;
+        this.currentShape = data.formo;
 
         this.syncBlockInputs(data.blockId, color);
         this.updateShapeButtons();
@@ -2693,7 +2693,7 @@ class BlockBuilderWorkspace {
             id: groupKey,
             blockId: -1,
             name: group.userData.blockName,
-            shape: "cube",
+            formo: "cube",
             rotation: 0
         }, snapshots );
         this.clearSelection();
@@ -2758,7 +2758,7 @@ class BlockBuilderWorkspace {
             id: `${pos.x},${pos.y},${pos.z}`,
             blockId: (block.userData.blockId as number) ?? 0,
             name: (block.userData.blockName as string) ?? "Unknown",
-            shape: (block.userData.shape as ShapeId) ?? "cube",
+            formo: (block.userData.shape as FormoId) ?? "cube",
             rotation: (block.userData.rotation as number) ?? 0,
             scale: { x: block.scale.x, y: block.scale.y, z: block.scale.z }
         };
@@ -2800,14 +2800,14 @@ class BlockBuilderWorkspace {
      * Find a Minecraft block by its cleaned name, allowing a trailing or
      * missing " block" suffix.
      *     name ( string ) - cleaned lowercase name.
-     * Returns MinecraftBlock or undefined.
+     * Returns MajnkraftaBloko or undefined.
      */
-    private findBlockByName(name: string): MinecraftBlock | undefined {
+    private findBlockByName(name: string): MajnkraftaBloko | undefined {
         const matches = (candidate: string): boolean =>
             candidate.toLowerCase() === name || candidate.toLowerCase().replace(/ /g, "") === name.replace(/ /g, "");
 
-        return MINECRAFT_BLOCKS.find((b) => matches(b.name))
-            ?? MINECRAFT_BLOCKS.find((b) => matches(name.endsWith(" block") ? name.substring(0, name.length - 6) : name + " block"));
+        return MAJNKRAFTAJ_BLOKOJ.find((b) => matches(b.name))
+            ?? MAJNKRAFTAJ_BLOKOJ.find((b) => matches(name.endsWith(" block") ? name.substring(0, name.length - 6) : name + " block"));
     }
 
     /**
@@ -2817,10 +2817,10 @@ class BlockBuilderWorkspace {
      *     color ( string ) - fallback color.
      * Returns MinecraftBlock.
      */
-    private getBlockById(idOrName: number | string, color: string): MinecraftBlock {
+    private getBlockById(idOrName: number | string, color: string): MajnkraftaBloko {
         const { numericId, name } = this.parseIdOrName(idOrName);
         if (numericId !== null) {
-            const found = MINECRAFT_BLOCKS.find((b) => b.id === numericId);
+            const found = MAJNKRAFTAJ_BLOKOJ.find((b) => b.id === numericId);
             if (found) return found;
             return { id: numericId, name: `Block ${numericId}`, color };
         }
@@ -2852,14 +2852,14 @@ class BlockBuilderWorkspace {
      * Swap a block's geometry to a new shape, rebuilding it from the shape
      * definition while preserving position, rotation, material and edges.
      *     block ( THREE.Mesh ) - block to update.
-     *     shape ( ShapeId ) - shape id.
+     *     shape ( FormoId ) - shape id.
      */
-    private applyBlockShape(block: THREE.Mesh, shape: ShapeId): void {
+    private applyBlockShape(block: THREE.Mesh, shape: FormoId): void {
         const material = block.material as THREE.MeshLambertMaterial;
         const edges = block.children.find(
             (child): child is THREE.LineSegments => child instanceof THREE.LineSegments
         );
-        const newGeometry = buildShapeGeometry(shape);
+        const newGeometry = konstruiFormonGeometrion(shape);
         block.geometry.dispose();
         block.geometry = newGeometry;
         block.userData.shape = shape;
@@ -2886,7 +2886,7 @@ class BlockBuilderWorkspace {
      *     data ( BlockData ) - block data to place.
      */
     private placeBlockData(data: BlockData): void {
-        const block = this.createBlock(this.getBlockById(data.blockId, data.color), data.color, data.shape, data.position.x, data.position.y, data.position.z, data.rotation);
+        const block = this.createBlock(this.getBlockById(data.blockId, data.color), data.color, data.formo, data.position.x, data.position.y, data.position.z, data.rotation);
         // Restore any persisted scale ( default 1×1×1 if missing — e.g. a
         // pre-resize save file ).
         if ( data.scale ) {
@@ -2924,7 +2924,7 @@ class BlockBuilderWorkspace {
             const block = this.getBlockAt(entry.block);
             if (block && entry.previousData && typeof entry.previousData !== "string") {
                 const prev = entry.previousData as BlockData;
-                this.updateBlock(block, prev.blockId, prev.color, prev.shape, prev.name);
+                this.updateBlock(block, prev.blockId, prev.color, prev.formo, prev.name);
             }
         } else if (entry.action === "rotate" && entry.block && entry.previousData && typeof entry.previousData !== "string") {
             const block = this.getBlockAt(entry.block);
@@ -3003,7 +3003,7 @@ class BlockBuilderWorkspace {
         } else if (entry.action === "paint" && entry.block) {
             const block = this.getBlockAt(entry.block);
             if (block) {
-                this.updateBlock(block, entry.block.blockId, entry.block.color, entry.block.shape, entry.block.name);
+                this.updateBlock(block, entry.block.blockId, entry.block.color, entry.block.formo, entry.block.name);
             }
         } else if (entry.action === "rotate" && entry.block) {
             const block = this.getBlockAt(entry.block);
@@ -3107,7 +3107,7 @@ class BlockBuilderWorkspace {
         const data = this.getAllBlockData();
         const json = JSON.stringify(data, null, 2);
         const timestamp = this.getTimestamp();
-        downloadText(`ſןᴜȝ - ${timestamp}.json`, json, "application/json");
+        elŝutiTekston(`ſןᴜȝ - ${timestamp}.json`, json, "application/json");
     }
 
     /**
@@ -3150,7 +3150,7 @@ class BlockBuilderWorkspace {
                     const arrayBuffer = e.target?.result as ArrayBuffer;
                     if (!arrayBuffer) throw new Error("Could not read file data");
                     const isMcstructure = fileName.endsWith(".mcstructure");
-                    const blocks = await parseSchematicOrStructure(arrayBuffer, isMcstructure);
+                    const blocks = await analiziSchematikonAuStructure(arrayBuffer, isMcstructure);
                     this.clearAll();
                     this.placeBlocks(blocks);
                     this.updateBlockCount();
@@ -3167,7 +3167,7 @@ class BlockBuilderWorkspace {
             reader.onload = (e) => {
                 try {
                     const text = e.target?.result as string;
-                    const parsedBlocks = parseJSONBlocks(text);
+                    const parsedBlocks = analiziJSONBlokojn(text);
                     this.clearAll();
                     this.placeBlocks(parsedBlocks);
                     this.updateBlockCount();
@@ -3184,15 +3184,15 @@ class BlockBuilderWorkspace {
      * Place a list of parsed blocks into the scene.
      *     blocks ( Array ) - parsed blocks.
      */
-    private placeBlocks(blocks: ParsedSchematicBlock[]): void {
+    private placeBlocks(blocks: AnalizitaSchematikaBloko[]): void {
         blocks.forEach((b) => {
             this.placeBlockData({
-                position: { x: gridToWorld(b.x), y: gridToWorld(b.y), z: gridToWorld(b.z) },
+                position: { x: kradoAlMondo(b.x), y: kradoAlMondo(b.y), z: kradoAlMondo(b.z) },
                 color: b.color,
                 id: `${b.x},${b.y},${b.z}`,
                 blockId: typeof b.name === "number" ? b.name : 0,
                 name: String(b.name),
-                shape: (b.shape as ShapeId) ?? "cube",
+                formo: (b.formo as FormoId) ?? "cube",
                 rotation: b.rotation ?? 0
             });
         });
@@ -3207,11 +3207,11 @@ class BlockBuilderWorkspace {
             data.push({ position: block.position, color: this.getBlockColor(block) });
         }
 
-        const { obj, mtl } = buildOBJ(data);
+        const { obj, mtl } = konstruiOBJ(data);
         const timestamp = this.getTimestamp();
-        downloadText(`ſןᴜȝ - ${timestamp}.obj`, obj, "application/octet-stream");
+        elŝutiTekston(`ſןᴜȝ - ${timestamp}.obj`, obj, "application/octet-stream");
         setTimeout(() => {
-            downloadText(`ſןᴜȝ - ${timestamp}.mtl`, mtl, "application/octet-stream");
+            elŝutiTekston(`ſןᴜȝ - ${timestamp}.mtl`, mtl, "application/octet-stream");
         }, 0o100);
     }
 
@@ -3219,13 +3219,13 @@ class BlockBuilderWorkspace {
      * Export structure as a Minecraft-flavored schematic JSON.
      */
     private exportSchematic(): void {
-        const blocks: ParsedSchematicBlock[] = [];
+        const blocks: AnalizitaSchematikaBloko[] = [];
         for (const block of this.blocks.values()) {
             const data = this.readBlockData(block);
             blocks.push({
-                x: worldToGrid(data.position.x),
-                y: worldToGrid(data.position.y),
-                z: worldToGrid(data.position.z),
+                x: mondoAlKrado(data.position.x),
+                y: mondoAlKrado(data.position.y),
+                z: mondoAlKrado(data.position.z),
                 name: data.blockId,
                 color: data.color
             });
@@ -3245,7 +3245,7 @@ class BlockBuilderWorkspace {
 
         const json = JSON.stringify(schematic, null, 2);
         const timestamp = this.getTimestamp();
-        downloadText(`ſןᴜȝ schematic - ${timestamp}.${extension}`, json, "application/json");
+        elŝutiTekston(`ſןᴜȝ schematic - ${timestamp}.${extension}`, json, "application/json");
     }
 
     /**
@@ -3263,14 +3263,14 @@ class BlockBuilderWorkspace {
                 const arrayBuffer = e.target?.result as ArrayBuffer;
                 if (!arrayBuffer) throw new Error("Could not read file data");
 
-                let blocks: ParsedSchematicBlock[] = [];
+                let blocks: AnalizitaSchematikaBloko[] = [];
 
                 try {
                     const text = new TextDecoder().decode(arrayBuffer);
-                    blocks = parseJSONBlocks(text);
+                    blocks = analiziJSONBlokojn(text);
                 } catch (jsonErr) {
                     const isMcstructure = file.name.endsWith(".mcstructure");
-                    blocks = await parseSchematicOrStructure(arrayBuffer, isMcstructure);
+                    blocks = await analiziSchematikonAuStructure(arrayBuffer, isMcstructure);
                 }
 
                 this.clearAll();

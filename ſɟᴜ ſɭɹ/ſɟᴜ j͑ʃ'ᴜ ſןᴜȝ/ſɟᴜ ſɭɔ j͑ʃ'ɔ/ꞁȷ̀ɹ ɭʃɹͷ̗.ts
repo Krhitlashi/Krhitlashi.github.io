@@ -7,11 +7,11 @@
  */
 
 import * as THREE from "three";
-import { type ShapeId } from "./}ʃᴜ ſɭɜ ı],ᴜ.js";
+import { type FormoId } from "./}ʃᴜ ſɭɜ ı],ᴜ.js";
 import {
-    parseJSONBlocks,
-    gridToWorld,
-    type ParsedSchematicBlock
+    analiziJSONBlokojn,
+    kradoAlMondo,
+    type AnalizitaSchematikaBloko
 } from "./ſ̀ȷᴜȝ.js";
 
 /**
@@ -26,9 +26,9 @@ export type BackgroundMode = "ring" | "islands";
 export class BackgroundManager {
     private scene: THREE.Scene;
     private group: THREE.Group;
-    private template: ParsedSchematicBlock[] = [];
+    private template: AnalizitaSchematikaBloko[] = [];
     private gridSize: number;
-    private createBlock: ( color: string, shape: ShapeId, rotation: number ) => THREE.Mesh;
+    private createBlock: ( color: string, shape: FormoId, rotation: number ) => THREE.Mesh;
     private currentMode: BackgroundMode;
 
     /**
@@ -39,7 +39,7 @@ export class BackgroundManager {
     constructor(
         scene: THREE.Scene,
         gridSize: number,
-        createBlock: ( color: string, shape: ShapeId, rotation: number ) => THREE.Mesh
+        createBlock: ( color: string, shape: FormoId, rotation: number ) => THREE.Mesh
     ) {
         this.scene = scene;
         this.gridSize = gridSize;
@@ -83,7 +83,7 @@ export class BackgroundManager {
             const url = new URL( "./ſןᴜȝ/j͑ʃᴜ ɭʃᴜͷ̗.json", import.meta.url );
             const res = await fetch( url );
             if ( !res.ok ) throw new Error( `HTTP ${ res.status }` );
-            this.template = parseJSONBlocks( await res.text() );
+            this.template = analiziJSONBlokojn( await res.text() );
             return this.template.length > 0;
         } catch ( err ) {
             console.warn( "ſ͕ȷɜ ſɭʞɹ j͑ʃɔ j͑ʃ'ᴜ ɭʃᴜͷ̗ ꞁȷ̀ɔ ƽᶗ‹ ᶅſɔ j͐ʃэ ⟅", err );
@@ -106,7 +106,7 @@ export class BackgroundManager {
      * Build concentric rings of template copies at ground level.
      *     template ( ParsedSchematicBlock[] ) - building block list.
      */
-    buildRing( template: ParsedSchematicBlock[] ): void {
+    buildRing( template: AnalizitaSchematikaBloko[] ): void {
         this.removeCurrent();
 
         const minX = Math.min( ...template.map( ( b ) => b.x ) );
@@ -138,13 +138,13 @@ export class BackgroundManager {
                 for ( const b of template ) {
                     const block = this.createBlock(
                         b.color || "#888888",
-                        ( b.shape as ShapeId ) ?? "cube",
+                        ( b.formo as FormoId ) ?? "cube",
                         b.rotation ?? 0
                     );
                     block.position.set(
-                        ( gridToWorld( b.x ) - gridToWorld( cx ) ) * scale,
-                        ( gridToWorld( b.y ) - gridToWorld( minY ) ) * scale,
-                        ( gridToWorld( b.z ) - gridToWorld( cz ) ) * scale
+                        ( kradoAlMondo( b.x ) - kradoAlMondo( cx ) ) * scale,
+                        ( kradoAlMondo( b.y ) - kradoAlMondo( minY ) ) * scale,
+                        ( kradoAlMondo( b.z ) - kradoAlMondo( cz ) ) * scale
                     );
                     block.scale.setScalar( scale );
                     building.add( block );
@@ -165,7 +165,7 @@ export class BackgroundManager {
      * spread across a wide vertical range — some above the baseplate, some below.
      *     template ( ParsedSchematicBlock[] ) - building block list.
      */
-    buildIslands( template: ParsedSchematicBlock[] ): void {
+    buildIslands( template: AnalizitaSchematikaBloko[] ): void {
         this.removeCurrent();
 
         const minX = Math.min( ...template.map( ( b ) => b.x ) );
@@ -320,13 +320,13 @@ export class BackgroundManager {
                 for ( const b of template ) {
                     const block = this.createBlock(
                         b.color || "#888888",
-                        ( b.shape as ShapeId ) ?? "cube",
+                        ( b.formo as FormoId ) ?? "cube",
                         b.rotation ?? 0
                     );
                     block.position.set(
-                        ( gridToWorld( b.x ) - gridToWorld( cx ) ) * scale,
-                        ( gridToWorld( b.y ) - gridToWorld( minY ) ) * scale + capY,
-                        ( gridToWorld( b.z ) - gridToWorld( cz ) ) * scale
+                        ( kradoAlMondo( b.x ) - kradoAlMondo( cx ) ) * scale,
+                        ( kradoAlMondo( b.y ) - kradoAlMondo( minY ) ) * scale + capY,
+                        ( kradoAlMondo( b.z ) - kradoAlMondo( cz ) ) * scale
                     );
                     block.scale.setScalar( scale );
                     building.add( block );

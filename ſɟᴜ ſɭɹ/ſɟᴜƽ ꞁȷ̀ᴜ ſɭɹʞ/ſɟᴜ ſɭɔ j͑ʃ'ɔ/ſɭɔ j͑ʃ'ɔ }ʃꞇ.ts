@@ -1,27 +1,27 @@
 // ≺⧼ Whiteboard Application - Main Entry Point ⧽≻
 
 import {
-    canvas, state, panState, pageState, spaceState, objectState, touchGestureState,
-    CANVAS_WIDTH, CANVAS_HEIGHT,
-    ZOOM_STEP_NUM, ZOOM_STEP_DEN, ZOOM_BASE,
-    MIN_ZOOM, MAX_ZOOM
+    canvas, stato, panstato, paĝostato, spacstato, objektstato, tuŝaGeststato,
+    TABULA_LARGXO, TABULA_ALTO,
+    PLIGRANDIGPAŜO_NUM, PLIGRANDIGPAŜO_DEN, PLIGRANDIGBAZO,
+    MIN_PLIGRANDIGO, MAX_PLIGRANDIGO
 } from "./ꞁȷ̀ɔ j͑ʃƽɔƽ.js";
 
 import {
-    resetCursor, setCursor, getToolCursor, initButton,
-    findObjectAtPoint, invalidateTextCaches
+    restarigiKursoron, agordiKursoron, akiriIlanKursoron, iniciiButonon,
+    troviObjektonCePunkto, malvalidigiTekstajnKesxojn
 } from "./ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
 
-import { isSharedUiElement } from "../../}ʃɹ ɭʃᴜ j͑ʃɔ }ʃw j͑ʃᴜ ſɭᴜ ŋᷠᴜ.js";
+import { cxuKomunaUiElemento } from "../../}ʃɹ ɭʃᴜ j͑ʃɔ }ʃw j͑ʃᴜ ſɭᴜ ŋᷠᴜ.js";
 
 import {
-    layerManager, pageManager, renderLayerList, renderPageList
+    tavolAdministranto, pagAdministranto, renderiTavolojnListon, renderiPagojnListon
 } from "./ɭʃᴜ }ʃɔƽ.js";
 
 import {
-    getCurrentCanvas, getCurrentCtx, redrawCanvas, saveState, drawWhiteboardGrid,
-    switchToPageCanvas, syncPanToCSS, resizeActivePage, updateCanvasSizeDisplay,
-    getActivePage, isActivePageInfinite
+    akiriAktualanTabulon, akiriAktualanCtx, redesegniTabulon, konserviStaton, desegniTabulanKradon,
+    sxangxiAlPagaTabulo, sinkronigiPanAlCSS, grandSxangxiAktivanPagon, gxisdatigiTabulanGrandanMontron,
+    akiriAktivanPagon, cxuAktivaPagoSenfina
 } from "./ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ſɭɹʞ.js";
 
 import {
@@ -31,7 +31,7 @@ import {
 } from "./ſɭ,ɔ }ʃꞇ.js";
 
 import {
-    getCanvasCoords, startDrawing, draw, stopDrawing,
+    akiriTabulajnKoordinatojn, startDrawing, draw, stopDrawing,
     initTextEditInput, editTextObject
 } from "./ſɟᴜ ſɭɹʞ.js";
 
@@ -42,17 +42,17 @@ let setZoomFn: ( zoom: number ) => void = () => { };
 // ⟪ Initialization 🚀 ⟫
 
 function initCanvas(): void {
-    if ( !getCurrentCanvas() ) return;
-    const activePage = pageManager.getActive();
-    const w = activePage?.width || CANVAS_WIDTH;
-    const h = activePage?.height || CANVAS_HEIGHT;
-    getCurrentCanvas()!.width = activePage?.infinite ? window.innerWidth : w;
-    getCurrentCanvas()!.height = activePage?.infinite ? window.innerHeight : h;
+    if ( !akiriAktualanTabulon() ) return;
+    const activePage = pagAdministranto.getActive();
+    const w = activePage?.width || TABULA_LARGXO;
+    const h = activePage?.height || TABULA_ALTO;
+    akiriAktualanTabulon()!.width = activePage?.infinite ? window.innerWidth : w;
+    akiriAktualanTabulon()!.height = activePage?.infinite ? window.innerHeight : h;
 
-    const ctx = getCurrentCtx()!;
-    const curCanvas = getCurrentCanvas()!;
+    const ctx = akiriAktualanCtx()!;
+    const curCanvas = akiriAktualanTabulon()!;
     if ( activePage?.infinite ) {
-        drawWhiteboardGrid( ctx, curCanvas.width, curCanvas.height );
+        desegniTabulanKradon( ctx, curCanvas.width, curCanvas.height );
     } else {
         ctx.fillStyle = "#ffffff";
         ctx.fillRect( 0, 0, curCanvas.width, curCanvas.height );
@@ -62,19 +62,19 @@ function initCanvas(): void {
 }
 
 function initLayers(): void {
-    layerManager.layers = [];
-    layerManager.counter = 0;
-    layerManager.create( "ꞙɭı ɭ(ꞇ ɭʃᴜ }ʃɔƽ" );
-    layerManager.syncToState();
-    renderLayerList();
+    tavolAdministranto.layers = [];
+    tavolAdministranto.counter = 0;
+    tavolAdministranto.create( "ꞙɭı ɭ(ꞇ ɭʃᴜ }ʃɔƽ" );
+    tavolAdministranto.syncToState();
+    renderiTavolojnListon();
 }
 
 function initPages(): void {
-    pageManager.pages = [];
-    pageManager.counter = 0;
-    pageManager.create( "ꞙɭı ɭ(ꞇ ɭʃᴜ }ʃɔƽ" );
-    pageManager.syncToState();
-    renderPageList();
+    pagAdministranto.pages = [];
+    pagAdministranto.counter = 0;
+    pagAdministranto.create( "ꞙɭı ɭ(ꞇ ɭʃᴜ }ʃɔƽ" );
+    pagAdministranto.syncToState();
+    renderiPagojnListon();
 }
 
 function initZoom(): void {
@@ -86,28 +86,28 @@ function initZoom(): void {
     }
 
     function updateZoom(): void {
-        const zoom = state.zoomNum / state.zoomDen;
+        const zoom = stato.zoomNum / stato.zoomDen;
         document.documentElement.style.setProperty( "--zoom", zoom.toString() );
-        if ( zoomLevel ) zoomLevel.textContent = `${Math.round( state.zoomNum )}/${state.zoomDen}x`;
-        invalidateTextCaches();
-        redrawCanvas();
+        if ( zoomLevel ) zoomLevel.textContent = `${Math.round( stato.zoomNum )}/${stato.zoomDen}x`;
+        malvalidigiTekstajnKesxojn();
+        redesegniTabulon();
     }
 
     function setZoom( newZoom: number ): void {
-        const activePage = getActivePage();
+        const activePage = akiriAktivanPagon();
         // Infinite pages cannot zoom out below 1x — the canvas always fills the screen
-        const minZoom = activePage?.infinite ? 0o1 : MIN_ZOOM;
-        const maxZoom = MAX_ZOOM;
+        const minZoom = activePage?.infinite ? 0o1 : MIN_PLIGRANDIGO;
+        const maxZoom = MAX_PLIGRANDIGO;
         
         if ( newZoom <= minZoom ) {
-            state.zoomNum = minZoom * ZOOM_BASE;
-            state.zoomDen = ZOOM_BASE;
+            stato.zoomNum = minZoom * PLIGRANDIGBAZO;
+            stato.zoomDen = PLIGRANDIGBAZO;
         } else if ( newZoom >= maxZoom ) {
-            state.zoomNum = maxZoom * ZOOM_BASE;
-            state.zoomDen = ZOOM_BASE;
+            stato.zoomNum = maxZoom * PLIGRANDIGBAZO;
+            stato.zoomDen = PLIGRANDIGBAZO;
         } else {
-            state.zoomNum = newZoom * ZOOM_BASE;
-            state.zoomDen = ZOOM_BASE;
+            stato.zoomNum = newZoom * PLIGRANDIGBAZO;
+            stato.zoomDen = PLIGRANDIGBAZO;
         }
         updateZoom();
     }
@@ -115,29 +115,29 @@ function initZoom(): void {
     setZoomFn = setZoom;
 
     function adjustZoom( numeratorMult: number, denominatorMult: number ): void {
-        const oldZoom = state.zoomNum / state.zoomDen;
+        const oldZoom = stato.zoomNum / stato.zoomDen;
         const newZoom = oldZoom * ( numeratorMult / denominatorMult );
         setZoom( newZoom );
     }
 
-    initButton( "zoomIn", () => adjustZoom( ZOOM_STEP_NUM, ZOOM_STEP_DEN ) );
-    initButton( "zoomOut", () => adjustZoom( ZOOM_STEP_DEN, ZOOM_STEP_NUM ) );
-    initButton( "zoomReset", () => {
-        state.zoomNum = 1; state.zoomDen = 1;
-        panState.offsetX = 0; panState.offsetY = 0;
-        syncPanToCSS();
+    iniciiButonon( "zoomIn", () => adjustZoom( PLIGRANDIGPAŜO_NUM, PLIGRANDIGPAŜO_DEN ) );
+    iniciiButonon( "zoomOut", () => adjustZoom( PLIGRANDIGPAŜO_DEN, PLIGRANDIGPAŜO_NUM ) );
+    iniciiButonon( "zoomReset", () => {
+        stato.zoomNum = 1; stato.zoomDen = 1;
+        panstato.offsetX = 0; panstato.offsetY = 0;
+        sinkronigiPanAlCSS();
         updateZoom();
     } );
 
     document.addEventListener( "wheel", ( e: WheelEvent ) => {
-        if ( isSharedUiElement( e.target ) ) return;
+        if ( cxuKomunaUiElemento( e.target ) ) return;
         
-        const activePage = getActivePage();
+        const activePage = akiriAktivanPagon();
         
         // Ctrl+wheel zoom works on ALL pages (both infinite and non-infinite)
         if ( e.ctrlKey ) {
             e.preventDefault();
-            const currentZoom = state.zoomNum / state.zoomDen;
+            const currentZoom = stato.zoomNum / stato.zoomDen;
             const zoomFactor = Math.exp( -e.deltaY * 0o2 / 0o1000 );
             const newZoom = currentZoom * zoomFactor;
             setZoom( newZoom );
@@ -147,12 +147,12 @@ function initZoom(): void {
         // Pan with the wheel
         e.preventDefault();
         const panSpeed = 0o2;
-        panState.offsetX -= e.deltaX * panSpeed;
-        panState.offsetY -= e.deltaY * panSpeed;
+        panstato.offsetX -= e.deltaX * panSpeed;
+        panstato.offsetY -= e.deltaY * panSpeed;
         if ( activePage?.infinite ) {
             updateZoom();  // redraws with canvas context translate
         } else {
-            syncPanToCSS();  // shift via CSS translate
+            sinkronigiPanAlCSS();  // shift via CSS translate
         }
     }, { passive: false } );
 
@@ -180,14 +180,14 @@ function initCanvasEvents(): void {
 }
 
 function handleDocumentMouseDown( e: MouseEvent ): void {
-    if ( e.button !== 0 || isSharedUiElement( e.target ) ) return;
+    if ( e.button !== 0 || cxuKomunaUiElemento( e.target ) ) return;
     
     // Space+drag panning works on all pages
-    const activePage = getActivePage();
-    if ( spaceState.isPressed ) {
-        panState.isPanning = true;
-        panState.startX = e.clientX - panState.offsetX;
-        panState.startY = e.clientY - panState.offsetY;
+    const activePage = akiriAktivanPagon();
+    if ( spacstato.isPressed ) {
+        panstato.isPanning = true;
+        panstato.startX = e.clientX - panstato.offsetX;
+        panstato.startY = e.clientY - panstato.offsetY;
         if ( canvas ) canvas.dataset.cursor = "grabbing";
         return;
     }
@@ -196,19 +196,19 @@ function handleDocumentMouseDown( e: MouseEvent ): void {
 }
 
 function handleDocumentMouseMove( e: MouseEvent ): void {
-    if ( panState.isPanning ) {
+    if ( panstato.isPanning ) {
         e.preventDefault();
-        panState.offsetX = e.clientX - panState.startX;
-        panState.offsetY = e.clientY - panState.startY;
-        const activePage = getActivePage();
+        panstato.offsetX = e.clientX - panstato.startX;
+        panstato.offsetY = e.clientY - panstato.startY;
+        const activePage = akiriAktivanPagon();
         if ( activePage?.infinite ) {
-            redrawCanvas();  // redraw with canvas context translate
+            redesegniTabulon();  // redraw with canvas context translate
         } else {
-            syncPanToCSS();  // shift via CSS translate
+            sinkronigiPanAlCSS();  // shift via CSS translate
         }
         return;
     }
-    if ( state.isDrawing ) draw( e );
+    if ( stato.isDrawing ) draw( e );
 }
 
 // ⟪ Cursor Reset Helpers 🖰 ⟫
@@ -219,21 +219,21 @@ function handleDocumentMouseMove( e: MouseEvent ): void {
  * and clears the dataset override.
  */
 function resetPanCursor(): void {
-    if ( spaceState.isPressed ) {
+    if ( spacstato.isPressed ) {
         if ( canvas ) canvas.dataset.cursor = "grab";
     } else {
         if ( canvas ) delete canvas.dataset.cursor;
-        setCursor( getToolCursor() );
+        agordiKursoron( akiriIlanKursoron() );
     }
 }
 
 function handleDocumentMouseUp( e: MouseEvent ): void {
-    if ( panState.isPanning ) {
-        panState.isPanning = false;
+    if ( panstato.isPanning ) {
+        panstato.isPanning = false;
         resetPanCursor();
         return;
     }
-    if ( state.isDrawing ) stopDrawing( e );
+    if ( stato.isDrawing ) stopDrawing( e );
 }
 
 function getTouchCenter( e: TouchEvent ): { x: number; y: number } {
@@ -254,34 +254,34 @@ function getTouchDistance( e: TouchEvent ): number {
 }
 
 function handleTouchStart( e: TouchEvent ): void {
-    if ( e.touches.length > 2 || isSharedUiElement( e.target ) ) return;
+    if ( e.touches.length > 2 || cxuKomunaUiElemento( e.target ) ) return;
 
-    const activePage = getActivePage();
+    const activePage = akiriAktivanPagon();
     const isInfinite = activePage?.infinite === true;
 
     if ( e.touches.length === 2 ) {
         if ( !isInfinite ) return;  // Let browser handle 2-finger scroll natively
         e.preventDefault();
         // Start pinch-to-zoom
-        touchGestureState.isPinching = true;
-        touchGestureState.initialDistance = getTouchDistance( e );
-        touchGestureState.initialZoom = state.zoomNum / state.zoomDen;
+        tuŝaGeststato.isPinching = true;
+        tuŝaGeststato.initialDistance = getTouchDistance( e );
+        tuŝaGeststato.initialZoom = stato.zoomNum / stato.zoomDen;
 
         // Also start panning from center
-        panState.isPanning = true;
+        panstato.isPanning = true;
         const center = getTouchCenter( e );
-        panState.startX = center.x - panState.offsetX;
-        panState.startY = center.y - panState.offsetY;
+        panstato.startX = center.x - panstato.offsetX;
+        panstato.startY = center.y - panstato.offsetY;
         if ( canvas ) canvas.dataset.cursor = "grabbing";
         return;
     }
 
-    if ( spaceState.isPressed ) {
+    if ( spacstato.isPressed ) {
         if ( !isInfinite ) return;  // Let browser handle space+scroll natively
         e.preventDefault();
-        panState.isPanning = true;
-        panState.startX = e.touches[ 0 ].clientX - panState.offsetX;
-        panState.startY = e.touches[ 0 ].clientY - panState.offsetY;
+        panstato.isPanning = true;
+        panstato.startX = e.touches[ 0 ].clientX - panstato.offsetX;
+        panstato.startY = e.touches[ 0 ].clientY - panstato.offsetY;
         if ( canvas ) canvas.dataset.cursor = "grabbing";
         return;
     }
@@ -294,38 +294,38 @@ function handleTouchStart( e: TouchEvent ): void {
 function handleTouchMove( e: TouchEvent ): void {
     if ( e.touches.length > 2 ) return;
 
-    const activePage = getActivePage();
+    const activePage = akiriAktivanPagon();
     const isInfinite = activePage?.infinite === true;
 
-    if ( e.touches.length === 2 && touchGestureState.isPinching && isInfinite ) {
+    if ( e.touches.length === 2 && tuŝaGeststato.isPinching && isInfinite ) {
         e.preventDefault();
 
         // Handle pinch-to-zoom
         const currentDistance = getTouchDistance( e );
-        if ( currentDistance > 0 && touchGestureState.initialDistance > 0 ) {
-            const zoomFactor = currentDistance / touchGestureState.initialDistance;
-            const newZoom = touchGestureState.initialZoom * zoomFactor;
+        if ( currentDistance > 0 && tuŝaGeststato.initialDistance > 0 ) {
+            const zoomFactor = currentDistance / tuŝaGeststato.initialDistance;
+            const newZoom = tuŝaGeststato.initialZoom * zoomFactor;
             setZoomFn( newZoom );
         }
 
         // Handle panning with two fingers
         const center = getTouchCenter( e );
-        panState.offsetX = center.x - panState.startX;
-        panState.offsetY = center.y - panState.startY;
-        redrawCanvas();
+        panstato.offsetX = center.x - panstato.startX;
+        panstato.offsetY = center.y - panstato.startY;
+        redesegniTabulon();
         return;
     }
 
-    if ( panState.isPanning && isInfinite ) {
+    if ( panstato.isPanning && isInfinite ) {
         e.preventDefault();
         const center = getTouchCenter( e );
-        panState.offsetX = center.x - panState.startX;
-        panState.offsetY = center.y - panState.startY;
-        redrawCanvas();
+        panstato.offsetX = center.x - panstato.startX;
+        panstato.offsetY = center.y - panstato.startY;
+        redesegniTabulon();
         return;
     }
 
-    if ( state.isDrawing ) {
+    if ( stato.isDrawing ) {
         draw( new MouseEvent( "mousemove", {
             clientX: e.touches[ 0 ].clientX, clientY: e.touches[ 0 ].clientY
         } ) );
@@ -333,19 +333,19 @@ function handleTouchMove( e: TouchEvent ): void {
 }
 
 function handleTouchEnd( e: TouchEvent ): void {
-    if ( touchGestureState.isPinching ) {
-        touchGestureState.isPinching = false;
-        touchGestureState.initialDistance = 0;
-        touchGestureState.initialZoom = 0;
+    if ( tuŝaGeststato.isPinching ) {
+        tuŝaGeststato.isPinching = false;
+        tuŝaGeststato.initialDistance = 0;
+        tuŝaGeststato.initialZoom = 0;
     }
 
-    if ( panState.isPanning ) {
-        panState.isPanning = false;
+    if ( panstato.isPanning ) {
+        panstato.isPanning = false;
         resetPanCursor();
         return;
     }
 
-    if ( e.changedTouches.length === 1 && state.isDrawing ) {
+    if ( e.changedTouches.length === 1 && stato.isDrawing ) {
         const touch = e.changedTouches[ 0 ];
         stopDrawing( new MouseEvent( "mouseup", {
             clientX: touch.clientX, clientY: touch.clientY
@@ -354,14 +354,14 @@ function handleTouchEnd( e: TouchEvent ): void {
 }
 
 function handleTouchCancel( e: TouchEvent ): void {
-    if ( touchGestureState.isPinching ) {
-        touchGestureState.isPinching = false;
-        touchGestureState.initialDistance = 0;
-        touchGestureState.initialZoom = 0;
+    if ( tuŝaGeststato.isPinching ) {
+        tuŝaGeststato.isPinching = false;
+        tuŝaGeststato.initialDistance = 0;
+        tuŝaGeststato.initialZoom = 0;
     }
 
-    if ( panState.isPanning ) {
-        panState.isPanning = false;
+    if ( panstato.isPanning ) {
+        panstato.isPanning = false;
         resetPanCursor();
         return;
     }
@@ -369,9 +369,9 @@ function handleTouchCancel( e: TouchEvent ): void {
 }
 
 function handleDoubleClick( e: MouseEvent ): void {
-    if ( isSharedUiElement( e.target ) ) return;
-    const coords = getCanvasCoords( e );
-    const clickedObject = findObjectAtPoint( coords.x, coords.y );
+    if ( cxuKomunaUiElemento( e.target ) ) return;
+    const coords = akiriTabulajnKoordinatojn( e );
+    const clickedObject = troviObjektonCePunkto( coords.x, coords.y );
     if ( clickedObject && clickedObject.type === "text" ) {
         editTextObject( clickedObject );
     }
@@ -379,31 +379,31 @@ function handleDoubleClick( e: MouseEvent ): void {
 
 function handleKeyup( e: KeyboardEvent ): void {
     if ( e.code === "Space" ) {
-        spaceState.isPressed = false;
-        if ( !panState.isPanning && !state.isDrawing ) {
+        spacstato.isPressed = false;
+        if ( !panstato.isPanning && !stato.isDrawing ) {
             if ( canvas ) delete canvas.dataset.cursor;
-            setCursor( getToolCursor() );
+            agordiKursoron( akiriIlanKursoron() );
         }
     }
 }
 
 function handleBlur(): void {
-    spaceState.isPressed = false;
-    panState.isPanning = false;
+    spacstato.isPressed = false;
+    panstato.isPanning = false;
     if ( canvas ) delete canvas.dataset.cursor;
-    resetCursor();
+    restarigiKursoron();
 }
 
 // ⟪ Window Resize (unified single handler) 🪟 ⟫
 
 function initWindowResize(): void {
     window.addEventListener( "resize", () => {
-        const activePage = getActivePage();
-        document.documentElement.style.setProperty( "--zoom", ( state.zoomNum / state.zoomDen ).toString() );
+        const activePage = akiriAktivanPagon();
+        document.documentElement.style.setProperty( "--zoom", ( stato.zoomNum / stato.zoomDen ).toString() );
         if ( activePage?.infinite ) {
-            resizeActivePage( window.innerWidth, window.innerHeight );
+            grandSxangxiAktivanPagon( window.innerWidth, window.innerHeight );
         } else {
-            redrawCanvas();
+            redesegniTabulon();
         }
     } );
 }
@@ -426,4 +426,4 @@ initPageControls();
 initPageSizeControls();
 initZoom();
 initFileOperations();
-saveState();
+konserviStaton();

@@ -6,8 +6,8 @@ declare const getTaskbar: any;
 declare const getElementSpans: any;
 
 import { AppData, IconGridConfig, CustomHTMLElement } from "./ꞁȷ̀ɜ ı],ɔ ŋᷠᴜ }ʃꞇ.js";
-import { getContainerDimensions, getElementPosition } from "./ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ/ſɟᴜ ſɭɔƽ.js";
-import { setupTileDrag, setupTileResize } from "./ſɟɔ }ʃᴜ.js";
+import { akiriUjonGrandecojn, akiriElementanPozicion } from "./ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ/ſɟᴜ ſɭɔƽ.js";
+import { agordiKaheloTreni, agordiKaheloGrandSxangxi } from "./ſɟɔ }ʃᴜ.js";
 
 // ⟪ Mobile Grid Dimension Aliases ( from CONSTANTS ) ⟫
 export const MOBILE_GRID_ROWS = CONSTANTS.DIM.MOBILE_ROWS;
@@ -19,24 +19,24 @@ let APPS: AppData[] = [];
 
 // ⟪ Icon Grid ⟫
 
-export class IconGrid {
+export class PiktogramaKrado {
     containerId: string;
     container: HTMLElement | null;
     config: IconGridConfig;
-    isMobile: boolean;
+    estasPortebla: boolean;
     rows: number;
     cols: number;
     initialRows: number;
     initialCols: number;
     bottomUp: boolean;
-    fixedWidth: number | null;
-    fixedHeight: number | null;
-    editMode: boolean;
-    labelMode: string;
-    currentPage: number;
-    totalPages: number;
-    touchStartY: number;
-    touchStartX: number;
+    fiksaLarĝo: number | null;
+    fiksaAlto: number | null;
+    redaktaReĝimo: boolean;
+    etikedReĝimo: string;
+    nunaPaĝo: number;
+    tutajPaĝoj: number;
+    tuŝaKomencoY: number;
+    tuŝaKomencoX: number;
 
     constructor( containerId: string, config: IconGridConfig = {} ) {
         this.containerId = containerId;
@@ -44,104 +44,104 @@ export class IconGrid {
         this.config = config;
 
         // Auto-detect mobile vs desktop
-        this.isMobile = this.checkIsMobile();
-        this.rows = this.isMobile ? MOBILE_GRID_ROWS : ( config.rows || DESKTOP_GRID_ROWS );
-        this.cols = this.isMobile ? MOBILE_GRID_COLS : ( config.cols || DESKTOP_GRID_COLS );
+        this.estasPortebla = this.cxuPortebla();
+        this.rows = this.estasPortebla ? MOBILE_GRID_ROWS : ( config.rows || DESKTOP_GRID_ROWS );
+        this.cols = this.estasPortebla ? MOBILE_GRID_COLS : ( config.cols || DESKTOP_GRID_COLS );
         this.initialRows = this.rows;
         this.initialCols = this.cols;
         this.bottomUp = config.bottomUp || false;
-        this.fixedWidth = config.width ?? null;
-        this.fixedHeight = config.height ?? null;
-        this.editMode = false;
-        this.labelMode = config.labelMode || "external";
-        this.currentPage = 0;
-        this.totalPages = 1;
-        this.touchStartY = 0;
-        this.touchStartX = 0;
+        this.fiksaLarĝo = config.width ?? null;
+        this.fiksaAlto = config.height ?? null;
+        this.redaktaReĝimo = false;
+        this.etikedReĝimo = config.labelMode || "external";
+        this.nunaPaĝo = 0;
+        this.tutajPaĝoj = 1;
+        this.tuŝaKomencoY = 0;
+        this.tuŝaKomencoX = 0;
 
         if ( !this.container ) return;
 
         this.container.addEventListener( "dblclick", ( e: MouseEvent ) => {
             const isClickableBackground = this.containerId === "desktop" || this.containerId === "start-menu";
             if ( isClickableBackground && e.target === this.container ) {
-                this.toggleEdit();
+                this.baskuligiRedaktadon();
             }
         } );
 
         // Touch events for swipe pagination
-        this.container.addEventListener( "touchstart", ( e: TouchEvent ) => this.handleTouchStart( e ), { passive: true } );
-        this.container.addEventListener( "touchmove", ( e: TouchEvent ) => this.handleTouchMove( e ), { passive: false } );
-        this.container.addEventListener( "touchend", ( e: TouchEvent ) => this.handleTouchEnd( e ), { passive: true } );
+        this.container.addEventListener( "touchstart", ( e: TouchEvent ) => this.pritraktiTuŝanKomencon( e ), { passive: true } );
+        this.container.addEventListener( "touchmove", ( e: TouchEvent ) => this.pritraktiTuŝanMovon( e ), { passive: false } );
+        this.container.addEventListener( "touchend", ( e: TouchEvent ) => this.pritraktiTuŝanFinon( e ), { passive: true } );
 
         // Listen for screen size changes
-        window.addEventListener( "resize", () => this.handleScreenResize() );
+        window.addEventListener( "resize", () => this.pritraktiEkrananGrandSxangxon() );
 
-        this.init();
+        this.inicii();
     }
 
-    checkIsMobile(): boolean {
+    cxuPortebla(): boolean {
         return window.innerWidth < CONSTANTS.BREAKPOINTS.MOBILE || window.innerHeight < CONSTANTS.BREAKPOINTS.MOBILE;
     }
 
-    handleScreenResize(): void {
-        const wasMobile = this.isMobile;
-        this.isMobile = this.checkIsMobile();
+    pritraktiEkrananGrandSxangxon(): void {
+        const wasMobile = this.estasPortebla;
+        this.estasPortebla = this.cxuPortebla();
 
-        if ( wasMobile !== this.isMobile ) {
+        if ( wasMobile !== this.estasPortebla ) {
             // Screen size changed between mobile and desktop
-            this.rows = this.isMobile ? MOBILE_GRID_ROWS : DESKTOP_GRID_ROWS;
-            this.cols = this.isMobile ? MOBILE_GRID_COLS : DESKTOP_GRID_COLS;
-            this.refresh();
-            this.relayout();
+            this.rows = this.estasPortebla ? MOBILE_GRID_ROWS : DESKTOP_GRID_ROWS;
+            this.cols = this.estasPortebla ? MOBILE_GRID_COLS : DESKTOP_GRID_COLS;
+            this.refreŝigi();
+            this.rearanĝi();
         }
     }
 
-    handleTouchStart( e: TouchEvent ): void {
-        this.touchStartY = e.touches[0].clientY;
-        this.touchStartX = e.touches[0].clientX;
+    pritraktiTuŝanKomencon( e: TouchEvent ): void {
+        this.tuŝaKomencoY = e.touches[0].clientY;
+        this.tuŝaKomencoX = e.touches[0].clientX;
     }
 
-    handleTouchMove( e: TouchEvent ): void {
+    pritraktiTuŝanMovon( e: TouchEvent ): void {
         if ( this.containerId === "desktop" || this.containerId === "start-menu-content" ) {
             e.preventDefault();
         }
     }
 
-    handleTouchEnd( e: TouchEvent ): void {
+    pritraktiTuŝanFinon( e: TouchEvent ): void {
         const touchEndY = e.changedTouches[0].clientY;
         const touchEndX = e.changedTouches[0].clientX;
-        const diffY = touchEndY - this.touchStartY;
-        const diffX = touchEndX - this.touchStartX;
+        const diffY = touchEndY - this.tuŝaKomencoY;
+        const diffX = touchEndX - this.tuŝaKomencoX;
 
         // Vertical swipe for pagination (only on mobile)
-        if ( this.isMobile && Math.abs( diffY ) > Math.abs( diffX ) && Math.abs( diffY ) > 50 ) {
+        if ( this.estasPortebla && Math.abs( diffY ) > Math.abs( diffX ) && Math.abs( diffY ) > 50 ) {
             if ( diffY > 0 ) {
                 // Swipe down - previous page
-                if ( this.currentPage > 0 ) {
-                    this.currentPage--;
-                    this.refresh();
+                if ( this.nunaPaĝo > 0 ) {
+                    this.nunaPaĝo--;
+                    this.refreŝigi();
                     if ( ( window as any ).DesktopIconManager ) ( window as any ).DesktopIconManager._updatePageIndicators();
                 }
             } else {
                 // Swipe up - next page
                 const maxPage = Math.ceil( APPS.length / ( this.rows * this.cols ) ) - 1;
-                if ( this.currentPage < maxPage ) {
-                    this.currentPage++;
-                    this.refresh();
+                if ( this.nunaPaĝo < maxPage ) {
+                    this.nunaPaĝo++;
+                    this.refreŝigi();
                     if ( ( window as any ).DesktopIconManager ) ( window as any ).DesktopIconManager._updatePageIndicators();
                 }
             }
         }
     }
 
-    init(): void {
+    inicii(): void {
         // Clear container to remove any existing tiles
         if ( this.container ) {
             this.container.innerHTML = "";
         }
     }
 
-    updateAdaptiveOrientation( el: HTMLElement ): void {
+    gxisdatigiAdaptanOrientigon( el: HTMLElement ): void {
         requestAnimationFrame( () => {
             const rect = el.getBoundingClientRect();
             if ( rect.width === 0 || rect.height === 0 ) return;
@@ -164,7 +164,7 @@ export class IconGrid {
             const padding = 0o20;
             const threshold = 0o100 + pillThickness + padding;
 
-            if ( this.labelMode === "external" ) {
+            if ( this.etikedReĝimo === "external" ) {
                 if ( rect.width < threshold ) {
                     effectivePos = "bottom";
                     if ( this.containerId === "start-menu-content" ) {
@@ -191,12 +191,12 @@ export class IconGrid {
             if ( newColSpan !== oldColSpan || newRowSpan !== oldRowSpan ) {
                 el.dataset.colSpan = newColSpan.toString();
                 el.dataset.rowSpan = newRowSpan.toString();
-                this.applyPosition( el, parseInt( el.dataset.col || "0" ), parseInt( el.dataset.row || "0" ) );
+                this.aplikiPozicion( el, parseInt( el.dataset.col || "0" ), parseInt( el.dataset.row || "0" ) );
             }
         } );
     }
 
-    addIcon( appData: AppData, index: number ): HTMLElement {
+    aldoniPiktogramon( appData: AppData, index: number ): HTMLElement {
         if ( !this.container ) return {} as any;
 
         const el = document.createElement( "div" );
@@ -219,10 +219,10 @@ export class IconGrid {
         buttonEl.onclick = ( e: MouseEvent ) => {
             e.stopPropagation();
             // Open app if not in edit mode, not resizing, and not dragging
-            if ( !this.editMode && !el.classList.contains( "resizing" ) && !isDragging ) {
+            if ( !this.redaktaReĝimo && !el.classList.contains( "resizing" ) && !isDragging ) {
                 const wm = ( window as any ).WindowManager || ( window as any ).getWindowManager();
                 if ( wm && wm.loadAppFromPath ) {
-                    wm.loadAppFromPath( appData.app, appData.name );
+                    wm.sxargiAplikonDeVojo( appData.app, appData.name );
                 } else {
                     console.error( "WindowManager not available" );
                 }
@@ -238,13 +238,13 @@ export class IconGrid {
         };
 
         // Add label based on mode
-        if ( this.labelMode === "inside" ) {
+        if ( this.etikedReĝimo === "inside" ) {
             // Internal mode: label inside button area
             const labelSpan = document.createElement( "span" );
             labelSpan.className = "label inside";
             labelSpan.innerText = appData.name;
             buttonEl.appendChild( labelSpan );
-        } else if ( this.labelMode !== "hidden" && this.labelMode !== "off" ) {
+        } else if ( this.etikedReĝimo !== "hidden" && this.etikedReĝimo !== "off" ) {
             // External mode: create title bar (ksaka - like recents-card)
             const labelContainer = document.createElement( "ksaka" );
             labelContainer.className = "title-bar";
@@ -269,7 +269,7 @@ export class IconGrid {
             e.stopPropagation();
             e.preventDefault();
             const pos = InputHandler.getPointerPos( e );
-            setupTileResize( this, el, pos.x, pos.y );
+            agordiKaheloGrandSxangxi( this, el, pos.x, pos.y );
         };
         handle.addEventListener( "mousedown", onResizeStart );
         handle.addEventListener( "touchstart", onResizeStart, { passive: false } );
@@ -277,8 +277,8 @@ export class IconGrid {
         el.appendChild( handle );
 
         if ( this.container ) this.container.appendChild( el );
-        this.snapToGrid( el, index );
-        this.updateAdaptiveOrientation( el );
+        this.alakrogiAlKrado( el, index );
+        this.gxisdatigiAdaptanOrientigon( el );
 
         // Track resize state on the element itself
         ( el as CustomHTMLElement )._isResizing = false;
@@ -287,7 +287,7 @@ export class IconGrid {
         const onPointerDown = ( e: any ) => {
             // Check if clicking directly on resize handle element
             const isResizeHandle = e.target === handle;
-            const canDrag = this.editMode || ( this.containerId === "desktop" && !isResizeHandle );
+            const canDrag = this.redaktaReĝimo || ( this.containerId === "desktop" && !isResizeHandle );
 
             // Block drag if currently resizing or on resize handle
             if ( ( el as CustomHTMLElement )._isResizing || isResizeHandle ) {
@@ -296,7 +296,7 @@ export class IconGrid {
 
             if ( canDrag ) {
                 const pos = InputHandler.getPointerPos( e );
-                setupTileDrag( this, el, pos.x, pos.y, () => {
+                agordiKaheloTreni( this, el, pos.x, pos.y, () => {
                     isDragging = false;
                 } );
             }
@@ -308,7 +308,7 @@ export class IconGrid {
         return el;
     }
 
-    snapToGrid( el: HTMLElement, index: number ): void {
+    alakrogiAlKrado( el: HTMLElement, index: number ): void {
         if ( !this.container ) return;
 
         // Handle pagination for mobile desktop only
@@ -320,13 +320,13 @@ export class IconGrid {
         el.dataset.page = pageIndex.toString();
 
         // Show/hide based on pagination (mobile desktop only)
-        if ( this.isMobile && this.containerId === "desktop" ) {
-            el.style.display = pageIndex === this.currentPage ? "" : "none";
+        if ( this.estasPortebla && this.containerId === "desktop" ) {
+            el.style.display = pageIndex === this.nunaPaĝo ? "" : "none";
         }
         if ( this.containerId !== "start-menu-content" ) {
             const c = Math.floor( indexOnPage / this.rows );
             const r = ( this.rows - 1 ) - ( indexOnPage % this.rows );
-            this.applyPosition( el, c, r );
+            this.aplikiPozicion( el, c, r );
             return;
         }
 
@@ -352,16 +352,16 @@ export class IconGrid {
             const colGroup = Math.floor( index / itemsPerCol );
             const c = colGroup * cs;
             const r = ( this.rows - rs ) - ( index % itemsPerCol );
-            this.applyPosition( el, c, r );
+            this.aplikiPozicion( el, c, r );
         } else {
             const itemsPerCol = Math.floor( this.rows / rs );
             const c = Math.floor( index / itemsPerCol ) * cs;
             const r = ( this.rows - rs ) - ( index % itemsPerCol ) * rs;
-            this.applyPosition( el, c, r );
+            this.aplikiPozicion( el, c, r );
         }
     }
 
-    applyPosition( el: HTMLElement, c: number, r: number, xOffset: number = 0 ): void {
+    aplikiPozicion( el: HTMLElement, c: number, r: number, xOffset: number = 0 ): void {
         const { colSpan, rowSpan } = getElementSpans( el );
 
         const canExpand = this.containerId === "start-menu-content";
@@ -376,7 +376,7 @@ export class IconGrid {
                 needsRefresh = true;
             }
             if ( needsRefresh ) {
-                this.refresh();
+                this.refreŝigi();
                 return;
             }
         } else {
@@ -408,7 +408,7 @@ export class IconGrid {
         }
     }
 
-    relayout(): void {
+    rearanĝi(): void {
         if ( !this.config.centered || !this.container ) return;
 
         const tiles = Array.from( this.container.querySelectorAll( ".app-tile" ) ) as HTMLElement[];
@@ -417,19 +417,19 @@ export class IconGrid {
         let minC = this.cols;
         let maxC = 0;
         tiles.forEach( tile => {
-            const { col: c, colSpan: cs } = getElementPosition( tile );
+            const { col: c, colSpan: cs } = akiriElementanPozicion( tile );
             if ( c < minC ) minC = c;
             if ( c + cs > maxC ) maxC = c + cs;
         } );
 
         const usedWidthCols = maxC - minC;
-        const { width: containerW } = getContainerDimensions( this.fixedWidth, this.fixedHeight, this.container );
+        const { width: containerW } = akiriUjonGrandecojn( this.fiksaLarĝo, this.fiksaAlto, this.container );
         const w = containerW / this.cols;
         const xOffset = ( containerW - ( usedWidthCols * w ) ) / 2 - ( minC * w );
 
         tiles.forEach( tile => {
-            const { col, row } = getElementPosition( tile );
-            this.applyPosition( tile, col, row, xOffset );
+            const { col, row } = akiriElementanPozicion( tile );
+            this.aplikiPozicion( tile, col, row, xOffset );
         } );
 
         if ( this.containerId === "start-menu-content" ) {
@@ -438,7 +438,7 @@ export class IconGrid {
         }
     }
 
-    isAreaOccupied( c: number, r: number, colSpan: number, rowSpan: number, excludeEl: HTMLElement | null ): boolean {
+    cxuAreoOkupita( c: number, r: number, colSpan: number, rowSpan: number, excludeEl: HTMLElement | null ): boolean {
         if ( !this.container ) return false;
         for ( const tile of Array.from( this.container.querySelectorAll( ".app-tile" ) ) as HTMLElement[] ) {
             if ( tile === excludeEl ) continue;
@@ -462,8 +462,8 @@ export class IconGrid {
         return false;
     }
 
-    snapAfterDrag( el: HTMLElement ): void {
-        const { width: containerW, height: containerH } = getContainerDimensions( this.fixedWidth, this.fixedHeight, this.container );
+    alakrogiPostTrenado( el: HTMLElement ): void {
+        const { width: containerW, height: containerH } = akiriUjonGrandecojn( this.fiksaLarĝo, this.fiksaAlto, this.container );
         const gap = CONSTANTS.DIM.GAP_SIZE;
         const cellW = ( containerW - ( this.cols - 1 ) * gap ) / this.cols;
         const cellH = ( containerH - ( this.rows - 1 ) * gap ) / this.rows;
@@ -491,7 +491,7 @@ export class IconGrid {
         el.dataset._newCol = c.toString();
         el.dataset._newRow = r.toString();
 
-        if ( this.isAreaOccupied( c, r, colSpan, rowSpan, el ) ) {
+        if ( this.cxuAreoOkupita( c, r, colSpan, rowSpan, el ) ) {
             let spotFound = false;
             for ( let radius = 1; radius < 0o40 && !spotFound; radius++ ) {
                 for ( let dc = -radius; dc <= radius && !spotFound; dc++ ) {
@@ -501,7 +501,7 @@ export class IconGrid {
                         if ( nc >= 0 && nc + colSpan <= this.cols && nr >= 0 && nr + rowSpan <= this.rows ) {
                             el.dataset._newCol = nc.toString();
                             el.dataset._newRow = nr.toString();
-                            if ( !this.isAreaOccupied( nc, nr, colSpan, rowSpan, el ) ) {
+                            if ( !this.cxuAreoOkupita( nc, nr, colSpan, rowSpan, el ) ) {
                                 c = nc; r = nr; spotFound = true;
                             }
                         }
@@ -515,44 +515,44 @@ export class IconGrid {
         delete el.dataset._newCol;
         delete el.dataset._newRow;
 
-        this.applyPosition( el, c, r );
-        this.updateAdaptiveOrientation( el );
+        this.aplikiPozicion( el, c, r );
+        this.gxisdatigiAdaptanOrientigon( el );
 
         // Save tile layout to storage
         if ( this.containerId === "desktop" ) ( window as any ).DesktopIconManager?._saveDesktopLayout();
     }
 
-    toggleEdit(): void {
-        this.editMode = !this.editMode;
+    baskuligiRedaktadon(): void {
+        this.redaktaReĝimo = !this.redaktaReĝimo;
         if ( this.container ) this.container.classList.toggle( "edit-mode" );
-        document.body.classList.toggle( "edit-mode", this.editMode );
+        document.body.classList.toggle( "edit-mode", this.redaktaReĝimo );
     }
 
-    refresh(): void {
+    refreŝigi(): void {
         if ( !this.container ) return;
         const tiles = Array.from( this.container.querySelectorAll( ".app-tile" ) ) as HTMLElement[];
         tiles.forEach( ( tile, index ) => {
-            const { col: c, row: r } = getElementPosition( tile );
+            const { col: c, row: r } = akiriElementanPozicion( tile );
             const page = parseInt( tile.dataset.page || "0" ) || 0;
 
             // Update pagination visibility (mobile desktop only)
-            if ( this.isMobile && this.containerId === "desktop" ) {
-                tile.style.display = page === this.currentPage ? "" : "none";
+            if ( this.estasPortebla && this.containerId === "desktop" ) {
+                tile.style.display = page === this.nunaPaĝo ? "" : "none";
             }
 
-            if ( !isNaN( c ) && !isNaN( r ) ) this.applyPosition( tile, c, r );
-            else this.snapToGrid( tile, index );
+            if ( !isNaN( c ) && !isNaN( r ) ) this.aplikiPozicion( tile, c, r );
+            else this.alakrogiAlKrado( tile, index );
         } );
     }
 }
 
 // Attach to window for global access
-( window as any ).IconGrid = IconGrid;
+( window as any ).IconGrid = PiktogramaKrado;
 
 /**
  * Get maximum page number for mobile pagination
  */
-export function getMaxPage( apps?: any[] ): number {
+export function akiriMaksimumanPaĝon( apps?: any[] ): number {
     const itemsPerPage = MOBILE_GRID_ROWS * MOBILE_GRID_COLS;
     return Math.ceil( ( apps || ( window as any ).APPS || [] ).length / itemsPerPage ) - 1;
 }

@@ -12,14 +12,14 @@ declare const getStrings: any;
 declare const APPS: any;
 declare const updateDock: any;
 
-class WindowManager {
-    static zIndex: number = CONSTANTS.WM.BASE_Z_INDEX;
-    static _themeWatcher: any = null;
-    static _currentTheme: string = "detect";
+class FenestraAdministranto {
+    static statikaZIndekso: number = CONSTANTS.WM.BASE_Z_INDEX;
+    static statikaTemoVigladilo: any = null;
+    static statikaNunaTemo: string = "detect";
 
     // ⟪ App URL Map ⟫ - Built from APPS_DATA ( path → path )
 
-    static get APP_URLS(): { [ key: string ]: string } {
+    static get aplikaĵajURLoj(): { [ key: string ]: string } {
         if ( typeof CONSTANTS.APPS_DATA !== "undefined" ) {
             const map: { [ key: string ]: string } = {};
             CONSTANTS.APPS_DATA.forEach( ( app: any ) => {
@@ -32,26 +32,26 @@ class WindowManager {
 
     // ⟪ Helper Functions ⟫
 
-    static _randomWindowPosition( baseY: number ): { x: number; y: number } {
+    static _aleatoriaFenestraPozicio( baseY: number ): { x: number; y: number } {
         return {
             x: ( Math.floor( Math.random() * CONSTANTS.WM.WINDOW_RANDOM_RANGE ) * CONSTANTS.WM.WINDOW_RANDOM_STEP ) + CONSTANTS.WM.WINDOW_BASE_X,
             y: ( Math.floor( Math.random() * CONSTANTS.WM.WINDOW_RANDOM_RANGE ) * CONSTANTS.WM.WINDOW_RANDOM_STEP ) + baseY
         };
     }
 
-    static _createWindowElement( id: string, title: string ): HTMLElement {
+    static _kreiFenestranElementon( id: string, title: string ): HTMLElement {
         const win = document.createElement( "div" );
         win.classList.add( "window" );
         win.id = id;
         return win;
     }
 
-    static _setupWindowInteractions( win: HTMLElement, id: string, title: string ): void {
-        win.addEventListener( "mousedown", () => { win.style.zIndex = ( ++this.zIndex ).toString(); } );
-        this.setAppActive( title, true );
+    static _agordiFenestrajnInteragojn( win: HTMLElement, id: string, title: string ): void {
+        win.addEventListener( "mousedown", () => { win.style.zIndex = ( ++this.statikaZIndekso ).toString(); } );
+        this.agordiAplikonAktiva( title, true );
     }
 
-    static _injectStylesIntoIframe( iframeId: string ): void {
+    static _injektiStilojnEnIframon( iframeId: string ): void {
         const iframe = document.getElementById( iframeId ) as HTMLIFrameElement | null;
         if ( !iframe ) return;
 
@@ -90,58 +90,58 @@ class WindowManager {
         };
     }
 
-    static _buildTitleBar( id: string, title: string, simple: boolean = false ): string {
+    static _konstruiTitolaBreton( id: string, title: string, simple: boolean = false ): string {
         if ( simple ) {
             return `
-                <ksaka onmousedown="WindowManager.startDrag(event, '${id}')" ontouchstart="WindowManager.startDrag(event, '${id}')">
-                    <button onclick="WindowManager.closeWindow('${id}')" title="Close">/</button>
-                    <button onclick="WindowManager.toggleMaximize('${id}')" title="Maximize">O</button>
-                    <button onclick="WindowManager.minimizeWindow('${id}')" title="Minimize">|</button>
+                <ksaka onmousedown="WindowManager.komenciTrenadon(event, '${id}')" ontouchstart="WindowManager.komenciTrenadon(event, '${id}')">
+                    <button onclick="WindowManager.fermiFenestron('${id}')" title="Close">/</button>
+                    <button onclick="WindowManager.baskuligiMaksimumigxon('${id}')" title="Maximize">O</button>
+                    <button onclick="WindowManager.minimumigiFenestron('${id}')" title="Minimize">|</button>
                     <p class="title-bar-title">${title}</p>
                 </ksaka>
             `;
         }
         return `
-            <ksaka class="title-bar n2tase" onmousedown="WindowManager.startDrag(event, '${id}')" ontouchstart="WindowManager.startDrag(event, '${id}')">
+            <ksaka class="title-bar n2tase" onmousedown="WindowManager.komenciTrenadon(event, '${id}')" ontouchstart="WindowManager.komenciTrenadon(event, '${id}')">
                 <div class="window-controls cakaxa">
-                    <button class="control-btn" onclick="WindowManager.closeWindow('${id}')" title="Close">/</button>
-                    <button class="control-btn" onclick="WindowManager.toggleMaximize('${id}')" title="Maximize">O</button>
-                    <button class="control-btn" onclick="WindowManager.minimizeWindow('${id}')" title="Minimize">|</button>
+                    <button class="control-btn" onclick="WindowManager.fermiFenestron('${id}')" title="Close">/</button>
+                    <button class="control-btn" onclick="WindowManager.baskuligiMaksimumigxon('${id}')" title="Maximize">O</button>
+                    <button class="control-btn" onclick="WindowManager.minimumigiFenestron('${id}')" title="Minimize">|</button>
                 </div>
                 <div class="title-bar-title">${title}</div>
             </ksaka>
         `;
     }
 
-    static _buildIframeContent( iframeId: string, url: string ): string {
+    static _konstruiIframanEnhavon( iframeId: string, url: string ): string {
         return `<iframe id="${iframeId}" src="${url}" sandbox="allow-same-origin allow-scripts" style="inline-size:100%; block-size:100%;" class="n2tase"></iframe>`;
     }
 
-    static _buildResizeHandles( id: string ): string {
+    static _konstruiGrandSxangxilojn( id: string ): string {
         return `
-            <div class="resize-handle resize-handle-n" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'n')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'n')"></div>
-            <div class="resize-handle resize-handle-s" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 's')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 's')"></div>
-            <div class="resize-handle resize-handle-e" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'e')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'e')"></div>
-            <div class="resize-handle resize-handle-w" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'w')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'w')"></div>
-            <div class="resize-handle resize-handle-ne" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'ne')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'ne')"></div>
-            <div class="resize-handle resize-handle-nw" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'nw')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'nw')"></div>
-            <div class="resize-handle resize-handle-se" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'se')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'se')"></div>
-            <div class="resize-handle resize-handle-sw" onmousedown="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'sw')" ontouchstart="WindowManager.bringToFront('${id}'); WindowManager.startResize(event, '${id}', 'sw')"></div>
+            <div class="resize-handle resize-handle-n" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'n')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'n')"></div>
+            <div class="resize-handle resize-handle-s" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 's')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 's')"></div>
+            <div class="resize-handle resize-handle-e" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'e')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'e')"></div>
+            <div class="resize-handle resize-handle-w" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'w')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'w')"></div>
+            <div class="resize-handle resize-handle-ne" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'ne')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'ne')"></div>
+            <div class="resize-handle resize-handle-nw" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'nw')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'nw')"></div>
+            <div class="resize-handle resize-handle-se" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'se')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'se')"></div>
+            <div class="resize-handle resize-handle-sw" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'sw')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'sw')"></div>
         `;
     }
 
     // ⟪ Bring Window To Front ⟫
 
-    static bringToFront( id: string ): void {
+    static alenportiAlFrunto( id: string ): void {
         const win = document.getElementById( id );
         if ( win ) {
-            win.style.zIndex = ( ++this.zIndex ).toString();
+            win.style.zIndex = ( ++this.statikaZIndekso ).toString();
         }
     }
 
     // ⟪ Load App From Path ⟫
 
-    static loadAppFromPath( path: string, title: string ): void {
+    static sxargiAplikonDeVojo( path: string, title: string ): void {
         const container = getWindowContainer();
 
         // Check if app is already open
@@ -153,78 +153,78 @@ class WindowManager {
         
         if ( existingWin ) {
             // App is already open - focus it and refresh recents
-            this.focusWindow( existingWin.id );
-            this.renderRecents();
+            this.fokusigiFenestron( existingWin.id );
+            this.renderiLastatempajn();
             return;
         }
 
         const id = "win-" + Date.now();
-        const win = this._createWindowElement( id, title );
+        const win = this._kreiFenestranElementon( id, title );
         const app = ( typeof CONSTANTS.APPS_DATA !== "undefined" ) ? CONSTANTS.APPS_DATA.find( ( a: any ) => a.path === path ) : null;
         win.dataset.emoji = app?.emoji || "🖥️";
-        const { x, y } = this._randomWindowPosition( CONSTANTS.WM.WINDOW_BASE_Y_LOAD );
+        const { x, y } = this._aleatoriaFenestraPozicio( CONSTANTS.WM.WINDOW_BASE_Y_LOAD );
         win.style.left = x + "px";
         win.style.top = y + "px";
-        win.style.zIndex = ( ++this.zIndex ).toString();
+        win.style.zIndex = ( ++this.statikaZIndekso ).toString();
 
         const iframeId = "iframe-" + id;
         win.innerHTML = `
         <div class="cepufal" style="padding: 0; inline-size: 100%;">
-            ${this._buildTitleBar( id, title, true )}
-            ${this._buildIframeContent( iframeId, path )}
+            ${this._konstruiTitolaBreton( id, title, true )}
+            ${this._konstruiIframanEnhavon( iframeId, path )}
         </div>
-        ` + this._buildResizeHandles( id );
+        ` + this._konstruiGrandSxangxilojn( id );
 
         container.appendChild( win );
-        this._setupWindowInteractions( win, id, title );
-        this.updateTaskbarApps();
-        this._injectStylesIntoIframe( iframeId );
+        this._agordiFenestrajnInteragojn( win, id, title );
+        this.gxisdatigiTaskobretajnAplikojn();
+        this._injektiStilojnEnIframon( iframeId );
 
         // Animate window opening with fractions
-        AnimationManager.windowOpen( win, { ...CONSTANTS.ANIM_SETTINGS.windowOpen } );
+        AnimationManager.fenestroMalfermi( win, { ...CONSTANTS.ANIM_SETTINGS.windowOpen } );
 
         // Refresh recents to show new window
-        this.renderRecents();
+        this.renderiLastatempajn();
     }
 
     // ⟪ Create Window ⟫
 
-    static createWindow( path: string, content: string = "" ): void {
+    static kreiFenestron( path: string, content: string = "" ): void {
         const id = "win-" + Date.now();
         const title = path.split( "/" ).pop()?.replace( ".html", "" ) || "App";
         const container = getWindowContainer();
-        const win = this._createWindowElement( id, title );
+        const win = this._kreiFenestranElementon( id, title );
         const app = ( typeof CONSTANTS.APPS_DATA !== "undefined" ) ? CONSTANTS.APPS_DATA.find( ( a: any ) => a.path === path ) : null;
         win.dataset.emoji = app?.emoji || "🖥️";
-        const { x, y } = this._randomWindowPosition( CONSTANTS.WM.WINDOW_BASE_Y_CREATE );
+        const { x, y } = this._aleatoriaFenestraPozicio( CONSTANTS.WM.WINDOW_BASE_Y_CREATE );
         win.style.left = x + "px";
         win.style.top = y + "px";
-        win.style.zIndex = ( ++this.zIndex ).toString();
+        win.style.zIndex = ( ++this.statikaZIndekso ).toString();
 
-        const appUrl = this.APP_URLS[ path ];
+        const appUrl = this.aplikaĵajURLoj[ path ];
         const iframeId = "iframe-" + id;
         const internalContent = appUrl
-            ? this._buildIframeContent( iframeId, appUrl )
+            ? this._konstruiIframanEnhavon( iframeId, appUrl )
             : ( content || `<div><p>${title}</p></div>` );
 
-        win.innerHTML = this._buildTitleBar( id, title ) + internalContent +
-            this._buildResizeHandles( id );
+        win.innerHTML = this._konstruiTitolaBreton( id, title ) + internalContent +
+            this._konstruiGrandSxangxilojn( id );
 
-        this._setupWindowInteractions( win, id, title );
+        this._agordiFenestrajnInteragojn( win, id, title );
         container.appendChild( win );
-        this.updateTaskbarApps();
+        this.gxisdatigiTaskobretajnAplikojn();
 
         if ( appUrl ) {
-            this._injectStylesIntoIframe( iframeId );
+            this._injektiStilojnEnIframon( iframeId );
         }
 
         // Animate window opening with fractions
-        AnimationManager.windowOpen( win, { ...CONSTANTS.ANIM_SETTINGS.windowOpen } );
+        AnimationManager.fenestroMalfermi( win, { ...CONSTANTS.ANIM_SETTINGS.windowOpen } );
     }
 
     // ⟪ Start Resize ⟫
 
-    static startResize( e: MouseEvent | TouchEvent, id: string, handle: string ): void {
+    static komenciGrandSxangxon( e: MouseEvent | TouchEvent, id: string, handle: string ): void {
         e.stopPropagation();
         e.preventDefault();
 
@@ -314,17 +314,17 @@ class WindowManager {
 
     // ⟪ Close Window ⟫
 
-    static closeWindow( id: string ): void {
+    static fermiFenestron( id: string ): void {
         const win = document.getElementById( id );
         if ( win ) {
             const title = getWindowTitle( win );
 
             // Animate window closing with fractions
-            AnimationManager.windowClose( win, { ...CONSTANTS.ANIM_SETTINGS.windowClose } ).then( () => {
-                this.setAppActive( title, false );
+            AnimationManager.fenestroFermi( win, { ...CONSTANTS.ANIM_SETTINGS.windowClose } ).then( () => {
+                this.agordiAplikonAktiva( title, false );
                 win.remove();
-                this.updateTaskbarApps();
-                this.renderRecents();
+                this.gxisdatigiTaskobretajnAplikojn();
+                this.renderiLastatempajn();
             } );
 
             return;
@@ -333,7 +333,7 @@ class WindowManager {
 
     // ⟪ Start Drag ⟫
 
-    static startDrag( e: MouseEvent | TouchEvent, id: string ): void {
+    static komenciTrenadon( e: MouseEvent | TouchEvent, id: string ): void {
         e.preventDefault();
 
         const win = document.getElementById( id );
@@ -372,13 +372,13 @@ class WindowManager {
 
     // ⟪ Toggle Maximize ⟫
 
-    static toggleMaximize( id: string ): void {
+    static baskuligiMaksimumigxon( id: string ): void {
         const win = document.getElementById( id );
         if ( !win ) return;
 
         if ( win.classList.contains( "maximized" ) ) {
             // Play unmaximize animation first
-            AnimationManager.unmaximizeWindow( win, {
+            AnimationManager.malmaksimumigiFenestron( win, {
                 duration: CONSTANTS.ANIM_SETTINGS.windowMaximize.duration,
                 easing: CONSTANTS.ANIM_SETTINGS.windowMaximize.easing,
                 toScale: CONSTANTS.ANIM_SETTINGS.windowMaximize.scale
@@ -406,7 +406,7 @@ class WindowManager {
             ( win.style as any ).bottom = "";
             win.classList.add( "maximized" );
             // Play maximize animation
-            AnimationManager.maximizeWindow( win, {
+            AnimationManager.maksimumigiFenestron( win, {
                 duration: CONSTANTS.ANIM_SETTINGS.windowMaximize.duration,
                 easing: CONSTANTS.ANIM_SETTINGS.windowMaximize.easing,
                 fromScale: CONSTANTS.ANIM_SETTINGS.windowMaximize.scale
@@ -416,18 +416,18 @@ class WindowManager {
 
     // ⟪ Minimize Window ⟫
 
-    static minimizeWindow( id: string ): void {
+    static minimumigiFenestron( id: string ): void {
         const win = document.getElementById( id );
         if ( win ) {
             // Add minimized class immediately to trigger state change,
             // but animation manager will handle the visual part.
-            AnimationManager.minimizeWindow( win, {
+            AnimationManager.minimumigiFenestron( win, {
                 duration: CONSTANTS.ANIM_SETTINGS.windowMinimize.duration,
                 easing: CONSTANTS.ANIM_SETTINGS.windowMinimize.easing
             } ).then( () => {
                 win.classList.add( "minimized" );
-                this.updateTaskbarApps();
-                this.renderRecents();
+                this.gxisdatigiTaskobretajnAplikojn();
+                this.renderiLastatempajn();
                 if ( typeof updateDock === "function" ) updateDock();
             } );
         }
@@ -435,21 +435,21 @@ class WindowManager {
 
     // ⟪ Focus Window ⟫
 
-    static focusWindow( id: string ): void {
+    static fokusigiFenestron( id: string ): void {
         const win = document.getElementById( id );
         if ( win ) {
             if ( win.classList.contains( "minimized" ) ) {
                 win.classList.remove( "minimized" );
-                AnimationManager.restoreWindow( win );
+                AnimationManager.restaŭriFenestron( win );
             }
-            win.style.zIndex = ( ++this.zIndex ).toString();
+            win.style.zIndex = ( ++this.statikaZIndekso ).toString();
             if ( ( window as any ).PanelManager ) ( window as any ).PanelManager.closeAllPanels();
-            this.updateTaskbarApps();
+            this.gxisdatigiTaskobretajnAplikojn();
         }
     }
 
     // ⟪ Render Recents ⟫
-    static renderRecents(): void {
+    static renderiLastatempajn(): void {
         const list = document.getElementById( "recents-list" );
         if ( !list ) return;
 
@@ -466,9 +466,9 @@ class WindowManager {
             const emoji = win.dataset.emoji || "🖥️";
             const id = win.id;
             return `
-                <div class="recents-card" onclick="WindowManager.focusWindow('${id}')">
+                <div class="recents-card" onclick="WindowManager.fokusigiFenestron('${id}')">
                     <ksaka class="title-bar">
-                        <button class="recents-close-btn" onclick="event.stopPropagation(); WindowManager.closeWindow('${id}'); WindowManager.renderRecents();">/</button>
+                        <button class="recents-close-btn" onclick="event.stopPropagation(); WindowManager.fermiFenestron('${id}'); WindowManager.renderiLastatempajn();">/</button>
                         <p class="title-bar-title">${title}</p>
                     </ksaka>
                     <div class="recents-preview">
@@ -481,7 +481,7 @@ class WindowManager {
 
     // ⟪ Update Dock ⟫
 
-    static updateDock(): void {
+    static gxisdatigiDokon(): void {
         const dock = document.getElementById( "taskbar-dock" );
         if ( !dock ) return;
 
@@ -496,7 +496,7 @@ class WindowManager {
             const id = win.id;
             const isMinimized = win.classList.contains( "minimized" );
             return `
-                <button class="dock-btn n2tase ${isMinimized ? "minimized" : ""}" onclick="WindowManager.focusWindow('${id}')" title="${title}">
+                <button class="dock-btn n2tase ${isMinimized ? "minimized" : ""}" onclick="WindowManager.fokusigiFenestron('${id}')" title="${title}">
                     ${title[ 0 ].toUpperCase()}
                 </button>
             `;
@@ -505,7 +505,7 @@ class WindowManager {
 
     // ⟪ Set App Active ⟫
 
-    static setAppActive( appName: string | null, active: boolean | null ): void {
+    static agordiAplikonAktiva( appName: string | null, active: boolean | null ): void {
         const countSpan = document.querySelector( ".active-apps-count" ) as HTMLElement | null;
         if ( countSpan ) {
             const count = document.querySelectorAll( ".window" ).length;
@@ -515,7 +515,7 @@ class WindowManager {
 
     // ⟪ Update Taskbar Apps ⟫
 
-    static updateTaskbarApps(): void {
+    static gxisdatigiTaskobretajnAplikojn(): void {
         const center = getHomeArea();
         const taskbar = getTaskbar();
         if ( !center || !taskbar ) return;
@@ -523,12 +523,12 @@ class WindowManager {
         center.querySelectorAll( ".taskbar-app-btn" ).forEach( ( b: HTMLElement ) => b.remove() );
 
         // Recent apps only shown in recents panel and start menu, not in taskbar
-        this.setAppActive( null, null );
+        this.agordiAplikonAktiva( null, null );
     }
 
     // ⟪ Settings Handlers ⟫
 
-    static updateTaskbarSettings( val: string ): void {
+    static gxisdatigiTaskobretajnAgordojn( val: string ): void {
         document.documentElement.style.setProperty( "--taskbar-width", val + "px" );
 
         const taskbar = getTaskbar();
@@ -542,25 +542,25 @@ class WindowManager {
 
     // ⟪ Theme Management ⟫
 
-    static setTheme( theme: string ): void {
+    static agordiTemon( theme: string ): void {
         if ( theme === "detect" ) {
             const isDark = window.matchMedia( "(prefers-color-scheme: dark)" ).matches;
-            this.applyTheme( isDark );
+            this.aplikiTemon( isDark );
             // Watch for system changes
-            if ( !this._themeWatcher ) {
-                this._themeWatcher = ( e: MediaQueryListEvent ) => {
-                    if ( this._currentTheme === "detect" ) this.applyTheme( e.matches );
+            if ( !this.statikaTemoVigladilo ) {
+                this.statikaTemoVigladilo = ( e: MediaQueryListEvent ) => {
+                    if ( this.statikaNunaTemo === "detect" ) this.aplikiTemon( e.matches );
                 };
-                window.matchMedia( "(prefers-color-scheme: dark)" ).addEventListener( "change", this._themeWatcher );
+                window.matchMedia( "(prefers-color-scheme: dark)" ).addEventListener( "change", this.statikaTemoVigladilo );
             }
         } else {
-            this.applyTheme( theme === "dark" );
+            this.aplikiTemon( theme === "dark" );
         }
-        this._currentTheme = theme;
+        this.statikaNunaTemo = theme;
         localStorage.setItem( "os-theme", theme );
     }
 
-    static applyTheme( isDark: boolean ): void {
+    static aplikiTemon( isDark: boolean ): void {
         const themeVars: { [ key: string ]: string } = isDark ? {
             "--ខេលេសៃ": "#000", "--ខេលេសៃច្ហិ": "#000000a0", "--កេភ": "#fff", "--កេភ២": "#c4c4c4",
             "--តានេក": "#ffffff10", "--តានេកខេលេ": "#ffffff10", "--តានេក២": "#ffffff20",
@@ -580,7 +580,7 @@ class WindowManager {
 
     // ⟪ Wallpaper Management ⟫
 
-    static setWallpaper( url: string ): void {
+    static agordiTapeton( url: string ): void {
         const root = document.getElementById( "os-root" );
         if ( root ) {
             root.classList.remove( "wallpaper-gradient" );
@@ -595,7 +595,7 @@ class WindowManager {
         localStorage.setItem( "os-wallpaper", url || "" );
     }
 
-    static setGradientWallpaper( start: string, end: string ): void {
+    static agordiGradientanTapeton( start: string, end: string ): void {
         const root = document.getElementById( "os-root" );
         if ( root ) {
             root.classList.add( "wallpaper-gradient" );
@@ -606,14 +606,14 @@ class WindowManager {
         localStorage.removeItem( "os-wallpaper" );
     }
 
-    static setRandomGradientWallpaper(): void {
+    static agordiHazardaGradientaTapeto(): void {
         const randomColor = () => '#' + Math.floor( Math.random() * 16777215 ).toString( 16 ).padStart( 6, '0' );
         const start = randomColor();
         const end = randomColor();
-        this.setGradientWallpaper( start, end );
+        this.agordiGradientanTapeton( start, end );
     }
 
-    static clearWallpaper(): void {
+    static forigiTapeton(): void {
         const root = document.getElementById( "os-root" );
         if ( root ) {
             root.classList.remove( "wallpaper-gradient" );
@@ -625,32 +625,32 @@ class WindowManager {
 
     // ⟪ Initialization ⟫
 
-    static init(): void {
+    static inicii(): void {
         const savedTheme = localStorage.getItem( "os-theme" ) || "detect";
-        this.setTheme( savedTheme );
+        this.agordiTemon( savedTheme );
 
         // Load wallpaper (image or gradient)
         const savedWallpaper = localStorage.getItem( "os-wallpaper" );
         if ( savedWallpaper ) {
-            this.setWallpaper( savedWallpaper );
+            this.agordiTapeton( savedWallpaper );
         } else {
             const savedGradient = JSON.parse( localStorage.getItem( "os-wallpaper-gradient" ) || "null" );
             if ( savedGradient ) {
-                this.setGradientWallpaper( savedGradient.start, savedGradient.end );
+                this.agordiGradientanTapeton( savedGradient.start, savedGradient.end );
             }
         }
 
         // Initialize taskbar size from localStorage
         const savedTaskbarSize = localStorage.getItem( "os-taskbar-size" ) || "48";
-        this.updateTaskbarSettings( savedTaskbarSize );
+        this.gxisdatigiTaskobretajnAgordojn( savedTaskbarSize );
 
         // Initialize taskbar with saved position and insets
-        this.initTaskbar();
+        this.iniciiTaskobreton();
     }
 
     // ⟪ Set Language ⟫
 
-    static setLanguage( val: string ): void {
+    static agordiLingvon( val: string ): void {
         if ( typeof window.k2regawe === "function" ) {
             window.k2regawe( val );
         }
@@ -658,30 +658,30 @@ class WindowManager {
 
     // ⟪ Set Label Display ⟫
 
-    static setLabelDisplay( val: string ): void {
+    static agordiEtikedMontron( val: string ): void {
         if ( ( window as any ).DesktopIconManager ) {
             const dim = ( window as any ).DesktopIconManager;
             if ( dim.desktop ) {
-                dim.desktop.labelMode = val;
-                dim.desktop.init();
+                dim.desktop.etikedReĝimo = val;
+                dim.desktop.inicii();
             }
             if ( dim.startMenu ) {
-                dim.startMenu.labelMode = val;
-                dim.startMenu.init();
+                dim.startMenu.etikedReĝimo = val;
+                dim.startMenu.inicii();
             }
 
             // Re-add icons to both grids
             APPS.forEach( ( app: any, i: number ) => {
-                dim.desktop?.addIcon( app, i );
-                dim.startMenu?.addIcon( app, i );
+                dim.desktop?.aldoniPiktogramon( app, i );
+                dim.startMenu?.aldoniPiktogramon( app, i );
             } );
-            dim._relayoutAll();
+            dim._rearanĝiCxiujn();
         }
     }
 
     // ⟪ Set Taskbar Position ⟫
 
-    static setTaskbarPosition( pos: string ): void {
+    static agordiTaskobretanPozicion( pos: string ): void {
         const taskbar = getTaskbar();
         if ( taskbar ) taskbar.dataset.position = pos;
 
@@ -719,14 +719,14 @@ class WindowManager {
         // Update tile orientations via managers
         if ( ( window as any ).DesktopIconManager ) {
             [ ( window as any ).DesktopIconManager.desktop, ( window as any ).DesktopIconManager.startMenu ].forEach( ( grid: any ) => {
-                grid?.container?.querySelectorAll( ".app-tile" ).forEach( ( tile: HTMLElement ) => grid.updateAdaptiveOrientation( tile ) );
+                grid?.container?.querySelectorAll( ".app-tile" ).forEach( ( tile: HTMLElement ) => grid.gxisdatigiAdaptanOrientigon( tile ) );
             } );
         }
 
         if ( ( window as any ).DesktopIconManager?.desktop ) {
             setTimeout( () => {
                 document.querySelectorAll( "#desktop .app-tile" ).forEach( ( tile: any ) =>
-                    ( window as any ).DesktopIconManager.desktop.applyPosition( tile, parseInt( tile.dataset.col ), parseInt( tile.dataset.row ) )
+                    ( window as any ).DesktopIconManager.desktop.aplikiPozicion( tile, parseInt( tile.dataset.col ), parseInt( tile.dataset.row ) )
                 );
             }, CONSTANTS.WM.TASKBAR_REPOSITION_DELAY );
         }
@@ -737,7 +737,7 @@ class WindowManager {
 
     // ⟪ Init Taskbar ⟫
 
-    static initTaskbar(): void {
+    static iniciiTaskobreton(): void {
         const taskbar = getTaskbar();
         if ( !taskbar ) return;
 
@@ -760,7 +760,7 @@ class WindowManager {
                 const needsUpdate = newIsPortrait ? !isValidForPortrait : !isValidForLandscape;
 
                 if ( needsUpdate ) {
-                    this.setTaskbarPosition( newIsPortrait ? "bottom" : "left" );
+                    this.agordiTaskobretanPozicion( newIsPortrait ? "bottom" : "left" );
                 }
             }
         };
@@ -776,14 +776,14 @@ class WindowManager {
                 const validForLandscape = savedPos === "left" || savedPos === "right";
 
                 if ( ( isPortrait && validForPortrait ) || ( !isPortrait && validForLandscape ) ) {
-                    this.setTaskbarPosition( savedPos );
+                    this.agordiTaskobretanPozicion( savedPos );
                 } else {
                     // Auto-set based on orientation
-                    this.setTaskbarPosition( isPortrait ? "bottom" : "left" );
+                    this.agordiTaskobretanPozicion( isPortrait ? "bottom" : "left" );
                 }
             } else {
                 // No saved position - auto-set based on orientation
-                this.setTaskbarPosition( isPortrait ? "bottom" : "left" );
+                this.agordiTaskobretanPozicion( isPortrait ? "bottom" : "left" );
             }
 
             // Listen for orientation changes and resize
@@ -791,7 +791,7 @@ class WindowManager {
             window.addEventListener( "resize", autoPositionTaskbar );
         } else {
             const savedPos = localStorage.getItem( "os-taskbar-position" ) || "left";
-            this.setTaskbarPosition( savedPos );
+            this.agordiTaskobretanPozicion( savedPos );
         }
     }
 }
@@ -803,26 +803,26 @@ window.addEventListener( "message", ( e ) => {
     
     // Handle gradient wallpaper actions
     if ( action === "setGradientWallpaper" && value?.start && value?.end ) {
-        WindowManager.setGradientWallpaper( value.start, value.end );
+        (window as any).WindowManager.agordiGradientanTapeton( value.start, value.end );
         return;
     }
     if ( action === "setRandomGradientWallpaper" ) {
-        WindowManager.setRandomGradientWallpaper();
+        (window as any).WindowManager.agordiHazardaGradientaTapeto();
         return;
     }
     if ( action === "clearWallpaper" ) {
-        WindowManager.clearWallpaper();
+        (window as any).WindowManager.forigiTapeton();
         return;
     }
     
-    if ( typeof ( WindowManager as any )[ action ] === "function" ) {
-        ( WindowManager as any )[ action ]( value );
+    if ( typeof ( window as any ).WindowManager[ action ] === "function" ) {
+        ( window as any ).WindowManager[ action ]( value );
     }
 } );
 
 // Initialize Window Manager settings (theme, wallpaper, etc.)
-document.addEventListener( "DOMContentLoaded", () => WindowManager.init() );
+document.addEventListener( "DOMContentLoaded", () => (window as any).WindowManager.inicii() );
 
-( window as any ).WindowManager = WindowManager;
-( window as any ).renderRecents = () => WindowManager.renderRecents();
-( window as any ).updateDock = () => WindowManager.updateDock();
+( window as any ).WindowManager = FenestraAdministranto;
+( window as any ).renderRecents = () => (window as any).WindowManager.renderiLastatempajn();
+( window as any ).updateDock = () => (window as any).WindowManager.gxisdatigiDokon();

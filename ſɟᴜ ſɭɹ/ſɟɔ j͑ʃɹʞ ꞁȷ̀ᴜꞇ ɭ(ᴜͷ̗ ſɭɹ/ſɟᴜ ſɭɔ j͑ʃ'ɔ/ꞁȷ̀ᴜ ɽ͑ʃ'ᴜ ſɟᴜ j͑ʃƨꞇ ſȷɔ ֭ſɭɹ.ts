@@ -2,7 +2,7 @@
 
 // ⟪ Clock Manager ⟫
 
-export const ClockManager = {
+export const HorlogxoAdministranto = {
     timeEl: null as HTMLElement | null,
     dateEl: null as HTMLElement | null,
 
@@ -28,4 +28,4 @@ export const ClockManager = {
 };
 
 // Attach to window for global access
-( window as any ).ClockManager = ClockManager;
+( window as any ).ClockManager = HorlogxoAdministranto;

@@ -8,43 +8,43 @@ declare const throttle: any;
 declare const StorageUtil: any;
 declare const toggleQsButton: any;
 
-import { IconGrid, MOBILE_GRID_ROWS, MOBILE_GRID_COLS } from "./ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ.js";
+import { PiktogramaKrado, MOBILE_GRID_ROWS, MOBILE_GRID_COLS } from "./ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ.js";
 import { AppData } from "./ꞁȷ̀ɜ ı],ɔ ŋᷠᴜ }ʃꞇ.js";
 
 let APPS: AppData[] = [];
 
 // ⟪ Desktop Icon Manager ⟫
 
-export const DesktopIconManager = {
-    desktop: null as IconGrid | null,
-    startMenu: null as IconGrid | null,
+export const LabortablaPiktogramoAdministranto = {
+    labortablo: null as PiktogramaKrado | null,
+    komencaMenuo: null as PiktogramaKrado | null,
 
-    _relayoutAll() {
-        [ this.desktop, this.startMenu ].forEach( grid => grid?.relayout() );
+    _rearanĝiCxiujn() {
+        [ this.labortablo, this.komencaMenuo ].forEach( grid => grid?.rearanĝi() );
     },
 
-    _snapAllGrids() {
-        [ this.desktop, this.startMenu ].forEach( grid => {
-            if ( grid?.container ) grid.container.querySelectorAll( ".app-tile" ).forEach( ( t: any ) => grid.snapAfterDrag( t as HTMLElement ) );
+    _alakrogiCxiujnKradojn() {
+        [ this.labortablo, this.komencaMenuo ].forEach( grid => {
+            if ( grid?.container ) grid.container.querySelectorAll( ".app-tile" ).forEach( ( t: any ) => grid.alakrogiPostTrenado( t as HTMLElement ) );
         } );
     },
 
-    _handleResize() {
-        [ this.desktop, this.startMenu ].forEach( grid => {
-            if ( grid?.container ) grid.relayout();
+    _pritraktiGrandSxangxon() {
+        [ this.labortablo, this.komencaMenuo ].forEach( grid => {
+            if ( grid?.container ) grid.rearanĝi();
         } );
     },
 
-    _saveDesktopLayout() {
-        if ( StorageUtil && this.desktop?.container ) {
-            const tiles = Array.from( this.desktop.container.querySelectorAll( ".app-tile" ) ) as HTMLElement[];
+    _konserviLabortablanArangxon() {
+        if ( StorageUtil && this.labortablo?.container ) {
+            const tiles = Array.from( this.labortablo.container.querySelectorAll( ".app-tile" ) ) as HTMLElement[];
             StorageUtil.saveTileLayout( tiles, "desktopTileLayout" );
         }
     },
 
     // Move tile to a specific page (mobile only)
     moveTileToPage( tile: HTMLElement, targetPage: number ) {
-        if ( !tile || !this.desktop ) return;
+        if ( !tile || !this.labortablo ) return;
 
         const appPath = tile.dataset.app;
         const appIndex = APPS.findIndex( ( app: any ) => app.app === appPath );
@@ -58,15 +58,15 @@ export const DesktopIconManager = {
         const itemsPerPage = MOBILE_GRID_ROWS * MOBILE_GRID_COLS;
         const newIndex = ( targetPage * itemsPerPage ) + ( appIndex % itemsPerPage );
 
-        const newEl = this.desktop.addIcon( APPS[ appIndex ], newIndex );
-        this.desktop.snapToGrid( newEl, newIndex );
+        const newEl = this.labortablo.aldoniPiktogramon( APPS[ appIndex ], newIndex );
+        this.labortablo.alakrogiAlKrado( newEl, newIndex );
 
         // Update page indicators
-        this._updatePageIndicators();
+        this._gxisdatigiPaĝajnIndikilojn();
 
         // Refresh to show tile on new page
-        this.desktop.currentPage = targetPage;
-        this.desktop.refresh();
+        this.labortablo.nunaPaĝo = targetPage;
+        this.labortablo.refreŝigi();
     },
 
     transferIconFromStartMenu( el: HTMLElement ) {
@@ -76,37 +76,37 @@ export const DesktopIconManager = {
             app: el.dataset.app || ""
         };
         
-        if ( !this.desktop || !this.startMenu ) return;
+        if ( !this.labortablo || !this.komencaMenuo ) return;
         
         // Add to desktop
-        const newEl = this.desktop.addIcon( appData, 0 );
-        this.desktop.snapToGrid( newEl, 0 );
+        const newEl = this.labortablo.aldoniPiktogramon( appData, 0 );
+        this.labortablo.alakrogiAlKrado( newEl, 0 );
         el.remove();
         
         // Remove duplicate from start menu and relayout
-        const startMenu = this.startMenu;
+        const startMenu = this.komencaMenuo;
         if ( !startMenu.container ) return;
         
         [ ...startMenu.container.querySelectorAll( ".app-tile" ) ]
             .forEach( ( tile: any, idx: number ) => {
                 if ( tile.dataset.app === appData.app ) tile.remove();
-                else startMenu.snapToGrid( tile, idx );
+                else startMenu.alakrogiAlKrado( tile, idx );
             } );
         
-        this._relayoutAll();
-        this._saveDesktopLayout();
+        this._rearanĝiCxiujn();
+        this._konserviLabortablanArangxon();
     },
 
     async init() {
         // IconGrid auto-detects mobile vs desktop now
-        this.desktop = new IconGrid( "desktop", { centered: false, bottomUp: true, labelMode: "external" } );
-        this.startMenu = new IconGrid( "start-menu-content", { centered: false, bottomUp: true, labelMode: "external" } );
+        this.labortablo = new PiktogramaKrado( "desktop", { centered: false, bottomUp: true, labelMode: "external" } );
+        this.komencaMenuo = new PiktogramaKrado( "start-menu-content", { centered: false, bottomUp: true, labelMode: "external" } );
 
         // Set cross-references for transfer operations
-        ( this.desktop as any ).desktop = this.desktop;
-        ( this.desktop as any ).startMenu = this.startMenu;
-        ( this.startMenu as any ).desktop = this.desktop;
-        ( this.startMenu as any ).startMenu = this.startMenu;
+        ( this.labortablo as any ).desktop = this.labortablo;
+        ( this.labortablo as any ).startMenu = this.komencaMenuo;
+        ( this.komencaMenuo as any ).desktop = this.labortablo;
+        ( this.komencaMenuo as any ).startMenu = this.komencaMenuo;
 
         APPS = APPS_DATA.map( ( app: any ) => ( {
             name: app.path.split( "/" ).pop().replace( ".html", "" ),
@@ -115,34 +115,34 @@ export const DesktopIconManager = {
         } ) );
 
         APPS.forEach( ( app: any, i: number ) => {
-            this.desktop?.addIcon( app, i );
-            this.startMenu?.addIcon( app, i );
+            this.labortablo?.aldoniPiktogramon( app, i );
+            this.komencaMenuo?.aldoniPiktogramon( app, i );
         } );
 
         // Apply saved tile layout from storage
-        if ( StorageUtil && this.desktop?.container ) {
-            const tiles = Array.from( this.desktop.container.querySelectorAll( ".app-tile" ) ) as HTMLElement[];
-            const desktop = this.desktop;
+        if ( StorageUtil && this.labortablo?.container ) {
+            const tiles = Array.from( this.labortablo.container.querySelectorAll( ".app-tile" ) ) as HTMLElement[];
+            const desktop = this.labortablo;
             StorageUtil.applyTileLayout( tiles, "desktopTileLayout", ( tile: HTMLElement, col: number, row: number ) => {
-                desktop.applyPosition( tile, col, row );
+                desktop.aplikiPozicion( tile, col, row );
             } );
         }
 
-        this._initQuickSettings();
-        this._relayoutAll();
-        this._createPageIndicators();
-        setTimeout( () => this.desktop?.relayout(), 0o140 );
+        this._iniciiRapidaAgordojn();
+        this._rearanĝiCxiujn();
+        this._kreiPaĝajnIndikilojn();
+        setTimeout( () => this.labortablo?.rearanĝi(), 0o140 );
 
         window.addEventListener( "resize", throttle( () => {
-            this._handleResize();
-            setTimeout( () => this._snapAllGrids(), 0o200 );
+            this._pritraktiGrandSxangxon();
+            setTimeout( () => this._alakrogiCxiujnKradojn(), 0o200 );
         }, 0o312 ) );
 
-        if ( QSManager ) QSManager.init();
-        if ( NotificationManager ) NotificationManager.init();
+        if ( QSManager ) QSManager.inicii();
+        if ( (window as any).NotificationManager ) (window as any).NotificationManager.init();
     },
 
-    _createPageIndicators() {
+    _kreiPaĝajnIndikilojn() {
         // Remove existing indicators
         const existing = document.querySelector( ".page-indicators" );
         if ( existing ) existing.remove();
@@ -160,10 +160,10 @@ export const DesktopIconManager = {
             const dot = document.createElement( "div" );
             dot.className = "page-indicator" + ( i === 0 ? " active" : "" );
             dot.onclick = () => {
-                if ( this.desktop ) {
-                    this.desktop.currentPage = i;
-                    this.desktop.refresh();
-                    this._updatePageIndicators();
+                if ( this.labortablo ) {
+                    this.labortablo.nunaPaĝo = i;
+                    this.labortablo.refreŝigi();
+                    this._gxisdatigiPaĝajnIndikilojn();
                 }
             };
             container.appendChild( dot );
@@ -172,17 +172,17 @@ export const DesktopIconManager = {
         document.body.appendChild( container );
     },
 
-    _updatePageIndicators() {
+    _gxisdatigiPaĝajnIndikilojn() {
         const container = document.querySelector( ".page-indicators" );
-        if ( !container || !this.desktop ) return;
+        if ( !container || !this.labortablo ) return;
 
         const dots = container.querySelectorAll( ".page-indicator" );
         dots.forEach( ( dot, i ) => {
-            dot.classList.toggle( "active", i === ( this.desktop as any )?.currentPage );
+            dot.classList.toggle( "active", i === ( this.labortablo as any )?.currentPage );
         } );
     },
 
-    _initQuickSettings() {
+    _iniciiRapidaAgordojn() {
         const qsContainer = document.getElementById( "quick-settings-container" );
         const qsGrid = document.getElementById( "quick-settings-buttons" );
         const slidersContainer = document.getElementById( "quick-settings-sliders" );
@@ -262,7 +262,7 @@ export const DesktopIconManager = {
                             const id = act.replace( "add-qs-", "" ), isS = ( id === "volume" || id === "brightness" );
                             const storage = StorageUtil;
                             const key = isS ? "qs-slider-order" : "xeku1okek-order", ord = storage.get( key, [] );
-                            ord.push( id ); storage.set( key, ord ); this._initQuickSettings();
+                            ord.push( id ); storage.set( key, ord ); this._iniciiRapidaAgordojn();
                         } else origH.call( ( window as any ).ContextMenuManager, act );
                         ( window as any ).ContextMenuManager.handleAction = origH;
                     };
@@ -271,13 +271,13 @@ export const DesktopIconManager = {
             editActions.appendChild( editBtn );
         }
 
-        [ qsGrid, slidersContainer ].forEach( c => this._setupQSDragReorder( c ) );
-        this._setupQSContainerDrag( qsContainer );
+        [ qsGrid, slidersContainer ].forEach( c => this._agordiRAATreniReordigxon( c ) );
+        this._agordiRAATeniLonTreni( qsContainer );
 
-        if ( QSManager ) QSManager.restoreUI();
+        if ( (window as any).QSManager ) (window as any).QSManager.restoreUI();
     },
 
-    _handleQSClick( e: any, el: HTMLElement ) {
+    _pritraktiRAAKlako( e: any, el: HTMLElement ) {
         if ( document.getElementById( "quick-settings-container" )?.classList.contains( "qs-editing" ) ) {
             if ( e.target.tagName === "INPUT" ) return;
             e.preventDefault(); e.stopPropagation();
@@ -286,13 +286,13 @@ export const DesktopIconManager = {
         }
     },
 
-    _removeQSItem( storageKey: string, id: string ) {
+    _forigiRAAElementon( storageKey: string, id: string ) {
         const storage = StorageUtil;
         const ord = storage.get( storageKey, [] ).filter( ( itemId: string ) => itemId !== id );
-        storage.set( storageKey, ord ); this._initQuickSettings();
+        storage.set( storageKey, ord ); this._iniciiRapidaAgordojn();
     },
 
-    _setupQSContainerDrag( container: HTMLElement | null ) {
+    _agordiRAATeniLonTreni( container: HTMLElement | null ) {
         if ( !container ) return;
         const storage = StorageUtil;
         ( container as any ).onmousedown = ( e: MouseEvent ) => {
@@ -315,7 +315,7 @@ export const DesktopIconManager = {
         };
     },
 
-    _setupQSDragReorder( container: HTMLElement | null ) {
+    _agordiRAATreniReordigxon( container: HTMLElement | null ) {
         if ( !container ) return;
         const storage = StorageUtil;
         container.addEventListener( "mousedown", ( e: MouseEvent ) => {
@@ -346,5 +346,5 @@ export const DesktopIconManager = {
 };
 
 // Attach to window for global access
-( window as any ).DesktopIconManager = DesktopIconManager;
+( window as any ).DesktopIconManager = LabortablaPiktogramoAdministranto;
 ( window as any ).APPS = APPS;
