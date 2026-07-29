@@ -1,9 +1,9 @@
-// ≺⧼ Desktop Icon Manager ⧽≻
+// ≺⧼ Labortabla Piktograma Administranto ⧽≻
 
 declare const APPS_DATA: any;
 declare const QS_TOGGLES: any;
-declare const QSManager: any;
-declare const NotificationManager: any;
+declare const RapidaAgordoAdministranto: any;
+declare const SciigoAdministranto: any;
 declare const throttle: any;
 declare const StorageUtil: any;
 declare const toggleQsButton: any;
@@ -13,7 +13,7 @@ import { AppData } from "./ꞁȷ̀ɜ ı],ɔ ŋᷠᴜ }ʃꞇ.js";
 
 let APPS: AppData[] = [];
 
-// ⟪ Desktop Icon Manager ⟫
+// ⟪ Labortabla Piktograma Administranto ⟫
 
 export const LabortablaPiktogramoAdministranto = {
     labortablo: null as PiktogramaKrado | null,
@@ -42,8 +42,8 @@ export const LabortablaPiktogramoAdministranto = {
         }
     },
 
-    // Move tile to a specific page (mobile only)
-    moveTileToPage( tile: HTMLElement, targetPage: number ) {
+    // Movigi kahelon al specifa paĝo (nur portebla)
+    movigiKahelonAlPagxo( tile: HTMLElement, targetPage: number ) {
         if ( !tile || !this.labortablo ) return;
 
         const appPath = tile.dataset.app;
@@ -51,25 +51,25 @@ export const LabortablaPiktogramoAdministranto = {
 
         if ( appIndex === -1 ) return;
 
-        // Remove tile from current position
+        // Forigi kahelon el nuna pozicio
         tile.remove();
 
-        // Re-add at new page position
+        // Re-aldoni ĉe nova paĝpozicio
         const itemsPerPage = MOBILE_GRID_ROWS * MOBILE_GRID_COLS;
         const newIndex = ( targetPage * itemsPerPage ) + ( appIndex % itemsPerPage );
 
         const newEl = this.labortablo.aldoniPiktogramon( APPS[ appIndex ], newIndex );
         this.labortablo.alakrogiAlKrado( newEl, newIndex );
 
-        // Update page indicators
+        // Ĝisdatigi paĝajn indikilojn
         this._gxisdatigiPaĝajnIndikilojn();
 
-        // Refresh to show tile on new page
+        // Refreŝigi por montri kahelon sur nova paĝo
         this.labortablo.nunaPaĝo = targetPage;
         this.labortablo.refreŝigi();
     },
 
-    transferIconFromStartMenu( el: HTMLElement ) {
+    transigiPiktogramonDeKomencaMenuo( el: HTMLElement ) {
         const appData = {
             name: el.dataset.app?.split( "/" ).pop()?.replace( ".html", "" ) || "App",
             icon: ( el.querySelector( ".icon" ) as HTMLElement )?.innerText || "🖥️",
@@ -78,12 +78,12 @@ export const LabortablaPiktogramoAdministranto = {
         
         if ( !this.labortablo || !this.komencaMenuo ) return;
         
-        // Add to desktop
+        // Aldoni al labortablo
         const newEl = this.labortablo.aldoniPiktogramon( appData, 0 );
         this.labortablo.alakrogiAlKrado( newEl, 0 );
         el.remove();
         
-        // Remove duplicate from start menu and relayout
+        // Forigi duoblaĵon el komenca menuo kaj reelaranĝi
         const startMenu = this.komencaMenuo;
         if ( !startMenu.container ) return;
         
@@ -97,12 +97,12 @@ export const LabortablaPiktogramoAdministranto = {
         this._konserviLabortablanArangxon();
     },
 
-    async init() {
-        // IconGrid auto-detects mobile vs desktop now
+    async inicii() {
+        // IconGrid aŭtomate detektas porteblan vs labortablan nun
         this.labortablo = new PiktogramaKrado( "desktop", { centered: false, bottomUp: true, labelMode: "external" } );
         this.komencaMenuo = new PiktogramaKrado( "start-menu-content", { centered: false, bottomUp: true, labelMode: "external" } );
 
-        // Set cross-references for transfer operations
+        // Agordi kruc-referencojn por transigaj operacioj
         ( this.labortablo as any ).desktop = this.labortablo;
         ( this.labortablo as any ).startMenu = this.komencaMenuo;
         ( this.komencaMenuo as any ).desktop = this.labortablo;
@@ -119,7 +119,7 @@ export const LabortablaPiktogramoAdministranto = {
             this.komencaMenuo?.aldoniPiktogramon( app, i );
         } );
 
-        // Apply saved tile layout from storage
+        // Apliki konservitan kahelan aranĝon el stokejo
         if ( StorageUtil && this.labortablo?.container ) {
             const tiles = Array.from( this.labortablo.container.querySelectorAll( ".app-tile" ) ) as HTMLElement[];
             const desktop = this.labortablo;
@@ -138,16 +138,16 @@ export const LabortablaPiktogramoAdministranto = {
             setTimeout( () => this._alakrogiCxiujnKradojn(), 0o200 );
         }, 0o312 ) );
 
-        if ( QSManager ) QSManager.inicii();
-        if ( (window as any).NotificationManager ) (window as any).NotificationManager.init();
+        if ( RapidaAgordoAdministranto ) RapidaAgordoAdministranto.inicii();
+        if ( (window as any).SciigoAdministranto ) (window as any).SciigoAdministranto.inicii();
     },
 
     _kreiPaĝajnIndikilojn() {
-        // Remove existing indicators
+        // Forigi ekzistantajn indikilojn
         const existing = document.querySelector( ".page-indicators" );
         if ( existing ) existing.remove();
 
-        // Create page indicators for mobile
+        // Krei paĝajn indikilojn por portebla reĝimo
         const itemsPerPage = MOBILE_GRID_ROWS * MOBILE_GRID_COLS;
         const totalPages = Math.ceil( APPS.length / itemsPerPage );
 
@@ -208,18 +208,18 @@ export const LabortablaPiktogramoAdministranto = {
             QS_TOGGLES.forEach( ( t: any ) => { if ( !savedToggleOrder.includes( t.id ) ) toggles.push( t ); } );
         }
         qsGrid.innerHTML = toggles.map( ( t: any ) => `
-            <div class="xeku1okek" data-qs-id="${t.id}" onclick="window.DesktopIconManager._handleQSClick( event , this , 'xeku1okek-order' )">
+            <div class="xeku1okek" data-qs-id="${t.id}" onclick="window.LabortablaPiktogramoAdministranto._pritraktiRAAKlako( event , this , 'xeku1okek-order' )">
                 <button class="caku1o" data-setting="${t.id}" aria-pressed="${t.default}" onclick="if ( window.toggleQsButton ) toggleQsButton( this )">
                     <span class="icon">${t.icon}</span>
                     <span class="label" data-oskakefani="${t.string}">${t.label}</span>
                 </button>
-                <button class="qs-remove-btn" onclick="event.stopPropagation(); window.DesktopIconManager._removeQSItem( event , 'xeku1okek-order' , '${t.id}' )">/</button>
+                <button class="qs-remove-btn" onclick="event.stopPropagation(); window.LabortablaPiktogramoAdministranto._forigiRAAElementon( event , 'xeku1okek-order' , '${t.id}' )">/</button>
             </div>
         ` ).join( "" );
 
         const defaultSliders = [
-            { id: "volume", label: "Volume", icon: "🔊", string: "qs_volume", max: 0o100, value: 0o40, handler: "volume" },
-            { id: "brightness", label: "Brightness", icon: "🔆", string: "qs_brightness", max: 0o100, value: 0o60, handler: "brightness" }
+            { id: "volume", label: "Laŭteco", icon: "🔊", string: "qs_volume", max: 0o100, value: 0o40, handler: "volume" },
+            { id: "brightness", label: "Heleco", icon: "🔆", string: "qs_brightness", max: 0o100, value: 0o60, handler: "brightness" }
         ];
         let sliders = [ ...defaultSliders ];
         if ( savedSliderOrder ) {
@@ -227,13 +227,13 @@ export const LabortablaPiktogramoAdministranto = {
             defaultSliders.forEach( ( s: any ) => { if ( !savedSliderOrder.includes( s.id ) ) sliders.push( s ); } );
         }
         slidersContainer.innerHTML = sliders.map( ( s: any ) => `
-            <div class="xeku1okek" data-qs-id="${s.id}" onclick="window.DesktopIconManager._handleQSClick( event , this , 'qs-slider-order' )">
+            <div class="xeku1okek" data-qs-id="${s.id}" onclick="window.LabortablaPiktogramoAdministranto._pritraktiRAAKlako( event , this , 'qs-slider-order' )">
                 <ciihii class="">
                     <span class="label" data-oskakefani="${s.string}">${s.label}</span>
                     <span class="icon">${s.icon}</span>
                     <input type="range" min="0" max="${s.max}" value="${s.value}" oninput="if ( window.updateSlider ) updateSlider( '${s.handler}' , this.value )">
                 </ciihii>
-                <button class="qs-remove-btn" onclick="event.stopPropagation(); window.DesktopIconManager._removeQSItem( event , 'qs-slider-order' , '${s.id}' )">/</button>
+                <button class="qs-remove-btn" onclick="event.stopPropagation(); window.LabortablaPiktogramoAdministranto._forigiRAAElementon( event , 'qs-slider-order' , '${s.id}' )">/</button>
             </div>
         ` ).join( "" );
 
@@ -253,18 +253,18 @@ export const LabortablaPiktogramoAdministranto = {
                 const remT = QS_TOGGLES.filter( ( t: any ) => !curT.includes( t.id ) );
                 const remS = defaultSliders.filter( ( s: any ) => !curS.includes( s.id ) );
                 if ( remT.length === 0 && remS.length === 0 ) return;
-                if ( ( window as any ).ContextMenuManager ) {
+                if ( ( (window as any).KuntekstaMenuoAdministranto ) ) {
                     const addA = [ ...remT.map( ( t: any ) => ( { action: `add-qs-${t.id}`, label: `+ ${t.label}`, icon: t.icon } ) ), ...remS.map( ( s: any ) => ( { action: `add-qs-${s.id}`, label: `+ ${s.label}`, icon: "S" } ) ) ];
-                    ( window as any ).ContextMenuManager._renderMenu( [], addA, e.clientX, e.clientY );
-                    const origH = ( window as any ).ContextMenuManager.handleAction;
-                    ( window as any ).ContextMenuManager.handleAction = ( act: string ) => {
+                    ( window as any ).KuntekstaMenuoAdministranto.bildigiMenuon( [], addA, e.clientX, e.clientY );
+                    const origH = ( window as any ).KuntekstaMenuoAdministranto.pritraktiAgadon;
+                    ( window as any ).KuntekstaMenuoAdministranto.pritraktiAgadon = ( act: string ) => {
                         if ( act.startsWith( "add-qs-" ) ) {
                             const id = act.replace( "add-qs-", "" ), isS = ( id === "volume" || id === "brightness" );
                             const storage = StorageUtil;
                             const key = isS ? "qs-slider-order" : "xeku1okek-order", ord = storage.get( key, [] );
                             ord.push( id ); storage.set( key, ord ); this._iniciiRapidaAgordojn();
-                        } else origH.call( ( window as any ).ContextMenuManager, act );
-                        ( window as any ).ContextMenuManager.handleAction = origH;
+                        } else origH.call( ( window as any ).KuntekstaMenuoAdministranto, act );
+                        ( window as any ).KuntekstaMenuoAdministranto.pritraktiAgadon = origH;
                     };
                 }
             };
@@ -274,7 +274,7 @@ export const LabortablaPiktogramoAdministranto = {
         [ qsGrid, slidersContainer ].forEach( c => this._agordiRAATreniReordigxon( c ) );
         this._agordiRAATeniLonTreni( qsContainer );
 
-        if ( (window as any).QSManager ) (window as any).QSManager.restoreUI();
+        if ( (window as any).RapidaAgordoAdministranto ) (window as any).RapidaAgordoAdministranto.restaŭriUI();
     },
 
     _pritraktiRAAKlako( e: any, el: HTMLElement ) {
@@ -307,10 +307,10 @@ export const LabortablaPiktogramoAdministranto = {
                     storage.set( "qs-container-order", Array.from( container.children ).filter( c => c.id === "quick-settings-buttons" || c.id === "quick-settings-sliders" ).map( c => c.id ) );
                 }
             };
-            // Use unified input handler
-            const InputHandler = ( window as any ).InputHandler;
-            if ( InputHandler ) {
-                InputHandler.setupDrag( target, null, move, () => {} );
+            // Uzi unuecigitan enigan traktilon
+            const EnigaAdministranto = ( window as any ).EnigaAdministranto;
+            if ( EnigaAdministranto ) {
+                EnigaAdministranto.setupDrag( target, null, move, () => {} );
             }
         };
     },
@@ -336,15 +336,15 @@ export const LabortablaPiktogramoAdministranto = {
                 const key = ( container.id === "quick-settings-buttons" ) ? "xeku1okek-order" : "qs-slider-order";
                 storage.set( key, Array.from( container.querySelectorAll( "[data-qs-id]" ) ).map( el => ( el as HTMLElement ).dataset.qsId ) );
             };
-            // Use unified input handler
-            const InputHandler = ( window as any ).InputHandler;
-            if ( InputHandler ) {
-                InputHandler.setupDrag( item, null, move, up );
+            // Uzi unuecigitan enigan traktilon
+            const EnigaAdministranto = ( window as any ).EnigaAdministranto;
+            if ( EnigaAdministranto ) {
+                EnigaAdministranto.setupDrag( item, null, move, up );
             }
         } );
     },
 };
 
-// Attach to window for global access
-( window as any ).DesktopIconManager = LabortablaPiktogramoAdministranto;
+// Aldoni al fenestro por tutmonda aliro
+( window as any ).LabortablaPiktogramoAdministranto = LabortablaPiktogramoAdministranto;
 ( window as any ).APPS = APPS;

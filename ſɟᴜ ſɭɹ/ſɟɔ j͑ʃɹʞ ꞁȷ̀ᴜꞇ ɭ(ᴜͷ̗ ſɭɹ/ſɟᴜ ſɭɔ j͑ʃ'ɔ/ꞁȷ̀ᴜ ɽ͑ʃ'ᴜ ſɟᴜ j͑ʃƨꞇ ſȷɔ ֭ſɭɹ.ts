@@ -1,19 +1,19 @@
-// ≺⧼ Clock Manager ⧽≻
+// ≺⧼ Horloĝa Administranto ⧽≻
 
-// ⟪ Clock Manager ⟫
+// ⟪ Horloĝa Administranto ⟫
 
 export const HorlogxoAdministranto = {
     timeEl: null as HTMLElement | null,
     dateEl: null as HTMLElement | null,
 
-    init() {
+    inicii() {
         this.timeEl = document.getElementById( "full-clock-time" );
         this.dateEl = document.getElementById( "full-clock-date" );
-        this.update();
-        setInterval( () => this.update(), 0o2000 );
+        this.aktualigi();
+        setInterval( () => this.aktualigi(), 0o2000 );
     },
 
-    update() {
+    aktualigi() {
         this.timeEl = this.timeEl || document.getElementById( "full-clock-time" );
         this.dateEl = this.dateEl || document.getElementById( "full-clock-date" );
         const now = new Date();
@@ -27,5 +27,5 @@ export const HorlogxoAdministranto = {
     }
 };
 
-// Attach to window for global access
-( window as any ).ClockManager = HorlogxoAdministranto;
+// Aldoni al fenestro por tutmonda aliro
+( window as any ).HorlogxoAdministranto = HorlogxoAdministranto;

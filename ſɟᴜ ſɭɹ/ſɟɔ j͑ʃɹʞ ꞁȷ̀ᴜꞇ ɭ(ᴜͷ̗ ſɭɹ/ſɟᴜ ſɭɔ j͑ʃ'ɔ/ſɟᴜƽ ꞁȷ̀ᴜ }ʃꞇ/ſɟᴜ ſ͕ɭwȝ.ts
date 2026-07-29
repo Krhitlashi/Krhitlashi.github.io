@@ -1,10 +1,10 @@
-// ≺⧼ DOM Utilities ⧽≻
+// ≺⧼ DOM-Utilajoj ⧽≻
 
 declare const CONSTANTS: any;
 declare const APPS: any;
 declare const kjesaiGawe: any;
 declare const skakefani: any;
-declare const WindowManager: any;
+declare const FenestraAdministranto: any;
 
 interface TaskbretoInfo {
     pos: string;
@@ -12,18 +12,18 @@ interface TaskbretoInfo {
 }
 
 /**
- * Get the taskbar element
+ * Akiri la taskobretan elementon
  * @returns {HTMLElement|null}
  */
 function akiriTaskobreton(): HTMLElement | null {
     return document.getElementById( "taskbar" );
 }
 
-// Attach to window for global access
+// Alkroĉi al fenestro por tutmonda aliro
 ( window as any ).getTaskbar = akiriTaskobreton;
 
 /**
- * Get the start menu element
+ * Akiri la komencan menuon
  * @returns {HTMLElement|null}
  */
 function akiriKomencanMenuon(): HTMLElement | null {
@@ -31,7 +31,7 @@ function akiriKomencanMenuon(): HTMLElement | null {
 }
 
 /**
- * Get the home area element
+ * Akiri la hejman areon
  * @returns {HTMLElement|null}
  */
 function akiriHejmanAreon(): HTMLElement | null {
@@ -39,7 +39,7 @@ function akiriHejmanAreon(): HTMLElement | null {
 }
 
 /**
- * Get the window container element
+ * Akiri la fenestran ujon
  * @returns {HTMLElement|null}
  */
 function akiriFenestranUjon(): HTMLElement | null {
@@ -47,7 +47,7 @@ function akiriFenestranUjon(): HTMLElement | null {
 }
 
 /**
- * Get all open windows
+ * Akiri ĉiujn malfermajn fenestrojn
  * @returns {NodeList}
  */
 function akiriMalfermajnFenestrojn(): NodeListOf<HTMLElement> {
@@ -55,7 +55,7 @@ function akiriMalfermajnFenestrojn(): NodeListOf<HTMLElement> {
 }
 
 /**
- * Get taskbar position and orientation info
+ * Akiri taskobretan pozicion kaj orientiĝan informon
  * @returns {{pos: string, isVertical: boolean}}
  */
 function akiriTaskbretonInfo(): TaskbretoInfo {
@@ -65,7 +65,7 @@ function akiriTaskbretonInfo(): TaskbretoInfo {
 }
 
 /**
- * Check if taskbar is in large mode
+ * Kontroli ĉu taskobreto estas en granda reĝimo
  * @returns {boolean}
  */
 function cxuTaskbretoGranda(): boolean {
@@ -74,7 +74,7 @@ function cxuTaskbretoGranda(): boolean {
 }
 
 /**
- * Get window title from a window element
+ * Akiri fenestran titolon el fenestra elemento
  * @param {HTMLElement} win
  * @returns {string}
  */
@@ -83,7 +83,7 @@ function akiriFenestranTitolon( win: HTMLElement ): string {
 }
 
 /**
- * Get app icon from APPS data
+ * Akiri aplikaĵan piktogramon el APPS-datumaro
  * @param {string} title
  * @returns {string}
  */
@@ -94,7 +94,7 @@ function akiriAplikoPiktogramon( title: string ): string {
 }
 
 /**
- * Get language strings
+ * Akiri lingvajn ĉenojn
  * @returns {object}
  */
 function akiriTextojn(): { [key: string]: string } {
@@ -105,14 +105,14 @@ function akiriTextojn(): { [key: string]: string } {
 }
 
 /**
- * Get WindowManager with fallback
+ * Akiri FenestranAdministranton kun rezervo
  * @returns {any|null}
  */
 function akiriFenestranAdministranton(): any {
-    return ( window as any ).WindowManager || ( typeof WindowManager !== "undefined" ? WindowManager : null );
+    return ( window as any ).FenestraAdministranto || ( typeof FenestraAdministranto !== "undefined" ? FenestraAdministranto : null );
 }
 
-// Attach all utilities to window for global access
+// Alkroĉi ĉiujn utilaĵojn al fenestro por tutmonda aliro
 ( window as any ).getStartMenu = akiriKomencanMenuon;
 ( window as any ).getHomeArea = akiriHejmanAreon;
 ( window as any ).getWindowContainer = akiriFenestranUjon;

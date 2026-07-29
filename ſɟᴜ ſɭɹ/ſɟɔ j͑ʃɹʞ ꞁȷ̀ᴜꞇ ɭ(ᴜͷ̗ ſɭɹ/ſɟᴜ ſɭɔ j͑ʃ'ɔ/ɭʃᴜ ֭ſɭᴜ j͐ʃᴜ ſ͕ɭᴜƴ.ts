@@ -1,34 +1,34 @@
-// ≺⧼ Animation Manager ⧽≻ - Taskbar-directional animations with octal fractions
+// ≺⧼ Animacia Administranto ⧽≻ - Taskobret-direktaj animacioj kun okumaj frakcioj
 
 declare const CONSTANTS: any;
 declare const getTaskbar: any;
 
 const AnimacioAdministranto: {
-    defaults: { duration: number; easing: string };
-    easings: any;
+    apriorajxoj: { duration: number; easing: string };
+    mildigoj: any;
     _positionConfigCache: { [key: string]: any };
     [key: string]: any;
 } = {
-    // ⟪ Default Animation Settings ⟫
-    defaults: {
+    // ⟪ Aprioraj Animaciaj Agordoj ⟫
+    apriorajxoj: {
         duration: CONSTANTS.ANIM.DURATION_DEFAULT,
         easing: CONSTANTS.ANIM.EASINGS.ease
     },
 
-    // ⟪ Easing Functions ⟫
-    easings: CONSTANTS.ANIM.EASINGS,
+    // ⟪ Mildigaj Funkcioj ⟫
+    mildigoj: CONSTANTS.ANIM.EASINGS,
 
-    // ⟪ Position Config Cache ⟫
+    // ⟪ Pozicia Agorda Kaŝmemoro ⟫
     _positionConfigCache: {},
 
-    // ⟪ Position Utilities ⟫
+    // ⟪ Poziciaj Utilajoj ⟫
 
-    // Get complete position configuration for a taskbar position
-    getPositionConfig(pos: any = null): any {
+    // Akiri kompletan pozician agordon por taskobreta pozicio
+    akiriPozicianAgordon(pos: any = null): any {
         const taskbar: HTMLElement | null = getTaskbar();
         const position: string = pos || taskbar?.dataset.position || "left";
 
-        // Return cached config if available
+        // Redoni kaŝmemorigitan agordon se disponebla
         if (this._positionConfigCache[position]) {
             return this._positionConfigCache[position];
         }
@@ -55,18 +55,18 @@ const AnimacioAdministranto: {
         return result;
     },
 
-    // ⟪ Get Panel Animation Direction Based on Taskbar ⟫
+    // ⟪ Akiri Panelan Animacian Direkton Bazitan sur Taskobreto ⟫
 
-    // All panels slide out from the taskbar edge
-    getPanelDirection(panelId: string): { from: string; to: string } {
+    // Ĉiuj paneloj glitas el la taskobreta rando
+    akiriPanelanDirekton(panelId: string): { from: string; to: string } {
         const { position } = this.akiriPozicianAgordon();
-        // All panels share the same directional logic — slide from taskbar edge
+        // Ĉiuj paneloj kunhavas la saman direktan logikon — gliti el taskobreta rando
         return { from: position, to: position };
     },
 
-    // ⟪ Get Transform for Direction ⟫
+    // ⟪ Akiri Transformon por Direkto ⟫
 
-    getDirectionTransform(direction: string, fraction: number = 1): string {
+    akiriDirektanTransformon(direction: string, fraction: number = 1): string {
         const percentage: number = fraction * 100;
         const transforms: { [key: string]: string } = {
             top: `translateY(-${percentage}%)`,
@@ -77,9 +77,9 @@ const AnimacioAdministranto: {
         return transforms[direction] || transforms.bottom;
     },
 
-    // ⟪ Get Taskbar Edge Offset ⟫
+    // ⟪ Akiri Taskobretan Randan Ofseton ⟫
 
-    getTaskbarOffset(fraction: number = 1): { transform: string; inset: { [key: string]: string } } {
+    akiriTaskobretanOfseton(fraction: number = 1): { transform: string; inset: { [key: string]: string } } {
         const { position, offsetTransform, insetProp } = this.akiriPozicianAgordon();
         const tbSize: number = parseInt(getComputedStyle(document.documentElement).getPropertyValue(CONSTANTS.CSS_VARS.taskbarSize)) || CONSTANTS.SYS.TASKBAR_SIZE;
         const offset: number = tbSize * fraction;
@@ -90,9 +90,9 @@ const AnimacioAdministranto: {
         };
     },
 
-    // ⟪ Get Taskbar Size for Position ⟫
+    // ⟪ Akiri Taskobretan Grandecon por Pozicio ⟫
 
-    getTaskbarSizeForPosition(pos: any = null, fraction: number = 1): { position: string; size: number; offset: number } {
+    akiriTaskobretanGrandonPorPozicio(pos: any = null, fraction: number = 1): { position: string; size: number; offset: number } {
         const { position } = this.akiriPozicianAgordon(pos);
         const tbSize: number = parseInt(getComputedStyle(document.documentElement).getPropertyValue(CONSTANTS.CSS_VARS.taskbarSize)) || CONSTANTS.SYS.TASKBAR_SIZE;
         return {
@@ -102,9 +102,9 @@ const AnimacioAdministranto: {
         };
     },
 
-    // ⟪ Fade In ⟫
+    // ⟪ Malaperi En ⟫
 
-    fadeIn(element: HTMLElement, options: any = {}): Promise<void> {
+    malaperiEn(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? this.apriorajxoj.duration;
@@ -128,9 +128,9 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Fade Out ⟫
+    // ⟪ Malaperi El ⟫
 
-    fadeOut(element: HTMLElement, options: any = {}): Promise<void> {
+    malaperiEl(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? this.apriorajxoj.duration;
@@ -151,9 +151,9 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Slide Panel ( Unified Internal Method ) ⟫
+    // ⟪ Gliti Panelon ( Unuigita Interna Metodo ) ⟫
 
-    slidePanel(
+    glitiPanelon(
         element: HTMLElement,
         panelId: string,
         isEntering: boolean,
@@ -192,9 +192,9 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Slide In From Taskbar Edge ⟫
+    // ⟪ Gliti En el Taskobreta Rando ⟫
 
-    slideInFromTaskbar(element: HTMLElement, panelId: string, options: any = {}): Promise<void> {
+    glitiEnElTaskobreto(element: HTMLElement, panelId: string, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? this.apriorajxoj.duration;
@@ -204,9 +204,9 @@ const AnimacioAdministranto: {
         return this.glitiPanelon(element, panelId, true, { duration, easing, fraction, display: options.display });
     },
 
-    // ⟪ Slide Out To Taskbar Edge ⟫
+    // ⟪ Gliti El al Taskobreta Rando ⟫
 
-    slideOutToTaskbar(element: HTMLElement, panelId: string, options: any = {}): Promise<void> {
+    glitiElAlTaskobreto(element: HTMLElement, panelId: string, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? this.apriorajxoj.duration;
@@ -216,9 +216,9 @@ const AnimacioAdministranto: {
         return this.glitiPanelon(element, panelId, false, { duration, easing, fraction, display: options.display });
     },
 
-    // ⟪ Slide In ( from edge ) ⟫
+    // ⟪ Gliti En ( el rando ) ⟫
 
-    slideIn(element: HTMLElement, options: any = {}): Promise<void> {
+    glitiEn(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? this.apriorajxoj.duration;
@@ -248,9 +248,9 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Slide Out ( to edge ) ⟫
+    // ⟪ Gliti El ( al rando ) ⟫
 
-    slideOut(element: HTMLElement, options: any = {}): Promise<void> {
+    glitiEl(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? this.apriorajxoj.duration;
@@ -276,9 +276,9 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Scale In ( pop effect ) ⟫
+    // ⟪ Skali En ( ŝprucefiko ) ⟫
 
-    scaleIn(element: HTMLElement, options: any = {}): Promise<void> {
+    skaliEn(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? this.apriorajxoj.duration;
@@ -305,9 +305,9 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Scale Out ( shrink effect ) ⟫
+    // ⟪ Skali El ( ŝrumpa efiko ) ⟫
 
-    scaleOut(element: HTMLElement, options: any = {}): Promise<void> {
+    skaliEl(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? this.apriorajxoj.duration;
@@ -330,9 +330,9 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Window Open Animation ( slide + fade from taskbar ) ⟫
+    // ⟪ Fenestro Malferma Animacio ( gliti + malaperi el taskobreto ) ⟫
 
-    windowOpen(element: HTMLElement, options: any = {}): Promise<void> {
+    fenestroMalfermi(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? CONSTANTS.ANIM.DURATION_LONG;
@@ -340,10 +340,10 @@ const AnimacioAdministranto: {
         const fraction: number = options.fraction ?? CONSTANTS.ANIM.FRACTIONS.oneEighth;
         const scale: number = options.scale ?? CONSTANTS.ANIM.FRACTIONS.sevenEighths;
 
-        // Get taskbar position and offset
+        // Akiri taskobretan pozicion kaj ofseton
         const { position, offset } = this.akiriTaskobretanGrandonPorPozicio(null, fraction);
 
-        // Calculate offset based on taskbar position
+        // Kalkuli ofseton bazitan sur taskobreta pozicio
         const offsets: { [key: string]: string } = {
             left: `translateX(${offset}px) translateY(-20px)`,
             right: `translateX(-${offset}px) translateY(-20px)`,
@@ -371,9 +371,9 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Window Close Animation ( scale down + fade toward taskbar ) ⟫
+    // ⟪ Fenestro Ferma Animacio ( skali malsupren + malaperi al taskobreto ) ⟫
 
-    windowClose(element: HTMLElement, options: any = {}): Promise<void> {
+    fenestroFermi(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? CONSTANTS.ANIM.DURATION_SHORT;
@@ -381,10 +381,10 @@ const AnimacioAdministranto: {
         const fraction: number = options.fraction ?? CONSTANTS.ANIM.FRACTIONS.oneEighth;
         const scale: number = options.scale ?? CONSTANTS.ANIM.FRACTIONS.sevenEighths;
 
-        // Get taskbar position and offset
+        // Akiri taskobretan pozicion kaj ofseton
         const { position, offset } = this.akiriTaskobretanGrandonPorPozicio(null, fraction);
 
-        // Calculate end transform toward taskbar
+        // Kalkuli finan transformon al taskobreto
         const offsets: { [key: string]: string } = {
             left: `translateX(${offset}px) translateY(8px)`,
             right: `translateX(-${offset}px) translateY(8px)`,
@@ -410,26 +410,26 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Minimize Window Animation ( scale into taskbar ) ⟫
+    // ⟪ Minimumigi Fenestran Animacion ( skali en taskobreton ) ⟫
 
-    minimizeWindow(element: HTMLElement, options: any = {}): Promise<void> {
+    minimumigiFenestron(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? CONSTANTS.ANIM_SETTINGS.windowMinimize.duration;
         const easing: string = options.easing ?? CONSTANTS.ANIM_SETTINGS.windowMinimize.easing;
         const scale: number = options.scale ?? CONSTANTS.ANIM_SETTINGS.windowMinimize.scale;
 
-        // Get taskbar position and size
+        // Akiri taskobretan pozicion kaj grandecon
         const { position } = this.akiriPozicianAgordon();
         const taskbar: HTMLElement | null = getTaskbar();
         const tbRect: DOMRect = taskbar?.getBoundingClientRect() || { left: 0, top: window.innerHeight, right: window.innerWidth, bottom: window.innerHeight, width: window.innerWidth, height: 0, x: 0, y: window.innerHeight, toJSON() { return {}; } };
         const winRect: DOMRect = element.getBoundingClientRect();
 
-        // Calculate the center point of the window
+        // Kalkuli la centran punkton de la fenestro
         const winCenterX: number = winRect.left + winRect.width / 2;
         const winCenterY: number = winRect.top + winRect.height / 2;
 
-        // Calculate target point on taskbar
+        // Kalkuli celpunkton sur taskobreto
         let targetX: number, targetY: number;
         switch (position) {
             case "left":
@@ -451,7 +451,7 @@ const AnimacioAdministranto: {
                 break;
         }
 
-        // Calculate translation distance
+        // Kalkuli tradukan distancon
         const translateX: number = targetX - winCenterX;
         const translateY: number = targetY - winCenterY;
 
@@ -470,9 +470,9 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Maximize Window Animation ⟫
+    // ⟪ Maksimumigi Fenestran Animacion ⟫
 
-    maximizeWindow(element: HTMLElement, options: any = {}): Promise<void> {
+    maksimumigiFenestron(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? CONSTANTS.ANIM_SETTINGS.windowMaximize.duration;
@@ -491,9 +491,9 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Restore from Maximize Animation ⟫
+    // ⟪ Restarigi el Maksimumiga Animacio ⟫
 
-    unmaximizeWindow(element: HTMLElement, options: any = {}): Promise<void> {
+    malmaksimumigiFenestron(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? CONSTANTS.ANIM_SETTINGS.windowMaximize.duration;
@@ -512,9 +512,9 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Restore Window Animation ( from minimized ) ⟫
+    // ⟪ Restarigi Fenestran Animacion ( el minimumigita ) ⟫
 
-    restoreWindow(element: HTMLElement, options: any = {}): Promise<void> {
+    restaŭriFenestron(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const duration: number = options.duration ?? CONSTANTS.ANIM.DURATION_DEFAULT;
@@ -539,9 +539,9 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Ripple Effect ( for buttons ) ⟫
+    // ⟪ Ondeta Efiko ( por butonoj ) ⟫
 
-    ripple(element: HTMLElement, event: MouseEvent, options: any = {}): void {
+    ondeto(element: HTMLElement, event: MouseEvent, options: any = {}): void {
         if (!element) return;
 
         const duration: number = options.duration ?? CONSTANTS.ANIM.DURATION_DEFAULT;
@@ -569,9 +569,9 @@ const AnimacioAdministranto: {
         setTimeout(() => ripple.remove(), duration);
     },
 
-    // ⟪ Animate Value ( for counters, sliders ) ⟫
+    // ⟪ Animacii Valoron ( por nombriloj, ŝoviloj ) ⟫
 
-    animateValue(element: HTMLElement, start: number, end: number, duration: number, formatter?: (val: number) => string): Promise<void> {
+    animaciiValoron(element: HTMLElement, start: number, end: number, duration: number, formatter?: (val: number) => string): Promise<void> {
         if (!element) return Promise.resolve();
 
         const startTime: number = performance.now();
@@ -602,26 +602,26 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Parse Easing Function ⟫
+    // ⟪ Analizi Mildigan Funkcion ⟫
 
-    parseEasing(easing: string, t: number): number {
+    analiziMildigon(easing: string, t: number): number {
         if (easing.includes("cubic-bezier")) {
             return t < CONSTANTS.ANIM.FRACTIONS.fourEighths ? 2 * t * t : -1 + (4 - 2 * t) * t;
         }
         return t;
     },
 
-    // ⟪ Cancel All Animations on Element ⟫
+    // ⟪ Nuligi Ĉiujn Animaciojn sur Elemento ⟫
 
-    cancelAnimations(element: HTMLElement): void {
+    nuligiAnimaciojn(element: HTMLElement): void {
         if (element && element.getAnimations) {
             element.getAnimations().forEach(anim => anim.cancel());
         }
     },
 
-    // ⟪ Popup Animation ( for context menu ) ⟫
+    // ⟪ Ŝpruca Animacio ( por kunteksta menuo ) ⟫
 
-    popupIn(element: HTMLElement, options: any = {}): Promise<void> {
+    sxprucEn(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
         const duration: number = options.duration ?? CONSTANTS.ANIM_SETTINGS.popup.duration;
         const easing: string = options.easing ?? CONSTANTS.ANIM_SETTINGS.popup.easing;
@@ -640,9 +640,9 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Popup Close Animation ( fade out ) ⟫
+    // ⟪ Ŝpruca Ferma Animacio ( malaperi el ) ⟫
 
-    popupOut(element: HTMLElement, options: any = {}): Promise<void> {
+    sxprucEl(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
         const duration: number = options.duration ?? CONSTANTS.ANIM_SETTINGS.popup.duration;
         const easing: string = options.easing ?? CONSTANTS.ANIM_SETTINGS.popup.easing;
@@ -661,22 +661,27 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Popup Animation ( for context menu ) - Legacy Alias ⟫
+    // ⟪ Ŝpruca Animacio ( por kunteksta menuo ) - Heredaĵa Aliajnimo ⟫
 
     popup(element: HTMLElement, options: any = {}): Promise<void> {
         return this.sxprucEn(element, options);
     },
 
-    // ⟪ Full Screen App Fade In ⟫
+    // ⟪ Plenekrana Aplika Malapero En ⟫
 
-    fullScreenApp(element: HTMLElement, options: any = {}): Promise<void> {
+    plenekranaApliko(element: HTMLElement, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
         return this.malaperiEn(element, options);
     },
 
-    // ⟪ Animate Panel Open ( from taskbar edge ) ⟫
+    // ⟪ Heredaĵa Aliajnimo ⟫
+    fullScreenApp(element: HTMLElement, options: any = {}): Promise<void> {
+        return this.plenekranaApliko(element, options);
+    },
 
-    openPanel(element: HTMLElement, panelId: string, options: any = {}): Promise<void> {
+    // ⟪ Animacii Panelan Malfermon ( el taskobreta rando ) ⟫
+
+    malfermiPanelon(element: HTMLElement, panelId: string, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const fraction: number = options.fraction ?? CONSTANTS.ANIM.FRACTIONS.full;
@@ -690,9 +695,9 @@ const AnimacioAdministranto: {
         });
     },
 
-    // ⟪ Animate Panel Close ( to taskbar edge ) ⟫
+    // ⟪ Animacii Panelan Fermon ( al taskobreta rando ) ⟫
 
-    closePanel(element: HTMLElement, panelId: string, options: any = {}): Promise<void> {
+    fermiPanelon(element: HTMLElement, panelId: string, options: any = {}): Promise<void> {
         if (!element) return Promise.resolve();
 
         const fraction: number = options.fraction ?? CONSTANTS.ANIM.FRACTIONS.full;
@@ -707,5 +712,5 @@ const AnimacioAdministranto: {
     }
 };
 
-// Attach to window for global access
-(window as any).AnimationManager = AnimacioAdministranto;
+// Aldoni al fenestro por tutmonda aliro
+(window as any).AnimacioAdministranto = AnimacioAdministranto;

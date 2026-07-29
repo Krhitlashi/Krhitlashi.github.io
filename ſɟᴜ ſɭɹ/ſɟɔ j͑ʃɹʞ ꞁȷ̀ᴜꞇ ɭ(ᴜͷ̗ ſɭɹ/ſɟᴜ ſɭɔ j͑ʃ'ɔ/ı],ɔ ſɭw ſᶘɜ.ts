@@ -1,4 +1,4 @@
-// ≺⧼ Quick Settings Manager ⧽≻ - Centralized QS state management
+// ≺⧼ Rapida Agordo Administranto ⧽≻ - Centralizita ŝtata administrado de rapidaj agordoj
 
 declare const CONSTANTS: any;
 declare const StorageUtil: any;
@@ -10,17 +10,17 @@ interface QSState {
 const RapidaAgordoAdministranto = ( function() {
     let state: QSState = { ...CONSTANTS.QS.DEFAULTS };
 
-    // ⟪ Load From Storage ⟫
+    // ⟪ Ŝargi el Stokejo ⟫
     function sxargiElStokejo(): void {
         state = StorageUtil.loadWithDefaults( CONSTANTS.STORAGE_KEYS.qsState, CONSTANTS.QS.DEFAULTS );
     }
 
-    // ⟪ Save To Storage ⟫
+    // ⟪ Konservi al Stokejo ⟫
     function konserviAlStokejo(): void {
         StorageUtil.set( CONSTANTS.STORAGE_KEYS.qsState, state );
     }
 
-    // ⟪ Dispatch Change Event ⟫
+    // ⟪ Sendi Ŝanĝan Eventon ⟫
 
     function sendiSxangxon( key: string, value: any ): void {
         const event = new CustomEvent( CONSTANTS.EVENT_NAMES.settingsChange, {
@@ -30,45 +30,45 @@ const RapidaAgordoAdministranto = ( function() {
     }
 
     return {
-        // ⟪ Get State ⟫
+        // ⟪ Akiri Ŝtaton ⟫
 
-        get( key: string ): any {
+        akiri( key: string ): any {
             return state[ key ];
         },
 
-        // ⟪ Set State ⟫
+        // ⟪ Agordi Ŝtaton ⟫
 
-        set( key: string, value: any ): void {
+        agordi( key: string, value: any ): void {
             state[ key ] = value;
             konserviAlStokejo();
             sendiSxangxon( key, value );
         },
 
-        // ⟪ Toggle State ⟫
+        // ⟪ Baskuli Ŝtaton ⟫
 
-        toggle( key: string ): boolean {
+        baskuligi( key: string ): boolean {
             const newValue = !state[ key ];
-            this.set( key, newValue );
+            this.agordi( key, newValue );
             return newValue;
         },
 
-        // ⟪ Get All State ⟫
+        // ⟪ Akiri Ĉiujn Ŝtatojn ⟫
 
-        getAll(): QSState {
+        akiriCxiujn(): QSState {
             return { ...state };
         },
 
-        // ⟪ Set All State ⟫
+        // ⟪ Agordi Ĉiujn Ŝtatojn ⟫
 
-        setAll( newState: QSState ): void {
+        agordiCxiujn( newState: QSState ): void {
             state = { ...state, ...newState };
             konserviAlStokejo();
         },
 
-        // ⟪ Update Brightness ⟫
+        // ⟪ Agordi Helecan Nivelon ⟫
 
-        setBrightness( value: number ): void {
-            this.set( "brightness", value );
+        agordiHelecon( value: number ): void {
+            this.agordi( "brightness", value );
             document.documentElement.style.setProperty( CONSTANTS.CSS_VARS.brightness, ( value / CONSTANTS.SYS.BRIGHTNESS_MAX ).toString() );
             const osRoot = document.getElementById( "os-root" );
             if ( osRoot ) {
@@ -76,57 +76,57 @@ const RapidaAgordoAdministranto = ( function() {
             }
         },
 
-        // ⟪ Update Volume ⟫
+        // ⟪ Agordi Laŭtecan Nivelon ⟫
 
-        setVolume( value: number ): void {
-            this.set( "volume", value );
-            // Could integrate with Web Audio API here
+        agordiLaŭtecon( value: number ): void {
+            this.agordi( "volume", value );
+            // Eblus integriĝi kun Web Audio API ĉi tie
         },
 
-        // ⟪ Toggle Button Handler ⟫
+        // ⟪ Baskula Butona Traktilo ⟫
 
-        handleToggle( btn: HTMLElement ): void {
+        pritraktiBaskulon( btn: HTMLElement ): void {
             const isPressed = btn.getAttribute( "aria-pressed" ) === "true";
             const newState = !isPressed;
             btn.setAttribute( "aria-pressed", newState.toString() );
 
             const setting = btn.getAttribute( "data-setting" );
             if ( setting ) {
-                this.set( setting, newState );
+                this.agordi( setting, newState );
             }
         },
 
-        // ⟪ Init ⟫
+        // ⟪ Inicii ⟫
 
         inicii(): void {
             sxargiElStokejo();
             this.restaŭriUI();
         },
 
-        // ⟪ Restore UI State ⟫
+        // ⟪ Restarigi UI-Ŝtaton ⟫
 
         restaŭriUI(): void {
-            // Restore toggle button states
+            // Restarigi baskulajn butonajn statojn
             document.querySelectorAll( ".xeku1okek" ).forEach( ( btn: Element ) => {
                 const setting = ( btn as HTMLElement ).getAttribute( "data-setting" );
                 if ( setting ) {
-                    const value = this.get( setting );
+                    const value = this.akiri( setting );
                     ( btn as HTMLElement ).setAttribute( "aria-pressed", value?.toString() || "false" );
                 }
             } );
 
-            // Restore slider values
+            // Restarigi ŝovilaĵajn valorojn
             document.querySelectorAll( "#quick-settings-sliders input[type='range']" ).forEach( ( slider: Element ) => {
                 const parent = slider.closest( "[data-qs-id]" );
                 const id = parent?.getAttribute( "data-qs-id" );
                 if ( id ) {
-                    ( slider as HTMLInputElement ).value = this.get( id ) || 0;
+                    ( slider as HTMLInputElement ).value = this.akiri( id ) || 0;
                 }
             } );
         }
     };
 } )();
 
-// ⟪ Global Alias ⟫
+// ⟪ Tutmondaj Aliajnimoj ⟫
 
-( window as any ).QSManager = RapidaAgordoAdministranto;
+( window as any ).RapidaAgordoAdministranto = RapidaAgordoAdministranto;

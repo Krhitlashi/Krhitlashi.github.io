@@ -1,4 +1,4 @@
-// ≺⧼ Element Utilities ⧽≻
+// ≺⧼ Elementaj Utilajoj ⧽≻
 
 declare const CONSTANTS: any;
 

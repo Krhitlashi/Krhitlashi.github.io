@@ -1,4 +1,4 @@
-// ≺⧼ Math Utilities ⧽≻
+// ≺⧼ Matematikaj Utilajoj ⧽≻
 
 /**
  * Clamp a value between min and max

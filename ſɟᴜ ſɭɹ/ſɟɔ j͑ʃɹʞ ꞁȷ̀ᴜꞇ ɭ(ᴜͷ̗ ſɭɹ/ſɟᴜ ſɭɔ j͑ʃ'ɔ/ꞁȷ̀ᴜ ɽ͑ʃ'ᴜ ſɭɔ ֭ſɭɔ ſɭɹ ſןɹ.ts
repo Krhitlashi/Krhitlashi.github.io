@@ -1,4 +1,4 @@
-// ≺⧼ WindowManager ⧽≻
+// ≺⧼ Fenestra Administranto ⧽≻
 
 declare const CONSTANTS: any;
 declare const getWindowContainer: any;
@@ -6,8 +6,8 @@ declare const getWindowTitle: any;
 declare const getHomeArea: any;
 declare const getTaskbar: any;
 declare const setDraggingState: any;
-declare const InputHandler: any;
-declare const AnimationManager: any;
+declare const EnigaAdministranto: any;
+declare const AnimacioAdministranto: any;
 declare const getStrings: any;
 declare const APPS: any;
 declare const updateDock: any;
@@ -17,7 +17,7 @@ class FenestraAdministranto {
     static statikaTemoVigladilo: any = null;
     static statikaNunaTemo: string = "detect";
 
-    // ⟪ App URL Map ⟫ - Built from APPS_DATA ( path → path )
+    // ⟪ Aplikaĵa URL-Mapo ⟫ - Konstruita el APPS_DATA ( vojo → vojo )
 
     static get aplikaĵajURLoj(): { [ key: string ]: string } {
         if ( typeof CONSTANTS.APPS_DATA !== "undefined" ) {
@@ -30,7 +30,7 @@ class FenestraAdministranto {
         return {};
     }
 
-    // ⟪ Helper Functions ⟫
+    // ⟪ Helpaj Funkcioj ⟫
 
     static _aleatoriaFenestraPozicio( baseY: number ): { x: number; y: number } {
         return {
@@ -93,20 +93,20 @@ class FenestraAdministranto {
     static _konstruiTitolaBreton( id: string, title: string, simple: boolean = false ): string {
         if ( simple ) {
             return `
-                <ksaka onmousedown="WindowManager.komenciTrenadon(event, '${id}')" ontouchstart="WindowManager.komenciTrenadon(event, '${id}')">
-                    <button onclick="WindowManager.fermiFenestron('${id}')" title="Close">/</button>
-                    <button onclick="WindowManager.baskuligiMaksimumigxon('${id}')" title="Maximize">O</button>
-                    <button onclick="WindowManager.minimumigiFenestron('${id}')" title="Minimize">|</button>
+                <ksaka onmousedown="FenestraAdministranto.komenciTrenadon(event, '${id}')" ontouchstart="FenestraAdministranto.komenciTrenadon(event, '${id}')">
+                    <button onclick="FenestraAdministranto.fermiFenestron('${id}')" title="Fermi">/</button>
+                    <button onclick="FenestraAdministranto.baskuligiMaksimumigxon('${id}')" title="Maksimumigi">O</button>
+                    <button onclick="FenestraAdministranto.minimumigiFenestron('${id}')" title="Minimumigi">|</button>
                     <p class="title-bar-title">${title}</p>
                 </ksaka>
             `;
         }
         return `
-            <ksaka class="title-bar n2tase" onmousedown="WindowManager.komenciTrenadon(event, '${id}')" ontouchstart="WindowManager.komenciTrenadon(event, '${id}')">
+            <ksaka class="title-bar n2tase" onmousedown="FenestraAdministranto.komenciTrenadon(event, '${id}')" ontouchstart="FenestraAdministranto.komenciTrenadon(event, '${id}')">
                 <div class="window-controls cakaxa">
-                    <button class="control-btn" onclick="WindowManager.fermiFenestron('${id}')" title="Close">/</button>
-                    <button class="control-btn" onclick="WindowManager.baskuligiMaksimumigxon('${id}')" title="Maximize">O</button>
-                    <button class="control-btn" onclick="WindowManager.minimumigiFenestron('${id}')" title="Minimize">|</button>
+                    <button class="control-btn" onclick="FenestraAdministranto.fermiFenestron('${id}')" title="Fermi">/</button>
+                    <button class="control-btn" onclick="FenestraAdministranto.baskuligiMaksimumigxon('${id}')" title="Maksimumigi">O</button>
+                    <button class="control-btn" onclick="FenestraAdministranto.minimumigiFenestron('${id}')" title="Minimumigi">|</button>
                 </div>
                 <div class="title-bar-title">${title}</div>
             </ksaka>
@@ -119,18 +119,18 @@ class FenestraAdministranto {
 
     static _konstruiGrandSxangxilojn( id: string ): string {
         return `
-            <div class="resize-handle resize-handle-n" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'n')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'n')"></div>
-            <div class="resize-handle resize-handle-s" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 's')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 's')"></div>
-            <div class="resize-handle resize-handle-e" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'e')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'e')"></div>
-            <div class="resize-handle resize-handle-w" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'w')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'w')"></div>
-            <div class="resize-handle resize-handle-ne" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'ne')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'ne')"></div>
-            <div class="resize-handle resize-handle-nw" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'nw')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'nw')"></div>
-            <div class="resize-handle resize-handle-se" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'se')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'se')"></div>
-            <div class="resize-handle resize-handle-sw" onmousedown="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'sw')" ontouchstart="WindowManager.alenportiAlFrunto('${id}'); WindowManager.komenciGrandSxangxon(event, '${id}', 'sw')"></div>
+            <div class="resize-handle resize-handle-n" onmousedown="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 'n')" ontouchstart="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 'n')"></div>
+            <div class="resize-handle resize-handle-s" onmousedown="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 's')" ontouchstart="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 's')"></div>
+            <div class="resize-handle resize-handle-e" onmousedown="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 'e')" ontouchstart="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 'e')"></div>
+            <div class="resize-handle resize-handle-w" onmousedown="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 'w')" ontouchstart="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 'w')"></div>
+            <div class="resize-handle resize-handle-ne" onmousedown="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 'ne')" ontouchstart="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 'ne')"></div>
+            <div class="resize-handle resize-handle-nw" onmousedown="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 'nw')" ontouchstart="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 'nw')"></div>
+            <div class="resize-handle resize-handle-se" onmousedown="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 'se')" ontouchstart="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 'se')"></div>
+            <div class="resize-handle resize-handle-sw" onmousedown="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 'sw')" ontouchstart="FenestraAdministranto.alenportiAlFrunto('${id}'); FenestraAdministranto.komenciGrandSxangxon(event, '${id}', 'sw')"></div>
         `;
     }
 
-    // ⟪ Bring Window To Front ⟫
+    // ⟪ Alenporti Fenestron al Frunto ⟫
 
     static alenportiAlFrunto( id: string ): void {
         const win = document.getElementById( id );
@@ -139,7 +139,7 @@ class FenestraAdministranto {
         }
     }
 
-    // ⟪ Load App From Path ⟫
+    // ⟪ Ŝargi Aplikon el Vojo ⟫
 
     static sxargiAplikonDeVojo( path: string, title: string ): void {
         const container = getWindowContainer();
@@ -181,13 +181,13 @@ class FenestraAdministranto {
         this._injektiStilojnEnIframon( iframeId );
 
         // Animate window opening with fractions
-        AnimationManager.fenestroMalfermi( win, { ...CONSTANTS.ANIM_SETTINGS.windowOpen } );
+        AnimacioAdministranto.fenestroMalfermi( win, { ...CONSTANTS.ANIM_SETTINGS.windowOpen } );
 
         // Refresh recents to show new window
         this.renderiLastatempajn();
     }
 
-    // ⟪ Create Window ⟫
+    // ⟪ Krei Fenestron ⟫
 
     static kreiFenestron( path: string, content: string = "" ): void {
         const id = "win-" + Date.now();
@@ -219,10 +219,10 @@ class FenestraAdministranto {
         }
 
         // Animate window opening with fractions
-        AnimationManager.fenestroMalfermi( win, { ...CONSTANTS.ANIM_SETTINGS.windowOpen } );
+        AnimacioAdministranto.fenestroMalfermi( win, { ...CONSTANTS.ANIM_SETTINGS.windowOpen } );
     }
 
-    // ⟪ Start Resize ⟫
+    // ⟪ Komenci GrandŜanĝon ⟫
 
     static komenciGrandSxangxon( e: MouseEvent | TouchEvent, id: string, handle: string ): void {
         e.stopPropagation();
@@ -244,7 +244,7 @@ class FenestraAdministranto {
         const startBottom = startTop + startHeight;
 
         // Get pointer position using unified handler
-        const pos = InputHandler.getPointerPos( e );
+        const pos = EnigaAdministranto.getPointerPos( e );
         const startX = pos.x;
         const startY = pos.y;
 
@@ -312,7 +312,7 @@ class FenestraAdministranto {
         document.addEventListener( "touchcancel", onEnd );
     }
 
-    // ⟪ Close Window ⟫
+    // ⟪ Fermi Fenestron ⟫
 
     static fermiFenestron( id: string ): void {
         const win = document.getElementById( id );
@@ -320,7 +320,7 @@ class FenestraAdministranto {
             const title = getWindowTitle( win );
 
             // Animate window closing with fractions
-            AnimationManager.fenestroFermi( win, { ...CONSTANTS.ANIM_SETTINGS.windowClose } ).then( () => {
+            AnimacioAdministranto.fenestroFermi( win, { ...CONSTANTS.ANIM_SETTINGS.windowClose } ).then( () => {
                 this.agordiAplikonAktiva( title, false );
                 win.remove();
                 this.gxisdatigiTaskobretajnAplikojn();
@@ -331,7 +331,7 @@ class FenestraAdministranto {
         }
     }
 
-    // ⟪ Start Drag ⟫
+    // ⟪ Komenci Trenadon ⟫
 
     static komenciTrenadon( e: MouseEvent | TouchEvent, id: string ): void {
         e.preventDefault();
@@ -343,7 +343,7 @@ class FenestraAdministranto {
         const rect = win.getBoundingClientRect();
 
         // Get pointer position using unified handler
-        const pos = InputHandler.getPointerPos( e );
+        const pos = EnigaAdministranto.getPointerPos( e );
         const clientX = pos.x;
         const clientY = pos.y;
         const shiftX = clientX - rect.left;
@@ -367,10 +367,10 @@ class FenestraAdministranto {
             stopDrag();
         };
 
-        InputHandler.setupDrag( win, null, onMove, onEnd );
+        EnigaAdministranto.setupDrag( win, null, onMove, onEnd );
     }
 
-    // ⟪ Toggle Maximize ⟫
+    // ⟪ Baskuli Maksimumigon ⟫
 
     static baskuligiMaksimumigxon( id: string ): void {
         const win = document.getElementById( id );
@@ -378,7 +378,7 @@ class FenestraAdministranto {
 
         if ( win.classList.contains( "maximized" ) ) {
             // Play unmaximize animation first
-            AnimationManager.malmaksimumigiFenestron( win, {
+            AnimacioAdministranto.malmaksimumigiFenestron( win, {
                 duration: CONSTANTS.ANIM_SETTINGS.windowMaximize.duration,
                 easing: CONSTANTS.ANIM_SETTINGS.windowMaximize.easing,
                 toScale: CONSTANTS.ANIM_SETTINGS.windowMaximize.scale
@@ -406,7 +406,7 @@ class FenestraAdministranto {
             ( win.style as any ).bottom = "";
             win.classList.add( "maximized" );
             // Play maximize animation
-            AnimationManager.maksimumigiFenestron( win, {
+            AnimacioAdministranto.maksimumigiFenestron( win, {
                 duration: CONSTANTS.ANIM_SETTINGS.windowMaximize.duration,
                 easing: CONSTANTS.ANIM_SETTINGS.windowMaximize.easing,
                 fromScale: CONSTANTS.ANIM_SETTINGS.windowMaximize.scale
@@ -414,14 +414,14 @@ class FenestraAdministranto {
         }
     }
 
-    // ⟪ Minimize Window ⟫
+    // ⟪ Minimumigi Fenestron ⟫
 
     static minimumigiFenestron( id: string ): void {
         const win = document.getElementById( id );
         if ( win ) {
             // Add minimized class immediately to trigger state change,
             // but animation manager will handle the visual part.
-            AnimationManager.minimumigiFenestron( win, {
+            AnimacioAdministranto.minimumigiFenestron( win, {
                 duration: CONSTANTS.ANIM_SETTINGS.windowMinimize.duration,
                 easing: CONSTANTS.ANIM_SETTINGS.windowMinimize.easing
             } ).then( () => {
@@ -433,22 +433,22 @@ class FenestraAdministranto {
         }
     }
 
-    // ⟪ Focus Window ⟫
+    // ⟪ Fokusigi Fenestron ⟫
 
     static fokusigiFenestron( id: string ): void {
         const win = document.getElementById( id );
         if ( win ) {
             if ( win.classList.contains( "minimized" ) ) {
                 win.classList.remove( "minimized" );
-                AnimationManager.restaŭriFenestron( win );
+                AnimacioAdministranto.restaŭriFenestron( win );
             }
             win.style.zIndex = ( ++this.statikaZIndekso ).toString();
-            if ( ( window as any ).PanelManager ) ( window as any ).PanelManager.closeAllPanels();
+            if ( ( window as any ).PanelaAdministranto ) ( window as any ).PanelaAdministranto.fermiCxiujnPanelojn();
             this.gxisdatigiTaskobretajnAplikojn();
         }
     }
 
-    // ⟪ Render Recents ⟫
+    // ⟪ Bildigi Lastatempajn ⟫
     static renderiLastatempajn(): void {
         const list = document.getElementById( "recents-list" );
         if ( !list ) return;
@@ -466,9 +466,9 @@ class FenestraAdministranto {
             const emoji = win.dataset.emoji || "🖥️";
             const id = win.id;
             return `
-                <div class="recents-card" onclick="WindowManager.fokusigiFenestron('${id}')">
+                <div class="recents-card" onclick="FenestraAdministranto.fokusigiFenestron('${id}')">
                     <ksaka class="title-bar">
-                        <button class="recents-close-btn" onclick="event.stopPropagation(); WindowManager.fermiFenestron('${id}'); WindowManager.renderiLastatempajn();">/</button>
+                        <button class="recents-close-btn" onclick="event.stopPropagation(); FenestraAdministranto.fermiFenestron('${id}'); FenestraAdministranto.renderiLastatempajn();">/</button>
                         <p class="title-bar-title">${title}</p>
                     </ksaka>
                     <div class="recents-preview">
@@ -479,7 +479,7 @@ class FenestraAdministranto {
         } ).join( "" );
     }
 
-    // ⟪ Update Dock ⟫
+    // ⟪ Ĝisdatigi Dokon ⟫
 
     static gxisdatigiDokon(): void {
         const dock = document.getElementById( "taskbar-dock" );
@@ -496,14 +496,14 @@ class FenestraAdministranto {
             const id = win.id;
             const isMinimized = win.classList.contains( "minimized" );
             return `
-                <button class="dock-btn n2tase ${isMinimized ? "minimized" : ""}" onclick="WindowManager.fokusigiFenestron('${id}')" title="${title}">
+                <button class="dock-btn n2tase ${isMinimized ? "minimized" : ""}" onclick="FenestraAdministranto.fokusigiFenestron('${id}')" title="${title}">
                     ${title[ 0 ].toUpperCase()}
                 </button>
             `;
         } ).join( "" );
     }
 
-    // ⟪ Set App Active ⟫
+    // ⟪ Agordi Aplikon Aktiva ⟫
 
     static agordiAplikonAktiva( appName: string | null, active: boolean | null ): void {
         const countSpan = document.querySelector( ".active-apps-count" ) as HTMLElement | null;
@@ -513,7 +513,7 @@ class FenestraAdministranto {
         }
     }
 
-    // ⟪ Update Taskbar Apps ⟫
+    // ⟪ Ĝisdatigi Taskobretajn Aplikojn ⟫
 
     static gxisdatigiTaskobretajnAplikojn(): void {
         const center = getHomeArea();
@@ -526,7 +526,7 @@ class FenestraAdministranto {
         this.agordiAplikonAktiva( null, null );
     }
 
-    // ⟪ Settings Handlers ⟫
+    // ⟪ Agordaj Traktiloj ⟫
 
     static gxisdatigiTaskobretajnAgordojn( val: string ): void {
         document.documentElement.style.setProperty( "--taskbar-width", val + "px" );
@@ -540,7 +540,7 @@ class FenestraAdministranto {
         localStorage.setItem( "os-taskbar-size", val );
     }
 
-    // ⟪ Theme Management ⟫
+    // ⟪ Tema Administrado ⟫
 
     static agordiTemon( theme: string ): void {
         if ( theme === "detect" ) {
@@ -578,7 +578,7 @@ class FenestraAdministranto {
         document.querySelectorAll( "iframe" ).forEach( ( f: HTMLIFrameElement ) => { try { applyTo( f.contentDocument ); } catch ( e ) { /* ignore */ } } );
     }
 
-    // ⟪ Wallpaper Management ⟫
+    // ⟪ Tapeta Administrado ⟫
 
     static agordiTapeton( url: string ): void {
         const root = document.getElementById( "os-root" );
@@ -623,7 +623,7 @@ class FenestraAdministranto {
         localStorage.removeItem( "os-wallpaper-gradient" );
     }
 
-    // ⟪ Initialization ⟫
+    // ⟪ Inicado ⟫
 
     static inicii(): void {
         const savedTheme = localStorage.getItem( "os-theme" ) || "detect";
@@ -648,7 +648,7 @@ class FenestraAdministranto {
         this.iniciiTaskobreton();
     }
 
-    // ⟪ Set Language ⟫
+    // ⟪ Agordi Lingvon ⟫
 
     static agordiLingvon( val: string ): void {
         if ( typeof window.k2regawe === "function" ) {
@@ -656,11 +656,11 @@ class FenestraAdministranto {
         }
     }
 
-    // ⟪ Set Label Display ⟫
+    // ⟪ Agordi Etikedan Montron ⟫
 
     static agordiEtikedMontron( val: string ): void {
-        if ( ( window as any ).DesktopIconManager ) {
-            const dim = ( window as any ).DesktopIconManager;
+        if ( ( window as any ).LabortablaPiktogramoAdministranto ) {
+            const dim = ( window as any ).LabortablaPiktogramoAdministranto;
             if ( dim.desktop ) {
                 dim.desktop.etikedReĝimo = val;
                 dim.desktop.inicii();
@@ -679,7 +679,7 @@ class FenestraAdministranto {
         }
     }
 
-    // ⟪ Set Taskbar Position ⟫
+    // ⟪ Agordi Taskobretan Pozicion ⟫
 
     static agordiTaskobretanPozicion( pos: string ): void {
         const taskbar = getTaskbar();
@@ -717,16 +717,16 @@ class FenestraAdministranto {
         } );
 
         // Update tile orientations via managers
-        if ( ( window as any ).DesktopIconManager ) {
-            [ ( window as any ).DesktopIconManager.desktop, ( window as any ).DesktopIconManager.startMenu ].forEach( ( grid: any ) => {
+        if ( ( window as any ).LabortablaPiktogramoAdministranto ) {
+            [ ( window as any ).LabortablaPiktogramoAdministranto.desktop, ( window as any ).LabortablaPiktogramoAdministranto.startMenu ].forEach( ( grid: any ) => {
                 grid?.container?.querySelectorAll( ".app-tile" ).forEach( ( tile: HTMLElement ) => grid.gxisdatigiAdaptanOrientigon( tile ) );
             } );
         }
 
-        if ( ( window as any ).DesktopIconManager?.desktop ) {
+        if ( ( window as any ).LabortablaPiktogramoAdministranto?.desktop ) {
             setTimeout( () => {
                 document.querySelectorAll( "#desktop .app-tile" ).forEach( ( tile: any ) =>
-                    ( window as any ).DesktopIconManager.desktop.aplikiPozicion( tile, parseInt( tile.dataset.col ), parseInt( tile.dataset.row ) )
+                    ( window as any ).LabortablaPiktogramoAdministranto.desktop.aplikiPozicion( tile, parseInt( tile.dataset.col ), parseInt( tile.dataset.row ) )
                 );
             }, CONSTANTS.WM.TASKBAR_REPOSITION_DELAY );
         }
@@ -735,7 +735,7 @@ class FenestraAdministranto {
         localStorage.setItem( "os-taskbar-position", pos );
     }
 
-    // ⟪ Init Taskbar ⟫
+    // ⟪ Inicii Taskobreton ⟫
 
     static iniciiTaskobreton(): void {
         const taskbar = getTaskbar();
@@ -803,26 +803,26 @@ window.addEventListener( "message", ( e ) => {
     
     // Handle gradient wallpaper actions
     if ( action === "setGradientWallpaper" && value?.start && value?.end ) {
-        (window as any).WindowManager.agordiGradientanTapeton( value.start, value.end );
+        (window as any).FenestraAdministranto.agordiGradientanTapeton( value.start, value.end );
         return;
     }
     if ( action === "setRandomGradientWallpaper" ) {
-        (window as any).WindowManager.agordiHazardaGradientaTapeto();
+        (window as any).FenestraAdministranto.agordiHazardaGradientaTapeto();
         return;
     }
     if ( action === "clearWallpaper" ) {
-        (window as any).WindowManager.forigiTapeton();
+        (window as any).FenestraAdministranto.forigiTapeton();
         return;
     }
     
-    if ( typeof ( window as any ).WindowManager[ action ] === "function" ) {
-        ( window as any ).WindowManager[ action ]( value );
+    if ( typeof ( window as any ).FenestraAdministranto[ action ] === "function" ) {
+        ( window as any ).FenestraAdministranto[ action ]( value );
     }
 } );
 
 // Initialize Window Manager settings (theme, wallpaper, etc.)
-document.addEventListener( "DOMContentLoaded", () => (window as any).WindowManager.inicii() );
+document.addEventListener( "DOMContentLoaded", () => (window as any).FenestraAdministranto.inicii() );
 
-( window as any ).WindowManager = FenestraAdministranto;
-( window as any ).renderRecents = () => (window as any).WindowManager.renderiLastatempajn();
-( window as any ).updateDock = () => (window as any).WindowManager.gxisdatigiDokon();
+( window as any ).FenestraAdministranto = FenestraAdministranto;
+( window as any ).renderRecents = () => (window as any).FenestraAdministranto.renderiLastatempajn();
+( window as any ).updateDock = () => (window as any).FenestraAdministranto.gxisdatigiDokon();

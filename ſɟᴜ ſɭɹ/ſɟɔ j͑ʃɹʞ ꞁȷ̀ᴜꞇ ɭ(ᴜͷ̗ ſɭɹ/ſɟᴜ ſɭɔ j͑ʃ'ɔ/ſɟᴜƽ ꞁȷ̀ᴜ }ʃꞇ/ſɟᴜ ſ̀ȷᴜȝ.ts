@@ -1,4 +1,4 @@
-// ≺⧼ Storage Utilities ⧽≻
+// ≺⧼ Stokejaj Utilajoj ⧽≻
 
 const KonservejaUtilo = {
     /**

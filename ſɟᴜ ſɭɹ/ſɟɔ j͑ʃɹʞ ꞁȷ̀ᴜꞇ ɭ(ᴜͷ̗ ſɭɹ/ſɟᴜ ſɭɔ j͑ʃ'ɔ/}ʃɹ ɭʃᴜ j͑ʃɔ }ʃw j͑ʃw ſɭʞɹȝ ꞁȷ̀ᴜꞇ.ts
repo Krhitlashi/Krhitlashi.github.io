@@ -1,4 +1,4 @@
-// ≺⧼ Context Menu Manager ⧽≻
+// ≺⧼ Kunteksta Menuo Administranto ⧽≻
 
 declare const CONSTANTS: any;
 declare const AnimacioAdministranto: any;
@@ -10,7 +10,7 @@ import { akiriMaksimumanPaĝon } from "./ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ.js";
 
 let APPS: AppData[] = [];
 
-// ⟪ Context Menu Manager ⟫
+// ⟪ Kunteksta Menuo Administranto ⟫
 
 export const KuntekstaMenuoAdministranto = {
     menuo: null as any,
@@ -18,7 +18,7 @@ export const KuntekstaMenuoAdministranto = {
     menuoMalfermita: false,
     nunaKahelo: null as any,
 
-    init() {
+    inicii() {
         this.menuo = document.getElementById( "context-menu" );
         this.labortablo = document.getElementById( "desktop" );
         if ( !this.menuo || !this.labortablo ) return;
@@ -28,10 +28,10 @@ export const KuntekstaMenuoAdministranto = {
             e.preventDefault();
             e.stopPropagation();
             this.menuoMalfermita = true;
-            this.showForDesktop( e.clientX, e.clientY );
+            this.montriPorLabortablo( e.clientX, e.clientY );
         } );
 
-        // Hide menu on click outside (same pattern as PanelManager)
+    // Kaŝi menuon kiam oni klakas ekstere (sama ŝablono kiel PanelaAdministranto)
         document.addEventListener( "mousedown", ( e: MouseEvent ) => {
             if ( !this.menuoMalfermita ) return;
             const selectors: string[] = [ "#context-menu" ];
@@ -40,7 +40,7 @@ export const KuntekstaMenuoAdministranto = {
             }
         } );
 
-        // Hide menu on right click outside (to show new context menu)
+    // Kaŝi menuon kiam oni dek-klakas ekstere (por montri novan kuntekstan menuon)
         document.addEventListener( "contextmenu", ( e: MouseEvent ) => {
             if ( !this.menuoMalfermita ) return;
             const inMenu = ( e.target as HTMLElement ).closest( "#context-menu" );
@@ -50,21 +50,21 @@ export const KuntekstaMenuoAdministranto = {
         } );
     },
 
-     showForDesktop( x: number, y: number ) {
+    montriPorLabortablo( x: number, y: number ) {
         this.nunaKahelo = null;
-        this._renderMenu( [
-            { action: "edit-mode", label: "Edit Mode", icon: "✏️", i18n: "ctx_edit_mode" }
+        this.bildigiMenuon( [
+            { action: "edit-mode", label: "Redakta Reĝimo", icon: "✏️", i18n: "ctx_edit_mode" }
         ], [
-            { action: "refresh", label: "Refresh", icon: "🔄", i18n: "ctx_refresh" },
-            { action: "new-note", label: "New Note", icon: "📝", i18n: "ctx_new_note" },
-            { action: "terminal", label: "Terminal", icon: "💻", i18n: "ctx_terminal" }
+            { action: "refresh", label: "Refreŝigi", icon: "🔄", i18n: "ctx_refresh" },
+            { action: "new-note", label: "Nova Noto", icon: "📝", i18n: "ctx_new_note" },
+            { action: "terminal", label: "Terminalo", icon: "💻", i18n: "ctx_terminal" }
         ], x, y );
     },
 
-     showForTile( x: number, y: number, tileEl: HTMLElement ) {
+    montriPorKahelo( x: number, y: number, tileEl: HTMLElement ) {
         this.nunaKahelo = tileEl;
 
-        // Build move page actions for mobile
+    // Konstrui movpaĝajn agojn por portebla reĝimo
         const movePageActions = [];
         const maxPage = akiriMaksimumanPaĝon( APPS );
 
@@ -79,16 +79,16 @@ export const KuntekstaMenuoAdministranto = {
             }
         }
 
-        this._renderMenu( [
-            { action: "edit-mode", label: "Edit Mode", icon: "✏️", i18n: "ctx_edit_mode" }
+        this.bildigiMenuon( [
+            { action: "edit-mode", label: "Redakta Reĝimo", icon: "✏️", i18n: "ctx_edit_mode" }
         ], [
             ...movePageActions,
-            { action: "toggle-widget", label: "Widget Mode", icon: "🖼️", i18n: "ctx_widget_mode" },
-            { action: "toggle-live-tile", label: "Live Tile Mode", icon: "✨", i18n: "ctx_live_tile_mode" }
+            { action: "toggle-widget", label: "Fenestraĵa Reĝimo", icon: "🖼️", i18n: "ctx_widget_mode" },
+            { action: "toggle-live-tile", label: "Vivanta Kahela Reĝimo", icon: "✨", i18n: "ctx_live_tile_mode" }
         ], x, y );
     },
 
-    _renderMenu( primaryActions: any[], secondaryActions: any[], x: number, y: number ) {
+    bildigiMenuon( primaryActions: any[], secondaryActions: any[], x: number, y: number ) {
         const allActions = [ ...primaryActions, ...secondaryActions ];
         const strings = typeof getStrings === "function" ? getStrings() : {};
 
@@ -96,7 +96,7 @@ export const KuntekstaMenuoAdministranto = {
             let label = btn.label || "";
             let i18nLabel = "";
             
-            // Handle i18n with placeholder substitution for ctx_move_page
+    // Trakti i18n kun lokaĵa anstataŭigo por ctx_move_page
             if ( btn.i18n && strings[ btn.i18n ] ) {
                 i18nLabel = strings[ btn.i18n ];
                 if ( btn.i18n === "ctx_move_page" && btn.label ) {
@@ -115,16 +115,16 @@ export const KuntekstaMenuoAdministranto = {
 
         if ( this.menuo ) {
             this.menuo.innerHTML = allActions.map( renderButton ).join( "" );
-            this._bindMenuEvents();
+            this.ligiMenuajnEventojn();
              this.montri( x, y );
         }
     },
 
-    _bindMenuEvents() {
+    ligiMenuajnEventojn() {
         if ( this.menuo ) {
             this.menuo.querySelectorAll( "button" ).forEach( ( item: any ) => {
                 ( item as HTMLElement ).onclick = ( e: MouseEvent ) => {
-                    this.handleAction( ( e.currentTarget as HTMLElement ).dataset.action );
+                    this.pritraktiAgadon( ( e.currentTarget as HTMLElement ).dataset.action );
                     this.kaŝi();
                 };
             } );
@@ -142,7 +142,7 @@ export const KuntekstaMenuoAdministranto = {
             if ( rect.bottom > window.innerHeight ) this.menuo.style.top = ( window.innerHeight - rect.height ) + "px";
 
             if ( AnimacioAdministranto ) {
-                AnimacioAdministranto.popupIn( this.menuo, {
+                AnimacioAdministranto.sxprucEn( this.menuo, {
                     duration: CONSTANTS.ANIM_SETTINGS.popup.duration,
                     easing: CONSTANTS.ANIM_SETTINGS.popup.easing
                 } );
@@ -153,7 +153,7 @@ export const KuntekstaMenuoAdministranto = {
     kaŝi() {
         if ( this.menuo ) {
             if ( AnimacioAdministranto ) {
-                AnimacioAdministranto.popupOut( this.menuo, {
+                AnimacioAdministranto.sxprucEl( this.menuo, {
                     duration: CONSTANTS.ANIM_SETTINGS.popup.duration,
                     easing: CONSTANTS.ANIM_SETTINGS.popup.easing
                 } ).then( () => {
@@ -166,15 +166,15 @@ export const KuntekstaMenuoAdministranto = {
         this.menuoMalfermita = false;
     },
 
-    handleAction( action: string | undefined ) {
+    pritraktiAgadon( action: string | undefined ) {
         if ( !action ) return;
         const wm = getWindowManager();
 
-        // Handle move page actions for mobile
+    // Trakti movpaĝajn agojn por portebla reĝimo
         if ( action.startsWith( "move-page-" ) ) {
             const targetPage = parseInt( action.replace( "move-page-", "" ) );
-            if ( this.nunaKahelo && ( window as any ).DesktopIconManager?.desktop ) {
-                ( window as any ).DesktopIconManager.moveTileToPage( this.nunaKahelo, targetPage );
+            if ( this.nunaKahelo && ( window as any ).LabortablaPiktogramoAdministranto?.desktop ) {
+                ( window as any ).LabortablaPiktogramoAdministranto.movigiKahelonAlPagxo( this.nunaKahelo, targetPage );
             }
             return;
         }
@@ -188,12 +188,12 @@ export const KuntekstaMenuoAdministranto = {
                     this.nunaKahelo.classList.toggle( "live-tile-mode", action === "toggle-live-tile" );
                 }
                 break;
-            case "edit-mode": ( window as any ).DesktopIconManager?.desktop?.toggleEdit(); break;
-            case "new-note": wm?.loadAppFromPath( "ſɟᴜ ſɭɹ/ſɟᴜ ſᶘᴜ j͐ʃɹ.html", "Notes" ); break;
-            case "terminal": wm?.loadAppFromPath( "ſɟᴜ ſɭɹ/ſןɔ ſɭʞꞇ.html", "Terminal" ); break;
+            case "edit-mode": ( window as any ).LabortablaPiktogramoAdministranto?.desktop?.toggleEdit(); break;
+            case "new-note": wm?.sxargiAplikonDeVojo( "ſɟᴜ ſɭɹ/ſɟᴜ ſᶘᴜ j͐ʃɹ.html", "Notoj" ); break;
+            case "terminal": wm?.sxargiAplikonDeVojo( "ſɟᴜ ſɭɹ/ſןɔ ſɭʞꞇ.html", "Terminalo" ); break;
         }
     }
 };
 
-// Attach to window for global access
+// Aldoni al fenestro por tutmonda aliro
 ( window as any ).KuntekstaMenuoAdministranto = KuntekstaMenuoAdministranto;

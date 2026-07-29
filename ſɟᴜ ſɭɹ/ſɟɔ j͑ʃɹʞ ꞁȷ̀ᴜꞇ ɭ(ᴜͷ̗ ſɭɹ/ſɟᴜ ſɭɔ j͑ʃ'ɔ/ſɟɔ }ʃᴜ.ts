@@ -1,9 +1,8 @@
-// ≺⧼ Tile Drag and Resize Handlers ⧽≻
+// ≺⧼ Kahelaj Trenaj kaj Regrandigaj Traktiloj ⧽≻
 
 declare const CONSTANTS: any;
-declare const InputHandler: any;
+declare const EnigaAdministranto: any;
 declare const getStartMenu: any;
-declare const closeAllPanels: any;
 declare const getContainerDimensions: any;
 declare const isWithinBounds: any;
 declare const setElementDragging: any;
@@ -83,16 +82,16 @@ export function agordiKaheloTreni( grid: IconGridLike, el: HTMLElement, startX: 
         const deltaY = clientY - startY;
         const dragDistance = Math.abs( deltaX ) + Math.abs( deltaY );
 
-        // Set isDragging only after moving beyond threshold
+        // Agordi estasTrenanta nur post movado preter sojlo
         if ( !hasDragged && dragDistance > CONSTANTS.DIM.DRAG_THRESHOLD ) {
             hasDragged = true;
         }
 
-        // Close start menu if dragging far enough
+        // Fermi komencan menuon se treno sufiĉe malproksima
         if ( !startMenuClosed && startMenu && grid.containerId === "start-menu-content" && dragDistance > CONSTANTS.DIM.DRAG_THRESHOLD ) {
             startMenu.classList.remove( "open" );
             document.body.classList.remove( "start-menu-open" );
-            if ( typeof closeAllPanels === "function" ) closeAllPanels();
+            if ( ( window as any ).PanelaAdministranto ) ( window as any ).PanelaAdministranto.fermiCxiujnPanelojn();
             startMenuClosed = true;
         }
 
@@ -120,9 +119,9 @@ export function agordiKaheloTreni( grid: IconGridLike, el: HTMLElement, startX: 
         setElementDragging( el, false );
         el.style.zIndex = "";
 
-        // Handle transfer from start menu to desktop
-        if ( grid.containerId === "start-menu-content" && ( window as any ).DesktopIconManager?.desktop ) {
-            const desktop = ( window as any ).DesktopIconManager.desktop.container;
+        // Trakti transigon de komenca menuo al labortablo
+        if ( grid.containerId === "start-menu-content" && ( window as any ).LabortablaPiktogramoAdministranto?.labortablo ) {
+            const desktop = ( window as any ).LabortablaPiktogramoAdministranto.labortablo.container;
             const desktopRect = desktop.getBoundingClientRect();
             const elRect = el.getBoundingClientRect();
             const elCenterX = elRect.left + elRect.width / 2;
@@ -131,12 +130,12 @@ export function agordiKaheloTreni( grid: IconGridLike, el: HTMLElement, startX: 
             if ( isWithinBounds( elCenterX, elCenterY, desktopRect ) ) {
                 el.style.position = "";
                 if ( onDragEnd ) onDragEnd();
-                ( grid as any ).transferIconFromStartMenu( el );
+                ( grid as any ).transigiPiktogramonDeKomencaMenuo( el );
                 return;
             }
         }
 
-        // Restore position or snap
+        // Restarigi pozicion aŭ alklaki
         if ( grid.containerId === "start-menu-content" && originalParent ) {
             el.style.position = "";
             if ( onDragEnd ) onDragEnd();
@@ -149,10 +148,10 @@ export function agordiKaheloTreni( grid: IconGridLike, el: HTMLElement, startX: 
         }
     };
 
-    // Setup event listeners for both mouse and touch
+    // Agordi eventaŭskultilojn por kaj muso kaj tuŝo
     const onMove = ( ev: any ) => {
         ev.preventDefault();
-        const pos = InputHandler.getPointerPos( ev );
+        const pos = EnigaAdministranto.getPointerPos( ev );
         move( pos.x, pos.y );
     };
 
@@ -221,12 +220,12 @@ export function agordiKaheloGrandSxangxi( grid: IconGridLike, el: HTMLElement, s
         grid.gxisdatigiAdaptanOrientigon( el );
 
         // Save tile layout to storage
-        if ( grid.containerId === "desktop" ) ( window as any ).DesktopIconManager?._saveDesktopLayout();
+        if ( grid.containerId === "desktop" ) ( window as any ).LabortablaPiktogramoAdministranto?._konserviLabortablanArangxon();
     };
 
     const onMove = ( ev: any ) => {
         ev.preventDefault();
-        const pos = InputHandler.getPointerPos( ev );
+        const pos = EnigaAdministranto.getPointerPos( ev );
         move( pos.x, pos.y );
     };
 

@@ -1,4 +1,4 @@
-// ≺⧼ System ⧽≻ - Main OS Coordination
+// ≺⧼ Sistemo ⧽≻ - Main OS Coordination
 
 const Sistemo = {
     // ⟪ Utilities ⟫
@@ -17,56 +17,56 @@ const Sistemo = {
         }
     },
 
-    // ⟪ Initialization ⟫
+    // ⟪ Inicii ⟫
 
     init() {
-        // 1. ⟨ Essential Managers ⟩
-        if ( (window as any).WindowManager ) (window as any).WindowManager.inicii();
-        if ( (window as any).ContextMenuManager ) (window as any).ContextMenuManager.init();
-        if ( (window as any).PanelManager ) (window as any).PanelManager.initClickOutsideHandler();
-        if ( (window as any).NotificationManager ) (window as any).NotificationManager.init();
-        if ( (window as any).ClockManager ) (window as any).ClockManager.init();
+        // 1. ⟨ Esencaj Administrantoj ⟩
+        if ( (window as any).FenestraAdministranto ) (window as any).FenestraAdministranto.inicii();
+        if ( (window as any).KuntekstaMenuoAdministranto ) (window as any).KuntekstaMenuoAdministranto.inicii();
+        if ( (window as any).PanelaAdministranto ) (window as any).PanelaAdministranto.initClickOutsideHandler();
+        if ( (window as any).SciigoAdministranto ) (window as any).SciigoAdministranto.inicii();
+        if ( (window as any).HorlogxoAdministranto ) (window as any).HorlogxoAdministranto.inicii();
 
-        // 2. ⟨ Service Loops ⟩
+        // 2. ⟨ Servobukloj ⟩
         setInterval( () => this.gxisdatigiHorlogxon(), 0o2000 );
         this.gxisdatigiHorlogxon();
 
-        // 3. ⟨ Events ⟩
+        // 3. ⟨ Eventoj ⟩
         this.agordiEventojn();
 
-        // 4. ⟨ Final Rendering ⟩
-        if ( (window as any).DesktopIconManager ) {
-            requestAnimationFrame( () => (window as any).DesktopIconManager.init() );
+        // 4. ⟨ Fina Bildigo ⟩
+        if ( (window as any).LabortablaPiktogramoAdministranto ) {
+            requestAnimationFrame( () => (window as any).LabortablaPiktogramoAdministranto.inicii() );
         }
     },
 
     agordiEventojn() {
         const hb = document.getElementById( "home-bar" );
         if ( hb ) hb.onclick = () => {
-            if ( document.body.classList.contains( "start-menu-open" ) ) (window as any).PanelManager.closeAllPanels();
-            else (window as any).PanelManager.toggleStartMenu();
+            if ( document.body.classList.contains( "start-menu-open" ) ) (window as any).PanelaAdministranto.fermiCxiujnPanelojn();
+            else (window as any).PanelaAdministranto.baskuligiKomencaMenuo();
         };
 
         const tb = document.getElementById( "taskbar" );
         if ( tb ) tb.onclick = ( e: any ) => {
             const btn = (e.target as HTMLElement).closest( "button" );
             if ( !btn ) return;
-            const actions: { [key: string]: string } = { "status-area": "toggleQuickSettings", "notification-btn": "toggleNotifications", "recents-btn": "showRecents", "clock-area": "toggleClockFlyout" };
-            if ( actions[ btn.id ] ) ((window as any).PanelManager as any)[ actions[ btn.id ] ]();
+            const actions: { [key: string]: string } = { "status-area": "baskuligiRapidaAgordoj", "notification-btn": "baskuligiSciigojn", "recents-btn": "montriLastatempajn", "clock-area": "baskuligiHorlogxoElsxovo" };
+            if ( actions[ btn.id ] ) ((window as any).PanelaAdministranto as any)[ actions[ btn.id ] ]();
         };
     }
 };
 
-// ⟪ Global Aliases ⟫
+// ⟪ Tutmondaj Aliajnimoj ⟫
 
-function toggleQsButton( btn: any ) { if ( (window as any).QSManager ) (window as any).QSManager.handleToggle( btn ); }
+function toggleQsButton( btn: any ) { if ( (window as any).RapidaAgordoAdministranto ) (window as any).RapidaAgordoAdministranto.pritraktiBaskulon( btn ); }
 function updateSlider( type: any, val: any ) {
-    if ( !(window as any).QSManager ) return;
-    if ( type === "brightness" ) (window as any).QSManager.setBrightness( parseInt( val ) );
-    else if ( type === "volume" ) (window as any).QSManager.setVolume( parseInt( val ) );
+    if ( !(window as any).RapidaAgordoAdministranto ) return;
+    if ( type === "brightness" ) (window as any).RapidaAgordoAdministranto.agordiHelecon( parseInt( val ) );
+    else if ( type === "volume" ) (window as any).RapidaAgordoAdministranto.agordiLaŭtecon( parseInt( val ) );
 }
 
-// Attach to window for global access
+// Aldoni al fenestro por tutmonda aliro
 (window as any).toggleQsButton = toggleQsButton;
 (window as any).updateSlider = updateSlider;
-(window as any).System = Sistemo;
+(window as any).Sistemo = Sistemo;

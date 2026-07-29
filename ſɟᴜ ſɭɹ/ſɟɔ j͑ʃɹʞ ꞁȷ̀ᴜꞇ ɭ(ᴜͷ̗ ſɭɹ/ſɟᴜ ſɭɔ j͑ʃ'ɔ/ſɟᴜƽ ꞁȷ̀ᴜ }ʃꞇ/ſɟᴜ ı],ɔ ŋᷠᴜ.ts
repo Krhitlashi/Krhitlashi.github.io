@@ -1,4 +1,4 @@
-// ≺⧼ Input Handler - Unified Touch and Mouse Controls ⧽≻
+// ≺⧼ Eniga Traktilo - Unuigitaj Tuŝaj kaj Musaj Regiloj ⧽≻
 
 // Runtime: get CONSTANTS from window (loaded by HTML script tag)
 const CONSTANTS = (window as any).CONSTANTS;
@@ -12,7 +12,7 @@ interface PointerData {
 }
 
 const InputHandler = {
-    // ⟪ State ⟫
+    // ⟪ Ŝtato ⟫
     isDragging: false,
     isResizing: false,
     isTouch: false,
@@ -29,7 +29,7 @@ const InputHandler = {
     longPressTimer: null as number | null,
     longPressDuration: CONSTANTS.INPUT.LONG_PRESS_DURATION,
 
-    // ⟪ Event Normalization ⟫
+    // ⟪ Eventa Normigado ⟫
     getPointerPos(e: Event): { x: number; y: number } {
         if (e.type.startsWith("touch")) {
             const touch = (e as TouchEvent).touches?.[0] || (e as TouchEvent).changedTouches?.[0];
@@ -42,7 +42,7 @@ const InputHandler = {
         return e.type.startsWith("touch");
     },
 
-    // ⟪ Internal Pointer Handler Setup ⟫
+    // ⟪ Interna Montrila Traktila Agordo ⟫
     setupPointerHandlers(
         element: HTMLElement,
         isResize: boolean,
@@ -131,7 +131,7 @@ const InputHandler = {
         };
     },
 
-    // ⟪ Setup Functions ⟫
+    // ⟪ Agordaj Funkcioj ⟫
     setupDrag(
         element: HTMLElement,
         onStart: ((e: Event, data: PointerData) => void) | null,
@@ -309,7 +309,7 @@ const InputHandler = {
         }, onPanEnd);
     },
 
-    // ⟪ Cleanup ⟫
+    // ⟪ Purigado ⟫
     cleanup(): void {
         this.isDragging = false;
         this.isResizing = false;
@@ -320,7 +320,7 @@ const InputHandler = {
         }
     },
 
-    // ⟪ Utilities ⟫
+    // ⟪ Utilajoj ⟫
     stopEvent(e: Event): void {
         e.preventDefault();
         e.stopPropagation();
@@ -338,7 +338,7 @@ const InputHandler = {
     }
 };
 
-// ⟪ Global Helpers ⟫
+// ⟪ Tutmondaj Helpiloj ⟫
 function isDragging(): boolean {
     return InputHandler.isDragging;
 }
@@ -356,8 +356,8 @@ function setResizingState(state: boolean): void {
     InputHandler.isResizing = state;
 }
 
-// Attach to window for global access
-(window as any).InputHandler = InputHandler;
+// Aldoni al fenestro por tutmonda aliro
+( window as any ).EnigaAdministranto = InputHandler;
 (window as any).isDragging = isDragging;
 (window as any).isResizing = isResizing;
 (window as any).setDraggingState = setDraggingState;

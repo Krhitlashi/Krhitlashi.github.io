@@ -1,4 +1,4 @@
-// ≺⧼ Event Utilities ⧽≻
+// ≺⧼ Eventaj Utilajoj ⧽≻
 
 function aldoniEventajnAuskultantojn(
     elements: HTMLElement | HTMLElement[] | NodeList,

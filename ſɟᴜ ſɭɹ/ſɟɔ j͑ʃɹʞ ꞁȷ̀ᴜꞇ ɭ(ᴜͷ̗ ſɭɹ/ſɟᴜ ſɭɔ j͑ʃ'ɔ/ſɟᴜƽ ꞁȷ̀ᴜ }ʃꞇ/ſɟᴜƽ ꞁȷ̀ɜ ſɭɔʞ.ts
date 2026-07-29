@@ -1,4 +1,4 @@
-// ≺⧼ String Utilities ⧽≻
+// ≺⧼ Ĉenaj Utilajoj ⧽≻
 
 /**
  * Escape HTML special characters

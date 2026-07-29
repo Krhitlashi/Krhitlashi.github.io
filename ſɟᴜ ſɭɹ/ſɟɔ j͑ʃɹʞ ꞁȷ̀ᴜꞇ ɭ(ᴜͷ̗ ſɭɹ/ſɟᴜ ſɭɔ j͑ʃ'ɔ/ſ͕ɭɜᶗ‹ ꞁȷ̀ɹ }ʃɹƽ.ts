@@ -1,7 +1,7 @@
-// ≺⧼ Icon Grid Class ⧽≻
+// ≺⧼ Piktograma Krada Klaso ⧽≻
 
 declare const CONSTANTS: any;
-declare const InputHandler: any;
+declare const EnigaAdministranto: any;
 declare const getTaskbar: any;
 declare const getElementSpans: any;
 
@@ -9,7 +9,7 @@ import { AppData, IconGridConfig, CustomHTMLElement } from "./ꞁȷ̀ɜ ı],ɔ �
 import { akiriUjonGrandecojn, akiriElementanPozicion } from "./ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ/ſɟᴜ ſɭɔƽ.js";
 import { agordiKaheloTreni, agordiKaheloGrandSxangxi } from "./ſɟɔ }ʃᴜ.js";
 
-// ⟪ Mobile Grid Dimension Aliases ( from CONSTANTS ) ⟫
+// ⟪ Porteblaj Kradaj Dimensiaj Aliajnimoj ( el CONSTANTS ) ⟫
 export const MOBILE_GRID_ROWS = CONSTANTS.DIM.MOBILE_ROWS;
 export const MOBILE_GRID_COLS = CONSTANTS.DIM.MOBILE_COLS;
 export const DESKTOP_GRID_ROWS = CONSTANTS.DIM.DEFAULT_ROWS;
@@ -17,7 +17,7 @@ export const DESKTOP_GRID_COLS = CONSTANTS.DIM.DEFAULT_COLS;
 
 let APPS: AppData[] = [];
 
-// ⟪ Icon Grid ⟫
+// ⟪ Piktograma Krado ⟫
 
 export class PiktogramaKrado {
     containerId: string;
@@ -43,7 +43,7 @@ export class PiktogramaKrado {
         this.container = document.getElementById( containerId );
         this.config = config;
 
-        // Auto-detect mobile vs desktop
+        // Aŭtomate detekti porteblan vs labortablan
         this.estasPortebla = this.cxuPortebla();
         this.rows = this.estasPortebla ? MOBILE_GRID_ROWS : ( config.rows || DESKTOP_GRID_ROWS );
         this.cols = this.estasPortebla ? MOBILE_GRID_COLS : ( config.cols || DESKTOP_GRID_COLS );
@@ -88,7 +88,7 @@ export class PiktogramaKrado {
         this.estasPortebla = this.cxuPortebla();
 
         if ( wasMobile !== this.estasPortebla ) {
-            // Screen size changed between mobile and desktop
+            // Ekrana grando ŝanĝiĝis inter portebla kaj labortabla
             this.rows = this.estasPortebla ? MOBILE_GRID_ROWS : DESKTOP_GRID_ROWS;
             this.cols = this.estasPortebla ? MOBILE_GRID_COLS : DESKTOP_GRID_COLS;
             this.refreŝigi();
@@ -116,26 +116,26 @@ export class PiktogramaKrado {
         // Vertical swipe for pagination (only on mobile)
         if ( this.estasPortebla && Math.abs( diffY ) > Math.abs( diffX ) && Math.abs( diffY ) > 50 ) {
             if ( diffY > 0 ) {
-                // Swipe down - previous page
+                // Svingi malsupren - antaŭa paĝo
                 if ( this.nunaPaĝo > 0 ) {
                     this.nunaPaĝo--;
                     this.refreŝigi();
-                    if ( ( window as any ).DesktopIconManager ) ( window as any ).DesktopIconManager._updatePageIndicators();
+                    if ( ( window as any ).LabortablaPiktogramoAdministranto ) ( window as any ).LabortablaPiktogramoAdministranto._gxisdatigiPaĝajnIndikilojn();
                 }
             } else {
-                // Swipe up - next page
+                // Svingi supren - sekva paĝo
                 const maxPage = Math.ceil( APPS.length / ( this.rows * this.cols ) ) - 1;
                 if ( this.nunaPaĝo < maxPage ) {
                     this.nunaPaĝo++;
                     this.refreŝigi();
-                    if ( ( window as any ).DesktopIconManager ) ( window as any ).DesktopIconManager._updatePageIndicators();
+                    if ( ( window as any ).LabortablaPiktogramoAdministranto ) ( window as any ).LabortablaPiktogramoAdministranto._gxisdatigiPaĝajnIndikilojn();
                 }
             }
         }
     }
 
     inicii(): void {
-        // Clear container to remove any existing tiles
+        // Malplenigi ujon por forigi ekzistantajn kahelojn
         if ( this.container ) {
             this.container.innerHTML = "";
         }
@@ -154,7 +154,7 @@ export class PiktogramaKrado {
             let newColSpan = oldColSpan;
             let newRowSpan = oldRowSpan;
 
-            // Measure actual pill thickness
+            // Mezuri faktan pilolan dikecon
             const titleBar = el.querySelector( "ksaka" ) as HTMLElement | null;
             let pillThickness = 0o40;
             if ( titleBar ) {
@@ -207,12 +207,12 @@ export class PiktogramaKrado {
 
         let isDragging = false;
 
-        // Create cepufal wrapper (like recents-card)
+        // Krei cepufal-envolvaĵon (kiel lastatempa karto)
         const cepufalEl = document.createElement( "div" );
         cepufalEl.className = "cepufal";
         cepufalEl.style.padding = "0";
 
-        // Create button area
+        // Krei butonan areon
         const buttonEl = document.createElement( "button" );
         buttonEl.style.blockSize = "100%";
         buttonEl.style.inlineSize = "100%";
@@ -220,11 +220,11 @@ export class PiktogramaKrado {
             e.stopPropagation();
             // Open app if not in edit mode, not resizing, and not dragging
             if ( !this.redaktaReĝimo && !el.classList.contains( "resizing" ) && !isDragging ) {
-                const wm = ( window as any ).WindowManager || ( window as any ).getWindowManager();
-                if ( wm && wm.loadAppFromPath ) {
+                const wm = ( window as any ).FenestraAdministranto || ( window as any ).getWindowManager();
+                if ( wm && wm.sxargiAplikonDeVojo ) {
                     wm.sxargiAplikonDeVojo( appData.app, appData.name );
                 } else {
-                    console.error( "WindowManager not available" );
+                    console.error( "FenestraAdministranto ne disponeblas" );
                 }
             }
             isDragging = false;
@@ -232,20 +232,20 @@ export class PiktogramaKrado {
         buttonEl.oncontextmenu = ( e: MouseEvent ) => {
             e.stopPropagation();
             e.preventDefault();
-            if ( ( window as any ).ContextMenuManager ) {
-                ( window as any ).ContextMenuManager.showForTile( e.clientX, e.clientY, el );
+            if ( ( window as any ).KuntekstaMenuoAdministranto ) {
+                ( window as any ).KuntekstaMenuoAdministranto.showForTile( e.clientX, e.clientY, el );
             }
         };
 
-        // Add label based on mode
+        // Aldoni etikedon laŭ reĝimo
         if ( this.etikedReĝimo === "inside" ) {
-            // Internal mode: label inside button area
+            // Interna reĝimo: etikedo ene de butona areo
             const labelSpan = document.createElement( "span" );
             labelSpan.className = "label inside";
             labelSpan.innerText = appData.name;
             buttonEl.appendChild( labelSpan );
         } else if ( this.etikedReĝimo !== "hidden" && this.etikedReĝimo !== "off" ) {
-            // External mode: create title bar (ksaka - like recents-card)
+            // Ekstera reĝimo: krei titolbreton (ksaka - kiel lastatempa karto)
             const labelContainer = document.createElement( "ksaka" );
             labelContainer.className = "title-bar";
             const textSpan = document.createElement( "p" );
@@ -268,7 +268,7 @@ export class PiktogramaKrado {
         const onResizeStart = ( e: any ) => {
             e.stopPropagation();
             e.preventDefault();
-            const pos = InputHandler.getPointerPos( e );
+            const pos = EnigaAdministranto.getPointerPos( e );
             agordiKaheloGrandSxangxi( this, el, pos.x, pos.y );
         };
         handle.addEventListener( "mousedown", onResizeStart );
@@ -280,7 +280,7 @@ export class PiktogramaKrado {
         this.alakrogiAlKrado( el, index );
         this.gxisdatigiAdaptanOrientigon( el );
 
-        // Track resize state on the element itself
+        // Spuri regrandigan staton sur la elemento mem
         ( el as CustomHTMLElement )._isResizing = false;
 
         // Handle mousedown and touchstart for drag initiation
@@ -295,7 +295,7 @@ export class PiktogramaKrado {
             }
 
             if ( canDrag ) {
-                const pos = InputHandler.getPointerPos( e );
+                const pos = EnigaAdministranto.getPointerPos( e );
                 agordiKaheloTreni( this, el, pos.x, pos.y, () => {
                     isDragging = false;
                 } );
@@ -311,15 +311,15 @@ export class PiktogramaKrado {
     alakrogiAlKrado( el: HTMLElement, index: number ): void {
         if ( !this.container ) return;
 
-        // Handle pagination for mobile desktop only
+        // Trakti paĝadon nur por portebla labortablo
         const itemsPerPage = this.rows * this.cols;
         const pageIndex = itemsPerPage > 0 ? Math.floor( index / itemsPerPage ) : 0;
         const indexOnPage = itemsPerPage > 0 ? index % itemsPerPage : index;
 
-        // Store page info on element
+        // Konservi paĝinformon sur elemento
         el.dataset.page = pageIndex.toString();
 
-        // Show/hide based on pagination (mobile desktop only)
+        // Montri/kaŝi bazite sur paĝado (nur portebla labortablo)
         if ( this.estasPortebla && this.containerId === "desktop" ) {
             el.style.display = pageIndex === this.nunaPaĝo ? "" : "none";
         }
@@ -330,12 +330,12 @@ export class PiktogramaKrado {
             return;
         }
 
-        // Start menu: use full index for scrolling layout
+        // Komenca menuo: uzi plenan indekson por ruluma aranĝo
         const taskbar = typeof getTaskbar === "function" ? getTaskbar() : document.getElementById( "taskbar" );
         const taskbarPos = taskbar?.dataset.position || "left";
         const isVerticalTaskbar = taskbarPos === "left" || taskbarPos === "right";
 
-        // Adaptive spanning
+        // Adapta etendado
         if ( isVerticalTaskbar ) {
             el.dataset.colSpan = "2";
             el.dataset.rowSpan = "1";
@@ -346,7 +346,7 @@ export class PiktogramaKrado {
 
         const { colSpan: cs, rowSpan: rs } = getElementSpans( el );
 
-        // Fill vertically (bottom to top), then horizontally
+        // Plenigi vertikale (malsupre supren), poste horizontale
         if ( isVerticalTaskbar ) {
             const itemsPerCol = this.rows;
             const colGroup = Math.floor( index / itemsPerCol );
@@ -443,7 +443,7 @@ export class PiktogramaKrado {
         for ( const tile of Array.from( this.container.querySelectorAll( ".app-tile" ) ) as HTMLElement[] ) {
             if ( tile === excludeEl ) continue;
 
-            // Use current position from dataset
+            // Uzi nunan pozicion el datumaro
             let tc = parseInt( tile.dataset.col || "0" );
             let tr = parseInt( tile.dataset.row || "0" );
 
@@ -508,18 +508,18 @@ export class PiktogramaKrado {
                     }
                 }
             }
-            // If no empty spot found, keep the dropped position anyway
+            // Se neniu malplena loko trovita, teni la faligitan pozicion ĉiukaze
         }
 
-        // Clear temporary values and apply position
+        // Forigi provizorajn valorojn kaj apliki pozicion
         delete el.dataset._newCol;
         delete el.dataset._newRow;
 
         this.aplikiPozicion( el, c, r );
         this.gxisdatigiAdaptanOrientigon( el );
 
-        // Save tile layout to storage
-        if ( this.containerId === "desktop" ) ( window as any ).DesktopIconManager?._saveDesktopLayout();
+        // Konservi kahelan aranĝon al stokejo
+        if ( this.containerId === "desktop" ) ( window as any ).LabortablaPiktogramoAdministranto?._konserviLabortablanArangxon();
     }
 
     baskuligiRedaktadon(): void {
@@ -546,8 +546,8 @@ export class PiktogramaKrado {
     }
 }
 
-// Attach to window for global access
-( window as any ).IconGrid = PiktogramaKrado;
+// Aldoni al fenestro por tutmonda aliro
+( window as any ).PiktogramaKrado = PiktogramaKrado;
 
 /**
  * Get maximum page number for mobile pagination
