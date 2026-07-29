@@ -13,6 +13,7 @@ import "./ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ/ſɟᴜ ſɭɔƽ.js";
 import "./ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ/ſɟᴜ ſ͕ɭwȝ.js";
 import "./ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ/ſɟᴜƽ ꞁȷ̀ɜ ſɭɔʞ.js";
 import "./ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ/ſɟᴜ ſ̀ȷᴜȝ.js";
+import "./ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ/ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
 
 // ⟨ Administrantoj ⟩ - ĉi tiuj alkroĉas al fenestro
 import "./ɭʃᴜ ֭ſɭᴜ j͐ʃᴜ ſ͕ɭᴜƴ.js";

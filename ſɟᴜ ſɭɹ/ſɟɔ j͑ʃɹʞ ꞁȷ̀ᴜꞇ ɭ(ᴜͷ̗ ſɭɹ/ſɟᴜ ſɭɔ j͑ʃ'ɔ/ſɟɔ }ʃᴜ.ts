@@ -8,34 +8,7 @@ declare const isWithinBounds: any;
 declare const setElementDragging: any;
 
 import { CustomHTMLElement } from "./ꞁȷ̀ɜ ı],ɔ ŋᷠᴜ }ʃꞇ.js";
-
-/**
- * Setup pointer event listeners for drag/resize operations
- */
-function agordiMontrajnEventojn(
-    onMove: ( ev: any ) => void,
-    onEnd: () => void
-): void {
-    document.addEventListener( "mousemove", onMove );
-    document.addEventListener( "mouseup", onEnd );
-    document.addEventListener( "touchmove", onMove, { passive: false } );
-    document.addEventListener( "touchend", onEnd );
-    document.addEventListener( "touchcancel", onEnd );
-}
-
-/**
- * Remove pointer event listeners for drag/resize operations
- */
-function forigiMontrajnEventojn(
-    onMove: ( ev: any ) => void,
-    onEnd: () => void
-): void {
-    document.removeEventListener( "mousemove", onMove );
-    document.removeEventListener( "mouseup", onEnd );
-    document.removeEventListener( "touchmove", onMove );
-    document.removeEventListener( "touchend", onEnd );
-    document.removeEventListener( "touchcancel", onEnd );
-}
+import { setupMontrajnEventojn, akiriMontranPunkton } from "./ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ/ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
 
 // Forward reference to avoid circular dependency
 interface IconGridLike {
@@ -151,16 +124,14 @@ export function agordiKaheloTreni( grid: IconGridLike, el: HTMLElement, startX: 
     // Agordi eventaŭskultilojn por kaj muso kaj tuŝo
     const onMove = ( ev: any ) => {
         ev.preventDefault();
-        const pos = EnigaAdministranto.getPointerPos( ev );
+        const pos = akiriMontranPunkton( ev );
         move( pos.x, pos.y );
     };
 
-    const onEnd = () => {
-        forigiMontrajnEventojn( onMove, onEnd );
+    const forigiEventojn = setupMontrajnEventojn( onMove, () => {
+        forigiEventojn();
         up();
-    };
-
-    agordiMontrajnEventojn( onMove, onEnd );
+    } );
 }
 
 /**
@@ -225,14 +196,12 @@ export function agordiKaheloGrandSxangxi( grid: IconGridLike, el: HTMLElement, s
 
     const onMove = ( ev: any ) => {
         ev.preventDefault();
-        const pos = EnigaAdministranto.getPointerPos( ev );
+        const pos = akiriMontranPunkton( ev );
         move( pos.x, pos.y );
     };
 
-    const onEnd = () => {
-        forigiMontrajnEventojn( onMove, onEnd );
+    const forigiEventojn = setupMontrajnEventojn( onMove, () => {
+        forigiEventojn();
         up();
-    };
-
-    agordiMontrajnEventojn( onMove, onEnd );
+    } );
 }

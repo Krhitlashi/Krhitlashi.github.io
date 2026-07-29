@@ -7,6 +7,7 @@ declare const getWindowManager: any;
 
 import { AppData } from "./ꞁȷ̀ɜ ı],ɔ ŋᷠᴜ }ʃꞇ.js";
 import { akiriMaksimumanPaĝon } from "./ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ.js";
+import { klikoEkstereTraktilo } from "./ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ/ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
 
 let APPS: AppData[] = [];
 
@@ -32,13 +33,7 @@ export const KuntekstaMenuoAdministranto = {
         } );
 
     // Kaŝi menuon kiam oni klakas ekstere (sama ŝablono kiel PanelaAdministranto)
-        document.addEventListener( "mousedown", ( e: MouseEvent ) => {
-            if ( !this.menuoMalfermita ) return;
-            const selectors: string[] = [ "#context-menu" ];
-            if ( !selectors.some( sel => ( e.target as HTMLElement ).closest( sel ) ) ) {
-                this.kaŝi();
-            }
-        } );
+        klikoEkstereTraktilo( [ "#context-menu" ], () => this.kaŝi(), () => this.menuoMalfermita );
 
     // Kaŝi menuon kiam oni dek-klakas ekstere (por montri novan kuntekstan menuon)
         document.addEventListener( "contextmenu", ( e: MouseEvent ) => {

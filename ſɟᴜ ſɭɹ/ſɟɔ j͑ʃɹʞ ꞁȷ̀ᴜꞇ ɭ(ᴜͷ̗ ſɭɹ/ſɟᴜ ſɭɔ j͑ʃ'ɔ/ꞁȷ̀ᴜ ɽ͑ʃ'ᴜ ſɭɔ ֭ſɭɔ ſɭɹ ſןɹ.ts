@@ -12,6 +12,162 @@ declare const getStrings: any;
 declare const APPS: any;
 declare const updateDock: any;
 
+import { setupMontrajnEventojn, akiriMontranPunkton } from "./ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ/ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
+
+// ⟪ HSL → Hex Konvertilo ⟫
+// h: 0-360°, s kaj l: 0-1
+
+function _akiriHSLHex( h: number, s: number, l: number ): string {
+    const c: number = ( 1 - Math.abs( 2 * l - 1 ) ) * s;
+    const x: number = c * ( 1 - Math.abs( ( ( h / 60 ) % 2 ) - 1 ) );
+    const m: number = l - c / 2;
+
+    let r = 0, g = 0, b = 0;
+    if ( h < 60 ) { r = c; g = x; }
+    else if ( h < 120 ) { r = x; g = c; }
+    else if ( h < 180 ) { g = c; b = x; }
+    else if ( h < 240 ) { g = x; b = c; }
+    else if ( h < 300 ) { r = x; b = c; }
+    else { r = c; b = x; }
+
+    const alHex = ( raw: number ): string => {
+        // Per konstrukcio raw ( = r + m aŭ g + m aŭ b + m ) ≤ 1, do 0o377 estas la
+        // ĝusta maksimuma multiplikato sen bezonata klampo
+        const v = Math.round( raw * 0o377 );
+        return v.toString( 16 ).padStart( 2, '0' );
+    };
+    return '#' + alHex( r + m ) + alHex( g + m ) + alHex( b + m );
+}
+
+
+// \u27ea Hilaj Funkcioj por Tavola Komponado \u27eb
+
+function _hexToRgba( hex: string, alfa: number ): string {
+    const c: string = hex.charAt( 0 ) === "#" ? hex.substring( 1 ) : hex;
+    const r: number = parseInt( c.substring( 0, 2 ), 16 );
+    const g: number = parseInt( c.substring( 2, 4 ), 16 );
+    const b: number = parseInt( c.substring( 4, 6 ), 16 );
+    return `rgba(${r},${g},${b},${Math.max(0, Math.min(1, alfa)).toFixed(2)})`;
+}
+
+const _randEntjer = ( min: number, max: number ): number =>
+    Math.floor( min + Math.random() * ( max - min + 1 ) );
+
+const _randPozicio = (): string =>
+    `${_randEntjer( 15, 85 )}% ${_randEntjer( 15, 85 )}%`;
+
+// Magiaj ne\u016daj akcentoj por 20% de brilaj akcentoj - donas surprizan diversecon
+const _MAGIAJ_NEUTRALOJ: string[] = [
+    "#ffd166",
+    "#7adfff",
+    "#ffffff",
+    "#ff8acc",
+    "#a3b6ff",
+    "#caffc7"
+];
+
+function _akiriBrilanAkcenton( h: number, s: number ): string {
+    const novaS: number = Math.min( 0.95, s + 0.20 );
+    const novaL: number = Math.min( 0.88, 0.60 + Math.random() * 0.20 );
+    return _akiriHSLHex( h, novaS, novaL );
+}
+
+function _akiriAkcentanKoloron( h: number, s: number ): string {
+    // 20% magiaj ne\u016daj; 80% derivitaj de la baza huao (altigitaj S/L)
+    if ( Math.random() < 0.20 ) {
+        return _MAGIAJ_NEUTRALOJ[ _randEntjer( 0, _MAGIAJ_NEUTRALOJ.length - 1 ) ];
+    }
+    return _akiriBrilanAkcenton( h, s );
+}
+
+// Brila orbo: hela koloro en centro, malklari\u011das al menumo%
+function _briloTavolo( hex: string, intenseco: number, menumo: number ): string {
+    return `radial-gradient(circle at ${_randPozicio()}, ${_hexToRgba( hex, intenseco )} 0%, ${_hexToRgba( hex, 0 )} ${menumo}%)`;
+}
+
+// Frostita vitro: travidebla centro, meza bando, malklari\u011das eksteren
+function _frostTavolo( hex: string, opako: number ): string {
+    return `radial-gradient(circle at ${_randPozicio()}, ${_hexToRgba( hex, 0 )} 0%, ${_hexToRgba( hex, opako )} 45%, ${_hexToRgba( hex, 0 )} 100%)`;
+}
+
+// Subtila direkta lavumo
+function _lavTavolo( hex: string, opako: number, angulo: number ): string {
+    return `linear-gradient(${angulo}deg, ${_hexToRgba( hex, opako )} 0%, ${_hexToRgba( hex, 0 )} 65%)`;
+}
+
+// Konusa prisma radio (mallar\u011da, klare difinita)
+function _konusTavolo( hex: string, opako: number ): string {
+    const angulo: number = _randEntjer( 0, 360 );
+    return `conic-gradient(from ${angulo}deg at ${_randPozicio()}, ${_hexToRgba( hex, 0 )} 0deg, ${_hexToRgba( hex, opako )} 18deg, ${_hexToRgba( hex, 0 )} 36deg)`;
+}
+
+type _Regimo = "aūroro" | "kosmo" | "frost" | "prismo";
+
+// Re\u011dimo-pez-distribuo: a\u016broro 33%, kosmo 33%, frost 17%, prismo 17%
+const _REGIMOJ: _Regimo[] = [ "aūroro", "aūroro", "kosmo", "kosmo", "frost", "prismo" ];
+
+function _konstruiTavolojn(
+    koloroj: string[],
+    h1: number, s1: number,
+    angulo: number,
+    tipo: "linear" | "radial",
+    regimo: _Regimo
+): string[] {
+    const baza: string = tipo === "radial"
+        ? `radial-gradient(ellipse at center, ${koloroj.join( ", " )})`
+        : `linear-gradient(${angulo}deg, ${koloroj.join( ", " )})`;
+
+    const tavoloj: string[] = [];
+
+    if ( regimo === "aūroro" ) {
+        // A\u016broro: 2 lar\u011daj molaj briloj + eventuala lavumo
+        const ak1: string = _akiriAkcentanKoloron( h1, s1 );
+        const ak2: string = _akiriAkcentanKoloron( h1, s1 );
+        tavoloj.push( _briloTavolo( ak1, 0.55, 60 ) );
+        tavoloj.push( _briloTavolo( ak2, 0.45, 70 ) );
+        if ( Math.random() < 0.50 ) {
+            tavoloj.push( _lavTavolo( "#ffffff", 0.06, _randEntjer( 80, 180 ) ) );
+        }
+    } else if ( regimo === "kosmo" ) {
+        // Kosmo: 3 akraj densaj briloj + malhela vualo
+        const ak1: string = _akiriAkcentanKoloron( h1, s1 );
+        const ak2: string = _akiriAkcentanKoloron( h1, s1 );
+        const ak3: string = _akiriAkcentanKoloron( h1, s1 );
+        tavoloj.push( _briloTavolo( ak1, 0.85, 35 ) );
+        tavoloj.push( _briloTavolo( ak2, 0.75, 30 ) );
+        tavoloj.push( _briloTavolo( ak3, 0.65, 45 ) );
+        tavoloj.push( _lavTavolo( "#000000", 0.25, 180 ) );
+    } else if ( regimo === "frost" ) {
+        // Frosto: 2-3 frostitaj vitroj + ak\u0109enta brilo
+        const lav: string = "#ffffff";
+        const ak: string = _akiriAkcentanKoloron( h1, s1 );
+        tavoloj.push( _frostTavolo( lav, 0.30 ) );
+        tavoloj.push( _frostTavolo( lav, 0.22 ) );
+        if ( Math.random() < 0.60 ) {
+            tavoloj.push( _frostTavolo( ak, 0.18 ) );
+        }
+        tavoloj.push( _briloTavolo( ak, 0.40, 50 ) );
+    } else if ( regimo === "prismo" ) {
+        // Prismo: konusaj radioj de baza koloroj + 1 magia
+        koloroj.forEach( hex => {
+            tavoloj.push( _konusTavolo( hex, 0.40 ) );
+        });
+        if ( koloroj.length < 3 ) {
+            const plia: string = _akiriAkcentanKoloron( h1, s1 );
+            tavoloj.push( _konusTavolo( plia, 0.35 ) );
+        }
+    }
+
+
+    // Baza IRAS LAS -- CSS background-image desupre montras la unuan tavolon,
+    // do por ke la opaka baza estu FONE (ne kaŝu la brilojn / frostajn vitrojn),
+    // ni aldonas ĝin post la translucentaj tavoloj en la listo.
+    tavoloj.push( baza );
+
+    return tavoloj;
+}
+
+
 class FenestraAdministranto {
     static statikaZIndekso: number = CONSTANTS.WM.BASE_Z_INDEX;
     static statikaTemoVigladilo: any = null;
@@ -244,7 +400,7 @@ class FenestraAdministranto {
         const startBottom = startTop + startHeight;
 
         // Get pointer position using unified handler
-        const pos = EnigaAdministranto.getPointerPos( e );
+        const pos = akiriMontranPunkton( e );
         const startX = pos.x;
         const startY = pos.y;
 
@@ -282,34 +438,19 @@ class FenestraAdministranto {
             win.style.height = finalHeight + "px";
         };
 
-        // Create move handlers
-        const onMove = ( ev: MouseEvent ) => {
-            doDrag( ev.clientX, ev.clientY );
-        };
-
-        const onTouchMove = ( ev: TouchEvent ) => {
+        // Create move handler
+        const onMove = ( ev: any ) => {
             ev.preventDefault();
-            const touch = ev.touches[ 0 ] || ev.changedTouches[ 0 ];
-            if ( touch ) doDrag( touch.clientX, touch.clientY );
+            const p = akiriMontranPunkton( ev );
+            doDrag( p.x, p.y );
         };
 
-        const onEnd = () => {
+        // Agordi komunajn montradajn eventojn (forigiEventojn estas vokata en la onEnd-fino)
+        const forigiEventojn = setupMontrajnEventojn( onMove, () => {
             setDraggingState( false );
             ( win as any )._isResizing = false;
-            // Remove event listeners
-            document.removeEventListener( "mousemove", onMove );
-            document.removeEventListener( "mouseup", onEnd );
-            document.removeEventListener( "touchmove", onTouchMove, { passive: false } as any );
-            document.removeEventListener( "touchend", onEnd );
-            document.removeEventListener( "touchcancel", onEnd );
-        };
-
-        // Set up event listeners directly on document
-        document.addEventListener( "mousemove", onMove );
-        document.addEventListener( "mouseup", onEnd );
-        document.addEventListener( "touchmove", onTouchMove, { passive: false } as any );
-        document.addEventListener( "touchend", onEnd );
-        document.addEventListener( "touchcancel", onEnd );
+            forigiEventojn();
+        } );
     }
 
     // ⟪ Fermi Fenestron ⟫
@@ -343,7 +484,7 @@ class FenestraAdministranto {
         const rect = win.getBoundingClientRect();
 
         // Get pointer position using unified handler
-        const pos = EnigaAdministranto.getPointerPos( e );
+        const pos = akiriMontranPunkton( e );
         const clientX = pos.x;
         const clientY = pos.y;
         const shiftX = clientX - rect.left;
@@ -595,22 +736,136 @@ class FenestraAdministranto {
         localStorage.setItem( "os-wallpaper", url || "" );
     }
 
-    static agordiGradientanTapeton( start: string, end: string ): void {
+    static agordiGradientanTapeton(
+        start: string,
+        end: string,
+        angulo: number = 135,
+        koloroj?: string[],
+        tipo: "linear" | "radial" = "linear",
+        tavoloj?: string[]
+    ): void {
         const root = document.getElementById( "os-root" );
         if ( root ) {
             root.classList.add( "wallpaper-gradient" );
-            root.style.backgroundImage = `linear-gradient(135deg, ${start}, ${end})`;
+            const haltpunktoj: string[] = koloroj && koloroj.length >= 2 ? koloroj : [ start, end ];
+            const css: string = tavoloj && tavoloj.length > 0
+                ? tavoloj.join( ", " )
+                : (
+                    tipo === "radial"
+                        ? `radial-gradient(ellipse at center, ${haltpunktoj.join( ", " )})`
+                        : `linear-gradient(${angulo}deg, ${haltpunktoj.join( ", " )})`
+                );
+            root.style.backgroundImage = css;
             root.style.backgroundSize = "100% 100%";
         }
-        localStorage.setItem( "os-wallpaper-gradient", JSON.stringify( { start, end } ) );
+        // Persistas nur la tavolojn kiam ili ekzistas (aliaokaze retro-kompatiba skemo)
+        const konservado: any = {
+            start,
+            end,
+            koloroj: koloroj && koloroj.length >= 2 ? koloroj : [ start, end ],
+            angulo,
+            tipo
+        };
+        if ( tavoloj && tavoloj.length > 0 ) konservado.tavoloj = tavoloj;
+        localStorage.setItem( "os-wallpaper-gradient", JSON.stringify( konservado ) );
         localStorage.removeItem( "os-wallpaper" );
     }
 
     static agordiHazardaGradientaTapeto(): void {
-        const randomColor = () => '#' + Math.floor( Math.random() * 16777215 ).toString( 16 ).padStart( 6, '0' );
-        const start = randomColor();
-        const end = randomColor();
-        this.agordiGradientanTapeton( start, end );
+        // Algoritma hazarda gradienta generacio - neniu antaudifinita paledo.
+        // Uzas kolorharmoniojn kun HSL-parametraj limoj por eviti la "mudan" zonon
+        // (S < 50% kaj L \u0109irka\u016d 40-60%) kaj certigi klaran kontraston inter finoj.
+        // Aldonas tavolojn (brilo, frostita vitro, prisma radio) sur la baza harmonio
+        // por unikeco kaj videbla profundo -- ne nur plata koloro-al-koloro.
+
+        // 1. Harmonio: 0=monokroma, 1=analoga, 2=triada-proksima, 3=dividita-komplementa
+        const harmonio: number = Math.floor( Math.random() * 0o4 );
+        const baza: number = Math.floor( Math.random() * 0o550 );
+
+        let h1: number;
+        let h2: number;
+        if ( harmonio === 0 ) {
+            // Monokroma: \u00b115\u00b0 - apena\u016ba eta delto por subtila profundeco
+            h1 = baza;
+            h2 = baza + ( Math.random() < 0.5 ? -0o15 : 0o15 );
+        } else if ( harmonio === 1 ) {
+            // Analoga: 20\u00b0-50\u00b0 - intima parenco
+            h1 = baza;
+            h2 = baza + 0o24 + Math.floor( Math.random() * 0o30 );
+        } else if ( harmonio === 2 ) {
+            // Triada-proksima: 60\u00b0-110\u00b0 - harmoniigita kontrasto (stilo Coolors/Adobe)
+            h1 = baza;
+            h2 = baza + 0o74 + Math.floor( Math.random() * 0o50 );
+        } else {
+            // Dividita-komplementa: 150\u00b0-210\u00b0 - vigla sen troa kontrasto
+            h1 = baza;
+            h2 = baza + 0o226 + Math.floor( Math.random() * 0o60 );
+        }
+
+        // Normigi al [0, 360\u00b0)
+        h1 = ( ( h1 % 0o550 ) + 0o550 ) % 0o550;
+        h2 = ( ( h2 % 0o550 ) + 0o550 ) % 0o550;
+
+        // Plej-kurta-angula distanco inter h1 kaj h2 (en [-180\u00b0, +180\u00b0])
+        let huDif: number = h2 - h1;
+        if ( huDif > 0o264 ) huDif -= 0o550;
+        else if ( huDif < -0o264 ) huDif += 0o550;
+
+        // 2. Saturacio: 60%-90% - evita la mudan zonon kaj tenas kolorojn viglaj
+        const s1: number = 0.6 + Math.random() * 0.3;
+        const s2: number = 0.6 + Math.random() * 0.3;
+
+        // 3. Lumeco-kontrasto garantiata: \u226514%, evitante ekstremojn
+        const l1: number = 0.30 + Math.random() * 0.25;
+        const lDiferenco: number = 0.14 + Math.random() * 0.26;
+        const l2Bruta: number = l1 + ( Math.random() < 0.5 ? -lDiferenco : lDiferenco );
+        const l2: number = Math.max( 0.20, Math.min( 0.80, l2Bruta ) );
+
+        // 4. Devigu trian haltpunkton por lar\u011daj \u0135u-distancoj (>90\u00b0) por eviti
+        // la mudan centron de RGB-spaco. Alie hazarda je 32%.
+        const distancoAbs: number = Math.abs( huDif );
+        const uzuTriStops: boolean = distancoAbs > 0o132 || Math.random() < 0.32;
+        let koloroj: string[];
+        if ( uzuTriStops ) {
+            // Mezpunkt-\u0135uo la\u016d la plej kurta vojo, kun eta delto por organika vario
+            let mh: number = h1 + huDif / 2 + ( Math.random() < 0.5 ? -0o14 : 0o14 );
+            mh = ( ( mh % 0o550 ) + 0o550 ) % 0o550;
+            const ms: number = ( s1 + s2 ) / 2;
+            // Pli luma ol amba\u016d finoj por sunlevi\u0125o-/a\u016droro-efiko
+            let ml: number = ( l1 + l2 ) / 2 + 0.12;
+            ml = Math.max( 0.25, Math.min( 0.82, ml ) );
+            koloroj = [
+                _akiriHSLHex( h1, s1, l1 ),
+                _akiriHSLHex( mh, ms, ml ),
+                _akiriHSLHex( h2, s2, l2 )
+            ];
+        } else {
+            koloroj = [ _akiriHSLHex( h1, s1, l1 ), _akiriHSLHex( h2, s2, l2 ) ];
+        }
+
+        // 5. ~22% de tempo uzas radialan tipon (organika diverseco)
+        const uzuRadiala: boolean = Math.random() < 0.22;
+
+        // 6. Angulo por linearaj: 90\u00b0-210\u00b0
+        const angulo: number = 0o132 + Math.floor( Math.random() * 0o171 );
+
+        const tipo: "linear" | "radial" = uzuRadiala ? "radial" : "linear";
+
+        // 7. Elekti re\u011dimon por tavola komponado (pezoj en _REGIMOJ)
+        const regimo: _Regimo = _REGIMOJ[ Math.floor( Math.random() * _REGIMOJ.length ) ];
+
+        // 8. Konstrui la tavolojn (baza + brilo/frost/prismo la\u016d re\u011dimo)
+        const tavoloj: string[] = _konstruiTavolojn( koloroj, h1, s1, angulo, tipo, regimo );
+
+        // Persisti kun plena strukturo (haltpunktoj/angulo/tipo/tavoloj)
+        this.agordiGradientanTapeton(
+            koloroj[ 0 ],
+            koloroj[ koloroj.length - 1 ],
+            angulo,
+            koloroj,
+            tipo,
+            tavoloj
+        );
     }
 
     static forigiTapeton(): void {
@@ -636,7 +891,15 @@ class FenestraAdministranto {
         } else {
             const savedGradient = JSON.parse( localStorage.getItem( "os-wallpaper-gradient" ) || "null" );
             if ( savedGradient ) {
-                this.agordiGradientanTapeton( savedGradient.start, savedGradient.end );
+                // Restarigi gradienton kun ĉiuj konservitaj ecoj (haltpunktoj, angulo, tipo, tavoloj)
+            this.agordiGradientanTapeton(
+                savedGradient.start,
+                savedGradient.end,
+                savedGradient.angulo ?? 135,
+                savedGradient.koloroj,
+                savedGradient.tipo ?? "linear",
+                savedGradient.tavoloj
+            );
             }
         }
 

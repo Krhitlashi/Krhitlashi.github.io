@@ -15,6 +15,8 @@ declare const renderRecents: any;
 declare const updateDock: any;
 declare const getOpenWindows: any;
 
+import { klikoEkstereTraktilo } from "./ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ/ŋᷠᴜ ſȷɔ ſɭ,ꞇ.js";
+
 class PanelaAdministranto {
     static animationDuration: number = CONSTANTS.ANIM.DURATION_DEFAULT;
 
@@ -195,64 +197,65 @@ class PanelaAdministranto {
         }
     }
 
-    // ⟪ Baskuli Rapidajn Agordojn ⟫
-    static baskuligiRapidaAgordoj(): void {
-        const container = this.akiriPanelon(this.panels.quickSettings);
-        if (!container) return;
+    // ⟪ Unuigita Panela Baskulilo ⟫
 
-        const isVisible = this.cxuPaneloVidebla(container);
+    static baskuligi( panelId: string, btnId: string, opts?: { onBefore?: () => void; onAboutToShow?: () => void; onShow?: () => void } ): void {
+        if ( opts?.onBefore ) opts.onBefore();
+        const panel = this.akiriPanelon( panelId );
+        if ( !panel ) return;
+
+        const isVisible = this.cxuPaneloVidebla( panel );
         this.fermiCxiujnPanelojn();
 
-        if (!isVisible) {
-            if ((container as any)._hideTimeout) {
-                clearTimeout((container as any)._hideTimeout);
-                delete (container as any)._hideTimeout;
-            }
-
-            setTimeout(() => {
-                this.poziciigiPanelon(container, "status-area", false, "quickSettings");
-                void container.offsetWidth;
-                addClass(container, "visible");
-                this.agordiButononPremita("status-area", true);
-                AnimacioAdministranto.malfermiPanelon(container, "quickSettings", {
-                    duration: this.animationDuration
-                });
-            }, this.animationDuration);
+        if ( !isVisible ) {
+            if ( opts?.onAboutToShow ) opts.onAboutToShow();
+            setTimeout( () => {
+                if ( opts?.onShow ) opts.onShow();
+                else this.montriPanelon( panel, btnId, false, panelId );
+            }, this.animationDuration );
         }
+    }
+
+    // ⟪ Baskuli Rapidajn Agordojn ⟫
+    static baskuligiRapidaAgordoj(): void {
+        return this.baskuligi( this.panels.quickSettings, "status-area", {
+            onAboutToShow: () => {
+                const container = this.akiriPanelon( this.panels.quickSettings );
+                if ( container && ( container as any )._hideTimeout ) {
+                    clearTimeout( ( container as any )._hideTimeout );
+                    delete ( container as any )._hideTimeout;
+                }
+            },
+            onShow: () => {
+                const container = this.akiriPanelon( this.panels.quickSettings );
+                if ( !container ) return;
+                this.poziciigiPanelon( container, "status-area", false, "quickSettings" );
+                void container.offsetWidth;
+                addClass( container, "visible" );
+                this.agordiButononPremita( "status-area", true );
+                AnimacioAdministranto.malfermiPanelon( container, "quickSettings", {
+                    duration: this.animationDuration
+                } );
+            }
+        } );
     }
 
     // ⟪ Baskuli Sciigojn ⟫
     static baskuligiSciigojn(): void {
-        if ( (window as any).SciigoAdministranto ) (window as any).SciigoAdministranto.renderi();
-        const panel = this.akiriPanelon(this.panels.notifications);
-        if (!panel) return;
-
-        const isVisible = this.cxuPaneloVidebla(panel);
-        this.fermiCxiujnPanelojn();
-
-        if (!isVisible) {
-            setTimeout(() => {
-                this.montriPanelon(panel, "notification-btn", false, "notifications");
-            }, this.animationDuration);
-        }
+        return this.baskuligi( this.panels.notifications, "notification-btn", {
+            onBefore: () => {
+                if ( ( window as any ).SciigoAdministranto ) ( window as any ).SciigoAdministranto.renderi();
+            }
+        } );
     }
 
     // ⟪ Baskuli Horloĝan Elflugaĵon ⟫
     static baskuligiHorlogxoElsxovo(): void {
-        if ((window as any).HorlogxoAdministranto) {
-            (window as any).HorlogxoAdministranto.update();
-        }
-        const panel = this.akiriPanelon(this.panels.clockFlyout);
-        if (!panel) return;
-
-        const isVisible = this.cxuPaneloVidebla(panel);
-        this.fermiCxiujnPanelojn();
-
-        if (!isVisible) {
-            setTimeout(() => {
-                this.montriPanelon(panel, "clock-area", false, "clockFlyout");
-            }, this.animationDuration);
-        }
+        return this.baskuligi( this.panels.clockFlyout, "clock-area", {
+            onBefore: () => {
+                if ( ( window as any ).HorlogxoAdministranto ) ( window as any ).HorlogxoAdministranto.update();
+            }
+        } );
     }
 
     // ⟪ Baskuli Komencan Menuon ⟫
@@ -320,12 +323,10 @@ class PanelaAdministranto {
 
     // ⟪ Iniciati Panelan Eksterklakan Traktilon ⟫
     static initClickOutsideHandler(): void {
-        document.addEventListener("mousedown", (e: MouseEvent) => {
-            const selectors: string[] = [".system-panel", "#taskbar", "#taskbar-dock", "#start-menu", "#recents-panel", "#quick-settings-container"];
-            if (!selectors.some(sel => (e.target as HTMLElement).closest(sel))) {
-                this.fermiCxiujnPanelojn();
-            }
-        });
+        klikoEkstereTraktilo(
+            [ ".system-panel", "#taskbar", "#taskbar-dock", "#start-menu", "#recents-panel", "#quick-settings-container" ],
+            () => this.fermiCxiujnPanelojn()
+        );
     }
 }
 
