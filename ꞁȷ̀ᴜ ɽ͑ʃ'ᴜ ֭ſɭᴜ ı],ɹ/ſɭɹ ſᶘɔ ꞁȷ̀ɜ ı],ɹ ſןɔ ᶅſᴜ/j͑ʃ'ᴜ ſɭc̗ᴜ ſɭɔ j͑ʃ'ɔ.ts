@@ -1,9 +1,9 @@
 /**( ɭʃɔ ŋᷠɹ j͑ʃ'ɔ ſȷᴜͷ̗ )
- * Loads and parses txt content with defined styles.
+ * Ŝarĝas kaj analizas txt-enhavon kun difinitaj stiloj.
  * @returns void
 */
 
-// ⟪ External Declarations 🔌 ⟫
+// ⟪ Eksteraj Deklaroj 🔌 ⟫
 
 async function tem2Vefal(): Promise<void> {
     const cakavop2 = new URL("./ſɟᴜ j͑ʃ'ɜ ſןɹ.txt", import.meta.url).href;
@@ -37,9 +37,9 @@ async function tem2Vefal(): Promise<void> {
 
 
 /**( j͑ʃ'ɔ ſȷᴜͷ̗ )
- * Parses txt content and creates thala elements.
- * @param kp6 ( string ) - The text content to parse.
- * @returns Array of thala elements
+ * Analizas txt-enhavon kaj kreas thala elementojn.
+ * @param kp6 ( string ) - La teksta enhavo por analizi.
+ * @returns Array de thala elementoj
 */
 function vefal(kp6: string): HTMLElement[] {
     const han2k = kp6.split("\n");
@@ -76,8 +76,8 @@ function vefal(kp6: string): HTMLElement[] {
         const n2k = han2k[i];
         const l6catasuN2k = n2k.trim();
 
-        // Strip insignificant prefix tokens that may appear at the start of a line
-        // alongside a meaningful token (e.g. "<j͑ʃı],> <ſɭɔ˞>> Title <<ſɭɔ˞>")
+        // Forigu sensignifajn prefiksajn ĵetonojn kiuj povas aperi ĉe la komenco de linio
+        // apud signifplena ĵetono ( ekz. "<j͑ʃı],> <ſɭɔ˞>> Title <<ſɭɔ˞>" )
         const strippedN2k = l6catasuN2k
             .replace(/^<ʃ}ʃ>\s*/, "")
             .replace(/^<ſᶘ>\s*/, "")

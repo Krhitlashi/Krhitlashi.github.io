@@ -1,334 +1,334 @@
 /// <reference types="vite/client" />
 
-// ≺⧼ ſɭɘэ j͑ʃᴜꞇ ſɭɹʞ ꞁȷ̀ᴜ }ʃꞇ - Text Art Generator 🎨 ⧽≻
+// ≺⧼ ſɭɘэ j͑ʃᴜꞇ ſɭɹʞ ꞁȷ̀ᴜ }ʃꞇ - Teksta Arta Generatoro 🎨 ⧽≻
 
 
-// ⟪ Types 📐 ⟫
+// ⟪ Tipoj 📐 ⟫
 
-interface CharData {
-	name: string;
-	lines: string[];
-	width: number;
-	height: number;
+interface SignoDatumoj {
+	nomo: string;
+	linioj: string[];
+	larĝo: number;
+	alto: number;
 }
 
-interface Column {
-	chars: CharData[];
-	width: number;
-	height: number;
+interface Kolumno {
+	signoj: SignoDatumoj[];
+	larĝo: number;
+	alto: number;
 }
 
-interface SyllableBlock {
-	lines: string[];
-	height: number;
-	width: number;
+interface SilabaBloko {
+	linioj: string[];
+	alto: number;
+	larĝo: number;
 }
 
-interface ColumnData {
-	lines: string[];
-	width: number;
-	height: number;
+interface KolumnajDatumoj {
+	linioj: string[];
+	larĝo: number;
+	alto: number;
 }
 
 
-// ⟪ Constants 📦 ⟫
+// ⟪ Konstantoj 📦 ⟫
 
-// Map of character name to its loaded glyph data
-const charMap = new Map<string, CharData>();
+// Mapo de signa nomo al ĝia ŝargita glifo-datumo
+const signaMapo = new Map<string, SignoDatumoj>();
 
-const glyphFiles = import.meta.glob("./**/*.txt", {
+const glifajDosieroj = import.meta.glob("./**/*.txt", {
 	query: "?raw",
 	import: "default",
 	eager: true
 }) as Record<string, string>;
 
-// Sorted names by length descending, for greedy matching
-let sortedNames: string[] = [];
+// Ordaj nomoj laŭ longo malkreskante, por avida kongruo
+let ordigitajNomoj: string[] = [];
 
 
-// ⟪ Glyph Loading 📂 ⟫
+// ⟪ Glifo Ŝarĝado 📂 ⟫
 
 /**
-	Store glyph data for every discovered txt file in this folder tree.
+	Stoku glifo-datumojn por ĉiu trovita txt-dosiero en ĉi tiu dosierujo.
 */
-async function loadChars(): Promise<void> {
-	const entries = Object.entries(glyphFiles);
+async function ŝargiSignojn(): Promise<void> {
+	const eroj = Object.entries(glifajDosieroj);
 
-	for ( const [ path, text ] of entries ) {
+	for ( const [ vojo, teksto ] of eroj ) {
 		try {
-			const name = path.split("/").pop()?.replace(/\.txt$/, "");
-			if ( !name ) continue;
+			const nomo = vojo.split("/").pop()?.replace(/\.txt$/, "");
+			if ( !nomo ) continue;
 
-			const rawLines = text.replace(/\r/g, "").split("\n");
+			const krudajLinioj = teksto.replace(/\r/g, "").split("\n");
 
-			// Strip trailing empty line from files ending with a newline
-			if ( rawLines.length > 1 && rawLines[rawLines.length - 1] === "" ) {
-				rawLines.pop();
+			// Forigu finan malplenan linion de dosieroj finiĝantaj per novlinio
+			if ( krudajLinioj.length > 1 && krudajLinioj[krudajLinioj.length - 1] === "" ) {
+				krudajLinioj.pop();
 			}
 
-			const width = Math.max(...rawLines.map(l => l.length), 0);
-			const lines = rawLines.map(l => l.padEnd(width, " "));
-			const height = lines.length;
+			const larĝo = Math.max(...krudajLinioj.map(l => l.length), 0);
+			const linioj = krudajLinioj.map(l => l.padEnd(larĝo, " "));
+			const alto = linioj.length;
 
-			charMap.set(name, { name, lines, width, height });
+			signaMapo.set(nomo, { nomo, linioj, larĝo, alto });
 
 		} catch ( e ) {
-			console.error(`( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Failed to load glyph. ${path}`, e);
+			console.error(`( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Malsukcesis ŝargi glifon. ${vojo}`, e);
 		}
 	}
 
-	sortedNames = [ ...charMap.keys() ].sort(( a, b ) => b.length - a.length);
+	ordigitajNomoj = [ ...signaMapo.keys() ].sort(( a, b ) => b.length - a.length);
 }
 
 
-// ⟪ Tokenization ✂️ ⟫
+// ⟪ Ĵetonigado ✂️ ⟫
 
 /**
-	Tokenize a syllable string into a list of known glyph names using greedy longest-first matching.
-		syllable ( string ) - Input syllable string.
-	Returns array of matched token names.
+	Ĵetonigu silaban ĉenon en liston de konataj glifnomoj uzante avidan plej-longan-unuan kongruon.
+		silabo ( string ) - Eniga silaba ĉeno.
+	Revenigas tabelon de kongruitaj ĵetonnomoj.
 */
-function tokenizeSyllable(syllable: string): string[] {
-	const tokens: string[] = [];
+function ĵetonigiSilabon(silabo: string): string[] {
+	const ĵetonoj: string[] = [];
 	let i = 0;
 
-	while ( i < syllable.length ) {
-		let matched = false;
-		for ( const name of sortedNames ) {
-			if ( syllable.startsWith(name, i) ) {
-				tokens.push(name);
-				i += name.length;
-				matched = true;
+	while ( i < silabo.length ) {
+		let kongruis = false;
+		for ( const nomo of ordigitajNomoj ) {
+			if ( silabo.startsWith(nomo, i) ) {
+				ĵetonoj.push(nomo);
+				i += nomo.length;
+				kongruis = true;
 				break;
 			}
 		}
 
-		if ( !matched ) {
-			// Unmatched character. pass through as-is
-			tokens.push(syllable[i]);
+		if ( !kongruis ) {
+			// Nekongruita signo. pasu tra neŝanĝite
+			ĵetonoj.push(silabo[i]);
 			i++;
 		}
 	}
 
-	return tokens;
+	return ĵetonoj;
 }
 
 
-// ⟪ Block Rendering 🔲 ⟫
+// ⟪ Bloka Bildigo 🔲 ⟫
 
 /**
-	Render a single syllable as a block of ASCII text art lines.
-		syllable ( string ) - The syllable to render.
-	Returns array of equal-length strings forming the block.
+	Bildigu unuopajn silabojn kiel blokon da ASCII-tekstartaj linioj.
+		silabo ( string ) - La silabo por bildigi.
+	Revenigas tabelon da egal-longaj ĉenoj formantaj la blokon.
 */
-function renderSyllableBlock(syllable: string): string[] {
-	const tokens = tokenizeSyllable(syllable);
-	if ( tokens.length === 0 ) return [];
+function bildigiSilabanBlokon(silabo: string): string[] {
+	const ĵetonoj = ĵetonigiSilabon(silabo);
+	if ( ĵetonoj.length === 0 ) return [];
 
-	const reversedTokens = [ ...tokens ].reverse();
-	const columns: Column[] = [];
-	let currentCol: Column | null = null;
+	const renversitajĴetonoj = [ ...ĵetonoj ].reverse();
+	const kolumnoj: Kolumno[] = [];
+	let nunaKolono: Kolumno | null = null;
 
-	for ( const token of reversedTokens ) {
-		const charData = charMap.get(token) || { name: token, lines: [ "" ], width: 0o4, height: 0o4 };
+	for ( const ĵetono of renversitajĴetonoj ) {
+		const signoDatumo = signaMapo.get(ĵetono) || { nomo: ĵetono, linioj: [ "" ], larĝo: 0o4, alto: 0o4 };
 
-		const isSmall = charData.height === 0o4;
-		const canStack = isSmall && currentCol && currentCol.chars.every(c => c.height === 0o4);
+		const estasMalgranda = signoDatumo.alto === 0o4;
+		const povasAmasigi = estasMalgranda && nunaKolono && nunaKolono.signoj.every(c => c.alto === 0o4);
 
-		if ( canStack && currentCol ) {
-			currentCol.chars.unshift(charData);
-			currentCol.width = Math.max(currentCol.width, charData.width);
-			currentCol.height += charData.height;
+		if ( povasAmasigi && nunaKolono ) {
+			nunaKolono.signoj.unshift(signoDatumo);
+			nunaKolono.larĝo = Math.max(nunaKolono.larĝo, signoDatumo.larĝo);
+			nunaKolono.alto += signoDatumo.alto;
 		} else {
-			currentCol = { chars: [ charData ], width: charData.width, height: charData.height };
-			columns.push(currentCol);
+			nunaKolono = { signoj: [ signoDatumo ], larĝo: signoDatumo.larĝo, alto: signoDatumo.alto };
+			kolumnoj.push(nunaKolono);
 		}
 	}
 
-	const finalColumns = [ ...columns ].reverse();
-	if ( finalColumns.length === 0 ) return [];
+	const finajKolumnoj = [ ...kolumnoj ].reverse();
+	if ( finajKolumnoj.length === 0 ) return [];
 
-	const blockHeight = Math.max(0o7, ...finalColumns.map(col => col.height));
+	const blokaAlto = Math.max(0o7, ...finajKolumnoj.map(kol => kol.alto));
 
-	const columnsLines: string[][] = finalColumns.map((col) => {
-		const colLines: string[] = [];
-		for ( const char of col.chars ) {
-			for ( const line of char.lines ) {
-				colLines.push(line.padEnd(col.width, " "));
+	const kolumnajLinioj: string[][] = finajKolumnoj.map((kol) => {
+		const kolLinioj: string[] = [];
+		for ( const signo of kol.signoj ) {
+			for ( const linio of signo.linioj ) {
+				kolLinioj.push(linio.padEnd(kol.larĝo, " "));
 			}
 		}
 
-		const padCount = blockHeight - colLines.length;
-		const padding = Array(padCount).fill(" ".repeat(col.width));
+		const kusenKvanto = blokaAlto - kolLinioj.length;
+		const kuseno = Array(kusenKvanto).fill(" ".repeat(kol.larĝo));
 
-		return [ ...colLines, ...padding ];
+		return [ ...kolLinioj, ...kuseno ];
 	});
 
-	const blockLines: string[] = [];
-	for ( let r = 0; r < blockHeight; r++ ) {
-		let line = "";
-		for ( let c = 0; c < columnsLines.length; c++ ) {
-			if ( c > 0 ) line += " ";
-			line += columnsLines[c][r];
+	const blokajLinioj: string[] = [];
+	for ( let r = 0; r < blokaAlto; r++ ) {
+		let linio = "";
+		for ( let c = 0; c < kolumnajLinioj.length; c++ ) {
+			if ( c > 0 ) linio += " ";
+			linio += kolumnajLinioj[c][r];
 		}
-		blockLines.push(line);
+		blokajLinioj.push(linio);
 	}
 
-	return blockLines;
+	return blokajLinioj;
 }
 
 
-// ⟪ Output Rendering 🖥️ ⟫
+// ⟪ Eliga Bildigo 🖥️ ⟫
 
 /**
-	Update the pre element with rendered text art from the input string.
-		text ( string ) - The raw input text from the textarea.
-		preElement ( HTMLPreElement ) - The target pre element.
-		maxline ( number ) - Max syllable blocks per vertical column before wrapping. 0 = no limit.
+	Ĝisdatigu la pre-elementon per bildigita tekstarto el la eniga ĉeno.
+		teksto ( string ) - La kruda eniga teksto el la tekstareo.
+		preElement ( HTMLPreElement ) - La cela pre-elemento.
+		maksLinio ( number ) - Maksimumo da silabaj blokoj po vertikala kolumno antaŭ volvado. 0 = sen limo.
 */
-// Update the pre element with rendered text art from the input string.
-	function updateOutput(text: string, preElement: HTMLPreElement, maxline: number): void {
-	if ( !text ) {
+// Ĝisdatigu la pre-elementon per bildigita tekstarto el la eniga ĉeno.
+	function ĝisdatigiEliron(teksto: string, preElement: HTMLPreElement, maksLinio: number): void {
+	if ( !teksto ) {
 		preElement.textContent = "";
 		return;
 	}
 
-	// ⟨ Build syllable blocks, treating newlines as forced column breaks ⟩
-	const inputLines = text.replace(/\r/g, "").split("\n");
-	const columnsBlocks: SyllableBlock[][] = [];
-	let currentColumn: SyllableBlock[] = [];
+	// ⟨ Konstruu silabajn blokojn, traktante novliniojn kiel devigajn kolumnopaŭzojn ⟩
+	const enigajLinioj = teksto.replace(/\r/g, "").split("\n");
+	const kolumnajBlokoj: SilabaBloko[][] = [];
+	let nunaKolumno: SilabaBloko[] = [];
 
-	for ( const inputLine of inputLines ) {
-		// Newline → force a column break (flush whatever has accumulated)
-		if ( currentColumn.length > 0 ) {
-			columnsBlocks.push(currentColumn);
-			currentColumn = [];
+	for ( const enigaLinio of enigajLinioj ) {
+		// Novlinio → devigu kolumnopaŭzon (forĵetu kio ajn amasiĝis)
+		if ( nunaKolumno.length > 0 ) {
+			kolumnajBlokoj.push(nunaKolumno);
+			nunaKolumno = [];
 		}
 
-		const syllables = inputLine.split(" ");
-		for ( const syllable of syllables ) {
-			let block: SyllableBlock;
-			if ( syllable === "" ) {
-				// Empty syllable (consecutive spaces). insert a blank block
-				block = { lines: Array(0o7).fill(" "), height: 0o7, width: 1 };
+		const silaboj = enigaLinio.split(" ");
+		for ( const silabo of silaboj ) {
+			let bloko: SilabaBloko;
+			if ( silabo === "" ) {
+				// Malplena silabo (sinsekvaj spacoj). enmetu malplenan blokon
+				bloko = { linioj: Array(0o7).fill(" "), alto: 0o7, larĝo: 1 };
 			} else {
-				const lines = renderSyllableBlock(syllable);
-				const height = lines.length;
-				const width = lines.length > 0 ? lines[0].length : 0;
-				block = { lines, height, width };
+				const linioj = bildigiSilabanBlokon(silabo);
+				const alto = linioj.length;
+				const larĝo = linioj.length > 0 ? linioj[0].length : 0;
+				bloko = { linioj, alto, larĝo };
 			}
 
-			// Apply maxline limit within the current input line
-			if ( maxline > 0 && currentColumn.length >= maxline ) {
-				columnsBlocks.push(currentColumn);
-				currentColumn = [ block ];
+			// Apliku la maksLinio-limigon ene de la nuna eniga linio
+			if ( maksLinio > 0 && nunaKolumno.length >= maksLinio ) {
+				kolumnajBlokoj.push(nunaKolumno);
+				nunaKolumno = [ bloko ];
 			} else {
-				currentColumn.push(block);
+				nunaKolumno.push(bloko);
 			}
 		}
 	}
-	if ( currentColumn.length > 0 ) columnsBlocks.push(currentColumn);
+	if ( nunaKolumno.length > 0 ) kolumnajBlokoj.push(nunaKolumno);
 
-	if ( columnsBlocks.length === 0 ) {
+	if ( kolumnajBlokoj.length === 0 ) {
 		preElement.textContent = "";
 		return;
 	}
 
-	// ⟨ Pad blocks within the same horizontal row to match the tallest block in that row ⟩
-	const maxBlocksInCol = Math.max(...columnsBlocks.map(col => col.length), 0);
-	const rowMaxHeights: number[] = Array(maxBlocksInCol).fill(0);
-	for ( let r = 0; r < maxBlocksInCol; r++ ) {
-		let maxHeight = 0;
-		for ( const col of columnsBlocks ) {
-			if ( col[r] ) {
-				maxHeight = Math.max(maxHeight, col[r].height);
+	// ⟨ Kusenu blokojn en la sama horizontala vico por egali la plej altan blokon en tiu vico ⟩
+	const maksimumajBlokojEnKol = Math.max(...kolumnajBlokoj.map(kol => kol.length), 0);
+	const vicoMaksimumajAltoj: number[] = Array(maksimumajBlokojEnKol).fill(0);
+	for ( let r = 0; r < maksimumajBlokojEnKol; r++ ) {
+		let maksimumaAlto = 0;
+		for ( const kol of kolumnajBlokoj ) {
+			if ( kol[r] ) {
+				maksimumaAlto = Math.max(maksimumaAlto, kol[r].alto);
 			}
 		}
-		rowMaxHeights[r] = maxHeight;
+		vicoMaksimumajAltoj[r] = maksimumaAlto;
 	}
 
-	for ( const col of columnsBlocks ) {
-		for ( let r = 0; r < col.length; r++ ) {
-			const targetHeight = rowMaxHeights[r];
-			const block = col[r];
-			if ( block.height < targetHeight ) {
-				const padCount = targetHeight - block.height;
-				const blankLine = " ".repeat(block.width);
-				const padding = Array(padCount).fill(blankLine);
-				block.lines = [ ...block.lines, ...padding ];
-				block.height = targetHeight;
+	for ( const kol of kolumnajBlokoj ) {
+		for ( let r = 0; r < kol.length; r++ ) {
+			const celaAlto = vicoMaksimumajAltoj[r];
+			const bloko = kol[r];
+			if ( bloko.alto < celaAlto ) {
+				const kusenKvanto = celaAlto - bloko.alto;
+				const malplenaLinio = " ".repeat(bloko.larĝo);
+				const kuseno = Array(kusenKvanto).fill(malplenaLinio);
+				bloko.linioj = [ ...bloko.linioj, ...kuseno ];
+				bloko.alto = celaAlto;
 			}
 		}
 	}
 
-	// ⟨ Render each column bottom-to-top ⟩
-	const columnsData: ColumnData[] = columnsBlocks.map((col) => {
-		const colLines: string[] = [];
-		for ( let i = col.length - 1; i >= 0; i-- ) {
-			colLines.push(...col[i].lines);
+	// ⟨ Bildigu ĉiun kolumnon malsupre-al-supre ⟩
+	const kolumnajDatumoj: KolumnajDatumoj[] = kolumnajBlokoj.map((kol) => {
+		const kolLinioj: string[] = [];
+		for ( let i = kol.length - 1; i >= 0; i-- ) {
+			kolLinioj.push(...kol[i].linioj);
 		}
 
-		const colWidth = Math.max(...col.map(b => b.width), 0);
-		const paddedColLines = colLines.map(line => line.padEnd(colWidth, " "));
+		const kolLarĝo = Math.max(...kol.map(b => b.larĝo), 0);
+		const plenigitajKolLinioj = kolLinioj.map(linio => linio.padEnd(kolLarĝo, " "));
 
-		return { lines: paddedColLines, width: colWidth, height: paddedColLines.length };
+		return { linioj: plenigitajKolLinioj, larĝo: kolLarĝo, alto: plenigitajKolLinioj.length };
 	});
 
-	// ⟨ Combine columns horizontally, bottom-aligned ⟩
-	const H_output = Math.max(...columnsData.map(c => c.height), 0);
+	// ⟨ Kombinu kolumnojn horizontale, malsupro-aliniitaj ⟩
+	const eligaAlto = Math.max(...kolumnajDatumoj.map(c => c.alto), 0);
 
-	const paddedColumnsLines: string[][] = columnsData.map((c) => {
-		const padCount = H_output - c.height;
-		const blankLine = " ".repeat(c.width);
-		const padding = Array(padCount).fill(blankLine);
-		return [ ...padding, ...c.lines ];
+	const plenigitajKolumnoj: string[][] = kolumnajDatumoj.map((c) => {
+		const kusenKvanto = eligaAlto - c.alto;
+		const malplenaLinio = " ".repeat(c.larĝo);
+		const kuseno = Array(kusenKvanto).fill(malplenaLinio);
+		return [ ...kuseno, ...c.linioj ];
 	});
 
-	const finalLines: string[] = [];
-	for ( let r = 0; r < H_output; r++ ) {
-		let line = "";
-		for ( let c = 0; c < paddedColumnsLines.length; c++ ) {
-			if ( c > 0 ) line += " ";
-			line += paddedColumnsLines[c][r];
+	const finajLinioj: string[] = [];
+	for ( let r = 0; r < eligaAlto; r++ ) {
+		let linio = "";
+		for ( let c = 0; c < plenigitajKolumnoj.length; c++ ) {
+			if ( c > 0 ) linio += " ";
+			linio += plenigitajKolumnoj[c][r];
 		}
-		finalLines.push(line);
+		finajLinioj.push(linio);
 	}
 
-	preElement.textContent = finalLines.join("\n");
+	preElement.textContent = finajLinioj.join("\n");
 }
 
 
-// ⟪ Initialization 🚀 ⟫
+// ⟪ Inicialigo 🚀 ⟫
 
 document.addEventListener("DOMContentLoaded", async () => {
-	const textarea = document.getElementById("saxesuOx2pewa") as HTMLTextAreaElement | null;
+	const tekstareo = document.getElementById("saxesuOx2pewa") as HTMLTextAreaElement | null;
 	const pre = document.getElementById("tlakakuOx2pewa") as HTMLPreElement | null;
-	const maxlineInput = document.getElementById("maxlineInput") as HTMLInputElement | null;
+	const maksLinioEnigo = document.getElementById("maxlineInput") as HTMLInputElement | null;
 
-	if ( !textarea || !pre ) {
-		console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Text Art generator. textarea or pre element not found.");
+	if ( !tekstareo || !pre ) {
+		console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Teksta Arta generatoro. tekstareo aŭ pre-elemento ne trovita.");
 		return;
 	}
 
 	pre.textContent = "";
 
-	await loadChars();
+	await ŝargiSignojn();
 
-	const getMaxline = (): number => {
-		if ( !maxlineInput ) return 0;
-		const val = parseInt(maxlineInput.value, 0o10);
-		return isNaN(val) ? 0 : val;
+	const akiriMaksLinion = (): number => {
+		if ( !maksLinioEnigo ) return 0;
+		const valoro = parseInt(maksLinioEnigo.value, 0o10);
+		return isNaN(valoro) ? 0 : valoro;
 	};
 
-	updateOutput(textarea.value, pre, getMaxline());
+	ĝisdatigiEliron(tekstareo.value, pre, akiriMaksLinion());
 
-	textarea.addEventListener("input", () => {
-		updateOutput(textarea.value, pre, getMaxline());
+	tekstareo.addEventListener("input", () => {
+		ĝisdatigiEliron(tekstareo.value, pre, akiriMaksLinion());
 	});
 
-	if ( maxlineInput ) {
-		maxlineInput.addEventListener("input", () => {
-			updateOutput(textarea.value, pre, getMaxline());
+	if ( maksLinioEnigo ) {
+		maksLinioEnigo.addEventListener("input", () => {
+			ĝisdatigiEliron(tekstareo.value, pre, akiriMaksLinion());
 		});
 	}
 });

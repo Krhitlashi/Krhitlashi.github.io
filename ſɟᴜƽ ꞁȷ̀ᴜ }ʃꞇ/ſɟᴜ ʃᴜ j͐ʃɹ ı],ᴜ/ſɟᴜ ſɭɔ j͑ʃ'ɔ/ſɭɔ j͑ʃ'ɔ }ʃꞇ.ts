@@ -1,39 +1,39 @@
-// ≺⧼ ſɟᴜ ſɭɔ j͑ʃ'ɔ - Ktash Coordinate Map ⧽≻
+// ≺⧼ ſɟᴜ ſɭɔ j͑ʃ'ɔ - Ktash Koordinata Mapo ⧽≻
 
-// ⟪ External Declarations 🔌 ⟫
+// ⟪ Eksteraj Deklaroj 🔌 ⟫
 
 declare const L: any;
-declare const vab6k2fekp6: ( text: string ) => number;
+declare const vab6k2fekp6: ( teksto: string ) => number;
 declare const K2FE: string[];
 
-// ⟪ Constants 🔢 ⟫
+// ⟪ Konstantoj 🔢 ⟫
 
-const GRID_OFFSET = 11.62354;
+const KADRA_DEKALO = 11.62354;
 
-const ZOOM_INITIAL = 0o7;
-const ZOOM_MAX = 0o22;
-const ZOOM_SEARCH_DEFAULT = 0o3;
-const ZOOM_LEVEL_2 = 0o10;
-const ZOOM_LEVEL_3 = 0o14;
-const ZOOM_LEVEL_4 = 0o20;
-const ZOOM_RESET = 0o3;
+const ZOMO_KOMENCA = 0o7;
+const ZOMO_MAKSIMUMA = 0o22;
+const ZOMO_SERĈA_DEFŬLTA = 0o3;
+const ZOMO_NIVELO_2 = 0o10;
+const ZOMO_NIVELO_3 = 0o14;
+const ZOMO_NIVELO_4 = 0o20;
+const ZOMO_RESTAŬRA = 0o3;
 
-// ⟪ Types 📐 ⟫
+// ⟪ Tipoj 📐 ⟫
 
-interface GridSystem {
+interface KadraSistemo {
     ksaka: { v: string; hPrefix: string[]; hSuffix: string[] };
     latin: { v: string; hPrefix: string[]; hSuffix: string[] };
     chmuah: { v: string; hPrefix: string[]; hSuffix: string[] };
 }
 
-interface GridCoords {
+interface KadrajKoordinatoj {
     v1: number; h1: number;
     v2: number; h2: number;
     v3: number; h3: number;
     v4: number; h4: number;
 }
 
-interface SearchResult {
+interface SerĉaRezulto {
     lat: number;
     lon: number;
     v: number;
@@ -44,86 +44,86 @@ interface SearchResult {
     chmuahName: string;
 }
 
-interface SearchReturn {
-    results: SearchResult[];
-    zoom?: number;
+interface SerĉaReveno {
+    rezultoj: SerĉaRezulto[];
+    zomo?: number;
 }
 
-interface ParsedCoords {
+interface AnalizitajKoordinatoj {
     lat: number;
     lon: number;
 }
 
-interface DMSObject {
-    deg: number;
+interface DMSObjekto {
+    gra: number;
     min: number;
-    sec: number;
+    sek: number;
 }
 
-interface CacheSizeResult {
-    size: number;
-    count: number;
+interface KaŝaGrandaRezulto {
+    grandeco: number;
+    kvanto: number;
 }
 
-interface SWMessage {
-    type: string;
-    tiles?: string[];
+interface SWMesaĝo {
+    tipo: string;
+    kaheloj?: string[];
 }
 
-// ⟪ Global Variables 🌍 ⟫
+// ⟪ Tutmondaj Variabloj 🌍 ⟫
 
-let latInput: HTMLInputElement;
-let lonInput: HTMLInputElement;
-let latDeg: HTMLInputElement;
-let latMin: HTMLInputElement;
-let latSec: HTMLInputElement;
-let lonDeg: HTMLInputElement;
-let lonMin: HTMLInputElement;
-let lonSec: HTMLInputElement;
-let dmsInputs: HTMLInputElement[];
+let latEnigo: HTMLInputElement;
+let lonEnigo: HTMLInputElement;
+let latGradoj: HTMLInputElement;
+let latMinutoj: HTMLInputElement;
+let latSekundoj: HTMLInputElement;
+let lonGradoj: HTMLInputElement;
+let lonMinutoj: HTMLInputElement;
+let lonSekundoj: HTMLInputElement;
+let dmsEnigoj: HTMLInputElement[];
 
-let tabDecimal: HTMLButtonElement;
-let tabDMS: HTMLButtonElement;
-let decimalControls: HTMLElement;
-let dmsControls: HTMLElement;
+let langetoDecimala: HTMLButtonElement;
+let langetoDMS: HTMLButtonElement;
+let decimalajRegiloj: HTMLElement;
+let dmsRegiloj: HTMLElement;
 
-let outputCoords: HTMLDivElement;
+let eliraKoordinatoj: HTMLDivElement;
 let kefAraq: HTMLDivElement;
-let outputName: HTMLDivElement;
+let eliraNomo: HTMLDivElement;
 let piak: HTMLDivElement;
-let canvas: HTMLCanvasElement;
-let ctx: CanvasRenderingContext2D;
-let mapContainer: HTMLElement;
-let showGridCheck: HTMLInputElement;
-let useBase10Check: HTMLInputElement;
-let resetBtn: HTMLButtonElement;
+let kanvaso: HTMLCanvasElement;
+let kunteksto: CanvasRenderingContext2D;
+let mapaUjo: HTMLElement;
+let montruKadronMarko: HTMLInputElement;
+let uzuBazo10Marko: HTMLInputElement;
+let restarigaButono: HTMLButtonElement;
 
-let downloadBtn: HTMLButtonElement;
-let clearCacheBtn: HTMLButtonElement;
-let cacheStatus: HTMLSpanElement;
-let cacheSize: HTMLSpanElement;
-let progressBar: HTMLDivElement;
-let progressFill: HTMLDivElement;
-let downloadStatus: HTMLElement;
+let elŝutaButono: HTMLButtonElement;
+let forigiKaŝaButono: HTMLButtonElement;
+let kaŝaStato: HTMLSpanElement;
+let kaŝaGrando: HTMLSpanElement;
+let progresStrio: HTMLDivElement;
+let progresPlenigo: HTMLDivElement;
+let elŝutaStato: HTMLElement;
 
-let searchInput: HTMLInputElement;
-let searchBtn: HTMLButtonElement;
-let searchResults: HTMLElement;
+let serĉaEnigo: HTMLInputElement;
+let serĉaButono: HTMLButtonElement;
+let serĉajRezultoj: HTMLElement;
 
-let currentLat = 47.48;
-let currentLon = -122.21;
-let showGrid = true;
-let useBase10 = false;
+let nunaLat = 47.48;
+let nunaLon = -122.21;
+let montruKadron = true;
+let uzuBazo10 = false;
 
-let map: any = null;
-let marker: any = null;
+let mapo: any = null;
+let markilo: any = null;
 
-// ⟪ Data Arrays 📚 ⟫
+// ⟪ Datumaj Tabeloj 📚 ⟫
 
-const GRID_SYSTEMS: GridSystem[] = [];
+const KADRAJ_SISTEMOJ: KadraSistemo[] = [];
 
 for ( let i = 0; i < 0o40; i++ ) {
-    GRID_SYSTEMS.push({
+    KADRAJ_SISTEMOJ.push({
         ksaka: {
             v: ["ᶅſ", "ſן", "ſȷ", "ŋᷠ", "ʃ", "ɽ͑ʃ'", "j͑ʃ'", "ſᶘ", "ɭ(", "ɭʃ", "j͑ʃ", "}ʃ", "j͐ʃ", "ſ̀ȷ", "ſɭ,", "ſɭˬ", "ɭl̀", "ſɟ", "ı],", "ſ͕ȷ", "ſ͔ɭ", "ſɭ", "֭ſɭ", "ſ͕ɭ", "j͑ʃɘ", "j͑ʃƨ", "j͑ʃᴜ̭", "j͑ʃƽ", "ſןᴜ̭", "ɭʃƽ", "ſɟɘ", "ſɭƨ"][i] || "?",
             hPrefix: ["ꞇ", "ɹ", "ɔ", "ᴜ", "w", "ɜ", "э", "эⅎ"],
@@ -142,108 +142,108 @@ for ( let i = 0; i < 0o40; i++ ) {
     });
 }
 
-// ⟪ Helper Functions 🛠️ ⟫
+// ⟪ Helpaj Funkcioj 🛠️ ⟫
 
-function updateMapPosition(lat: number, lon: number, zoom: number | null = null): void {
-    currentLat = lat;
-    currentLon = lon;
-    marker!.setLatLng([currentLat, currentLon]);
-    if ( zoom !== null ) {
-        map!.setView([currentLat, currentLon], zoom);
+function ĝisdatigiMapanPozicion( lat: number, lon: number, zomo: number | null = null ): void {
+    nunaLat = lat;
+    nunaLon = lon;
+    markilo!.setLatLng([nunaLat, nunaLon]);
+    if ( zomo !== null ) {
+        mapo!.setView([nunaLat, nunaLon], zomo);
     }
-    updateAllInputs();
-    update();
+    ĝisdatigiĈiujnEnigojn();
+    ĝisdatigi();
 }
 
-function getElements(...ids: string[]): Record<string, HTMLElement | null> {
-    const elements: Record<string, HTMLElement | null> = {};
+function akiriElementojn( ...ids: string[] ): Record<string, HTMLElement | null> {
+    const elementoj: Record<string, HTMLElement | null> = {};
     for ( const id of ids ) {
-        elements[id] = document.getElementById(id);
+        elementoj[id] = document.getElementById(id);
     }
-    return elements;
+    return elementoj;
 }
 
-function addEventListeners(elements: HTMLElement[], event: string, handler: EventListener): void {
-    for ( const el of elements ) {
-        el.addEventListener(event, handler);
+function aldoniEventajnAŭskultilojn( elementoj: HTMLElement[], evento: string, pritraktilo: EventListener ): void {
+    for ( const el of elementoj ) {
+        el.addEventListener(evento, pritraktilo);
     }
 }
 
-function clampCoordinate(value: number, min: number, max: number): number {
-    if ( value < min ) return min;
-    if ( value > max ) return max;
-    return value;
+function alklampiKoordinaton( valoro: number, min: number, maks: number ): number {
+    if ( valoro < min ) return min;
+    if ( valoro > maks ) return maks;
+    return valoro;
 }
 
-function updateMarkerPosition(): void {
-    map!.setView([currentLat, currentLon]);
-    marker!.setLatLng([currentLat, currentLon]);
+function ĝisdatigiMarkilanPozicion(): void {
+    mapo!.setView([nunaLat, nunaLon]);
+    markilo!.setLatLng([nunaLat, nunaLon]);
 }
 
-function parseCoordinatePairs(pairs: string[]): { fullV: number[]; fullH: number[] } | null {
-    const fullV = [0, 0, 0, 0];
-    const fullH = [0, 0, 0, 0];
+function analiziKoordinatoparojn( paroj: string[] ): { plenajV: number[]; plenajH: number[] } | null {
+    const plenajV = [0, 0, 0, 0];
+    const plenajH = [0, 0, 0, 0];
     const v: number[] = [];
     const h: number[] = [];
 
-    for ( const pair of pairs ) {
-        const mid = Math.ceil(pair.length / 2);
-        const vStr = pair.slice(0, mid);
-        const hStr = pair.slice(mid);
-        const vVal = parseInt(vStr, 8);
-        const hVal = parseInt(hStr, 8);
-        if ( isNaN(vVal) || isNaN(hVal) ) return null;
-        v.push(vVal - 1);
-        h.push(hVal - 1);
+    for ( const paro of paroj ) {
+        const mezo = Math.ceil(paro.length / 2);
+        const vĈeno = paro.slice(0, mezo);
+        const hĈeno = paro.slice(mezo);
+        const vValoro = parseInt(vĈeno, 8);
+        const hValoro = parseInt(hĈeno, 8);
+        if ( isNaN(vValoro) || isNaN(hValoro) ) return null;
+        v.push(vValoro - 1);
+        h.push(hValoro - 1);
     }
 
-    const startLevel = 4 - pairs.length;
-    for ( let i = 0; i < pairs.length; i++ ) {
-        fullV[startLevel + i] = v[i];
-        fullH[startLevel + i] = h[i];
+    const komencaNivelo = 4 - paroj.length;
+    for ( let i = 0; i < paroj.length; i++ ) {
+        plenajV[komencaNivelo + i] = v[i];
+        plenajH[komencaNivelo + i] = h[i];
     }
 
-    return { fullV, fullH };
+    return { plenajV, plenajH };
 }
 
-function createResultButtons(containerSelector: string, results: SearchResult[], zoom: number, onSelect: (lat: number, lon: number, targetZoom: number) => void): void {
-    const displayResults = results.slice(0, 0o40);
-    document.querySelector(containerSelector)!.innerHTML = displayResults.map(r => `
+function kreiRezultbutonojn( ujselektilo: string, rezultoj: SerĉaRezulto[], zomo: number, postElektado: (lat: number, lon: number, celaZomo: number) => void ): void {
+    const montritajRezultoj = rezultoj.slice(0, 0o40);
+    document.querySelector(ujselektilo)!.innerHTML = montritajRezultoj.map(r => `
         <button data-lat="${r.lat}" data-lon="${r.lon}">
             <p><strong>${r.ksakaName}</strong> ( ${r.latinName} )</p>
             <small>${r.v + 1} ${r.h + 1}</small>
         </button>
     `).join("");
 
-    document.querySelectorAll(`${containerSelector} button`).forEach(item => {
-        item.addEventListener("click", () => {
-            const btn = item as HTMLButtonElement;
-            onSelect(parseFloat(btn.dataset.lat!), parseFloat(btn.dataset.lon!), zoom);
+    document.querySelectorAll(`${ujselektilo} button`).forEach(ero => {
+        ero.addEventListener("click", () => {
+            const butono = ero as HTMLButtonElement;
+            postElektado(parseFloat(butono.dataset.lat!), parseFloat(butono.dataset.lon!), zomo);
         });
     });
 }
 
-function calcGridLevels(value: number, totalRange: number, divisions: number[], _isLongitude = false): number[] {
-    let raw1 = ( value / totalRange ) * divisions[0];
-    if ( raw1 >= divisions[0] ) raw1 = divisions[0] - 0.000001;
-    if ( raw1 < 0 ) raw1 = 0;
-    let level1 = Math.floor(raw1);
-    let remainder = raw1 - level1;
+function kalkuliKadronivelojn( valoro: number, tutaĜis: number, dividoj: number[], _ĉuLongitudo = false ): number[] {
+    let kruda1 = ( valoro / tutaĜis ) * dividoj[0];
+    if ( kruda1 >= dividoj[0] ) kruda1 = dividoj[0] - 0.000001;
+    if ( kruda1 < 0 ) kruda1 = 0;
+    let nivelo1 = Math.floor(kruda1);
+    let resto = kruda1 - nivelo1;
 
-    const levels = [ level1 ];
+    const niveloj = [ nivelo1 ];
     for ( let i = 1; i < 4; i++ ) {
-        let raw = remainder * divisions[i];
-        let level = Math.floor(raw);
-        remainder = raw - level;
-        levels.push(level);
+        let kruda = resto * dividoj[i];
+        let nivelo = Math.floor(kruda);
+        resto = kruda - nivelo;
+        niveloj.push(nivelo);
     }
-    return levels;
+    return niveloj;
 }
 
-// ⟪ Initialization 🚀 ⟫
+// ⟪ Inicialigo 🚀 ⟫
 
-function initElements(): void {
-    const elements = getElements(
+function inicialigiElementojn(): void {
+    const elementoj = akiriElementojn(
         "latInput", "lonInput", "latDeg", "latMin", "latSec",
         "lonDeg", "lonMin", "lonSec", "tabDecimal", "tabDMS",
         "decimalControls", "dmsControls", "outputCoords", "kefAraq",
@@ -253,577 +253,577 @@ function initElements(): void {
         "progressFill", "downloadStatus", "searchInput", "searchBtn", "searchResults"
     ) as Record<string, HTMLElement>;
 
-    latInput = elements.latInput as HTMLInputElement;
-    lonInput = elements.lonInput as HTMLInputElement;
-    latDeg = elements.latDeg as HTMLInputElement;
-    latMin = elements.latMin as HTMLInputElement;
-    latSec = elements.latSec as HTMLInputElement;
-    lonDeg = elements.lonDeg as HTMLInputElement;
-    lonMin = elements.lonMin as HTMLInputElement;
-    lonSec = elements.lonSec as HTMLInputElement;
-    dmsInputs = [ latDeg, latMin, latSec, lonDeg, lonMin, lonSec ];
+    latEnigo = elementoj.latInput as HTMLInputElement;
+    lonEnigo = elementoj.lonInput as HTMLInputElement;
+    latGradoj = elementoj.latDeg as HTMLInputElement;
+    latMinutoj = elementoj.latMin as HTMLInputElement;
+    latSekundoj = elementoj.latSec as HTMLInputElement;
+    lonGradoj = elementoj.lonDeg as HTMLInputElement;
+    lonMinutoj = elementoj.lonMin as HTMLInputElement;
+    lonSekundoj = elementoj.lonSec as HTMLInputElement;
+    dmsEnigoj = [ latGradoj, latMinutoj, latSekundoj, lonGradoj, lonMinutoj, lonSekundoj ];
 
-    tabDecimal = elements.tabDecimal as HTMLButtonElement;
-    tabDMS = elements.tabDMS as HTMLButtonElement;
-    decimalControls = elements.decimalControls as HTMLElement;
-    dmsControls = elements.dmsControls as HTMLElement;
+    langetoDecimala = elementoj.tabDecimal as HTMLButtonElement;
+    langetoDMS = elementoj.tabDMS as HTMLButtonElement;
+    decimalajRegiloj = elementoj.decimalControls as HTMLElement;
+    dmsRegiloj = elementoj.dmsControls as HTMLElement;
 
-    outputCoords = elements.outputCoords as HTMLDivElement;
-    kefAraq = elements.kefAraq as HTMLDivElement;
-    outputName = elements.outputName as HTMLDivElement;
-    piak = elements.piak as HTMLDivElement;
-    canvas = elements.gridCanvas as HTMLCanvasElement;
-    ctx = canvas.getContext("2d")!;
-    mapContainer = elements.mapContainer as HTMLElement;
-    showGridCheck = elements.showGridCheck as HTMLInputElement;
-    useBase10Check = elements.useBase10Check as HTMLInputElement;
-    resetBtn = elements.resetBtn as HTMLButtonElement;
+    eliraKoordinatoj = elementoj.outputCoords as HTMLDivElement;
+    kefAraq = elementoj.kefAraq as HTMLDivElement;
+    eliraNomo = elementoj.outputName as HTMLDivElement;
+    piak = elementoj.piak as HTMLDivElement;
+    kanvaso = elementoj.gridCanvas as HTMLCanvasElement;
+    kunteksto = kanvaso.getContext("2d")!;
+    mapaUjo = elementoj.mapContainer as HTMLElement;
+    montruKadronMarko = elementoj.showGridCheck as HTMLInputElement;
+    uzuBazo10Marko = elementoj.useBase10Check as HTMLInputElement;
+    restarigaButono = elementoj.resetBtn as HTMLButtonElement;
 
-    downloadBtn = elements.downloadBtn as HTMLButtonElement;
-    clearCacheBtn = elements.clearCacheBtn as HTMLButtonElement;
-    cacheStatus = elements.cacheStatus as HTMLSpanElement;
-    cacheSize = elements.cacheSize as HTMLSpanElement;
-    progressBar = elements.progressBar as HTMLDivElement;
-    progressFill = elements.progressFill as HTMLDivElement;
-    downloadStatus = elements.downloadStatus as HTMLElement;
+    elŝutaButono = elementoj.downloadBtn as HTMLButtonElement;
+    forigiKaŝaButono = elementoj.clearCacheBtn as HTMLButtonElement;
+    kaŝaStato = elementoj.cacheStatus as HTMLSpanElement;
+    kaŝaGrando = elementoj.cacheSize as HTMLSpanElement;
+    progresStrio = elementoj.progressBar as HTMLDivElement;
+    progresPlenigo = elementoj.progressFill as HTMLDivElement;
+    elŝutaStato = elementoj.downloadStatus as HTMLElement;
 
-    searchInput = elements.searchInput as HTMLInputElement;
-    searchBtn = elements.searchBtn as HTMLButtonElement;
-    searchResults = elements.searchResults as HTMLElement;
+    serĉaEnigo = elementoj.searchInput as HTMLInputElement;
+    serĉaButono = elementoj.searchBtn as HTMLButtonElement;
+    serĉajRezultoj = elementoj.searchResults as HTMLElement;
 }
 
-function init(): void {
-    initElements();
+function inicialigi(): void {
+    inicialigiElementojn();
 
-    const urlCoords = parseURLCoords();
-    if ( urlCoords ) {
-        currentLat = urlCoords.lat;
-        currentLon = urlCoords.lon;
+    const urlKoordinatoj = analiziURLkoordinatojn();
+    if ( urlKoordinatoj ) {
+        nunaLat = urlKoordinatoj.lat;
+        nunaLon = urlKoordinatoj.lon;
     }
 
-    map = L.map("map", {
-        center: [currentLat, currentLon],
-        zoom: ZOOM_INITIAL,
+    mapo = L.map("map", {
+        center: [nunaLat, nunaLon],
+        zoom: ZOMO_KOMENCA,
         zoomControl: false
     });
 
-    L.control.zoom({ position: "bottomright" }).addTo(map);
+    L.control.zoom({ position: "bottomright" }).addTo(mapo);
 
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "© OpenStreetMap contributors",
-        maxZoom: ZOOM_MAX
-    }).addTo(map);
+        maxZoom: ZOMO_MAKSIMUMA
+    }).addTo(mapo);
 
-    marker = L.marker([currentLat, currentLon], {
+    markilo = L.marker([nunaLat, nunaLon], {
         icon: L.divIcon({
             className: "custom-marker",
             html: "<div style=\"width:12px;height:12px;background:#fff;border:2px solid #d0a040;border-radius:50%;\"></div>",
             iconSize: [12, 12],
             iconAnchor: [6, 6]
         })
-    }).addTo(map);
+    }).addTo(mapo);
 
-    map.on("click", handleMapClickLeaflet);
-    map.on("move", updateMapSync);
-    map.on("zoom", updateMapSync);
+    mapo.on("click", traktiMapklakonLeaflet);
+    mapo.on("move", ĝisdatigiMapanSinkrone);
+    mapo.on("zoom", ĝisdatigiMapanSinkrone);
 
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
+    reskaligiKanvason();
+    window.addEventListener("resize", reskaligiKanvason);
 
-    addEventListeners([ latInput, lonInput ], "input", handleDecimalInput);
+    aldoniEventajnAŭskultilojn([ latEnigo, lonEnigo ], "input", traktiDecimalanEnigon);
 
-    dmsInputs.forEach(el => {
-        el.addEventListener("input", handleDMSInput);
-        el.addEventListener("change", handleDMSInput);
+    dmsEnigoj.forEach(el => {
+        el.addEventListener("input", traktiDMSEnigon);
+        el.addEventListener("change", traktiDMSEnigon);
     });
 
-    const latHemRadios = document.querySelectorAll(`input[name="latHem"]`);
-    const lonHemRadios = document.querySelectorAll(`input[name="lonHem"]`);
-    latHemRadios.forEach(radio => radio.addEventListener("change", handleDMSInput));
-    lonHemRadios.forEach(radio => radio.addEventListener("change", handleDMSInput));
+    const latHemRadiobutonoj = document.querySelectorAll(`input[name="latHem"]`);
+    const lonHemRadiobutonoj = document.querySelectorAll(`input[name="lonHem"]`);
+    latHemRadiobutonoj.forEach(radio => radio.addEventListener("change", traktiDMSEnigon));
+    lonHemRadiobutonoj.forEach(radio => radio.addEventListener("change", traktiDMSEnigon));
 
-    tabDecimal.addEventListener("click", () => switchMode("decimal"));
-    tabDMS.addEventListener("click", () => switchMode("dms"));
+    langetoDecimala.addEventListener("click", () => ŝanĝiReĝimon("decimal"));
+    langetoDMS.addEventListener("click", () => ŝanĝiReĝimon("dms"));
 
-    showGridCheck.addEventListener("change", ( e ) => {
-        showGrid = ( e.target as HTMLInputElement ).checked;
-        draw();
+    montruKadronMarko.addEventListener("change", ( e ) => {
+        montruKadron = ( e.target as HTMLInputElement ).checked;
+        desegni();
     });
 
-    useBase10Check.addEventListener("change", ( e ) => {
-        useBase10 = ( e.target as HTMLInputElement ).checked;
-        update();
+    uzuBazo10Marko.addEventListener("change", ( e ) => {
+        uzuBazo10 = ( e.target as HTMLInputElement ).checked;
+        ĝisdatigi();
     });
 
-    const gridOnlyToggle = document.getElementById("gridOnlyToggle") as HTMLButtonElement;
-    let gridOnlyMode = false;
-    gridOnlyToggle.addEventListener("click", () => {
-        gridOnlyMode = !gridOnlyMode;
-        gridOnlyToggle.setAttribute("aria-pressed", gridOnlyMode.toString());
+    const kadronurBaskulo = document.getElementById("gridOnlyToggle") as HTMLButtonElement;
+    let kadronurReĝimo = false;
+    kadronurBaskulo.addEventListener("click", () => {
+        kadronurReĝimo = !kadronurReĝimo;
+        kadronurBaskulo.setAttribute("aria-pressed", kadronurReĝimo.toString());
         document.querySelectorAll("#map .leaflet-tile-pane, #map .leaflet-layer")
-            .forEach(tile => {
-                ( tile as HTMLElement ).style.opacity = gridOnlyMode ? "0" : "1";
+            .forEach(kahelo => {
+                ( kahelo as HTMLElement ).style.opacity = kadronurReĝimo ? "0" : "1";
             });
-        draw();
+        desegni();
     } );
 
-    resetBtn.addEventListener("click", () => {
-        updateMapPosition( 0, 0, ZOOM_RESET );
+    restarigaButono.addEventListener("click", () => {
+        ĝisdatigiMapanPozicion( 0, 0, ZOMO_RESTAŬRA );
     });
 
-    const zoomRadios = document.querySelectorAll(`input[name="zoomSelect"]`);
-    zoomRadios.forEach(radio => radio.addEventListener("change", () => {
-        // Zoom level changed by user - can be used to trigger map zoom if needed
+    const zomajRadiobutonoj = document.querySelectorAll(`input[name="zoomSelect"]`);
+    zomajRadiobutonoj.forEach(radio => radio.addEventListener("change", () => {
+        // Zomonivelo ŝanĝita de la uzanto - povas esti uzata por deĉenigi mapan zomon se necese
     }));
 
-    downloadBtn.addEventListener( "click", downloadCurrentView );
-    clearCacheBtn.addEventListener( "click", clearCache );
+    elŝutaButono.addEventListener( "click", elŝutiNunanVidon );
+    forigiKaŝaButono.addEventListener( "click", forigiKaŝmemoron );
 
-    searchBtn.addEventListener( "click", searchAddress );
-    searchInput.addEventListener( "keypress", ( e ) => {
+    serĉaButono.addEventListener( "click", serĉiAdreson );
+    serĉaEnigo.addEventListener( "keypress", ( e ) => {
         if ( ( e as KeyboardEvent ).key === "Enter" ) {
-            searchAddress();
+            serĉiAdreson();
         }
     } );
-    searchInput.addEventListener( "paste", handlePaste );
+    serĉaEnigo.addEventListener( "paste", traktiAlgluon );
 
-    let urlUpdateTimeout: ReturnType<typeof setTimeout> | null = null;
-    function updateURLDebounced(): void {
-        if ( urlUpdateTimeout ) clearTimeout( urlUpdateTimeout );
-        urlUpdateTimeout = setTimeout( updateURL, 0o400 );
+    let urlĜisdatigaTemp: ReturnType<typeof setTimeout> | null = null;
+    function ĝisdatigiURLMalfrue(): void {
+        if ( urlĜisdatigaTemp ) clearTimeout( urlĜisdatigaTemp );
+        urlĜisdatigaTemp = setTimeout( ĝisdatigiURL, 0o400 );
     }
-    map.on( "moveend", updateURLDebounced );
-    map.on( "zoomend", updateURLDebounced );
+    mapo.on( "moveend", ĝisdatigiURLMalfrue );
+    mapo.on( "zoomend", ĝisdatigiURLMalfrue );
 
-    updateAllInputs();
-    update();
-    updateCacheInfo();
+    ĝisdatigiĈiujnEnigojn();
+    ĝisdatigi();
+    ĝisdatigiKaŝinformojn();
 
     if ( "serviceWorker" in navigator ) {
         navigator.serviceWorker.register( "./j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js" )
-            .then( reg => console.log( "Service Worker registered.", reg ) )
-            .catch( err => console.error( "Service Worker registration failed.", err ) );
+            .then( reg => console.log( "Service Worker registrita.", reg ) )
+            .catch( err => console.error( "Service Worker registrado malsukcesis.", err ) );
     }
 }
 
-function handleMapClickLeaflet( e: any ): void {
-    updateMapPosition( e.latlng.lat, e.latlng.lng );
+function traktiMapklakonLeaflet( e: any ): void {
+    ĝisdatigiMapanPozicion( e.latlng.lat, e.latlng.lng );
 }
 
-function updateMapSync(): void {
-    const center = map!.getCenter();
-    updateMapPosition( center.lat, center.lng );
+function ĝisdatigiMapanSinkrone(): void {
+    const centro = mapo!.getCenter();
+    ĝisdatigiMapanPozicion( centro.lat, centro.lng );
 }
 
-function switchMode( mode: "decimal" | "dms" ): void {
-    if ( mode === "decimal" ) {
-        tabDecimal.setAttribute( "aria-pressed", "true" );
-        tabDMS.setAttribute( "aria-pressed", "false" );
-        decimalControls.classList.remove( "kobe" );
-        dmsControls.classList.add( "kobe" );
+function ŝanĝiReĝimon( reĝimo: "decimal" | "dms" ): void {
+    if ( reĝimo === "decimal" ) {
+        langetoDecimala.setAttribute( "aria-pressed", "true" );
+        langetoDMS.setAttribute( "aria-pressed", "false" );
+        decimalajRegiloj.classList.remove( "kobe" );
+        dmsRegiloj.classList.add( "kobe" );
     } else {
-        tabDMS.setAttribute( "aria-pressed", "true" );
-        tabDecimal.setAttribute( "aria-pressed", "false" );
-        dmsControls.classList.remove( "kobe" );
-        decimalControls.classList.add( "kobe" );
+        langetoDMS.setAttribute( "aria-pressed", "true" );
+        langetoDecimala.setAttribute( "aria-pressed", "false" );
+        dmsRegiloj.classList.remove( "kobe" );
+        decimalajRegiloj.classList.add( "kobe" );
     }
 }
 
-function resizeCanvas(): void {
-    const rect = mapContainer.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
-    update();
+function reskaligiKanvason(): void {
+    const rektangulo = mapaUjo.getBoundingClientRect();
+    kanvaso.width = rektangulo.width;
+    kanvaso.height = rektangulo.height;
+    ĝisdatigi();
 }
 
-// ⟪ Data Handling 📊 ⟫
+// ⟪ Datumprilaboro 📊 ⟫
 
-function handleDecimalInput(): void {
-    let lat = parseFloat( latInput.value );
-    let lon = parseFloat( lonInput.value );
+function traktiDecimalanEnigon(): void {
+    let lat = parseFloat( latEnigo.value );
+    let lon = parseFloat( lonEnigo.value );
 
     if ( isNaN( lat ) ) lat = 0;
     if ( isNaN( lon ) ) lon = 0;
-    lat = clampCoordinate(lat, -90, 90);
-    lon = clampCoordinate(lon, -180, 180);
+    lat = alklampiKoordinaton(lat, -90, 90);
+    lon = alklampiKoordinaton(lon, -180, 180);
 
-    currentLat = lat;
-    currentLon = lon;
+    nunaLat = lat;
+    nunaLon = lon;
 
-    updateMarkerPosition();
+    ĝisdatigiMarkilanPozicion();
 
-    updateDMSInputs();
-    update();
+    ĝisdatigiDMSEnigojn();
+    ĝisdatigi();
 }
 
-function handleDMSInput(): void {
-    let lDeg = parseFloat( latDeg.value ) || 0;
-    let lMin = parseFloat( latMin.value ) || 0;
-    let lSec = parseFloat( latSec.value ) || 0;
+function traktiDMSEnigon(): void {
+    let lGra = parseFloat( latGradoj.value ) || 0;
+    let lMin = parseFloat( latMinutoj.value ) || 0;
+    let lSek = parseFloat( latSekundoj.value ) || 0;
     let lHem = document.querySelector(`input[name="latHem"]:checked`)?.getAttribute("value") || "N";
 
-    let loDeg = parseFloat( lonDeg.value ) || 0;
-    let loMin = parseFloat( lonMin.value ) || 0;
-    let loSec = parseFloat( lonSec.value ) || 0;
+    let loGra = parseFloat( lonGradoj.value ) || 0;
+    let loMin = parseFloat( lonMinutoj.value ) || 0;
+    let loSek = parseFloat( lonSekundoj.value ) || 0;
     let loHem = document.querySelector(`input[name="lonHem"]:checked`)?.getAttribute("value") || "E";
 
-    let decLat = lDeg + ( lMin / 60 ) + ( lSec / 3600 );
-    if ( lHem === "S" ) decLat = -decLat;
+    let dekLat = lGra + ( lMin / 60 ) + ( lSek / 3600 );
+    if ( lHem === "S" ) dekLat = -dekLat;
 
-    let decLon = loDeg + ( loMin / 60 ) + ( loSec / 3600 );
-    if ( loHem === "W" ) decLon = -decLon;
+    let dekLon = loGra + ( loMin / 60 ) + ( loSek / 3600 );
+    if ( loHem === "W" ) dekLon = -dekLon;
 
-    decLat = clampCoordinate(decLat, -90, 90);
-    decLon = clampCoordinate(decLon, -180, 180);
+    dekLat = alklampiKoordinaton(dekLat, -90, 90);
+    dekLon = alklampiKoordinaton(dekLon, -180, 180);
 
-    currentLat = decLat;
-    currentLon = decLon;
+    nunaLat = dekLat;
+    nunaLon = dekLon;
 
-    updateMarkerPosition();
+    ĝisdatigiMarkilanPozicion();
 
-    latInput.value = currentLat.toFixed( 5 );
-    lonInput.value = currentLon.toFixed( 5 );
+    latEnigo.value = nunaLat.toFixed( 5 );
+    lonEnigo.value = nunaLon.toFixed( 5 );
 
-    update();
+    ĝisdatigi();
 }
 
-function updateAllInputs(): void {
-    latInput.value = currentLat.toFixed( 5 );
-    lonInput.value = currentLon.toFixed( 5 );
-    updateDMSInputs();
+function ĝisdatigiĈiujnEnigojn(): void {
+    latEnigo.value = nunaLat.toFixed( 5 );
+    lonEnigo.value = nunaLon.toFixed( 5 );
+    ĝisdatigiDMSEnigojn();
 }
 
-function updateDMSInputs(): void {
-    const latObj = decimalToDMS( currentLat );
-    latDeg.value = latObj.deg.toString();
-    latMin.value = latObj.min.toString();
-    latSec.value = latObj.sec.toFixed( 2 );
-    const latRadio = document.querySelector(`input[name="latHem"][value="${currentLat >= 0 ? "N" : "S"}"]`) as HTMLInputElement | null;
+function ĝisdatigiDMSEnigojn(): void {
+    const latObjekto = decimalaAlDMS( nunaLat );
+    latGradoj.value = latObjekto.gra.toString();
+    latMinutoj.value = latObjekto.min.toString();
+    latSekundoj.value = latObjekto.sek.toFixed( 2 );
+    const latRadio = document.querySelector(`input[name="latHem"][value="${nunaLat >= 0 ? "N" : "S"}"]`) as HTMLInputElement | null;
     if ( latRadio ) latRadio.checked = true;
 
-    const lonObj = decimalToDMS( currentLon );
-    lonDeg.value = lonObj.deg.toString();
-    lonMin.value = lonObj.min.toString();
-    lonSec.value = lonObj.sec.toFixed( 2 );
-    const lonRadio = document.querySelector(`input[name="lonHem"][value="${currentLon >= 0 ? "E" : "W"}"]`) as HTMLInputElement | null;
+    const lonObjekto = decimalaAlDMS( nunaLon );
+    lonGradoj.value = lonObjekto.gra.toString();
+    lonMinutoj.value = lonObjekto.min.toString();
+    lonSekundoj.value = lonObjekto.sek.toFixed( 2 );
+    const lonRadio = document.querySelector(`input[name="lonHem"][value="${nunaLon >= 0 ? "E" : "W"}"]`) as HTMLInputElement | null;
     if ( lonRadio ) lonRadio.checked = true;
 }
 
-function decimalToDMS( decimal: number ): DMSObject {
-    const absVal = Math.abs( decimal );
-    const deg = Math.floor( absVal );
-    const minFull = ( absVal - deg ) * 60;
-    const min = Math.floor( minFull );
-    const sec = ( minFull - min ) * 60;
-    return { deg, min, sec };
+function decimalaAlDMS( decimalo: number ): DMSObjekto {
+    const absolutaValoro = Math.abs( decimalo );
+    const gra = Math.floor( absolutaValoro );
+    const minPlena = ( absolutaValoro - gra ) * 60;
+    const min = Math.floor( minPlena );
+    const sek = ( minPlena - min ) * 60;
+    return { gra, min, sek };
 }
 
-// ⟪ Coordinate & Grid Logic 📍 ⟫
+// ⟪ Koordinata & Kadra Logiko 📍 ⟫
 
-function getGridCoords( lat: number, lon: number ): GridCoords {
-    let baseDegWest = ( lon <= 0 ) ? -lon : ( 360 - lon );
-    if ( lon === 0 ) baseDegWest = 0;
+function akiriKadrajnKoordinatojn( lat: number, lon: number ): KadrajKoordinatoj {
+    let bazaGradOkcidenten = ( lon <= 0 ) ? -lon : ( 360 - lon );
+    if ( lon === 0 ) bazaGradOkcidenten = 0;
 
-    let degWest = ( baseDegWest + GRID_OFFSET ) % 360;
-    const hLevels = calcGridLevels( degWest, 360, [ 0o100, 0o40, 0o40, 0o40 ] );
+    let gradOkcidenten = ( bazaGradOkcidenten + KADRA_DEKALO ) % 360;
+    const hNiveloj = kalkuliKadronivelojn( gradOkcidenten, 360, [ 0o100, 0o40, 0o40, 0o40 ] );
 
-    const vLevels = calcGridLevels( 90 - lat, 180, [ 0o40, 0o40, 0o40, 0o40 ] );
+    const vNiveloj = kalkuliKadronivelojn( 90 - lat, 180, [ 0o40, 0o40, 0o40, 0o40 ] );
 
     return {
-        v1: vLevels[ 0 ], h1: hLevels[ 0 ],
-        v2: vLevels[ 1 ], h2: hLevels[ 1 ],
-        v3: vLevels[ 2 ], h3: hLevels[ 2 ],
-        v4: vLevels[ 3 ], h4: hLevels[ 3 ]
+        v1: vNiveloj[ 0 ], h1: hNiveloj[ 0 ],
+        v2: vNiveloj[ 1 ], h2: hNiveloj[ 1 ],
+        v3: vNiveloj[ 2 ], h3: hNiveloj[ 2 ],
+        v4: vNiveloj[ 3 ], h4: hNiveloj[ 3 ]
     };
 }
 
-function levelsToNormalized( levels: number[], divisors: number[] ): number {
-    let total = 0;
-    for ( let i = 0; i < levels.length; i++ ) {
-        let divisor = 1;
+function nivelojAlNormaligitaj( niveloj: number[], dividantoj: number[] ): number {
+    let tuta = 0;
+    for ( let i = 0; i < niveloj.length; i++ ) {
+        let dividanto = 1;
         for ( let j = 0; j <= i; j++ ) {
-            divisor *= divisors[ j ];
+            dividanto *= dividantoj[ j ];
         }
-        total += levels[ i ] / divisor;
+        tuta += niveloj[ i ] / dividanto;
     }
-    return total;
+    return tuta;
 }
 
-function gridToLatLon( v1: number, h1: number, v2: number, h2: number, v3: number, h3: number, v4: number, h4: number ): ParsedCoords {
-    const vLevels = [ v1, v2, v3, v4 ].map( v => Math.max( 0, v - 1 ) );
-    const hLevels = [ h1, h2, h3, h4 ].map( h => Math.max( 0, h - 1 ) );
+function kadroAlLatLon( v1: number, h1: number, v2: number, h2: number, v3: number, h3: number, v4: number, h4: number ): AnalizitajKoordinatoj {
+    const vNiveloj = [ v1, v2, v3, v4 ].map( v => Math.max( 0, v - 1 ) );
+    const hNiveloj = [ h1, h2, h3, h4 ].map( h => Math.max( 0, h - 1 ) );
 
-    const vTotal = levelsToNormalized( vLevels, [ 0o40, 0o40, 0o40, 0o40 ] );
-    const hTotal = levelsToNormalized( hLevels, [ 0o100, 0o40, 0o40, 0o40 ] );
+    const vTuta = nivelojAlNormaligitaj( vNiveloj, [ 0o40, 0o40, 0o40, 0o40 ] );
+    const hTuta = nivelojAlNormaligitaj( hNiveloj, [ 0o100, 0o40, 0o40, 0o40 ] );
 
-    let lat = 90 - ( vTotal * 180 );
+    let lat = 90 - ( vTuta * 180 );
 
-    let degWest = hTotal * 360;
-    let baseDegWest = ( degWest - GRID_OFFSET );
-    while ( baseDegWest < 0 ) baseDegWest += 360;
-    baseDegWest = baseDegWest % 360;
+    let gradOkcidenten = hTuta * 360;
+    let bazaGradOkcidenten = ( gradOkcidenten - KADRA_DEKALO );
+    while ( bazaGradOkcidenten < 0 ) bazaGradOkcidenten += 360;
+    bazaGradOkcidenten = bazaGradOkcidenten % 360;
 
-    let lon = ( baseDegWest <= 180 ) ? -baseDegWest : ( 360 - baseDegWest );
+    let lon = ( bazaGradOkcidenten <= 180 ) ? -bazaGradOkcidenten : ( 360 - bazaGradOkcidenten );
 
     return { lat, lon };
 }
 
-function getName( v: number, h: number, system: "ksaka" | "latin" | "chmuah" = "ksaka" ): string {
-    const sys = GRID_SYSTEMS[ v ]?.[ system ];
+function akiriNomon( v: number, h: number, sistemo: "ksaka" | "latin" | "chmuah" = "ksaka" ): string {
+    const sys = KADRAJ_SISTEMOJ[ v ]?.[ sistemo ];
     if ( !sys ) return "?";
 
-    const vName = sys.v;
-    const pIndex = Math.floor( h / 0o10 );
-    const sIndex = h % 0o10;
-    const hName = ( sys.hPrefix[ pIndex ] || "" ) + ( sys.hSuffix[ sIndex ] || "" );
-    return vName + hName;
+    const vNomo = sys.v;
+    const pIndekso = Math.floor( h / 0o10 );
+    const sIndekso = h % 0o10;
+    const hNomo = ( sys.hPrefix[ pIndekso ] || "" ) + ( sys.hSuffix[ sIndekso ] || "" );
+    return vNomo + hNomo;
 }
 
-function getNameLatin( v: number, h: number ): string {
-    const name = getName( v, h, "latin" );
-    return name.charAt( 0 ).toUpperCase() + name.slice( 1 );
+function akiriLatinanNomon( v: number, h: number ): string {
+    const nomo = akiriNomon( v, h, "latin" );
+    return nomo.charAt( 0 ).toUpperCase() + nomo.slice( 1 );
 }
 
-function getNameChmuah( v: number, h: number ): string {
-    return getName( v, h, "chmuah" );
+function akiriĈmuahnomon( v: number, h: number ): string {
+    return akiriNomon( v, h, "chmuah" );
 }
 
-function getNamesForCoords( vArr: number[], hArr: number[] ): { ksakaName: string; latinName: string; chmuahName: string } {
+function akiriNomojnPorKoordinatoj( vTabelo: number[], hTabelo: number[] ): { ksakaName: string; latinName: string; chmuahName: string } {
     return {
-        ksakaName: vArr.map( ( v, i ) => getName( v - 1, hArr[ i ] - 1, "ksaka" ) ).join( " " ),
-        latinName: vArr.map( ( v, i ) => getNameLatin( v - 1, hArr[ i ] - 1 ) ).join( " " ),
-        chmuahName: vArr.map( ( v, i ) => getNameChmuah( v - 1, hArr[ i ] - 1 ) ).join( " " )
+        ksakaName: vTabelo.map( ( v, i ) => akiriNomon( v - 1, hTabelo[ i ] - 1, "ksaka" ) ).join( " " ),
+        latinName: vTabelo.map( ( v, i ) => akiriLatinanNomon( v - 1, hTabelo[ i ] - 1 ) ).join( " " ),
+        chmuahName: vTabelo.map( ( v, i ) => akiriĈmuahnomon( v - 1, hTabelo[ i ] - 1 ) ).join( " " )
     };
 }
 
-function draw(): void {
-    const w = canvas.width;
-    const h = canvas.height;
-    ctx.clearRect( 0, 0, w, h );
+function desegni(): void {
+    const w = kanvaso.width;
+    const h = kanvaso.height;
+    kunteksto.clearRect( 0, 0, w, h );
 
-    if ( !showGrid || !map ) return;
+    if ( !montruKadron || !mapo ) return;
 
-    const zoom = map.getZoom();
-    const bounds = map.getBounds();
-    const north = bounds.getNorth();
-    const south = bounds.getSouth();
-    const east = bounds.getEast();
-    const west = bounds.getWest();
+    const zomo = mapo.getZoom();
+    const limoj = mapo.getBounds();
+    const nordo = limoj.getNorth();
+    const sudo = limoj.getSouth();
+    const oriento = limoj.getEast();
+    const okcidento = limoj.getWest();
 
-    function drawGridLinesForLevel( vDivisions: number, hDivisions: number, color: string, width: number ): void {
-        ctx.beginPath();
-        ctx.strokeStyle = color;
-        ctx.lineWidth = width;
+    function desegniKadrojnPorNivelo( vDividoj: number, hDividoj: number, koloro: string, larĝo: number ): void {
+        kunteksto.beginPath();
+        kunteksto.strokeStyle = koloro;
+        kunteksto.lineWidth = larĝo;
 
-        for ( let vIdx = 0; vIdx <= vDivisions; vIdx++ ) {
-            let lat = 90 - ( vIdx / vDivisions ) * 180;
-            if ( lat < south - 1 || lat > north + 1 ) continue;
+        for ( let vIndekso = 0; vIndekso <= vDividoj; vIndekso++ ) {
+            let lat = 90 - ( vIndekso / vDividoj ) * 180;
+            if ( lat < sudo - 1 || lat > nordo + 1 ) continue;
 
-            const p1 = map!.latLngToContainerPoint( [ lat, west ] );
-            const p2 = map!.latLngToContainerPoint( [ lat, east ] );
+            const p1 = mapo!.latLngToContainerPoint( [ lat, okcidento ] );
+            const p2 = mapo!.latLngToContainerPoint( [ lat, oriento ] );
 
-            ctx.moveTo( p1.x, p1.y );
-            ctx.lineTo( p2.x, p2.y );
+            kunteksto.moveTo( p1.x, p1.y );
+            kunteksto.lineTo( p2.x, p2.y );
         }
 
-        for ( let hIdx = 0; hIdx <= hDivisions; hIdx++ ) {
-            let ratio = hIdx / hDivisions;
-            let degWestOffset = ratio * 360;
-            let baseDegWest = ( degWestOffset - GRID_OFFSET + 360 ) % 360;
-            let lon = ( baseDegWest <= 180 ) ? -baseDegWest : ( 360 - baseDegWest );
+        for ( let hIndekso = 0; hIndekso <= hDividoj; hIndekso++ ) {
+            let proporcio = hIndekso / hDividoj;
+            let gradOkcidentaDeŝovo = proporcio * 360;
+            let bazaGradOkcidenten = ( gradOkcidentaDeŝovo - KADRA_DEKALO + 360 ) % 360;
+            let lon = ( bazaGradOkcidenten <= 180 ) ? -bazaGradOkcidenten : ( 360 - bazaGradOkcidenten );
 
-            const centerLon = ( west + east ) / 2;
-            let displayLon = lon;
+            const centraLon = ( okcidento + oriento ) / 2;
+            let montraLon = lon;
 
-            while ( displayLon < centerLon - 180 ) displayLon += 360;
-            while ( displayLon > centerLon + 180 ) displayLon -= 360;
+            while ( montraLon < centraLon - 180 ) montraLon += 360;
+            while ( montraLon > centraLon + 180 ) montraLon -= 360;
 
-            let isInView = false;
+            let ĉuEnVido = false;
 
-            if ( displayLon >= west - 1 && displayLon <= east + 1 ) {
-                isInView = true;
+            if ( montraLon >= okcidento - 1 && montraLon <= oriento + 1 ) {
+                ĉuEnVido = true;
             }
-            else if ( east - west > 180 ) {
-                isInView = true;
+            else if ( oriento - okcidento > 180 ) {
+                ĉuEnVido = true;
             }
             else {
-                let wrappedLon1 = displayLon + 360;
-                let wrappedLon2 = displayLon - 360;
-                if ( ( wrappedLon1 >= west - 1 && wrappedLon1 <= east + 1 ) ||
-                    ( wrappedLon2 >= west - 1 && wrappedLon2 <= east + 1 ) ) {
-                    isInView = true;
+                let volvitaLon1 = montraLon + 360;
+                let volvitaLon2 = montraLon - 360;
+                if ( ( volvitaLon1 >= okcidento - 1 && volvitaLon1 <= oriento + 1 ) ||
+                    ( volvitaLon2 >= okcidento - 1 && volvitaLon2 <= oriento + 1 ) ) {
+                    ĉuEnVido = true;
                 }
             }
 
-            if ( !isInView ) continue;
+            if ( !ĉuEnVido ) continue;
 
-            const p1 = map!.latLngToContainerPoint( [ north, displayLon ] );
-            const p2 = map!.latLngToContainerPoint( [ south, displayLon ] );
+            const p1 = mapo!.latLngToContainerPoint( [ nordo, montraLon ] );
+            const p2 = mapo!.latLngToContainerPoint( [ sudo, montraLon ] );
 
-            ctx.moveTo( p1.x, p1.y );
-            ctx.lineTo( p2.x, p2.y );
+            kunteksto.moveTo( p1.x, p1.y );
+            kunteksto.lineTo( p2.x, p2.y );
         }
-        ctx.stroke();
+        kunteksto.stroke();
     }
 
-    drawGridLinesForLevel( 0o40, 0o100, "rgba(224, 160, 72, 0.5)", 3 );
+    desegniKadrojnPorNivelo( 0o40, 0o100, "rgba(224, 160, 72, 0.5)", 3 );
 
-    if ( zoom >= ZOOM_LEVEL_2 ) {
-        drawGridLinesForLevel( 0o40 * 0o40, 0o100 * 0o40, "rgba(224, 160, 72, 0.5)", 2 );
+    if ( zomo >= ZOMO_NIVELO_2 ) {
+        desegniKadrojnPorNivelo( 0o40 * 0o40, 0o100 * 0o40, "rgba(224, 160, 72, 0.5)", 2 );
     }
 
-    if ( zoom >= ZOOM_LEVEL_3 ) {
-        drawGridLinesForLevel( 0o40 * 0o40 * 0o40, 0o100 * 0o40 * 0o40, "rgba(224, 160, 72, 0.75)", 1 );
+    if ( zomo >= ZOMO_NIVELO_3 ) {
+        desegniKadrojnPorNivelo( 0o40 * 0o40 * 0o40, 0o100 * 0o40 * 0o40, "rgba(224, 160, 72, 0.75)", 1 );
     }
 
-    if ( zoom >= ZOOM_LEVEL_4 ) {
-        drawGridLinesForLevel( 0o40 * 0o40 * 0o40 * 0o40, 0o100 * 0o40 * 0o40 * 0o40, "rgba(224, 160, 72, 1)", 1 / 2 );
+    if ( zomo >= ZOMO_NIVELO_4 ) {
+        desegniKadrojnPorNivelo( 0o40 * 0o40 * 0o40 * 0o40, 0o100 * 0o40 * 0o40 * 0o40, "rgba(224, 160, 72, 1)", 1 / 2 );
     }
 }
 
-function update(): void {
-    const n2k = getGridCoords( currentLat, currentLon );
+function ĝisdatigi(): void {
+    const n2k = akiriKadrajnKoordinatojn( nunaLat, nunaLon );
 
     const v1 = n2k.v1 + 1; const h1 = n2k.h1 + 1;
     const v2 = n2k.v2 + 1; const h2 = n2k.h2 + 1;
     const v3 = n2k.v3 + 1; const h3 = n2k.h3 + 1;
     const v4 = n2k.v4 + 1; const h4 = n2k.h4 + 1;
 
-    let coords: string;
-    if ( useBase10 ) {
-        coords = `${v1} ${h1} - ${v2} ${h2} - ${v3} ${h3} - ${v4} ${h4}`;
+    let koordinatoj: string;
+    if ( uzuBazo10 ) {
+        koordinatoj = `${v1} ${h1} - ${v2} ${h2} - ${v3} ${h3} - ${v4} ${h4}`;
     } else {
-        coords = `${window.vab6caja( v1 )} ${window.vab6caja( h1 )} - ${window.vab6caja( v2 )} ${window.vab6caja( h2 )} - ${window.vab6caja( v3 )} ${window.vab6caja( h3 )} - ${window.vab6caja( v4 )} ${window.vab6caja( h4 )}`;
+        koordinatoj = `${window.vab6caja( v1 )} ${window.vab6caja( h1 )} - ${window.vab6caja( v2 )} ${window.vab6caja( h2 )} - ${window.vab6caja( v3 )} ${window.vab6caja( h3 )} - ${window.vab6caja( v4 )} ${window.vab6caja( h4 )}`;
     }
 
-    outputCoords.textContent = window.skakefK2fe( coords );
+    eliraKoordinatoj.textContent = window.skakefK2fe( koordinatoj );
 
-    const names = getNamesForCoords( [ v1, v2, v3, v4 ], [ h1, h2, h3, h4 ] );
-    kefAraq.innerHTML = names.ksakaName;
-    outputName.innerHTML = names.latinName;
-    piak.innerHTML = names.chmuahName;
+    const nomoj = akiriNomojnPorKoordinatoj( [ v1, v2, v3, v4 ], [ h1, h2, h3, h4 ] );
+    kefAraq.innerHTML = nomoj.ksakaName;
+    eliraNomo.innerHTML = nomoj.latinName;
+    piak.innerHTML = nomoj.chmuahName;
 
     vacepu("cepufal");
 
-    draw();
+    desegni();
 }
 
-// ⟪ Search 🔍 ⟫
+// ⟪ Serĉo 🔍 ⟫
 
-function parseCoordValue( val: string ): number {
-    if ( !val ) return 0;
-    if ( Array.from(val).some( c => K2FE.includes( c ) ) ) {
-        return vab6k2fekp6( val );
+function analiziKoordinatanValoron( valoro: string ): number {
+    if ( !valoro ) return 0;
+    if ( Array.from(valoro).some( c => K2FE.includes( c ) ) ) {
+        return vab6k2fekp6( valoro );
     }
-    return useBase10 ? parseInt( val, 0o12 ) : parseInt( val, 0o10 );
+    return uzuBazo10 ? parseInt( valoro, 0o12 ) : parseInt( valoro, 0o10 );
 }
 
-function isCoordinatePattern( query: string ): boolean {
-    const parts = query.trim().split( /[\s\-–—]+/ ).filter( p => p.length > 0 );
-    if ( parts.length < 2 ) return false;
-    const numPattern = new RegExp( `^[\\d${K2FE}]+$` );
-    return parts.every( p => numPattern.test( p ) );
+function ĉuKoordinataŜablono( demando: string ): boolean {
+    const partoj = demando.trim().split( /[\s\-–—]+/ ).filter( p => p.length > 0 );
+    if ( partoj.length < 2 ) return false;
+    const nombraŜablono = new RegExp( `^[\\d${K2FE}]+$` );
+    return partoj.every( p => nombraŜablono.test( p ) );
 }
 
-// ⟪ URL Coordinate Handling 🔗 ⟫
+// ⟪ URL-Koordinata Prilaboro 🔗 ⟫
 
-function parseURLCoords(): ParsedCoords | null {
-    const params = new URLSearchParams( window.location.search );
-    const coords = params.get( "n2k" );
-    if ( !coords ) return null;
+function analiziURLkoordinatojn(): AnalizitajKoordinatoj | null {
+    const parametroj = new URLSearchParams( window.location.search );
+    const koordinatoj = parametroj.get( "n2k" );
+    if ( !koordinatoj ) return null;
 
-    const pairs = coords.split( "-" ).filter( p => p.length > 0 );
-    if ( pairs.length === 0 || pairs.length > 4 ) return null;
+    const paroj = koordinatoj.split( "-" ).filter( p => p.length > 0 );
+    if ( paroj.length === 0 || paroj.length > 4 ) return null;
 
-    const result = parseCoordinatePairs(pairs);
-    if ( !result ) return null;
+    const rezulto = analiziKoordinatoparojn(paroj);
+    if ( !rezulto ) return null;
 
-    const { fullV, fullH } = result;
-    const gridResult = gridToLatLon(
-        fullV[ 0 ] + 1, fullH[ 0 ] + 1,
-        fullV[ 1 ] + 1, fullH[ 1 ] + 1,
-        fullV[ 2 ] + 1, fullH[ 2 ] + 1,
-        fullV[ 3 ] + 1, fullH[ 3 ] + 1
+    const { plenajV, plenajH } = rezulto;
+    const kadraRezulto = kadroAlLatLon(
+        plenajV[ 0 ] + 1, plenajH[ 0 ] + 1,
+        plenajV[ 1 ] + 1, plenajH[ 1 ] + 1,
+        plenajV[ 2 ] + 1, plenajH[ 2 ] + 1,
+        plenajV[ 3 ] + 1, plenajH[ 3 ] + 1
     );
 
-    return { lat: gridResult.lat, lon: gridResult.lon };
+    return { lat: kadraRezulto.lat, lon: kadraRezulto.lon };
 }
 
-function updateURL(): void {
-    const n2k = getGridCoords( currentLat, currentLon );
+function ĝisdatigiURL(): void {
+    const n2k = akiriKadrajnKoordinatojn( nunaLat, nunaLon );
     const v = [ n2k.v1 + 1, n2k.v2 + 1, n2k.v3 + 1, n2k.v4 + 1 ];
     const h = [ n2k.h1 + 1, n2k.h2 + 1, n2k.h3 + 1, n2k.h4 + 1 ];
 
-    const pairs: string[] = [];
+    const paroj: string[] = [];
     for ( let i = 0; i < 4; i++ ) {
-        const vStr = v[ i ].toString( 0o10 ).padStart( 2, "0" );
-        const hStr = h[ i ].toString( 0o10 ).padStart( 2, "0" );
-        pairs.push( vStr + hStr );
+        const vĈeno = v[ i ].toString( 0o10 ).padStart( 2, "0" );
+        const hĈeno = h[ i ].toString( 0o10 ).padStart( 2, "0" );
+        paroj.push( vĈeno + hĈeno );
     }
 
     const url = new URL( window.location.href );
-    url.searchParams.set( "n2k", pairs.join( "-" ) );
+    url.searchParams.set( "n2k", paroj.join( "-" ) );
     window.history.replaceState( {}, "", url );
 }
 
-function handlePaste( e: ClipboardEvent ): void {
-    const paste = e.clipboardData?.getData( "text" );
-    if ( !paste ) return;
+function traktiAlgluon( e: ClipboardEvent ): void {
+    const algluaĵo = e.clipboardData?.getData( "text" );
+    if ( !algluaĵo ) return;
 
     try {
-        const url = new URL( paste );
-        const params = new URLSearchParams( url.search );
-        const coords = params.get( "n2k" );
+        const url = new URL( algluaĵo );
+        const parametroj = new URLSearchParams( url.search );
+        const koordinatoj = parametroj.get( "n2k" );
 
-        if ( coords ) {
+        if ( koordinatoj ) {
             e.preventDefault();
-            const pairs = coords.split( "-" ).filter( p => p.length > 0 );
-            const result = parseCoordinatePairs(pairs);
-            if ( !result ) return;
+            const paroj = koordinatoj.split( "-" ).filter( p => p.length > 0 );
+            const rezulto = analiziKoordinatoparojn(paroj);
+            if ( !rezulto ) return;
 
-            const { fullV, fullH } = result;
-            const gridResult = gridToLatLon(
-                fullV[ 0 ] + 1, fullH[ 0 ] + 1,
-                fullV[ 1 ] + 1, fullH[ 1 ] + 1,
-                fullV[ 2 ] + 1, fullH[ 2 ] + 1,
-                fullV[ 3 ] + 1, fullH[ 3 ] + 1
+            const { plenajV, plenajH } = rezulto;
+            const kadraRezulto = kadroAlLatLon(
+                plenajV[ 0 ] + 1, plenajH[ 0 ] + 1,
+                plenajV[ 1 ] + 1, plenajH[ 1 ] + 1,
+                plenajV[ 2 ] + 1, plenajH[ 2 ] + 1,
+                plenajV[ 3 ] + 1, plenajH[ 3 ] + 1
             );
 
-            let zoom = ZOOM_SEARCH_DEFAULT;
-            if ( pairs.length >= 2 ) zoom = ZOOM_LEVEL_2;
-            if ( pairs.length >= 3 ) zoom = ZOOM_LEVEL_3;
-            if ( pairs.length >= 4 ) zoom = ZOOM_LEVEL_4;
+            let zomo = ZOMO_SERĈA_DEFŬLTA;
+            if ( paroj.length >= 2 ) zomo = ZOMO_NIVELO_2;
+            if ( paroj.length >= 3 ) zomo = ZOMO_NIVELO_3;
+            if ( paroj.length >= 4 ) zomo = ZOMO_NIVELO_4;
 
-            updateMapPosition( gridResult.lat, gridResult.lon, zoom );
+            ĝisdatigiMapanPozicion( kadraRezulto.lat, kadraRezulto.lon, zomo );
             return;
         }
-    } catch ( _err ) {
+    } catch ( _eraro ) {
     }
 }
 
-function buildNames( vArr: number[], hArr: number[] ): { ksakaName: string; latinName: string; chmuahName: string } {
-    return getNamesForCoords( vArr, hArr );
+function konstruiNomojn( vTabelo: number[], hTabelo: number[] ): { ksakaName: string; latinName: string; chmuahName: string } {
+    return akiriNomojnPorKoordinatoj( vTabelo, hTabelo );
 }
 
-function search( query: string ): SearchReturn | null {
-    if ( !query ) return null;
+function serĉi( demando: string ): SerĉaReveno | null {
+    if ( !demando ) return null;
 
-    if ( isCoordinatePattern( query ) ) {
-        const pairs = query.trim().split( /[\s]*[\-–—][\s]*/ ).filter( p => p.length > 0 );
-        const parseVal = ( val: string ) => parseCoordValue( val ) || 0;
+    if ( ĉuKoordinataŜablono( demando ) ) {
+        const paroj = demando.trim().split( /[\s]*[\-–—][\s]*/ ).filter( p => p.length > 0 );
+        const analiziValoron = ( valoro: string ) => analiziKoordinatanValoron( valoro ) || 0;
 
         const v: number[] = [];
         const h: number[] = [];
-        for ( const pair of pairs ) {
-            const nums = pair.trim().split( /\s+/ ).filter( p => p.length > 0 );
-            if ( nums.length >= 2 ) {
-                v.push( parseVal( nums[ 0 ] ) );
-                h.push( parseVal( nums[ 1 ] ) );
-            } else if ( nums.length === 1 ) {
+        for ( const paro of paroj ) {
+            const nombroj = paro.trim().split( /\s+/ ).filter( p => p.length > 0 );
+            if ( nombroj.length >= 2 ) {
+                v.push( analiziValoron( nombroj[ 0 ] ) );
+                h.push( analiziValoron( nombroj[ 1 ] ) );
+            } else if ( nombroj.length === 1 ) {
                 if ( v.length === h.length ) {
-                    v.push( parseVal( nums[ 0 ] ) );
+                    v.push( analiziValoron( nombroj[ 0 ] ) );
                 } else {
-                    h.push( parseVal( nums[ 0 ] ) );
+                    h.push( analiziValoron( nombroj[ 0 ] ) );
                 }
             }
         }
@@ -831,274 +831,274 @@ function search( query: string ): SearchReturn | null {
         while ( v.length < 4 ) v.push( 0 );
         while ( h.length < 4 ) h.push( 0 );
 
-        const result = gridToLatLon( v[ 0 ], h[ 0 ], v[ 1 ], h[ 1 ], v[ 2 ], h[ 2 ], v[ 3 ], h[ 3 ] );
-        const numLevels = Math.max( 1, pairs.length );
-        const names = buildNames( v.slice( 0, numLevels ), h.slice( 0, numLevels ) );
+        const rezulto = kadroAlLatLon( v[ 0 ], h[ 0 ], v[ 1 ], h[ 1 ], v[ 2 ], h[ 2 ], v[ 3 ], h[ 3 ] );
+        const nombraNivelo = Math.max( 1, paroj.length );
+        const nomoj = konstruiNomojn( v.slice( 0, nombraNivelo ), h.slice( 0, nombraNivelo ) );
 
         return {
-            results: [{
-                lat: result.lat,
-                lon: result.lon,
+            rezultoj: [{
+                lat: rezulto.lat,
+                lon: rezulto.lon,
                 v: v[ 0 ],
                 h: h[ 0 ],
-                ...names
+                ...nomoj
             }],
-            zoom: [ ZOOM_SEARCH_DEFAULT, ZOOM_LEVEL_2, ZOOM_LEVEL_3, ZOOM_LEVEL_4 ][ Math.min( numLevels - 1, 3 ) ] || ZOOM_SEARCH_DEFAULT
+            zomo: [ ZOMO_SERĈA_DEFŬLTA, ZOMO_NIVELO_2, ZOMO_NIVELO_3, ZOMO_NIVELO_4 ][ Math.min( nombraNivelo - 1, 3 ) ] || ZOMO_SERĈA_DEFŬLTA
         };
     }
 
-    const queryParts = query.trim().toLowerCase().split( /\s+/ ).filter( p => p.length > 0 );
-    const numParts = queryParts.length;
-    if ( numParts === 0 || numParts > 4 ) return null;
+    const demandopartoj = demando.trim().toLowerCase().split( /\s+/ ).filter( p => p.length > 0 );
+    const nombroDePartoj = demandopartoj.length;
+    if ( nombroDePartoj === 0 || nombroDePartoj > 4 ) return null;
 
-    const currentCoords = getGridCoords( currentLat, currentLon );
-    const currentV = [ currentCoords.v1, currentCoords.v2, currentCoords.v3, currentCoords.v4 ];
-    const currentH = [ currentCoords.h1, currentCoords.h2, currentCoords.h3, currentCoords.h4 ];
+    const nunajKoordinatoj = akiriKadrajnKoordinatojn( nunaLat, nunaLon );
+    const nunajV = [ nunajKoordinatoj.v1, nunajKoordinatoj.v2, nunajKoordinatoj.v3, nunajKoordinatoj.v4 ];
+    const nunajH = [ nunajKoordinatoj.h1, nunajKoordinatoj.h2, nunajKoordinatoj.h3, nunajKoordinatoj.h4 ];
 
-    const results: SearchResult[] = [];
+    const rezultoj: SerĉaRezulto[] = [];
 
-    function searchLevel( level: number, startLevel: number, vArr: number[], hArr: number[], system: "k" | "l" | "c" ): void {
-        const hLimit = level === 0 ? 0o100 : 0o40;
-        const vLimit = 0o40;
+    function serĉiNivelon( nivelo: number, komencaNivelo: number, vTabelo: number[], hTabelo: number[], sistemo: "k" | "l" | "c" ): void {
+        const hLimito = nivelo === 0 ? 0o100 : 0o40;
+        const vLimito = 0o40;
 
-        for ( let v = 0; v < vLimit; v++ ) {
-            for ( let h = 0; h < hLimit; h++ ) {
-                let name: string;
-                if ( system === "k" ) name = getName( v, h, "ksaka" );
-                else if ( system === "l" ) name = getNameLatin( v, h );
-                else name = getNameChmuah( v, h );
+        for ( let v = 0; v < vLimito; v++ ) {
+            for ( let h = 0; h < hLimito; h++ ) {
+                let nomo: string;
+                if ( sistemo === "k" ) nomo = akiriNomon( v, h, "ksaka" );
+                else if ( sistemo === "l" ) nomo = akiriLatinanNomon( v, h );
+                else nomo = akiriĈmuahnomon( v, h );
 
-                if ( !name.toLowerCase().startsWith( queryParts[ level - startLevel ] ) ) continue;
+                if ( !nomo.toLowerCase().startsWith( demandopartoj[ nivelo - komencaNivelo ] ) ) continue;
 
-                const newV = [ ...vArr, v ];
-                const newH = [ ...hArr, h ];
-                const queryIndex = level - startLevel;
+                const novajV = [ ...vTabelo, v ];
+                const novajH = [ ...hTabelo, h ];
+                const demandaIndekso = nivelo - komencaNivelo;
 
-                if ( queryIndex === numParts - 1 ) {
-                    const fullV = [ ...currentV.slice( 0, startLevel ), ...newV ];
-                    const fullH = [ ...currentH.slice( 0, startLevel ), ...newH ];
+                if ( demandaIndekso === nombroDePartoj - 1 ) {
+                    const plenajV = [ ...nunajV.slice( 0, komencaNivelo ), ...novajV ];
+                    const plenajH = [ ...nunajH.slice( 0, komencaNivelo ), ...novajH ];
 
-                    while ( fullV.length < 4 ) { fullV.push( 0 ); fullH.push( 0 ); }
+                    while ( plenajV.length < 4 ) { plenajV.push( 0 ); plenajH.push( 0 ); }
 
-                    const coords = gridToLatLon(
-                        fullV[ 0 ] + 1, fullH[ 0 ] + 1,
-                        fullV[ 1 ] + 1, fullH[ 1 ] + 1,
-                        fullV[ 2 ] + 1, fullH[ 2 ] + 1,
-                        fullV[ 3 ] + 1, fullH[ 3 ] + 1
+                    const koordinatoj = kadroAlLatLon(
+                        plenajV[ 0 ] + 1, plenajH[ 0 ] + 1,
+                        plenajV[ 1 ] + 1, plenajH[ 1 ] + 1,
+                        plenajV[ 2 ] + 1, plenajH[ 2 ] + 1,
+                        plenajV[ 3 ] + 1, plenajH[ 3 ] + 1
                     );
-                    const names = getNamesForCoords( fullV.map( x => x + 1 ), fullH.map( x => x + 1 ) );
-                    results.push({
-                        lat: coords.lat,
-                        lon: coords.lon,
-                        v: fullV[ 0 ],
-                        h: fullH[ 0 ],
-                        startLevel,
-                        ...names
+                    const nomoj = akiriNomojnPorKoordinatoj( plenajV.map( x => x + 1 ), plenajH.map( x => x + 1 ) );
+                    rezultoj.push({
+                        lat: koordinatoj.lat,
+                        lon: koordinatoj.lon,
+                        v: plenajV[ 0 ],
+                        h: plenajH[ 0 ],
+                        startLevel: komencaNivelo,
+                        ...nomoj
                     });
-                } else if ( level < 3 ) {
-                    searchLevel( level + 1, startLevel, newV, newH, system );
+                } else if ( nivelo < 3 ) {
+                    serĉiNivelon( nivelo + 1, komencaNivelo, novajV, novajH, sistemo );
                 }
             }
         }
     }
 
-    for ( let startLevel = 0; startLevel <= 4 - numParts; startLevel++ ) {
-        ( [ "k", "l", "c" ] as const ).forEach( ( sys ) => searchLevel( startLevel, startLevel, [], [], sys ) );
+    for ( let komencaNivelo = 0; komencaNivelo <= 4 - nombroDePartoj; komencaNivelo++ ) {
+        ( [ "k", "l", "c" ] as const ).forEach( ( sys ) => serĉiNivelon( komencaNivelo, komencaNivelo, [], [], sys ) );
     }
 
-    results.sort( ( a, b ) => {
-        const distA = Math.abs( a.lat - currentLat ) + Math.abs( a.lon - currentLon );
-        const distB = Math.abs( b.lat - currentLat ) + Math.abs( b.lon - currentLon );
+    rezultoj.sort( ( a, b ) => {
+        const distA = Math.abs( a.lat - nunaLat ) + Math.abs( a.lon - nunaLon );
+        const distB = Math.abs( b.lat - nunaLat ) + Math.abs( b.lon - nunaLon );
         return distA - distB;
     });
 
-    return results.length > 0 ? { results } : null;
+    return rezultoj.length > 0 ? { rezultoj } : null;
 }
 
-function displaySearchResults( result: SearchReturn | null ): void {
-    if ( !result ) {
-        searchResults.innerHTML = "<p>֭ſɭɹ ſɟɔ j͐ʃɹʞ ⟅</p>";
-        searchResults.classList.remove( "kobe" );
+function montriSerĉajnRezultojn( rezulto: SerĉaReveno | null ): void {
+    if ( !rezulto ) {
+        serĉajRezultoj.innerHTML = "<p>֭ſɭɹ ſɟɔ j͐ʃɹʞ ⟅</p>";
+        serĉajRezultoj.classList.remove( "kobe" );
         return;
     }
 
-    const { results, zoom } = result;
-    const queryParts = searchInput.value.trim().split( /\s+/ ).filter( p => p.length > 0 );
-    const showList = queryParts.length >= 2 || results.length > 1;
+    const { rezultoj, zomo } = rezulto;
+    const demandopartoj = serĉaEnigo.value.trim().split( /\s+/ ).filter( p => p.length > 0 );
+    const montriListon = demandopartoj.length >= 2 || rezultoj.length > 1;
 
-    if ( !showList && results.length === 1 ) {
-        const r = results[ 0 ];
-        updateMapPosition( r.lat, r.lon, zoom || ZOOM_LEVEL_2 );
-        searchResults.classList.add( "kobe" );
+    if ( !montriListon && rezultoj.length === 1 ) {
+        const r = rezultoj[ 0 ];
+        ĝisdatigiMapanPozicion( r.lat, r.lon, zomo || ZOMO_NIVELO_2 );
+        serĉajRezultoj.classList.add( "kobe" );
         return;
     }
 
-    createResultButtons("#searchResults", results, zoom || ZOOM_LEVEL_2, (lat, lon, targetZoom) => {
-        updateMapPosition(lat, lon, targetZoom);
-        searchResults.classList.add("kobe");
-        searchInput.value = "";
+    kreiRezultbutonojn("#searchResults", rezultoj, zomo || ZOMO_NIVELO_2, (lat, lon, celaZomo) => {
+        ĝisdatigiMapanPozicion(lat, lon, celaZomo);
+        serĉajRezultoj.classList.add("kobe");
+        serĉaEnigo.value = "";
     });
 
-    searchResults.classList.remove( "kobe" );
+    serĉajRezultoj.classList.remove( "kobe" );
 }
 
-async function searchAddress(): Promise<void> {
-    const query = searchInput.value.trim();
-    if ( !query ) return;
+async function serĉiAdreson(): Promise<void> {
+    const demando = serĉaEnigo.value.trim();
+    if ( !demando ) return;
 
-    const result = search( query );
-    if ( result ) {
-        displaySearchResults( result );
+    const rezulto = serĉi( demando );
+    if ( rezulto ) {
+        montriSerĉajnRezultojn( rezulto );
         return;
     }
 
-    searchResults.innerHTML = "<p>ſɭᴎɔ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ</p>";
-    searchResults.classList.remove( "kobe" );
+    serĉajRezultoj.innerHTML = "<p>ſɭᴎɔ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ</p>";
+    serĉajRezultoj.classList.remove( "kobe" );
 
     try {
-        const response = await fetch( `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent( query )}&limit=5` );
-        if ( !response.ok ) throw new Error( "( ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ )" );
+        const respondo = await fetch( `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent( demando )}&limit=5` );
+        if ( !respondo.ok ) throw new Error( "( ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ )" );
 
-        const results: any[] = await response.json();
-        if ( results.length === 0 ) {
-            searchResults.innerHTML = "<p>֭ſɭɹ ſɟɔ j͐ʃɹʞ ⟅</p>";
+        const rezultoj: any[] = await respondo.json();
+        if ( rezultoj.length === 0 ) {
+            serĉajRezultoj.innerHTML = "<p>֭ſɭɹ ſɟɔ j͐ʃɹʞ ⟅</p>";
             return;
         }
 
-        const osmResults: SearchResult[] = results.map(result => ({
-            lat: parseFloat(result.lat),
-            lon: parseFloat(result.lon),
-            ksakaName: result.display_name,
-            latinName: result.display_name,
-            chmuahName: result.display_name,
+        const osmajRezultoj: SerĉaRezulto[] = rezultoj.map(rezultato => ({
+            lat: parseFloat(rezultato.lat),
+            lon: parseFloat(rezultato.lon),
+            ksakaName: rezultato.display_name,
+            latinName: rezultato.display_name,
+            chmuahName: rezultato.display_name,
             v: 0,
             h: 0
         }));
 
-        createResultButtons("#searchResults", osmResults, 0o20, (lat, lon) => {
-            updateMapPosition(lat, lon, 0o20);
-            searchResults.classList.add("kobe");
-            searchInput.value = "";
+        kreiRezultbutonojn("#searchResults", osmajRezultoj, 0o20, (lat, lon) => {
+            ĝisdatigiMapanPozicion(lat, lon, 0o20);
+            serĉajRezultoj.classList.add("kobe");
+            serĉaEnigo.value = "";
         });
 
-    } catch ( error ) {
-        console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", error );
-        searchResults.innerHTML = "<p>ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⟅</p>";
+    } catch ( eraro ) {
+        console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", eraro );
+        serĉajRezultoj.innerHTML = "<p>ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⟅</p>";
     }
 }
 
-// ⟪ Offline functionality 📥 ⟫
+// ⟪ Malreteca funkciado 📥 ⟫
 
-async function downloadCurrentView(): Promise<void> {
-    const zoom = parseInt( document.querySelector(`input[name="zoomSelect"]:checked`)?.getAttribute("value") || "7" );
-    const bounds = map!.getBounds();
+async function elŝutiNunanVidon(): Promise<void> {
+    const zomo = parseInt( document.querySelector(`input[name="zoomSelect"]:checked`)?.getAttribute("value") || "7" );
+    const limoj = mapo!.getBounds();
 
-    downloadBtn.disabled = true;
-    progressBar.classList.add( "active" );
-    downloadStatus.textContent = "ſɭᴎɔ j͑ʃ'ɔ ſɟᴜ ſɭɹ ſȷɔ ⟅";
+    elŝutaButono.disabled = true;
+    progresStrio.classList.add( "active" );
+    elŝutaStato.textContent = "ſɭᴎɔ j͑ʃ'ɔ ſɟᴜ ſɭɹ ſȷɔ ⟅";
 
-    const tiles = getTileList( bounds, zoom );
-    const total = tiles.length;
+    const kaheloj = akiriKahelanListon( limoj, zomo );
+    const tuta = kaheloj.length;
 
-    if ( total > 0o400 ) {
-        if ( !confirm( `This will download ${total} tiles ( ~ ${( total * 1 / 0o20 ).toFixed( 1 ) } MB ) . Continue ?` ) ) {
-            downloadBtn.disabled = false;
-            progressBar.classList.remove( "active" );
-            downloadStatus.textContent = "";
+    if ( tuta > 0o400 ) {
+        if ( !confirm( `Ĉi tio elŝutos ${tuta} kahelojn ( ~ ${( tuta * 1 / 0o20 ).toFixed( 1 ) } MB ) . Daŭrigi ?` ) ) {
+            elŝutaButono.disabled = false;
+            progresStrio.classList.remove( "active" );
+            elŝutaStato.textContent = "";
             return;
         }
     }
 
-    downloadStatus.textContent = `ſɭᶗ‹ɔ ſ͕ɭwc̭ ſɭɹ j͐ʃ ${total} j͑ʃᴜꞇ ſɭɔƽ ⟅`;
+    elŝutaStato.textContent = `ſɭᶗ‹ɔ ſ͕ɭwc̭ ſɭɹ j͐ʃ ${tuta} j͑ʃᴜꞇ ſɭɔƽ ⟅`;
 
     try {
-        const result = await sendMessageToSW( { type: "CACHE_TILES", tiles } ) as CacheSizeResult;
-        progressFill.style.width = "100%";
+        const rezulto = await sendiMesaĝonAlSW( { tipo: "CACHE_TILES", kaheloj } ) as KaŝaGrandaRezulto;
+        progresPlenigo.style.width = "100%";
         setTimeout( () => {
-            downloadStatus.textContent = `ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜꞇ ſ͕ɭwc̭ ſɭɹ j͐ʃ ${result.count} j͑ʃᴜꞇ ſɭɔƽ ✅ ⟅`;
-            progressBar.classList.remove( "active" );
-            progressFill.style.width = "0%";
-            updateCacheInfo();
+            elŝutaStato.textContent = `ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜꞇ ſ͕ɭwc̭ ſɭɹ j͐ʃ ${rezulto.kvanto} j͑ʃᴜꞇ ſɭɔƽ ✅ ⟅`;
+            progresStrio.classList.remove( "active" );
+            progresPlenigo.style.width = "0%";
+            ĝisdatigiKaŝinformojn();
         }, 0o400 );
-    } catch ( err ) {
-        downloadStatus.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${( err as Error ).message} ❌ ⟅`;
-        progressBar.classList.remove( "active" );
+    } catch ( eraro ) {
+        elŝutaStato.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${( eraro as Error ).message} ❌ ⟅`;
+        progresStrio.classList.remove( "active" );
     }
 
-    downloadBtn.disabled = false;
+    elŝutaButono.disabled = false;
 }
 
-function getTileUrl(x: number, y: number, z: number): string {
+function akiriKahelanURL( x: number, y: number, z: number ): string {
     return `https://tile.openstreetmap.org/${z}/${x}/${y}.png`;
 }
 
-function latLonToTile(lat: number, lon: number, zoom: number): { x: number; y: number } {
-    const scale = Math.pow(2, zoom);
-    const x = Math.floor(( lon + 180 ) / 360 * scale);
-    const y = Math.floor(( 1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * scale);
+function latLonAlKahelo( lat: number, lon: number, zomo: number ): { x: number; y: number } {
+    const skalo = Math.pow(2, zomo);
+    const x = Math.floor(( lon + 180 ) / 360 * skalo);
+    const y = Math.floor(( 1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * skalo);
     return { x, y };
 }
 
-function getTileList(bounds: any, zoom: number): string[] {
-    const tiles: string[] = [];
-    const nw = bounds.getNorthWest();
-    const se = bounds.getSouthEast();
+function akiriKahelanListon( limoj: any, zomo: number ): string[] {
+    const kaheloj: string[] = [];
+    const nw = limoj.getNorthWest();
+    const se = limoj.getSouthEast();
 
-    const minTile = latLonToTile(nw.lat, nw.lng, zoom);
-    const maxTile = latLonToTile(se.lat, se.lng, zoom);
+    const minKahelo = latLonAlKahelo(nw.lat, nw.lng, zomo);
+    const maksKahelo = latLonAlKahelo(se.lat, se.lng, zomo);
 
-    for ( let x = minTile.x; x <= maxTile.x; x++ ) {
-        for ( let y = minTile.y; y <= maxTile.y; y++ ) {
-            tiles.push(getTileUrl( x, y, zoom ));
+    for ( let x = minKahelo.x; x <= maksKahelo.x; x++ ) {
+        for ( let y = minKahelo.y; y <= maksKahelo.y; y++ ) {
+            kaheloj.push(akiriKahelanURL( x, y, zomo ));
         }
     }
 
-    return tiles;
+    return kaheloj;
 }
 
-async function clearCache(): Promise<void> {
-    if ( !confirm( "Clear all cached tiles ?" ) ) return;
+async function forigiKaŝmemoron(): Promise<void> {
+    if ( !confirm( "Forigi ĉiujn kaŝitajn kahelojn ?" ) ) return;
 
-    clearCacheBtn.disabled = true;
+    forigiKaŝaButono.disabled = true;
     try {
-        await sendMessageToSW({ type: "CLEAR_TILE_CACHE" });
-        downloadStatus.textContent = "ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜꞇ j͐ʃэ j͑ʃ'ᴜ ᶅſɔ ✅ ⟅";
-        updateCacheInfo();
-        setTimeout(() => downloadStatus.textContent = "", 0o3000);
-    } catch ( err ) {
-        downloadStatus.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${( err as Error ).message} ❌ ⟅`;
+        await sendiMesaĝonAlSW({ tipo: "CLEAR_TILE_CACHE" });
+        elŝutaStato.textContent = "ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜꞇ j͐ʃэ j͑ʃ'ᴜ ᶅſɔ ✅ ⟅";
+        ĝisdatigiKaŝinformojn();
+        setTimeout(() => elŝutaStato.textContent = "", 0o3000);
+    } catch ( eraro ) {
+        elŝutaStato.textContent = `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ${( eraro as Error ).message} ❌ ⟅`;
     }
-    clearCacheBtn.disabled = false;
+    forigiKaŝaButono.disabled = false;
 }
 
-async function updateCacheInfo(): Promise<void> {
+async function ĝisdatigiKaŝinformojn(): Promise<void> {
     try {
-        const result = await sendMessageToSW( { type: "GET_CACHE_SIZE" } ) as CacheSizeResult;
-        cacheStatus.textContent = `ꞁȷ̀ɜ ſןᴜ ʃɜƽ ꞁȷ̀ᴜꞇ j͑ʃ'ɜ ſןɹ - ${result.size} ⟅`;
-        cacheSize.textContent = `~ ${( result.size * 1 / 0o10 ).toFixed(1)} j͑ʃᴜꞇ ꞙɭц ſɟᴜ ꞙɭıɔ ⟅`;
-    } catch ( err ) {
-        console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", err);
+        const rezulto = await sendiMesaĝonAlSW( { tipo: "GET_CACHE_SIZE" } ) as KaŝaGrandaRezulto;
+        kaŝaStato.textContent = `ꞁȷ̀ɜ ſןᴜ ʃɜƽ ꞁȷ̀ᴜꞇ j͑ʃ'ɜ ſןɹ - ${rezulto.grandeco} ⟅`;
+        kaŝaGrando.textContent = `~ ${( rezulto.grandeco * 1 / 0o10 ).toFixed(1)} j͑ʃᴜꞇ ꞙɭц ſɟᴜ ꞙɭıɔ ⟅`;
+    } catch ( eraro ) {
+        console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", eraro);
     }
 }
 
-function sendMessageToSW(message: SWMessage): Promise<any> {
-    return new Promise(( resolve, reject ) => {
+function sendiMesaĝonAlSW( mesaĝo: SWMesaĝo ): Promise<any> {
+    return new Promise(( solvi, rifuzi ) => {
         if ( !navigator.serviceWorker.controller ) {
-            reject(new Error("No service worker controller"));
+            rifuzi(new Error("Neniu servilo-laboranto reganto"));
             return;
         }
 
-        const messageChannel = new MessageChannel();
-        messageChannel.port1.onmessage = ( event ) => {
-            if ( event.data.error ) {
-                reject(new Error(event.data.error));
+        const mesaĝaKanalo = new MessageChannel();
+        mesaĝaKanalo.port1.onmessage = ( evento ) => {
+            if ( evento.data.eraro ) {
+                rifuzi(new Error(evento.data.eraro));
             } else {
-                resolve( event.data );
+                solvi( evento.data );
             }
         };
 
-        navigator.serviceWorker.controller.postMessage(message, [ messageChannel.port2 ]);
+        navigator.serviceWorker.controller.postMessage(mesaĝo, [ mesaĝaKanalo.port2 ]);
     } );
 }
 
-init();
+inicialigi();

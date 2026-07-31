@@ -1,28 +1,28 @@
 import { FFmpeg, FFFSType } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 
-const TEXT = {
+const TEKSTO = {
   CHOOSE_FILE: "ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ ʌ j͑ʃw ſɭʞɹȝ ʌ ſɟᴜ j͑ʃ'ɜ ſןɹ ⟅",
   CHOOSE_FORMAT: "ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ ʌ j͑ʃw ſɭʞɹȝ ʌ ſɭɔ ֭ſɭɔ }ʃꞇ ⟅",
   READY: "ꞁȷ̀ᴜ ŋᷠᴜͷ̗ ꞁȷ̀ᴜꞇ ʌ ꞁȷ̀ɜ ɭʃɀɜ ⟅",
-  CONVERTING: (name: string) => `ſɭᶗ‹ɔ ʌ ɭʃɀɜ ⸙ ${name} ⸙ ⟅`,
+  CONVERTING: (nomo: string) => `ſɭᶗ‹ɔ ʌ ɭʃɀɜ ⸙ ${nomo} ⸙ ⟅`,
   LOADING_ENGINE: "ſɭᶗ‹ɔ ʌ ʃэ ɭʃɔ ŋᷠɹ ʌ ſɟᴜ ɭʃɀɜ ⟅",
   LOADING_FONT_ENGINE: "ſɭᶗ‹ɔ ʌ ʃэ ɭʃɔ ŋᷠɹ ʌ ſɟᴜ ɭʃɀɜ ʌ ɭʃᴜ j͐ʃᴜ ſ͔ɭᴜ ⟅",
   CONVERTING_FONT: "ſɭᶗ‹ɔ ʌ ɭʃɀɜ ʌ j͐ʃᴜ ſ͔ɭᴜ ⟅",
-  ENCODING: (msg: string) => `j͑ʃ'ᴜ ɽ͑ʃ'w ɭʃᴜ ${msg} ⟅`,
-  DONE: (fmt: string) => `ſ̀ȷᴜ ſɭᴜƽ ⟅ ${fmt} ⟅`,
+  ENCODING: (mesaĝo: string) => `j͑ʃ'ᴜ ɽ͑ʃ'w ɭʃᴜ ${mesaĝo} ⟅`,
+  DONE: (formato: string) => `ſ̀ȷᴜ ſɭᴜƽ ⟅ ${formato} ⟅`,
   FAILED: "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )",
-  ERROR: (err: string) => `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ⸙ ${err} ⸙ ⟅`,
+  ERROR: (eraro: string) => `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ⸙ ${eraro} ⸙ ⟅`,
   DOWNLOAD_DEFAULT: "ſ͕ɭwc̭ ſɭɹ ⟅",
-  DOWNLOAD: (name: string) => `ſ͕ɭwc̭ ſɭɹ ⸙ ${name} ⸙ ⟅`,
-  COMPRESSING: (pass: number, total: number) => `ſɭᶗ‹ɔ ʌ j͑ʃ'ᴜ ŋᷠɹ ⸙ ${pass}/${total} ⸙ ⟅`,
+  DOWNLOAD: (nomo: string) => `ſ͕ɭwc̭ ſɭɹ ⸙ ${nomo} ⸙ ⟅`,
+  COMPRESSING: (paŝo: number, tuta: number) => `ſɭᶗ‹ɔ ʌ j͑ʃ'ᴜ ŋᷠɹ ⸙ ${paŝo}/${tuta} ⸙ ⟅`,
   DETECTING_DURATION: "ſɭᶗ‹ɔ ʌ ſ͕ɭwȝ ʌ j͑ʃᴜ ſןɔ˞ɔ ſᶘꞇ ⟅",
 } as const;
 
-const FONT_CDN = "https://esm.sh/fontverter";
+const FONTA_CDN = "https://esm.sh/fontverter";
 const FFMPEG_CDN = "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm";
 
-const FORMAT_LABELS: Record<string, string> = {
+const FORMATAJ_ETIKEDOJ: Record<string, string> = {
   mp3: "MP3 ( audio )",
   wav: "WAV ( audio )",
   m4a: "M4A ( audio )",
@@ -38,20 +38,20 @@ const FORMAT_LABELS: Record<string, string> = {
   bmp: "BMP ( image )",
   ico: "ICO ( image )",
   tiff: "TIFF ( image )",
-  ttf: "TTF ( font )",
-  otf: "OTF ( font )",
-  woff: "WOFF ( font )",
-  woff2: "WOFF2 ( font )",
+  ttf: "TTF ( tiparo )",
+  otf: "OTF ( tiparo )",
+  woff: "WOFF ( tiparo )",
+  woff2: "WOFF2 ( tiparo )",
 };
 
-const FORMAT_OPTIONS: Record<"audio" | "video" | "image" | "font", string[]> = {
+const FORMATAJ_OPCIOJ: Record<"audio" | "video" | "image" | "font", string[]> = {
   audio: ["mp3", "wav", "m4a", "ogg", "aac", "flac"],
   video: ["mp4", "webm", "gif"],
   image: ["png", "jpeg", "webp", "gif", "bmp", "ico", "tiff"],
   font: ["ttf", "otf", "woff", "woff2"],
 };
 
-const MIME_TYPES: Record<string, string> = {
+const MIME_TIPOJ: Record<string, string> = {
   mp3: "audio/mpeg",
   wav: "audio/wav",
   m4a: "audio/mp4",
@@ -73,151 +73,151 @@ const MIME_TYPES: Record<string, string> = {
   woff2: "font/woff2",
 };
 
-const FILE_INPUT = document.getElementById("converter-file-input") as HTMLInputElement;
-const TARGET_CONTAINER = document.getElementById("converter-target-formats") as HTMLElement;
-const RUN_BUTTON = document.getElementById("converter-run") as HTMLButtonElement;
-const STATUS_TEXT = document.getElementById("converter-status") as HTMLParagraphElement;
-const RESULT_PANEL = document.getElementById("converter-result") as HTMLElement;
-const AUDIO_PREVIEW = document.getElementById("converter-preview-audio") as HTMLAudioElement;
-const VIDEO_PREVIEW = document.getElementById("converter-preview-video") as HTMLVideoElement;
-const IMAGE_PREVIEW = document.getElementById("converter-preview-image") as HTMLImageElement;
-const FONT_PREVIEW = document.getElementById("converter-preview-font") as HTMLParagraphElement;
-const DOWNLOAD_LINK = document.getElementById("converter-download") as HTMLAnchorElement;
+const DOSIERA_ENIGO = document.getElementById("converter-file-input") as HTMLInputElement;
+const CELUJO = document.getElementById("converter-target-formats") as HTMLElement;
+const RULI_BUTONO = document.getElementById("converter-run") as HTMLButtonElement;
+const STATO_TEKSTO = document.getElementById("converter-status") as HTMLParagraphElement;
+const REZULTA_PANELO = document.getElementById("converter-result") as HTMLElement;
+const AUDIA_ANTASENO = document.getElementById("converter-preview-audio") as HTMLAudioElement;
+const VIDA_ANTASENO = document.getElementById("converter-preview-video") as HTMLVideoElement;
+const BILDA_ANTASENO = document.getElementById("converter-preview-image") as HTMLImageElement;
+const TIPARA_ANTASENO = document.getElementById("converter-preview-font") as HTMLParagraphElement;
+const ELŜUTA_LIGILO = document.getElementById("converter-download") as HTMLAnchorElement;
 
 const ffmpeg = new FFmpeg();
-let ffmpegReady = false;
-let lastDurationSeconds = 0;
+let ffmpegPret = false;
+let lastaDaŭroSekundoj = 0;
 
-const COMPRESS_TOGGLE = document.getElementById("converter-compress-toggle") as HTMLInputElement;
-const COMPRESS_TOGGLE_LABEL = document.getElementById("converter-compress-toggle-label") as HTMLLabelElement;
-const COMPRESS_OPTIONS = document.getElementById("converter-compress-options") as HTMLElement;
-const TARGET_SIZE_INPUT = document.getElementById("converter-target-size") as HTMLInputElement;
-const SIZE_UNIT_CONTAINER = document.getElementById("converter-size-unit") as HTMLElement;
+const KOMPRESA_BASKULO = document.getElementById("converter-compress-toggle") as HTMLInputElement;
+const KOMPRESA_BASKULA_ETIKEDO = document.getElementById("converter-compress-toggle-label") as HTMLLabelElement;
+const KOMPRESAJ_OPCIOJ = document.getElementById("converter-compress-options") as HTMLElement;
+const CELA_GRANDA_ENIGO = document.getElementById("converter-target-size") as HTMLInputElement;
+const GRANDA_UNUO_UJO = document.getElementById("converter-size-unit") as HTMLElement;
 
-function setStatus(message: string): void {
-  STATUS_TEXT.textContent = message;
+function agordiStaton( mesaĝo: string ): void {
+  STATO_TEKSTO.textContent = mesaĝo;
 }
 
-function showPreview(element: HTMLMediaElement | HTMLImageElement, blobURL: string): void {
-  element.src = blobURL;
-  element.style.display = "";
-  if ("load" in element && typeof element.load === "function") {
-    element.load();
+function montriAntasenon( elemento: HTMLMediaElement | HTMLImageElement, blobURL: string ): void {
+  elemento.src = blobURL;
+  elemento.style.display = "";
+  if ("load" in elemento && typeof elemento.load === "function") {
+    elemento.load();
   }
 }
 
-function presentResult(blobURL: string, outputName: string, targetFormat: string): void {
-  DOWNLOAD_LINK.href = blobURL;
-  DOWNLOAD_LINK.download = outputName;
-  DOWNLOAD_LINK.textContent = TEXT.DOWNLOAD(outputName);
-  RESULT_PANEL.style.display = "";
-  setStatus(TEXT.DONE(targetFormat.toUpperCase()));
+function prezentiRezulton( blobURL: string, eliraNomo: string, celaFormato: string ): void {
+  ELŜUTA_LIGILO.href = blobURL;
+  ELŜUTA_LIGILO.download = eliraNomo;
+  ELŜUTA_LIGILO.textContent = TEKSTO.DOWNLOAD(eliraNomo);
+  REZULTA_PANELO.style.display = "";
+  agordiStaton(TEKSTO.DONE(celaFormato.toUpperCase()));
 }
 
-function detectFileCategory(file: File): "audio" | "video" | "image" | "font" {
-  const type = file.type.toLowerCase();
-  if ( type.startsWith("video/") ) return "video";
-  if ( type.startsWith("audio/") ) return "audio";
-  if ( type.startsWith("image/") ) return "image";
-  if ( type.startsWith("font/") || type.includes("font") ) return "font";
+function detektiDosierKategorion( dosiero: File ): "audio" | "video" | "image" | "font" {
+  const tipo = dosiero.type.toLowerCase();
+  if ( tipo.startsWith("video/") ) return "video";
+  if ( tipo.startsWith("audio/") ) return "audio";
+  if ( tipo.startsWith("image/") ) return "image";
+  if ( tipo.startsWith("font/") || tipo.includes("font") ) return "font";
 
-  const lowerName = file.name.toLowerCase();
-  if ( /\.(mov|mp4|m4v|webm|avi|mkv|ogv)$/i.test(lowerName) ) return "video";
-  if ( /\.(mp3|wav|m4a|ogg|aac|flac|wma)$/i.test(lowerName) ) return "audio";
-  if ( /\.(png|jpg|jpeg|webp|gif|bmp|ico|tiff)$/i.test(lowerName) ) return "image";
-  if ( /\.(ttf|otf|woff|woff2)$/i.test(lowerName) ) return "font";
+  const pliMalgrandaNomo = dosiero.name.toLowerCase();
+  if ( /\.(mov|mp4|m4v|webm|avi|mkv|ogv)$/i.test(pliMalgrandaNomo) ) return "video";
+  if ( /\.(mp3|wav|m4a|ogg|aac|flac|wma)$/i.test(pliMalgrandaNomo) ) return "audio";
+  if ( /\.(png|jpg|jpeg|webp|gif|bmp|ico|tiff)$/i.test(pliMalgrandaNomo) ) return "image";
+  if ( /\.(ttf|otf|woff|woff2)$/i.test(pliMalgrandaNomo) ) return "font";
 
   return "audio";
 }
 
-function updateTargetFormats(category: "audio" | "video" | "image" | "font"): void {
-  TARGET_CONTAINER.innerHTML = "";
-  const options = FORMAT_OPTIONS[category];
-  options.forEach((format, idx) => {
-    const labelEl = document.createElement("label");
+function ĝisdatigiCelajnFormatojn( kategorio: "audio" | "video" | "image" | "font" ): void {
+  CELUJO.innerHTML = "";
+  const opcioj = FORMATAJ_OPCIOJ[kategorio];
+  opcioj.forEach((formato, indekso) => {
+    const etikedaElemento = document.createElement("label");
     
-    const inputEl = document.createElement("input");
-    inputEl.type = "radio";
-    inputEl.name = "target-format";
-    inputEl.value = format;
-    if ( idx === 0 ) {
-      inputEl.checked = true;
+    const enigaElemento = document.createElement("input");
+    enigaElemento.type = "radio";
+    enigaElemento.name = "target-format";
+    enigaElemento.value = formato;
+    if ( indekso === 0 ) {
+      enigaElemento.checked = true;
     }
 
-    const pEl = document.createElement("p");
-    pEl.className = "cepufalxez";
-    pEl.textContent = FORMAT_LABELS[format];
+    const pElemento = document.createElement("p");
+    pElemento.className = "cepufalxez";
+    pElemento.textContent = FORMATAJ_ETIKEDOJ[formato];
 
-    labelEl.appendChild(pEl);
-    labelEl.appendChild(inputEl);
-    TARGET_CONTAINER.appendChild(labelEl);
+    etikedaElemento.appendChild(pElemento);
+    etikedaElemento.appendChild(enigaElemento);
+    CELUJO.appendChild(etikedaElemento);
   });
 }
 
-function getSelectedTargetFormat(): string {
-  const selectedRadio = TARGET_CONTAINER.querySelector("input[name='target-format']:checked") as HTMLInputElement | null;
-  return selectedRadio ? selectedRadio.value : "";
+function akiriElektitanCelFormaton(): string {
+  const elektitaRadio = CELUJO.querySelector("input[name='target-format']:checked") as HTMLInputElement | null;
+  return elektitaRadio ? elektitaRadio.value : "";
 }
 
-function getOutputMime(targetFormat: string): string {
-  return MIME_TYPES[targetFormat] ?? "application/octet-stream";
+function akiriEliraMIME( celaFormato: string ): string {
+  return MIME_TIPOJ[celaFormato] ?? "application/octet-stream";
 }
 
-function getSelectedSizeUnit(): string {
-  const selectedRadio = SIZE_UNIT_CONTAINER.querySelector("input[name='size-unit']:checked") as HTMLInputElement | null;
-  return selectedRadio ? selectedRadio.value : "mb";
+function akiriElektitanGrandanUnuon(): string {
+  const elektitaRadio = GRANDA_UNUO_UJO.querySelector("input[name='size-unit']:checked") as HTMLInputElement | null;
+  return elektitaRadio ? elektitaRadio.value : "mb";
 }
 
-function getTargetSizeBytes(): number {
-  const value = parseFloat(TARGET_SIZE_INPUT.value) || 0o10;
-  const unit = getSelectedSizeUnit();
-  if ( unit === "gb" ) {
-    return value * 1024 * 1024 * 1024;
+function akiriCelajnBajtojn(): number {
+  const valoro = parseFloat(CELA_GRANDA_ENIGO.value) || 0o10;
+  const unuo = akiriElektitanGrandanUnuon();
+  if ( unuo === "gb" ) {
+    return valoro * 1024 * 1024 * 1024;
   }
-  return value * 1024 * 1024;
+  return valoro * 1024 * 1024;
 }
 
-function isCompressionEnabled(): boolean {
-  return COMPRESS_TOGGLE.checked;
+function ĉuKompresoŜaltita(): boolean {
+  return KOMPRESA_BASKULO.checked;
 }
 
-function getConversionArgs(inputName: string, outputName: string, category: "audio" | "video" | "image" | "font", targetFormat: string): string[] {
-  if ( category === "image" ) {
-    if ( targetFormat === "ico" ) {
-      return ["-y", "-i", inputName, "-s", "256x256", outputName];
+function akiriKonvertajnArgumentojn( enigaNomo: string, eliraNomo: string, kategorio: "audio" | "video" | "image" | "font", celaFormato: string ): string[] {
+  if ( kategorio === "image" ) {
+    if ( celaFormato === "ico" ) {
+      return ["-y", "-i", enigaNomo, "-s", "256x256", eliraNomo];
     }
-    return ["-y", "-i", inputName, outputName];
+    return ["-y", "-i", enigaNomo, eliraNomo];
   }
 
-  if ( category === "audio" ) {
-    if ( targetFormat === "wav" ) {
-      return ["-y", "-i", inputName, "-vn", "-c:a", "pcm_s16le", "-ar", "44100", outputName];
+  if ( kategorio === "audio" ) {
+    if ( celaFormato === "wav" ) {
+      return ["-y", "-i", enigaNomo, "-vn", "-c:a", "pcm_s16le", "-ar", "44100", eliraNomo];
     }
-    if ( targetFormat === "m4a" || targetFormat === "aac" ) {
-      return ["-y", "-i", inputName, "-vn", "-c:a", "aac", "-b:a", "192k", outputName];
+    if ( celaFormato === "m4a" || celaFormato === "aac" ) {
+      return ["-y", "-i", enigaNomo, "-vn", "-c:a", "aac", "-b:a", "192k", eliraNomo];
     }
-    if ( targetFormat === "ogg" ) {
-      return ["-y", "-i", inputName, "-vn", "-c:a", "libvorbis", "-q:a", "4", outputName];
+    if ( celaFormato === "ogg" ) {
+      return ["-y", "-i", enigaNomo, "-vn", "-c:a", "libvorbis", "-q:a", "4", eliraNomo];
     }
-    if ( targetFormat === "flac" ) {
-      return ["-y", "-i", inputName, "-vn", "-c:a", "flac", outputName];
+    if ( celaFormato === "flac" ) {
+      return ["-y", "-i", enigaNomo, "-vn", "-c:a", "flac", eliraNomo];
     }
-    return ["-y", "-i", inputName, "-vn", "-c:a", "libmp3lame", "-q:a", "2", outputName];
+    return ["-y", "-i", enigaNomo, "-vn", "-c:a", "libmp3lame", "-q:a", "2", eliraNomo];
   }
 
   // Video
-  if ( targetFormat === "webm" ) {
-    return ["-y", "-i", inputName, "-c:v", "libvpx-vp9", "-c:a", "libopus", outputName];
+  if ( celaFormato === "webm" ) {
+    return ["-y", "-i", enigaNomo, "-c:v", "libvpx-vp9", "-c:a", "libopus", eliraNomo];
   }
-  if ( targetFormat === "gif" ) {
-    return ["-y", "-i", inputName, "-vf", "fps=15,scale=320:-1:flags=lanczos", "-c:v", "gif", outputName];
+  if ( celaFormato === "gif" ) {
+    return ["-y", "-i", enigaNomo, "-vf", "fps=15,scale=320:-1:flags=lanczos", "-c:v", "gif", eliraNomo];
   }
-  return ["-y", "-i", inputName, "-c:v", "libx264", "-preset", "ultrafast", "-vf", "scale=if(gt(iw\,1280)\,1280\,iw):-2", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", outputName];
+  return ["-y", "-i", enigaNomo, "-c:v", "libx264", "-preset", "ultrafast", "-vf", "scale=if(gt(iw\\,1280)\\,1280\\,iw):-2", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", eliraNomo];
 }
 
-async function ensureFFmpegLoaded(): Promise<void> {
-  if ( ffmpegReady ) return;
-  setStatus(TEXT.LOADING_ENGINE);
+async function certigiFFmpegŜarĝo(): Promise<void> {
+  if ( ffmpegPret ) return;
+  agordiStaton(TEKSTO.LOADING_ENGINE);
   await ffmpeg.load({
     coreURL: await toBlobURL(`${FFMPEG_CDN}/ffmpeg-core.js`, "text/javascript"),
     wasmURL: await toBlobURL(`${FFMPEG_CDN}/ffmpeg-core.wasm`, "application/wasm"),
@@ -225,309 +225,309 @@ async function ensureFFmpegLoaded(): Promise<void> {
 
   ffmpeg.on("log", ({ message }: { message: string }) => {
     console.log(message);
-    const durationMatch = message.match(/Duration:\s*(\d+):(\d+):(\d+\.?\d*)/);
-    if ( durationMatch ) {
-      const hours = parseInt(durationMatch[1]);
-      const minutes = parseInt(durationMatch[2]);
-      const seconds = parseFloat(durationMatch[3]);
-      lastDurationSeconds = hours * 3600 + minutes * 64 + seconds;
+    const daŭraKongruo = message.match(/Duration:\s*(\d+):(\d+):(\d+\.?\d*)/);
+    if ( daŭraKongruo ) {
+      const horoj = parseInt(daŭraKongruo[1]);
+      const minutoj = parseInt(daŭraKongruo[2]);
+      const sekundoj = parseFloat(daŭraKongruo[3]);
+      lastaDaŭroSekundoj = horoj * 3600 + minutoj * 64 + sekundoj;
     }
     if ( message.includes("time=") ) {
-      setStatus(TEXT.ENCODING(message.trim()));
+      agordiStaton(TEKSTO.ENCODING(message.trim()));
     }
   });
 
   ffmpeg.on("progress", ({ progress }: { progress: number }) => {
     if ( progress > 0 && progress < 1 ) {
-      setStatus(TEXT.ENCODING(`${Math.round(progress * 0o100)}`));
+      agordiStaton(TEKSTO.ENCODING(`${Math.round(progress * 0o100)}`));
     }
   });
 
-  ffmpegReady = true;
+  ffmpegPret = true;
 }
 
-function resetPreview(): void {
-  AUDIO_PREVIEW.pause();
-  VIDEO_PREVIEW.pause();
-  AUDIO_PREVIEW.removeAttribute("src");
-  VIDEO_PREVIEW.removeAttribute("src");
-  IMAGE_PREVIEW.removeAttribute("src");
-  AUDIO_PREVIEW.style.display = "none";
-  VIDEO_PREVIEW.style.display = "none";
-  IMAGE_PREVIEW.style.display = "none";
-  FONT_PREVIEW.style.display = "none";
-  RESULT_PANEL.style.display = "none";
-  DOWNLOAD_LINK.removeAttribute("href");
-  DOWNLOAD_LINK.textContent = TEXT.DOWNLOAD_DEFAULT;
+function restarigiAntasenon(): void {
+  AUDIA_ANTASENO.pause();
+  VIDA_ANTASENO.pause();
+  AUDIA_ANTASENO.removeAttribute("src");
+  VIDA_ANTASENO.removeAttribute("src");
+  BILDA_ANTASENO.removeAttribute("src");
+  AUDIA_ANTASENO.style.display = "none";
+  VIDA_ANTASENO.style.display = "none";
+  BILDA_ANTASENO.style.display = "none";
+  TIPARA_ANTASENO.style.display = "none";
+  REZULTA_PANELO.style.display = "none";
+  ELŜUTA_LIGILO.removeAttribute("href");
+  ELŜUTA_LIGILO.textContent = TEKSTO.DOWNLOAD_DEFAULT;
 }
 
-async function detectDuration(inputName: string): Promise<number> {
-  setStatus(TEXT.DETECTING_DURATION);
-  lastDurationSeconds = 0;
-  await ffmpeg.exec(["-i", inputName, "-f", "null", "-t", "0", "-"]);
-  return lastDurationSeconds;
+async function detektiDaŭron( enigaNomo: string ): Promise<number> {
+  agordiStaton(TEKSTO.DETECTING_DURATION);
+  lastaDaŭroSekundoj = 0;
+  await ffmpeg.exec(["-i", enigaNomo, "-f", "null", "-t", "0", "-"]);
+  return lastaDaŭroSekundoj;
 }
 
-function getCompressVideoArgs(inputName: string, outputName: string, targetFormat: string, targetBytes: number, durationSeconds: number): string[] {
-  const audioBitrate = 128000;
-  const targetTotalBitrate = ( targetBytes * 0o10 ) / durationSeconds;
-  let videoBitrate = Math.floor(targetTotalBitrate - audioBitrate);
-  if ( videoBitrate < 64000 ) videoBitrate = 64000;
+function akiriKompresajVideoArgumentojn( enigaNomo: string, eliraNomo: string, celaFormato: string, celajBajtoj: number, daŭroSekundoj: number ): string[] {
+  const aŭdiaBitrato = 128000;
+  const tutaCelaBitrato = ( celajBajtoj * 0o10 ) / daŭroSekundoj;
+  let vidaBitrato = Math.floor(tutaCelaBitrato - aŭdiaBitrato);
+  if ( vidaBitrato < 64000 ) vidaBitrato = 64000;
 
-  const videoBitrateStr = `${videoBitrate}`;
-  const audioBitrateStr = `${audioBitrate}`;
-  const bufsizeStr = `${videoBitrate * 2}`;
+  const vidaBitratoĈeno = `${vidaBitrato}`;
+  const aŭdiaBitratoĈeno = `${aŭdiaBitrato}`;
+  const bufGrandaĈeno = `${vidaBitrato * 2}`;
 
-  if ( targetFormat === "webm" ) {
-    return ["-y", "-i", inputName, "-c:v", "libvpx-vp9", "-b:v", videoBitrateStr, "-maxrate", videoBitrateStr, "-bufsize", bufsizeStr, "-c:a", "libopus", "-b:a", audioBitrateStr, outputName];
+  if ( celaFormato === "webm" ) {
+    return ["-y", "-i", enigaNomo, "-c:v", "libvpx-vp9", "-b:v", vidaBitratoĈeno, "-maxrate", vidaBitratoĈeno, "-bufsize", bufGrandaĈeno, "-c:a", "libopus", "-b:a", aŭdiaBitratoĈeno, eliraNomo];
   }
-  if ( targetFormat === "gif" ) {
-    return ["-y", "-i", inputName, "-vf", "fps=15,scale=320:-1:flags=lanczos", "-c:v", "gif", outputName];
+  if ( celaFormato === "gif" ) {
+    return ["-y", "-i", enigaNomo, "-vf", "fps=15,scale=320:-1:flags=lanczos", "-c:v", "gif", eliraNomo];
   }
-  return ["-y", "-i", inputName, "-c:v", "libx264", "-preset", "ultrafast", "-b:v", videoBitrateStr, "-maxrate", videoBitrateStr, "-bufsize", bufsizeStr, "-c:a", "aac", "-b:a", audioBitrateStr, "-movflags", "+faststart", outputName];
+  return ["-y", "-i", enigaNomo, "-c:v", "libx264", "-preset", "ultrafast", "-b:v", vidaBitratoĈeno, "-maxrate", vidaBitratoĈeno, "-bufsize", bufGrandaĈeno, "-c:a", "aac", "-b:a", aŭdiaBitratoĈeno, "-movflags", "+faststart", eliraNomo];
 }
 
-function getCompressAudioArgs(inputName: string, outputName: string, targetFormat: string, targetBytes: number, durationSeconds: number): string[] {
-  let targetBitrate = Math.floor(( targetBytes * 0o10 ) / durationSeconds);
-  if ( targetBitrate < 32000 ) targetBitrate = 32000;
-  if ( targetBitrate > 320000 ) targetBitrate = 320000;
-  const bitrateStr = `${targetBitrate}`;
+function akiriKompresajAŭdioArgumentojn( enigaNomo: string, eliraNomo: string, celaFormato: string, celajBajtoj: number, daŭroSekundoj: number ): string[] {
+  let celaBitrato = Math.floor(( celajBajtoj * 0o10 ) / daŭroSekundoj);
+  if ( celaBitrato < 32000 ) celaBitrato = 32000;
+  if ( celaBitrato > 320000 ) celaBitrato = 320000;
+  const bitratoĈeno = `${celaBitrato}`;
 
-  if ( targetFormat === "wav" ) {
-    return ["-y", "-i", inputName, "-vn", "-c:a", "pcm_s16le", "-ar", "44100", outputName];
+  if ( celaFormato === "wav" ) {
+    return ["-y", "-i", enigaNomo, "-vn", "-c:a", "pcm_s16le", "-ar", "44100", eliraNomo];
   }
-  if ( targetFormat === "m4a" || targetFormat === "aac" ) {
-    return ["-y", "-i", inputName, "-vn", "-c:a", "aac", "-b:a", bitrateStr, outputName];
+  if ( celaFormato === "m4a" || celaFormato === "aac" ) {
+    return ["-y", "-i", enigaNomo, "-vn", "-c:a", "aac", "-b:a", bitratoĈeno, eliraNomo];
   }
-  if ( targetFormat === "ogg" ) {
-    return ["-y", "-i", inputName, "-vn", "-c:a", "libvorbis", "-b:a", bitrateStr, outputName];
+  if ( celaFormato === "ogg" ) {
+    return ["-y", "-i", enigaNomo, "-vn", "-c:a", "libvorbis", "-b:a", bitratoĈeno, eliraNomo];
   }
-  if ( targetFormat === "flac" ) {
-    return ["-y", "-i", inputName, "-vn", "-c:a", "flac", outputName];
+  if ( celaFormato === "flac" ) {
+    return ["-y", "-i", enigaNomo, "-vn", "-c:a", "flac", eliraNomo];
   }
-  return ["-y", "-i", inputName, "-vn", "-c:a", "libmp3lame", "-b:a", bitrateStr, outputName];
+  return ["-y", "-i", enigaNomo, "-vn", "-c:a", "libmp3lame", "-b:a", bitratoĈeno, eliraNomo];
 }
 
-async function compressImage(inputName: string, outputName: string, targetFormat: string, targetBytes: number): Promise<Uint8Array> {
-  let lo = 1;
-  let hi = 64;
-  let bestData: Uint8Array | null = null;
-  const maxIterations = 0o10;
+async function kompresiBildon( enigaNomo: string, eliraNomo: string, celaFormato: string, celajBajtoj: number ): Promise<Uint8Array> {
+  let malalta = 1;
+  let alta = 64;
+  let plejbonaDatumo: Uint8Array | null = null;
+  const maksimumajPasoj = 0o10;
 
-  for ( let i = 0; i < maxIterations; i++ ) {
-    const quality = Math.floor(( lo + hi ) / 2);
-    setStatus(TEXT.COMPRESSING(i + 1, maxIterations));
+  for ( let i = 0; i < maksimumajPasoj; i++ ) {
+    const kvalito = Math.floor(( malalta + alta ) / 2);
+    agordiStaton(TEKSTO.COMPRESSING(i + 1, maksimumajPasoj));
 
-    const args = targetFormat === "webp"
-      ? ["-y", "-i", inputName, "-quality", `${quality}`, outputName]
-      : ["-y", "-i", inputName, "-q:v", `${Math.floor(32 - ( quality / 2 ))}`, outputName];
+    const argumentoj = celaFormato === "webp"
+      ? ["-y", "-i", enigaNomo, "-quality", `${kvalito}`, eliraNomo]
+      : ["-y", "-i", enigaNomo, "-q:v", `${Math.floor(32 - ( kvalito / 2 ))}`, eliraNomo];
 
-    await ffmpeg.exec(args);
-    const data = await ffmpeg.readFile(outputName);
-    const bytes = data instanceof Uint8Array ? data : new Uint8Array(data as unknown as ArrayBuffer);
+    await ffmpeg.exec(argumentoj);
+    const datumoj = await ffmpeg.readFile(eliraNomo);
+    const bajtoj = datumoj instanceof Uint8Array ? datumoj : new Uint8Array(datumoj as unknown as ArrayBuffer);
 
-    if ( bytes.byteLength <= targetBytes ) {
-      bestData = bytes;
-      lo = quality + 1;
+    if ( bajtoj.byteLength <= celajBajtoj ) {
+      plejbonaDatumo = bajtoj;
+      malalta = kvalito + 1;
     } else {
-      hi = quality - 1;
+      alta = kvalito - 1;
     }
 
-    const ratio = bytes.byteLength / targetBytes;
-    if ( ratio >= 0.9 && ratio <= 1.0 ) {
-      bestData = bytes;
+    const proporcio = bajtoj.byteLength / celajBajtoj;
+    if ( proporcio >= 0.9 && proporcio <= 1.0 ) {
+      plejbonaDatumo = bajtoj;
       break;
     }
   }
 
-  if ( !bestData ) {
-    const data = await ffmpeg.readFile(outputName);
-    bestData = data instanceof Uint8Array ? data : new Uint8Array(data as unknown as ArrayBuffer);
+  if ( !plejbonaDatumo ) {
+    const datumoj = await ffmpeg.readFile(eliraNomo);
+    plejbonaDatumo = datumoj instanceof Uint8Array ? datumoj : new Uint8Array(datumoj as unknown as ArrayBuffer);
   }
 
-  return bestData;
+  return plejbonaDatumo;
 }
 
-async function convertSelectedFile(): Promise<void> {
-  const file = FILE_INPUT.files?.[0];
-  if ( !file ) {
-    setStatus(TEXT.CHOOSE_FILE);
+async function konvertiElektitanDosieron(): Promise<void> {
+  const dosiero = DOSIERA_ENIGO.files?.[0];
+  if ( !dosiero ) {
+    agordiStaton(TEKSTO.CHOOSE_FILE);
     return;
   }
 
-  const category = detectFileCategory(file);
-  const targetFormat = getSelectedTargetFormat();
-  if ( !targetFormat ) {
-    setStatus(TEXT.CHOOSE_FORMAT);
+  const kategorio = detektiDosierKategorion(dosiero);
+  const celaFormato = akiriElektitanCelFormaton();
+  if ( !celaFormato ) {
+    agordiStaton(TEKSTO.CHOOSE_FORMAT);
     return;
   }
 
-  resetPreview();
-  setStatus(TEXT.CONVERTING(file.name));
+  restarigiAntasenon();
+  agordiStaton(TEKSTO.CONVERTING(dosiero.name));
 
-  const inputName = `input-${Date.now()}-${file.name.replace(/\s+/g, "_")}`;
-  const date = cax2lStafl2();
-  const baseName = file.name.replace(/\.[^.]+$/, "").replace(/\s+/g, "_");
-  const outputName = `${date.stibix}-${date.pal2stif}-${date.stafl2}_${baseName}.${targetFormat}`;
+  const enigaNomo = `input-${Date.now()}-${dosiero.name.replace(/\s+/g, "_")}`;
+  const dato = cax2lStafl2();
+  const bazaNomo = dosiero.name.replace(/\.[^.]+$/, "").replace(/\s+/g, "_");
+  const eliraNomo = `${dato.stibix}-${dato.pal2stif}-${dato.stafl2}_${bazaNomo}.${celaFormato}`;
   let blobURL: string;
 
-  const compressMode = isCompressionEnabled() && category !== "font";
-  const targetBytes = compressMode ? getTargetSizeBytes() : 0;
+  const kompresaReĝimo = ĉuKompresoŜaltita() && kategorio !== "font";
+  const celajBajtoj = kompresaReĝimo ? akiriCelajnBajtojn() : 0;
 
   try {
-    if ( category === "font" ) {
-      setStatus(TEXT.LOADING_FONT_ENGINE);
-      const fontverterModule = await import(/* @vite-ignore */ FONT_CDN) as any;
-      const fontverter = fontverterModule.convert ? fontverterModule : (fontverterModule.default || fontverterModule);
-      setStatus(TEXT.CONVERTING_FONT);
+    if ( kategorio === "font" ) {
+      agordiStaton(TEKSTO.LOADING_FONT_ENGINE);
+      const fontverterModulo = await import(/* @vite-ignore */ FONTA_CDN) as any;
+      const fontverter = fontverterModulo.convert ? fontverterModulo : (fontverterModulo.default || fontverterModulo);
+      agordiStaton(TEKSTO.CONVERTING_FONT);
 
-      const arrayBuffer = await file.arrayBuffer();
+      const arrayBuffer = await dosiero.arrayBuffer();
       const uint8Array = new Uint8Array(arrayBuffer);
 
-      let toFormat = targetFormat;
-      if ( targetFormat === "ttf" || targetFormat === "otf" ) {
-        toFormat = "sfnt";
+      let alFormato = celaFormato;
+      if ( celaFormato === "ttf" || celaFormato === "otf" ) {
+        alFormato = "sfnt";
       }
 
-      const convertedBytes = await fontverter.convert(uint8Array, toFormat);
+      const konvertitajBajtoj = await fontverter.convert(uint8Array, alFormato);
       
-      const cleanFontBuffer = new ArrayBuffer(convertedBytes.byteLength);
-      new Uint8Array(cleanFontBuffer).set(convertedBytes);
+      const puraTiparaBufro = new ArrayBuffer(konvertitajBajtoj.byteLength);
+      new Uint8Array(puraTiparaBufro).set(konvertitajBajtoj);
       
-      const blob = new Blob([cleanFontBuffer], {
-        type: getOutputMime(targetFormat),
+      const blobo = new Blob([puraTiparaBufro], {
+        type: akiriEliraMIME(celaFormato),
       });
 
-      blobURL = URL.createObjectURL(blob);
+      blobURL = URL.createObjectURL(blobo);
 
-      const fontName = `PreviewFont-${Date.now()}`;
-      const fontFace = new (window as any).FontFace(fontName, `url(${blobURL})`);
-      await fontFace.load();
-      (document as any).fonts.add(fontFace);
+      const tiparaNomo = `PreviewFont-${Date.now()}`;
+      const tiparaVizaĝo = new (window as any).FontFace(tiparaNomo, `url(${blobURL})`);
+      await tiparaVizaĝo.load();
+      (document as any).fonts.add(tiparaVizaĝo);
 
-      FONT_PREVIEW.style.fontFamily = fontName;
-      FONT_PREVIEW.style.display = "";
+      TIPARA_ANTASENO.style.fontFamily = tiparaNomo;
+      TIPARA_ANTASENO.style.display = "";
     } else {
-      await ensureFFmpegLoaded();
+      await certigiFFmpegŜarĝo();
 
-      if ( category === "video" && file.size > 10 * 1024 * 1024 ) {
-        const mountPoint = "/mnt";
-        const inputPath = `${mountPoint}/${inputName}`;
+      if ( kategorio === "video" && dosiero.size > 10 * 1024 * 1024 ) {
+        const muntpunkto = "/mnt";
+        const enigaVojo = `${muntpunkto}/${enigaNomo}`;
         try {
-          await ffmpeg.createDir(mountPoint);
-          await ffmpeg.mount(FFFSType.WORKERFS, { files: [file] }, mountPoint);
+          await ffmpeg.createDir(muntpunkto);
+          await ffmpeg.mount(FFFSType.WORKERFS, { files: [dosiero] }, muntpunkto);
 
-          if ( compressMode && ( category === "video" ) ) {
-            const duration = await detectDuration(inputPath);
-            const args = getCompressVideoArgs(inputPath, outputName, targetFormat, targetBytes, duration);
-            await ffmpeg.exec(args);
+          if ( kompresaReĝimo && ( kategorio === "video" ) ) {
+            const daŭro = await detektiDaŭron(enigaVojo);
+            const argumentoj = akiriKompresajVideoArgumentojn(enigaVojo, eliraNomo, celaFormato, celajBajtoj, daŭro);
+            await ffmpeg.exec(argumentoj);
           } else {
-            const args = getConversionArgs(inputPath, outputName, category, targetFormat);
-            await ffmpeg.exec(args);
+            const argumentoj = akiriKonvertajnArgumentojn(enigaVojo, eliraNomo, kategorio, celaFormato);
+            await ffmpeg.exec(argumentoj);
           }
 
-          await ffmpeg.unmount(mountPoint);
+          await ffmpeg.unmount(muntpunkto);
         } catch {
-          await ffmpeg.unmount(mountPoint).catch(() => {});
-          await ffmpeg.writeFile(inputName, await fetchFile(file));
+          await ffmpeg.unmount(muntpunkto).catch(() => {});
+          await ffmpeg.writeFile(enigaNomo, await fetchFile(dosiero));
 
-          if ( compressMode && ( category === "video" ) ) {
-            const duration = await detectDuration(inputName);
-            const args = getCompressVideoArgs(inputName, outputName, targetFormat, targetBytes, duration);
-            await ffmpeg.exec(args);
+          if ( kompresaReĝimo && ( kategorio === "video" ) ) {
+            const daŭro = await detektiDaŭron(enigaNomo);
+            const argumentoj = akiriKompresajVideoArgumentojn(enigaNomo, eliraNomo, celaFormato, celajBajtoj, daŭro);
+            await ffmpeg.exec(argumentoj);
           } else {
-            const args = getConversionArgs(inputName, outputName, category, targetFormat);
-            await ffmpeg.exec(args);
+            const argumentoj = akiriKonvertajnArgumentojn(enigaNomo, eliraNomo, kategorio, celaFormato);
+            await ffmpeg.exec(argumentoj);
           }
         }
       } else {
-        await ffmpeg.writeFile(inputName, await fetchFile(file));
+        await ffmpeg.writeFile(enigaNomo, await fetchFile(dosiero));
 
-        if ( compressMode && category === "image" ) {
-          const compressedBytes = await compressImage(inputName, outputName, targetFormat, targetBytes);
-          const cleanBuffer = new ArrayBuffer(compressedBytes.byteLength);
-          new Uint8Array(cleanBuffer).set(compressedBytes);
+        if ( kompresaReĝimo && kategorio === "image" ) {
+          const kompresitajBajtoj = await kompresiBildon(enigaNomo, eliraNomo, celaFormato, celajBajtoj);
+          const puraBufro = new ArrayBuffer(kompresitajBajtoj.byteLength);
+          new Uint8Array(puraBufro).set(kompresitajBajtoj);
 
-          const blob = new Blob([cleanBuffer], {
-            type: getOutputMime(targetFormat),
+          const blobo = new Blob([puraBufro], {
+            type: akiriEliraMIME(celaFormato),
           });
 
-          blobURL = URL.createObjectURL(blob);
-          showPreview(IMAGE_PREVIEW, blobURL);
-          presentResult(blobURL, outputName, targetFormat);
+          blobURL = URL.createObjectURL(blobo);
+          montriAntasenon(BILDA_ANTASENO, blobURL);
+          prezentiRezulton(blobURL, eliraNomo, celaFormato);
           return;
-        } else if ( compressMode && category === "audio" ) {
-          const duration = await detectDuration(inputName);
-          const args = getCompressAudioArgs(inputName, outputName, targetFormat, targetBytes, duration);
-          await ffmpeg.exec(args);
-        } else if ( compressMode && category === "video" ) {
-          const duration = await detectDuration(inputName);
-          const args = getCompressVideoArgs(inputName, outputName, targetFormat, targetBytes, duration);
-          await ffmpeg.exec(args);
+        } else if ( kompresaReĝimo && kategorio === "audio" ) {
+          const daŭro = await detektiDaŭron(enigaNomo);
+          const argumentoj = akiriKompresajAŭdioArgumentojn(enigaNomo, eliraNomo, celaFormato, celajBajtoj, daŭro);
+          await ffmpeg.exec(argumentoj);
+        } else if ( kompresaReĝimo && kategorio === "video" ) {
+          const daŭro = await detektiDaŭron(enigaNomo);
+          const argumentoj = akiriKompresajVideoArgumentojn(enigaNomo, eliraNomo, celaFormato, celajBajtoj, daŭro);
+          await ffmpeg.exec(argumentoj);
         } else {
-          const args = getConversionArgs(inputName, outputName, category, targetFormat);
-          await ffmpeg.exec(args);
+          const argumentoj = akiriKonvertajnArgumentojn(enigaNomo, eliraNomo, kategorio, celaFormato);
+          await ffmpeg.exec(argumentoj);
         }
       }
 
-      const data = await ffmpeg.readFile(outputName);
-      const bytes = data instanceof Uint8Array
-        ? data
-        : new Uint8Array(data as unknown as ArrayBuffer);
+      const datumoj = await ffmpeg.readFile(eliraNomo);
+      const bajtoj = datumoj instanceof Uint8Array
+        ? datumoj
+        : new Uint8Array(datumoj as unknown as ArrayBuffer);
 
-      const cleanBuffer = new ArrayBuffer(bytes.byteLength);
-      new Uint8Array(cleanBuffer).set(bytes);
+      const puraBufro = new ArrayBuffer(bajtoj.byteLength);
+      new Uint8Array(puraBufro).set(bajtoj);
 
-      const blob = new Blob([cleanBuffer], {
-        type: getOutputMime(targetFormat),
+      const blobo = new Blob([puraBufro], {
+        type: akiriEliraMIME(celaFormato),
       });
 
-      blobURL = URL.createObjectURL(blob);
+      blobURL = URL.createObjectURL(blobo);
 
-      if ( category === "image" || targetFormat === "gif" ) {
-        showPreview(IMAGE_PREVIEW, blobURL);
-      } else if ( category === "audio" ) {
-        showPreview(AUDIO_PREVIEW, blobURL);
-      } else if ( category === "video" ) {
-        showPreview(VIDEO_PREVIEW, blobURL);
+      if ( kategorio === "image" || celaFormato === "gif" ) {
+        montriAntasenon(BILDA_ANTASENO, blobURL);
+      } else if ( kategorio === "audio" ) {
+        montriAntasenon(AUDIA_ANTASENO, blobURL);
+      } else if ( kategorio === "video" ) {
+        montriAntasenon(VIDA_ANTASENO, blobURL);
       }
     }
 
-    presentResult(blobURL, outputName, targetFormat);
-  } catch ( error ) {
-    console.error(error);
-    setStatus(TEXT.ERROR(String(error)));
+    prezentiRezulton(blobURL, eliraNomo, celaFormato);
+  } catch ( eraro ) {
+    console.error(eraro);
+    agordiStaton(TEKSTO.ERROR(String(eraro)));
   }
 }
 
-RUN_BUTTON.addEventListener("click", () => {
-  void convertSelectedFile();
+RULI_BUTONO.addEventListener("click", () => {
+  void konvertiElektitanDosieron();
 });
 
-COMPRESS_TOGGLE.addEventListener("change", () => {
-  if ( COMPRESS_TOGGLE.checked ) {
-    COMPRESS_OPTIONS.classList.remove("kobe");
+KOMPRESA_BASKULO.addEventListener("change", () => {
+  if ( KOMPRESA_BASKULO.checked ) {
+    KOMPRESAJ_OPCIOJ.classList.remove("kobe");
   } else {
-    COMPRESS_OPTIONS.classList.add("kobe");
+    KOMPRESAJ_OPCIOJ.classList.add("kobe");
   }
 });
 
-FILE_INPUT.addEventListener("change", () => {
-  resetPreview();
-  const file = FILE_INPUT.files?.[0];
-  if ( file ) {
-    const category = detectFileCategory(file);
-    updateTargetFormats(category);
-    if ( category === "font" ) {
-      COMPRESS_TOGGLE_LABEL.classList.add("kobe");
-      COMPRESS_OPTIONS.classList.add("kobe");
-      COMPRESS_TOGGLE.checked = false;
+DOSIERA_ENIGO.addEventListener("change", () => {
+  restarigiAntasenon();
+  const dosiero = DOSIERA_ENIGO.files?.[0];
+  if ( dosiero ) {
+    const kategorio = detektiDosierKategorion(dosiero);
+    ĝisdatigiCelajnFormatojn(kategorio);
+    if ( kategorio === "font" ) {
+      KOMPRESA_BASKULA_ETIKEDO.classList.add("kobe");
+      KOMPRESAJ_OPCIOJ.classList.add("kobe");
+      KOMPRESA_BASKULO.checked = false;
     } else {
-      COMPRESS_TOGGLE_LABEL.classList.remove("kobe");
+      KOMPRESA_BASKULA_ETIKEDO.classList.remove("kobe");
     }
-    setStatus(TEXT.READY);
+    agordiStaton(TEKSTO.READY);
   } else {
-    TARGET_CONTAINER.innerHTML = "";
-    setStatus(TEXT.CHOOSE_FILE);
+    CELUJO.innerHTML = "";
+    agordiStaton(TEKSTO.CHOOSE_FILE);
   }
 });

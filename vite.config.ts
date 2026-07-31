@@ -6,81 +6,81 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Helper to find all HTML files
-function getHtmlEntries(dir: string, allFiles: Record<string, string> = {}) {
-  const files = readdirSync(dir);
+// Helpa funkcio por trovi ĉiujn HTML-dosierojn
+function akiriHtmlEnirojn(dir: string, ĉiujDosieroj: Record<string, string> = {}) {
+  const dosieroj = readdirSync(dir);
 
-  files.forEach(( file ) => {
-    const filePath = resolve(dir, file);
-    if ( statSync(filePath).isDirectory() ) {
-      if ( file !== "node_modules" && file !== "dist" && file !== ".git" ) {
-        getHtmlEntries(filePath, allFiles);
+  dosieroj.forEach(( dosiero ) => {
+    const dosieroVojo = resolve(dir, dosiero);
+    if ( statSync(dosieroVojo).isDirectory() ) {
+      if ( dosiero !== "node_modules" && dosiero !== "dist" && dosiero !== ".git" ) {
+        akiriHtmlEnirojn(dosieroVojo, ĉiujDosieroj);
       }
-    } else if ( file.endsWith(".html") ) {
-      const relativePath = relative(__dirname, filePath);
-      const name = relativePath.replace(/\.html$/, "").replace(/[\\/]/g, "_");
-      allFiles[name] = filePath;
+    } else if ( dosiero.endsWith(".html") ) {
+      const relativaVojo = relative(__dirname, dosieroVojo);
+      const nomo = relativaVojo.replace(/\.html$/, "").replace(/[\\/]/g, "_");
+      ĉiujDosieroj[nomo] = dosieroVojo;
     }
   });
 
-  return allFiles;
+  return ĉiujDosieroj;
 }
 
-// Plugin to copy remaining static JS / TXT files to dist.
-const copyStaticFilesPlugin = {
-  name: "copy-static-files",
+// Kromaĵo por kopii ceterajn statikajn JS / TXT-dosierojn al dist.
+const kopiiStatikajnDosierojnKromaĵo = {
+  name: "kopii-statikajn-dosierojn",
   closeBundle() {
-    const distDir = join(__dirname, "dist");
-    const excludedDirs = [ "node_modules", "dist", ".git", ".github", ".idea" ];
+    const distDosierujo = join(__dirname, "dist");
+    const ekskluditajDosierujoj = [ "node_modules", "dist", ".git", ".github", ".idea" ];
 
-    function findStaticFiles(dir: string, files: string[] = []): string[] {
-      const entries = readdirSync(dir, { withFileTypes: true });
+    function troviStatikajnDosierojn(dir: string, dosieroj: string[] = []): string[] {
+      const eniroj = readdirSync(dir, { withFileTypes: true });
 
-      for ( const entry of entries ) {
-        const fullPath = join(dir, entry.name);
+      for ( const eniro of eniroj ) {
+        const plenaVojo = join(dir, eniro.name);
 
-        if ( entry.isDirectory() && excludedDirs.includes(entry.name) ) {
+        if ( eniro.isDirectory() && ekskluditajDosierujoj.includes(eniro.name) ) {
           continue;
         }
 
-        if ( entry.isDirectory() ) {
-          findStaticFiles(fullPath, files);
-        } else if ( entry.isFile() && ( entry.name.endsWith(".js") || entry.name.endsWith(".txt") || entry.name.endsWith(".xlsx") ) ) {
-          files.push(fullPath);
+        if ( eniro.isDirectory() ) {
+          troviStatikajnDosierojn(plenaVojo, dosieroj);
+        } else if ( eniro.isFile() && ( eniro.name.endsWith(".js") || eniro.name.endsWith(".txt") || eniro.name.endsWith(".xlsx") ) ) {
+          dosieroj.push(plenaVojo);
         }
       }
 
-      return files;
+      return dosieroj;
     }
 
-    const staticFiles = findStaticFiles(__dirname);
-    let copiedCount = 0;
+    const statikajDosieroj = troviStatikajnDosierojn(__dirname);
+    let kopiitaKvanto = 0;
 
-    staticFiles.forEach(( srcPath ) => {
-      const relativePath = relative(__dirname, srcPath);
-      const destPath = join(distDir, relativePath);
-      const destDirPath = dirname(destPath);
+    statikajDosieroj.forEach(( fontaVojo ) => {
+      const relativaVojo = relative(__dirname, fontaVojo);
+      const celaVojo = join(distDosierujo, relativaVojo);
+      const celaDosierujo = dirname(celaVojo);
 
-      if ( !existsSync(destDirPath) ) {
-        mkdirSync(destDirPath, { recursive: true });
+      if ( !existsSync(celaDosierujo) ) {
+        mkdirSync(celaDosierujo, { recursive: true });
       }
-      copyFileSync(srcPath, destPath);
-      copiedCount++;
+      copyFileSync(fontaVojo, celaVojo);
+      kopiitaKvanto++;
     });
 
-    console.log(`Copied ${copiedCount} static files to dist`);
+    console.log(`Kopiitaj ${kopiitaKvanto} statikaj dosieroj al dist`);
   }
 };
 
-// Convert a Rollup/Vite module ID ( file:// URL, virtual URL with ?query, absolute path, or relative path ) into a path string relative to the project root, or null.
-function toSourceRelative(id: string | null | undefined): string | null {
+// Konvertu Rollup/Vite-modulan ID-on ( file:// URL, virtuala URL kun ?query, absoluta vojo aŭ relativa vojo ) en vojosignaron relative al la projekta radiko, aŭ null.
+function alFontoRelativa(id: string | null | undefined): string | null {
   if ( !id ) return null;
   let p = id;
-  const qIdx = p.indexOf("?");
-  if ( qIdx !== -1 ) p = p.substring(0, qIdx);
-  const hIdx = p.indexOf("#");
-  if ( hIdx !== -1 ) p = p.substring(0, hIdx);
-  // Convert file:// URL → absolute path.
+  const qIndekso = p.indexOf("?");
+  if ( qIndekso !== -1 ) p = p.substring(0, qIndekso);
+  const hIndekso = p.indexOf("#");
+  if ( hIndekso !== -1 ) p = p.substring(0, hIndekso);
+  // Konvertu file:// URL → absoluta vojo.
   if ( p.startsWith("file://") ) {
     try {
       p = fileURLToPath(p);
@@ -98,34 +98,34 @@ function toSourceRelative(id: string | null | undefined): string | null {
 }
 
 export default defineConfig({
-  plugins: [copyStaticFilesPlugin],
+  plugins: [kopiiStatikajnDosierojnKromaĵo],
   build: {
     rollupOptions: {
-      input: getHtmlEntries(__dirname),
-      /* Preserve both the asset basename AND its source-relative directory. Vite's `[name]` token gives the sanitized basename ( e.g. `ı__ɔ` from `ı],ɔ` ), and `assetInfo.originalFileNames[0]` gives the source path so can reconstruct the source directory. Without this, a CSS file at `ſɟᴜ ſɭɹ/.../֭ſɭᴜ ı],ɔ.css` ends up at dist root as `֭ſɭᴜ ı__ɔ.css`, losing its source directory.
+      input: akiriHtmlEnirojn(__dirname),
+      /* Konservu kaj la aktivan baznomon KAJ ĝian fonto-relativan dosierujon. Vite-aj `[name]` ĵetonoj donas la sanigitan baznomon ( ekz. `ı__ɔ` el `ı],ɔ` ), kaj `assetInfo.originalFileNames[0]` donas la fontan vojon por rekonstrui la fontan dosierujon. Sen tio, CSS-dosiero ĉe `ſɟᴜ ſɭɹ/.../֭ſɭᴜ ı],ɔ.css` finiĝus ĉe la dist-radiko kiel `֭ſɭᴜ ı__ɔ.css`, perdante sian fontan dosierujon.
       
-      Chunk files ( JS bundles ) keep Vite's default `[name]-[hash].js` naming so existing chunk URLs stay addressable.
+      Peĉdosieroj ( JS-pakaĵoj ) konservas Vite-ajn normajn `[name]-[hash].js` nomojn por ke ekzistantaj peĉ-URL-oj restu adreseblaj.
       
-      ( Note ) This is under `rollupOptions` ( not `rolldownOptions` ) intentionally. Vite 8 uses Rolldown under the hood, while the bundler still consumes `rollupOptions.output` for asset naming. */
+      ( Noto ) Ĉi tio estas intence sub `rollupOptions` ( ne `rolldownOptions` ). Vite 8 uzas Rolldown sub la kapuĉo, dum la pakaĵilo ankoraŭ konsumas `rollupOptions.output` por aktiva nomado. */
       output: {
         assetFileNames: ( assetInfo ) => {
-          const name = assetInfo.names?.[0] ?? "";
-          const original = ( assetInfo.originalFileNames ?? [] )[0];
-          if ( original ) {
-            const rel = toSourceRelative(original);
+          const nomo = assetInfo.names?.[0] ?? "";
+          const originalo = ( assetInfo.originalFileNames ?? [] )[0];
+          if ( originalo ) {
+            const rel = alFontoRelativa(originalo);
             if ( rel ) {
-              const dir = dirname(rel);
-              const sourceExt = extname(original);
-              // Vite 8 / Rolldown's `assetInfo.names[0]` is inconsistent across asset types. HTML-imported CSS uses basename without extension ( `֭ſɭᴜ ı__ɔ` ), while binary/text assets imported via CSS/JS chunks ( TTF/PNG/ICO/JSON ) have with the extension already on `name` ( `j͑ʃꞇȝ.ttf` ). Strip the source's extension off `name` if present, then always re-append.
-              const withoutExt = sourceExt && name.endsWith(sourceExt)
-                ? name.slice(0, -sourceExt.length)
-                : name;
-              return dir && dir !== "."
-                ? `${dir}/${withoutExt}${sourceExt}`
-                : `${withoutExt}${sourceExt}`;
+              const dosierujo = dirname(rel);
+              const fontaEtendo = extname(originalo);
+              // Vite 8 / Rolldown-aj `assetInfo.names[0]` estas malkonsekvencaj tra aktivaj tipoj. HTML-importita CSS uzas baznomon sen etendo ( `֭ſɭᴜ ı__ɔ` ), dum binaraj/tekstaj aktivaj dosieroj importitaj per CSS/JS-peĉoj ( TTF/PNG/ICO/JSON ) havas la etendon jam sur `nomo` ( `j͑ʃꞇȝ.ttf` ). Forigu la fontan etendon de `nomo` se ĉeestas, poste ĉiam re-almetu.
+              const senEtendo = fontaEtendo && nomo.endsWith(fontaEtendo)
+                ? nomo.slice(0, -fontaEtendo.length)
+                : nomo;
+              return dosierujo && dosierujo !== "."
+                ? `${dosierujo}/${senEtendo}${fontaEtendo}`
+                : `${senEtendo}${fontaEtendo}`;
             }
           }
-          return name;
+          return nomo;
         },
       },
     },

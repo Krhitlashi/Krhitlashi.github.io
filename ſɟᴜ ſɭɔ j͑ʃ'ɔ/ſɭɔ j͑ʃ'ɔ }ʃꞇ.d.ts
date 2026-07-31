@@ -1,14 +1,14 @@
-// ≺⧼ ſɭɔ j͑ʃ'ɔ }ʃꞇ ⧽≻ - Global Type Declarations
-// Type declarations for all global JS functions and constants
+// ≺⧼ ſɭɔ j͑ʃ'ɔ }ʃꞇ ⧽≻ - Tutmondaj Tipaj Deklaroj
+// Tipaj deklaroj por ĉiuj tutmondaj JS-funkcioj kaj konstantoj
 
 declare global {
-  // ⟨ ſɭɔ j͑ʃ'ɔ }ʃꞇ.js ⟩ - Text Processing
-  function vacepu(className: string): void;
+  // ⟨ ſɭɔ j͑ʃ'ɔ }ʃꞇ.js ⟩ - Tekstoprilaboro
+  function vacepu(klasoNomo: string): void;
   function a3esoza(sozanu: HTMLElement): void;
   function valas(): void;
   function b6vegejexSakeveni(): Promise<void>;
 
-  // ⟨ ſɟᴜ ı],ɹͷ̗.js ⟩ - Number Systems & Constants
+  // ⟨ ſɟᴜ ı],ɹͷ̗.js ⟩ - Nombrosistemoj kaj Konstantoj
   const K2FE: string[];
   const KNAK2FE: number;
   function vab6caja(xap2suK2fe: number): string;
@@ -42,17 +42,17 @@ declare global {
   const K_BOLTZMANN: number;
   const HI_L6RAK2K2H2: number;
 
-  // ⟨ j͑ʃƽᴜ ſɭɔʞ.js ) - Localization
+  // ⟨ j͑ʃƽᴜ ſɭɔʞ.js ⟩ - Lokalizo
   function k2regawe(gawe: string): void;
   function kocepufal(gawe: string): void;
   function skakefK2fe(okef: string): string;
   const skakefani: Record<string, Record<string, string>>;
 
-  // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ.js ⟩ - Search
+  // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ.js ⟩ - Serĉo
   function iibaCax2l(bana2bakano: string, cax2l: HTMLElement): void;
   function iibaThala(bana2bakano: string, ariiba: HTMLElement): void;
 
-  // ⟨ j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js ⟩ - Service Worker
+  // ⟨ j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js ⟩ - Servilo-Laboranto
   const STATIC_CACHE_NAME: string;
   const STATIC_ASSETS: string[];
 }

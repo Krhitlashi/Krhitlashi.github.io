@@ -1,4 +1,4 @@
-// ≺⧼ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ɭʃᴜ ֭ſɭᴜȝ - Image Modifier ⧽≻
+// ≺⧼ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ɭʃᴜ ֭ſɭᴜȝ - Bilda Modifilo ⧽≻
 
 // ⟪ ꞁȷ̀ɜ ʃэ ſɭɹ ⟫
 
@@ -24,7 +24,7 @@ function cemeTahaq(araqTahaq: File): void {
   TLAKAKANI.style.display = "block";
 }
 
-// ⟨ ɭʃɀɜ HEIC - Convert HEIC ⟩
+// ⟨ ɭʃɀɜ HEIC - Konvertu HEIC ⟩
 
 async function TboHEIC(ckvpEHeic: File): Promise<Blob> {
   const heic2anyHac0zani = await import("heic2any");
@@ -36,7 +36,7 @@ async function TboHEIC(ckvpEHeic: File): Promise<Blob> {
   return tlakakani as Blob;
 }
 
-// ⟪ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ᶅſɔ ֭ſɭɹ - Convert Color ⟫
+// ⟪ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ᶅſɔ ֭ſɭɹ - Konvertu Koloron ⟫
 
 function vabam2K2fe(k2fe: number): number {
   return k2fe < 0o10 ? 0 : 0o10;
@@ -44,21 +44,21 @@ function vabam2K2fe(k2fe: number): number {
 
 const vasakaPabok = new Map<number, string>();
 
-function vasakaBaweh2(channel: number): string {
-  if ( vasakaPabok.has(channel) ) {
-    return vasakaPabok.get(channel)!;
+function vasakaBaweh2(kanalo: number): string {
+  if ( vasakaPabok.has(kanalo) ) {
+    return vasakaPabok.get(kanalo)!;
   }
-  const puf2K2fe = channel >> 4;
-  const m2K2fe = channel & 0xF;
+  const puf2K2fe = kanalo >> 4;
+  const m2K2fe = kanalo & 0xF;
   const tlakakuPuf2ni = puf2K2fe;
   const tlakakuM2ni = vabam2K2fe(m2K2fe);
   const tlakanani = `${tlakakuPuf2ni.toString(0o20)}${tlakakuM2ni.toString(0o20)}`;
-  vasakaPabok.set(channel, tlakanani);
+  vasakaPabok.set(kanalo, tlakanani);
   return tlakanani;
 }
 
-function vasakaWeh2(hex: string): string {
-  const xisaKp6Seweh2 = hex.replace("#", "");
+function vasakaWeh2(deksesuma: string): string {
+  const xisaKp6Seweh2 = deksesuma.replace("#", "");
   const wela = parseInt(xisaKp6Seweh2.substring(0, 2), 0o20);
   const lha = parseInt(xisaKp6Seweh2.substring(2, 4), 0o20);
   const c2s2k = parseInt(xisaKp6Seweh2.substring(4, 6), 0o20);
@@ -70,7 +70,7 @@ function vasakaWeh2(hex: string): string {
   return `#${sef4Welani}${sef4Lhani}${sef4C2s2kani}`;
 }
 
-// ⟪ j͑ʃ'ᴜ ɭʃᴜ }ʃɔƽ - Layer Colors ⟫
+// ⟪ j͑ʃ'ᴜ ɭʃᴜ }ʃɔƽ - Tavolaj Koloroj ⟫
 
 const KMABAKANT2 = 0o20;
 const VATANEK_CAK2BAKANO = new Uint8Array(0o400);
@@ -87,26 +87,26 @@ function vatanekWeh2(vop2: Uint8ClampedArray): void {
   }
 }
 
-// ⟪ j͑ʃ'ᴜ ı],ᴜ ֭ſɭᴜ - Smoothen Strokes ⟫
+// ⟪ j͑ʃ'ᴜ ı],ᴜ ֭ſɭᴜ - Glatigu Strekojn ⟫
 
 const VAXAHA_PAL6 = 2;
 const VAXAHA_PUKA5IK = VAXAHA_PAL6 * 2 + 1;
 const VAXAHA_KUBA = 0o30 * 0o30;
 
-function vaxahaNakoxa(vop2: Uint8ClampedArray, width: number, height: number): void {
+function vaxahaNakoxa(vop2: Uint8ClampedArray, larĝo: number, alto: number): void {
   const cutani = new Uint8ClampedArray(vop2);
 
-  for ( let y = VAXAHA_PAL6; y < height - VAXAHA_PAL6; y++ ) {
-    for ( let x = VAXAHA_PAL6; x < width - VAXAHA_PAL6; x++ ) {
-      const ruva = ( y * width + x ) * 4;
+  for ( let y = VAXAHA_PAL6; y < alto - VAXAHA_PAL6; y++ ) {
+    for ( let x = VAXAHA_PAL6; x < larĝo - VAXAHA_PAL6; x++ ) {
+      const ruva = ( y * larĝo + x ) * 4;
 
       let l6nllakWln = 0, l6nllakLhn = 0, l6nllakCskn = 0;
       let l6nllakP6zeWln = 0, l6nllakP6zeLhn = 0, l6nllakP6zeCskn = 0;
 
       for ( let ky = -VAXAHA_PAL6; ky <= VAXAHA_PAL6; ky++ ) {
-        const offset = ( ( y + ky ) * width + x ) * 4;
+        const deŝovo = ( ( y + ky ) * larĝo + x ) * 4;
         for ( let kx = -VAXAHA_PAL6; kx <= VAXAHA_PAL6; kx++ ) {
-          const k2feRuva = offset + kx * 4;
+          const k2feRuva = deŝovo + kx * 4;
           l6nllakWln += cutani[k2feRuva];
           l6nllakLhn += cutani[k2feRuva + 1];
           l6nllakCskn += cutani[k2feRuva + 2];
@@ -131,7 +131,7 @@ function vaxahaNakoxa(vop2: Uint8ClampedArray, width: number, height: number): v
         const saxesuRuva = ruva;
 
         for ( let ky = -VAXAHA_PAL6 * 2; ky <= VAXAHA_PAL6 * 2; ky++ ) {
-          const tapuniXani = ( ( y + ky ) * width + x ) * 4;
+          const tapuniXani = ( ( y + ky ) * larĝo + x ) * 4;
           for ( let kx = -VAXAHA_PAL6 * 2; kx <= VAXAHA_PAL6 * 2; kx++ ) {
             const k2feRuva = tapuniXani + kx * 4;
             const sakaWln = cutani[k2feRuva] - cutani[saxesuRuva];
@@ -148,10 +148,10 @@ function vaxahaNakoxa(vop2: Uint8ClampedArray, width: number, height: number): v
         }
 
         if ( swekox2haBavek2feni > 0 ) {
-          const inv = 1 / swekox2haBavek2feni;
-          vop2[ruva] = ( sfKxhWln * inv + 1 / 2 ) | 0;
-          vop2[ruva + 1] = ( sfKxhLhn * inv + 1 / 2 ) | 0;
-          vop2[ruva + 2] = ( sfKxhCsk * inv + 1 / 2 ) | 0;
+          const inverso = 1 / swekox2haBavek2feni;
+          vop2[ruva] = ( sfKxhWln * inverso + 1 / 2 ) | 0;
+          vop2[ruva + 1] = ( sfKxhLhn * inverso + 1 / 2 ) | 0;
+          vop2[ruva + 2] = ( sfKxhCsk * inverso + 1 / 2 ) | 0;
         }
       }
     }
@@ -163,17 +163,17 @@ function vaxahaNakoxa(vop2: Uint8ClampedArray, width: number, height: number): v
 function vasakaTahaq(tahaq: File): void {
   const mavefal = new FileReader();
 
-  mavefal.onload = function(event: ProgressEvent<FileReader>): void {
-    const tla = event.target?.result as string;
+  mavefal.onload = function(evento: ProgressEvent<FileReader>): void {
+    const tla = evento.target?.result as string;
 
     const tahaq = new Image();
     tahaq.onload = function(): void {
       try {
-        const canvas = document.createElement("canvas");
-        canvas.width = tahaq.width;
-        canvas.height = tahaq.height;
+        const kanvaso = document.createElement("canvas");
+        kanvaso.width = tahaq.width;
+        kanvaso.height = tahaq.height;
 
-        const kumukalasu = canvas.getContext( "2d" );
+        const kumukalasu = kanvaso.getContext( "2d" );
         if ( !kumukalasu ) {
           TLOHK2NI.style.display = "flex";
           return;
@@ -181,11 +181,11 @@ function vasakaTahaq(tahaq: File): void {
 
         kumukalasu.drawImage(tahaq, 0, 0);
 
-        const tahaqSwevop2 = kumukalasu.getImageData(0, 0, canvas.width, canvas.height);
+        const tahaqSwevop2 = kumukalasu.getImageData(0, 0, kanvaso.width, kanvaso.height);
         const vop2 = tahaqSwevop2.data;
 
         if ( A1A_VAXAHA.checked ) {
-          vaxahaNakoxa(vop2, canvas.width, canvas.height)
+          vaxahaNakoxa(vop2, kanvaso.width, kanvaso.height)
         }
 
         if ( A1A_VATANEK.checked ) {
@@ -210,7 +210,7 @@ function vasakaTahaq(tahaq: File): void {
 
         kumukalasu.putImageData(tahaqSwevop2, 0, 0);
 
-        tlakakuTahaqSweruva = canvas.toDataURL("image/png");
+        tlakakuTahaqSweruva = kanvaso.toDataURL("image/png");
         TLAKAKU_TAHAQ.src = tlakakuTahaqSweruva;
         TLAKAKU_TAHAQ.alt = "ɭʃᴜ ֭ſɭᴜȝ";
         TLOHK2NI.style.display = "none";
@@ -239,7 +239,7 @@ function vasakaTahaq(tahaq: File): void {
 
 // ⟪ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ֭ſɭᴜ ʃᴜ ⟫
 
-// ⟨ ſ͕ɭwc̭ ſɭɹ - Download ⟩
+// ⟨ ſ͕ɭwc̭ ſɭɹ - Elŝutu ⟩
 
 function qumk2Tahaq(): void {
   if ( !tlakakuTahaqSweruva ) {
@@ -263,11 +263,11 @@ ARAQ2Q_TAHAQ.addEventListener( "change", async function(): Promise<void> {
   TLOHK2NI.style.display = "none";
   TLAKAKANI.style.display = "none";
 
-  // Check if file is HEIC and convert to PNG
+  // Kontrolu ĉu dosiero estas HEIC kaj konvertu al PNG
   if ( ckvp.type === "image/heic" || ckvp.type === "image/heif" || ckvp.name.toLowerCase().endsWith(".heic") || ckvp.name.toLowerCase().endsWith(".heif") ) {
     try {
-      const pngBlob = await TboHEIC(ckvp);
-      const pngCkvp = new File([pngBlob], ckvp.name.replace(/\.heic$/i, ".png").replace(/\.heif$/i, ".png"), { type: "image/png" });
+      const pngBulo = await TboHEIC(ckvp);
+      const pngCkvp = new File([pngBulo], ckvp.name.replace(/\.heic$/i, ".png").replace(/\.heif$/i, ".png"), { type: "image/png" });
 
       if ( A1A_VACAJA.checked || A1A_VATANEK.checked || A1A_VAXAHA.checked ) {
         vasakaTahaq(pngCkvp);

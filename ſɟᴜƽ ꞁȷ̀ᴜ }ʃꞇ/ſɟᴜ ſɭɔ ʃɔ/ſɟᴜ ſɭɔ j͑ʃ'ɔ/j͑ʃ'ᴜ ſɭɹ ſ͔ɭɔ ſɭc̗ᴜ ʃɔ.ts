@@ -1,86 +1,86 @@
-// ≺⧼ j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭc̗ᴜ ʃɔ - Sound Change Applier ⧽≻
+// ≺⧼ j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭc̗ᴜ ʃɔ - SonŜanĝa Aplikilo ⧽≻
 
 type Gawe = "aih" | "en";
 
 // ⟪ ꞁȷ̀ɜ j͑ʃᴜ ⟫
 
-interface SoundEntry {
+interface SonoEniro {
   id: string;
-  value: string;
+  valoro: string;
 }
 
-interface SoundGroup {
+interface Sonogrupo {
   id: string;
-  name: string;
-  soundIds: string[];
+  nomo: string;
+  sonajIdoj: string[];
 }
 
-interface PhonologyState {
-  sounds: SoundEntry[];
-  groups: SoundGroup[];
+interface FonologiaStato {
+  sonoj: SonoEniro[];
+  grupoj: Sonogrupo[];
 }
 
-interface StructurePart {
-  groupId: string;
-  numerator: number;
+interface StrukturaParto {
+  grupoId: string;
+  numeratoro: number;
 }
 
-interface SyllableStructure {
+interface Silabostrukturo {
   id: string;
-  parts: StructurePart[];
+  partoj: StrukturaParto[];
 }
 
-interface EvolveSave {
+interface EvoluaKonservo {
   id: string;
-  name: string;
-  rules: string;
-  customWords: string;
-  useGenerated: boolean;
+  nomo: string;
+  reguloj: string;
+  proprajVortoj: string;
+  uziGeneritaj: boolean;
 }
 
-interface GeneratorSave {
+interface GeneratoraKonservo {
   id: string;
-  name: string;
-  sounds: SoundEntry[];
-  groups: SoundGroup[];
-  activeGroupId: string | null;
-  draftParts: StructurePart[];
-  structures: SyllableStructure[];
-  evolveSaves: EvolveSave[];
-  activeEvolveSaveId: string | null;
+  nomo: string;
+  sonoj: SonoEniro[];
+  grupoj: Sonogrupo[];
+  aktivaGrupoId: string | null;
+  malnetajPartoj: StrukturaParto[];
+  strukturoj: Silabostrukturo[];
+  evoluaKonservoj: EvoluaKonservo[];
+  aktivaEvoluaKonservoId: string | null;
 }
 
-interface SavesState {
-  saves: GeneratorSave[];
-  activeSaveId: string | null;
+interface KonservojStato {
+  konservoj: GeneratoraKonservo[];
+  aktivaKonservoId: string | null;
 }
 
-interface EvolveState {
-  rules: string;
-  customWords: string;
-  useGenerated: boolean;
+interface EvoluaStato {
+  reguloj: string;
+  proprajVortoj: string;
+  uziGeneritaj: boolean;
 }
 
-type Matcher =
-  | { type: "literal"; value: string }
-  | { type: "boundary" }
-  | { type: "group"; groupName: string }
-  | { type: "alternatives"; options: Matcher[] };
+type Kongruilo =
+  | { tipo: "laŭvorta"; valoro: string }
+  | { tipo: "limo" }
+  | { tipo: "grupo"; grupoNomo: string }
+  | { tipo: "alternativoj"; opcioj: Kongruilo[] };
 
-interface ParsedRule {
-  preContext: Matcher[];
-  target: Matcher[];
-  postContext: Matcher[];
-  replacement: string[];
+interface AnalizitaRegulo {
+  antaŭKunteksto: Kongruilo[];
+  celo: Kongruilo[];
+  postKunteksto: Kongruilo[];
+  anstataŭigo: string[];
 }
 
 // ⟪ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟫
 
-const GENERATOR_STORAGE_KEY = "phonology-generator-state-v1";
-const EVOLVE_STORAGE_KEY = "phonology-evolve-state-v1";
-const BOUNDARY = "#";
+const GENERATORA_STOKAJO_ŜLOSILO = "phonology-generator-state-v1";
+const EVOLUA_STOKAJO_ŜLOSILO = "phonology-evolve-state-v1";
+const LIMO = "#";
 
-const TEXT = {
+const TEKSTO = {
   aih: {
     READY: "ꞁȷ̀ᴜ ŋᷠᴜͷ̗",
     NO_RULES: "ꞁȷ̀ɔ ſ͕ɭɹƽ ʌ ſɭᴜc̗ ɭʃᴜ ⟅",
@@ -103,769 +103,769 @@ const TEXT = {
 
 // ⟪ ꞁȷ̀ɜ ʃэ ſɭɹ ⟫
 
-function getLanguage(): Gawe {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("lang") === "en" ? "en" : "aih";
+function akiriLingvon(): Gawe {
+  const parametroj = new URLSearchParams(window.location.search);
+  return parametroj.get("lang") === "en" ? "en" : "aih";
 }
 
-function getElement<TElement extends HTMLElement>(id: string): TElement {
-  const element = document.getElementById(id);
-  if ( !element ) {
-    throw new Error(`Missing element ${id}`);
+function akiriElementon<TElement extends HTMLElement>(id: string): TElement {
+  const elemento = document.getElementById(id);
+  if ( !elemento ) {
+    throw new Error(`Mankas elemento ${id}`);
   }
-  return element as TElement;
+  return elemento as TElement;
 }
 
-const language = getLanguage();
-const T = TEXT[language];
+const lingvo = akiriLingvon();
+const T = TEKSTO[lingvo];
 
 // ⟪ ꞁȷ̀ɜ ɽ͑ʃ'ᴜ ⟫
 
-const RULES_TEXTAREA = getElement<HTMLTextAreaElement>("evolve-rules");
-const SOURCE_GENERATED = getElement<HTMLInputElement>("evolve-source-generated");
-const SOURCE_CUSTOM = getElement<HTMLInputElement>("evolve-source-custom");
-const CUSTOM_WORDS_TEXTAREA = getElement<HTMLTextAreaElement>("evolve-custom-words");
-const RUN_BUTTON = getElement<HTMLButtonElement>("evolve-run");
-const STATUS = getElement<HTMLParagraphElement>("evolve-status");
-const OUTPUT = getElement<HTMLElement>("evolve-output");
+const REGULOJ_TEKSTAREJO = akiriElementon<HTMLTextAreaElement>("evolve-rules");
+const FONTO_GENERITA = akiriElementon<HTMLInputElement>("evolve-source-generated");
+const FONTO_PROPRA = akiriElementon<HTMLInputElement>("evolve-source-custom");
+const PROPRAJVORTOJ_TEKSTAREJO = akiriElementon<HTMLTextAreaElement>("evolve-custom-words");
+const RULI_BUTONO = akiriElementon<HTMLButtonElement>("evolve-run");
+const STATO = akiriElementon<HTMLParagraphElement>("evolve-status");
+const ELIRO = akiriElementon<HTMLElement>("evolve-output");
 
-const EVOLVE_SAVES_LIST = getElement<HTMLElement>("evolve-saves-list");
-const EVOLVE_SAVE_NAME_INPUT = getElement<HTMLInputElement>("evolve-save-name-input");
-const EVOLVE_ADD_SAVE_BUTTON = getElement<HTMLButtonElement>("evolve-add-save");
-const EVOLVE_DELETE_SAVE_BUTTON = getElement<HTMLButtonElement>("evolve-delete-save");
+const EVOLUAJ_KONSERVOJ_LISTO = akiriElementon<HTMLElement>("evolve-saves-list");
+const EVOLUA_KONSERVA_NOMO_ENIGO = akiriElementon<HTMLInputElement>("evolve-save-name-input");
+const ALDONI_EVOLUAN_KONSERVON_BUTONO = akiriElementon<HTMLButtonElement>("evolve-add-save");
+const FORIGI_EVOLUAN_KONSERVON_BUTONO = akiriElementon<HTMLButtonElement>("evolve-delete-save");
 
 // ⟪ ꞁȷ̀ɜ ŋᷠᴜ ⟫
 
-let savesState: SavesState = { saves: [], activeSaveId: null };
+let konservojStato: KonservojStato = { konservoj: [], aktivaKonservoId: null };
 
-function loadSavesState(): void {
+function ŝargiKonservojnStaton(): void {
   try {
-    const raw = localStorage.getItem("phonology-generator-saves-v2");
-    if ( raw ) {
-      const parsed = JSON.parse(raw);
-      if ( parsed && Array.isArray(parsed.saves) && parsed.saves.length > 0 ) {
-        savesState = parsed;
+    const kruda = localStorage.getItem("phonology-generator-saves-v2");
+    if ( kruda ) {
+      const analizita = JSON.parse(kruda);
+      if ( analizita && Array.isArray(analizita.konservoj) && analizita.konservoj.length > 0 ) {
+        konservojStato = analizita;
         return;
       }
     }
   } catch {}
-  savesState = { saves: [], activeSaveId: null };
+  konservojStato = { konservoj: [], aktivaKonservoId: null };
 }
 
-function getActiveGeneratorSave(): GeneratorSave | undefined {
-  return savesState.saves.find(s => s.id === savesState.activeSaveId);
+function akiriAktivanGeneratoranKonservon(): GeneratoraKonservo | undefined {
+  return konservojStato.konservoj.find(k => k.id === konservojStato.aktivaKonservoId);
 }
 
-function getActiveEvolveSave(): EvolveSave | undefined {
-  const activeGen = getActiveGeneratorSave();
-  if ( !activeGen ) return undefined;
-  return activeGen.evolveSaves.find(e => e.id === activeGen.activeEvolveSaveId);
+function akiriAktivanEvoluanKonservon(): EvoluaKonservo | undefined {
+  const aktivaGen = akiriAktivanGeneratoranKonservon();
+  if ( !aktivaGen ) return undefined;
+  return aktivaGen.evoluaKonservoj.find(e => e.id === aktivaGen.aktivaEvoluaKonservoId);
 }
 
-function loadPhonologyState(): PhonologyState {
-  loadSavesState();
-  const activeGen = getActiveGeneratorSave();
-  if ( activeGen ) {
+function ŝargiFonologianStaton(): FonologiaStato {
+  ŝargiKonservojnStaton();
+  const aktivaGen = akiriAktivanGeneratoranKonservon();
+  if ( aktivaGen ) {
     return {
-      sounds: activeGen.sounds || [],
-      groups: activeGen.groups || [],
+      sonoj: aktivaGen.sonoj || [],
+      grupoj: aktivaGen.grupoj || [],
     };
   }
-  return { sounds: [], groups: [] };
+  return { sonoj: [], grupoj: [] };
 }
 
-function loadEvolveState(): EvolveState {
-  loadSavesState();
-  const activeEvolve = getActiveEvolveSave();
-  if ( activeEvolve ) {
+function ŝargiEvoluanStaton(): EvoluaStato {
+  ŝargiKonservojnStaton();
+  const aktivaEvoluo = akiriAktivanEvoluanKonservon();
+  if ( aktivaEvoluo ) {
     return {
-      rules: activeEvolve.rules || "",
-      customWords: activeEvolve.customWords || "",
-      useGenerated: typeof activeEvolve.useGenerated === "boolean" ? activeEvolve.useGenerated : true,
+      reguloj: aktivaEvoluo.reguloj || "",
+      proprajVortoj: aktivaEvoluo.proprajVortoj || "",
+      uziGeneritaj: typeof aktivaEvoluo.uziGeneritaj === "boolean" ? aktivaEvoluo.uziGeneritaj : true,
     };
   }
-  return { rules: "", customWords: "", useGenerated: true };
+  return { reguloj: "", proprajVortoj: "", uziGeneritaj: true };
 }
 
-function saveEvolveState(stateData: EvolveState): void {
-  loadSavesState();
-  const activeGen = getActiveGeneratorSave();
-  if ( activeGen ) {
-    const activeEvolve = activeGen.evolveSaves.find(e => e.id === activeGen.activeEvolveSaveId);
-    if ( activeEvolve ) {
-      activeEvolve.rules = stateData.rules;
-      activeEvolve.customWords = stateData.customWords;
-      activeEvolve.useGenerated = stateData.useGenerated;
-      localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(savesState));
+function konserviEvoluanStaton(statDatumoj: EvoluaStato): void {
+  ŝargiKonservojnStaton();
+  const aktivaGen = akiriAktivanGeneratoranKonservon();
+  if ( aktivaGen ) {
+    const aktivaEvoluo = aktivaGen.evoluaKonservoj.find(e => e.id === aktivaGen.aktivaEvoluaKonservoId);
+    if ( aktivaEvoluo ) {
+      aktivaEvoluo.reguloj = statDatumoj.reguloj;
+      aktivaEvoluo.proprajVortoj = statDatumoj.proprajVortoj;
+      aktivaEvoluo.uziGeneritaj = statDatumoj.uziGeneritaj;
+      localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(konservojStato));
       window.dispatchEvent(new CustomEvent("phonology-state-updated"));
     }
   }
 }
 
-// ⟪ ʃɔ ſɭɹ j͑ʃ'ɔ ⟫ - Tokenizer
+// ⟪ ʃɔ ſɭɹ j͑ʃ'ɔ ⟫ - Ĵetonigilo
 
-function tokenize(word: string, knownSounds: string[]): string[] {
-  if ( !word ) return [];
-  const sorted = [...knownSounds].filter(s => s.length > 0).sort((a, b) => b.length - a.length);
-  const tokens: string[] = [];
+function ĵetonigi( vorto: string, konatajSonoj: string[] ): string[] {
+  if ( !vorto ) return [];
+  const ordigitaj = [...konatajSonoj].filter(s => s.length > 0).sort((a, b) => b.length - a.length);
+  const ĵetonoj: string[] = [];
   let i = 0;
 
-  while ( i < word.length ) {
-    let matched = false;
+  while ( i < vorto.length ) {
+    let kongruis = false;
 
-    for ( const sound of sorted ) {
-      if ( word.startsWith(sound, i) ) {
-        tokens.push(sound);
-        i += sound.length;
-        matched = true;
+    for ( const sono of ordigitaj ) {
+      if ( vorto.startsWith(sono, i) ) {
+        ĵetonoj.push(sono);
+        i += sono.length;
+        kongruis = true;
         break;
       }
     }
 
-    if ( !matched ) {
-      // Take one base character plus any following combining marks
-      let end = i + 1;
-      while ( end < word.length ) {
-        const cp = word.codePointAt(end);
-        if ( cp === undefined || !isCombiningMark(cp) ) break;
-        end += cp > 0xFFFF ? 2 : 1;
+    if ( !kongruis ) {
+      // Prenu unu bazan signon plus ĉiujn sekvantajn kunigmarkojn
+      let fino = i + 1;
+      while ( fino < vorto.length ) {
+        const kp = vorto.codePointAt(fino);
+        if ( kp === undefined || !estasKunigmarko(kp) ) break;
+        fino += kp > 0xFFFF ? 2 : 1;
       }
-      tokens.push(word.slice(i, end));
-      i = end;
+      ĵetonoj.push(vorto.slice(i, fino));
+      i = fino;
     }
   }
 
-  return tokens;
+  return ĵetonoj;
 }
 
-function isCombiningMark(cp: number): boolean {
+function estasKunigmarko( kp: number ): boolean {
   return (
-    (cp >= 0x0300 && cp <= 0x036F) ||
-    (cp >= 0x1AB0 && cp <= 0x1AFF) ||
-    (cp >= 0x1DC0 && cp <= 0x1DFF) ||
-    (cp >= 0x20D0 && cp <= 0x20FF) ||
-    (cp >= 0xFE20 && cp <= 0xFE2F)
+    (kp >= 0x0300 && kp <= 0x036F) ||
+    (kp >= 0x1AB0 && kp <= 0x1AFF) ||
+    (kp >= 0x1DC0 && kp <= 0x1DFF) ||
+    (kp >= 0x20D0 && kp <= 0x20FF) ||
+    (kp >= 0xFE20 && kp <= 0xFE2F)
   );
 }
 
-// ⟪ ſɭɹ ⟫ - Rule Parsing Utilities
+// ⟪ ſɭɹ ⟫ - Regulaj Analizaj Utilaĵoj
 
-function findMatchingBracket(str: string, start: number): number {
-  let depth = 0;
-  for ( let i = start; i < str.length; i++ ) {
-    if ( str[i] === "[" ) depth++;
-    else if ( str[i] === "]" ) {
-      depth--;
-      if ( depth === 0 ) return i;
+function troviKongruanKrampon( ĉeno: string, komenco: number ): number {
+  let profundo = 0;
+  for ( let i = komenco; i < ĉeno.length; i++ ) {
+    if ( ĉeno[i] === "[" ) profundo++;
+    else if ( ĉeno[i] === "]" ) {
+      profundo--;
+      if ( profundo === 0 ) return i;
     }
   }
   return -1;
 }
 
-function findTopLevelChar(str: string, ch: string): number {
-  let bracketDepth = 0;
-  for ( let i = 0; i < str.length; i++ ) {
-    if ( str[i] === "[" ) bracketDepth++;
-    else if ( str[i] === "]" ) bracketDepth--;
-    else if ( bracketDepth === 0 && str[i] === ch ) return i;
+function troviSupraNivelanSignon( ĉeno: string, signo: string ): number {
+  let krampaProfundo = 0;
+  for ( let i = 0; i < ĉeno.length; i++ ) {
+    if ( ĉeno[i] === "[" ) krampaProfundo++;
+    else if ( ĉeno[i] === "]" ) krampaProfundo--;
+    else if ( krampaProfundo === 0 && ĉeno[i] === signo ) return i;
   }
   return -1;
 }
 
-function splitTopLevel(str: string, sep: string): string[] {
-  const parts: string[] = [];
-  let current = "";
-  let bracketDepth = 0;
-  let parenDepth = 0;
+function disigiSupraNivela( ĉeno: string, disigilo: string ): string[] {
+  const partoj: string[] = [];
+  let nuna = "";
+  let krampaProfundo = 0;
+  let parentezaProfundo = 0;
   let i = 0;
 
-  while ( i < str.length ) {
-    const ch = str[i];
+  while ( i < ĉeno.length ) {
+    const signo = ĉeno[i];
 
-    if ( ch === "[" ) {
-      bracketDepth++;
-      current += ch;
+    if ( signo === "[" ) {
+      krampaProfundo++;
+      nuna += signo;
       i++;
-    } else if ( ch === "]" ) {
-      bracketDepth--;
-      current += ch;
+    } else if ( signo === "]" ) {
+      krampaProfundo--;
+      nuna += signo;
       i++;
-    } else if ( ch === "(" ) {
-      parenDepth++;
-      current += ch;
+    } else if ( signo === "(" ) {
+      parentezaProfundo++;
+      nuna += signo;
       i++;
-    } else if ( ch === ")" ) {
-      parenDepth--;
-      current += ch;
+    } else if ( signo === ")" ) {
+      parentezaProfundo--;
+      nuna += signo;
       i++;
-    } else if ( bracketDepth === 0 && parenDepth === 0 && str.startsWith(sep, i) ) {
-      parts.push(current);
-      current = "";
-      i += sep.length;
+    } else if ( krampaProfundo === 0 && parentezaProfundo === 0 && ĉeno.startsWith(disigilo, i) ) {
+      partoj.push(nuna);
+      nuna = "";
+      i += disigilo.length;
     } else {
-      current += ch;
+      nuna += signo;
       i++;
     }
   }
 
-  if ( current !== "" ) parts.push(current);
-  return parts;
+  if ( nuna !== "" ) partoj.push(nuna);
+  return partoj;
 }
 
-// ⟪ ſɭɹ ⟫ - Bracket & Pattern Parsing
+// ⟪ ſɭɹ ⟫ - Krampa & Ŝablona Analizo
 
-function parseBracketContent(content: string): Matcher {
-  content = content.trim();
+function analiziKrampanEnhavon( enhavo: string ): Kongruilo {
+  enhavo = enhavo.trim();
 
-  // Deletion marker - in matcher context returns a literal empty match
-  if ( content === "›" ) {
-    return { type: "literal", value: "" };
+  // Foriga markilo - en kongruila kunteksto redonas laŭvortan malplenan kongruon
+  if ( enhavo === "›" ) {
+    return { tipo: "laŭvorta", valoro: "" };
   }
 
-  // Split by top-level ｡ (U+FF61) for alternatives
-  const parts = splitTopLevel(content, "｡");
+  // Disigu per supra-nivela ｡ (U+FF61) por alternativoj
+  const partoj = disigiSupraNivela(enhavo, "｡");
 
-  if ( parts.length > 1 ) {
-    const options = parts.map(part => parseSingleMatcher(part.trim()));
-    return { type: "alternatives", options };
+  if ( partoj.length > 1 ) {
+    const opcioj = partoj.map(parto => analiziUnuopKongruilon(parto.trim()));
+    return { tipo: "alternativoj", opcioj };
   }
 
-  // Nested bracket expression
-  if ( content.startsWith("[") && content.endsWith("]") ) {
-    return parseBracketContent(content.slice(1, -1));
+  // Nestita krampesprimo
+  if ( enhavo.startsWith("[") && enhavo.endsWith("]") ) {
+    return analiziKrampanEnhavon(enhavo.slice(1, -1));
   }
 
-  // Group reference: ends with 'o' and has more than one character
-  if ( content.length > 1 && content.endsWith("o") ) {
-    const groupName = content.slice(0, -1);
-    return { type: "group", groupName };
+  // Grupo-referenco: finiĝas per 'o' kaj havas pli ol unu signon
+  if ( enhavo.length > 1 && enhavo.endsWith("o") ) {
+    const grupoNomo = enhavo.slice(0, -1);
+    return { tipo: "grupo", grupoNomo };
   }
 
-  // Literal sound
-  return { type: "literal", value: content };
+  // Laŭvorta sono
+  return { tipo: "laŭvorta", valoro: enhavo };
 }
 
-function parseSingleMatcher(text: string): Matcher {
-  text = text.trim();
+function analiziUnuopKongruilon( teksto: string ): Kongruilo {
+  teksto = teksto.trim();
 
-  if ( text === "#" ) {
-    return { type: "boundary" };
+  if ( teksto === "#" ) {
+    return { tipo: "limo" };
   }
 
-  if ( text.startsWith("[") && text.endsWith("]") ) {
-    return parseBracketContent(text.slice(1, -1));
+  if ( teksto.startsWith("[") && teksto.endsWith("]") ) {
+    return analiziKrampanEnhavon(teksto.slice(1, -1));
   }
 
-  return { type: "literal", value: text };
+  return { tipo: "laŭvorta", valoro: teksto };
 }
 
-function parsePatternElements(text: string): Matcher[] {
-  text = text.trim();
-  if ( !text ) return [];
+function analiziŜablonerojn( teksto: string ): Kongruilo[] {
+  teksto = teksto.trim();
+  if ( !teksto ) return [];
 
-  const matchers: Matcher[] = [];
+  const kongruiloj: Kongruilo[] = [];
   let i = 0;
 
-  while ( i < text.length ) {
-    // Skip whitespace
-    while ( i < text.length && text[i] === " " ) i++;
-    if ( i >= text.length ) break;
+  while ( i < teksto.length ) {
+    // Preterlasu spacojn
+    while ( i < teksto.length && teksto[i] === " " ) i++;
+    if ( i >= teksto.length ) break;
 
-    if ( text[i] === "[" ) {
-      const end = findMatchingBracket(text, i);
-      if ( end === -1 ) {
-        // Unmatched bracket - take rest as literal
-        matchers.push({ type: "literal", value: text.slice(i) });
+    if ( teksto[i] === "[" ) {
+      const fino = troviKongruanKrampon(teksto, i);
+      if ( fino === -1 ) {
+        // Nekongrua krampo - prenu la reston kiel laŭvortan
+        kongruiloj.push({ tipo: "laŭvorta", valoro: teksto.slice(i) });
         break;
       }
-      matchers.push(parseBracketContent(text.slice(i + 1, end)));
-      i = end + 1;
-    } else if ( text[i] === "#" ) {
-      matchers.push({ type: "boundary" });
+      kongruiloj.push(analiziKrampanEnhavon(teksto.slice(i + 1, fino)));
+      i = fino + 1;
+    } else if ( teksto[i] === "#" ) {
+      kongruiloj.push({ tipo: "limo" });
       i++;
     } else {
-      // Read literal until whitespace or special character
-      let end = i;
-      while ( end < text.length && text[end] !== " " && text[end] !== "[" && text[end] !== "#" && text[end] !== "(" && text[end] !== ")" ) {
-        end++;
+      // Legu laŭvortan ĝis spaceto aŭ speciala signo
+      let fino = i;
+      while ( fino < teksto.length && teksto[fino] !== " " && teksto[fino] !== "[" && teksto[fino] !== "#" && teksto[fino] !== "(" && teksto[fino] !== ")" ) {
+        fino++;
       }
-      const lit = text.slice(i, end);
-      if ( lit ) matchers.push({ type: "literal", value: lit });
-      i = end;
+      const laŭvorto = teksto.slice(i, fino);
+      if ( laŭvorto ) kongruiloj.push({ tipo: "laŭvorta", valoro: laŭvorto });
+      i = fino;
     }
   }
 
-  return matchers;
+  return kongruiloj;
 }
 
-// ⟪ ſɭɹ ⟫ - Replacement & Rule Parsing
+// ⟪ ſɭɹ ⟫ - Anstataŭigo & Regula Analizo
 
-function parseReplacement(text: string, knownSounds: string[]): string[] {
-  text = text.trim();
+function analiziAnstataŭigon( teksto: string, konatajSonoj: string[] ): string[] {
+  teksto = teksto.trim();
 
-  // Deletion markers
-  if ( text === "[›]" ) return [];
-  if ( text.startsWith("[") && text.endsWith("]") ) {
-    const inner = text.slice(1, -1).trim();
-    if ( inner === "›" ) return [];
+  // Forigaj markiloj
+  if ( teksto === "[›]" ) return [];
+  if ( teksto.startsWith("[") && teksto.endsWith("]") ) {
+    const interno = teksto.slice(1, -1).trim();
+    if ( interno === "›" ) return [];
   }
 
-  // Tokenize each whitespace-separated segment using known sounds
-  const segments = text.split(/\s+/).filter(s => s.length > 0);
-  const result: string[] = [];
-  for ( const segment of segments ) {
-    result.push(...tokenize(segment, knownSounds));
+  // Ĵetonigu ĉiun spaceton-disigitan segmenton uzante konatajn sonojn
+  const segmentoj = teksto.split(/\s+/).filter(s => s.length > 0);
+  const rezulto: string[] = [];
+  for ( const segmento of segmentoj ) {
+    rezulto.push(...ĵetonigi(segmento, konatajSonoj));
   }
-  return result;
+  return rezulto;
 }
 
-function parseRule(line: string, knownSounds: string[]): ParsedRule | null {
-  line = line.trim();
-  if ( !line ) return null;
+function analiziRegulon( linio: string, konatajSonoj: string[] ): AnalizitaRegulo | null {
+  linio = linio.trim();
+  if ( !linio ) return null;
 
-  // Split by ' / ' (spaced slash), fallback to '/'
-  let sides = splitTopLevel(line, " / ");
-  let rightSide: string;
+  // Disigu per ' / ' (spacita oblikvo), defaŭlte al '/'
+  let flankoj = disigiSupraNivela(linio, " / ");
+  let dekstraFlanko: string;
 
-  if ( sides.length >= 2 ) {
-    rightSide = sides.slice(1).join(" / ").trim();
+  if ( flankoj.length >= 2 ) {
+    dekstraFlanko = flankoj.slice(1).join(" / ").trim();
   } else {
-    sides = splitTopLevel(line, "/");
-    if ( sides.length < 2 ) return null;
-    rightSide = sides.slice(1).join("/").trim();
+    flankoj = disigiSupraNivela(linio, "/");
+    if ( flankoj.length < 2 ) return null;
+    dekstraFlanko = flankoj.slice(1).join("/").trim();
   }
 
-  const leftSide = sides[0].trim();
-  const replacement = parseReplacement(rightSide, knownSounds);
+  const maldekstraFlanko = flankoj[0].trim();
+  const anstataŭigo = analiziAnstataŭigon(dekstraFlanko, konatajSonoj);
 
-  // Check for explicit target with ( )
-  const openParen = findTopLevelChar(leftSide, "(");
-  const closeParen = findTopLevelChar(leftSide, ")");
+  // Kontrolu eksplicitan celon per ( )
+  const malfermaParentezo = troviSupraNivelanSignon(maldekstraFlanko, "(");
+  const fermaParentezo = troviSupraNivelanSignon(maldekstraFlanko, ")");
 
-  if ( openParen !== -1 && closeParen !== -1 && closeParen > openParen ) {
-    const preText = leftSide.slice(0, openParen).trim();
-    const targetText = leftSide.slice(openParen + 1, closeParen).trim();
-    const postText = leftSide.slice(closeParen + 1).trim();
+  if ( malfermaParentezo !== -1 && fermaParentezo !== -1 && fermaParentezo > malfermaParentezo ) {
+    const antaŭTeksto = maldekstraFlanko.slice(0, malfermaParentezo).trim();
+    const celoTeksto = maldekstraFlanko.slice(malfermaParentezo + 1, fermaParentezo).trim();
+    const postTeksto = maldekstraFlanko.slice(fermaParentezo + 1).trim();
 
     return {
-      preContext: parsePatternElements(preText),
-      target: parsePatternElements(targetText),
-      postContext: parsePatternElements(postText),
-      replacement,
+      antaŭKunteksto: analiziŜablonerojn(antaŭTeksto),
+      celo: analiziŜablonerojn(celoTeksto),
+      postKunteksto: analiziŜablonerojn(postTeksto),
+      anstataŭigo,
     };
   }
 
-  // No parentheses: leading # becomes pre-context, trailing # becomes post-context
-  const all = parsePatternElements(leftSide);
+  // Sen parentezoj: komenca # iĝas antaŭ-kunteksto, fina # iĝas post-kunteksto
+  const ĉiuj = analiziŜablonerojn(maldekstraFlanko);
 
-  let preEnd = 0;
-  while ( preEnd < all.length && all[preEnd].type === "boundary" ) preEnd++;
+  let antaŭFino = 0;
+  while ( antaŭFino < ĉiuj.length && ĉiuj[antaŭFino].tipo === "limo" ) antaŭFino++;
 
-  let postStart = all.length;
-  while ( postStart > preEnd && all[postStart - 1].type === "boundary" ) postStart--;
+  let postKomenco = ĉiuj.length;
+  while ( postKomenco > antaŭFino && ĉiuj[postKomenco - 1].tipo === "limo" ) postKomenco--;
 
   return {
-    preContext: all.slice(0, preEnd),
-    target: all.slice(preEnd, postStart),
-    postContext: all.slice(postStart),
-    replacement,
+    antaŭKunteksto: ĉiuj.slice(0, antaŭFino),
+    celo: ĉiuj.slice(antaŭFino, postKomenco),
+    postKunteksto: ĉiuj.slice(postKomenco),
+    anstataŭigo,
   };
 }
 
-// ⟪ ʃɔ ɭʃw ⟫ - Matching Engine
+// ⟪ ʃɔ ɭʃw ⟫ - Kongrua Motorilo
 
-function matchesMatcher(matcher: Matcher, token: string, phonState: PhonologyState): boolean {
-  switch ( matcher.type ) {
-    case "literal":
-      return token === matcher.value;
-    case "boundary":
-      return token === BOUNDARY;
-    case "group": {
-      const group = phonState.groups.find(g => g.name === matcher.groupName);
-      if ( !group ) return false;
-      return group.soundIds.some(sid => {
-        const sound = phonState.sounds.find(s => s.id === sid);
-        return sound !== undefined && sound.value === token;
+function kongruasKongruilo( kongruilo: Kongruilo, ĵetono: string, fonologiaStato: FonologiaStato ): boolean {
+  switch ( kongruilo.tipo ) {
+    case "laŭvorta":
+      return ĵetono === kongruilo.valoro;
+    case "limo":
+      return ĵetono === LIMO;
+    case "grupo": {
+      const grupo = fonologiaStato.grupoj.find(g => g.nomo === kongruilo.grupoNomo);
+      if ( !grupo ) return false;
+      return grupo.sonajIdoj.some(sid => {
+        const sono = fonologiaStato.sonoj.find(s => s.id === sid);
+        return sono !== undefined && sono.valoro === ĵetono;
       });
     }
-    case "alternatives":
-      return matcher.options.some(opt => matchesMatcher(opt, token, phonState));
+    case "alternativoj":
+      return kongruilo.opcioj.some(opcio => kongruasKongruilo(opcio, ĵetono, fonologiaStato));
   }
 }
 
-function matchForward(pattern: Matcher[], tokens: string[], start: number, phonState: PhonologyState): boolean {
-  if ( start + pattern.length > tokens.length ) return false;
-  for ( let i = 0; i < pattern.length; i++ ) {
-    if ( !matchesMatcher(pattern[i], tokens[start + i], phonState) ) return false;
+function kongruiAntaŭen( ŝablono: Kongruilo[], ĵetonoj: string[], komenco: number, fonologiaStato: FonologiaStato ): boolean {
+  if ( komenco + ŝablono.length > ĵetonoj.length ) return false;
+  for ( let i = 0; i < ŝablono.length; i++ ) {
+    if ( !kongruasKongruilo(ŝablono[i], ĵetonoj[komenco + i], fonologiaStato) ) return false;
   }
   return true;
 }
 
-function matchBackward(pattern: Matcher[], tokens: string[], end: number, phonState: PhonologyState): boolean {
-  const start = end - pattern.length + 1;
-  if ( start < 0 ) return false;
-  return matchForward(pattern, tokens, start, phonState);
+function kongruiMalantaŭen( ŝablono: Kongruilo[], ĵetonoj: string[], fino: number, fonologiaStato: FonologiaStato ): boolean {
+  const komenco = fino - ŝablono.length + 1;
+  if ( komenco < 0 ) return false;
+  return kongruiAntaŭen(ŝablono, ĵetonoj, komenco, fonologiaStato);
 }
 
-// ⟪ j͑ʃ'ᴜ ʃɔ ⟫ - Rule Application
+// ⟪ j͑ʃ'ᴜ ʃɔ ⟫ - Regula Apliko
 
-function applyRule(rule: ParsedRule, wordTokens: string[], phonState: PhonologyState): string[] {
-  if ( rule.target.length === 0 ) return wordTokens;
+function aplikiRegulon( regulo: AnalizitaRegulo, vortajĴetonoj: string[], fonologiaStato: FonologiaStato ): string[] {
+  if ( regulo.celo.length === 0 ) return vortajĴetonoj;
 
-  // Pad with boundary tokens for # matching
-  const padded = [BOUNDARY, ...wordTokens, BOUNDARY];
-  const result: string[] = [];
-  let i = 1; // Start after leading #
-  const lastReal = padded.length - 2; // Index of last real token
+  // Plenigu per limaj ĵetonoj por # kongruo
+  const plenigita = [LIMO, ...vortajĴetonoj, LIMO];
+  const rezulto: string[] = [];
+  let i = 1; // Komencu post la komenca #
+  const lastaReala = plenigita.length - 2; // Indekso de lasta reala ĵetono
 
-  while ( i <= lastReal ) {
-    let replaced = false;
+  while ( i <= lastaReala ) {
+    let anstataŭigita = false;
 
-    // Can the target fit starting at position i within the real tokens?
-    if ( i + rule.target.length - 1 <= lastReal ) {
-      if ( matchForward(rule.target, padded, i, phonState) ) {
-        // Check preceding context ending at i-1
-        const preOk = rule.preContext.length === 0 ||
-          matchBackward(rule.preContext, padded, i - 1, phonState);
+    // Ĉu la celo povas eniri komencante je pozicio i ene de la realaj ĵetonoj?
+    if ( i + regulo.celo.length - 1 <= lastaReala ) {
+      if ( kongruiAntaŭen(regulo.celo, plenigita, i, fonologiaStato) ) {
+        // Kontrolu antaŭan kuntekston finiĝantan je i-1
+        const antaŭOke = regulo.antaŭKunteksto.length === 0 ||
+          kongruiMalantaŭen(regulo.antaŭKunteksto, plenigita, i - 1, fonologiaStato);
 
-        // Check following context starting after the target
-        const postIdx = i + rule.target.length;
-        const postOk = rule.postContext.length === 0 ||
-          (postIdx + rule.postContext.length <= padded.length &&
-           matchForward(rule.postContext, padded, postIdx, phonState));
+        // Kontrolu postan kuntekston komenciĝantan post la celo
+        const postIndekso = i + regulo.celo.length;
+        const postOke = regulo.postKunteksto.length === 0 ||
+          (postIndekso + regulo.postKunteksto.length <= plenigita.length &&
+           kongruiAntaŭen(regulo.postKunteksto, plenigita, postIndekso, fonologiaStato));
 
-        if ( preOk && postOk ) {
-          result.push(...rule.replacement);
-          i += rule.target.length;
-          replaced = true;
+        if ( antaŭOke && postOke ) {
+          rezulto.push(...regulo.anstataŭigo);
+          i += regulo.celo.length;
+          anstataŭigita = true;
         }
       }
     }
 
-    if ( !replaced ) {
-      result.push(padded[i]);
+    if ( !anstataŭigita ) {
+      rezulto.push(plenigita[i]);
       i++;
     }
   }
 
-  return result;
+  return rezulto;
 }
 
-function evolveWord(wordTokens: string[], rules: ParsedRule[], phonState: PhonologyState): string[] {
-  let current = wordTokens;
-  for ( const rule of rules ) {
-    current = applyRule(rule, current, phonState);
+function evoluiVorton( vortajĴetonoj: string[], reguloj: AnalizitaRegulo[], fonologiaStato: FonologiaStato ): string[] {
+  let nuna = vortajĴetonoj;
+  for ( const regulo of reguloj ) {
+    nuna = aplikiRegulon(regulo, nuna, fonologiaStato);
   }
-  return current;
+  return nuna;
 }
 
 // ⟪ j͑ʃᴜꞇ ⟫ - UI
 
-function setStatus(message: string): void {
-  STATUS.textContent = message;
+function agordiStaton( mesaĝo: string ): void {
+  STATO.textContent = mesaĝo;
   if ( typeof vacepu === "function" ) {
     vacepu("cepufal");
   }
 }
 
-function createTextElement(tagName: "p" | "span", text: string, className = typeof vacepu === "function" ? "" : "cepufalxez"): HTMLElement {
-  const element = document.createElement(tagName);
-  if ( className ) element.className = className;
-  element.textContent = text;
-  return element;
+function kreiTekstanElementon( etikednomo: "p" | "span", teksto: string, klasnomo = typeof vacepu === "function" ? "" : "cepufalxez"): HTMLElement {
+  const elemento = document.createElement(etikednomo);
+  if ( klasnomo ) elemento.className = klasnomo;
+  elemento.textContent = teksto;
+  return elemento;
 }
 
-function getGeneratedWords(): string[] {
-  const container = document.getElementById("phonology-output");
-  if ( !container ) return [];
-  const words: string[] = [];
-  container.querySelectorAll("ciihii").forEach(item => {
-    const text = item.textContent?.trim();
-    if ( text ) words.push(text);
+function akiriGeneritajnVortojn(): string[] {
+  const ujo = document.getElementById("phonology-output");
+  if ( !ujo ) return [];
+  const vortoj: string[] = [];
+  ujo.querySelectorAll("ciihii").forEach(ero => {
+    const teksto = ero.textContent?.trim();
+    if ( teksto ) vortoj.push(teksto);
   });
-  return words;
+  return vortoj;
 }
 
-function toggleCustomWords(): void {
-  if ( SOURCE_CUSTOM.checked ) {
-    CUSTOM_WORDS_TEXTAREA.classList.remove("kobe");
+function baskuliProprajnVortojn(): void {
+  if ( FONTO_PROPRA.checked ) {
+    PROPRAJVORTOJ_TEKSTAREJO.classList.remove("kobe");
   } else {
-    CUSTOM_WORDS_TEXTAREA.classList.add("kobe");
+    PROPRAJVORTOJ_TEKSTAREJO.classList.add("kobe");
   }
 }
 
-function saveCurrentState(): void {
-  saveEvolveState({
-    rules: RULES_TEXTAREA.value,
-    customWords: CUSTOM_WORDS_TEXTAREA.value,
-    useGenerated: SOURCE_GENERATED.checked,
+function konserviNunanStaton(): void {
+  konserviEvoluanStaton({
+    reguloj: REGULOJ_TEKSTAREJO.value,
+    proprajVortoj: PROPRAJVORTOJ_TEKSTAREJO.value,
+    uziGeneritaj: FONTO_GENERITA.checked,
   });
 }
 
-function runEvolve(): void {
-  const phonState = loadPhonologyState();
-  const rulesText = RULES_TEXTAREA.value.trim();
+function ruliEvoluon(): void {
+  const fonologiaStato = ŝargiFonologianStaton();
+  const regulojTeksto = REGULOJ_TEKSTAREJO.value.trim();
 
-  if ( !rulesText ) {
-    setStatus(T.NO_RULES);
+  if ( !regulojTeksto ) {
+    agordiStaton(T.NO_RULES);
     return;
   }
 
-  // Get source words
-  let words: string[];
-  if ( SOURCE_GENERATED.checked ) {
-    words = getGeneratedWords();
+  // Akiru fontvortojn
+  let vortoj: string[];
+  if ( FONTO_GENERITA.checked ) {
+    vortoj = akiriGeneritajnVortojn();
   } else {
-    words = CUSTOM_WORDS_TEXTAREA.value
+    vortoj = PROPRAJVORTOJ_TEKSTAREJO.value
       .split("\n")
-      .map(w => w.trim())
-      .filter(w => w.length > 0);
+      .map(v => v.trim())
+      .filter(v => v.length > 0);
   }
 
-  if ( words.length === 0 ) {
-    setStatus(T.NO_WORDS);
+  if ( vortoj.length === 0 ) {
+    agordiStaton(T.NO_WORDS);
     return;
   }
 
-  // Parse all rules
-  const knownSounds = phonState.sounds.map(s => s.value);
-  const ruleLines = rulesText.split("\n").map(l => l.trim()).filter(l => l.length > 0);
-  const rules: ParsedRule[] = [];
+  // Analizu ĉiujn regulojn
+  const konatajSonoj = fonologiaStato.sonoj.map(s => s.valoro);
+  const regulajLinioj = regulojTeksto.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+  const reguloj: AnalizitaRegulo[] = [];
 
-  for ( let idx = 0; idx < ruleLines.length; idx++ ) {
-    const parsed = parseRule(ruleLines[idx], knownSounds);
-    if ( !parsed ) {
-      setStatus(`${T.PARSE_ERROR} ${idx + 1}`);
+  for ( let indekso = 0; indekso < regulajLinioj.length; indekso++ ) {
+    const analizita = analiziRegulon(regulajLinioj[indekso], konatajSonoj);
+    if ( !analizita ) {
+      agordiStaton(`${T.PARSE_ERROR} ${indekso + 1}`);
       return;
     }
-    rules.push(parsed);
+    reguloj.push(analizita);
   }
 
-  // Apply rules to each word and render output
-  OUTPUT.replaceChildren();
-  let count = 0;
+  // Apliku regulojn al ĉiu vorto kaj bildigu eliron
+  ELIRO.replaceChildren();
+  let kvanto = 0;
 
-  for ( const word of words ) {
-    const tokens = tokenize(word, knownSounds);
-    const evolved = evolveWord(tokens, rules, phonState);
-    const evolvedStr = evolved.join("");
+  for ( const vorto of vortoj ) {
+    const ĵetonoj = ĵetonigi(vorto, konatajSonoj);
+    const evoluinta = evoluiVorton(ĵetonoj, reguloj, fonologiaStato);
+    const evoluintaĈeno = evoluinta.join("");
 
-    const wrapper = document.createElement("ciihii");
-    wrapper.appendChild(createTextElement("span", `${word} \n🔼\n ${evolvedStr}`));
-    OUTPUT.appendChild(wrapper);
-    count++;
+    const envolvilo = document.createElement("ciihii");
+    envolvilo.appendChild(kreiTekstanElementon("span", `${vorto} \n🔼\n ${evoluintaĈeno}`));
+    ELIRO.appendChild(envolvilo);
+    kvanto++;
   }
 
-  setStatus(`${T.EVOLVED} ${count}`);
+  agordiStaton(`${T.EVOLVED} ${kvanto}`);
 
   if ( typeof vacepu === "function" ) {
     vacepu("cepufal");
   }
 }
 
-// ⟪ ꞁȷ̀ᴜ j͑ʃᴜ ⟫ - Initialization
+// ⟪ ꞁȷ̀ᴜ j͑ʃᴜ ⟫ - Inicialigo
 
-function renderEvolveState(): void {
-  const state = loadEvolveState();
-  RULES_TEXTAREA.value = state.rules;
-  CUSTOM_WORDS_TEXTAREA.value = state.customWords;
+function bildigiEvoluanStaton(): void {
+  const stato = ŝargiEvoluanStaton();
+  REGULOJ_TEKSTAREJO.value = stato.reguloj;
+  PROPRAJVORTOJ_TEKSTAREJO.value = stato.proprajVortoj;
 
-  if ( state.useGenerated ) {
-    SOURCE_GENERATED.checked = true;
+  if ( stato.uziGeneritaj ) {
+    FONTO_GENERITA.checked = true;
   } else {
-    SOURCE_CUSTOM.checked = true;
+    FONTO_PROPRA.checked = true;
   }
 
-  toggleCustomWords();
+  baskuliProprajnVortojn();
 }
 
-function renderEvolveSaves(): void {
-  resetChildren(EVOLVE_SAVES_LIST);
+function bildigiEvoluajnKonservojn(): void {
+  restarigiInfanojn(EVOLUAJ_KONSERVOJ_LISTO);
   
-  const activeGen = getActiveGeneratorSave();
-  if ( !activeGen ) return;
+  const aktivaGen = akiriAktivanGeneratoranKonservon();
+  if ( !aktivaGen ) return;
 
-    activeGen.evolveSaves.forEach((save) => {
-      const tabButton = document.createElement("button");
-      tabButton.type = "button";
-      const tabLabel = createTextElement("span", save.name);
-      tabButton.appendChild(tabLabel);
+    aktivaGen.evoluaKonservoj.forEach((konservo) => {
+      const langetaButono = document.createElement("button");
+      langetaButono.type = "button";
+      const langetaEtikedo = kreiTekstanElementon("span", konservo.nomo);
+      langetaButono.appendChild(langetaEtikedo);
       
-      if ( save.id === activeGen.activeEvolveSaveId ) {
-        tabButton.setAttribute("aria-pressed", "true");
+      if ( konservo.id === aktivaGen.aktivaEvoluaKonservoId ) {
+        langetaButono.setAttribute("aria-pressed", "true");
       }
       
-      tabButton.addEventListener("click", () => {
-        const gen = savesState.saves.find(s => s.id === savesState.activeSaveId);
+      langetaButono.addEventListener("click", () => {
+        const gen = konservojStato.konservoj.find(k => k.id === konservojStato.aktivaKonservoId);
         if ( gen ) {
-          gen.activeEvolveSaveId = save.id;
+          gen.aktivaEvoluaKonservoId = konservo.id;
         }
-        localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(savesState));
-        loadSavesState();
-        updateEvolveUI();
+        localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(konservojStato));
+        ŝargiKonservojnStaton();
+        ĝisdatigiEvoluanUI();
       });
 
-      tabButton.addEventListener("contextmenu", (e) => {
+      langetaButono.addEventListener("contextmenu", (e) => {
         e.preventDefault();
-        const input = document.createElement("input");
-        input.type = "text";
-        input.value = save.name;
-        tabLabel.replaceWith(input);
-        input.focus();
-        input.select();
-        const finish = () => {
-          const newName = input.value.trim();
-          if ( newName && newName !== save.name ) {
-            save.name = newName;
-            localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(savesState));
-            loadSavesState();
-            updateEvolveUI();
+        const enigo = document.createElement("input");
+        enigo.type = "text";
+        enigo.value = konservo.nomo;
+        langetaEtikedo.replaceWith(enigo);
+        enigo.focus();
+        enigo.select();
+        const fini = () => {
+          const novaNomo = enigo.value.trim();
+          if ( novaNomo && novaNomo !== konservo.nomo ) {
+            konservo.nomo = novaNomo;
+            localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(konservojStato));
+            ŝargiKonservojnStaton();
+            ĝisdatigiEvoluanUI();
           } else {
-            input.replaceWith(tabLabel);
+            enigo.replaceWith(langetaEtikedo);
           }
         };
-        input.addEventListener("blur", finish);
-        input.addEventListener("keydown", (ke) => {
+        enigo.addEventListener("blur", fini);
+        enigo.addEventListener("keydown", (ke) => {
           if ( ke.key === "Enter" ) {
-            input.blur();
+            enigo.blur();
           } else if ( ke.key === "Escape" ) {
-            input.value = save.name;
-            input.blur();
+            enigo.value = konservo.nomo;
+            enigo.blur();
           }
         });
       });
 
-      EVOLVE_SAVES_LIST.appendChild(tabButton);
+      EVOLUAJ_KONSERVOJ_LISTO.appendChild(langetaButono);
     });
 
-  const activeEvolve = getActiveEvolveSave();
-  if ( activeEvolve ) {
-    EVOLVE_SAVE_NAME_INPUT.value = activeEvolve.name;
+  const aktivaEvoluo = akiriAktivanEvoluanKonservon();
+  if ( aktivaEvoluo ) {
+    EVOLUA_KONSERVA_NOMO_ENIGO.value = aktivaEvoluo.nomo;
   }
 
-  if ( activeGen.evolveSaves.length <= 1 ) {
-    EVOLVE_DELETE_SAVE_BUTTON.style.display = "none";
+  if ( aktivaGen.evoluaKonservoj.length <= 1 ) {
+    FORIGI_EVOLUAN_KONSERVON_BUTONO.style.display = "none";
   } else {
-    EVOLVE_DELETE_SAVE_BUTTON.style.display = "";
+    FORIGI_EVOLUAN_KONSERVON_BUTONO.style.display = "";
   }
 }
 
-function addEvolveSave(): void {
-  const activeGen = getActiveGeneratorSave();
-  if ( !activeGen ) return;
+function aldoniEvoluanKonservon(): void {
+  const aktivaGen = akiriAktivanGeneratoranKonservon();
+  if ( !aktivaGen ) return;
 
-  let maxNum = 0;
-  for ( const s of activeGen.evolveSaves ) {
-    const val = parseInt(s.name, 0o10);
-    if ( !isNaN(val) && val > maxNum ) {
-      maxNum = val;
+  let maksNum = 0;
+  for ( const k of aktivaGen.evoluaKonservoj ) {
+    const valoro = parseInt(k.nomo, 0o10);
+    if ( !isNaN(valoro) && valoro > maksNum ) {
+      maksNum = valoro;
     }
   }
-  const nextName = ( maxNum + 1 ).toString();
+  const sekvaNomo = ( maksNum + 1 ).toString();
 
-  const newSave: EvolveSave = {
-    id: makeId(),
-    name: nextName,
-    rules: "",
-    customWords: "",
-    useGenerated: true,
+  const novaKonservo: EvoluaKonservo = {
+    id: kreiId(),
+    nomo: sekvaNomo,
+    reguloj: "",
+    proprajVortoj: "",
+    uziGeneritaj: true,
   };
 
-  activeGen.evolveSaves.push(newSave);
-  activeGen.activeEvolveSaveId = newSave.id;
+  aktivaGen.evoluaKonservoj.push(novaKonservo);
+  aktivaGen.aktivaEvoluaKonservoId = novaKonservo.id;
   
-  localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(savesState));
+  localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(konservojStato));
   window.dispatchEvent(new CustomEvent("phonology-state-updated"));
 
-  EVOLVE_SAVE_NAME_INPUT.focus();
-  EVOLVE_SAVE_NAME_INPUT.select();
+  EVOLUA_KONSERVA_NOMO_ENIGO.focus();
+  EVOLUA_KONSERVA_NOMO_ENIGO.select();
 }
 
-function deleteEvolveSave(): void {
-  const activeGen = getActiveGeneratorSave();
-  if ( !activeGen || activeGen.evolveSaves.length <= 1 ) return;
+function forigiEvoluanKonservon(): void {
+  const aktivaGen = akiriAktivanGeneratoranKonservon();
+  if ( !aktivaGen || aktivaGen.evoluaKonservoj.length <= 1 ) return;
 
-  const index = activeGen.evolveSaves.findIndex(e => e.id === activeGen.activeEvolveSaveId);
-  activeGen.evolveSaves = activeGen.evolveSaves.filter(e => e.id !== activeGen.activeEvolveSaveId);
+  const indekso = aktivaGen.evoluaKonservoj.findIndex(e => e.id === aktivaGen.aktivaEvoluaKonservoId);
+  aktivaGen.evoluaKonservoj = aktivaGen.evoluaKonservoj.filter(e => e.id !== aktivaGen.aktivaEvoluaKonservoId);
 
-  const nextActiveIndex = Math.min(index, activeGen.evolveSaves.length - 1);
-  const nextActive = activeGen.evolveSaves[nextActiveIndex];
-  activeGen.activeEvolveSaveId = nextActive.id;
+  const sekvaAktivaIndekso = Math.min(indekso, aktivaGen.evoluaKonservoj.length - 1);
+  const sekvaAktiva = aktivaGen.evoluaKonservoj[sekvaAktivaIndekso];
+  aktivaGen.aktivaEvoluaKonservoId = sekvaAktiva.id;
 
-  localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(savesState));
+  localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(konservojStato));
   window.dispatchEvent(new CustomEvent("phonology-state-updated"));
 }
 
-function renameEvolveSave(): void {
-  const newName = EVOLVE_SAVE_NAME_INPUT.value.trim();
-  if ( !newName ) return;
+function alinomiEvoluanKonservon(): void {
+  const novaNomo = EVOLUA_KONSERVA_NOMO_ENIGO.value.trim();
+  if ( !novaNomo ) return;
 
-  const activeEvolve = getActiveEvolveSave();
-  if ( activeEvolve ) {
-    activeEvolve.name = newName;
-    localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(savesState));
+  const aktivaEvoluo = akiriAktivanEvoluanKonservon();
+  if ( aktivaEvoluo ) {
+    aktivaEvoluo.nomo = novaNomo;
+    localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(konservojStato));
     window.dispatchEvent(new CustomEvent("phonology-state-updated"));
   }
 }
 
-function resetChildren(element: HTMLElement): void {
-  element.replaceChildren();
+function restarigiInfanojn( elemento: HTMLElement ): void {
+  elemento.replaceChildren();
 }
 
-function makeId(): string {
+function kreiId(): string {
   if ( typeof crypto !== "undefined" && "randomUUID" in crypto ) {
     return crypto.randomUUID();
   }
   return `${Date.now().toString(0o10)}-${Math.random().toString(0o10).slice(2)}`;
 }
 
-function updateEvolveUI(): void {
-  renderEvolveSaves();
-  renderEvolveState();
+function ĝisdatigiEvoluanUI(): void {
+  bildigiEvoluajnKonservojn();
+  bildigiEvoluanStaton();
 }
 
-function initEvolve(): void {
-  loadSavesState();
-  updateEvolveUI();
+function inicialigiEvoluon(): void {
+  ŝargiKonservojnStaton();
+  ĝisdatigiEvoluanUI();
 
-  RULES_TEXTAREA.placeholder = T.RULES_PLACEHOLDER;
-  CUSTOM_WORDS_TEXTAREA.placeholder = T.CUSTOM_PLACEHOLDER;
+  REGULOJ_TEKSTAREJO.placeholder = T.RULES_PLACEHOLDER;
+  PROPRAJVORTOJ_TEKSTAREJO.placeholder = T.CUSTOM_PLACEHOLDER;
 
-  RUN_BUTTON.addEventListener("click", () => {
-    saveCurrentState();
-    runEvolve();
+  RULI_BUTONO.addEventListener("click", () => {
+    konserviNunanStaton();
+    ruliEvoluon();
   });
 
-  SOURCE_GENERATED.addEventListener("change", () => {
-    toggleCustomWords();
-    saveCurrentState();
+  FONTO_GENERITA.addEventListener("change", () => {
+    baskuliProprajnVortojn();
+    konserviNunanStaton();
   });
 
-  SOURCE_CUSTOM.addEventListener("change", () => {
-    toggleCustomWords();
-    saveCurrentState();
+  FONTO_PROPRA.addEventListener("change", () => {
+    baskuliProprajnVortojn();
+    konserviNunanStaton();
   });
 
-  RULES_TEXTAREA.addEventListener("input", saveCurrentState);
-  CUSTOM_WORDS_TEXTAREA.addEventListener("input", saveCurrentState);
+  REGULOJ_TEKSTAREJO.addEventListener("input", konserviNunanStaton);
+  PROPRAJVORTOJ_TEKSTAREJO.addEventListener("input", konserviNunanStaton);
 
-  EVOLVE_ADD_SAVE_BUTTON.addEventListener("click", addEvolveSave);
-  EVOLVE_DELETE_SAVE_BUTTON.addEventListener("click", deleteEvolveSave);
-  EVOLVE_SAVE_NAME_INPUT.addEventListener("input", renameEvolveSave);
-  EVOLVE_SAVE_NAME_INPUT.addEventListener("keydown", (e) => {
+  ALDONI_EVOLUAN_KONSERVON_BUTONO.addEventListener("click", aldoniEvoluanKonservon);
+  FORIGI_EVOLUAN_KONSERVON_BUTONO.addEventListener("click", forigiEvoluanKonservon);
+  EVOLUA_KONSERVA_NOMO_ENIGO.addEventListener("input", alinomiEvoluanKonservon);
+  EVOLUA_KONSERVA_NOMO_ENIGO.addEventListener("keydown", (e) => {
     if ( e.key === "Enter" ) {
-      EVOLVE_SAVE_NAME_INPUT.blur();
+      EVOLUA_KONSERVA_NOMO_ENIGO.blur();
     }
   });
 
-  setStatus(T.READY);
+  agordiStaton(T.READY);
 }
 
 window.addEventListener("phonology-state-updated", () => {
-  loadSavesState();
-  updateEvolveUI();
+  ŝargiKonservojnStaton();
+  ĝisdatigiEvoluanUI();
 });
 
-initEvolve();
+inicialigiEvoluon();
 
 export {};

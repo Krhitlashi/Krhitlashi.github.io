@@ -147,8 +147,8 @@ const registraro = new StrukturaRegistro();
 
 // ⟪ Fonologiaj Helpiloj 🔤 ⟫
 
-/** Check if vorto is vowel-initial.
- *     @param vorto ( string , required ) - Word to check.
+/** Kontrolu ĉu vorto komenciĝas per vokalo.
+ *     @param vorto ( string , required ) - Vorto por kontroli.
  * @returns boolean */
 function cxuVokalaKomenco(vorto: string): boolean {
     if ( !vorto || !vorto.trim() ) {
@@ -161,8 +161,8 @@ function cxuVokalaKomenco(vorto: string): boolean {
     return IIKRHIAJ_VOKALOJ.includes(stripped[0]);
 }
 
-/** Check if vorto ends with a vowel sound.
- *     @param vorto ( string , required ) - Word to check.
+/** Kontrolu ĉu vorto finiĝas per vokala sono.
+ *     @param vorto ( string , required ) - Vorto por kontroli.
  * @returns boolean */
 function cxuVokalaFino(vorto: string): boolean {
     if ( !vorto ) {
@@ -211,11 +211,11 @@ interface VerbModifiloOpcioj {
 }
 
 /**
- * Apply modifiers to a verb (afikso, modaleco, intensifier).
- * Unified function for both main verbs and VN modifier verbs.
- * Negative prefixes (YOR, KOTAK) cannot co-occur with their positive counterparts (OR, TAK).
-    * @param verbo ( VortEniro , required ) - Verb entry with gawekiif and traduko.
-    * @param opcioj ( VerbModifiloOpcioj = {} , optional ) - Modifier opcioj.
+ * Apliku modifilojn al verbo (afikso, modaleco, intensigilo).
+ * Unuigita funkcio por ambaŭ ĉefaj verboj kaj VN-modifaj verboj.
+ * Negativaj prefiksoj (YOR, KOTAK) ne povas kunekzisti kun siaj pozitivaj ekvivalentoj (OR, TAK).
+    * @param verbo ( VortEniro , required ) - Verba eniro kun gawekiif kaj traduko.
+    * @param opcioj ( VerbModifiloOpcioj = {} , optional ) - Modifaj opcioj.
  * @returns ModifitaVortEniro
  */
 function aplikiVerbModifilojn(verbo: VortEniro, opcioj: VerbModifiloOpcioj = {}): ModifitaVortEniro {
@@ -300,11 +300,11 @@ function aplikiVerbModifilojn(verbo: VortEniro, opcioj: VerbModifiloOpcioj = {})
 // ⟪ Afiksa Apliko 🔧 ⟫
 
 /**
- * Apply afikso based on phonological rules.
- * Automatically determines if prefix or suffix based on afikso type.
- * Selects vowel or consonant form based on vorto boundary.
-    * @param vorto ( string , required ) - Word to apply afikso to.
-    * @param afiksoTipo ( string , required ) - Type of afikso (e.g., "OR", "KON", "SU", "AL").
+ * Apliku afikson laŭ fonologiaj reguloj.
+ * Aŭtomate determinas ĉu prefikso aŭ sufikso laŭ afiksa tipo.
+ * Elektas vokalan aŭ konsonantan formon laŭ vorta limo.
+    * @param vorto ( string , required ) - Vorto al kiu apliki afikson.
+    * @param afiksoTipo ( string , required ) - Tipo de afikso ( ekz. "OR", "KON", "SU", "AL" ).
  * @returns string
  */
 function aplikiAfikson(vorto: string, afiksoTipo: string): string {
@@ -326,8 +326,8 @@ function aplikiAfikson(vorto: string, afiksoTipo: string): string {
 }
 
 /**
- * Check if afikso is adjectivizing (turns vorto into adjective).
-    * @param afiksoTipo ( string , required ) - Type of afikso.
+ * Kontrolu ĉu afikso estas adjektiviga (turnas vorton en adjektivon).
+    * @param afiksoTipo ( string , required ) - Tipo de afikso.
  * @returns boolean
  */
 function cxuAdjektivaAfikso(afiksoTipo: string): boolean {
@@ -335,12 +335,12 @@ function cxuAdjektivaAfikso(afiksoTipo: string): boolean {
 }
 
 /**
- * Check if a vorto has an adjectivizing prefix.
- * Adjectivizing prefixes turn nouns/verbs into adjectives.
- * L6R only adjectivizes non-verbs (for verbs it's passive voice).
- * Uses akiriL6RUzon() to determine L6R function.
-    * @param vorto ( string , required ) - Word to check.
-    * @param vortoEniro ( VortEniro | null = null , optional ) - Word entry to check if L6R is passive.
+ * Kontrolu ĉu vorto havas adjektivigan prefikson.
+ * Adjektivigaj prefiksoj turnas substantivojn/verbojn en adjektivojn.
+ * L6R adjektivigas nur ne-verbojn (por verboj ĝi estas pasiva voĉo).
+ * Uzas akiriL6RUzon() por determini L6R-funkcion.
+    * @param vorto ( string , required ) - Vorto por kontroli.
+    * @param vortoEniro ( VortEniro | null = null , optional ) - Vorta eniro por kontroli ĉu L6R estas pasiva.
  * @returns boolean
  */
 function cxuAdjektivaPrefikso(vorto: string, vortoEniro: VortEniro | null = null): boolean {
@@ -358,9 +358,9 @@ function cxuAdjektivaPrefikso(vorto: string, vortoEniro: VortEniro | null = null
 }
 
 /**
- * Check if L6R prefix is used as passive (on a verb) or adjectivizer (on non-verb).
-    * @param vorto ( string | null , required ) - Word to check.
-    * @param vortoEniro ( VortEniro | null , required ) - Word entry from dictionary.
+ * Kontrolu ĉu L6R-prefikso estas uzata kiel pasivo (sur verbo) aŭ adjektivigilo (sur ne-verbo).
+    * @param vorto ( string | null , required ) - Vorto por kontroli.
+    * @param vortoEniro ( VortEniro | null , required ) - Vorta eniro el la vortaro.
  * @returns string
  */
 function akiriL6RUzon(vorto: string | null, vortoEniro: VortEniro | null): string {
@@ -373,8 +373,8 @@ function akiriL6RUzon(vorto: string | null, vortoEniro: VortEniro | null): strin
 }
 
 /**
- * Get a random adjectivizing prefix type.
- * Returns one of the adjectivizing prefix keys (2R, K2R, J6R, H2R, SAR, SWER, SER).
+ * Akiru hazardan adjektivigan prefiksan tipon.
+ * Redonas unu el la adjektivigaj prefiksaj klavoj (2R, K2R, J6R, H2R, SAR, SWER, SER).
  * @returns string
  */
 function akiriHazardanAdjektivanPrefikson(): string {
@@ -383,17 +383,17 @@ function akiriHazardanAdjektivanPrefikson(): string {
 }
 
 /**
- * Apply an adjectivizing prefix to a vorto, converting it to an adjective.
- * Adjectivizing prefixes turn nouns/verbs into adjectives with relational meanings
- * - 2R. WITH (having the quality of)
- * - K2R. USING (by means of)
- * - J6R. IN (located within)
- * - H2R. WITHOUT (lacking)
- * - SAR. FOR (purpose/benefit)
- * - SWER. ABOUT (concerning)
- * - SER. OF (possession/relation)
-    * @param vortoEniro ( VortEniro , required ) - Word entry with gawekiif, traduko, and pos.
-    * @param prefiksoTipo ( string | null = null , optional ) - Specific prefix type, or null for random.
+ * Apliku adjektivigan prefikson al vorto, konvertante ĝin en adjektivon.
+ * Adjektivigaj prefiksoj turnas substantivojn/verbojn en adjektivojn kun rilataj signifoj
+ * - 2R. KUN (havante la kvaliton de)
+ * - K2R. UZANTE (per rimedo de)
+ * - J6R. EN (lokiĝanta ene de)
+ * - H2R. SEN (mankanta)
+ * - SAR. POR (celo/avantaĝo)
+ * - SWER. PRI (koncernanta)
+ * - SER. DE (posedo/rilato)
+    * @param vortoEniro ( VortEniro , required ) - Vorta eniro kun gawekiif, traduko, kaj poŝo.
+    * @param prefiksoTipo ( string | null = null , optional ) - Specifa prefiksa tipo, aŭ null por hazarda.
  * @returns VortEniro
  */
 function aplikiAdjektivanPrefikson(vortoEniro: VortEniro, prefiksoTipo: string | null = null): VortEniro {
@@ -419,10 +419,10 @@ function aplikiAdjektivanPrefikson(vortoEniro: VortEniro, prefiksoTipo: string |
 }
 
 /**
- * Create an adjective from a noun or verb using adjectivizing prefixes.
- * If no noun/verb is available, returns null.
-    * @param fontoPoŝo ( "Noun" | "Verb" = "Noun" , optional ) - Source part of speech.
-    * @param prefiksoTipo ( string | null = null , optional ) - Specific prefix type, or null for random.
+ * Kreu adjektivon el substantivo aŭ verbo uzante adjektivigajn prefiksojn.
+ * Se neniu substantivo/verbo disponeblas, redonu null.
+    * @param fontoPoŝo ( "Noun" | "Verb" = "Noun" , optional ) - Fonto de parolparto.
+    * @param prefiksoTipo ( string | null = null , optional ) - Specifa prefiksa tipo, aŭ null por hazarda.
  * @returns VortEniro | null
  */
 function kreiAdjektivon(fontoPoŝo: "Noun" | "Verb" = "Noun", prefiksoTipo: string | null = null): VortEniro | null {
@@ -434,8 +434,8 @@ function kreiAdjektivon(fontoPoŝo: "Noun" | "Verb" = "Noun", prefiksoTipo: stri
 }
 
 /**
- * Check if a vorto is a verb (for L6R restriction).
-    * @param vortoEniro ( VortEniro | null , required ) - Word entry from dictionary.
+ * Kontrolu ĉu vorto estas verbo (por L6R-limigo).
+    * @param vortoEniro ( VortEniro | null , required ) - Vorta eniro el la vortaro.
  * @returns boolean
  */
 function cxuVerbo(vortoEniro: VortEniro | null): boolean {
@@ -443,9 +443,9 @@ function cxuVerbo(vortoEniro: VortEniro | null): boolean {
 }
 
 /**
- * Get the conflicting modaleco prefix for a given prefix.
- * Negative modaleco prefixes (YOR, KOTAK) cannot co-occur with their positive counterparts (OR, TAK).
-    * @param prefiksoTipo ( string , required ) - The prefix type to check.
+ * Akiru la konfliktantan modalecon-prefikson por donita prefikso.
+ * Negativaj modalecaj prefiksoj (YOR, KOTAK) ne povas kunekzisti kun siaj pozitivaj ekvivalentoj (OR, TAK).
+    * @param prefiksoTipo ( string , required ) - La prefiksa tipo por kontroli.
  * @returns string | null
  */
 function akiriKonfliktantanPrefikson(prefiksoTipo: string): string | null {
@@ -481,7 +481,7 @@ const IIKRHIAJ_INTERPUNKCIOJ = ["⟅", "｡", "⸙", "ʌ"];
 const _vortaroKaso = new Map<string, VortEniro[]>();
 
 /**
- * Get all Iikrhia script sequences for character detection.
+ * Akiru ĉiujn Iikrhia-skribajn sekvencojn por signa detekto.
  * @returns string[]
  */
 function akiriCxiujnIikrhiajnSekvencojn(): string[] {
@@ -489,8 +489,8 @@ function akiriCxiujnIikrhiajnSekvencojn(): string[] {
 }
 
 /**
- * Check if teksto contains Iikrhia script characters.
-    * @param teksto ( string , required ) - Text to check.
+ * Kontrolu ĉu teksto enhavas Iikrhia-skribajn signojn.
+    * @param teksto ( string , required ) - Teksto por kontroli.
  * @returns boolean
  */
 function cxuEnhavasIikrhianSkribon(teksto: string): boolean {
@@ -501,8 +501,8 @@ function cxuEnhavasIikrhianSkribon(teksto: string): boolean {
 }
 
 /**
- * Select traduko parts that don't contain Iikrhia script.
-    * @param tradukoPartoj ( string[] , required ) - List of traduko alternatives.
+ * Elektu traduko-partojn kiuj ne enhavas Iikrhian skribon.
+    * @param tradukoPartoj ( string[] , required ) - Listo de traduko-alternativoj.
  * @returns string
  */
 function elektiNeIikrhianTradukon(tradukoPartoj: string[]): string {
@@ -514,7 +514,7 @@ function elektiNeIikrhianTradukon(tradukoPartoj: string[]): string {
     return tradukoPartoj[0] || "";
 }
 
-// ⟨ POS markers — same as dictionary page handler ⟩
+// ⟨ POZ-markiloj — samkiel la vortara paĝa pritraktilo ⟩
 const KEFHAXE: Readonly<Record<string, string>> = {
     "ſɟɹƽ ꞁȷ̀ᴜ }ʃꞇ": "Affix",
     "ſɭɔ ı],ɔ }ʃꞇ": "Evidential",
@@ -530,8 +530,8 @@ const KEFHAXE: Readonly<Record<string, string>> = {
 };
 
 /**
- * Coerce a sheet cell to a trimmed single-line string.
- *    @param v ( unknown ) - Raw cell value.
+ * Konvertu folian ĉelon al tondita unulinia ĉeno.
+ *    @param v ( unknown ) - Kruda ĉelvaloro.
  * @returns string
  */
 function ĉeloAlTeksto(v: unknown): string {
@@ -540,9 +540,9 @@ function ĉeloAlTeksto(v: unknown): string {
 }
 
 /**
- * Decide POS by checking Theme first, then Is Under The Theme.
- *    @param temo ( string ) - Theme cell ( column 0 ).
- *    @param estasSub ( string ) - Is Under The Theme cell ( column 1 ).
+ * Decidu la pozicion kontrolante unue Temon, poste Estas Sub La Temo.
+ *    @param temo ( string ) - Temo-ĉelo ( kolumno 0 ).
+ *    @param estasSub ( string ) - Estas Sub La Temo-ĉelo ( kolumno 1 ).
  * @returns string
  */
 function determiniPoŝon(temo: string, estasSub: string): string {
@@ -556,10 +556,10 @@ function determiniPoŝon(temo: string, estasSub: string): string {
 }
 
 /**
- * Normalise a KEFHAXE POS label to its base type.
- * "Number ( Noun )" → "Noun", "Chemical ( Noun )" → "Noun", "Affix" → "Affix", etc.
- * This mirrors the original `determinePos()` regex extraction.
- *    @param poŝo ( string ) - Raw POS label.
+ * Normaligu KEFHAXE-POZ-etikedon al sia baza tipo.
+ * "Number ( Noun )" → "Noun", "Chemical ( Noun )" → "Noun", "Affix" → "Affix", ktp.
+ * Ĉi tio spegulas la originalan `determinePos()` regul-espriman eltiron.
+ *    @param poŝo ( string ) - Kruda POZ-etikedo.
  * @returns string
  */
 function normigiPoŝon(poŝo: string): string {
@@ -569,8 +569,8 @@ function normigiPoŝon(poŝo: string): string {
 }
 
 /**
- * Fetch and parse the xlsx dictionary, returning VortEniro[] directly.
-    * @param xlsxVojo ( string | null = null , optional ) - Path to the xlsx file.
+ * Alportu kaj analizu la xlsx-vortaron, redonante VortEniro[] rekte.
+    * @param xlsxVojo ( string | null = null , optional ) - Vojo al la xlsx-dosiero.
  * @returns VortEniro[]
  */
 async function sxargiVortaron(xlsxVojo: string | null = null): Promise<VortEniro[]> {
@@ -603,7 +603,7 @@ async function sxargiVortaron(xlsxVojo: string | null = null): Promise<VortEniro
             const tradukoKruda = ĉeloAlTeksto(vico[3]);
             if ( !vortoKruda ) continue;
             const poŝo = determiniPoŝon(temo, estasSub);
-            // ⟨ Split multi-vorto cells by "｡" — same as original HTML parser ⟩
+            // ⟨ Disigu multi-vortajn ĉelojn per "｡" — samkiel la originala HTML-analizilo ⟩
             const vortoj = vortoKruda.split("｡").map(p => p.trim()).filter(p => p);
             const tradukoj = tradukoKruda ? tradukoKruda.split("｡").map(p => p.trim()).filter(p => p) : [];
             for ( const unuVorto of vortoj ) {
@@ -630,7 +630,7 @@ async function sxargiVortaron(xlsxVojo: string | null = null): Promise<VortEniro
 }
 
 /**
- * Load dictionary by trying multiple paths in order.
+ * Ŝarĝu la vortaron provante plurajn vojojn en ordo.
  * @returns VortEniro[]
  */
 async function sxargiVortaronKunFalreto(): Promise<VortEniro[]> {
@@ -645,7 +645,7 @@ async function sxargiVortaronKunFalreto(): Promise<VortEniro[]> {
 }
 
 /**
- * Load dictionary synchronously (if pre-loaded).
+ * Ŝarĝu la vortaron sinkrone (se antaŭŝargita).
  * @returns VortEniro[]
  */
 function sxargiVortaronSinkrone(): VortEniro[] {
@@ -654,8 +654,8 @@ function sxargiVortaronSinkrone(): VortEniro[] {
 }
 
 /**
- * Get random vorto by POS.
-    * @param pos ( string , required ) - Part of speech tag.
+ * Akiru hazardan vorton laŭ POZ.
+    * @param pos ( string , required ) - Parolparta etikedo.
  * @returns VortEniro | null
  */
 function akiriVortonPerPoŝo(pos: string): VortEniro | null {
@@ -668,7 +668,7 @@ function akiriVortonPerPoŝo(pos: string): VortEniro | null {
 // ⟪ Frazaj Komponantoj 🧱 ⟫
 
 /**
- * Word position types in VOS sentence strukturo.
+ * Vortaj poziciaj tipoj en VOS-fraza strukturo.
  */
 const VortPozicio = {
     TEMPORALA: "TEMPORALA",
@@ -708,9 +708,9 @@ interface VerbModifiloj {
 }
 
 /**
- * Components for building a sentence.
- * Uses unified vortos array - all vortos (including adjectives, VN sequences, coordinated elements)
- * are stored as vorto entries with position and modifier information.
+ * Komponantoj por konstrui frazon.
+ * Uzas unuigitan vortoj-aron - ĉiuj vortoj (inkluzive adjektivojn, VN-sekvencojn, koordinatajn elementojn)
+ * estas stokitaj kiel vortaj eniroj kun pozicia kaj modifa informo.
  */
 class FrazKomponantoj {
     tempo: VortEniro | null = null;
@@ -727,8 +727,8 @@ class FrazKomponantoj {
 }
 
 /**
- * Helper to get afikso traduko with fallback to key.
-    * @param klavo ( string , required ) - Affix key.
+ * Helpilo por akiri afikso-tradukon kun falreto al klavo.
+    * @param klavo ( string , required ) - Afiksa klavo.
  * @returns string | null
  */
 function _akiriAfiksoTradukon(klavo: string): string | null {
@@ -1116,8 +1116,8 @@ class FrazKonstruilo {
         if (strukturo.length === 0) return;
         const lastIdx = strukturo.length - 1;
         const label = strukturo[lastIdx];
-        // ⟨ CEZ and TACE strukturo labels are not in SPECALAJ_MARKILOJ ( which stores
-        //    Iikrhia vortos ), but they should skip -AL just like the subject marker ⺓. ⟩
+        // ⟨ CEZ kaj TACE strukturo-etikedoj ne estas en SPECALAJ_MARKILOJ ( kiu stokas
+        //    Iikrhiajn vortojn ), sed ili devas preterlasi -AL samkiel la subjekta markilo ⺓. ⟩
         if ( label === "CEZ" || label === "TACE" || this._cxuSpecialaMarkilo(label) ) {
             return;
         }
@@ -1131,10 +1131,10 @@ class FrazKonstruilo {
 // ⟪ Helpaj Funkcioj por Oftaj Ŝablonoj 🔧 ⟫
 
 /**
- * Generic helper for "maybe" pattern - applies a modifier with 50% probability.
-    * @param builder ( FrazKonstruilo , required ) - Builder to modify.
-    * @param modifierFn ( Function , required ) - Function that applies the modifier.
-    * @param saltuSeVerbaAfikso ( boolean = false , optional ) - Skip if verb already has modaleco/afikso.
+ * Ĝenerala helpilo por "eble"-ŝablono - aplikas modifilon kun 50% probablo.
+    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
+    * @param modifierFn ( Function , required ) - Funkcio kiu aplikas la modifilon.
+    * @param saltuSeVerbaAfikso ( boolean = false , optional ) - Saltu se verbo jam havas modaleco/afikson.
  * @returns FrazKonstruilo
  */
 function ebleAplikiModifilon(
@@ -1158,12 +1158,12 @@ interface VNModifiloOpcioj {
 }
 
 /**
- * VN modifier function - adds V+N sequence as a modifier before a head noun.
- * V N works like an adjective - it modifies the following noun.
- * VN is V and N - each can have their own modifiers (adjectives, afiksoj, modaleco, intensifier).
- * Structure. (Adj V) (Adj N) N for subject/object with VN modifier.
-    * @param builder ( FrazKonstruilo , required ) - Builder to modify.
-    * @param opcioj ( VNModifiloOpcioj = {} , optional ) - Optional configuration.
+ * VN-modifa funkcio - aldonas V+N sekvencon kiel modifilon antaŭ ĉefa substantivo.
+ * V N funkcias kiel adjektivo - ĝi modifas la sekvantan substantivon.
+ * VN estas V kaj N - ĉiu povas havi siajn proprajn modifilojn (adjektivoj, afiksoj, modaleco, intensigilo).
+ * Strukturo. (Adj V) (Adj N) N por subjekto/objekto kun VN-modifilo.
+    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
+    * @param opcioj ( VNModifiloOpcioj = {} , optional ) - Opcia agordo.
  * @returns FrazKonstruilo
  */
 function aplikiVNModifilonUnue(builder: FrazKonstruilo, opcioj: VNModifiloOpcioj = {}): FrazKonstruilo {
@@ -1191,13 +1191,13 @@ function aplikiVNModifilonUnue(builder: FrazKonstruilo, opcioj: VNModifiloOpcioj
 }
 
 /**
- * Add a VN modifier sequence to a position.
- * VN is V and N - each can have their own modifiers (adjectives, afiksoj, modaleco).
- * VN acts as a modifier and comes BEFORE the head noun it modifies.
- * Structure. (Adj) V (Adj) N - where the entire VN sequence modifies the following head noun.
-    * @param builder ( FrazKonstruilo , required ) - Builder to modify.
-    * @param pozicio ( VortPozicioTipo , required ) - VortPozicio to add to.
-    * @param opcioj ( VNModifiloOpcioj , required ) - Modifier opcioj.
+ * Aldonu VN-modifan sekvencon al pozicio.
+ * VN estas V kaj N - ĉiu povas havi siajn proprajn modifilojn (adjektivoj, afiksoj, modaleco).
+ * VN agas kiel modifilo kaj venas ANTAŬ la ĉefa substantivo kiun ĝi modifas.
+ * Strukturo. (Adj) V (Adj) N - kie la tuta VN-sekvenco modifas la sekvantan ĉefan substantivon.
+    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
+    * @param pozicio ( VortPozicioTipo , required ) - VortPozicio al kiu aldoni.
+    * @param opcioj ( VNModifiloOpcioj , required ) - Modifaj opcioj.
  */
 function _aldoniVNModifilon(builder: FrazKonstruilo, pozicio: VortPozicioTipo, opcioj: VNModifiloOpcioj): void {
     const {
@@ -1259,7 +1259,7 @@ interface BazajFrazKomponantoj {
 }
 
 /**
- * Get base sentence components (V, O, S).
+ * Akiru bazajn frazajn komponantojn (V, O, S).
  * @returns BazajFrazKomponantoj | null
  */
 function akiriBazajnFrazKomponantojn(): BazajFrazKomponantoj | null {
@@ -1273,8 +1273,8 @@ function akiriBazajnFrazKomponantojn(): BazajFrazKomponantoj | null {
 }
 
 /**
- * Optionally add temporal frame.
-    * @param builder ( FrazKonstruilo , required ) - Builder to modify.
+ * Eble aldonu temporalan kadron.
+    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
  * @returns FrazKonstruilo
  */
 function ebleAldoniTemporalon(builder: FrazKonstruilo): FrazKonstruilo {
@@ -1294,11 +1294,11 @@ interface AdjektivoOpcioj {
 }
 
 /**
- * Add random adjectives to any positions with random counts.
- * Each position (verb, object, subject) can get 0-2 adjectives randomly.
-    * @param builder ( FrazKonstruilo , required ) - Builder to modify.
-    * @param base ( BazajFrazKomponantoj , required ) - Base components (verb, obj, subj).
-    * @param opcioj ( AdjektivoOpcioj = {} , optional ) - Optional configuration.
+ * Aldonu hazardajn adjektivojn al ajnaj pozicioj kun hazardaj kvantoj.
+ * Ĉiu pozicio (verbo, objekto, subjekto) povas ricevi 0-2 adjektivojn hazarde.
+    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
+    * @param base ( BazajFrazKomponantoj , required ) - Bazaj komponantoj (verbo, obj, subj).
+    * @param opcioj ( AdjektivoOpcioj = {} , optional ) - Opcia agordo.
  * @returns FrazKonstruilo
  */
 function aplikiAdjektivojn(builder: FrazKonstruilo, base: BazajFrazKomponantoj, opcioj: AdjektivoOpcioj = {}): FrazKonstruilo {
@@ -1341,9 +1341,9 @@ interface EvidencialoOpcioj {
 }
 
 /**
- * Unified evidential function - applies evidential to VP or sentence scope.
-    * @param builder ( FrazKonstruilo , required ) - Builder to modify.
-    * @param opcioj ( EvidencialoOpcioj = {} , optional ) - Optional configuration.
+ * Unuigita evidenciala funkcio - aplikas evidencialon al VP aŭ fraza amplekso.
+    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
+    * @param opcioj ( EvidencialoOpcioj = {} , optional ) - Opcia agordo.
  * @returns FrazKonstruilo
  */
 function aplikiEvidencialonUnue(builder: FrazKonstruilo, opcioj: EvidencialoOpcioj = {}): FrazKonstruilo {
@@ -1368,8 +1368,8 @@ function aplikiEvidencialonUnue(builder: FrazKonstruilo, opcioj: EvidencialoOpci
 }
 
 /**
- * Optionally add unified evidential to VP or sentence scope.
-    * @param builder ( FrazKonstruilo , required ) - Builder to modify.
+ * Eble aldonu unuigitan evidencialon al VP aŭ fraza amplekso.
+    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
  * @returns FrazKonstruilo
  */
 function ebleAldoniEvidencialonUnue(builder: FrazKonstruilo): FrazKonstruilo {
@@ -1383,8 +1383,8 @@ function ebleAldoniEvidencialonUnue(builder: FrazKonstruilo): FrazKonstruilo {
 }
 
 /**
- * Optionally add modaleco (can/should with optional negation).
-    * @param builder ( FrazKonstruilo , required ) - Builder to modify.
+ * Eble aldonu modalecon (can/should kun opcia negacio).
+    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
  * @returns FrazKonstruilo
  */
 function ebleAldoniModalecojn(builder: FrazKonstruilo): FrazKonstruilo {
@@ -1402,8 +1402,8 @@ function ebleAldoniModalecojn(builder: FrazKonstruilo): FrazKonstruilo {
 }
 
 /**
- * Optionally add negation (KON-).
-    * @param builder ( FrazKonstruilo , required ) - Builder to modify.
+ * Eble aldonu negacion (KON-).
+    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
  * @returns FrazKonstruilo
  */
 function ebleAldoniNegacion(builder: FrazKonstruilo): FrazKonstruilo {
@@ -1419,9 +1419,9 @@ interface IntensigiloOpcioj {
 }
 
 /**
- * Optionally add intensifier to object adjective or verb.
-    * @param builder ( FrazKonstruilo , required ) - Builder to modify.
-    * @param opcioj ( IntensigiloOpcioj = {} , optional ) - Optional configuration.
+ * Eble aldonu intensigilon al objekta adjektivo aŭ verbo.
+    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
+    * @param opcioj ( IntensigiloOpcioj = {} , optional ) - Opcia agordo.
  * @returns FrazKonstruilo
  */
 function ebleAldoniIntensigilon(builder: FrazKonstruilo, opcioj: IntensigiloOpcioj = {}): FrazKonstruilo {
@@ -1451,9 +1451,9 @@ interface VerbaAfiksoOpcioj {
 }
 
 /**
- * Unified verb afikso function - applies verb afiksoj (passive, inchoative, etc.).
-    * @param builder ( FrazKonstruilo , required ) - Builder to modify.
-    * @param opcioj ( VerbaAfiksoOpcioj = {} , optional ) - Optional configuration.
+ * Unuigita verba afiksa funkcio - aplikas verbajn afiksojn (pasivo, inkoativo, ktp).
+    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
+    * @param opcioj ( VerbaAfiksoOpcioj = {} , optional ) - Opcia agordo.
  * @returns FrazKonstruilo
  */
 function aplikiVerbanAfiksonUnue(builder: FrazKonstruilo, opcioj: VerbaAfiksoOpcioj = {}): FrazKonstruilo {
@@ -1471,9 +1471,9 @@ function aplikiVerbanAfiksonUnue(builder: FrazKonstruilo, opcioj: VerbaAfiksoOpc
 }
 
 /**
- * Optionally add unified verb afikso (passive, inchoative, etc.).
-    * @param builder ( FrazKonstruilo , required ) - Builder to modify.
-    * @param afiksoTipo ( string | null = null , optional ) - Affix type.
+ * Eble aldonu unuigitan verban afikson (pasivo, inkoativo, ktp).
+    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
+    * @param afiksoTipo ( string | null = null , optional ) - Afiksa tipo.
  * @returns FrazKonstruilo
  */
 function ebleAldoniVerbanAfiksonUnue(builder: FrazKonstruilo, afiksoTipo: string | null = null): FrazKonstruilo {
@@ -1494,12 +1494,12 @@ interface KoordinatajElementojOpcioj {
 }
 
 /**
- * Coordinated elements function - adds coordinated objects and subjects.
- * For objects. N KAL N (simple coordination allowed)
- * For subjects. N KAL (modifier) N - after KAL, must have adjective or V N modifier
- * Structure. V O₁ KAL O₂ ⺓ S₁ KAL (Adj/V N) S₂
-    * @param builder ( FrazKonstruilo , required ) - Builder to modify.
-    * @param opcioj ( KoordinatajElementojOpcioj = {} , optional ) - Optional configuration.
+ * Koordinataj elementaj funkcio - aldonas koordinatajn objektojn kaj subjektojn.
+ * Por objektoj. N KAL N (simpla koordinado permesita)
+ * Por subjektoj. N KAL (modifilo) N - post KAL, devas havi adjektivon aŭ V N-modifilon
+ * Strukturo. V O₁ KAL O₂ ⺓ S₁ KAL (Adj/V N) S₂
+    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
+    * @param opcioj ( KoordinatajElementojOpcioj = {} , optional ) - Opcia agordo.
  * @returns FrazKonstruilo
  */
 function aplikiKoordinatajnElementojnUnue(builder: FrazKonstruilo, opcioj: KoordinatajElementojOpcioj = {}): FrazKonstruilo {
@@ -1532,9 +1532,9 @@ function aplikiKoordinatajnElementojnUnue(builder: FrazKonstruilo, opcioj: Koord
 }
 
 /**
- * Optionally add unified coordinated elements to both objects and subjects.
-    * @param builder - Builder to modify.
- * @returns Modified builder.
+ * Eble aldonu unuigitajn koordinatajn elementojn al ambaŭ objektoj kaj subjektoj.
+    * @param builder - Konstruilo por modifi.
+ * @returns Modifita konstruilo.
  */
 function ebleAldoniKoordinatajnElementojnUnue(builder: FrazKonstruilo): FrazKonstruilo {
     return ebleAplikiModifilon(builder, (b) => {
@@ -1546,10 +1546,10 @@ function ebleAldoniKoordinatajnElementojnUnue(builder: FrazKonstruilo): FrazKons
 }
 
 /**
- * Optionally add unified VN modifier to both object and subject.
- * VN components (V and N) can each have their own modifiers.
-    * @param builder - Builder to modify.
- * @returns Modified builder.
+ * Eble aldonu unuigitan VN-modifilon al ambaŭ objekto kaj subjekto.
+ * VN-komponantoj (V kaj N) povas ĉiu havi siajn proprajn modifilojn.
+    * @param builder - Konstruilo por modifi.
+ * @returns Modifita konstruilo.
  */
 function ebleAldoniUnuecanVNModifilon(builder: FrazKonstruilo): FrazKonstruilo {
     return ebleAplikiModifilon(builder, (b) => {
@@ -1572,12 +1572,12 @@ function ebleAldoniUnuecanVNModifilon(builder: FrazKonstruilo): FrazKonstruilo {
 }
 
 /**
- * Optionally add topic markers (QU/MU) to object and/or subject nouns.
- * Topic markers appear before the noun they modify.
- * QU = THIS/TOPIC (marks the topic of discussion)
- * MU = THAT/FOCUS (marks focused/contrastive information)
-    * @param builder - Builder to modify.
- * @returns Modified builder.
+ * Eble aldonu temajn markilojn (QU/MU) al objektoj kaj/aŭ subjektoj.
+ * Temaj markiloj aperas antaŭ la substantivo kiun ili modifas.
+ * QU = ĈI TIO/TOMO (markas la temon de diskuto)
+ * MU = TIO/FOKUSO (markas fokusitan/komparan informon)
+    * @param builder - Konstruilo por modifi.
+ * @returns Modifita konstruilo.
  */
 function ebleAldoniTemajnMarkilojn(builder: FrazKonstruilo): FrazKonstruilo {
     return ebleAplikiModifilon(builder, (b) => {
@@ -1611,10 +1611,10 @@ interface EbligitajModifiloj {
 }
 
 /**
- * Optionally convert to question.
-    * @param builder - Builder to modify.
-    * @param ebligitajModifiloj - Which modifiers are enabled.
- * @returns Modified builder.
+ * Eble konvertu al demando.
+    * @param builder - Konstruilo por modifi.
+    * @param ebligitajModifiloj - Kiuj modifiloj estas ebligitaj.
+ * @returns Modifita konstruilo.
  */
 function ebleAldoniDemandon(builder: FrazKonstruilo, ebligitajModifiloj: EbligitajModifiloj): FrazKonstruilo {
     if (!ebligitajModifiloj.question) return builder;
@@ -1633,11 +1633,11 @@ interface FrazaRezulto {
 }
 
 /**
- * Main sentence generator - builds sentence with random optional modifiers.
- * Uses unified vorto system - all vortos added via builder.aldoniVorton().
-    * @param strukturo - Specific strukturo (unused in modular system).
-    * @param ebligitajModifiloj - Which modifiers are enabled.
- * @returns Sentence data or null.
+ * Ĉefa fraza generatoro - konstruas frazon kun hazardaj opciaj modifiloj.
+ * Uzas unuigitan vortan sistemon - ĉiuj vortoj aldonitaj per builder.aldoniVorton().
+    * @param strukturo - Specifa strukturo (neuzata en modula sistemo).
+    * @param ebligitajModifiloj - Kiuj modifiloj estas ebligitaj.
+ * @returns Frazaj datumoj aŭ null.
  */
 function generiFrazon(strukturo: string | null = null, ebligitajModifiloj: EbligitajModifiloj = {}): FrazaRezulto | null {
     if (strukturo) {
@@ -1687,8 +1687,8 @@ function generiFrazon(strukturo: string | null = null, ebligitajModifiloj: Eblig
 // ⟪ UI Initialization 🖥️ ⟫
 
 /**
- * Initialize the sentence generator UI.
- * Sets up button click handlers and populates strukturo dropdown.
+ * Iniciatu la frazan generatoran uzulinterfacon.
+ * Agordas butonajn klakajn pritraktilojn kaj plenigas la strukturo-falmenuon.
  */
 function iniciiFrazGeneratoranUI(): void {
     const generiButono = document.getElementById("kf2Ox2pewaCa12na");

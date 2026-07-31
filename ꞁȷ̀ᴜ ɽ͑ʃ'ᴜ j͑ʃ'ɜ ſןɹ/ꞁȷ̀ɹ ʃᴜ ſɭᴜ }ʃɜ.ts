@@ -1,5 +1,5 @@
 // ≺⧼ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⧽≻
-// Dynamically discovers .html hacavop2 in subdirectories and generates <thala> elements.
+// Dinamike malkovras .html hacavop2 en subdosierujoj kaj generas <thala> elementojn.
 
 const ARAQ_SAR2BA = "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ j͑ʃ'ɜ ſןɹ.html"
 

@@ -4,404 +4,404 @@ import * as THREE from "three"
 import { OrbitControls } from "three/addons/controls/OrbitControls.js"
 import { createNoise3D, NoiseFunction3D } from "simplex-noise"
 
-class PlanetGenerator {
-    private simplex: NoiseFunction3D
-    private canvas: HTMLCanvasElement
-    private ctx: CanvasRenderingContext2D
-    private globeContainer: HTMLElement
-    private currentProjection: string
-    private seedString: string
-    private seed: number
-    private width: number
-    private height: number
-    private autoRotate: boolean
-    private scene: any
-    private camera: any
-    private renderer: any
-    private globe: any
-    private atmosphere: any
-    private clouds: any
-    private controls: any
-    private animationId: number | null
-    private params: {
-        waterLevel: number
-        temperature: number
-        continentCount: number
-        mountainHeight: number
-        atmosphereDensity: number
+class PlanedaGeneratoro {
+    private simplekso: NoiseFunction3D
+    private kanvaso: HTMLCanvasElement
+    private kunteksto: CanvasRenderingContext2D
+    private terglobujo: HTMLElement
+    private nunaProjekcio: string
+    private semaĈeno: string
+    private semo: number
+    private larĝo: number
+    private alto: number
+    private aŭtorotacio: boolean
+    private sceno: any
+    private fotilo: any
+    private bildigilo: any
+    private terglobo: any
+    private atmosfero: any
+    private nuboj: any
+    private regiloj: any
+    private animaciaId: number | null
+    private parametroj: {
+        akvonivelo: number
+        temperaturo: number
+        kontinentKvanto: number
+        montoAlto: number
+        atmosferaDenso: number
     }
-    private textureCanvas: HTMLCanvasElement = document.createElement( "canvas" )
-    private planetData: any[][] = []
+    private teksturaKanvaso: HTMLCanvasElement = document.createElement( "canvas" )
+    private planedajDatumoj: any[][] = []
 
-    hashString( str: string ): number {
-        let hash = 0
-        for ( let i = 0; i < str.length; i++ ) {
-            const char = str.charCodeAt( i )
-            hash = ( hash << 0o5 ) - hash + char
-            hash = hash & hash
+    haketiĈenon( ĉeno: string ): number {
+        let haketo = 0
+        for ( let i = 0; i < ĉeno.length; i++ ) {
+            const signo = ĉeno.charCodeAt( i )
+            haketo = ( haketo << 0o5 ) - haketo + signo
+            haketo = haketo & haketo
         }
-        return Math.abs( hash )
+        return Math.abs( haketo )
     }
 
     constructor() {
-        const noise3D = createNoise3D()
-        this.simplex = noise3D
-        this.canvas = document.getElementById( "map-canvas" ) as HTMLCanvasElement
-        this.ctx = this.canvas.getContext( "2d" )!
-        this.globeContainer = document.getElementById( "globe-container" )!
-        this.currentProjection = "equirectangular"
-        this.seedString = "42"
-        this.seed = this.hashString( this.seedString )
-        this.width = 0o2000
-        this.height = 0o400
-        this.autoRotate = true
-        this.scene = null
-        this.camera = null
-        this.renderer = null
-        this.globe = null
-        this.atmosphere = null
-        this.controls = null
-        this.animationId = null
+        const bruo3D = createNoise3D()
+        this.simplekso = bruo3D
+        this.kanvaso = document.getElementById( "map-canvas" ) as HTMLCanvasElement
+        this.kunteksto = this.kanvaso.getContext( "2d" )!
+        this.terglobujo = document.getElementById( "globe-container" )!
+        this.nunaProjekcio = "equirectangular"
+        this.semaĈeno = "42"
+        this.semo = this.haketiĈenon( this.semaĈeno )
+        this.larĝo = 0o2000
+        this.alto = 0o400
+        this.aŭtorotacio = true
+        this.sceno = null
+        this.fotilo = null
+        this.bildigilo = null
+        this.terglobo = null
+        this.atmosfero = null
+        this.regiloj = null
+        this.animaciaId = null
 
-        this.params = {
-            waterLevel: 0o2 / 0o10,
-            temperature: 0o4 / 0o10,
-            continentCount: 0o4,
-            mountainHeight: 0o3 / 0o10,
-            atmosphereDensity: 0o6 / 0o10,
+        this.parametroj = {
+            akvonivelo: 0o2 / 0o10,
+            temperaturo: 0o4 / 0o10,
+            kontinentKvanto: 0o4,
+            montoAlto: 0o3 / 0o10,
+            atmosferaDenso: 0o6 / 0o10,
         }
 
-        this.init()
+        this.inicialigi()
     }
 
-    init() {
-        this.resizeCanvas()
-        this.setupThreeJS()
-        this.setupEventListeners()
-        this.updateSliderDisplays()
-        this.generate()
+    inicialigi() {
+        this.reskaligiKanvason()
+        this.agordiThreeJS()
+        this.agordiEventajnAŭskultilojn()
+        this.ĝisdatigiGlitilojn()
+        this.generi()
 
         window.addEventListener( "resize", () => {
-            this.resizeCanvas()
-            this.resizeThreeJS()
-            this.render2D()
+            this.reskaligiKanvason()
+            this.reskaligiThreeJS()
+            this.bildigi2D()
         } )
     }
 
-    updateSliderDisplays() {
-        const seedVal = document.getElementById( "seed-val" )
-        const waterVal = document.getElementById( "water-val" )
-        const tempVal = document.getElementById( "temp-val" )
-        const continentsVal = document.getElementById( "continents-val" )
-        const mountainsVal = document.getElementById( "mountains-val" )
-        const atmosphereVal = document.getElementById( "atmosphere-val" )
+    ĝisdatigiGlitilojn() {
+        const semaValoro = document.getElementById( "seed-val" )
+        const akvaValoro = document.getElementById( "water-val" )
+        const tempValoro = document.getElementById( "temp-val" )
+        const kontinentojValoro = document.getElementById( "continents-val" )
+        const montojValoro = document.getElementById( "mountains-val" )
+        const atmosferoValoro = document.getElementById( "atmosphere-val" )
 
-        const seedInput = document.getElementById( "seed" ) as HTMLInputElement
-        const waterInput = document.getElementById( "water" ) as HTMLInputElement
-        const tempInput = document.getElementById( "temp" ) as HTMLInputElement
-        const continentsInput = document.getElementById( "continents" ) as HTMLInputElement
-        const mountainsInput = document.getElementById( "mountains" ) as HTMLInputElement
-        const atmosphereInput = document.getElementById( "atmosphere" ) as HTMLInputElement
+        const semaEnigo = document.getElementById( "seed" ) as HTMLInputElement
+        const akvaEnigo = document.getElementById( "water" ) as HTMLInputElement
+        const tempEnigo = document.getElementById( "temp" ) as HTMLInputElement
+        const kontinentojEnigo = document.getElementById( "continents" ) as HTMLInputElement
+        const montojEnigo = document.getElementById( "mountains" ) as HTMLInputElement
+        const atmosferoEnigo = document.getElementById( "atmosphere" ) as HTMLInputElement
 
-        if ( seedVal && seedInput ) seedVal.textContent = seedInput.value
-        if ( waterVal && waterInput ) waterVal.textContent = waterInput.value
-        if ( tempVal && tempInput ) tempVal.textContent = tempInput.value
-        if ( continentsVal && continentsInput ) continentsVal.textContent = continentsInput.value
-        if ( mountainsVal && mountainsInput ) mountainsVal.textContent = mountainsInput.value
-        if ( atmosphereVal && atmosphereInput ) atmosphereVal.textContent = atmosphereInput.value
+        if ( semaValoro && semaEnigo ) semaValoro.textContent = semaEnigo.value
+        if ( akvaValoro && akvaEnigo ) akvaValoro.textContent = akvaEnigo.value
+        if ( tempValoro && tempEnigo ) tempValoro.textContent = tempEnigo.value
+        if ( kontinentojValoro && kontinentojEnigo ) kontinentojValoro.textContent = kontinentojEnigo.value
+        if ( montojValoro && montojEnigo ) montojValoro.textContent = montojEnigo.value
+        if ( atmosferoValoro && atmosferoEnigo ) atmosferoValoro.textContent = atmosferoEnigo.value
     }
 
-    randomizeSettings() {
-        const seedInput = document.getElementById( "seed" ) as HTMLInputElement
-        const waterInput = document.getElementById( "water" ) as HTMLInputElement
-        const tempInput = document.getElementById( "temp" ) as HTMLInputElement
-        const continentsInput = document.getElementById( "continents" ) as HTMLInputElement
-        const mountainsInput = document.getElementById( "mountains" ) as HTMLInputElement
-        const atmosphereInput = document.getElementById( "atmosphere" ) as HTMLInputElement
+    hazardigiAgordojn() {
+        const semaEnigo = document.getElementById( "seed" ) as HTMLInputElement
+        const akvaEnigo = document.getElementById( "water" ) as HTMLInputElement
+        const tempEnigo = document.getElementById( "temp" ) as HTMLInputElement
+        const kontinentojEnigo = document.getElementById( "continents" ) as HTMLInputElement
+        const montojEnigo = document.getElementById( "mountains" ) as HTMLInputElement
+        const atmosferoEnigo = document.getElementById( "atmosphere" ) as HTMLInputElement
 
-        const randomString = Math.random().toString( 0o44 ).substring( 0o2, 0o15 )
-        const seed = randomString
-        const water = Math.floor( Math.random() * 0o100 )
+        const hazardaĈeno = Math.random().toString( 0o44 ).substring( 0o2, 0o15 )
+        const semo = hazardaĈeno
+        const akvo = Math.floor( Math.random() * 0o100 )
         const temp = Math.floor( Math.random() * 0o100 )
-        const continents = Math.floor( Math.random() * 0o10 ) + 1
-        const mountains = Math.floor( Math.random() * 0o100 )
-        const atmosphere = Math.floor( Math.random() * 0o100 )
+        const kontinentoj = Math.floor( Math.random() * 0o10 ) + 1
+        const montoj = Math.floor( Math.random() * 0o100 )
+        const atmosfero = Math.floor( Math.random() * 0o100 )
 
-        seedInput.value = seed
-        waterInput.value = water.toString()
-        tempInput.value = temp.toString()
-        continentsInput.value = continents.toString()
-        mountainsInput.value = mountains.toString()
-        atmosphereInput.value = atmosphere.toString()
+        semaEnigo.value = semo
+        akvaEnigo.value = akvo.toString()
+        tempEnigo.value = temp.toString()
+        kontinentojEnigo.value = kontinentoj.toString()
+        montojEnigo.value = montoj.toString()
+        atmosferoEnigo.value = atmosfero.toString()
 
-        this.seedString = seed
-        this.seed = this.hashString( this.seedString )
-        this.params.waterLevel = water / 0o100
-        this.params.temperature = temp / 0o100
-        this.params.continentCount = continents
-        this.params.mountainHeight = mountains / 0o100
-        this.params.atmosphereDensity = atmosphere / 0o100
+        this.semaĈeno = semo
+        this.semo = this.haketiĈenon( this.semaĈeno )
+        this.parametroj.akvonivelo = akvo / 0o100
+        this.parametroj.temperaturo = temp / 0o100
+        this.parametroj.kontinentKvanto = kontinentoj
+        this.parametroj.montoAlto = montoj / 0o100
+        this.parametroj.atmosferaDenso = atmosfero / 0o100
 
-        this.updateSliderDisplays()
-        this.generate()
+        this.ĝisdatigiGlitilojn()
+        this.generi()
     }
 
-    resizeCanvas() {
-        const rect = this.canvas.getBoundingClientRect()
-        this.width = Math.floor( rect.width )
-        this.height = Math.floor( rect.height )
-        this.canvas.width = this.width
-        this.canvas.height = this.height
-        this.canvas.style.transform = "none"
+    reskaligiKanvason() {
+        const rektangulo = this.kanvaso.getBoundingClientRect()
+        this.larĝo = Math.floor( rektangulo.width )
+        this.alto = Math.floor( rektangulo.height )
+        this.kanvaso.width = this.larĝo
+        this.kanvaso.height = this.alto
+        this.kanvaso.style.transform = "none"
     }
 
-    setupThreeJS() {
-        this.scene = new THREE.Scene()
-        this.scene.background = new THREE.Color( 0x0c0e1b )
+    agordiThreeJS() {
+        this.sceno = new THREE.Scene()
+        this.sceno.background = new THREE.Color( 0x0c0e1b )
 
-        const rect = this.globeContainer.getBoundingClientRect()
-        const width = Math.floor( rect.width )
-        const height = Math.floor( rect.height )
-        const aspect = width / height
-        this.camera = new THREE.PerspectiveCamera( 0o40, aspect, 0o1 / 0o10, 0o400 )
-        this.camera.position.z = 0o5
+        const rektangulo = this.terglobujo.getBoundingClientRect()
+        const larĝo = Math.floor( rektangulo.width )
+        const alto = Math.floor( rektangulo.height )
+        const aspekto = larĝo / alto
+        this.fotilo = new THREE.PerspectiveCamera( 0o40, aspekto, 0o1 / 0o10, 0o400 )
+        this.fotilo.position.z = 0o5
 
-        this.renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } )
-        this.renderer.setSize( width, height )
-        this.renderer.setPixelRatio( window.devicePixelRatio )
-        this.renderer.domElement.style.inlineSize = "100%"
-        this.renderer.domElement.style.blockSize = "100%"
-        this.renderer.domElement.style.display = "block"
-        this.globeContainer.appendChild( this.renderer.domElement )
+        this.bildigilo = new THREE.WebGLRenderer( { antialias: true, alpha: true } )
+        this.bildigilo.setSize( larĝo, alto )
+        this.bildigilo.setPixelRatio( window.devicePixelRatio )
+        this.bildigilo.domElement.style.inlineSize = "100%"
+        this.bildigilo.domElement.style.blockSize = "100%"
+        this.bildigilo.domElement.style.display = "block"
+        this.terglobujo.appendChild( this.bildigilo.domElement )
 
-        // ⟪ Add stars ⟫ ✨
-        this.createStarField()
+        // ⟪ Aldonu stelojn ⟫ ✨
+        this.kreiStelkampon()
 
-        // ⟪ Add lighting ⟫ 💡
-        const ambientLight = new THREE.AmbientLight( 0x404040, 0o4 / 0o10 )
-        this.scene.add( ambientLight )
+        // ⟪ Aldonu lumigadon ⟫ 💡
+        const ĉirkaŭaLumo = new THREE.AmbientLight( 0x404040, 0o4 / 0o10 )
+        this.sceno.add( ĉirkaŭaLumo )
 
-        const sunLight = new THREE.DirectionalLight( 0xffffff, 0o6 / 0o5 )
-        sunLight.position.set( 0o5, 0o3, 0o5 )
-        this.scene.add( sunLight )
+        const sunaLumo = new THREE.DirectionalLight( 0xffffff, 0o6 / 0o5 )
+        sunaLumo.position.set( 0o5, 0o3, 0o5 )
+        this.sceno.add( sunaLumo )
 
-        const backLight = new THREE.DirectionalLight( 0x445588, 0o3 / 0o10 )
-        backLight.position.set( -0o5, -0o3, -0o5 )
-        this.scene.add( backLight )
+        const malantaŭaLumo = new THREE.DirectionalLight( 0x445588, 0o3 / 0o10 )
+        malantaŭaLumo.position.set( -0o5, -0o3, -0o5 )
+        this.sceno.add( malantaŭaLumo )
 
-        this.controls = new OrbitControls( this.camera, this.renderer.domElement )
-        this.controls.enableDamping = true
-        this.controls.dampingFactor = 0o4 / 0o100
-        this.controls.rotateSpeed = 0o4 / 0o10
-        this.controls.minDistance = 0o3
-        this.controls.maxDistance = 0o20
+        this.regiloj = new OrbitControls( this.fotilo, this.bildigilo.domElement )
+        this.regiloj.enableDamping = true
+        this.regiloj.dampingFactor = 0o4 / 0o100
+        this.regiloj.rotateSpeed = 0o4 / 0o10
+        this.regiloj.minDistance = 0o3
+        this.regiloj.maxDistance = 0o20
 
-        this.animate()
+        this.animacii()
     }
 
-    createStarField() {
-        const geometry = new THREE.BufferGeometry()
-        const vertices = []
-        const colors = []
+    kreiStelkampon() {
+        const geometrio = new THREE.BufferGeometry()
+        const verticoj = []
+        const koloroj = []
 
         for ( let i = 0; i < 0o5710; i++ ) {
-            vertices.push(
+            verticoj.push(
                 ( Math.random() - 0o4 / 0o10 ) * 0o100,
                 ( Math.random() - 0o4 / 0o10 ) * 0o100,
                 ( Math.random() - 0o4 / 0o10 ) * 0o100
             )
 
-            const color = new THREE.Color()
-            color.setHSL( Math.random() * 0o2 / 0o12 + 0o4 / 0o10, 0o3 / 0o12, Math.random() * 0o4 / 0o10 + 0o4 / 0o10 )
-            colors.push( color.r, color.g, color.b )
+            const koloro = new THREE.Color()
+            koloro.setHSL( Math.random() * 0o2 / 0o12 + 0o4 / 0o10, 0o3 / 0o12, Math.random() * 0o4 / 0o10 + 0o4 / 0o10 )
+            koloroj.push( koloro.r, koloro.g, koloro.b )
         }
 
-        geometry.setAttribute( "position", new THREE.Float32BufferAttribute( vertices, 0o3 ) )
-        geometry.setAttribute( "color", new THREE.Float32BufferAttribute( colors, 0o3 ) )
+        geometrio.setAttribute( "position", new THREE.Float32BufferAttribute( verticoj, 0o3 ) )
+        geometrio.setAttribute( "color", new THREE.Float32BufferAttribute( koloroj, 0o3 ) )
 
-        const material = new THREE.PointsMaterial( {
+        const materialo = new THREE.PointsMaterial( {
             size: 0o4 / 0o100,
             vertexColors: true,
             transparent: true,
             opacity: 0o6 / 0o10
         } )
 
-        const stars = new THREE.Points( geometry, material )
-        this.scene.add( stars )
+        const steloj = new THREE.Points( geometrio, materialo )
+        this.sceno.add( steloj )
     }
 
-    resizeThreeJS() {
-        if ( !this.camera || !this.renderer ) return
+    reskaligiThreeJS() {
+        if ( !this.fotilo || !this.bildigilo ) return
 
-        const rect = this.globeContainer.getBoundingClientRect()
-        const width = Math.floor( rect.width )
-        const height = Math.floor( rect.height )
+        const rektangulo = this.terglobujo.getBoundingClientRect()
+        const larĝo = Math.floor( rektangulo.width )
+        const alto = Math.floor( rektangulo.height )
 
-        this.camera.aspect = width / height
-        this.camera.updateProjectionMatrix()
-        this.renderer.setSize( width, height )
+        this.fotilo.aspect = larĝo / alto
+        this.fotilo.updateProjectionMatrix()
+        this.bildigilo.setSize( larĝo, alto )
     }
 
-    setupEventListeners() {
-        // ⟪ Seed input ⟫ 🎲
+    agordiEventajnAŭskultilojn() {
+        // ⟪ Sema enigo ⟫ 🎲
         document.getElementById( "seed" )!.addEventListener( "input", ( e ) => {
-            this.seedString = ( e.target as HTMLInputElement ).value
-            this.seed = this.hashString( this.seedString )
-            document.getElementById( "seed-val" )!.textContent = this.seed.toString()
+            this.semaĈeno = ( e.target as HTMLInputElement ).value
+            this.semo = this.haketiĈenon( this.semaĈeno )
+            document.getElementById( "seed-val" )!.textContent = this.semo.toString()
         } )
 
         document.getElementById( "water" )!.addEventListener( "input", ( e ) => {
-            this.params.waterLevel = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
+            this.parametroj.akvonivelo = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
             document.getElementById( "water-val" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
         document.getElementById( "temp" )!.addEventListener( "input", ( e ) => {
-            this.params.temperature = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
+            this.parametroj.temperaturo = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
             document.getElementById( "temp-val" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
         document.getElementById( "continents" )!.addEventListener( "input", ( e ) => {
-            this.params.continentCount = parseInt( ( e.target as HTMLInputElement ).value )
+            this.parametroj.kontinentKvanto = parseInt( ( e.target as HTMLInputElement ).value )
             document.getElementById( "continents-val" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
         document.getElementById( "mountains" )!.addEventListener( "input", ( e ) => {
-            this.params.mountainHeight = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
+            this.parametroj.montoAlto = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
             document.getElementById( "mountains-val" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
         document.getElementById( "atmosphere" )!.addEventListener( "input", ( e ) => {
-            this.params.atmosphereDensity = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
+            this.parametroj.atmosferaDenso = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
             document.getElementById( "atmosphere-val" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
-        // ⟪ Buttons ⟫ 🔘
+        // ⟪ Butonoj ⟫ 🔘
         document.getElementById( "generate-btn" )!.addEventListener( "click", () => {
-            this.generate()
+            this.generi()
         } )
 
         document.getElementById( "randomize-btn" )!.addEventListener( "click", () => {
-            this.randomizeSettings()
+            this.hazardigiAgordojn()
         } )
 
         document.getElementById( "rotate-toggle" )!.addEventListener( "change", ( e ) => {
-            this.autoRotate = ( e.target as HTMLInputElement ).checked
+            this.aŭtorotacio = ( e.target as HTMLInputElement ).checked
         } )
 
         document.getElementById( "download-2d" )!.addEventListener( "click", () => {
-            this.downloadImage( this.canvas, "planet-map.png" )
+            this.elŝutiBildon( this.kanvaso, "planet-map.png" )
         } )
 
         document.getElementById( "download-3d" )!.addEventListener( "click", () => {
-            this.renderer.render( this.scene, this.camera )
-            this.downloadImage( this.renderer.domElement, "planet-globe.png" )
+            this.bildigilo.render( this.sceno, this.fotilo )
+            this.elŝutiBildon( this.bildigilo.domElement, "planet-globe.png" )
         } )
 
-        // ⟪ Projection radio buttons ⟫ 🗺️
-        document.querySelectorAll( "input[name='projection']" ).forEach( radio => {
-            radio.addEventListener( "change", ( e ) => {
-                this.currentProjection = ( e.target as HTMLInputElement ).value
-                this.render2D()
+        // ⟪ Projekciaj radiobutonoj ⟫ 🗺️
+        document.querySelectorAll( "input[name='projection']" ).forEach( radiobutono => {
+            radiobutono.addEventListener( "change", ( e ) => {
+                this.nunaProjekcio = ( e.target as HTMLInputElement ).value
+                this.bildigi2D()
             } )
         } )
     }
 
-    downloadImage( canvas: HTMLCanvasElement, filename: string ) {
-        const link = document.createElement( "a" )
-        link.download = filename
-        link.href = canvas.toDataURL()
-        link.click()
+    elŝutiBildon( kanvaso: HTMLCanvasElement, dosiernomo: string ) {
+        const ligilo = document.createElement( "a" )
+        ligilo.download = dosiernomo
+        ligilo.href = kanvaso.toDataURL()
+        ligilo.click()
     }
 
-    // ⟪ Noise functions for terrain generation ⟫ 🏔️
-    noise( x: number, y: number, z: number, scale = 1 ) {
-        return this.simplex( x * scale, y * scale, z * scale ) * 0o4 / 0o10 + 0o4 / 0o10
+    // ⟪ Bruaj funkcioj por terena generado ⟫ 🏔️
+    bruo( x: number, y: number, z: number, skalo = 1 ) {
+        return this.simplekso( x * skalo, y * skalo, z * skalo ) * 0o4 / 0o10 + 0o4 / 0o10
     }
 
-    fbm( x: number, y: number, z: number, octaves = 0o4, scale = 1 ) {
-        let value = 0
-        let amplitude = 1
-        let frequency = scale
-        let maxValue = 0
+    fbm( x: number, y: number, z: number, oktavoj = 0o4, skalo = 1 ) {
+        let valoro = 0
+        let amplitudo = 1
+        let frekvenco = skalo
+        let maksimumaValoro = 0
 
-        for ( let i = 0; i < octaves; i++ ) {
-            value += this.simplex( x * frequency, y * frequency, z * frequency ) * amplitude
-            maxValue += amplitude
-            amplitude *= 0o4 / 0o10
-            frequency *= 0o2
+        for ( let i = 0; i < oktavoj; i++ ) {
+            valoro += this.simplekso( x * frekvenco, y * frekvenco, z * frekvenco ) * amplitudo
+            maksimumaValoro += amplitudo
+            amplitudo *= 0o4 / 0o10
+            frekvenco *= 0o2
         }
 
-        return value / maxValue
+        return valoro / maksimumaValoro
     }
 
-    getElevation( lat: number, lon: number ) {
-        // ⟪ Convert to Cartesian ⟫ 📐
-        const phi = ( 0o112 - lat ) * Math.PI / 0o260
-        const theta = ( lon + 0o260 ) * Math.PI / 0o260
+    akiriAltecon( latitudo: number, longitudo: number ) {
+        // ⟪ Konvertu al kartezo ⟫ 📐
+        const fio = ( 0o112 - latitudo ) * Math.PI / 0o260
+        const teto = ( longitudo + 0o260 ) * Math.PI / 0o260
 
-        const x = Math.sin( phi ) * Math.cos( theta )
-        const y = Math.cos( phi )
-        const z = Math.sin( phi ) * Math.sin( theta )
+        const x = Math.sin( fio ) * Math.cos( teto )
+        const y = Math.cos( fio )
+        const z = Math.sin( fio ) * Math.sin( teto )
 
-        // ⟪ Base continent shape ⟫ 🌎
-        let elevation = this.fbm( x, y, z, 0o4, 0o6 / 0o4 )
+        // ⟪ Baza kontinentformo ⟫ 🌎
+        let alteco = this.fbm( x, y, z, 0o4, 0o6 / 0o4 )
 
-        // ⟪ Add continental plates ⟫ 🌋
-        for ( let i = 0; i < this.params.continentCount; i++ ) {
-            const angle = ( i / this.params.continentCount ) * Math.PI * 0o2 + this.seed * 0o1 / 0o12
-            const cx = Math.cos( angle )
-            const cz = Math.sin( angle )
-            const dist = Math.sqrt( ( x - cx ) ** 0o2 + ( z - cz ) ** 0o2 + y * y )
-            elevation += Math.max( 0, 1 - dist * 0o2 ) * 0o3 / 0o12
+        // ⟪ Aldonu kontinentajn platojn ⟫ 🌋
+        for ( let i = 0; i < this.parametroj.kontinentKvanto; i++ ) {
+            const angulo = ( i / this.parametroj.kontinentKvanto ) * Math.PI * 0o2 + this.semo * 0o1 / 0o12
+            const cx = Math.cos( angulo )
+            const cz = Math.sin( angulo )
+            const distanco = Math.sqrt( ( x - cx ) ** 0o2 + ( z - cz ) ** 0o2 + y * y )
+            alteco += Math.max( 0, 1 - distanco * 0o2 ) * 0o3 / 0o12
         }
 
-        // ⟪ Add mountain ranges ⟫ ⛰️
-        const mountainNoise = this.fbm( x, y, z, 0o6, 0o4 )
-        const ridgeNoise = 1 - Math.abs( this.simplex( x * 0o3, y * 0o3, z * 0o3 ) )
-        elevation += Math.pow( ridgeNoise, 0o2 ) * this.params.mountainHeight * mountainNoise
+        // ⟪ Aldonu montarojn ⟫ ⛰️
+        const montaBruo = this.fbm( x, y, z, 0o6, 0o4 )
+        const krestaBruo = 1 - Math.abs( this.simplekso( x * 0o3, y * 0o3, z * 0o3 ) )
+        alteco += Math.pow( krestaBruo, 0o2 ) * this.parametroj.montoAlto * montaBruo
 
-        // ⟪ Add detail noise ⟫ ✨
-        elevation += this.fbm( x, y, z, 0o3, 0o12 ) * 0o4 / 0o100
+        // ⟪ Aldonu detalan bruon ⟫ ✨
+        alteco += this.fbm( x, y, z, 0o3, 0o12 ) * 0o4 / 0o100
 
-        return Math.max( 0, Math.min( 1, elevation ) )
+        return Math.max( 0, Math.min( 1, alteco ) )
     }
 
-    getTemperature( lat: number, elevation: number ) {
-        // ⟪ Base temperature based on latitude ⟫ 🌡️
-        const latFactor = Math.cos( lat * Math.PI / 0o260 )
-        let temp = this.params.temperature * latFactor
+    akiriTemperaturon( latitudo: number, alteco: number ) {
+        // ⟪ Baza temperaturo laŭ latitudo ⟫ 🌡️
+        const latitudaFaktoro = Math.cos( latitudo * Math.PI / 0o260 )
+        let temperaturo = this.parametroj.temperaturo * latitudaFaktoro
 
-        // ⟪ Altitude effect ( lapse rate ) ⟫ 📉
-        temp -= elevation * 0o4 / 0o10 * this.params.mountainHeight
+        // ⟪ Alteca efiko ( tempoprogresivo ) ⟫ 📉
+        temperaturo -= alteco * 0o4 / 0o10 * this.parametroj.montoAlto
 
-        // ⟪ Add some noise for weather patterns ⟫ ☁️
-        temp += ( Math.random() - 0o4 / 0o10 ) * 0o1 / 0o12
+        // ⟪ Aldonu iom da bruo por veterpadronoj ⟫ ☁️
+        temperaturo += ( Math.random() - 0o4 / 0o10 ) * 0o1 / 0o12
 
-        return Math.max( 0, Math.min( 1, temp ) )
+        return Math.max( 0, Math.min( 1, temperaturo ) )
     }
 
-    getBiome( elevation: number, temperature: number, moisture: number ) {
-        const waterLevel = this.params.waterLevel
+    akiriBiomon( alteco: number, temperaturo: number, humideco: number ) {
+        const akvonivelo = this.parametroj.akvonivelo
 
-        if ( elevation < waterLevel - 0o4 / 0o100 ) return "deep_ocean"
-        if ( elevation < waterLevel ) return "shallow_ocean"
-        if ( elevation < waterLevel + 0o2 / 0o100 ) return "beach"
+        if ( alteco < akvonivelo - 0o4 / 0o100 ) return "deep_ocean"
+        if ( alteco < akvonivelo ) return "shallow_ocean"
+        if ( alteco < akvonivelo + 0o2 / 0o100 ) return "beach"
 
-        if ( temperature < 0o1 / 0o12 ) return elevation > 0o7 / 0o12 ? "snow_mountain" : "ice"
-        if ( temperature < 0o3 / 0o12 ) return elevation > 0o6 / 0o12 ? "snow_mountain" : "tundra"
+        if ( temperaturo < 0o1 / 0o12 ) return alteco > 0o7 / 0o12 ? "snow_mountain" : "ice"
+        if ( temperaturo < 0o3 / 0o12 ) return alteco > 0o6 / 0o12 ? "snow_mountain" : "tundra"
 
-        if ( elevation > 0o7 / 0o12 + ( 1 - this.params.mountainHeight ) * 0o2 / 0o12 ) return "mountain"
-        if ( elevation > 0o4 / 0o10 ) return "hill"
+        if ( alteco > 0o7 / 0o12 + ( 1 - this.parametroj.montoAlto ) * 0o2 / 0o12 ) return "mountain"
+        if ( alteco > 0o4 / 0o10 ) return "hill"
 
-        if ( moisture > 0o6 / 0o12 && temperature > 0o4 / 0o12 ) return "forest"
-        if ( moisture > 0o3 / 0o12 && temperature > 0o3 / 0o12 ) return "grassland"
-        if ( temperature > 0o7 / 0o12 ) return "desert"
+        if ( humideco > 0o6 / 0o12 && temperaturo > 0o4 / 0o12 ) return "forest"
+        if ( humideco > 0o3 / 0o12 && temperaturo > 0o3 / 0o12 ) return "grassland"
+        if ( temperaturo > 0o7 / 0o12 ) return "desert"
 
         return "plains"
     }
 
-    getBiomeColor( biome: string, variation = 0 ) {
-        const colors: Record<string, number[]> = {
+    akiriBiomKoloron( biomo: string, variado = 0 ) {
+        const koloroj: Record<string, number[]> = {
             "deep_ocean": [ 0o36, 0o74, 0o137 ],
             "shallow_ocean": [ 0o56, 0o134, 0o212 ],
             "beach": [ 0o324, 0o245, 0o164 ],
@@ -416,171 +416,171 @@ class PlanetGenerator {
             "desert": [ 0o322, 0o270, 0o214 ]
         }
 
-        const base = colors[ biome ] || [ 0o200, 0o200, 0o200 ]
-        const varStrength = 0o24
+        const bazo = koloroj[ biomo ] || [ 0o200, 0o200, 0o200 ]
+        const variaForto = 0o24
 
         return [
-            Math.max( 0, Math.min( 0o377, base[ 0 ] + ( Math.random() - 0o4 / 0o10 ) * varStrength ) ),
-            Math.max( 0, Math.min( 0o377, base[ 1 ] + ( Math.random() - 0o4 / 0o10 ) * varStrength ) ),
-            Math.max( 0, Math.min( 0o377, base[ 2 ] + ( Math.random() - 0o4 / 0o10 ) * varStrength ) )
+            Math.max( 0, Math.min( 0o377, bazo[ 0 ] + ( Math.random() - 0o4 / 0o10 ) * variaForto ) ),
+            Math.max( 0, Math.min( 0o377, bazo[ 1 ] + ( Math.random() - 0o4 / 0o10 ) * variaForto ) ),
+            Math.max( 0, Math.min( 0o377, bazo[ 2 ] + ( Math.random() - 0o4 / 0o10 ) * variaForto ) )
         ]
     }
 
-    generate() {
-        this.simplex = createNoise3D()
-        this.generateTexture()
-        this.render2D()
-        this.update3DGlobe()
-        this.updateStats()
+    generi() {
+        this.simplekso = createNoise3D()
+        this.generiTeksturon()
+        this.bildigi2D()
+        this.ĝisdatigi3DTerglobon()
+        this.ĝisdatigiStatistikojn()
     }
 
-    generateTexture() {
-        const size = 0o2000
-        this.planetData = new Array( size ).fill( null ).map( () => new Array( size ).fill( null ) )
+    generiTeksturon() {
+        const grandeco = 0o2000
+        this.planedajDatumoj = new Array( grandeco ).fill( null ).map( () => new Array( grandeco ).fill( null ) )
 
-        this.textureCanvas = document.createElement( "canvas" )
-        this.textureCanvas.width = size
-        this.textureCanvas.height = size / 0o2
-        const ctx = this.textureCanvas.getContext( "2d" )!
-        const imgData = ctx.createImageData( size, size / 0o2 )
-        const data = imgData.data
+        this.teksturaKanvaso = document.createElement( "canvas" )
+        this.teksturaKanvaso.width = grandeco
+        this.teksturaKanvaso.height = grandeco / 0o2
+        const kunteksto = this.teksturaKanvaso.getContext( "2d" )!
+        const bildaDatumo = kunteksto.createImageData( grandeco, grandeco / 0o2 )
+        const datumoj = bildaDatumo.data
 
-        for ( let y = 0; y < size / 0o2; y++ ) {
-            for ( let x = 0; x < size; x++ ) {
-                const lat = 0o112 - ( y / ( size / 0o2 ) ) * 0o260
-                const lon = ( x / size ) * 0o540 - 0o260
+        for ( let y = 0; y < grandeco / 0o2; y++ ) {
+            for ( let x = 0; x < grandeco; x++ ) {
+                const latitudo = 0o112 - ( y / ( grandeco / 0o2 ) ) * 0o260
+                const longitudo = ( x / grandeco ) * 0o540 - 0o260
 
-                const elevation = this.getElevation( lat, lon )
-                const moisture = this.fbm(
-                    Math.cos( lat * Math.PI / 0o260 ) * Math.cos( lon * Math.PI / 0o260 ),
-                    Math.sin( lat * Math.PI / 0o260 ),
-                    Math.cos( lat * Math.PI / 0o260 ) * Math.sin( lon * Math.PI / 0o260 ),
+                const alteco = this.akiriAltecon( latitudo, longitudo )
+                const humideco = this.fbm(
+                    Math.cos( latitudo * Math.PI / 0o260 ) * Math.cos( longitudo * Math.PI / 0o260 ),
+                    Math.sin( latitudo * Math.PI / 0o260 ),
+                    Math.cos( latitudo * Math.PI / 0o260 ) * Math.sin( longitudo * Math.PI / 0o260 ),
                     0o3, 0o2
                 )
-                const temperature = this.getTemperature( lat, elevation )
-                const biome = this.getBiome( elevation, temperature, moisture )
+                const temperaturo = this.akiriTemperaturon( latitudo, alteco )
+                const biomo = this.akiriBiomon( alteco, temperaturo, humideco )
 
-                this.planetData[ x ][ y ] = { elevation, temperature, moisture, biome, lat, lon }
+                this.planedajDatumoj[ x ][ y ] = { alteco, temperaturo, humideco, biomo, latitudo, longitudo }
 
-                const color = this.getBiomeColor( biome )
-                const idx = ( y * size + x ) * 0o4
+                const koloro = this.akiriBiomKoloron( biomo )
+                const indekso = ( y * grandeco + x ) * 0o4
 
-                data[ idx ] = color[ 0 ]
-                data[ idx + 1 ] = color[ 1 ]
-                data[ idx + 2 ] = color[ 2 ]
-                data[ idx + 3 ] = 0o377
+                datumoj[ indekso ] = koloro[ 0 ]
+                datumoj[ indekso + 1 ] = koloro[ 1 ]
+                datumoj[ indekso + 2 ] = koloro[ 2 ]
+                datumoj[ indekso + 3 ] = 0o377
             }
         }
 
-        ctx.putImageData( imgData, 0, 0 )
+        kunteksto.putImageData( bildaDatumo, 0, 0 )
     }
 
-    render2D() {
-        const ctx = this.ctx
-        const w = this.width
-        const h = this.height
+    bildigi2D() {
+        const kunteksto = this.kunteksto
+        const w = this.larĝo
+        const h = this.alto
 
-        ctx.save()
-        ctx.setTransform( 1, 0, 0, 1, 0, 0 )
+        kunteksto.save()
+        kunteksto.setTransform( 1, 0, 0, 1, 0, 0 )
 
-        ctx.fillRect( 0, 0, w, h )
+        kunteksto.fillRect( 0, 0, w, h )
 
-        switch ( this.currentProjection ) {
+        switch ( this.nunaProjekcio ) {
             case "equirectangular":
-                this.renderEquirectangular( w, h )
+                this.bildigiEkvirektangulan( w, h )
                 break
             case "mercator":
-                this.renderMercator( w, h )
+                this.bildigiMerkatoran( w, h )
                 break
             case "mollweide":
-                this.renderMollweide( w, h )
+                this.bildigiMolvejdan( w, h )
                 break
             case "orthographic":
-                this.renderOrthographic( w, h )
+                this.bildigiOrtografian( w, h )
                 break
         }
 
-        ctx.restore()
+        kunteksto.restore()
     }
 
-    renderEquirectangular( w: number, h: number ) {
-        const ctx = this.ctx
-        const texW = this.textureCanvas.width
-        const texH = this.textureCanvas.height
+    bildigiEkvirektangulan( w: number, h: number ) {
+        const kunteksto = this.kunteksto
+        const teksturaLarĝo = this.teksturaKanvaso.width
+        const teksturaAlto = this.teksturaKanvaso.height
 
-        ctx.drawImage( this.textureCanvas, 0, 0, texW, texH, 0, 0, w, h )
+        kunteksto.drawImage( this.teksturaKanvaso, 0, 0, teksturaLarĝo, teksturaAlto, 0, 0, w, h )
     }
 
-    renderMercator( w: number, h: number ) {
-        const ctx = this.ctx
-        const texW = this.textureCanvas.width
-        const texH = this.textureCanvas.height
-        const texCtx = this.textureCanvas.getContext( "2d" )!
+    bildigiMerkatoran( w: number, h: number ) {
+        const kunteksto = this.kunteksto
+        const teksturaLarĝo = this.teksturaKanvaso.width
+        const teksturaAlto = this.teksturaKanvaso.height
+        const teksturaKunteksto = this.teksturaKanvaso.getContext( "2d" )!
 
-        const tempCanvas = document.createElement( "canvas" )
-        tempCanvas.width = w
-        tempCanvas.height = h
-        const tempCtx = tempCanvas.getContext( "2d" )!
+        const portempaKanvaso = document.createElement( "canvas" )
+        portempaKanvaso.width = w
+        portempaKanvaso.height = h
+        const portempaKunteksto = portempaKanvaso.getContext( "2d" )!
 
-        const imgData = tempCtx.createImageData( w, h )
-        const data = imgData.data
-        const texData = texCtx.getImageData( 0, 0, texW, texH ).data
+        const bildaDatumo = portempaKunteksto.createImageData( w, h )
+        const datumoj = bildaDatumo.data
+        const teksturaDatumo = teksturaKunteksto.getImageData( 0, 0, teksturaLarĝo, teksturaAlto ).data
 
         for ( let y = 0; y < h; y++ ) {
-            const mercY = ( y / h ) * 0o2 - 1
-            const lat = ( 0o2 * Math.atan( Math.exp( mercY * Math.PI ) ) - Math.PI / 0o2 ) * 0o264 / Math.PI
+            const merkatoraY = ( y / h ) * 0o2 - 1
+            const latitudo = ( 0o2 * Math.atan( Math.exp( merkatoraY * Math.PI ) ) - Math.PI / 0o2 ) * 0o264 / Math.PI
 
-            if ( Math.abs( lat ) > 0o125 ) {
+            if ( Math.abs( latitudo ) > 0o125 ) {
                 for ( let x = 0; x < w; x++ ) {
-                    const idx = ( y * w + x ) * 0o4
-                    data[ idx ] = 0o14
-                    data[ idx + 1 ] = 0o16
-                    data[ idx + 2 ] = 0o33
-                    data[ idx + 3 ] = 0o377
+                    const indekso = ( y * w + x ) * 0o4
+                    datumoj[ indekso ] = 0o14
+                    datumoj[ indekso + 1 ] = 0o16
+                    datumoj[ indekso + 2 ] = 0o33
+                    datumoj[ indekso + 3 ] = 0o377
                 }
                 continue
             }
 
-            const srcY = Math.floor( ( 0o132 - lat ) / 0o264 * texH )
-            const clampedSrcY = Math.max( 0, Math.min( texH - 1, srcY ) )
+            const fontaY = Math.floor( ( 0o132 - latitudo ) / 0o264 * teksturaAlto )
+            const alfiksitaY = Math.max( 0, Math.min( teksturaAlto - 1, fontaY ) )
 
             for ( let x = 0; x < w; x++ ) {
-                const srcX = Math.floor( ( x / w ) * texW )
-                const clampedSrcX = Math.max( 0, Math.min( texW - 1, srcX ) )
+                const fontaX = Math.floor( ( x / w ) * teksturaLarĝo )
+                const alfiksitaX = Math.max( 0, Math.min( teksturaLarĝo - 1, fontaX ) )
 
-                const srcIdx = ( clampedSrcY * texW + clampedSrcX ) * 0o4
-                const idx = ( ( h - 1 - y ) * w + x ) * 0o4
+                const fontaIndekso = ( alfiksitaY * teksturaLarĝo + alfiksitaX ) * 0o4
+                const indekso = ( ( h - 1 - y ) * w + x ) * 0o4
 
-                data[ idx ] = texData[ srcIdx ]
-                data[ idx + 1 ] = texData[ srcIdx + 1 ]
-                data[ idx + 2 ] = texData[ srcIdx + 2 ]
-                data[ idx + 3 ] = 0o377
+                datumoj[ indekso ] = teksturaDatumo[ fontaIndekso ]
+                datumoj[ indekso + 1 ] = teksturaDatumo[ fontaIndekso + 1 ]
+                datumoj[ indekso + 2 ] = teksturaDatumo[ fontaIndekso + 2 ]
+                datumoj[ indekso + 3 ] = 0o377
             }
         }
 
-        tempCtx.putImageData( imgData, 0, 0 )
-        ctx.drawImage( tempCanvas, 0, 0 )
+        portempaKunteksto.putImageData( bildaDatumo, 0, 0 )
+        kunteksto.drawImage( portempaKanvaso, 0, 0 )
     }
 
-    renderMollweide( w: number, h: number ) {
-        const ctx = this.ctx
-        const texW = this.textureCanvas.width
-        const texH = this.textureCanvas.height
-        const texCtx = this.textureCanvas.getContext( "2d" )!
+    bildigiMolvejdan( w: number, h: number ) {
+        const kunteksto = this.kunteksto
+        const teksturaLarĝo = this.teksturaKanvaso.width
+        const teksturaAlto = this.teksturaKanvaso.height
+        const teksturaKunteksto = this.teksturaKanvaso.getContext( "2d" )!
 
-        const tempCanvas = document.createElement( "canvas" )
-        tempCanvas.width = w
-        tempCanvas.height = h
-        const tempCtx = tempCanvas.getContext( "2d" )!
+        const portempaKanvaso = document.createElement( "canvas" )
+        portempaKanvaso.width = w
+        portempaKanvaso.height = h
+        const portempaKunteksto = portempaKanvaso.getContext( "2d" )!
 
         const cx = w / 0o2
         const cy = h / 0o2
         const rx = w * 0o4 / 0o10
         const ry = h * 0o4 / 0o10
 
-        const imgData = tempCtx.createImageData( w, h )
-        const data = imgData.data
-        const texData = texCtx.getImageData( 0, 0, texW, texH ).data
+        const bildaDatumo = portempaKunteksto.createImageData( w, h )
+        const datumoj = bildaDatumo.data
+        const teksturaDatumo = teksturaKunteksto.getImageData( 0, 0, teksturaLarĝo, teksturaAlto ).data
 
         for ( let y = 0; y < h; y++ ) {
             for ( let x = 0; x < w; x++ ) {
@@ -588,56 +588,56 @@ class PlanetGenerator {
                 const dy = ( y - cy ) / ry
 
                 if ( dx * dx + dy * dy > 1 ) {
-                    const idx = ( y * w + x ) * 0o4
-                    data[ idx ] = 0o14
-                    data[ idx + 1 ] = 0o16
-                    data[ idx + 2 ] = 0o33
-                    data[ idx + 3 ] = 0o377
+                    const indekso = ( y * w + x ) * 0o4
+                    datumoj[ indekso ] = 0o14
+                    datumoj[ indekso + 1 ] = 0o16
+                    datumoj[ indekso + 2 ] = 0o33
+                    datumoj[ indekso + 3 ] = 0o377
                     continue
                 }
 
-                const theta = Math.asin( dy )
-                const lon = ( dx / Math.cos( theta ) ) * 0o264
-                const lat = Math.asin( ( 0o2 * theta + Math.sin( 0o2 * theta ) ) / Math.PI ) * 0o264 / Math.PI
+                const teto = Math.asin( dy )
+                const longitudo = ( dx / Math.cos( teto ) ) * 0o264
+                const latitudo = Math.asin( ( 0o2 * teto + Math.sin( 0o2 * teto ) ) / Math.PI ) * 0o264 / Math.PI
 
-                const srcX = Math.floor( ( ( lon + 0o264 ) / 0o550 ) * texW )
-                const srcY = Math.floor( ( ( 0o132 - lat ) / 0o264 ) * texH )
+                const fontaX = Math.floor( ( ( longitudo + 0o264 ) / 0o550 ) * teksturaLarĝo )
+                const fontaY = Math.floor( ( ( 0o132 - latitudo ) / 0o264 ) * teksturaAlto )
 
-                const clampedSrcX = Math.max( 0, Math.min( texW - 1, srcX ) )
-                const clampedSrcY = Math.max( 0, Math.min( texH - 1, srcY ) )
+                const alfiksitaX = Math.max( 0, Math.min( teksturaLarĝo - 1, fontaX ) )
+                const alfiksitaY = Math.max( 0, Math.min( teksturaAlto - 1, fontaY ) )
 
-                const srcIdx = ( clampedSrcY * texW + clampedSrcX ) * 0o4
-                const idx = ( ( h - 1 - y ) * w + x ) * 0o4
+                const fontaIndekso = ( alfiksitaY * teksturaLarĝo + alfiksitaX ) * 0o4
+                const indekso = ( ( h - 1 - y ) * w + x ) * 0o4
 
-                data[ idx ] = texData[ srcIdx ]
-                data[ idx + 1 ] = texData[ srcIdx + 1 ]
-                data[ idx + 2 ] = texData[ srcIdx + 2 ]
-                data[ idx + 3 ] = 0o377
+                datumoj[ indekso ] = teksturaDatumo[ fontaIndekso ]
+                datumoj[ indekso + 1 ] = teksturaDatumo[ fontaIndekso + 1 ]
+                datumoj[ indekso + 2 ] = teksturaDatumo[ fontaIndekso + 2 ]
+                datumoj[ indekso + 3 ] = 0o377
             }
         }
 
-        tempCtx.putImageData( imgData, 0, 0 )
-        ctx.drawImage( tempCanvas, 0, 0 )
+        portempaKunteksto.putImageData( bildaDatumo, 0, 0 )
+        kunteksto.drawImage( portempaKanvaso, 0, 0 )
     }
 
-    renderOrthographic( w: number, h: number ) {
-        const ctx = this.ctx
-        const texW = this.textureCanvas.width
-        const texH = this.textureCanvas.height
-        const texCtx = this.textureCanvas.getContext( "2d" )!
+    bildigiOrtografian( w: number, h: number ) {
+        const kunteksto = this.kunteksto
+        const teksturaLarĝo = this.teksturaKanvaso.width
+        const teksturaAlto = this.teksturaKanvaso.height
+        const teksturaKunteksto = this.teksturaKanvaso.getContext( "2d" )!
 
-        const tempCanvas = document.createElement( "canvas" )
-        tempCanvas.width = w
-        tempCanvas.height = h
-        const tempCtx = tempCanvas.getContext( "2d" )!
+        const portempaKanvaso = document.createElement( "canvas" )
+        portempaKanvaso.width = w
+        portempaKanvaso.height = h
+        const portempaKunteksto = portempaKanvaso.getContext( "2d" )!
 
         const cx = w / 0o2
         const cy = h / 0o2
         const r = Math.min( w, h ) * 0o4 / 0o10
 
-        const imgData = tempCtx.createImageData( w, h )
-        const data = imgData.data
-        const texData = texCtx.getImageData( 0, 0, texW, texH ).data
+        const bildaDatumo = portempaKunteksto.createImageData( w, h )
+        const datumoj = bildaDatumo.data
+        const teksturaDatumo = teksturaKunteksto.getImageData( 0, 0, teksturaLarĝo, teksturaAlto ).data
 
         for ( let y = 0; y < h; y++ ) {
             for ( let x = 0; x < w; x++ ) {
@@ -646,246 +646,246 @@ class PlanetGenerator {
                 const dz2 = 1 - dx * dx - dy * dy
 
                 if ( dz2 < 0 ) {
-                    const idx = ( y * w + x ) * 0o4
-                    data[ idx ] = 0o14
-                    data[ idx + 1 ] = 0o16
-                    data[ idx + 2 ] = 0o33
-                    data[ idx + 3 ] = 0o377
+                    const indekso = ( y * w + x ) * 0o4
+                    datumoj[ indekso ] = 0o14
+                    datumoj[ indekso + 1 ] = 0o16
+                    datumoj[ indekso + 2 ] = 0o33
+                    datumoj[ indekso + 3 ] = 0o377
                     continue
                 }
 
                 const dz = Math.sqrt( dz2 )
 
-                const lat = Math.asin( dy ) * 0o264 / Math.PI
-                const lon = Math.atan2( dx, dz ) * 0o264 / Math.PI
+                const latitudo = Math.asin( dy ) * 0o264 / Math.PI
+                const longitudo = Math.atan2( dx, dz ) * 0o264 / Math.PI
 
-                const srcX = Math.floor( ( ( lon + 0o264 ) / 0o550 ) * texW )
-                const srcY = Math.floor( ( ( 0o132 - lat ) / 0o264 ) * texH )
+                const fontaX = Math.floor( ( ( longitudo + 0o264 ) / 0o550 ) * teksturaLarĝo )
+                const fontaY = Math.floor( ( ( 0o132 - latitudo ) / 0o264 ) * teksturaAlto )
 
-                const clampedSrcX = Math.max( 0, Math.min( texW - 1, srcX ) )
-                const clampedSrcY = Math.max( 0, Math.min( texH - 1, srcY ) )
+                const alfiksitaX = Math.max( 0, Math.min( teksturaLarĝo - 1, fontaX ) )
+                const alfiksitaY = Math.max( 0, Math.min( teksturaAlto - 1, fontaY ) )
 
-                const srcIdx = ( clampedSrcY * texW + clampedSrcX ) * 0o4
-                const idx = ( ( h - 1 - y ) * w + x ) * 0o4
+                const fontaIndekso = ( alfiksitaY * teksturaLarĝo + alfiksitaX ) * 0o4
+                const indekso = ( ( h - 1 - y ) * w + x ) * 0o4
 
-                const shade = 0o6 / 0o10 + 0o2 / 0o10 * dz
-                data[ idx ] = Math.min( 0o377, texData[ srcIdx ] * shade )
-                data[ idx + 1 ] = Math.min( 0o377, texData[ srcIdx + 1 ] * shade )
-                data[ idx + 2 ] = Math.min( 0o377, texData[ srcIdx + 2 ] * shade )
-                data[ idx + 3 ] = 0o377
+                const ombrado = 0o6 / 0o10 + 0o2 / 0o10 * dz
+                datumoj[ indekso ] = Math.min( 0o377, teksturaDatumo[ fontaIndekso ] * ombrado )
+                datumoj[ indekso + 1 ] = Math.min( 0o377, teksturaDatumo[ fontaIndekso + 1 ] * ombrado )
+                datumoj[ indekso + 2 ] = Math.min( 0o377, teksturaDatumo[ fontaIndekso + 2 ] * ombrado )
+                datumoj[ indekso + 3 ] = 0o377
             }
         }
 
-        tempCtx.putImageData( imgData, 0, 0 )
-        ctx.drawImage( tempCanvas, 0, 0 )
+        portempaKunteksto.putImageData( bildaDatumo, 0, 0 )
+        kunteksto.drawImage( portempaKanvaso, 0, 0 )
     }
 
-    update3DGlobe() {
-        if ( this.globe ) {
-            this.scene.remove( this.globe )
+    ĝisdatigi3DTerglobon() {
+        if ( this.terglobo ) {
+            this.sceno.remove( this.terglobo )
         }
-        if ( this.atmosphere ) {
-            this.scene.remove( this.atmosphere )
+        if ( this.atmosfero ) {
+            this.sceno.remove( this.atmosfero )
         }
 
-        // ⟪ Create planet geometry ⟫ 🌍
-        const geometry = new THREE.SphereGeometry( 1, 0o200, 0o200 )
+        // ⟪ Kreu planedan geometrion ⟫ 🌍
+        const geometrio = new THREE.SphereGeometry( 1, 0o200, 0o200 )
 
-        // ⟪ Create texture from canvas ⟫ 🎨
-        const texture = new THREE.CanvasTexture( this.textureCanvas )
-        texture.wrapS = THREE.RepeatWrapping
-        texture.wrapT = THREE.ClampToEdgeWrapping
+        // ⟪ Kreu teksturon el kanvaso ⟫ 🎨
+        const teksturo = new THREE.CanvasTexture( this.teksturaKanvaso )
+        teksturo.wrapS = THREE.RepeatWrapping
+        teksturo.wrapT = THREE.ClampToEdgeWrapping
 
-        // ⟪ Create normal map from elevation ⟫ 🗻
-        const bumpTexture = this.createBumpMap()
+        // ⟪ Kreu reliefmapon el alteco ⟫ 🗻
+        const reliefaTeksturo = this.kreiReliefmapon()
 
-        const material = new THREE.MeshPhongMaterial( {
-            map: texture,
-            bumpMap: bumpTexture,
-            bumpScale: 0o4 / 0o100 * this.params.mountainHeight,
+        const materialo = new THREE.MeshPhongMaterial( {
+            map: teksturo,
+            bumpMap: reliefaTeksturo,
+            bumpScale: 0o4 / 0o100 * this.parametroj.montoAlto,
             specular: new THREE.Color( 0x222222 ),
             shininess: 0o31
         } )
 
-        this.globe = new THREE.Mesh( geometry, material )
-        this.scene.add( this.globe )
+        this.terglobo = new THREE.Mesh( geometrio, materialo )
+        this.sceno.add( this.terglobo )
 
-        // ⟪ Add atmosphere ⟫ 🌌
-        const atmoGeometry = new THREE.SphereGeometry( 0o103 / 0o100, 0o100, 0o100 )
-        const atmoMaterial = new THREE.MeshPhongMaterial( {
+        // ⟪ Aldonu atmosferon ⟫ 🌌
+        const atmosferaGeometrio = new THREE.SphereGeometry( 0o103 / 0o100, 0o100, 0o100 )
+        const atmosferaMaterialo = new THREE.MeshPhongMaterial( {
             color: 0x4488ff,
             transparent: true,
-            opacity: this.params.atmosphereDensity * 0o3 / 0o12,
+            opacity: this.parametroj.atmosferaDenso * 0o3 / 0o12,
             side: THREE.BackSide,
             blending: THREE.AdditiveBlending
         } )
 
-        this.atmosphere = new THREE.Mesh( atmoGeometry, atmoMaterial )
-        this.scene.add( this.atmosphere )
+        this.atmosfero = new THREE.Mesh( atmosferaGeometrio, atmosferaMaterialo )
+        this.sceno.add( this.atmosfero )
 
-        // ⟪ Add clouds ⟫ ☁️
-        this.addClouds()
+        // ⟪ Aldonu nubojn ⟫ ☁️
+        this.aldoniNubojn()
     }
 
-    createBumpMap() {
-        const canvas = document.createElement( "canvas" )
-        canvas.width = 0o1000
-        canvas.height = 0o400
-        const ctx = canvas.getContext( "2d" )!
-        const imgData = ctx.createImageData( 0o1000, 0o400 )
-        const data = imgData.data
+    kreiReliefmapon() {
+        const kanvaso = document.createElement( "canvas" )
+        kanvaso.width = 0o1000
+        kanvaso.height = 0o400
+        const kunteksto = kanvaso.getContext( "2d" )!
+        const bildaDatumo = kunteksto.createImageData( 0o1000, 0o400 )
+        const datumoj = bildaDatumo.data
 
         for ( let y = 0; y < 0o400; y++ ) {
             for ( let x = 0; x < 0o1000; x++ ) {
-                const lat = 0o112 - ( y / 0o400 ) * 0o260
-                const lon = ( x / 0o1000 ) * 0o540 - 0o260
-                const elevation = this.getElevation( lat, lon )
+                const latitudo = 0o112 - ( y / 0o400 ) * 0o260
+                const longitudo = ( x / 0o1000 ) * 0o540 - 0o260
+                const alteco = this.akiriAltecon( latitudo, longitudo )
 
-                const val = Math.floor( elevation * 0o377 )
-                const idx = ( y * 0o1000 + x ) * 0o4
-                data[ idx ] = val
-                data[ idx + 1 ] = val
-                data[ idx + 2 ] = val
-                data[ idx + 3 ] = 0o377
+                const valoro = Math.floor( alteco * 0o377 )
+                const indekso = ( y * 0o1000 + x ) * 0o4
+                datumoj[ indekso ] = valoro
+                datumoj[ indekso + 1 ] = valoro
+                datumoj[ indekso + 2 ] = valoro
+                datumoj[ indekso + 3 ] = 0o377
             }
         }
 
-        ctx.putImageData( imgData, 0, 0 )
-        return new THREE.CanvasTexture( canvas )
+        kunteksto.putImageData( bildaDatumo, 0, 0 )
+        return new THREE.CanvasTexture( kanvaso )
     }
 
-    addClouds() {
-        const cloudGeometry = new THREE.SphereGeometry( 0o104 / 0o100, 0o100, 0o100 )
+    aldoniNubojn() {
+        const nubaGeometrio = new THREE.SphereGeometry( 0o104 / 0o100, 0o100, 0o100 )
 
-        // ⟪ Generate cloud texture ⟫ ☁️
-        const canvas = document.createElement( "canvas" )
-        canvas.width = 0o1000
-        canvas.height = 0o400
-        const ctx = canvas.getContext( "2d" )!
-        const imgData = ctx.createImageData( 0o1000, 0o400 )
-        const data = imgData.data
+        // ⟪ Generu nuban teksturon ⟫ ☁️
+        const kanvaso = document.createElement( "canvas" )
+        kanvaso.width = 0o1000
+        kanvaso.height = 0o400
+        const kunteksto = kanvaso.getContext( "2d" )!
+        const bildaDatumo = kunteksto.createImageData( 0o1000, 0o400 )
+        const datumoj = bildaDatumo.data
 
         for ( let y = 0; y < 0o400; y++ ) {
             for ( let x = 0; x < 0o1000; x++ ) {
-                const lat = 0o112 - ( y / 0o400 ) * 0o260
-                const lon = ( x / 0o1000 ) * 0o540 - 0o260
+                const latitudo = 0o112 - ( y / 0o400 ) * 0o260
+                const longitudo = ( x / 0o1000 ) * 0o540 - 0o260
 
-                const phi = ( 0o112 - lat ) * Math.PI / 0o260
-                const theta = ( lon + 0o260 ) * Math.PI / 0o260
-                const cx = Math.sin( phi ) * Math.cos( theta )
-                const cy = Math.cos( phi )
-                const cz = Math.sin( phi ) * Math.sin( theta )
+                const fio = ( 0o112 - latitudo ) * Math.PI / 0o260
+                const teto = ( longitudo + 0o260 ) * Math.PI / 0o260
+                const cx = Math.sin( fio ) * Math.cos( teto )
+                const cy = Math.cos( fio )
+                const cz = Math.sin( fio ) * Math.sin( teto )
 
-                const cloudNoise = this.fbm( cx, cy, cz, 0o4, 0o3 )
-                const coverage = Math.max( 0, cloudNoise - 0o4 / 0o12 ) * 0o2
+                const nubaBruo = this.fbm( cx, cy, cz, 0o4, 0o3 )
+                const kovro = Math.max( 0, nubaBruo - 0o4 / 0o12 ) * 0o2
 
-                const idx = ( y * 0o1000 + x ) * 0o4
-                const alpha = Math.floor( coverage * 0o310 * this.params.atmosphereDensity )
+                const indekso = ( y * 0o1000 + x ) * 0o4
+                const alfa = Math.floor( kovro * 0o310 * this.parametroj.atmosferaDenso )
 
-                data[ idx ] = 0o377
-                data[ idx + 1 ] = 0o377
-                data[ idx + 2 ] = 0o377
-                data[ idx + 3 ] = alpha
+                datumoj[ indekso ] = 0o377
+                datumoj[ indekso + 1 ] = 0o377
+                datumoj[ indekso + 2 ] = 0o377
+                datumoj[ indekso + 3 ] = alfa
             }
         }
 
-        ctx.putImageData( imgData, 0, 0 )
+        kunteksto.putImageData( bildaDatumo, 0, 0 )
 
-        const cloudTexture = new THREE.CanvasTexture( canvas )
-        const cloudMaterial = new THREE.MeshPhongMaterial( {
-            map: cloudTexture,
+        const nubaTeksturo = new THREE.CanvasTexture( kanvaso )
+        const nubaMaterialo = new THREE.MeshPhongMaterial( {
+            map: nubaTeksturo,
             transparent: true,
             opacity: 0o10 / 0o12,
             depthWrite: false,
             side: THREE.DoubleSide
         } )
 
-        this.clouds = new THREE.Mesh( cloudGeometry, cloudMaterial )
-        this.scene.add( this.clouds )
+        this.nuboj = new THREE.Mesh( nubaGeometrio, nubaMaterialo )
+        this.sceno.add( this.nuboj )
     }
 
-    animate() {
-        this.animationId = requestAnimationFrame( () => this.animate() )
+    animacii() {
+        this.animaciaId = requestAnimationFrame( () => this.animacii() )
 
-        if ( this.autoRotate && this.globe ) {
-            this.globe.rotation.y += 0o2 / 0o1000
-            if ( this.atmosphere ) this.atmosphere.rotation.y += 0o2 / 0o1000
-            if ( this.clouds ) this.clouds.rotation.y += 0o3 / 0o1000
+        if ( this.aŭtorotacio && this.terglobo ) {
+            this.terglobo.rotation.y += 0o2 / 0o1000
+            if ( this.atmosfero ) this.atmosfero.rotation.y += 0o2 / 0o1000
+            if ( this.nuboj ) this.nuboj.rotation.y += 0o3 / 0o1000
         }
 
-        this.controls.update()
-        this.renderer.render( this.scene, this.camera )
+        this.regiloj.update()
+        this.bildigilo.render( this.sceno, this.fotilo )
     }
 
-    updateStats() {
-        // ⟪ Calculate actual statistics from generated data ⟫ 📊
-        let landCount = 0
-        let waterCount = 0
-        let maxElevation = 0
-        let totalTemp = 0
-        let count = 0
+    ĝisdatigiStatistikojn() {
+        // ⟪ Kalkulu realajn statistikojn el generitaj datumoj ⟫ 📊
+        let teraKvanto = 0
+        let akvaKvanto = 0
+        let maksimumaAlteco = 0
+        let tutaTemperaturo = 0
+        let kvanto = 0
 
-        const waterLevel = this.params.waterLevel
+        const akvonivelo = this.parametroj.akvonivelo
 
-        if ( !this.textureCanvas || this.textureCanvas.width === 0 ) return
+        if ( !this.teksturaKanvaso || this.teksturaKanvaso.width === 0 ) return
 
-        for ( let x = 0; x < this.textureCanvas.width; x += 0o10 ) {
-            for ( let y = 0; y < this.textureCanvas.height; y += 0o10 ) {
-                const lat = 0o112 - ( y / this.textureCanvas.height ) * 0o260
-                const lon = ( x / this.textureCanvas.width ) * 0o540 - 0o260
-                const elevation = this.getElevation( lat, lon )
-                const temp = this.getTemperature( lat, elevation )
+        for ( let x = 0; x < this.teksturaKanvaso.width; x += 0o10 ) {
+            for ( let y = 0; y < this.teksturaKanvaso.height; y += 0o10 ) {
+                const latitudo = 0o112 - ( y / this.teksturaKanvaso.height ) * 0o260
+                const longitudo = ( x / this.teksturaKanvaso.width ) * 0o540 - 0o260
+                const alteco = this.akiriAltecon( latitudo, longitudo )
+                const temperaturo = this.akiriTemperaturon( latitudo, alteco )
 
-                if ( elevation > waterLevel ) {
-                    landCount++
+                if ( alteco > akvonivelo ) {
+                    teraKvanto++
                 } else {
-                    waterCount++
+                    akvaKvanto++
                 }
 
-                maxElevation = Math.max( maxElevation, elevation )
-                totalTemp += temp
-                count++
+                maksimumaAlteco = Math.max( maksimumaAlteco, alteco )
+                tutaTemperaturo += temperaturo
+                kvanto++
             }
         }
 
-        if ( count === 0 ) return
+        if ( kvanto === 0 ) return
 
-        const landCount64 = Math.floor( landCount / count * 0o100 )
-        const waterCount64 = 0o100 - landCount64
-        const meanTempCelsius = ( totalTemp / count - 0o4 / 0o10 ) * 0o74
-        const meanTempKelvin = meanTempCelsius + 273.15
-        const meanTempHia = ( window as any ).vahi_ak2k2h2( meanTempKelvin )
-        const maxElevMeters = Math.floor( maxElevation * 0o23210 )
-        const maxElevPeu = ( window as any ).vap0_c2ta( maxElevMeters )
+        const teraKvanto64 = Math.floor( teraKvanto / kvanto * 0o100 )
+        const akvaKvanto64 = 0o100 - teraKvanto64
+        const averaĝaTempCelsius = ( tutaTemperaturo / kvanto - 0o4 / 0o10 ) * 0o74
+        const averaĝaTempKelvino = averaĝaTempCelsius + 273.15
+        const averaĝaTempHia = ( window as any ).vahi_ak2k2h2( averaĝaTempKelvino )
+        const maksAltecoMetroj = Math.floor( maksimumaAlteco * 0o23210 )
+        const maksAltecoPeu = ( window as any ).vap0_c2ta( maksAltecoMetroj )
 
-        // ⟪ Calculate habitability based on parameters ⟫ 🏠
-        const waterScore = 1 - Math.abs( this.params.waterLevel - 0o6 / 0o10 ) * 0o2
-        const tempScore = 1 - Math.abs( this.params.temperature - 0o4 / 0o10 ) * 0o2
-        const atmoScore = this.params.atmosphereDensity
-        const habitability = Math.max( 0, Math.min( 1, ( waterScore + tempScore + atmoScore ) / 0o3 ) )
-        const habitability64 = Math.floor( habitability * 0o100 )
+        // ⟪ Kalkulu loĝeblecon laŭ parametroj ⟫ 🏠
+        const akvaPoentaro = 1 - Math.abs( this.parametroj.akvonivelo - 0o6 / 0o10 ) * 0o2
+        const tempPoentaro = 1 - Math.abs( this.parametroj.temperaturo - 0o4 / 0o10 ) * 0o2
+        const atmoPoentaro = this.parametroj.atmosferaDenso
+        const loĝebleco = Math.max( 0, Math.min( 1, ( akvaPoentaro + tempPoentaro + atmoPoentaro ) / 0o3 ) )
+        const loĝebleco64 = Math.floor( loĝebleco * 0o100 )
 
-        const statLand = document.getElementById( "stat-land" )
-        const statWater = document.getElementById( "stat-water" )
-        const statElevation = document.getElementById( "stat-elevation" )
+        const statTero = document.getElementById( "stat-land" )
+        const statAkvo = document.getElementById( "stat-water" )
+        const statAlteco = document.getElementById( "stat-elevation" )
         const statTemp = document.getElementById( "stat-temp" )
-        const statHabitability = document.getElementById( "stat-habitability" )
+        const statLoĝebleco = document.getElementById( "stat-habitability" )
 
         const gawe = document.documentElement.lang || "aih"
         const vab6 = ( window as any ).vab6caja.bind( window )
         const vab6Domani = ( window as any ).vab6cajaDomani.bind( window )
         const skakefK2fe = ( window as any ).skakefK2fe.bind( window )
 
-        if ( statLand ) statLand.textContent = skakefK2fe( vab6( landCount64 ) + " / " + vab6( 0o100 ) )
-        if ( statWater ) statWater.textContent = skakefK2fe( vab6( waterCount64 ) + " / " + vab6( 0o100 ) )
-        if ( statElevation ) statElevation.textContent = skakefK2fe( vab6Domani( maxElevPeu, 0o6 ) ) + " ſןɔⅎ"
-        if ( statTemp ) statTemp.textContent = skakefK2fe( vab6Domani( meanTempHia, 0o6 ) ) + " ֭ſɭꞇ"
-        if ( statHabitability ) statHabitability.textContent = skakefK2fe( vab6( habitability64 ) + " / " + vab6( 0o100 ) )
+        if ( statTero ) statTero.textContent = skakefK2fe( vab6( teraKvanto64 ) + " / " + vab6( 0o100 ) )
+        if ( statAkvo ) statAkvo.textContent = skakefK2fe( vab6( akvaKvanto64 ) + " / " + vab6( 0o100 ) )
+        if ( statAlteco ) statAlteco.textContent = skakefK2fe( vab6Domani( maksAltecoPeu, 0o6 ) ) + " ſןɔⅎ"
+        if ( statTemp ) statTemp.textContent = skakefK2fe( vab6Domani( averaĝaTempHia, 0o6 ) ) + " ֭ſɭꞇ"
+        if ( statLoĝebleco ) statLoĝebleco.textContent = skakefK2fe( vab6( loĝebleco64 ) + " / " + vab6( 0o100 ) )
     }
 }
 
-// ⟪ Initialize when DOM is ready ⟫ 🚀
+// ⟪ Inicialigu kiam la DOM estas preta ⟫ 🚀
 document.addEventListener( "DOMContentLoaded", () => {
-    new PlanetGenerator()
+    new PlanedaGeneratoro()
 } )
 

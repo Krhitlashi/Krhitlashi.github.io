@@ -1,10 +1,10 @@
-// ≺⧼ Iikrhian Dictionary Page Handler 🖱️ ⧽≻
-// Fetches ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬɔ.xlsx at runtime and parses it in-browser via
-// SheetJS ( `xlsx` package ). No pre-built data.txt needed.
-// List page. appends one <tr> per row to #kef tbody and wires click + search.
-// Detail page. looks up a row by ?i=N and fills the named sections.
+// ≺⧼ Iikrhia Vortara Paĝa Pritraktilo 🖱️ ⧽≻
+// Ŝarĝas ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬɔ.xlsx dum ruliĝo kaj analizas ĝin en la retumilo per
+// SheetJS ( `xlsx` pakaĵo ). Ne necesas antaŭkonstruita data.txt.
+// Listpaĝo. aldonas unu <tr> por ĉiu vico al #kef tbody kaj ligas klakadon + serĉon.
+// Detalpaĝo. serĉas vicon per ?i=N kaj plenigas la nomitajn sekciojn.
 //
-// POS determination and tag processing both mirror xlsx_html_etym.py.
+// Pozicia determinado kaj etiked-pritraktado ambaŭ spegulas xlsx_html_etym.py.
 
 import * as XLSX from "xlsx";
 
@@ -44,9 +44,9 @@ const VASAKA_KSAKA: Record<string, string> = {
 };
 
 /**
- * Normalize a tag string to NFC so it can be compared against the
- * literal keys regardless of how the xlsx stored the original chars.
- *    @param s ( string ) - Raw tag string.
+ * Normalizu etikedĉenon al NFC por ke ĝi kompareblu kontraŭ la
+ * laŭvortaj klavoj sendepende de kiel la xlsx stokis la originalajn signojn.
+ *    @param s ( string ) - Kruda etikedĉeno.
  * @returns string
  */
 function normaliziEtikedon(s: string): string {
@@ -62,10 +62,10 @@ const ETIKEDFORIGO_NFC: Set<string> = new Set(
 );
 
 /**
- * Decide POS by checking Theme first, then Is Under The Theme, for each
- * known marker.
- *    @param temo ( string ) - Theme cell ( column 0 ).
- *    @param estasSub ( string ) - Is Under The Theme cell ( column 1 ).
+ * Decidu la pozicion kontrolante unue Temon, poste Estas Sub La Temo, por ĉiu
+ * konata markilo.
+ *    @param temo ( string ) - Temo-ĉelo ( kolumno 0 ).
+ *    @param estasSub ( string ) - Estas Sub La Temo-ĉelo ( kolumno 1 ).
  * @returns string
  */
 function determiniPoŝon(temo: string, estasSub: string): string {
@@ -79,8 +79,8 @@ function determiniPoŝon(temo: string, estasSub: string): string {
 }
 
 /**
- * Coerce a sheet cell to a trimmed single-line string.
- *    @param v ( unknown ) - Raw cell value ( string, number, bool, null ).
+ * Konvertu folian ĉelon al tondita unulinia ĉeno.
+ *    @param v ( unknown ) - Kruda ĉelvaloro ( string, number, bool, null ).
  * @returns string
  */
 function ĉeloAlTeksto(v: unknown): string {
@@ -89,8 +89,8 @@ function ĉeloAlTeksto(v: unknown): string {
 }
 
 /**
- * Format the raw Tags cell into a display string.
- *    @param kruda ( string ) - The raw Tags column value.
+ * Formatu la krudan Etikedoj-ĉelon al montra ĉeno.
+ *    @param kruda ( string ) - La kruda Etikedoj-kolumnvaloro.
  * @returns string
  */
 function formatiEtikedojn(kruda: string): string {
@@ -98,7 +98,7 @@ function formatiEtikedojn(kruda: string): string {
     const partoj = kruda.split("||");
     const eligo: string[] = [];
     for ( const parto of partoj ) {
-        // ⟨ NFC-normalize so xlsx data with decomposed forms matches the literal keys ⟩
+        // ⟨ NFC-normaligu por ke xlsx-datumoj kun malkomponitaj formoj kongruu kun la laŭvortaj klavoj ⟩
         const tondita = normaliziEtikedon(parto.trim());
         if ( !tondita || ETIKEDFORIGO_NFC.has(tondita) ) continue;
         eligo.push(ETIKEDRENOMO_NFC[tondita] ?? tondita);
@@ -107,8 +107,8 @@ function formatiEtikedojn(kruda: string): string {
 }
 
 /**
- * Escape ampersand, less-than, and greater-than for safe HTML insertion.
- *    @param s ( string = "" ) - Plain text to escape.
+ * Eskapu ampersandon, malpli-ol, kaj pli-ol por sekura HTML-enmeto.
+ *    @param s ( string = "" ) - Simpla teksto por eskapi.
  * @returns string
  */
 function eskapiHtml(s: string): string {
@@ -119,8 +119,8 @@ function eskapiHtml(s: string): string {
 }
 
 /**
- * Escape `s` if it has content, otherwise return a single space.
- *    @param s ( string = "" ) - Plain text to escape.
+ * Eskapu `s` se ĝi havas enhavon, alie redonu unuop spacon.
+ *    @param s ( string = "" ) - Simpla teksto por eskapi.
  * @returns string
  */
 function ĉeloAŭSpaco(s: string): string {
@@ -130,8 +130,8 @@ function ĉeloAŭSpaco(s: string): string {
 let _datumPromeso: Promise<Falkefu_N2k[]> | null = null;
 
 /**
- * Fetch the xlsx once, parse it with SheetJS, derive POS + raw tags,
- * and cache the resulting array across calls.
+ * Alportu la xlsx-on unufoje, analizu ĝin per SheetJS, eligu POZ + krudajn etikedojn,
+ * kaj kaŝmemoru la rezultan aron trans vokoj.
  * @returns Promise
  */
 function ŝargiDatumojn(): Promise<Falkefu_N2k[]> {
@@ -193,7 +193,7 @@ async function agordiListPaĝon() {
         return;
     }
 
-    // ⟨ Render rows in a DocumentFragment so the live tbody stays untouched ⟩
+    // ⟨ Montru vicojn en DocumentFragment por ke la viva tbody restu netuŝita ⟩
     const fragmento = document.createDocumentFragment();
     for ( const vico of datumoj ) {
         const tr = document.createElement("tr");
@@ -201,7 +201,7 @@ async function agordiListPaĝon() {
         tr.tabIndex = 0;
 
         const iru = () => {
-            // ⟨ Preserve the current lang parameter so lang=en persists across pages ⟩
+            // ⟨ Konservu la nunan lang-parametron por ke lang=en daŭru tra paĝoj ⟩
             const langParam = new URLSearchParams(window.location.search).get("lang");
             let url = "./ſɭɔʞ.html?i=" + vico.i;
             if ( langParam ) {
@@ -217,7 +217,7 @@ async function agordiListPaĝon() {
             }
         });
 
-        // ⟨ Loanword column mirrors xlsx_html_etym.py. 3 cells when no tag, 4 cells when tagged ⟩
+        // ⟨ Pruntvorta kolumno spegulas xlsx_html_etym.py. 3 ĉeloj sen etikedo, 4 ĉeloj kun etikedo ⟩
         const etiked = formatiEtikedojn(vico.etikedoj);
         const etikedĉelo = etiked
             ? "<td>" + eskapiHtml(etiked) + "</td>"
@@ -233,7 +233,7 @@ async function agordiListPaĝon() {
     }
     tabelKorpo.replaceChildren(fragmento);
 
-    // ⟨ Search filter ⟩
+    // ⟨ Serĉa filtrilo ⟩
     enigo?.addEventListener("input", () => {
         const q = ( enigo.value || "" ).trim().toLowerCase();
         tabelKorpo.querySelectorAll("tr[data-i]").forEach(( vico ) => {
@@ -252,10 +252,10 @@ function akiriVicanIndeksonDeUrl(): number {
 }
 
 /**
- * Show or hide a named section based on whether `valoro` is empty.
- *    @param elementoId ( string = "" ) - Body element to receive the text.
- *    @param sekcioId ( string = "" ) - Wrapper section that gets `hidden`.
- *    @param valoro ( string = "" ) - Text to render.
+ * Montru aŭ kaŝu nomitan sekcion laŭ ĉu `valoro` estas malplena.
+ *    @param elementoId ( string = "" ) - Korpa elemento kiu ricevu la tekston.
+ *    @param sekcioId ( string = "" ) - Ĉirkaŭa sekcio kiu ricevas `hidden`.
+ *    @param valoro ( string = "" ) - Teksto por montri.
  * @returns void
  */
 function agordiKampon(elementoId: string, sekcioId: string, valoro: string): void {
@@ -299,19 +299,19 @@ async function agordiDetalPaĝon() {
         return;
     }
 
-    // ⟨ Spec. Theme + Is Under The Theme → POS tagging ⟩
+    // ⟨ Spec. Temo + Estas Sub La Temo → POZ-etikedado ⟩
     vortoElemento.textContent = vico.vorto;
-    // ⟨ Apply Iikrhia script rendering via vacepu on the word element.
-    //    The `.aih` class provides vertical layout; vacepu wraps each word
-    //    in horizontal `<span class="cepufalxez">` blocks so the word displays
-    //    correctly in both body-vertical ( aih ) and body-horizontal ( en ) modes. ⟩
+    // ⟨ Apliku Iikrhia-skriban bildigon per vacepu sur la vorta elemento.
+    //    La `.aih` klaso provizas vertikalan aranĝon; vacepu ĉirkaŭvolvas ĉiun vorton
+    //    en horizontalaj `<span class="cepufalxez">` blokoj por ke la vorto montriĝu
+    //    ĝuste en ambaŭ korpo-vertikala ( aih ) kaj korpo-horizontala ( en ) reĝimoj. ⟩
     if ( typeof ( window as any ).vacepu === "function" ) {
         ( window as any ).vacepu( "aih" );
     }
     poŝoElemento.textContent = vico.poŝo;
 
-    // ⟨ Fill sections. The translation element ( #skakefani ) is a bare <p>
-    //    without a <thala> wrapper, so set textContent directly.  ⟩
+    // ⟨ Plenigu sekciojn. La traduka elemento ( #skakefani ) estas nuda <p>
+    //    sen <thala> ĉirkaŭvolvaĵo, do starigu textContent rekte.  ⟩
     const tradukoEl = document.getElementById("skakefani");
     if ( tradukoEl ) tradukoEl.textContent = vico.traduko;
     agordiKampon("xaqadisuswegawekef", "xaqadisuswegawekef-araq", vico.prao);
@@ -322,10 +322,10 @@ async function agordiDetalPaĝon() {
     agordiKampon("xehate", "xehate-araq", formatiEtikedojn(vico.etikedoj));
 }
 
-// ⟪ Entry Point 🔌 ⟫
+// ⟪ Enirpunkto 🔌 ⟫
 async function inici() {
-    // ⟨ List page is identified by the search input ( #2bakano ).     ⟩
-    // ⟨ Detail page is identified by #kef ( only on the detail page ) . ⟩
+    // ⟨ Listpaĝo identiĝas per la serĉa enigo ( #2bakano ).     ⟩
+    // ⟨ Detalpaĝo identiĝas per #kef ( nur sur la detalpaĝo ) . ⟩
     if ( document.getElementById("2bakano") ) {
         await agordiListPaĝon();
     } else if ( document.getElementById("kef") ) {
