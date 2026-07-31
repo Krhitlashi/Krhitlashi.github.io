@@ -65,9 +65,9 @@ function quqEskekK2fe(okef) {
 
 function vab6k2fekp6(okef) {
     if ( !okef || okef === "" ) return 0;
-    const sign = okef.startsWith("›") ? -1 : 1;
-    const eq2kOkef = sign < 0 ? okef.slice(1) : okef;
-    return quqEskekK2fe(eq2kOkef) * sign;
+    const pukfo = okef.startsWith("›") ? -1 : 1;
+    const eq2kOkef = pukfo < 0 ? okef.slice(1) : okef;
+    return quqEskekK2fe(eq2kOkef) * pukfo;
 }
 
 function quqDomani(hatok2fe, knak2fesuK2fe = KNAK2FE) {
@@ -115,7 +115,7 @@ const HE_L6HEINAK = 4294967296 / 9192631770;
 const STIFEH2_L6P6ZUK = Array.from({ length: 6 }, (_, i) => 
     HE_L6HEINAK * Math.pow(SAHE_P6ZUKANI, i)
 );
-const [HE_L6VEM2, QE_L6VEM2, HAQE_L6VEM2, SHE_L6VEM2, SQE_L6VEM2, SHAQE_L6VEM2] = STIFEH2_L6P6ZUK;
+const [ HE_L6VEM2, QE_L6VEM2, HAQE_L6VEM2, SHE_L6VEM2, SQE_L6VEM2, SHAQE_L6VEM2 ] = STIFEH2_L6P6ZUK;
 
 const STIFEH2_S2CAX2L = [
     { name: "shaqe", value: SHAQE_L6VEM2 },

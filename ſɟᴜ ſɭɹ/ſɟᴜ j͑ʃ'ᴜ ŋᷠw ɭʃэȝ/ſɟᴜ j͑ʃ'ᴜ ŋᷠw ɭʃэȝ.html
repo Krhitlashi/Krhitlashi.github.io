@@ -23,24 +23,24 @@
     </thala>
 
     <thala>
-        <canvas id="map-canvas" style="align-self: center; justify-self: center; height: 256px; width: 512px;"></canvas>
+        <canvas id="mapa-kanvaso" style="align-self: center; justify-self: center; height: 256px; width: 512px;"></canvas>
         <ciihii>
             <sabosuc2w2q>
                 <label>
                     <p data-oskakefani="ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ ı"></p>
-                    <input type="radio" name="projection" value="equirectangular" checked>
+                    <input type="radio" name="projekcio" value="ekvidrektangula" checked>
                 </label>
                 <label>
                     <p data-oskakefani="ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ ɿ"></p>
-                    <input type="radio" name="projection" value="mercator">
+                    <input type="radio" name="projekcio" value="mercator">
                 </label>
                 <label>
                     <p data-oskakefani="ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ ц"></p>
-                    <input type="radio" name="projection" value="mollweide">
+                    <input type="radio" name="projekcio" value="mollweide">
                 </label>
                 <label>
                     <p data-oskakefani="ʃᴜ j͐ʃɹ ı],ᴜ j͑ʃп́ɔ ֭ſɭᴜ ʃᴜ э"></p>
-                    <input type="radio" name="projection" value="orthographic">
+                    <input type="radio" name="projekcio" value="ortografia">
                 </label>
             </sabosuc2w2q>
         </ciihii>
@@ -48,10 +48,10 @@
 
     <thala>
         <p class="ksakap2sa" data-oskakefani="ſןэ ſɭɘw ʃᴜ j͐ʃɹ ı],ᴜ"></p>
-        <div id="globe-container" style="block-size: 512px;"></div>
+        <div id="globujo" style="block-size: 512px;"></div>
         <label>
             <span data-oskakefani="ɭʃᴜɔ˞ ꞁȷ̀ᴜꞇ j͑ʃᴜ ʃɜ }ʃꞇ"></span>
-            <input type="checkbox" id="rotate-toggle">
+            <input type="checkbox" id="rotacia-baskulo">
         </label>
     </thala>
 
@@ -59,68 +59,68 @@
         <p class="ksakap2sa" data-oskakefani="j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃꞇ"></p>
         <ciihii>
             <p data-oskakefani="ɽ͑ʃ'w j͑ʃ'ᴜ"></p>
-            <input type="text" id="seed" value="42">
-            <p id="seed-val" class="kefhuruq"></p>
+            <input type="text" id="semo" value="42">
+            <p id="semo-valoro" class="kefhuruq"></p>
         </ciihii>
         <ciihii>
             <p data-oskakefani="ſᶘᴜ j͑ʃп́ɔ j͑ʃ'ɔ ŋᷠɹ"></p>
-            <input type="range" id="water" min="0" max="64" value="40">
-            <p id="water-val" class="kefhuruq"></p>
+            <input type="range" id="akvo" min="0" max="64" value="40">
+            <p id="akvo-valoro" class="kefhuruq"></p>
         </ciihii>
         <ciihii>
             <p data-oskakefani="ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ"></p>
-            <input type="range" id="temp" min="0" max="64" value="32">
-            <p id="temp-val" class="kefhuruq"></p>
+            <input type="range" id="temperaturo" min="0" max="64" value="32">
+            <p id="temperaturo-valoro" class="kefhuruq"></p>
         </ciihii>
         <ciihii>
             <p data-oskakefani="ɭʃw ɭʃᴜͷ̗ j͑ʃп́ɔ ſɭɹ ſȷɔ"></p>
-            <input type="range" id="continents" min="1" max="8" value="4">
-            <p id="continents-val" class="kefhuruq"></p>
+            <input type="range" id="kontinentoj" min="1" max="8" value="4">
+            <p id="kontinentoj-valoro" class="kefhuruq"></p>
         </ciihii>
         <ciihii>
             <p data-oskakefani="ɭl̀ᴜ ſ͕ɭɜ j͑ʃп́ɔ j͐ʃэ ɭ(ᴜ"></p>
-            <input type="range" id="mountains" min="0" max="64" value="24">
-            <p id="mountains-val" class="kefhuruq"></p>
+            <input type="range" id="montoj" min="0" max="64" value="24">
+            <p id="montoj-valoro" class="kefhuruq"></p>
         </ciihii>
         <ciihii>
             <p data-oskakefani="ſןw ſɟᴜ }ʃᴜ j͑ʃп́ɔ ſɭw ʃᴜ }ʃꞇ"></p>
-            <input type="range" id="atmosphere" min="0" max="64" value="38">
-            <p id="atmosphere-val" class="kefhuruq"></p>
+            <input type="range" id="atmosfero" min="0" max="64" value="38">
+            <p id="atmosfero-valoro" class="kefhuruq"></p>
         </ciihii>
-        <button id="randomize-btn" data-oskakefani="ꞁȷ̀ɜ j͑ʃᴜ ſɭᴜ ɭl̀ɜ"></button>
+        <button id="hazardigi-butono" data-oskakefani="ꞁȷ̀ɜ j͑ʃᴜ ſɭᴜ ɭl̀ɜ"></button>
     </thala>
 
-    <button id="generate-btn" data-oskakefani="ſɭʞɹ"></button>
+    <button id="generi-butono" data-oskakefani="ſɭʞɹ"></button>
 
     <sak></sak>
 
     <thala>
         <p class="ksakap2sa" data-oskakefani="ſ͕ɭwc̭ ſɭɹ"></p>
-        <button id="download-2d" data-oskakefani="ſ͕ɭwc̭ ſɭɹ ɭʃᴜ ſןɹ }ʃꞇ"></button>
-        <button id="download-3d" data-oskakefani="ſ͕ɭwc̭ ſɭɹ ſןэ ſɭɘw }ʃꞇ"></button>
+        <button id="elŝuti-2d" data-oskakefani="ſ͕ɭwc̭ ſɭɹ ɭʃᴜ ſןɹ }ʃꞇ"></button>
+        <button id="elŝuti-3d" data-oskakefani="ſ͕ɭwc̭ ſɭɹ ſןэ ſɭɘw }ʃꞇ"></button>
     </thala>
 
     <thala>
         <p class="ksakap2sa" data-oskakefani="j͑ʃ'ɜ ſןɹ"></p>
         <ciihii>
             <p data-oskakefani="ꞁȷ̀ɜƴ"></p>
-            <p id="stat-land" class="kefhuruq" ></p>
+            <p id="stat-tero" class="kefhuruq" ></p>
         </ciihii>
         <ciihii>
             <p data-oskakefani="ſᶘᴜ"></p>
-            <p id="stat-water" class="kefhuruq"></p>
+            <p id="stat-akvo" class="kefhuruq"></p>
         </ciihii>
         <ciihii>
             <p data-oskakefani="ſןͷ̗ɜ j͑ʃƨɔȝ"></p>
-            <p id="stat-elevation" class="kefhuruq"></p>
+            <p id="stat-alteco" class="kefhuruq"></p>
         </ciihii>
         <ciihii>
             <p data-oskakefani="ſɭɜ ı],ɹ ֭ſɭᴜ ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ"></p>
-            <p id="stat-temp" class="kefhuruq"></p>
+            <p id="stat-temperaturo" class="kefhuruq"></p>
         </ciihii>
         <ciihii>
             <p data-oskakefani="ꞁȷ̀ɜ j͑ʃ'ᴜ ɭ(ᴜͷ̗ ꞁȷ̀ᴜ }ʃꞇ"></p>
-            <p id="stat-habitability" class="kefhuruq"></p>
+            <p id="stat-loĝebleco" class="kefhuruq"></p>
         </ciihii>
     </thala>
 

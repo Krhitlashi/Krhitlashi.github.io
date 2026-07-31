@@ -73,26 +73,26 @@ const MIME_TIPOJ: Record<string, string> = {
   woff2: "font/woff2",
 };
 
-const DOSIERA_ENIGO = document.getElementById("converter-file-input") as HTMLInputElement;
-const CELUJO = document.getElementById("converter-target-formats") as HTMLElement;
-const RULI_BUTONO = document.getElementById("converter-run") as HTMLButtonElement;
-const STATO_TEKSTO = document.getElementById("converter-status") as HTMLParagraphElement;
-const REZULTA_PANELO = document.getElementById("converter-result") as HTMLElement;
-const AUDIA_ANTASENO = document.getElementById("converter-preview-audio") as HTMLAudioElement;
-const VIDA_ANTASENO = document.getElementById("converter-preview-video") as HTMLVideoElement;
-const BILDA_ANTASENO = document.getElementById("converter-preview-image") as HTMLImageElement;
-const TIPARA_ANTASENO = document.getElementById("converter-preview-font") as HTMLParagraphElement;
-const ELŜUTA_LIGILO = document.getElementById("converter-download") as HTMLAnchorElement;
+const DOSIERA_ENIGO = document.getElementById("konvertilo-dosiera-enigo") as HTMLInputElement;
+const CELUJO = document.getElementById("konvertilo-celaj-formatoj") as HTMLElement;
+const RULI_BUTONO = document.getElementById("konvertilo-ruli") as HTMLButtonElement;
+const STATO_TEKSTO = document.getElementById("konvertilo-stato") as HTMLParagraphElement;
+const REZULTA_PANELO = document.getElementById("konvertilo-rezulto") as HTMLElement;
+const AUDIA_ANTASENO = document.getElementById("konvertilo-antaseno-audio") as HTMLAudioElement;
+const VIDA_ANTASENO = document.getElementById("konvertilo-antaseno-video") as HTMLVideoElement;
+const BILDA_ANTASENO = document.getElementById("konvertilo-antaseno-bildo") as HTMLImageElement;
+const TIPARA_ANTASENO = document.getElementById("konvertilo-antaseno-tiparo") as HTMLParagraphElement;
+const ELŜUTA_LIGILO = document.getElementById("konvertilo-elŝuto") as HTMLAnchorElement;
 
 const ffmpeg = new FFmpeg();
 let ffmpegPret = false;
 let lastaDaŭroSekundoj = 0;
 
-const KOMPRESA_BASKULO = document.getElementById("converter-compress-toggle") as HTMLInputElement;
-const KOMPRESA_BASKULA_ETIKEDO = document.getElementById("converter-compress-toggle-label") as HTMLLabelElement;
-const KOMPRESAJ_OPCIOJ = document.getElementById("converter-compress-options") as HTMLElement;
-const CELA_GRANDA_ENIGO = document.getElementById("converter-target-size") as HTMLInputElement;
-const GRANDA_UNUO_UJO = document.getElementById("converter-size-unit") as HTMLElement;
+const KOMPRESA_BASKULO = document.getElementById("konvertilo-kompreso-baskulo") as HTMLInputElement;
+const KOMPRESA_BASKULA_ETIKEDO = document.getElementById("konvertilo-kompreso-baskula-etikedo") as HTMLLabelElement;
+const KOMPRESAJ_OPCIOJ = document.getElementById("konvertilo-kompresaj-opcioj") as HTMLElement;
+const CELA_GRANDA_ENIGO = document.getElementById("konvertilo-cela-grando") as HTMLInputElement;
+const GRANDA_UNUO_UJO = document.getElementById("konvertilo-granda-unuo") as HTMLElement;
 
 function agordiStaton( mesaĝo: string ): void {
   STATO_TEKSTO.textContent = mesaĝo;
@@ -138,7 +138,7 @@ function ĝisdatigiCelajnFormatojn( kategorio: "audio" | "video" | "image" | "fo
     
     const enigaElemento = document.createElement("input");
     enigaElemento.type = "radio";
-    enigaElemento.name = "target-format";
+    enigaElemento.name = "cela-formato";
     enigaElemento.value = formato;
     if ( indekso === 0 ) {
       enigaElemento.checked = true;
@@ -155,7 +155,7 @@ function ĝisdatigiCelajnFormatojn( kategorio: "audio" | "video" | "image" | "fo
 }
 
 function akiriElektitanCelFormaton(): string {
-  const elektitaRadio = CELUJO.querySelector("input[name='target-format']:checked") as HTMLInputElement | null;
+  const elektitaRadio = CELUJO.querySelector("input[name='cela-formato']:checked") as HTMLInputElement | null;
   return elektitaRadio ? elektitaRadio.value : "";
 }
 
@@ -164,7 +164,7 @@ function akiriEliraMIME( celaFormato: string ): string {
 }
 
 function akiriElektitanGrandanUnuon(): string {
-  const elektitaRadio = GRANDA_UNUO_UJO.querySelector("input[name='size-unit']:checked") as HTMLInputElement | null;
+  const elektitaRadio = GRANDA_UNUO_UJO.querySelector("input[name='granda-unuo']:checked") as HTMLInputElement | null;
   return elektitaRadio ? elektitaRadio.value : "mb";
 }
 

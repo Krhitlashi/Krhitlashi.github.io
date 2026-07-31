@@ -8,9 +8,9 @@ if ( hat2bakanoKek ) {
     let keksar2ba = null;
     let huqaq = null;
     
-    const targetSelector = this.getAttribute("data-search-target");
-    if ( targetSelector ) {
-        keksar2ba = document.querySelector(targetSelector);
+    const l6teqazalSukf2quKek = this.getAttribute("data-cela-selektilo");
+    if ( l6teqazalSukf2quKek ) {
+        keksar2ba = document.querySelector(l6teqazalSukf2quKek);
         if ( keksar2ba ) {
             if ( keksar2ba.tagName === "TABLE" || keksar2ba.querySelector("tbody") ) {
                 huqaq = "table";
@@ -63,14 +63,14 @@ function iibaCax2l(bana2bakano, cax2l) {
             }
 
             const kaltokuKp6 = kp6.split("｡");
-            if ( kaltokuKp6.some(part => part.trim() === bana2bakano) ) {
+            if ( kaltokuKp6.some(kek => kek.trim() === bana2bakano) ) {
                 a1aKuxa = true;
                 or2bato = true;
                 break;
             }
 
             const areq2kuKp6 = bana2bakano.split(/\s+/);
-            if ( areq2kuKp6.every(part => part && kp6.includes(part)) ) {
+            if ( areq2kuKp6.every(kek => kek && kp6.includes(kek)) ) {
                 or2bato = true;
                 break;
             }
@@ -82,7 +82,7 @@ function iibaCax2l(bana2bakano, cax2l) {
         }
 
         if ( or2bato ) {
-            l6r2ba.push({ row: hap2sabacax2l[i], a1aKuxa: a1aKuxa, index: i });
+            l6r2ba.push({ n2k: hap2sabacax2l[i], a1aKuxa: a1aKuxa, ruva: i });
         } else {
             hap2sabacax2l[i].style.display = "none";
         }
@@ -91,7 +91,7 @@ function iibaCax2l(bana2bakano, cax2l) {
     l6r2ba.sort((a, b) => {
         if ( a.a1aKuxa && !b.a1aKuxa ) return -1;
         if ( !a.a1aKuxa && b.a1aKuxa ) return 1;
-        return a.index - b.index;
+        return a.ruva - b.ruva;
     });
 
     const gelesKek = cax2l.querySelector("tbody");
@@ -102,17 +102,17 @@ function iibaCax2l(bana2bakano, cax2l) {
         }
         const kekKaltok = document.createDocumentFragment();
         for ( let i = l6r2ba.length - 1; i >= 0; i-- ) {
-            l6r2ba[i].row.style.display = "";
-            kekKaltok.appendChild(l6r2ba[i].row);
+            l6r2ba[i].n2k.style.display = "";
+            kekKaltok.appendChild(l6r2ba[i].n2k);
         }
         gelesKek.appendChild(kekKaltok);
         requestAnimationFrame(() => {
             cax2l.scrollTop = cax2l.scrollHeight;
         });
     } else {
-        l6r2ba.forEach(item => {
-            item.row.style.display = "";
-            gelesKek.appendChild(item.row);
+        l6r2ba.forEach(tanek => {
+            tanek.n2k.style.display = "";
+            gelesKek.appendChild(tanek.n2k);
         });
     }
 }

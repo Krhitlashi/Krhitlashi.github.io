@@ -27,69 +27,69 @@
 
     <thala>
         <sabosuc2w2q>
-            <input type="text" id="searchInput" placeholder="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ı" style="flex: 1;">
-            <button id="searchBtn" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ"></button>
+            <input type="text" id="serĉaEnigo" placeholder="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ı" style="flex: 1;">
+            <button id="serĉaButono" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ"></button>
         </sabosuc2w2q>
         
-        <maxema id="searchResults" class="kobe"></maxema>
+        <maxema id="serĉajRezultoj" class="kobe"></maxema>
     </thala>
 
     <thala>
         <sabosuc2w2q>
-            <button id="tabDecimal" data-oskakefani="ı],ᴜ ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ }ʃꞇ" aria-pressed="true"></button>
-            <button id="tabDMS" data-oskakefani="j͑ʃɔ ſȷꞇ }ʃꞇ" aria-pressed="false"></button>
+            <button id="langetoDecimala" data-oskakefani="ı],ᴜ ſןɹɔ˞ ꞁȷ̀ɜ ŋᷠᴜ }ʃꞇ" aria-pressed="true"></button>
+            <button id="langetoDMS" data-oskakefani="j͑ʃɔ ſȷꞇ }ʃꞇ" aria-pressed="false"></button>
         </sabosuc2w2q>
 
-        <ciihii id="decimalControls">
+        <ciihii id="decimalajRegiloj">
             <sabosuc2w2q>
                 <label> 
                     <span data-oskakefani="ſɟɔ ſןw }ʃꞇ"></span>
-                    <input type="number" id="latInput" value="47.48" step="0.00001" min="-90" max="90">
+                    <input type="number" id="latEnigo" value="47.48" step="0.00001" min="-90" max="90">
                 </label>
                 <label> 
                     <span data-oskakefani="ɭʃᴜ ſןw }ʃꞇ"></span>
-                    <input type="number" id="lonInput" value="-122.21" step="0.00001" min="-180" max="180">
+                    <input type="number" id="lonEnigo" value="-122.21" step="0.00001" min="-180" max="180">
                 </label>
             </sabosuc2w2q>
         </ciihii>
 
-        <ciihii id="dmsControls" class="kobe">
+        <ciihii id="dmsRegiloj" class="kobe">
             <p class="ksakat2xa" data-oskakefani="ſɟɔ ſןw }ʃꞇ"></p>
             <sabosuc2w2q>
                 <label>
                     <span data-oskakefani="j͐ʃᴜȝ"></span>
-                    <input type="radio" name="latHem" value="N" checked>
+                    <input type="radio" name="latDuonsfero" value="N" checked>
                 </label>
                 <label>
                     <span data-oskakefani="ſɭᴜȝ"></span>
-                    <input type="radio" name="latHem" value="S">
+                    <input type="radio" name="latDuonsfero" value="S">
                 </label>
             </sabosuc2w2q>
             <sabosuc2w2q>
-                <input type="number" id="latDeg" placeholder="Deg">
+                <input type="number" id="latGradoj" placeholder="Deg">
                 <span>°</span>
-                <input type="number" id="latMin" placeholder="Min">
+                <input type="number" id="latMinutoj" placeholder="Min">
                 <span>'</span>
-                <input type="number" id="latSec" placeholder="Sec">
+                <input type="number" id="latSekundoj" placeholder="Sec">
                 <span>"</span>
             </sabosuc2w2q>
             <p class="ksakat2xa" data-oskakefani="ɭʃᴜ ſןw }ʃꞇ"></p>
             <sabosuc2w2q>
                 <label>
                     <span data-oskakefani="j͑ʃᴜȝ"></span>
-                    <input type="radio" name="lonHem" value="E" checked>
+                    <input type="radio" name="lonDuonsfero" value="E" checked>
                 </label>
                 <label>
                     <span data-oskakefani="ɽ͑ʃ'ᴜȝ"></span>
-                    <input type="radio" name="lonHem" value="W">
+                    <input type="radio" name="lonDuonsfero" value="W">
                 </label>
             </sabosuc2w2q>
             <sabosuc2w2q>
-                <input type="number" id="lonDeg" placeholder="Deg">
+                <input type="number" id="lonGradoj" placeholder="Deg">
                 <span>°</span>
-                <input type="number" id="lonMin" placeholder="Min">
+                <input type="number" id="lonMinutoj" placeholder="Min">
                 <span>'</span>
-                <input type="number" id="lonSec" placeholder="Sec">
+                <input type="number" id="lonSekundoj" placeholder="Sec">
                 <span>"</span>
             </sabosuc2w2q>
         </ciihii>
@@ -100,25 +100,25 @@
         <sabosuc2w2q>
             <label>
                 <p data-oskakefani="ſɟɔ ŋᷠɔ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ"></p>
-                <input type="checkbox" id="showGridCheck" checked>
+                <input type="checkbox" id="montruKadronMarko" checked>
             </label>
             <label>
                 <p data-oskakefani="ſɭc̗ᴜ ſɭɹ ſȷɔ ı],ᴜ ſןɹ j͑ʃᴜꞇ"></p>
-                <input type="checkbox" id="useBase10Check">
+                <input type="checkbox" id="uzuBazo10Marko">
             </label>
         </sabosuc2w2q>
         <ciihii class="result-card" style="block-size: 176px;">
-            <div id="outputCoords">-- -- - -- -- - -- --</div>
+            <div id="eliraKoordinatoj">-- -- - -- -- - -- --</div>
             <div id="kefAraq">-- -- -- --</div>
-            <div id="outputName">-- -- -- --</div>
+            <div id="eliraNomo">-- -- -- --</div>
             <div id="piak">-- -- -- --</div>
         </ciihii>
-        <div class="map-section" id="mapContainer">
-            <div id="map"></div>
-            <canvas id="gridCanvas"></canvas>
+        <div class="map-section" id="mapaUjo">
+            <div id="mapo"></div>
+            <canvas id="kradaKanvaso"></canvas>
             <div>
-                <button id="satelliteToggle" class="n2tase" data-oskakefani="ſɟᴜ ֭ſɭɹ j͑ʃɔ" aria-pressed="true"></button>
-                <button id="gridOnlyToggle" class="n2tase" data-oskakefani="j͑ʃ'ɔ }ʃᴜ ŋᷠᴜ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ" aria-pressed="false"></button>
+                <button id="satelitaBaskulo" class="n2tase" data-oskakefani="ſɟᴜ ֭ſɭɹ j͑ʃɔ" aria-pressed="true"></button>
+                <button id="kradonurBaskulo" class="n2tase" data-oskakefani="j͑ʃ'ɔ }ʃᴜ ŋᷠᴜ ſ͕ɭɜᶗ‹ ꞁȷ̀ɹ }ʃɹƽ" aria-pressed="false"></button>
             </div>
         </div>
     </thala>
@@ -126,40 +126,40 @@
     <thala>
         <p class="ksakap2sa" data-oskakefani="֭ſɭᴜ ſȷɔ ſ͕ɭwc̭ ſɭɹ }ʃꞇ"></p>
         <sabosuc2w2q>
-            <span id="cacheStatus"></span>
-            <span id="cacheSize"></span>
+            <span id="kaŝaStato"></span>
+            <span id="kaŝaGrando"></span>
         </sabosuc2w2q>
         <sabosuc2w2q>
             <label>
                 <p data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ı"></p>
-                <input type="radio" name="zoomSelect" value="3">
+                <input type="radio" name="zomoElektilo" value="3">
             </label>
             <label>
                 <p data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ɿ"></p>
-                <input type="radio" name="zoomSelect" value="5">
+                <input type="radio" name="zomoElektilo" value="5">
             </label>
             <label>
                 <p data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ц"></p>
-                <input type="radio" name="zoomSelect" value="7" checked>
+                <input type="radio" name="zomoElektilo" value="7" checked>
             </label>
             <label>
                 <p data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ э"></p>
-                <input type="radio" name="zoomSelect" value="9">
+                <input type="radio" name="zomoElektilo" value="9">
             </label>
             <label>
                 <p data-oskakefani="ꞁȷ̀ɹ ʃᴜ ŋᷠɹ ꞟ"></p>
-                <input type="radio" name="zoomSelect" value="11">
+                <input type="radio" name="zomoElektilo" value="11">
             </label>
         </sabosuc2w2q>
-        <button id="downloadBtn" data-oskakefani="ſ͕ɭwc̭ ſɭɹ ſɭɹ ɭl̀ɔ }ʃꞇ"></button>
-        <button id="clearCacheBtn" data-oskakefani="j͑ʃ'ᴜ ֭ſɭɹ ſןᴜ ʃɜƽ"></button>
-        <div id="progressBar" style="inline-size: 100%; block-size: 4px; background: #303030; margin-block-start: 8px; display: none;">
-            <div id="progressFill" style="block-size: 100%; inline-size: 0%; background: #d8a048; transition: inline-size 0.25s;"></div>
+        <button id="elŝutaButono" data-oskakefani="ſ͕ɭwc̭ ſɭɹ ſɭɹ ɭl̀ɔ }ʃꞇ"></button>
+        <button id="forigiKaŝaButono" data-oskakefani="j͑ʃ'ᴜ ֭ſɭɹ ſןᴜ ʃɜƽ"></button>
+        <div id="progresStrio" style="inline-size: 100%; block-size: 4px; background: #303030; margin-block-start: 8px; display: none;">
+            <div id="progresPlenigo" style="block-size: 100%; inline-size: 0%; background: #d8a048; transition: inline-size 0.25s;"></div>
         </div>
-        <small id="downloadStatus"></small>
+        <small id="elŝutaStato"></small>
     </thala>
 
-    <button id="resetBtn" data-oskakefani="ɭʃɜ j͑ʃᴜᶗ‹"></button>
+    <button id="restarigaButono" data-oskakefani="ɭʃɜ j͑ʃᴜᶗ‹"></button>
 
     <sak></sak>
 

@@ -121,18 +121,18 @@ const T = TEKSTO[lingvo];
 
 // ⟪ ꞁȷ̀ɜ ɽ͑ʃ'ᴜ ⟫
 
-const REGULOJ_TEKSTAREJO = akiriElementon<HTMLTextAreaElement>("evolve-rules");
-const FONTO_GENERITA = akiriElementon<HTMLInputElement>("evolve-source-generated");
-const FONTO_PROPRA = akiriElementon<HTMLInputElement>("evolve-source-custom");
-const PROPRAJVORTOJ_TEKSTAREJO = akiriElementon<HTMLTextAreaElement>("evolve-custom-words");
-const RULI_BUTONO = akiriElementon<HTMLButtonElement>("evolve-run");
-const STATO = akiriElementon<HTMLParagraphElement>("evolve-status");
-const ELIRO = akiriElementon<HTMLElement>("evolve-output");
+const REGULOJ_TEKSTAREJO = akiriElementon<HTMLTextAreaElement>("evoluigi-reguloj");
+const FONTO_GENERITA = akiriElementon<HTMLInputElement>("evoluigi-fonto-generita");
+const FONTO_PROPRA = akiriElementon<HTMLInputElement>("evoluigi-fonto-propra");
+const PROPRAJVORTOJ_TEKSTAREJO = akiriElementon<HTMLTextAreaElement>("evoluigi-propraj-vortoj");
+const RULI_BUTONO = akiriElementon<HTMLButtonElement>("evoluigi-ruli");
+const STATO = akiriElementon<HTMLParagraphElement>("evoluigi-stato");
+const ELIRO = akiriElementon<HTMLElement>("evoluigi-eliro");
 
-const EVOLUAJ_KONSERVOJ_LISTO = akiriElementon<HTMLElement>("evolve-saves-list");
-const EVOLUA_KONSERVA_NOMO_ENIGO = akiriElementon<HTMLInputElement>("evolve-save-name-input");
-const ALDONI_EVOLUAN_KONSERVON_BUTONO = akiriElementon<HTMLButtonElement>("evolve-add-save");
-const FORIGI_EVOLUAN_KONSERVON_BUTONO = akiriElementon<HTMLButtonElement>("evolve-delete-save");
+const EVOLUAJ_KONSERVOJ_LISTO = akiriElementon<HTMLElement>("evoluigi-konservoj-listo");
+const EVOLUA_KONSERVA_NOMO_ENIGO = akiriElementon<HTMLInputElement>("evoluigi-konserva-nomo-enigo");
+const ALDONI_EVOLUAN_KONSERVON_BUTONO = akiriElementon<HTMLButtonElement>("evoluigi-aldoni-konservon");
+const FORIGI_EVOLUAN_KONSERVON_BUTONO = akiriElementon<HTMLButtonElement>("evoluigi-forigi-konservon");
 
 // ⟪ ꞁȷ̀ɜ ŋᷠᴜ ⟫
 
@@ -576,7 +576,7 @@ function kreiTekstanElementon( etikednomo: "p" | "span", teksto: string, klasnom
 }
 
 function akiriGeneritajnVortojn(): string[] {
-  const ujo = document.getElementById("phonology-output");
+  const ujo = document.getElementById("fonologio-eliro");
   if ( !ujo ) return [];
   const vortoj: string[] = [];
   ujo.querySelectorAll("ciihii").forEach(ero => {

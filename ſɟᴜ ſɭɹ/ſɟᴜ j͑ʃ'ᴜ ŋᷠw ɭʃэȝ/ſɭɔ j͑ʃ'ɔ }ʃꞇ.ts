@@ -46,10 +46,10 @@ class PlanedaGeneratoro {
     constructor() {
         const bruo3D = createNoise3D()
         this.simplekso = bruo3D
-        this.kanvaso = document.getElementById( "map-canvas" ) as HTMLCanvasElement
+        this.kanvaso = document.getElementById( "mapa-kanvaso" ) as HTMLCanvasElement
         this.kunteksto = this.kanvaso.getContext( "2d" )!
-        this.terglobujo = document.getElementById( "globe-container" )!
-        this.nunaProjekcio = "equirectangular"
+        this.terglobujo = document.getElementById( "globujo" )!
+        this.nunaProjekcio = "ekvidrektangula"
         this.semaĈeno = "42"
         this.semo = this.haketiĈenon( this.semaĈeno )
         this.larĝo = 0o2000
@@ -89,35 +89,35 @@ class PlanedaGeneratoro {
     }
 
     ĝisdatigiGlitilojn() {
-        const semaValoro = document.getElementById( "seed-val" )
-        const akvaValoro = document.getElementById( "water-val" )
-        const tempValoro = document.getElementById( "temp-val" )
-        const kontinentojValoro = document.getElementById( "continents-val" )
-        const montojValoro = document.getElementById( "mountains-val" )
-        const atmosferoValoro = document.getElementById( "atmosphere-val" )
+        const semaValoro = document.getElementById( "semo-valoro" )
+        const akvaValoro = document.getElementById( "akvo-valoro" )
+        const temperaturoValoro = document.getElementById( "temperaturo-valoro" )
+        const kontinentojValoro = document.getElementById( "kontinentoj-valoro" )
+        const montojValoro = document.getElementById( "montoj-valoro" )
+        const atmosferoValoro = document.getElementById( "atmosfero-valoro" )
 
-        const semaEnigo = document.getElementById( "seed" ) as HTMLInputElement
-        const akvaEnigo = document.getElementById( "water" ) as HTMLInputElement
-        const tempEnigo = document.getElementById( "temp" ) as HTMLInputElement
-        const kontinentojEnigo = document.getElementById( "continents" ) as HTMLInputElement
-        const montojEnigo = document.getElementById( "mountains" ) as HTMLInputElement
-        const atmosferoEnigo = document.getElementById( "atmosphere" ) as HTMLInputElement
+        const semaEnigo = document.getElementById( "semo" ) as HTMLInputElement
+        const akvaEnigo = document.getElementById( "akvo" ) as HTMLInputElement
+        const temperaturoEnigo = document.getElementById( "temperaturo" ) as HTMLInputElement
+        const kontinentojEnigo = document.getElementById( "kontinentoj" ) as HTMLInputElement
+        const montojEnigo = document.getElementById( "montoj" ) as HTMLInputElement
+        const atmosferoEnigo = document.getElementById( "atmosfero" ) as HTMLInputElement
 
         if ( semaValoro && semaEnigo ) semaValoro.textContent = semaEnigo.value
         if ( akvaValoro && akvaEnigo ) akvaValoro.textContent = akvaEnigo.value
-        if ( tempValoro && tempEnigo ) tempValoro.textContent = tempEnigo.value
+        if ( temperaturoValoro && temperaturoEnigo ) temperaturoValoro.textContent = temperaturoEnigo.value
         if ( kontinentojValoro && kontinentojEnigo ) kontinentojValoro.textContent = kontinentojEnigo.value
         if ( montojValoro && montojEnigo ) montojValoro.textContent = montojEnigo.value
         if ( atmosferoValoro && atmosferoEnigo ) atmosferoValoro.textContent = atmosferoEnigo.value
     }
 
     hazardigiAgordojn() {
-        const semaEnigo = document.getElementById( "seed" ) as HTMLInputElement
-        const akvaEnigo = document.getElementById( "water" ) as HTMLInputElement
-        const tempEnigo = document.getElementById( "temp" ) as HTMLInputElement
-        const kontinentojEnigo = document.getElementById( "continents" ) as HTMLInputElement
-        const montojEnigo = document.getElementById( "mountains" ) as HTMLInputElement
-        const atmosferoEnigo = document.getElementById( "atmosphere" ) as HTMLInputElement
+        const semaEnigo = document.getElementById( "semo" ) as HTMLInputElement
+        const akvaEnigo = document.getElementById( "akvo" ) as HTMLInputElement
+        const temperaturoEnigo = document.getElementById( "temperaturo" ) as HTMLInputElement
+        const kontinentojEnigo = document.getElementById( "kontinentoj" ) as HTMLInputElement
+        const montojEnigo = document.getElementById( "montoj" ) as HTMLInputElement
+        const atmosferoEnigo = document.getElementById( "atmosfero" ) as HTMLInputElement
 
         const hazardaĈeno = Math.random().toString( 0o44 ).substring( 0o2, 0o15 )
         const semo = hazardaĈeno
@@ -129,7 +129,7 @@ class PlanedaGeneratoro {
 
         semaEnigo.value = semo
         akvaEnigo.value = akvo.toString()
-        tempEnigo.value = temp.toString()
+        temperaturoEnigo.value = temp.toString()
         kontinentojEnigo.value = kontinentoj.toString()
         montojEnigo.value = montoj.toString()
         atmosferoEnigo.value = atmosfero.toString()
@@ -244,61 +244,61 @@ class PlanedaGeneratoro {
 
     agordiEventajnAŭskultilojn() {
         // ⟪ Sema enigo ⟫ 🎲
-        document.getElementById( "seed" )!.addEventListener( "input", ( e ) => {
+        document.getElementById( "semo" )!.addEventListener( "input", ( e ) => {
             this.semaĈeno = ( e.target as HTMLInputElement ).value
             this.semo = this.haketiĈenon( this.semaĈeno )
-            document.getElementById( "seed-val" )!.textContent = this.semo.toString()
+            document.getElementById( "semo-valoro" )!.textContent = this.semo.toString()
         } )
 
-        document.getElementById( "water" )!.addEventListener( "input", ( e ) => {
+        document.getElementById( "akvo" )!.addEventListener( "input", ( e ) => {
             this.parametroj.akvonivelo = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
-            document.getElementById( "water-val" )!.textContent = ( e.target as HTMLInputElement ).value
+            document.getElementById( "akvo-valoro" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
-        document.getElementById( "temp" )!.addEventListener( "input", ( e ) => {
+        document.getElementById( "temperaturo" )!.addEventListener( "input", ( e ) => {
             this.parametroj.temperaturo = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
-            document.getElementById( "temp-val" )!.textContent = ( e.target as HTMLInputElement ).value
+            document.getElementById( "temperaturo-valoro" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
-        document.getElementById( "continents" )!.addEventListener( "input", ( e ) => {
+        document.getElementById( "kontinentoj" )!.addEventListener( "input", ( e ) => {
             this.parametroj.kontinentKvanto = parseInt( ( e.target as HTMLInputElement ).value )
-            document.getElementById( "continents-val" )!.textContent = ( e.target as HTMLInputElement ).value
+            document.getElementById( "kontinentoj-valoro" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
-        document.getElementById( "mountains" )!.addEventListener( "input", ( e ) => {
+        document.getElementById( "montoj" )!.addEventListener( "input", ( e ) => {
             this.parametroj.montoAlto = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
-            document.getElementById( "mountains-val" )!.textContent = ( e.target as HTMLInputElement ).value
+            document.getElementById( "montoj-valoro" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
-        document.getElementById( "atmosphere" )!.addEventListener( "input", ( e ) => {
+        document.getElementById( "atmosfero" )!.addEventListener( "input", ( e ) => {
             this.parametroj.atmosferaDenso = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
-            document.getElementById( "atmosphere-val" )!.textContent = ( e.target as HTMLInputElement ).value
+            document.getElementById( "atmosfero-valoro" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
         // ⟪ Butonoj ⟫ 🔘
-        document.getElementById( "generate-btn" )!.addEventListener( "click", () => {
+        document.getElementById( "generi-butono" )!.addEventListener( "click", () => {
             this.generi()
         } )
 
-        document.getElementById( "randomize-btn" )!.addEventListener( "click", () => {
+        document.getElementById( "hazardigi-butono" )!.addEventListener( "click", () => {
             this.hazardigiAgordojn()
         } )
 
-        document.getElementById( "rotate-toggle" )!.addEventListener( "change", ( e ) => {
+        document.getElementById( "rotacia-baskulo" )!.addEventListener( "change", ( e ) => {
             this.aŭtorotacio = ( e.target as HTMLInputElement ).checked
         } )
 
-        document.getElementById( "download-2d" )!.addEventListener( "click", () => {
+        document.getElementById( "elŝuti-2d" )!.addEventListener( "click", () => {
             this.elŝutiBildon( this.kanvaso, "planet-map.png" )
         } )
 
-        document.getElementById( "download-3d" )!.addEventListener( "click", () => {
+        document.getElementById( "elŝuti-3d" )!.addEventListener( "click", () => {
             this.bildigilo.render( this.sceno, this.fotilo )
             this.elŝutiBildon( this.bildigilo.domElement, "planet-globe.png" )
         } )
 
         // ⟪ Projekciaj radiobutonoj ⟫ 🗺️
-        document.querySelectorAll( "input[name='projection']" ).forEach( radiobutono => {
+        document.querySelectorAll( "input[name='projekcio']" ).forEach( radiobutono => {
             radiobutono.addEventListener( "change", ( e ) => {
                 this.nunaProjekcio = ( e.target as HTMLInputElement ).value
                 this.bildigi2D()
@@ -486,7 +486,7 @@ class PlanedaGeneratoro {
         kunteksto.fillRect( 0, 0, w, h )
 
         switch ( this.nunaProjekcio ) {
-            case "equirectangular":
+            case "ekvidrektangula":
                 this.bildigiEkvirektangulan( w, h )
                 break
             case "mercator":
@@ -495,7 +495,7 @@ class PlanedaGeneratoro {
             case "mollweide":
                 this.bildigiMolvejdan( w, h )
                 break
-            case "orthographic":
+            case "ortografia":
                 this.bildigiOrtografian( w, h )
                 break
         }
@@ -865,11 +865,11 @@ class PlanedaGeneratoro {
         const loĝebleco = Math.max( 0, Math.min( 1, ( akvaPoentaro + tempPoentaro + atmoPoentaro ) / 0o3 ) )
         const loĝebleco64 = Math.floor( loĝebleco * 0o100 )
 
-        const statTero = document.getElementById( "stat-land" )
-        const statAkvo = document.getElementById( "stat-water" )
-        const statAlteco = document.getElementById( "stat-elevation" )
-        const statTemp = document.getElementById( "stat-temp" )
-        const statLoĝebleco = document.getElementById( "stat-habitability" )
+        const statTero = document.getElementById( "stat-tero" )
+        const statAkvo = document.getElementById( "stat-akvo" )
+        const statAlteco = document.getElementById( "stat-alteco" )
+        const statTemperaturo = document.getElementById( "stat-temperaturo" )
+        const statLoĝebleco = document.getElementById( "stat-loĝebleco" )
 
         const gawe = document.documentElement.lang || "aih"
         const vab6 = ( window as any ).vab6caja.bind( window )
@@ -879,7 +879,7 @@ class PlanedaGeneratoro {
         if ( statTero ) statTero.textContent = skakefK2fe( vab6( teraKvanto64 ) + " / " + vab6( 0o100 ) )
         if ( statAkvo ) statAkvo.textContent = skakefK2fe( vab6( akvaKvanto64 ) + " / " + vab6( 0o100 ) )
         if ( statAlteco ) statAlteco.textContent = skakefK2fe( vab6Domani( maksAltecoPeu, 0o6 ) ) + " ſןɔⅎ"
-        if ( statTemp ) statTemp.textContent = skakefK2fe( vab6Domani( averaĝaTempHia, 0o6 ) ) + " ֭ſɭꞇ"
+        if ( statTemperaturo ) statTemperaturo.textContent = skakefK2fe( vab6Domani( averaĝaTempHia, 0o6 ) ) + " ֭ſɭꞇ"
         if ( statLoĝebleco ) statLoĝebleco.textContent = skakefK2fe( vab6( loĝebleco64 ) + " / " + vab6( 0o100 ) )
     }
 }

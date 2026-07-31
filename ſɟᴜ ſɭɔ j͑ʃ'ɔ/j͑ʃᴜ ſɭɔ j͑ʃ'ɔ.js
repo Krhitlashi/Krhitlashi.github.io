@@ -1,8 +1,8 @@
-// ≺⧼ Main Service Worker - ſɟᴜ ſɭɔ j͑ʃ'ɔ ⧽≻
+// ≺⧼ Ĉefa Servo-Laboranto - ſɟᴜ ſɭɔ j͑ʃ'ɔ ⧽≻
 
-const STATIC_CACHE_NAME = "pwa-v3";
+const STATIKA_KAŜO_NOMO = "pwa-v3";
 
-const STATIC_ASSETS = [
+const STATIKAJ_AKTIVAĴOJ = [
   "/",
   "/֭ſɭᴜ ı],ɔ.css",
   "/ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js",
@@ -14,37 +14,37 @@ const STATIC_ASSETS = [
   "/ꞁȷ̀ꞇ }ʃᴜƽ.html"
 ];
 
-// ⟨ Install ⟩
-self.addEventListener("install", ( event ) => {
-  console.log("[Service Worker] Installing -");
+// ⟨ Instalo ⟩
+self.addEventListener("install", ( evento ) => {
+  console.log("[Servo-Laboranto] Instalante -");
   self.skipWaiting();
-  event.waitUntil(
-    caches.open(STATIC_CACHE_NAME)
-      .then(( cache ) => {
-        console.log("[Service Worker] Caching static assets");
-        return cache.addAll(STATIC_ASSETS);
+  evento.waitUntil(
+    caches.open(STATIKA_KAŜO_NOMO)
+      .then(( kaŝo ) => {
+        console.log("[Servo-Laboranto] Kaŝante statikajn aktivaĵojn");
+        return kaŝo.addAll(STATIKAJ_AKTIVAĴOJ);
       })
-      .catch(( err ) => console.error("[Service Worker] Install failed -", err))
+      .catch(( eraro ) => console.error("[Servo-Laboranto] Instalado malsukcesis -", eraro))
   );
 });
 
-// ⟨ Activate - Clean up old caches ⟩
-self.addEventListener("activate", ( event ) => {
-  console.log("[Service Worker] Activating -");
-  event.waitUntil(
+// ⟨ Aktivigo - Purigi malnovajn kaŝojn ⟩
+self.addEventListener("activate", ( evento ) => {
+  console.log("[Servo-Laboranto] Aktivigante -");
+  evento.waitUntil(
     caches.keys()
-      .then(( cacheNames ) => {
+      .then(( kaŝajNomoj ) => {
         return Promise.all(
-          cacheNames
-            .filter(( cacheName ) => {
-              return cacheName.startsWith("pwa-");
+          kaŝajNomoj
+            .filter(( kaŝaNomo ) => {
+              return kaŝaNomo.startsWith("pwa-");
             })
-            .filter(( cacheName ) => {
-              return cacheName !== STATIC_CACHE_NAME;
+            .filter(( kaŝaNomo ) => {
+              return kaŝaNomo !== STATIKA_KAŜO_NOMO;
             })
-            .map(( cacheName ) => {
-              console.log("[Service Worker] Deleting old cache -", cacheName);
-              return caches.delete(cacheName);
+            .map(( kaŝaNomo ) => {
+              console.log("[Servo-Laboranto] Forigante malnovan kaŝon -", kaŝaNomo);
+              return caches.delete(kaŝaNomo);
             })
         );
       })
@@ -52,26 +52,26 @@ self.addEventListener("activate", ( event ) => {
   );
 });
 
-// ⟨ Fetch - Cache-first for static assets ⟩
-self.addEventListener("fetch", ( event ) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(( cachedResponse ) => {
-        if ( cachedResponse ) {
-          return cachedResponse;
+// ⟨ Prendo - Kaŝo-unue por statikaj aktivaĵoj ⟩
+self.addEventListener("fetch", ( evento ) => {
+  evento.respondWith(
+    caches.match(evento.request)
+      .then(( kaŝitaRespondo ) => {
+        if ( kaŝitaRespondo ) {
+          return kaŝitaRespondo;
         }
 
-        return fetch(event.request)
-          .then(( networkResponse ) => {
-            if ( networkResponse && networkResponse.status === 0o200 ) {
-              caches.open(STATIC_CACHE_NAME).then(( cache ) => {
-                cache.put(event.request, networkResponse.clone());
+        return fetch(evento.request)
+          .then(( retaRespondo ) => {
+            if ( retaRespondo && retaRespondo.status === 0o200 ) {
+              caches.open(STATIKA_KAŜO_NOMO).then(( kaŝo ) => {
+                kaŝo.put(evento.request, retaRespondo.clone());
               });
             }
-            return networkResponse;
+            return retaRespondo;
           })
           .catch(() => {
-            return caches.match(event.request);
+            return caches.match(evento.request);
           });
       })
   );

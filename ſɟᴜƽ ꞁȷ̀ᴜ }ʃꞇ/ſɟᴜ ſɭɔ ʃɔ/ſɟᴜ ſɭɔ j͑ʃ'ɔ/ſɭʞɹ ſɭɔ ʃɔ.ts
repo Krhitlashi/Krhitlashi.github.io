@@ -118,27 +118,27 @@ const TEKSTO = {
 const lingvo = akiriLingvon();
 const T = TEKSTO[lingvo];
 
-const SONA_ENIGO = akiriElementon<HTMLInputElement>("phonology-sound-input");
-const ALDONI_SONON_BUTONO = akiriElementon<HTMLButtonElement>("phonology-add-sound");
-const SONA_LISTO = akiriElementon<HTMLElement>("phonology-sound-list");
-const GRUPA_ENIGO = akiriElementon<HTMLInputElement>("phonology-group-input");
-const ALDONI_GRUPON_BUTONO = akiriElementon<HTMLButtonElement>("phonology-add-group");
-const GRUPA_LISTO = akiriElementon<HTMLElement>("phonology-group-list");
-const ASIGNA_LISTO = akiriElementon<HTMLElement>("phonology-assignment-list");
-const STRUKTURA_GRUPA_LISTO = akiriElementon<HTMLElement>("phonology-structure-group-list");
-const MALNETA_STRUKTURO = akiriElementon<HTMLElement>("phonology-draft-structure");
-const MALPLENIGI_MALNETON_BUTONO = akiriElementon<HTMLButtonElement>("phonology-clear-draft");
-const KONSERVI_STRUKTURON_BUTONO = akiriElementon<HTMLButtonElement>("phonology-save-structure");
-const STRUKTURA_LISTO = akiriElementon<HTMLElement>("phonology-structure-list");
-const GENERA_KVANTO = akiriElementon<HTMLInputElement>("phonology-generate-count");
-const GENERA_BUTONO = akiriElementon<HTMLButtonElement>("phonology-generate");
-const STATO = akiriElementon<HTMLParagraphElement>("phonology-status");
-const ELIRO = akiriElementon<HTMLElement>("phonology-output");
+const SONA_ENIGO = akiriElementon<HTMLInputElement>("fonologio-sono-enigo");
+const ALDONI_SONON_BUTONO = akiriElementon<HTMLButtonElement>("fonologio-aldoni-sonon");
+const SONA_LISTO = akiriElementon<HTMLElement>("fonologio-sona-listo");
+const GRUPA_ENIGO = akiriElementon<HTMLInputElement>("fonologio-grupa-enigo");
+const ALDONI_GRUPON_BUTONO = akiriElementon<HTMLButtonElement>("fonologio-aldoni-grupon");
+const GRUPA_LISTO = akiriElementon<HTMLElement>("fonologio-grupa-listo");
+const ASIGNA_LISTO = akiriElementon<HTMLElement>("fonologio-asigna-listo");
+const STRUKTURA_GRUPA_LISTO = akiriElementon<HTMLElement>("fonologio-struktura-grupa-listo");
+const MALNETA_STRUKTURO = akiriElementon<HTMLElement>("fonologio-malneta-strukturo");
+const MALPLENIGI_MALNETON_BUTONO = akiriElementon<HTMLButtonElement>("fonologio-malplenigi-malneton");
+const KONSERVI_STRUKTURON_BUTONO = akiriElementon<HTMLButtonElement>("fonologio-konservi-strukturon");
+const STRUKTURA_LISTO = akiriElementon<HTMLElement>("fonologio-struktura-listo");
+const GENERA_KVANTO = akiriElementon<HTMLInputElement>("fonologio-genera-kvanto");
+const GENERA_BUTONO = akiriElementon<HTMLButtonElement>("fonologio-generi");
+const STATO = akiriElementon<HTMLParagraphElement>("fonologio-stato");
+const ELIRO = akiriElementon<HTMLElement>("fonologio-eliro");
 
-const KONSERVA_LISTO = akiriElementon<HTMLElement>("phonology-saves-list");
-const KONSERVA_NOMO_ENIGO = akiriElementon<HTMLInputElement>("phonology-save-name-input");
-const ALDONI_KONSERVON_BUTONO = akiriElementon<HTMLButtonElement>("phonology-add-save");
-const FORIGI_KONSERVON_BUTONO = akiriElementon<HTMLButtonElement>("phonology-delete-save");
+const KONSERVA_LISTO = akiriElementon<HTMLElement>("fonologio-konservoj-listo");
+const KONSERVA_NOMO_ENIGO = akiriElementon<HTMLInputElement>("fonologio-konserva-nomo-enigo");
+const ALDONI_KONSERVON_BUTONO = akiriElementon<HTMLButtonElement>("fonologio-aldoni-konservon");
+const FORIGI_KONSERVON_BUTONO = akiriElementon<HTMLButtonElement>("fonologio-forigi-konservon");
 
 let konservojStato: KonservojStato = { konservoj: [], aktivaKonservoId: null };
 let stato: GeneratoraKonservo = ŝargiStaton();
@@ -513,7 +513,7 @@ function bildigiGrupojn(): void {
 
     const radiobutono = document.createElement("input");
     radiobutono.type = "radio";
-    radiobutono.name = "phonology-active-group";
+    radiobutono.name = "fonologio-aktiva-grupo";
     radiobutono.checked = grupo.id === stato.aktivaGrupoId;
     radiobutono.addEventListener("change", () => elektiGrupon(grupo.id));
 

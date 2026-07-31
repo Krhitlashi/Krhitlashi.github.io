@@ -244,52 +244,52 @@ function kalkuliKadronivelojn( valoro: number, tutaĜis: number, dividoj: number
 
 function inicialigiElementojn(): void {
     const elementoj = akiriElementojn(
-        "latInput", "lonInput", "latDeg", "latMin", "latSec",
-        "lonDeg", "lonMin", "lonSec", "tabDecimal", "tabDMS",
-        "decimalControls", "dmsControls", "outputCoords", "kefAraq",
-        "outputName", "piak", "gridCanvas", "mapContainer", "showGridCheck",
-        "useBase10Check", "resetBtn", "downloadBtn",
-        "clearCacheBtn", "cacheStatus", "cacheSize", "progressBar",
-        "progressFill", "downloadStatus", "searchInput", "searchBtn", "searchResults"
+        "latEnigo", "lonEnigo", "latGradoj", "latMinutoj", "latSekundoj",
+        "lonGradoj", "lonMinutoj", "lonSekundoj", "langetoDecimala", "langetoDMS",
+        "decimalajRegiloj", "dmsRegiloj", "eliraKoordinatoj", "kefAraq",
+        "eliraNomo", "piak", "kradaKanvaso", "mapaUjo", "montruKadronMarko",
+        "uzuBazo10Marko", "restarigaButono", "elŝutaButono",
+        "forigiKaŝaButono", "kaŝaStato", "kaŝaGrando", "progresStrio",
+        "progresPlenigo", "elŝutaStato", "serĉaEnigo", "serĉaButono", "serĉajRezultoj"
     ) as Record<string, HTMLElement>;
 
-    latEnigo = elementoj.latInput as HTMLInputElement;
-    lonEnigo = elementoj.lonInput as HTMLInputElement;
-    latGradoj = elementoj.latDeg as HTMLInputElement;
-    latMinutoj = elementoj.latMin as HTMLInputElement;
-    latSekundoj = elementoj.latSec as HTMLInputElement;
-    lonGradoj = elementoj.lonDeg as HTMLInputElement;
-    lonMinutoj = elementoj.lonMin as HTMLInputElement;
-    lonSekundoj = elementoj.lonSec as HTMLInputElement;
+    latEnigo = elementoj.latEnigo as HTMLInputElement;
+    lonEnigo = elementoj.lonEnigo as HTMLInputElement;
+    latGradoj = elementoj.latGradoj as HTMLInputElement;
+    latMinutoj = elementoj.latMinutoj as HTMLInputElement;
+    latSekundoj = elementoj.latSekundoj as HTMLInputElement;
+    lonGradoj = elementoj.lonGradoj as HTMLInputElement;
+    lonMinutoj = elementoj.lonMinutoj as HTMLInputElement;
+    lonSekundoj = elementoj.lonSekundoj as HTMLInputElement;
     dmsEnigoj = [ latGradoj, latMinutoj, latSekundoj, lonGradoj, lonMinutoj, lonSekundoj ];
 
-    langetoDecimala = elementoj.tabDecimal as HTMLButtonElement;
-    langetoDMS = elementoj.tabDMS as HTMLButtonElement;
-    decimalajRegiloj = elementoj.decimalControls as HTMLElement;
-    dmsRegiloj = elementoj.dmsControls as HTMLElement;
+    langetoDecimala = elementoj.langetoDecimala as HTMLButtonElement;
+    langetoDMS = elementoj.langetoDMS as HTMLButtonElement;
+    decimalajRegiloj = elementoj.decimalajRegiloj as HTMLElement;
+    dmsRegiloj = elementoj.dmsRegiloj as HTMLElement;
 
-    eliraKoordinatoj = elementoj.outputCoords as HTMLDivElement;
+    eliraKoordinatoj = elementoj.eliraKoordinatoj as HTMLDivElement;
     kefAraq = elementoj.kefAraq as HTMLDivElement;
-    eliraNomo = elementoj.outputName as HTMLDivElement;
+    eliraNomo = elementoj.eliraNomo as HTMLDivElement;
     piak = elementoj.piak as HTMLDivElement;
-    kanvaso = elementoj.gridCanvas as HTMLCanvasElement;
+    kanvaso = elementoj.kradaKanvaso as HTMLCanvasElement;
     kunteksto = kanvaso.getContext("2d")!;
-    mapaUjo = elementoj.mapContainer as HTMLElement;
-    montruKadronMarko = elementoj.showGridCheck as HTMLInputElement;
-    uzuBazo10Marko = elementoj.useBase10Check as HTMLInputElement;
-    restarigaButono = elementoj.resetBtn as HTMLButtonElement;
+    mapaUjo = elementoj.mapaUjo as HTMLElement;
+    montruKadronMarko = elementoj.montruKadronMarko as HTMLInputElement;
+    uzuBazo10Marko = elementoj.uzuBazo10Marko as HTMLInputElement;
+    restarigaButono = elementoj.restarigaButono as HTMLButtonElement;
 
-    elŝutaButono = elementoj.downloadBtn as HTMLButtonElement;
-    forigiKaŝaButono = elementoj.clearCacheBtn as HTMLButtonElement;
-    kaŝaStato = elementoj.cacheStatus as HTMLSpanElement;
-    kaŝaGrando = elementoj.cacheSize as HTMLSpanElement;
-    progresStrio = elementoj.progressBar as HTMLDivElement;
-    progresPlenigo = elementoj.progressFill as HTMLDivElement;
-    elŝutaStato = elementoj.downloadStatus as HTMLElement;
+    elŝutaButono = elementoj.elŝutaButono as HTMLButtonElement;
+    forigiKaŝaButono = elementoj.forigiKaŝaButono as HTMLButtonElement;
+    kaŝaStato = elementoj.kaŝaStato as HTMLSpanElement;
+    kaŝaGrando = elementoj.kaŝaGrando as HTMLSpanElement;
+    progresStrio = elementoj.progresStrio as HTMLDivElement;
+    progresPlenigo = elementoj.progresPlenigo as HTMLDivElement;
+    elŝutaStato = elementoj.elŝutaStato as HTMLElement;
 
-    serĉaEnigo = elementoj.searchInput as HTMLInputElement;
-    serĉaButono = elementoj.searchBtn as HTMLButtonElement;
-    serĉajRezultoj = elementoj.searchResults as HTMLElement;
+    serĉaEnigo = elementoj.serĉaEnigo as HTMLInputElement;
+    serĉaButono = elementoj.serĉaButono as HTMLButtonElement;
+    serĉajRezultoj = elementoj.serĉajRezultoj as HTMLElement;
 }
 
 function inicialigi(): void {
@@ -337,10 +337,10 @@ function inicialigi(): void {
         el.addEventListener("change", traktiDMSEnigon);
     });
 
-    const latHemRadiobutonoj = document.querySelectorAll(`input[name="latHem"]`);
-    const lonHemRadiobutonoj = document.querySelectorAll(`input[name="lonHem"]`);
-    latHemRadiobutonoj.forEach(radio => radio.addEventListener("change", traktiDMSEnigon));
-    lonHemRadiobutonoj.forEach(radio => radio.addEventListener("change", traktiDMSEnigon));
+    const latDuonsferoRadiobutonoj = document.querySelectorAll(`input[name="latDuonsfero"]`);
+    const lonDuonsferoRadiobutonoj = document.querySelectorAll(`input[name="lonDuonsfero"]`);
+    latDuonsferoRadiobutonoj.forEach(radio => radio.addEventListener("change", traktiDMSEnigon));
+    lonDuonsferoRadiobutonoj.forEach(radio => radio.addEventListener("change", traktiDMSEnigon));
 
     langetoDecimala.addEventListener("click", () => ŝanĝiReĝimon("decimal"));
     langetoDMS.addEventListener("click", () => ŝanĝiReĝimon("dms"));
@@ -355,12 +355,12 @@ function inicialigi(): void {
         ĝisdatigi();
     });
 
-    const kadronurBaskulo = document.getElementById("gridOnlyToggle") as HTMLButtonElement;
+    const kadronurBaskulo = document.getElementById("kradonurBaskulo") as HTMLButtonElement;
     let kadronurReĝimo = false;
     kadronurBaskulo.addEventListener("click", () => {
         kadronurReĝimo = !kadronurReĝimo;
         kadronurBaskulo.setAttribute("aria-pressed", kadronurReĝimo.toString());
-        document.querySelectorAll("#map .leaflet-tile-pane, #map .leaflet-layer")
+        document.querySelectorAll("#mapo .leaflet-tile-pane, #mapo .leaflet-layer")
             .forEach(kahelo => {
                 ( kahelo as HTMLElement ).style.opacity = kadronurReĝimo ? "0" : "1";
             });
@@ -371,7 +371,7 @@ function inicialigi(): void {
         ĝisdatigiMapanPozicion( 0, 0, ZOMO_RESTAŬRA );
     });
 
-    const zomajRadiobutonoj = document.querySelectorAll(`input[name="zoomSelect"]`);
+    const zomajRadiobutonoj = document.querySelectorAll(`input[name="zomoElektilo"]`);
     zomajRadiobutonoj.forEach(radio => radio.addEventListener("change", () => {
         // Zomonivelo ŝanĝita de la uzanto - povas esti uzata por deĉenigi mapan zomon se necese
     }));
@@ -460,18 +460,18 @@ function traktiDMSEnigon(): void {
     let lGra = parseFloat( latGradoj.value ) || 0;
     let lMin = parseFloat( latMinutoj.value ) || 0;
     let lSek = parseFloat( latSekundoj.value ) || 0;
-    let lHem = document.querySelector(`input[name="latHem"]:checked`)?.getAttribute("value") || "N";
+    let latDuonsfero = document.querySelector(`input[name="latDuonsfero"]:checked`)?.getAttribute("value") || "N";
 
     let loGra = parseFloat( lonGradoj.value ) || 0;
     let loMin = parseFloat( lonMinutoj.value ) || 0;
     let loSek = parseFloat( lonSekundoj.value ) || 0;
-    let loHem = document.querySelector(`input[name="lonHem"]:checked`)?.getAttribute("value") || "E";
+    let lonDuonsfero = document.querySelector(`input[name="lonDuonsfero"]:checked`)?.getAttribute("value") || "E";
 
     let dekLat = lGra + ( lMin / 60 ) + ( lSek / 3600 );
-    if ( lHem === "S" ) dekLat = -dekLat;
+    if ( latDuonsfero === "S" ) dekLat = -dekLat;
 
     let dekLon = loGra + ( loMin / 60 ) + ( loSek / 3600 );
-    if ( loHem === "W" ) dekLon = -dekLon;
+    if ( lonDuonsfero === "W" ) dekLon = -dekLon;
 
     dekLat = alklampiKoordinaton(dekLat, -90, 90);
     dekLon = alklampiKoordinaton(dekLon, -180, 180);
@@ -498,14 +498,14 @@ function ĝisdatigiDMSEnigojn(): void {
     latGradoj.value = latObjekto.gra.toString();
     latMinutoj.value = latObjekto.min.toString();
     latSekundoj.value = latObjekto.sek.toFixed( 2 );
-    const latRadio = document.querySelector(`input[name="latHem"][value="${nunaLat >= 0 ? "N" : "S"}"]`) as HTMLInputElement | null;
+    const latRadio = document.querySelector(`input[name="latDuonsfero"][value="${nunaLat >= 0 ? "N" : "S"}"]`) as HTMLInputElement | null;
     if ( latRadio ) latRadio.checked = true;
 
     const lonObjekto = decimalaAlDMS( nunaLon );
     lonGradoj.value = lonObjekto.gra.toString();
     lonMinutoj.value = lonObjekto.min.toString();
     lonSekundoj.value = lonObjekto.sek.toFixed( 2 );
-    const lonRadio = document.querySelector(`input[name="lonHem"][value="${nunaLon >= 0 ? "E" : "W"}"]`) as HTMLInputElement | null;
+    const lonRadio = document.querySelector(`input[name="lonDuonsfero"][value="${nunaLon >= 0 ? "E" : "W"}"]`) as HTMLInputElement | null;
     if ( lonRadio ) lonRadio.checked = true;
 }
 
@@ -933,7 +933,7 @@ function montriSerĉajnRezultojn( rezulto: SerĉaReveno | null ): void {
         return;
     }
 
-    kreiRezultbutonojn("#searchResults", rezultoj, zomo || ZOMO_NIVELO_2, (lat, lon, celaZomo) => {
+    kreiRezultbutonojn("#serĉajRezultoj", rezultoj, zomo || ZOMO_NIVELO_2, (lat, lon, celaZomo) => {
         ĝisdatigiMapanPozicion(lat, lon, celaZomo);
         serĉajRezultoj.classList.add("kobe");
         serĉaEnigo.value = "";
@@ -975,7 +975,7 @@ async function serĉiAdreson(): Promise<void> {
             h: 0
         }));
 
-        kreiRezultbutonojn("#searchResults", osmajRezultoj, 0o20, (lat, lon) => {
+        kreiRezultbutonojn("#serĉajRezultoj", osmajRezultoj, 0o20, (lat, lon) => {
             ĝisdatigiMapanPozicion(lat, lon, 0o20);
             serĉajRezultoj.classList.add("kobe");
             serĉaEnigo.value = "";
@@ -990,7 +990,7 @@ async function serĉiAdreson(): Promise<void> {
 // ⟪ Malreteca funkciado 📥 ⟫
 
 async function elŝutiNunanVidon(): Promise<void> {
-    const zomo = parseInt( document.querySelector(`input[name="zoomSelect"]:checked`)?.getAttribute("value") || "7" );
+    const zomo = parseInt( document.querySelector(`input[name="zomoElektilo"]:checked`)?.getAttribute("value") || "7" );
     const limoj = mapo!.getBounds();
 
     elŝutaButono.disabled = true;

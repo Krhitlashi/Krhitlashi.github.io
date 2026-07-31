@@ -223,7 +223,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
 
     const lagalInakLaga = `"${aralaga}"${inakLaga ? ", " + inakLaga : ""}, ${AŬTOFALLAJ_TIPAROJ}`;
 
-    const knahtaka = ( document.querySelector("input[name=\"arrangement\"]:checked") as HTMLInputElement )?.value || "fasai";
+    const knahtaka = ( document.querySelector("input[name=\"aranĝo\"]:checked") as HTMLInputElement )?.value || "fasai";
 
     const lagaWeh2 = ( document.getElementById("lagaWeh2") as HTMLInputElement ).value;
     const arak21okoWeh2Color = ( document.getElementById("arak21okoWeh2") as HTMLInputElement ).value;

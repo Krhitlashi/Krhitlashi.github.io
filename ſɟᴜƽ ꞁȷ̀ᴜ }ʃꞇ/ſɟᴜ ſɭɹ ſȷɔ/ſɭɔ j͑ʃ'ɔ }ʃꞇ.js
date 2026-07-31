@@ -1,391 +1,391 @@
-// ≺⧼ Base 8 Calculator - ſɟᴜ ſɭɔ j͑ʃ'ɔ ⧽≻
+// ≺⧼ Bazo-8 Kalkulilo - ſɟᴜ ſɭɔ j͑ʃ'ɔ ⧽≻
 
-// ⟪ Symbol Mappings 🔣 ⟫
+// ⟪ Simbolaj Mapoj 🔣 ⟫
 
-// ⟨ Operator symbols ⟩
-const opSymbols = {
-    add: "x",
-    subtract: "›",
-    multiply: "ɘ",
-    divide: "ꭎ",
-    power: "ɘɘ",
-    root: "ꭎꭎ",
-    equals: "=",
-    negative: "›",
-    decimal: "ɔ"
+// ⟨ Operatoraj simboloj ⟩
+const opSimboloj = {
+    adicio: "x",
+    subtraho: "›",
+    multipliko: "ɘ",
+    divido: "ꭎ",
+    potenco: "ɘɘ",
+    radiko: "ꭎꭎ",
+    egaleco: "=",
+    negativo: "›",
+    dekuma: "ɔ"
 };
 
-// ⟨ Operator label mapping for event handling ⟩
-const operatorLabelMap = {
-    "x": "add",
-    "›": "subtract",
-    "ɘ": "multiply",
-    "ꭎ": "divide",
-    "ɘɘ": "power",
-    "ꭎꭎ": "root"
+// ⟨ Operatora etiked-mapo por eventa pritraktado ⟩
+const operatoraEtikedmapo = {
+    "x": "adicio",
+    "›": "subtraho",
+    "ɘ": "multipliko",
+    "ꭎ": "divido",
+    "ɘɘ": "potenco",
+    "ꭎꭎ": "radiko"
 };
 
-// ⟪ State Variables 💾 ⟫
+// ⟪ Stato-Variabloj 💾 ⟫
 
-// ⟨ Current calculation state ⟩
-let currentValue = 0;
-let previousValue = 0;
-let pendingOperator = null;
-let lastResult = 0;
-let resetScreen = false;
+// ⟨ Nuna kalkula stato ⟩
+let nunaValoro = 0;
+let antaŭaValoro = 0;
+let pritraktataOperatoro = null;
+let lastaRezulto = 0;
+let rekomencigiEkranon = false;
 
-// ⟨ Display and input mode ⟩
-let octalDecimalMode = true;
-let inputStarted = false;
-let isFractional = false;
-let fractionalDigits = "";
-let historyStack = "";
+// ⟨ Ekrano kaj eniga reĝimo ⟩
+let oktalaDekumaModo = true;
+let enigoKomencita = false;
+let ĉuFrakcia = false;
+let frakciajCiferoj = "";
+let historiaStako = "";
 
-// ⟪ DOM Elements 🔧 ⟫
+// ⟪ DOM-Elementoj 🔧 ⟫
 
-const expressionEl = document.getElementById( "expression" );
-const resultEl = document.getElementById( "result" );
-const keypadEl = document.getElementById( "keypad" );
-const historyContainerEl = document.getElementById( "history-container" );
+const esprimoElemento = document.getElementById( "esprimo" );
+const rezultoElemento = document.getElementById( "rezulto" );
+const tastaroElemento = document.getElementById( "tastaro" );
+const historiaUjoElemento = document.getElementById( "historio-ujo" );
 
-// ⟪ Helper Functions 🛠️ ⟫
+// ⟪ Helpaj Funkcioj 🛠️ ⟫
 
-// ⟨ Reset all calculator state ⟩
-function resetState() {
-    currentValue = 0;
-    previousValue = 0;
-    pendingOperator = null;
-    lastResult = 0;
-    inputStarted = false;
-    isFractional = false;
-    fractionalDigits = "";
-    historyStack = "";
+// ⟨ Rekomencigi ĉiun kalkulan staton ⟩
+function rekomencigiStaton() {
+    nunaValoro = 0;
+    antaŭaValoro = 0;
+    pritraktataOperatoro = null;
+    lastaRezulto = 0;
+    enigoKomencita = false;
+    ĉuFrakcia = false;
+    frakciajCiferoj = "";
+    historiaStako = "";
 }
 
-// ⟨ Reset input state only ⟩
-function resetInputState() {
-    inputStarted = false;
-    isFractional = false;
-    fractionalDigits = "";
+// ⟨ Rekomencigi nur enigan staton ⟩
+function rekomencigiEniganStaton() {
+    enigoKomencita = false;
+    ĉuFrakcia = false;
+    frakciajCiferoj = "";
 }
 
-// ⟪ Conversion Functions 🔄 ⟫ ( using shared ſɟᴜ ı],ɹͷ̗.js )
+// ⟪ Konvertaj Funkcioj 🔄 ⟫ ( uzante komunan ſɟᴜ ı],ɹͷ̗.js )
 
-// ⟨ Convert number to display format ⟩
-function convertToDisplay( num ) {
-    return octalDecimalMode ? vab6cajaDomani( num ) : vab6caja( num );
+// ⟨ Konverti nombron al ekrana formato ⟩
+function konvertiAlEkrano( nombro ) {
+    return oktalaDekumaModo ? vab6cajaDomani( nombro ) : vab6caja( nombro );
 }
 
-// ⟨ Get current value as number with fractional part ⟩
-function getCurrentValueAsNumber() {
-    if ( !octalDecimalMode || !isFractional || fractionalDigits.length === 0 ) {
-        return currentValue;
+// ⟨ Akiri nunan valoron kiel nombron kun frakcia parto ⟩
+function akiriNunanNombron() {
+    if ( !oktalaDekumaModo || !ĉuFrakcia || frakciajCiferoj.length === 0 ) {
+        return nunaValoro;
     }
-    const fracValue = quqDomani( fractionalDigits );
-    const result = Math.abs( currentValue ) + fracValue;
-    return currentValue < 0 ? -result : result;
+    const frakciaValoro = quqDomani( frakciajCiferoj );
+    const rezulto = Math.abs( nunaValoro ) + frakciaValoro;
+    return nunaValoro < 0 ? -rezulto : rezulto;
 }
 
-// ⟨ Get value as number from integer and fractional digits ⟩
-function getValueAsNumber( intVal, fracDigits ) {
-    if ( !octalDecimalMode || !fracDigits || fracDigits.length === 0 ) {
-        return intVal;
+// ⟨ Akiri valoron kiel nombron el entjeraj kaj frakciaj ciferoj ⟩
+function akiriValoronNombro( entjeraValoro, frakciciferoj ) {
+    if ( !oktalaDekumaModo || !frakciciferoj || frakciciferoj.length === 0 ) {
+        return entjeraValoro;
     }
-    const fracValue = quqDomani( fracDigits );
-    const result = Math.abs( intVal ) + fracValue;
-    return intVal < 0 ? -result : result;
+    const frakciaValoro = quqDomani( frakciciferoj );
+    const rezulto = Math.abs( entjeraValoro ) + frakciaValoro;
+    return entjeraValoro < 0 ? -rezulto : rezulto;
 }
 
-// ⟨ Set current value from number ⟩
-function setCurrentValueFromNumber( num ) {
-    if ( !octalDecimalMode ) {
-        currentValue = Math.round( num );
-        resetInputState();
+// ⟨ Agordi nunan valoron el nombro ⟩
+function agordiNunanValoronElNombro( nombro ) {
+    if ( !oktalaDekumaModo ) {
+        nunaValoro = Math.round( nombro );
+        rekomencigiEniganStaton();
         return;
     }
-    let negative = num < 0;
-    num = Math.abs( num );
-    currentValue = Math.floor( num );
-    if ( negative ) currentValue = -currentValue;
+    let negativa = nombro < 0;
+    nombro = Math.abs( nombro );
+    nunaValoro = Math.floor( nombro );
+    if ( negativa ) nunaValoro = -nunaValoro;
 
-    let fracPart = num - Math.floor( num );
-    fractionalDigits = "";
-    isFractional = false;
+    let frakciaParto = nombro - Math.floor( nombro );
+    frakciajCiferoj = "";
+    ĉuFrakcia = false;
 
-    if ( fracPart > 0.0001 ) {
-        isFractional = true;
-        fractionalDigits = quqalDomanisuOk2fe( fracPart );
+    if ( frakciaParto > 0.0001 ) {
+        ĉuFrakcia = true;
+        frakciajCiferoj = quqalDomanisuOk2fe( frakciaParto );
     }
 }
 
-// ⟨ Perform backspace operation ⟩
-function performBackspace() {
-    handleBackspace();
+// ⟨ Efektivigi forigilon ⟩
+function efektivigiForigilon() {
+    traktiForigilon();
 }
 
-// ⟪ Display Functions 🖥️ ⟫
+// ⟪ Ekranaj Funkcioj 🖥️ ⟫
 
-// ⟨ Get display value for current state ⟩
-function getDisplayValue() {
-    if ( octalDecimalMode ) {
-        let result = vab6cajaDomani( Math.abs( currentValue ) );
-        if ( isFractional ) {
-            result = vab6caja( Math.abs( currentValue ) ) + " " + fractionalDigits;
+// ⟨ Akiri ekranan valoron por nuna stato ⟩
+function akiriEkrananValoron() {
+    if ( oktalaDekumaModo ) {
+        let rezulto = vab6cajaDomani( Math.abs( nunaValoro ) );
+        if ( ĉuFrakcia ) {
+            rezulto = vab6caja( Math.abs( nunaValoro ) ) + " " + frakciajCiferoj;
         }
-        result = skakefK2fe( result );
-        return neq2qKp6EKfo( result, currentValue < 0 );
+        rezulto = skakefK2fe( rezulto );
+        return neq2qKp6EKfo( rezulto, nunaValoro < 0 );
     } else {
-        let result = vab6caja( currentValue );
-        return skakefK2fe( result );
+        let rezulto = vab6caja( nunaValoro );
+        return skakefK2fe( rezulto );
     }
 }
 
-// ⟨ Get current value for display ⟩
-function getCurrentValueForDisplay() {
-    if ( octalDecimalMode && isFractional ) {
-        return getDisplayValue();
+// ⟨ Akiri nunan valoron por ekrano ⟩
+function akiriNunanValoronPorEkrano() {
+    if ( oktalaDekumaModo && ĉuFrakcia ) {
+        return akiriEkrananValoron();
     }
-    let result = convertToDisplay( currentValue );
-    return skakefK2fe( result );
+    let rezulto = konvertiAlEkrano( nunaValoro );
+    return skakefK2fe( rezulto );
 }
 
-// ⟨ Get operator symbol ⟩
-function getOpSymbol( op ) {
-    switch ( op ) {
-        case "add": return opSymbols.add;
-        case "subtract": return opSymbols.subtract;
-        case "multiply": return opSymbols.multiply;
-        case "divide": return opSymbols.divide;
-        case "power": return opSymbols.power;
-        case "root": return opSymbols.root;
-        case "equals": return opSymbols.equals;
-        default: return op;
+// ⟨ Akiri operatoran simbolon ⟩
+function akiriOpSimbolon( operatoro ) {
+    switch ( operatoro ) {
+        case "adicio": return opSimboloj.adicio;
+        case "subtraho": return opSimboloj.subtraho;
+        case "multipliko": return opSimboloj.multipliko;
+        case "divido": return opSimboloj.divido;
+        case "potenco": return opSimboloj.potenco;
+        case "radiko": return opSimboloj.radiko;
+        case "egaleco": return opSimboloj.egaleco;
+        default: return operatoro;
     }
 }
 
-// ⟨ Update display elements ⟩
-function updateDisplay() {
-    const symCurr = getCurrentValueForDisplay();
-    const symPrev = convertToDisplay( previousValue );
-    const opSym = getOpSymbol( pendingOperator );
+// ⟨ Ĝisdatigi ekranajn elementojn ⟩
+function ĝisdatigiEkranon() {
+    const simNuna = akiriNunanValoronPorEkrano();
+    const simAntaŭa = konvertiAlEkrano( antaŭaValoro );
+    const opSimbolo = akiriOpSimbolon( pritraktataOperatoro );
 
-    if ( pendingOperator && inputStarted && previousValue !== 0 ) {
-        expressionEl.textContent = `${ opSym } ${ symPrev } c ${ symCurr }`;
-    } else if ( pendingOperator && inputStarted ) {
-        expressionEl.textContent = `${ opSym } ${ symCurr }`;
-    } else if ( pendingOperator && previousValue !== 0 ) {
-        expressionEl.textContent = `${ opSym } ${ symPrev } c`;
-    } else if ( pendingOperator ) {
-        expressionEl.textContent = opSym;
-    } else if ( previousValue !== 0 && !inputStarted ) {
-        expressionEl.textContent = symPrev + " c";
+    if ( pritraktataOperatoro && enigoKomencita && antaŭaValoro !== 0 ) {
+        esprimoElemento.textContent = `${ opSimbolo } ${ simAntaŭa } c ${ simNuna }`;
+    } else if ( pritraktataOperatoro && enigoKomencita ) {
+        esprimoElemento.textContent = `${ opSimbolo } ${ simNuna }`;
+    } else if ( pritraktataOperatoro && antaŭaValoro !== 0 ) {
+        esprimoElemento.textContent = `${ opSimbolo } ${ simAntaŭa } c`;
+    } else if ( pritraktataOperatoro ) {
+        esprimoElemento.textContent = opSimbolo;
+    } else if ( antaŭaValoro !== 0 && !enigoKomencita ) {
+        esprimoElemento.textContent = simAntaŭa + " c";
     } else {
-        expressionEl.textContent = symCurr;
+        esprimoElemento.textContent = simNuna;
     }
 
-    resultEl.textContent = symCurr;
+    rezultoElemento.textContent = simNuna;
 }
 
-function handleDigit( symbol ) {
-    if ( resetScreen ) {
-        currentValue = 0;
-        resetScreen = false;
-        resetInputState();
+function traktiCiferon( simbolo ) {
+    if ( rekomencigiEkranon ) {
+        nunaValoro = 0;
+        rekomencigiEkranon = false;
+        rekomencigiEniganStaton();
     }
 
-    if ( !inputStarted ) {
-        currentValue = 0;
-        inputStarted = true;
+    if ( !enigoKomencita ) {
+        nunaValoro = 0;
+        enigoKomencita = true;
     }
 
-    const digitIndex = K2FE.indexOf( symbol );
-    if ( digitIndex !== -1 ) {
-        if ( octalDecimalMode && isFractional ) {
-            fractionalDigits += symbol;
+    const ciferecaIndekso = K2FE.indexOf( simbolo );
+    if ( ciferecaIndekso !== -1 ) {
+        if ( oktalaDekumaModo && ĉuFrakcia ) {
+            frakciajCiferoj += simbolo;
         } else {
-            currentValue = currentValue * KNAK2FE + digitIndex;
+            nunaValoro = nunaValoro * KNAK2FE + ciferecaIndekso;
         }
-        updateDisplay();
+        ĝisdatigiEkranon();
     }
 }
 
-function handleDecimalPoint() {
-    if ( !octalDecimalMode ) return;
-    if ( !inputStarted ) {
-        inputStarted = true;
-        currentValue = 0;
+function traktiDekumanPunkton() {
+    if ( !oktalaDekumaModo ) return;
+    if ( !enigoKomencita ) {
+        enigoKomencita = true;
+        nunaValoro = 0;
     }
-    if ( !isFractional ) {
-        isFractional = true;
-        fractionalDigits = "";
+    if ( !ĉuFrakcia ) {
+        ĉuFrakcia = true;
+        frakciajCiferoj = "";
     }
-    updateDisplay();
+    ĝisdatigiEkranon();
 }
 
-function handleOperator( op ) {
-    if ( previousValue !== 0 && inputStarted ) {
-        calculate();
-        pendingOperator = op;
-        inputStarted = false;
-        resetScreen = false;
-        updateDisplay();
+function traktiOperatoron( operatoro ) {
+    if ( antaŭaValoro !== 0 && enigoKomencita ) {
+        kalkuli();
+        pritraktataOperatoro = operatoro;
+        enigoKomencita = false;
+        rekomencigiEkranon = false;
+        ĝisdatigiEkranon();
         return;
     }
 
-    if ( previousValue === 0 && !inputStarted ) {
-        previousValue = currentValue;
-        currentValue = 0;
+    if ( antaŭaValoro === 0 && !enigoKomencita ) {
+        antaŭaValoro = nunaValoro;
+        nunaValoro = 0;
     }
 
-    // Store current value as number (including fractional part) before switching operator
-    if ( inputStarted ) {
-        previousValue = getCurrentValueAsNumber();
-        currentValue = 0;
-        resetInputState();
+    // Konservi nunan valoron kiel nombron ( inkluzive frakcian parton ) antaŭ ol ŝanĝi operatoron
+    if ( enigoKomencita ) {
+        antaŭaValoro = akiriNunanNombron();
+        nunaValoro = 0;
+        rekomencigiEniganStaton();
     }
 
-    pendingOperator = op;
-    resetScreen = false;
-    updateDisplay();
+    pritraktataOperatoro = operatoro;
+    rekomencigiEkranon = false;
+    ĝisdatigiEkranon();
 }
 
-// ⟪ Calculation Functions 🧮 ⟫
+// ⟪ Kalkulaj Funkcioj 🧮 ⟫
 
-// ⟨ Perform calculation ⟩
-function calculate() {
-    if ( !pendingOperator ) return;
-    if ( previousValue === 0 && currentValue === 0 && !isFractional ) return;
+// ⟨ Efektivigi kalkulon ⟩
+function kalkuli() {
+    if ( !pritraktataOperatoro ) return;
+    if ( antaŭaValoro === 0 && nunaValoro === 0 && !ĉuFrakcia ) return;
 
-    let result = 0;
-    let prevNum = getValueAsNumber( previousValue, "" );
-    let currNum = getCurrentValueAsNumber();
+    let rezulto = 0;
+    let antaŭaNombro = akiriValoronNombro( antaŭaValoro, "" );
+    let nunaNombro = akiriNunanNombron();
 
-    switch ( pendingOperator ) {
-        case "add":
-            result = currNum + prevNum;
+    switch ( pritraktataOperatoro ) {
+        case "adicio":
+            rezulto = nunaNombro + antaŭaNombro;
             break;
-        case "subtract":
-            result = currNum - prevNum;
+        case "subtraho":
+            rezulto = nunaNombro - antaŭaNombro;
             break;
-        case "multiply":
-            result = currNum * prevNum;
+        case "multipliko":
+            rezulto = nunaNombro * antaŭaNombro;
             break;
-        case "divide":
-            result = prevNum !== 0 ? currNum / prevNum : 0;
+        case "divido":
+            rezulto = antaŭaNombro !== 0 ? nunaNombro / antaŭaNombro : 0;
             break;
-        case "power":
-            result = Math.pow( currNum, prevNum );
+        case "potenco":
+            rezulto = Math.pow( nunaNombro, antaŭaNombro );
             break;
-        case "root":
-            result = Math.pow( currNum, 1 / prevNum );
+        case "radiko":
+            rezulto = Math.pow( nunaNombro, 1 / antaŭaNombro );
             break;
         default:
             return;
     }
 
-    const prevSym = convertToDisplay( previousValue );
-    const currSym = getCurrentValueForDisplay();
-    const resultSym = convertToDisplay( result );
-    const opSym = getOpSymbol( pendingOperator );
+    const antaŭaSimbolo = konvertiAlEkrano( antaŭaValoro );
+    const nunaSimbolo = akiriNunanValoronPorEkrano();
+    const rezultaSimbolo = konvertiAlEkrano( rezulto );
+    const opSimbolo = akiriOpSimbolon( pritraktataOperatoro );
 
-    const historyEntry = document.createElement( "p" );
-    historyEntry.className = "ksakap2sa";
-    historyEntry.textContent = `${ opSym } ${ currSym } c ${ prevSym } = ${ resultSym }`;
-    historyContainerEl.prepend( historyEntry );
+    const historiaEniro = document.createElement( "p" );
+    historiaEniro.className = "ksakap2sa";
+    historiaEniro.textContent = `${ opSimbolo } ${ nunaSimbolo } c ${ antaŭaSimbolo } = ${ rezultaSimbolo }`;
+    historiaUjoElemento.prepend( historiaEniro );
 
-    lastResult = result;
-    setCurrentValueFromNumber( result );
-    previousValue = 0;
-    pendingOperator = null;
-    inputStarted = false;
-    resetScreen = true;
+    lastaRezulto = rezulto;
+    agordiNunanValoronElNombro( rezulto );
+    antaŭaValoro = 0;
+    pritraktataOperatoro = null;
+    enigoKomencita = false;
+    rekomencigiEkranon = true;
 
-    resultEl.textContent = getCurrentValueForDisplay();
+    rezultoElemento.textContent = akiriNunanValoronPorEkrano();
 }
 
-// ⟪ Control Functions 🎛️ ⟫
+// ⟪ Kontrolaj Funkcioj 🎛️ ⟫
 
-// ⟨ Clear all state and display ⟩
-function clearAll() {
-    resetState();
-    expressionEl.textContent = "";
-    resultEl.textContent = K2FE[ 0 ];
-    historyContainerEl.innerHTML = "";
+// ⟨ Nuligi ĉiun staton kaj ekranon ⟩
+function nuligiĈion() {
+    rekomencigiStaton();
+    esprimoElemento.textContent = "";
+    rezultoElemento.textContent = K2FE[ 0 ];
+    historiaUjoElemento.innerHTML = "";
 }
 
-// ⟨ Handle separator input ⟩
-function handleSeparator() {
-    if ( inputStarted ) {
-        if ( previousValue === 0 ) {
-            previousValue = getCurrentValueAsNumber();
-            currentValue = 0;
-            resetInputState();
-            inputStarted = false;
-        } else if ( pendingOperator ) {
-            calculate();
+// ⟨ Trakti apartigilan enigon ⟩
+function traktiApartigilon() {
+    if ( enigoKomencita ) {
+        if ( antaŭaValoro === 0 ) {
+            antaŭaValoro = akiriNunanNombron();
+            nunaValoro = 0;
+            rekomencigiEniganStaton();
+            enigoKomencita = false;
+        } else if ( pritraktataOperatoro ) {
+            kalkuli();
         }
-        updateDisplay();
+        ĝisdatigiEkranon();
     }
 }
 
-// ⟨ Toggle negative sign ⟩
-function toggleNegative() {
-    if ( !inputStarted && currentValue === 0 && fractionalDigits.length === 0 ) return;
-    currentValue = -currentValue;
-    updateDisplay();
+// ⟨ Baskuligi negativan signon ⟩
+function baskuligiNegativon() {
+    if ( !enigoKomencita && nunaValoro === 0 && frakciajCiferoj.length === 0 ) return;
+    nunaValoro = -nunaValoro;
+    ĝisdatigiEkranon();
 }
 
-// ⟨ Handle backspace ⟩
-function handleBackspace() {
-    if ( octalDecimalMode && isFractional && fractionalDigits.length > 0 ) {
-        fractionalDigits = fractionalDigits.slice( 0, -1 );
-        if ( fractionalDigits.length === 0 ) {
-            isFractional = false;
+// ⟨ Trakti forigilon ⟩
+function traktiForigilon() {
+    if ( oktalaDekumaModo && ĉuFrakcia && frakciajCiferoj.length > 0 ) {
+        frakciajCiferoj = frakciajCiferoj.slice( 0, -1 );
+        if ( frakciajCiferoj.length === 0 ) {
+            ĉuFrakcia = false;
         }
-    } else if ( octalDecimalMode && isFractional ) {
-        isFractional = false;
+    } else if ( oktalaDekumaModo && ĉuFrakcia ) {
+        ĉuFrakcia = false;
     } else {
-        currentValue = Math.floor( currentValue / KNAK2FE );
-        if ( currentValue === 0 ) inputStarted = false;
+        nunaValoro = Math.floor( nunaValoro / KNAK2FE );
+        if ( nunaValoro === 0 ) enigoKomencita = false;
     }
-    updateDisplay();
+    ĝisdatigiEkranon();
 }
 
-// ⟪ Event Listeners 📡 ⟫
+// ⟪ Eventaj Aŭskultiloj 📡 ⟫
 
-// ⟨ Keypad button click handlers ⟩
-keypadEl.querySelectorAll( ".number-buttons button, .function-buttons button, .control-buttons button" ).forEach( button => {
-    button.addEventListener( "click", () => {
-        const label = button.textContent;
-        const className = button.className;
+// ⟨ Tastaraj butonklakaj pritraktiloj ⟩
+tastaroElemento.querySelectorAll( ".nombro-butonoj button, .funkcio-butonoj button, .kontrolo-butonoj button" ).forEach( butono => {
+    butono.addEventListener( "click", () => {
+        const etiked = butono.textContent;
+        const klasaNomo = butono.className;
 
-        if ( label === "c" ) { handleSeparator(); return; }
-        if ( className.includes( "decimal-btn" ) ) { handleDecimalPoint(); return; }
-        else if ( className.includes( "number-btn" ) ) handleDigit( label );
-        else if ( className.includes( "operator-btn" ) && operatorLabelMap[ label ] ) handleOperator( operatorLabelMap[ label ] );
-        else if ( className.includes( "power-btn" ) && label === "›" ) toggleNegative();
-        else if ( className.includes( "clear-btn" ) && label === "///" ) clearAll();
-        else if ( className.includes( "clear-btn" ) && label === "⌫" ) performBackspace();
-        else if ( className.includes( "equals-btn" ) ) calculate();
+        if ( etiked === "c" ) { traktiApartigilon(); return; }
+        if ( klasaNomo.includes( "dekuma-butono" ) ) { traktiDekumanPunkton(); return; }
+        else if ( klasaNomo.includes( "nombro-butono" ) ) traktiCiferon( etiked );
+        else if ( klasaNomo.includes( "operatoro-butono" ) && operatoraEtikedmapo[ etiked ] ) traktiOperatoron( operatoraEtikedmapo[ etiked ] );
+        else if ( klasaNomo.includes( "potenco-butono" ) && etiked === "›" ) baskuligiNegativon();
+        else if ( klasaNomo.includes( "nuliga-butono" ) && etiked === "///" ) nuligiĈion();
+        else if ( klasaNomo.includes( "nuliga-butono" ) && etiked === "⌫" ) efektivigiForigilon();
+        else if ( klasaNomo.includes( "egaleco-butono" ) ) kalkuli();
     } );
 } );
 
-// ⟨ Keyboard event handlers ⟩
-document.addEventListener( "keydown", ( e ) => {
-    if ( K2FE.includes( e.key ) ) {
-        handleDigit( e.key );
-    } else if ( e.key === "." || e.key === "," ) {
-        handleDecimalPoint();
-    } else if ( e.key === "Enter" || e.key === "=" ) {
-        calculate();
-    } else if ( e.key === "Escape" ) {
-        clearAll();
-    } else if ( e.key === "Backspace" ) {
-        performBackspace();
-    } else if ( e.key === "n" || e.key === "N" ) {
-        toggleNegative();
+// ⟨ Klavar-eventaj pritraktiloj ⟩
+document.addEventListener( "keydown", ( evento ) => {
+    if ( K2FE.includes( evento.key ) ) {
+        traktiCiferon( evento.key );
+    } else if ( evento.key === "." || evento.key === "," ) {
+        traktiDekumanPunkton();
+    } else if ( evento.key === "Enter" || evento.key === "=" ) {
+        kalkuli();
+    } else if ( evento.key === "Escape" ) {
+        nuligiĈion();
+    } else if ( evento.key === "Backspace" ) {
+        efektivigiForigilon();
+    } else if ( evento.key === "n" || evento.key === "N" ) {
+        baskuligiNegativon();
     }
 } );
 
-// ⟨ Initialize display ⟩
-updateDisplay();
+// ⟨ Inicialigi ekranon ⟩
+ĝisdatigiEkranon();

@@ -1786,22 +1786,22 @@ function iniciiFrazGeneratoranUI(): void {
     }
 
     function plenigiModifilojn(): void {
-        const container = document.getElementById("modifierCheckboxes");
-        if (!container) return;
+        const modifilujo = document.getElementById("modifilajMarkobutonoj");
+        if (!modifilujo) return;
 
-        container.innerHTML = "";
+        modifilujo.innerHTML = "";
 
         MODIFILOJ.forEach(mod => {
-            const label = document.createElement("label");
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.checked = ebligitajModifiloj[mod.id] ?? true;
-            checkbox.addEventListener("change", () => {
-                ebligitajModifiloj[mod.id] = checkbox.checked;
+            const etikedo = document.createElement("label");
+            const markobutono = document.createElement("input");
+            markobutono.type = "checkbox";
+            markobutono.checked = ebligitajModifiloj[mod.id] ?? true;
+            markobutono.addEventListener("change", () => {
+                ebligitajModifiloj[mod.id] = markobutono.checked;
             });
-            label.appendChild(document.createTextNode(" " + mod.name));
-            label.appendChild(checkbox);
-            container.appendChild(label);
+            etikedo.appendChild(document.createTextNode(" " + mod.name));
+            etikedo.appendChild(markobutono);
+            modifilujo.appendChild(etikedo);
         });
     }
 
