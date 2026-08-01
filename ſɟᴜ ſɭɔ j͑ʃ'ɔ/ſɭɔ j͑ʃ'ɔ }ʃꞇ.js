@@ -1,20 +1,3 @@
-// ⟪ j͐ʃᴜƣ̋ ꞁȷ̀ɜ ʃэ ſɟᴜ ſɭɹ ⟫
-
-async function b6vegejexSakeveni() {
-	if ( "serviceWorker" in navigator ) {
-		try {
-			const b6vegejexRuva = new URL("/ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js", window.location.origin);
-			const b6vegejex = await navigator
-			.serviceWorker
-			.register(b6vegejexRuva);
-			console.log("( ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀w ʃэ j͑ʃ'ɔ ɭl̀ɔᶗ‹ ⸙ j͑ʃᴜ ſɭɔ j͑ʃ'ɔ }ʃꞇ ⸙ ✔️ )", b6vegejex.scope);
-		}
-		catch ( e ) {
-			console.log("( ſ͕ȷɜ ʃэ j͑ʃ'ɔ ɭl̀ɔᶗ‹ ⸙ j͑ʃᴜ ſɭɔ j͑ʃ'ɔ }ʃꞇ ⸙ ❌ )", e);
-		}
-	}
-}
-
 // ⟪ j͑ʃ'ᴜ ſɟɔ ſןw ⟫
 
 const KOTASAKASUKP6 = ["(", ")", "[", "]", "<", ">", "-", "≺⧼", "⧽≻", "⟪", "⟫", "≺", "≻", "⧼", "⧽"];
@@ -147,7 +130,6 @@ function a3esoza(sozanu) {
 // ⟪ j͑ʃᴜ ı],ɔ j͑ʃw ſɭɔ j͑ʃ'ɔ ⟫
 
 document.addEventListener("DOMContentLoaded", () => {
-  b6vegejexSakeveni();
   vacepu("cepufal");
   vacepu("aih");
   valas();

@@ -6,6 +6,8 @@ declare global {
   function vacepu(klasoNomo: string): void;
   function a3esoza(sozanu: HTMLElement): void;
   function valas(): void;
+
+  // ⟨ j͑ʃᴜ ſɭɔ j͑ʃ'ɔ }ʃꞇ.js ⟩ - Registrado de la Servilo-Laboranto
   function b6vegejexSakeveni(): Promise<void>;
 
   // ⟨ ſɟᴜ ı],ɹͷ̗.js ⟩ - Nombrosistemoj kaj Konstantoj

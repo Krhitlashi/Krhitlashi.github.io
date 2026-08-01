@@ -1,4 +1,4 @@
-// ≺⧼ Ĉefa Servo-Laboranto - ſɟᴜ ſɭɔ j͑ʃ'ɔ ⧽≻
+// ≺⧼ j͑ʃᴜƣ̋ ꞁȷ̀ɜ ʃэ ſɟᴜ ſɭɹ - Ĉefa Servo-Laboranto ⧽≻
 
 const STATIKA_KAŜO_NOMO = "pwa-v3";
 
@@ -8,6 +8,7 @@ const STATIKAJ_AKTIVAĴOJ = [
   "/ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js",
   "/ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɟᴜ ı],ɹͷ̗.js",
   "/ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃƽᴜ ſɭɔʞ.js",
+  "/ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɟᴜ j͑ʃᴜƣ̋ ꞁȷ̀ɜ ʃэ ſɟᴜ ſɭɹ.js",
   "/index.html",
   "/ſ͔ɭᴜ ᶅſɔ.html",
   "/ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ ֭ſɭᴜ ı],ɹ.html",
