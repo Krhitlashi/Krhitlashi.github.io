@@ -301,7 +301,6 @@ thala {
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
-	justify-content: center;
 }
 .cakaxa {
 	align-self: stretch;
@@ -320,7 +319,6 @@ ciihii {
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
-	justify-content: center;
 }
 
 /* j͑ʃɜ ſɭ,ᴜ 🪷 */
