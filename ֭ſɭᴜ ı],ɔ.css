@@ -41,8 +41,7 @@
 
 	--ខេលេសៃ: #000;
 
-	--ខេលេសៃច្ហិ: #000000a0;
-	--ឆាងាធីច្ហិ: #181818c0;
+	--ខេលេសៃច្ហិ: #00000080;
 
 	--កេភ: #fff;
 	--កេភ២: #c8c8c8;
@@ -63,8 +62,7 @@
 
 		--ខេលេសៃ: #fff;
 
-		--ខេលេសៃច្ហិ: #ffffffa0;
-		--ឆាងាធីច្ហិ: #f8f8f8c0;
+		--ខេលេសៃច្ហិ: #ffffff80;
 
 		--កេភ: #000;
 		--កេភ២: #484848;
@@ -139,6 +137,11 @@ h1 {
 	font-weight: unset;
 	font-family: "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ";
 }
+h2, h3 {
+	margin: 0;
+	text-align: center;
+	font-weight: unset;
+}
 p {
 	margin: 0;
 	text-align: center;
@@ -164,7 +167,7 @@ p {
 	align-self: center;
 	font-family: "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ";
 }
-p:has(> .cepufalxez), h1:has(> .cepufalxez) {
+p:has(> .cepufalxez), h1:has(> .cepufalxez), h2:has(> .cepufalxez), h3:has(> .cepufalxez) {
 	display: flex;
 	align-items: flex-start;
 	justify-content: center;
@@ -173,7 +176,7 @@ p:has(> .cepufalxez), h1:has(> .cepufalxez) {
 .powukfal.cepufal {
 	flex-direction: column-reverse;
 }
-.powukfal p, .powukfal h, .powukfal a, .powukfal h1, .powukfal button {
+.powukfal p, .powukfal h, .powukfal a, .powukfal h1, .powukfal h2, .powukfal h3, .powukfal button {
 	transform: scale(-1, 1);
 }
 .powukfal a, .powukfal h, .powukfal .flak, .powukfal button {
@@ -323,7 +326,9 @@ ciihii {
 /* j͑ʃɜ ſɭ,ᴜ 🪷 */
 
 .n2tase, ksaka {
-	background-color: var(--ឆាងាធីច្ហិ);
+	background:
+    var(--តានេកខេលេ),
+    var(--ខេលេសៃច្ហិ);
 	backdrop-filter: var(--ច្ហិនី);
 }
 button.n2tase:hover::after, button.n2tase[aria-pressed="true"]::after {
