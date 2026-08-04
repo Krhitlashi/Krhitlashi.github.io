@@ -326,9 +326,7 @@ ciihii {
 /* j͑ʃɜ ſɭ,ᴜ 🪷 */
 
 .n2tase, ksaka {
-	background:
-    var(--តានេកខេលេ),
-    var(--ខេលេសៃច្ហិ);
+	background: linear-gradient(var(--តានេកខេលេ), var(--តានេកខេលេ)), linear-gradient(var(--ខេលេសៃច្ហិ), var(--ខេលេសៃច្ហិ));
 	backdrop-filter: var(--ច្ហិនី);
 }
 button.n2tase:hover::after, button.n2tase[aria-pressed="true"]::after {
