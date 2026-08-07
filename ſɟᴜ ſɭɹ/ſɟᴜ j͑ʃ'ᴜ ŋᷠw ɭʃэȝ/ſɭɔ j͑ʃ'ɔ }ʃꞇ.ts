@@ -32,6 +32,13 @@ class PlanedaGeneratoro {
     }
     private teksturaKanvaso: HTMLCanvasElement = document.createElement( "canvas" )
     private planedajDatumoj: any[][] = []
+    private skizaKanvaso: HTMLCanvasElement
+    private skizaKunteksto: CanvasRenderingContext2D
+    private desegnanta: boolean
+    private lastaX: number
+    private lastaY: number
+    private taksaRezulto: HTMLElement
+    private taksoOkazanta: boolean
 
     haketiĈenon( ĉeno: string ): number {
         let haketo = 0
@@ -51,7 +58,7 @@ class PlanedaGeneratoro {
         this.terglobujo = document.getElementById( "globujo" )!
         this.nunaProjekcio = "ekvidrektangula"
         this.semaĈeno = "42"
-        this.semo = this.haketiĈenon( this.semaĈeno )
+        this.semo = this.akiriSemonElĈeno( this.semaĈeno )
         this.larĝo = 0o2000
         this.alto = 0o400
         this.aŭtorotacio = true
@@ -71,6 +78,14 @@ class PlanedaGeneratoro {
             atmosferaDenso: 0o6 / 0o10,
         }
 
+        this.skizaKanvaso = document.getElementById( "skiza-kanvaso" ) as HTMLCanvasElement
+        this.skizaKunteksto = this.skizaKanvaso.getContext( "2d" )!
+        this.desegnanta = false
+        this.lastaX = 0
+        this.lastaY = 0
+        this.taksaRezulto = document.getElementById( "taksa-rezulto" )!
+        this.taksoOkazanta = false
+
         this.inicialigi()
     }
 
@@ -78,6 +93,7 @@ class PlanedaGeneratoro {
         this.reskaligiKanvason()
         this.agordiThreeJS()
         this.agordiEventajnAŭskultilojn()
+        this.agordiSkizanInterfacon()
         this.ĝisdatigiGlitilojn()
         this.generi()
 
@@ -135,7 +151,7 @@ class PlanedaGeneratoro {
         atmosferoEnigo.value = atmosfero.toString()
 
         this.semaĈeno = semo
-        this.semo = this.haketiĈenon( this.semaĈeno )
+        this.semo = this.akiriSemonElĈeno( this.semaĈeno )
         this.parametroj.akvonivelo = akvo / 0o100
         this.parametroj.temperaturo = temp / 0o100
         this.parametroj.kontinentKvanto = kontinentoj
@@ -246,7 +262,7 @@ class PlanedaGeneratoro {
         // ⟪ Sema enigo ⟫ 🎲
         document.getElementById( "semo" )!.addEventListener( "input", ( e ) => {
             this.semaĈeno = ( e.target as HTMLInputElement ).value
-            this.semo = this.haketiĈenon( this.semaĈeno )
+            this.semo = this.akiriSemonElĈeno( this.semaĈeno )
             document.getElementById( "semo-valoro" )!.textContent = this.semo.toString()
         } )
 
@@ -311,6 +327,256 @@ class PlanedaGeneratoro {
         ligilo.download = dosiernomo
         ligilo.href = kanvaso.toDataURL()
         ligilo.click()
+    }
+
+    // ⟪ Skizo kaj semo-takso 🖌️ ⟫
+
+    // ⟪ Semo el ĉeno. Numeraj ĉenoj uziĝas rekte, aliaj estas haketitaj. ⟫ 🔢
+    akiriSemonElĈeno( ĉeno: string ): number {
+        if ( /^[0-9]+$/.test( ĉeno ) ) return parseInt( ĉeno )
+        return this.haketiĈenon( ĉeno )
+    }
+
+    // ⟪ Determinisma hazarda funkcio por ripetebla bruo. ⟫ 🎲
+    kreiHazardan( semo: number ): () => number {
+        let stato = semo >>> 0
+        return () => {
+            stato = ( stato + 0o15512674765 ) >>> 0
+            let t = stato
+            t = Math.imul( t ^ ( t >>> 0o17 ), t | 1 )
+            t ^= t + Math.imul( t ^ ( t >>> 0o7 ), t | 0o75 )
+            return ( ( t ^ ( t >>> 0o16 ) ) >>> 0 ) / 0o40000000000
+        }
+    }
+
+    agordiSkizanInterfacon() {
+        // ⟪ Preparu la skizan kanvason. ⟫ 🖌️
+        this.skizaKanvaso.style.touchAction = "none"
+        this.viŝiSkizon()
+
+        this.skizaKanvaso.addEventListener( "pointerdown", ( e ) => {
+            this.desegnanta = true
+            const koordinatoj = this.akiriSkizanKoordinaton( e )
+            this.lastaX = koordinatoj[ 0 ]
+            this.lastaY = koordinatoj[ 1 ]
+            this.skizaKanvaso.setPointerCapture( e.pointerId )
+        } )
+
+        this.skizaKanvaso.addEventListener( "pointermove", ( e ) => {
+            if ( !this.desegnanta ) return
+            const koordinatoj = this.akiriSkizanKoordinaton( e )
+            this.skizaKunteksto.lineWidth = 0o4
+            this.skizaKunteksto.lineCap = "round"
+            this.skizaKunteksto.lineJoin = "round"
+            this.skizaKunteksto.strokeStyle = "#FFFFFF"
+            this.skizaKunteksto.beginPath()
+            this.skizaKunteksto.moveTo( this.lastaX, this.lastaY )
+            this.skizaKunteksto.lineTo( koordinatoj[ 0 ], koordinatoj[ 1 ] )
+            this.skizaKunteksto.stroke()
+            this.lastaX = koordinatoj[ 0 ]
+            this.lastaY = koordinatoj[ 1 ]
+        } )
+
+        const ĉesiDesegnadon = () => {
+            this.desegnanta = false
+        }
+
+        this.skizaKanvaso.addEventListener( "pointerup", ĉesiDesegnadon )
+        this.skizaKanvaso.addEventListener( "pointerleave", ĉesiDesegnadon )
+
+        document.getElementById( "viŝi-butono" )!.addEventListener( "click", () => {
+            this.viŝiSkizon()
+        } )
+
+        document.getElementById( "alŝuti-butono" )!.addEventListener( "click", () => {
+            document.getElementById( "alŝuta-enigo" )!.click()
+        } )
+
+        document.getElementById( "alŝuta-enigo" )!.addEventListener( "change", ( e ) => {
+            const enigo = e.target as HTMLInputElement
+            const dosiero = enigo.files?.[ 0 ]
+            if ( !dosiero ) return
+            this.legiAlŝutitanBildon( dosiero )
+            enigo.value = ""
+        } )
+
+        document.getElementById( "taksi-butono" )!.addEventListener( "click", () => {
+            this.taksiSemonElSkizo()
+        } )
+    }
+
+    akiriSkizanKoordinaton( evento: PointerEvent ): [ number, number ] {
+        const rektangulo = this.skizaKanvaso.getBoundingClientRect()
+        const x = ( evento.clientX - rektangulo.left ) * ( this.skizaKanvaso.width / rektangulo.width )
+        const y = ( evento.clientY - rektangulo.top ) * ( this.skizaKanvaso.height / rektangulo.height )
+        return [ x, y ]
+    }
+
+    viŝiSkizon() {
+        this.skizaKunteksto.fillStyle = "#001828"
+        this.skizaKunteksto.fillRect( 0, 0, this.skizaKanvaso.width, this.skizaKanvaso.height )
+        this.taksaRezulto.textContent = ""
+    }
+
+    legiAlŝutitanBildon( dosiero: File ) {
+        const legilo = new FileReader()
+        legilo.onload = () => {
+            const bildo = new Image()
+            bildo.onload = () => {
+                this.viŝiSkizon()
+                const proporcio = Math.min( this.skizaKanvaso.width / bildo.width, this.skizaKanvaso.height / bildo.height )
+                const w = bildo.width * proporcio
+                const h = bildo.height * proporcio
+                const x = ( this.skizaKanvaso.width - w ) / 0o2
+                const y = ( this.skizaKanvaso.height - h ) / 0o2
+                this.skizaKunteksto.drawImage( bildo, x, y, w, h )
+            }
+            bildo.src = legilo.result as string
+        }
+        legilo.readAsDataURL( dosiero )
+    }
+
+    // ⟪ Taksu la semon, kies kontinentoj plej similas la desegnon. ⟫ 🎯
+    taksiSemonElSkizo() {
+        if ( this.taksoOkazanta ) return
+        // ⟪ Malsuprenmendu la skizon en malaltan kradon. ⟫ 🗺️
+        const kradoLarĝo = 0o30
+        const kradoAlto = 0o14
+        const ĉelkvanto = kradoLarĝo * kradoAlto
+
+        const krado = document.createElement( "canvas" )
+        krado.width = kradoLarĝo
+        krado.height = kradoAlto
+        const kradoKunteksto = krado.getContext( "2d" )!
+        kradoKunteksto.drawImage( this.skizaKanvaso, 0, 0, kradoLarĝo, kradoAlto )
+        const datumoj = kradoKunteksto.getImageData( 0, 0, kradoLarĝo, kradoAlto ).data
+
+        const celajTeroj: boolean[] = []
+        let helaKvanto = 0
+        for ( let i = 0; i < ĉelkvanto; i++ ) {
+            const lumo = ( datumoj[ i * 0o4 ] + datumoj[ i * 0o4 + 1 ] + datumoj[ i * 0o4 + 2 ] ) / 0o3
+            const tero = lumo >= 0o200
+            celajTeroj.push( tero )
+            if ( tero ) helaKvanto++
+        }
+
+        if ( helaKvanto === 0 ) {
+            document.getElementById( "taksa-ciihii" )!.classList.remove( "kobe" )
+            this.taksaRezulto.textContent = "ꞁȷ̀ɔ ſ͕ɭɹƽ"
+            return
+        }
+
+        const celTeraProporcio = helaKvanto / ĉelkvanto
+        const akvaĈelkvanto = ĉelkvanto - helaKvanto
+        const akvonivelo = this.parametroj.akvonivelo
+
+        // ⟪ Poentaro de semo laŭ la krada formo. ⟫ 📊
+        const poentaro = ( semo: number ): number => {
+            this.semo = semo
+            this.simplekso = createNoise3D( this.kreiHazardan( semo ) )
+            let kongruajTeroj = 0
+            let kongruajAkvoj = 0
+            let generitajTeroj = 0
+            for ( let y = 0; y < kradoAlto; y++ ) {
+                for ( let x = 0; x < kradoLarĝo; x++ ) {
+                    const latitudo = 0o112 - ( y / kradoAlto ) * 0o260
+                    const longitudo = ( x / kradoLarĝo ) * 0o540 - 0o260
+                    const tero = this.akiriAltecon( latitudo, longitudo ) > akvonivelo
+                    if ( tero ) generitajTeroj++
+                    const celTero = celajTeroj[ y * kradoLarĝo + x ]
+                    if ( tero && celTero ) kongruajTeroj++
+                    else if ( !tero && !celTero ) kongruajAkvoj++
+                }
+            }
+            // ⟪ Tera kongruo pezas pli ol akva. ⟫ ⚖️
+            const pezitaKongruo = ( kongruajTeroj * 0o20 + kongruajAkvoj ) / ( helaKvanto * 0o20 + akvaĈelkvanto )
+            const proporciaKongruo = 1 - Math.abs( celTeraProporcio - generitajTeroj / ĉelkvanto )
+            return pezitaKongruo * 0o5 / 0o10 + proporciaKongruo * 0o3 / 0o10
+        }
+
+        // ⟪ Montru okupatan staton, poste serĉu post unu framo. ⟫ ⏳
+        this.taksoOkazanta = true
+        document.getElementById( "taksa-ciihii" )!.classList.remove( "kobe" )
+        this.taksaRezulto.textContent = "…"
+        window.setTimeout( () => {
+            try {
+            // ⟪ Hazardaj kandidatoj. ⟫ 🎲
+            const hazarda = this.kreiHazardan( Math.floor( Math.random() * 0o200000000 ) )
+            const kandidatoj: number[] = []
+            for ( let i = 0; i < 0o200; i++ ) kandidatoj.push( Math.floor( hazarda() * 0o4000000 ) )
+
+            // ⟪ Serĉu tra kontinentkvantoj kaj semoj. ⟫ 🏝️
+            let plejBona: { semo: number, poentaro: number, kontinentKvanto: number } = { semo: 0, poentaro: 0, kontinentKvanto: this.parametroj.kontinentKvanto }
+            for ( let kontinentKvanto = 1; kontinentKvanto <= 0o10; kontinentKvanto++ ) {
+                this.parametroj.kontinentKvanto = kontinentKvanto
+                let plejBonaj: { semo: number, poentaro: number }[] = []
+                for ( const kandidato of kandidatoj ) {
+                    const poento = poentaro( kandidato )
+                    plejBonaj.push( { semo: kandidato, poentaro: poento } )
+                    plejBonaj.sort( ( a, b ) => b.poentaro - a.poentaro )
+                    if ( plejBonaj.length > 0o4 ) plejBonaj.pop()
+                }
+
+                // ⟪ Plibonigu la plej bonajn kandidatojn. ⟫ ⛰️
+                let plejBonaK = plejBonaj[ 0 ]
+                for ( const kandidato of plejBonaj ) {
+                    const plibonigita = this.plibonigiSemon( kandidato.semo, poentaro )
+                    if ( plibonigita.poentaro > plejBonaK.poentaro ) plejBonaK = plibonigita
+                }
+
+                if ( plejBonaK.poentaro > plejBona.poentaro ) {
+                    plejBona = { semo: plejBonaK.semo, poentaro: plejBonaK.poentaro, kontinentKvanto: kontinentKvanto }
+                }
+            }
+
+            // ⟪ Apliku la trovitan kontinentkvanton kaj semon. ⟫ 🎲
+            this.parametroj.kontinentKvanto = plejBona.kontinentKvanto
+            const kontinentojEnigo = document.getElementById( "kontinentoj" ) as HTMLInputElement
+            kontinentojEnigo.value = plejBona.kontinentKvanto.toString()
+            document.getElementById( "kontinentoj-valoro" )!.textContent = plejBona.kontinentKvanto.toString()
+
+            const semo = Math.floor( plejBona.semo )
+            this.semaĈeno = semo.toString()
+            this.semo = semo
+            const semaEnigo = document.getElementById( "semo" ) as HTMLInputElement
+            semaEnigo.value = this.semaĈeno
+            document.getElementById( "semo-valoro" )!.textContent = this.semo.toString()
+            this.generi()
+
+            // ⟪ Montru la kongruan poentaron. ⟫ 📊
+            const vab6 = ( window as any ).vab6caja.bind( window )
+            const skakefK2fe = ( window as any ).skakefK2fe.bind( window )
+            const poento64 = Math.floor( plejBona.poentaro * 0o100 )
+            this.taksaRezulto.textContent = skakefK2fe( vab6( poento64 ) + " / " + vab6( 0o100 ) )
+            } finally {
+                this.taksoOkazanta = false
+            }
+        }, 0 )
+    }
+
+    // ⟪ Monteto-grimpado por trovi la plej proksiman semon. ⟫ ⛰️
+    plibonigiSemon( komencaSemo: number, poentaro: ( semo: number ) => number ): { semo: number, poentaro: number } {
+        let semo = komencaSemo
+        let plejAlta = poentaro( semo )
+        let ŝanĝiĝis = true
+        while ( ŝanĝiĝis ) {
+            ŝanĝiĝis = false
+            for ( const ŝtupo of [ 1, 0o10, 0o100, 0o1000, 0o10000, 0o100000 ] ) {
+                for ( const direkto of [ -1, 1 ] ) {
+                    const novaSemo = semo + direkto * ŝtupo
+                    if ( novaSemo < 0 ) continue
+                    const novaPoentaro = poentaro( novaSemo )
+                    if ( novaPoentaro > plejAlta ) {
+                        semo = novaSemo
+                        plejAlta = novaPoentaro
+                        ŝanĝiĝis = true
+                        break
+                    }
+                }
+                if ( ŝanĝiĝis ) break
+            }
+        }
+        return { semo: semo, poentaro: plejAlta }
     }
 
     // ⟪ Bruaj funkcioj por terena generado ⟫ 🏔️
@@ -427,7 +693,7 @@ class PlanedaGeneratoro {
     }
 
     generi() {
-        this.simplekso = createNoise3D()
+        this.simplekso = createNoise3D( this.kreiHazardan( this.semo ) )
         this.generiTeksturon()
         this.bildigi2D()
         this.ĝisdatigi3DTerglobon()
