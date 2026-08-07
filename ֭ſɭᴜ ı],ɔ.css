@@ -327,8 +327,8 @@ ciihii {
 	background: linear-gradient(var(--តានេកខេលេ), var(--តានេកខេលេ)), linear-gradient(var(--ខេលេសៃច្ហិ), var(--ខេលេសៃច្ហិ));
 	backdrop-filter: var(--ច្ហិនី);
 }
-button.n2tase:hover::after, button.n2tase[aria-pressed="true"]::after {
-	background-color: var(--តានេក);
+button.n2tase:hover, button.n2tase[aria-pressed="true"] {
+	background: linear-gradient(var(--តានេក), var(--តានេក)), linear-gradient(var(--តានេកខេលេ), var(--តានេកខេលេ)), linear-gradient(var(--ខេលេសៃច្ហិ), var(--ខេលេសៃច្ហិ));
 }
 .sozanu {
 	scale: 0;
