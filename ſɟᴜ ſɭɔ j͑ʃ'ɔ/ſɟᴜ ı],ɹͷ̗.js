@@ -104,8 +104,8 @@ const NLLAKUL_J6STIBIX_STAFL2 = 366;
 const J6STIBIX_PAL2 = 0o14;
 const PAL2STIF = 0o15;
 const J6PAL2_STAFL2 = 0o34;
+const NLLAKU_J6PAL2_STAFL2 = 0o35;
 const KSOZU_HASTAFL2 = 0o35;
-const NLLAKU_HASTAFL2 = 0o36;
 
 const SAHE_P6ZUKANI = 0o100;
 const J6STAFL2_BAR6Q = 24 * 60 * 60 * 1000;
@@ -137,10 +137,12 @@ function quqalJ6stibixStafl2(stibix) {
 }
 
 function quqalJ6pal2stifStafl2(stibix, pal2stif) {
-    if ( pal2stif >= 1 && pal2stif <= J6STIBIX_PAL2 ) {
+    if ( pal2stif >= 1 && pal2stif < J6STIBIX_PAL2 ) {
         return J6PAL2_STAFL2;
+    } else if ( pal2stif === J6STIBIX_PAL2 ) {
+        return nlakStafl2(stibix) ? NLLAKU_J6PAL2_STAFL2 : J6PAL2_STAFL2;
     } else if ( pal2stif === PAL2STIF ) {
-        return nlakStafl2(stibix) ? NLLAKU_HASTAFL2 : KSOZU_HASTAFL2;
+        return KSOZU_HASTAFL2;
     }
     return 0;
 }
@@ -170,8 +172,8 @@ function cax2lStafl2(cax2luStafl2 = new Date()) {
         stibix = 0;
         let fusuHastafl2 = -ksozuHastafl2 - 1;
 
-        while ( fusuHastafl2 >= C0ZAL_J6STIBIX_STAFL2 ) {
-            fusuHastafl2 -= C0ZAL_J6STIBIX_STAFL2;
+        while ( fusuHastafl2 >= quqalJ6stibixStafl2(stibix) ) {
+            fusuHastafl2 -= quqalJ6stibixStafl2(stibix);
             stibix--;
         }
 

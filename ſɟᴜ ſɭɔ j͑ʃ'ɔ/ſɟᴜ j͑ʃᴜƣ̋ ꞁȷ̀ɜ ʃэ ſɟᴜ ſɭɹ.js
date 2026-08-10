@@ -3,7 +3,7 @@
 async function b6vegejexSakeveni() {
 	if ( "serviceWorker" in navigator ) {
 		try {
-			const b6vegejexRuva = new URL("/ſɟᴜ ſɭɔ j͑ʃ'ɔ/j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js", window.location.origin);
+			const b6vegejexRuva = new URL("/ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ/ſɟᴜ ʃᴜ j͐ʃɹ ı],ᴜ/j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js", window.location.origin);
 			const b6vegejex = await navigator
 			.serviceWorker
 			.register(b6vegejexRuva);

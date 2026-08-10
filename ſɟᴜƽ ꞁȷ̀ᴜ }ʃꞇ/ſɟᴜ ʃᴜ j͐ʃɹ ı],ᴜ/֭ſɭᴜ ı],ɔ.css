@@ -6,8 +6,8 @@
     overflow: hidden;
     border: var(--សាកព៏);
 }
-#map,
-#gridCanvas {
+#mapo,
+#kradaKanvaso {
     inline-size: 100%;
     block-size: 100%;
     position: absolute;
@@ -15,10 +15,10 @@
     left: 0;
     border-radius: inherit;
 }
-#map .leaflet-tile {
+#mapo .leaflet-tile {
     border-radius: 0;
 }
-#gridCanvas {
+#kradaKanvaso {
     z-index: 512;
     pointer-events: none;
 }

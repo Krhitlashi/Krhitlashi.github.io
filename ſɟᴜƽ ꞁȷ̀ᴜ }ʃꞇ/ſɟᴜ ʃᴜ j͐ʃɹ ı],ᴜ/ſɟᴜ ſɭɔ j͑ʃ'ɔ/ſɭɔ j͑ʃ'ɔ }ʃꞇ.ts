@@ -301,7 +301,7 @@ function inicialigi(): void {
         nunaLon = urlKoordinatoj.lon;
     }
 
-    mapo = L.map("map", {
+    mapo = L.map("mapo", {
         center: [nunaLat, nunaLon],
         zoom: ZOMO_KOMENCA,
         zoomControl: false
@@ -1083,21 +1083,31 @@ async function ĝisdatigiKaŝinformojn(): Promise<void> {
 
 function sendiMesaĝonAlSW( mesaĝo: SWMesaĝo ): Promise<any> {
     return new Promise(( solvi, rifuzi ) => {
-        if ( !navigator.serviceWorker.controller ) {
-            rifuzi(new Error("Neniu servilo-laboranto reganto"));
+        if ( !( "serviceWorker" in navigator ) ) {
+            rifuzi( new Error( "Neniu servilo-laboranto" ) );
             return;
         }
 
         const mesaĝaKanalo = new MessageChannel();
         mesaĝaKanalo.port1.onmessage = ( evento ) => {
             if ( evento.data.eraro ) {
-                rifuzi(new Error(evento.data.eraro));
+                rifuzi( new Error( evento.data.eraro ) );
             } else {
                 solvi( evento.data );
             }
         };
 
-        navigator.serviceWorker.controller.postMessage(mesaĝo, [ mesaĝaKanalo.port2 ]);
+        const sendi = ( aktiva: ServiceWorker ) => {
+            aktiva.postMessage( mesaĝo, [ mesaĝaKanalo.port2 ] );
+        };
+
+        if ( navigator.serviceWorker.controller ) {
+            sendi( navigator.serviceWorker.controller );
+        } else {
+            navigator.serviceWorker.ready
+                .then( registrado => sendi( registrado.active! ) )
+                .catch( rifuzi );
+        }
     } );
 }
 
