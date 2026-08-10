@@ -43,6 +43,13 @@ declare global {
   const SACA: number;
   const K_BOLTZMANN: number;
   const HI_L6RAK2K2H2: number;
+  const HE_L6HEINAK: number;
+  const HE_L6VEM2: number;
+  const QE_L6VEM2: number;
+  const HAQE_L6VEM2: number;
+  const SHE_L6VEM2: number;
+  const SQE_L6VEM2: number;
+  const SHAQE_L6VEM2: number;
 
   // ⟨ j͑ʃƽᴜ ſɭɔʞ.js ⟩ - Lokalizo
   function k2regawe(gawe: string): void;
