@@ -444,7 +444,7 @@ summary:active {
 	border-radius: var(--អិត្ភេ);
 	display: flex;
 	flex-direction: row;
-	overflow: scroll;
+	flex-wrap: wrap;
 }
 .c2w2qkuba img,
 .c2w2qkuba iframe {
