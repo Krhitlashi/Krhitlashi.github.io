@@ -494,21 +494,20 @@ function renduSubdividojn(): void {
 
 // ⟨ Hazardaj lokoj por aŭtomata ŝarĝo ⟩
 const HAZARDAJ_LOKOJ: { nomo: string; lat: number; lon: number }[] = [
-    { nomo: "New York, United States", lat: 40.7128, lon: -74.006 },
-    { nomo: "London, United Kingdom", lat: 51.5074, lon: -0.1278 },
-    { nomo: "Tokyo, Japan", lat: 35.6762, lon: 139.6503 },
-    { nomo: "Sydney, Australia", lat: -33.8688, lon: 151.2093 },
-    { nomo: "Paris, France", lat: 48.8566, lon: 2.3522 },
-    { nomo: "Cairo, Egypt", lat: 30.0444, lon: 31.2357 },
-    { nomo: "Mexico City, Mexico", lat: 19.4326, lon: -99.1332 },
-    { nomo: "São Paulo, Brazil", lat: -23.5505, lon: -46.6333 },
-    { nomo: "Mumbai, India", lat: 19.076, lon: 72.8777 },
-    { nomo: "Beijing, China", lat: 39.9042, lon: 116.4074 },
-    { nomo: "Cape Town, South Africa", lat: -33.9249, lon: 18.4241 },
-    { nomo: "Reykjavík, Iceland", lat: 64.1466, lon: -21.9426 },
-    { nomo: "Honolulu, United States", lat: 21.3069, lon: -157.8583 },
-    { nomo: "Singapore", lat: 1.3521, lon: 103.8198 },
-    { nomo: "Buenos Aires, Argentina", lat: -34.6037, lon: -58.3816 },
+    { nomo: "McMurdo Station, Antarctica", lat: -77.8419, lon: 166.6863 },
+    { nomo: "Scott Base, Antarctica", lat: -77.8491, lon: 166.7647 },
+    { nomo: "Vostok Station, Antarctica", lat: -78.4647, lon: 106.8378 },
+    { nomo: "Concordia Station, Antarctica", lat: -75.1, lon: 123.33 },
+    { nomo: "Halley Research Station, Antarctica", lat: -75.5736, lon: -25.5083 },
+    { nomo: "Casey Station, Antarctica", lat: -66.2818, lon: 110.5276 },
+    { nomo: "Dumont d'Urville Station, Antarctica", lat: -66.6633, lon: 140.0019 },
+    { nomo: "Neumayer-Station III, Antarctica", lat: -70.65, lon: -8.25 },
+    { nomo: "Troll Station, Antarctica", lat: -72.0117, lon: 2.535 },
+    { nomo: "Rothera Research Station, Antarctica", lat: -67.5689, lon: -68.13 },
+    { nomo: "Palmer Station, Antarctica", lat: -64.7742, lon: -64.0533 },
+    { nomo: "Mawson Station, Antarctica", lat: -67.6027, lon: 62.8694 },
+    { nomo: "Marambio Base, Antarctica", lat: -64.2417, lon: -56.71 },
+    { nomo: "Esperanza Base, Antarctica", lat: -63.3972, lon: -56.9975 },
 ];
 
 // ⟨ Ŝargi lokon per koordinatoj ( temperaturo + suna tago ) ⟩
@@ -529,7 +528,7 @@ function ŝargiLokon( lat: number, lon: number, statoteksto: string, konataNomo?
 function uziHazardanLokon(): void {
     const loko = HAZARDAJ_LOKOJ[ Math.floor( Math.random() * HAZARDAJ_LOKOJ.length ) ];
     lokoStato.textContent = skakefaniK2fe( "ſɭᶗ‹ɔ ʌ ꞁȷ̀ɹ ʃᴜ v ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ" );
-    ŝargiLokon( loko.lat, loko.lon, "Uzante hazardan lokon", loko.nomo );
+    ŝargiLokon( loko.lat, loko.lon, "ſɭᶗ‹ɔ j͐ʃ ʌ ꞁȷ̀ɜ j͑ʃᴜ ſɭᴜ ɭl̀ɜ ʌ j͑ʃ'ɔƣ̋ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ⟅", loko.nomo );
 }
 
 // ⟨ Uzi la aparatan lokon ( defaŭlte hazarda loko ) ⟩
