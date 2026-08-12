@@ -35,11 +35,18 @@ const temperaturoKelvinoEnigo = document.getElementById( "temperaturo-kelvino" )
 const temperaturoCelsiusEnigo = document.getElementById( "temperaturo-celsius" ) as HTMLInputElement;
 let temperaturoKelvino = 273.15;
 
-// ⟨ Loka serĉo ( kiel en la krada mapo ) ⟩
-const lokoEnigo = document.getElementById( "temperaturo-loko-enigo" ) as HTMLInputElement;
-const lokoButono = document.getElementById( "temperaturo-loko-butono" ) as HTMLButtonElement;
-const lokoRezultoj = document.getElementById( "temperaturo-loko-rezultoj" ) as HTMLElement;
-const lokoStato = document.getElementById( "temperaturo-loko-stato" ) as HTMLElement;
+// ⟨ Loka serĉo ( komuna por temperaturo kaj suna tago ) ⟩
+const lokoEnigo = document.getElementById( "loko-enigo" ) as HTMLInputElement;
+const lokoButono = document.getElementById( "loko-butono" ) as HTMLButtonElement;
+const lokoMiaButono = document.getElementById( "loko-mia" ) as HTMLButtonElement;
+const lokoRezultoj = document.getElementById( "loko-rezultoj" ) as HTMLElement;
+const lokoStato = document.getElementById( "loko-stato" ) as HTMLElement;
+
+// ⟨ Temperaturo de la loko 🌡️ ⟩
+const lokoHia = document.getElementById( "loko-hia" ) as HTMLElement;
+const lokoKelvino = document.getElementById( "loko-kelvino" ) as HTMLElement;
+const lokoCelsius = document.getElementById( "loko-celsius" ) as HTMLElement;
+let lokoTemperaturoPreta = false;
 
 // ⟪ Nombro-Helpiloj 🔢 ⟫
 
@@ -211,12 +218,25 @@ function renduTemperaturon(): void {
     skribiNombron( temperaturoCelsiusEnigo, temperaturoKelvino - 273.15 );
 }
 
-// ⟨ Serĉi realan lokon per Nominatim ( OpenStreetMap ) ⟩
+// ⟨ Montri la nunan temperaturon de la loko ⟩
+function renduLokoTemperaturon(): void {
+    if ( !lokoTemperaturoPreta ) {
+        lokoHia.textContent = "—";
+        lokoKelvino.textContent = "—";
+        lokoCelsius.textContent = "—";
+        return;
+    }
+    lokoHia.textContent = formatiNombron( vahi_ak2k2h2( temperaturoKelvino ) );
+    lokoKelvino.textContent = formatiNombron( temperaturoKelvino );
+    lokoCelsius.textContent = formatiNombron( temperaturoKelvino - 273.15 );
+}
+
+// ⟨ Serĉi lokon per Nominatim ( OpenStreetMap ) - komuna ⟩
 async function serĉiLokon(): Promise<void> {
     const demando = lokoEnigo.value.trim();
     if ( !demando ) return;
 
-    lokoRezultoj.innerHTML = "<p>ſɭᴎɔ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ</p>";
+    lokoRezultoj.innerHTML = "<p>" + skakefaniK2fe( "ſɭᶗ‹ɔ ʌ ꞁȷ̀ɹ ʃᴜ v ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ" ) + "</p>";
     lokoRezultoj.classList.remove( "kobe" );
 
     try {
@@ -227,7 +247,7 @@ async function serĉiLokon(): Promise<void> {
 
         const rezultoj: { lat: string; lon: string; display_name: string }[] = await respondo.json();
         if ( rezultoj.length === 0 ) {
-            lokoRezultoj.innerHTML = "<p>֭ſɭɹ ſɟɔ j͐ʃɹʞ ⟅</p>";
+            lokoRezultoj.innerHTML = "<p>" + skakefaniK2fe( "ſ͕ȷɜ ſ͕ɭwȝ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ" ) + "</p>";
             return;
         }
 
@@ -242,37 +262,411 @@ async function serĉiLokon(): Promise<void> {
                 const nomo = decodeURIComponent( butono.getAttribute( "data-nomo" ) || "" );
                 lokoRezultoj.classList.add( "kobe" );
                 lokoRezultoj.innerHTML = "";
-                preniTemperaturon( lat, lon, nomo );
+                lokoStato.textContent = skakefaniK2fe( "ſɭᶗ‹ɔ ʌ ꞁȷ̀ɹ ʃᴜ v ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ" );
+                preniTemperaturon( lat, lon );
+                aktualigiSunalokon( lat, lon ).then( () => {
+                    lokoStato.textContent = skakefaniK2fe( "ſɭᶗ‹ɔ ʌ ſ͕ɭwȝ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ" ) + " ( " + nomo + " )";
+                } ).catch( eraro => {
+                    console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", eraro );
+                    lokoStato.textContent = skakefaniK2fe( "ſ͕ȷɜ j͑ʃ'ɔ ɭʃɔ ŋᷠɹ ʌ j͑ʃɜ ſᶘɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ" );
+                } );
             } );
         } );
     } catch ( eraro ) {
         console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", eraro );
-        lokoRezultoj.innerHTML = "<p>ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⟅</p>";
+        lokoRezultoj.innerHTML = "<p>" + skakefaniK2fe( "ſ͕ȷɜ ſ͕ɭwȝ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ" ) + "</p>";
     }
 }
 
-// ⟨ Preni nunan temperaturon de elektita loko ( Open-Meteo ) ⟩
-async function preniTemperaturon( lat: number, lon: number, nomo: string ): Promise<void> {
-    lokoStato.textContent = "ſɭᴎɔ " + nomo + " ⟅";
+// ⟨ Fono laŭ la vetera kodo ( WMO ) - duontravidebla al travidebla ⟩
+function veteroFono( kodo: number ): string {
+    const gradiento = ( hela: string, malhela: string ) =>
+        "linear-gradient( 45deg, " + koloroAlRgba( hela, 0o100 / 0xff ) + ", " + koloroAlRgba( malhela, 0 ) + " )";
+    if ( kodo === 0 ) return gradiento( "#88c8f8", "#58a8f8" );
+    if ( kodo === 1 || kodo === 2 ) return gradiento( "#a8c8e8", "#88b8e8" );
+    if ( kodo === 3 ) return gradiento( "#c8c8c8", "#a8a8a8" );
+    if ( kodo === 45 || kodo === 48 ) return gradiento( "#e8e8e8", "#c8c8c8" );
+    if ( kodo >= 51 && kodo <= 57 ) return gradiento( "#a8c8e8", "#88a8c8" );
+    if ( kodo >= 61 && kodo <= 67 ) return gradiento( "#7888c8", "#5868a8" );
+    if ( kodo >= 71 && kodo <= 77 ) return gradiento( "#f8f8f8", "#e8f8f8" );
+    if ( kodo >= 80 && kodo <= 82 ) return gradiento( "#6878c8", "#4868a8" );
+    if ( kodo === 85 || kodo === 86 ) return gradiento( "#f8f8f8", "#d8e8f8" );
+    if ( kodo >= 95 ) return gradiento( "#4818a8", "#2828a8" );
+    return gradiento( "#a8c8f8", "#58a8f8" );
+}
 
+// ⟨ Preni nunan temperaturon de elektita loko ( Open-Meteo ) ⟩
+async function preniTemperaturon( lat: number, lon: number ): Promise<void> {
     try {
         const respondo = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m`
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`
         );
         if ( !respondo.ok ) throw new Error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )" );
 
-        const datumoj: { current?: { temperature_2m?: number } } = await respondo.json();
+        const datumoj: { current?: { temperature_2m?: number; weather_code?: number } } = await respondo.json();
         const celsiuso = datumoj.current?.temperature_2m;
         if ( typeof celsiuso !== "number" ) throw new Error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )" );
 
         temperaturoKelvino = celsiuso + 273.15;
+        lokoTemperaturoPreta = true;
+
+        const veteroTablo = document.getElementById( "temperaturo-tabo" );
+        if ( veteroTablo && typeof datumoj.current?.weather_code === "number" ) {
+            veteroTablo.style.setProperty( "--vetero", veteroFono( datumoj.current.weather_code ) );
+        }
+
         renduTemperaturon();
-        lokoStato.textContent = skakefK2fe( nomo ) + " ⟅";
+        renduLokoTemperaturon();
     } catch ( eraro ) {
         console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", eraro );
-        lokoStato.textContent = "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )";
+        lokoTemperaturoPreta = false;
+        renduLokoTemperaturon();
     }
 }
+
+// ⟪ Suna Tago ☀️ ⟩
+
+// ⟨ Traduki tekston laŭ la nuna lingvo ( novaj ŝlosiloj havas anglajn lokokupilojn ) ⟩
+function skakefaniK2fe( okef: string ): string {
+    const gawe = document.documentElement.lang || "aih";
+    return skakefK2fe( skakefani[ gawe ]?.[ okef ] ?? skakefani[ "aih" ]?.[ okef ] ?? okef );
+}
+
+let sunaTago = {
+    preta: false,
+    sunlevigo: null as Date | null,
+    sunsubiro: null as Date | null,
+    sekvaSunlevigo: null as Date | null,
+    tagoLongo: 0,
+};
+
+// ⟨ Formati horon kiel hh.mm laŭ loka tempo ( konvertita al la nuna nombrosistemo ) ⟩
+function formatiHoron( dato: Date ): string {
+    return formatiNombron( dato.getHours() ) + "." + formatiNombron( dato.getMinutes() );
+}
+
+// ⟨ Formati daŭron kiel hh.mm.ss ( konvertita al la nuna nombrosistemo ) ⟩
+function formatiDaŭron( sekundoj: number ): string {
+    const h = formatiNombron( Math.floor( sekundoj / 3600 ) );
+    const m = formatiNombron( Math.floor( ( sekundoj % 3600 ) / 60 ) );
+    const s = formatiNombron( Math.floor( sekundoj % 60 ) );
+    return h + "." + m + "." + s;
+}
+
+// ⟨ Formati daton kiel aaaa-mm-tt laŭ loka tempo ⟩
+function formatiDaton( dato: Date ): string {
+    const jaro = dato.getFullYear();
+    const monato = String( dato.getMonth() + 1 ).padStart( 2, "0" );
+    const tago = String( dato.getDate() ).padStart( 2, "0" );
+    return jaro + "-" + monato + "-" + tago;
+}
+
+// ⟨ Preni sunleviĝon kaj sunsubiron por dato ( sunrise-sunset API ) ⟩
+async function preniSunlevigonSunsubiron( lat: number, lng: number, dato: Date ): Promise<{ sunlevigo: Date; sunsubiro: Date }> {
+    const datoKateno = formatiDaton( dato );
+    const url = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&date=${datoKateno}&formatted=0&tzid=UTC`;
+    const respondo = await fetch( url );
+    if ( !respondo.ok ) throw new Error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )" );
+    const datumoj = await respondo.json();
+    if ( datumoj.status !== "OK" ) throw new Error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )" );
+    return {
+        sunlevigo: new Date( datumoj.results.sunrise ),
+        sunsubiro: new Date( datumoj.results.sunset ),
+    };
+}
+
+// ⟨ Preni loknomon de koordinatoj ( Nominatim reverse ) ⟩
+async function preniLoknomon( lat: number, lng: number ): Promise<string> {
+    try {
+        const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&zoom=10&accept-language=en`;
+        const respondo = await fetch( url, { headers: { "User-Agent": "Freebuff/1.0" } } );
+        if ( !respondo.ok ) return "";
+        const datumoj = await respondo.json();
+        const adreso = datumoj.address || {};
+        const urbo = adreso.city || adreso.town || adreso.village || adreso.hamlet || "";
+        const lando = adreso.country || "";
+        if ( urbo && lando ) return urbo + ", " + lando;
+        if ( urbo ) return urbo;
+        if ( lando ) return lando;
+        return "";
+    } catch ( _ ) {
+        return "";
+    }
+}
+
+// ⟨ Ĝisdatigi la sunan tagon por loko ⟩
+async function aktualigiSunalokon( lat: number, lng: number ): Promise<void> {
+    const nun = new Date();
+    const hodiaŭ = new Date( nun.getFullYear(), nun.getMonth(), nun.getDate() );
+    const morgaŭ = new Date( hodiaŭ );
+    morgaŭ.setDate( morgaŭ.getDate() + 1 );
+
+    const [ hodiaŭaj, morgaŭaj ] = await Promise.all( [
+        preniSunlevigonSunsubiron( lat, lng, hodiaŭ ),
+        preniSunlevigonSunsubiron( lat, lng, morgaŭ ),
+    ] );
+
+    sunaTago.sunlevigo = hodiaŭaj.sunlevigo;
+    sunaTago.sunsubiro = hodiaŭaj.sunsubiro;
+    sunaTago.sekvaSunlevigo = morgaŭaj.sunlevigo;
+    sunaTago.tagoLongo = ( morgaŭaj.sunlevigo.getTime() - hodiaŭaj.sunlevigo.getTime() ) / 1000;
+
+    if ( !isFinite( sunaTago.tagoLongo ) || sunaTago.tagoLongo <= 0 ) {
+        sunaTago.preta = false;
+        throw new Error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )" );
+    }
+
+    sunaTago.preta = true;
+    renduSubdividojn();
+    renduSunanTagon();
+    ĝisdatigiĈielon();
+}
+
+// ⟨ Vivanta ĝisdatigo de horloĝoj ⟩
+function renduSunanTagon(): void {
+    if ( !sunaTago.preta ) return;
+    const nun = new Date();
+    const sunlevigo = sunaTago.sunlevigo as Date;
+    const sunsubiro = sunaTago.sunsubiro as Date;
+    const sekvaSunlevigo = sunaTago.sekvaSunlevigo as Date;
+    if ( isNaN( sunlevigo.getTime() ) || isNaN( sunsubiro.getTime() ) || isNaN( sekvaSunlevigo.getTime() ) ) return;
+
+    document.getElementById( "suno-sunlevigo" )!.textContent = formatiHoron( sunlevigo );
+    document.getElementById( "suno-sunsubiro" )!.textContent = formatiHoron( sunsubiro );
+    document.getElementById( "suno-tago-longeco" )!.textContent = formatiDaŭron( sunaTago.tagoLongo );
+
+    // ⟨ Pasita tempo ekde la plej lasta sunleviĝo ( mod la suna tago ) ⟩
+    let pasis = ( nun.getTime() - sunlevigo.getTime() ) / 1000;
+    if ( pasis < 0 ) {
+        pasis = ( nun.getTime() - ( sunlevigo.getTime() - sunaTago.tagoLongo * 1000 ) ) / 1000;
+    }
+    pasis = pasis % sunaTago.tagoLongo;
+    if ( pasis < 0 ) pasis += sunaTago.tagoLongo;
+
+    // ⟨ Bazo-64 horloĝo ( 64 3-niveloj ) ⟩
+    const nivelo1 = sunaTago.tagoLongo / 64;
+    const nivelo2 = sunaTago.tagoLongo / 4096;
+    const nivelo3 = sunaTago.tagoLongo / 262144;
+    const kvanto1 = Math.floor( pasis / nivelo1 );
+    const rest1 = pasis % nivelo1;
+    const kvanto2 = Math.floor( rest1 / nivelo2 );
+    const rest2 = rest1 % nivelo2;
+    const kvanto3 = Math.floor( rest2 / nivelo3 );
+
+    document.getElementById( "suno-bazo64-ı" )!.textContent = formatiNombron( kvanto1 );
+    document.getElementById( "suno-bazo64-ɿ" )!.textContent = formatiNombron( kvanto2 );
+    document.getElementById( "suno-bazo64-ц" )!.textContent = formatiNombron( kvanto3 );
+
+    // ⟨ Kutimaj unuoj horloĝo ( Haqe.Qe.He ) ⟩
+    const haqe = Math.floor( pasis / HAQE_L6VEM2 );
+    const qe = Math.floor( ( pasis % HAQE_L6VEM2 ) / QE_L6VEM2 );
+    const he = ( pasis % QE_L6VEM2 ) / HE_L6VEM2;
+    document.getElementById( "suno-kutima-haqe" )!.textContent = formatiNombron( haqe );
+    document.getElementById( "suno-kutima-qe" )!.textContent = formatiNombron( qe );
+    document.getElementById( "suno-kutima-he" )!.textContent = formatiNombron( he );
+
+    // ⟨ Progreso de la taga lumo ⟩
+    const lumoLongo = ( sunsubiro.getTime() - sunlevigo.getTime() ) / 1000;
+    const progreso = Math.min( 1, Math.max( 0, ( ( nun.getTime() - sunlevigo.getTime() ) / 1000 ) / lumoLongo ) );
+    document.getElementById( "suno-progreso" )!.textContent = formatiNombron( progreso * 100 );
+}
+
+// ⟨ Subdividoj de la suna tago ⟩
+function renduSubdividojn(): void {
+    if ( !sunaTago.preta ) return;
+    const tago = sunaTago.tagoLongo;
+    const valoroj = [ tago / 64, tago / 4096, tago / 262144 ];
+    const sufiksoj = [ "ı", "ɿ", "ц" ];
+    const unuoj = [
+        { kodo: "sek", funkcio: ( sek: number ) => sek },
+        { kodo: "min", funkcio: ( sek: number ) => sek / 60 },
+        { kodo: "hor", funkcio: ( sek: number ) => sek / 3600 },
+        { kodo: "he", funkcio: ( sek: number ) => sek / HE_L6VEM2 },
+        { kodo: "qe", funkcio: ( sek: number ) => sek / QE_L6VEM2 },
+        { kodo: "haqe", funkcio: ( sek: number ) => sek / HAQE_L6VEM2 },
+    ];
+    for ( let i = 0; i < valoroj.length; i++ ) {
+        for ( const unuo of unuoj ) {
+            document.getElementById( `suno-sub-${unuo.kodo}-${sufiksoj[ i ]}` )!.textContent = formatiNombron( unuo.funkcio( valoroj[ i ] ) );
+        }
+    }
+}
+
+// ⟨ Hazardaj lokoj por aŭtomata ŝarĝo ⟩
+const HAZARDAJ_LOKOJ: { nomo: string; lat: number; lon: number }[] = [
+    { nomo: "New York, United States", lat: 40.7128, lon: -74.006 },
+    { nomo: "London, United Kingdom", lat: 51.5074, lon: -0.1278 },
+    { nomo: "Tokyo, Japan", lat: 35.6762, lon: 139.6503 },
+    { nomo: "Sydney, Australia", lat: -33.8688, lon: 151.2093 },
+    { nomo: "Paris, France", lat: 48.8566, lon: 2.3522 },
+    { nomo: "Cairo, Egypt", lat: 30.0444, lon: 31.2357 },
+    { nomo: "Mexico City, Mexico", lat: 19.4326, lon: -99.1332 },
+    { nomo: "São Paulo, Brazil", lat: -23.5505, lon: -46.6333 },
+    { nomo: "Mumbai, India", lat: 19.076, lon: 72.8777 },
+    { nomo: "Beijing, China", lat: 39.9042, lon: 116.4074 },
+    { nomo: "Cape Town, South Africa", lat: -33.9249, lon: 18.4241 },
+    { nomo: "Reykjavík, Iceland", lat: 64.1466, lon: -21.9426 },
+    { nomo: "Honolulu, United States", lat: 21.3069, lon: -157.8583 },
+    { nomo: "Singapore", lat: 1.3521, lon: 103.8198 },
+    { nomo: "Buenos Aires, Argentina", lat: -34.6037, lon: -58.3816 },
+];
+
+// ⟨ Ŝargi lokon per koordinatoj ( temperaturo + suna tago ) ⟩
+function ŝargiLokon( lat: number, lon: number, statoteksto: string, konataNomo?: string ): void {
+    const nomoPromeso = konataNomo ? Promise.resolve( konataNomo ) : preniLoknomon( lat, lon );
+    nomoPromeso.then( nomo => {
+        preniTemperaturon( lat, lon );
+        aktualigiSunalokon( lat, lon ).then( () => {
+            lokoStato.textContent = skakefaniK2fe( statoteksto ) + ( nomo ? " ( " + nomo + " )" : "" );
+        } ).catch( eraro => {
+            console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", eraro );
+            lokoStato.textContent = skakefaniK2fe( "ſ͕ȷɜ j͑ʃ'ɔ ɭʃɔ ŋᷠɹ ʌ j͑ʃɜ ſᶘɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ" );
+        } );
+    } );
+}
+
+// ⟨ Elekti hazardan lokon ⟩
+function uziHazardanLokon(): void {
+    const loko = HAZARDAJ_LOKOJ[ Math.floor( Math.random() * HAZARDAJ_LOKOJ.length ) ];
+    lokoStato.textContent = skakefaniK2fe( "ſɭᶗ‹ɔ ʌ ꞁȷ̀ɹ ʃᴜ v ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ" );
+    ŝargiLokon( loko.lat, loko.lon, "Uzante hazardan lokon", loko.nomo );
+}
+
+// ⟨ Uzi la aparatan lokon ( defaŭlte hazarda loko ) ⟩
+function uziMianLokon(): void {
+    if ( !navigator.geolocation ) {
+        uziHazardanLokon();
+        return;
+    }
+
+    lokoStato.textContent = skakefaniK2fe( "ſɭᶗ‹ɔ ʌ ꞁȷ̀ɹ ʃᴜ v ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ" );
+    navigator.geolocation.getCurrentPosition(
+        pozicio => ŝargiLokon( pozicio.coords.latitude, pozicio.coords.longitude, "ſɭᶗ‹ɔ ʌ ſ͕ɭwȝ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ" ),
+        () => uziHazardanLokon(),
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
+    );
+}
+
+// ⟨ Aŭtomata ŝarĝo je komenco: jam-permesita loko aŭ hazarda loko ⟩
+function inicialigiLokon(): void {
+    const permiso = ( navigator as Navigator & { permissions?: { query: ( opcio: { name: string } ) => Promise<{ state: string }> } } ).permissions;
+    if ( permiso && permiso.query ) {
+        permiso.query( { name: "geolocation" } ).then( stato => {
+            if ( stato.state === "granted" ) {
+                navigator.geolocation.getCurrentPosition(
+                    pozicio => ŝargiLokon( pozicio.coords.latitude, pozicio.coords.longitude, "ſɭᶗ‹ɔ ʌ ſ͕ɭwȝ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ" ),
+                    () => uziHazardanLokon(),
+                    { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
+                );
+            } else {
+                uziHazardanLokon();
+            }
+        } ).catch( () => uziHazardanLokon() );
+    } else {
+        uziHazardanLokon();
+    }
+}
+
+// ⟪ Ĉielo 🎨 ⟩
+
+// ⟨ Ĉielaj koloroj laŭ la horo ( nokto → mateniĝo → tago → krepusko ) ⟩
+const ĈIELAJ_KOLOROJ: { horo: number; koloro: [ number, number, number ] }[] = [
+    { horo: 0, koloro: [ 0x08, 0x08, 0xa8 ] },
+    { horo: 0o6, koloro: [ 0xf8, 0xa8, 0xe8 ] },
+    { horo: 0o10, koloro: [ 0xa8, 0xc8, 0xf8 ] },
+    { horo: 0o14, koloro: [ 0x58, 0xa8, 0xf8 ] },
+    { horo: 0o20, koloro: [ 0xa8, 0xc8, 0xf8 ] },
+    { horo: 0o22, koloro: [ 0xf8, 0xa8, 0xe8 ] },
+    { horo: 0o25, koloro: [ 0x48, 0x18, 0xa8 ] },
+    { horo: 0o30, koloro: [ 0x08, 0x08, 0xa8 ] },
+];
+
+function koloroKateno( koloro: [ number, number, number ] ): string {
+    return "#" + koloro.map( v => v.toString( 16 ).padStart( 2, "0" ) ).join( "" );
+}
+
+// ⟨ Heksa koloro al rgba kun donita alfao ( #80 ≈ duontravidebla ) ⟩
+function koloroAlRgba( okef: string, alfa: number ): string {
+    const ruva = parseInt( okef.slice( 1 ), 16 );
+    return "rgba( " + ( ruva >> 16 ) + ", " + ( ( ruva >> 8 ) & 0xff ) + ", " + ( ruva & 0xff ) + ", " + alfa + " )";
+}
+
+// ⟨ Interpoli inter du koloroj ⟩
+function interpoliKoloron( a: [ number, number, number ], b: [ number, number, number ], t: number ): [ number, number, number ] {
+    return [
+        Math.round( a[ 0 ] + ( b[ 0 ] - a[ 0 ] ) * t ),
+        Math.round( a[ 1 ] + ( b[ 1 ] - a[ 1 ] ) * t ),
+        Math.round( a[ 2 ] + ( b[ 2 ] - a[ 2 ] ) * t ),
+    ];
+}
+
+// ⟨ Kalkuli la nunan ĉielan gradienton laŭ la loka horo ⟩
+function kalkuliĈielon(): string {
+    const nun = new Date();
+    const horo = nun.getHours() + nun.getMinutes() / 60;
+    let de = ĈIELAJ_KOLOROJ[ 0 ];
+    let al = ĈIELAJ_KOLOROJ[ ĈIELAJ_KOLOROJ.length - 1 ];
+    for ( let i = 0; i < ĈIELAJ_KOLOROJ.length - 1; i++ ) {
+        if ( horo >= ĈIELAJ_KOLOROJ[ i ].horo && horo <= ĈIELAJ_KOLOROJ[ i + 1 ].horo ) {
+            de = ĈIELAJ_KOLOROJ[ i ];
+            al = ĈIELAJ_KOLOROJ[ i + 1 ];
+            break;
+        }
+    }
+    const t = ( horo - de.horo ) / ( al.horo - de.horo );
+    const bazo = interpoliKoloron( de.koloro, al.koloro, t );
+    const hela = interpoliKoloron( bazo, [ 0xff, 0xff, 0xff ], 0.35 );
+
+    // ⟨ Direkto: startas malsupre-maldekstre ( 45° ) kaj rotacias dekstrume laŭ la suna fazo ( tempo ĝis la sekva sunleviĝo ) ⟩
+    let fazo: number;
+    if ( sunaTago.preta && sunaTago.sekvaSunlevigo ) {
+        const tempoĜisSekvaSunlevigo = ( sunaTago.sekvaSunlevigo.getTime() - nun.getTime() ) / 1000;
+        fazo = 1 - tempoĜisSekvaSunlevigo / sunaTago.tagoLongo;
+        fazo = ( ( fazo % 1 ) + 1 ) % 1;
+    } else {
+        fazo = horo / 24;
+    }
+    const angulo = 0o55 + fazo * 360;
+
+    return "linear-gradient( " + angulo + "deg, " + koloroAlRgba( koloroKateno( hela ), 0o100 / 0xff ) + ", " + koloroAlRgba( koloroKateno( bazo ), 0 ) + " )";
+}
+
+function ĝisdatigiĈielon(): void {
+    const sunoTabo = document.getElementById( "suno-tabo" );
+    if ( sunoTabo ) sunoTabo.style.setProperty( "--ĉielo", kalkuliĈielon() );
+}
+
+// ⟪ Langetoj 📑 ⟩
+
+const langetoLoko = document.getElementById( "langeto-loko" ) as HTMLButtonElement;
+const langetoKonverti = document.getElementById( "langeto-ɭʃɀɜ" ) as HTMLButtonElement;
+const langetoTabelo = document.getElementById( "langeto-tabelo" ) as HTMLButtonElement;
+
+const LOKAJ_TABOJ = [ "loko-tabo", "suno-titolo", "suno-tabo", "temperaturo-titolo", "temperaturo-tabo", "subdividoj-titolo", "subdividoj-tabo" ];
+const KONVERTAJ_TABOJ = [ "ɭʃɀɜ-tabo", "ɭʃɀɜ-tempo", "ɭʃɀɜ-longo", "ɭʃɀɜ-temperaturo" ];
+const TABELAJ_TABOJ = [ "tabelo-titolo", "tabelo-tabo" ];
+
+function montriLangeton( nomo: "loko" | "ɭʃɀɜ" | "tabelo" ): void {
+    const grupoj = [
+        { nomo: "loko", butono: langetoLoko, taboj: LOKAJ_TABOJ },
+        { nomo: "ɭʃɀɜ", butono: langetoKonverti, taboj: KONVERTAJ_TABOJ },
+        { nomo: "tabelo", butono: langetoTabelo, taboj: TABELAJ_TABOJ },
+    ];
+    for ( const grupo of grupoj ) {
+        const aktiva = grupo.nomo === nomo;
+        grupo.butono.setAttribute( "aria-pressed", aktiva ? "true" : "false" );
+        for ( const id of grupo.taboj ) {
+            const elemento = document.getElementById( id );
+            if ( !elemento ) continue;
+            if ( aktiva ) elemento.classList.remove( "kobe" );
+            else elemento.classList.add( "kobe" );
+        }
+    }
+}
+
+langetoLoko.addEventListener( "click", () => montriLangeton( "loko" ) );
+langetoKonverti.addEventListener( "click", () => montriLangeton( "ɭʃɀɜ" ) );
+langetoTabelo.addEventListener( "click", () => montriLangeton( "tabelo" ) );
 
 // ⟪ Eventaj Aŭskultiloj 📡 ⟩
 
@@ -285,6 +679,9 @@ uzuBazo10Marko.addEventListener( "change", () => {
     renduTempoUnuojn();
     renduLongon();
     renduTemperaturon();
+    renduLokoTemperaturon();
+    renduSunanTagon();
+    renduSubdividojn();
 } );
 
 kalendaroEnigo.addEventListener( "input", aktualigiKalendaron );
@@ -308,6 +705,7 @@ nunButono.addEventListener( "click", () => {
 } );
 
 lokoButono.addEventListener( "click", serĉiLokon );
+lokoMiaButono.addEventListener( "click", uziMianLokon );
 lokoEnigo.addEventListener( "keypress", ( evento ) => {
     if ( ( evento as KeyboardEvent ).key === "Enter" ) {
         serĉiLokon();
@@ -324,3 +722,8 @@ renduTempoEnigojn();
 renduTempoUnuojn();
 renduLongon();
 renduTemperaturon();
+
+ĝisdatigiĈielon();
+inicialigiLokon();
+setInterval( renduSunanTagon, 0o100 );
+setInterval( ĝisdatigiĈielon, 60000 );

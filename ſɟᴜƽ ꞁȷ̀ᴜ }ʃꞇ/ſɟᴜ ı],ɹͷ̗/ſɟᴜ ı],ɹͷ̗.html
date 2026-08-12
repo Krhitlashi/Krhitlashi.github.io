@@ -10,6 +10,32 @@
 
 	<link rel="manifest" href="../../ſɟᴜ ſɭɹ ſɟɔ j͐ʃɹʞ ꞁȷ̀ᴜꞇ.json">
 	<link rel="stylesheet" href="../../֭ſɭᴜ ı],ɔ.css">
+	<style>
+		#suno-tabo {
+			position: relative;
+		}
+		#suno-tabo::before {
+			content: "";
+			position: absolute;
+			inset: calc( -4 * var( --អារេង ) );
+			border-radius: inherit;
+			filter: blur( 32px );
+			background-image: var( --ĉielo, linear-gradient( var( --តានេកខេលេ ), var( --តានេកខេលេ ) ) );
+			z-index: -1;
+		}
+		#temperaturo-tabo {
+			position: relative;
+		}
+		#temperaturo-tabo::before {
+			content: "";
+			position: absolute;
+			inset: calc( -4 * var( --អារេង ) );
+			border-radius: inherit;
+			filter: blur( 32px );
+			background-image: var( --vetero, linear-gradient( var( --តានេកខេលេ ), var( --តានេកខេលេ ) ) );
+			z-index: -1;
+		}
+	</style>
 </head>
 
 <body class="cepufal">
@@ -30,6 +56,14 @@
 	</thala>
 
 	<thala>
+		<sabosuc2w2q>
+			<button id="langeto-loko" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ" aria-pressed="true"></button>
+			<button id="langeto-ɭʃɀɜ" data-oskakefani="ɭʃɀɜ" aria-pressed="false"></button>
+			<button id="langeto-tabelo" data-oskakefani="ſɭc̗ᴜ ſᶘᴜƴ ꞁȷ̀ᴜꞇ" aria-pressed="false"></button>
+		</sabosuc2w2q>
+	</thala>
+
+	<thala id="ɭʃɀɜ-tabo" class="kobe">
 		<p class="ksakap2sa" data-oskakefani="ɭʃɀɜ j͑ʃƨᴜ ſȷͷ̗ɹ"></p>
 
 		<p class="ksakat2xa" data-oskakefani="j͑ʃᴜ ı],ɔ }ʃꞇ"></p>
@@ -80,7 +114,7 @@
 		</table>
 	</thala>
 
-	<thala>
+	<thala id="ɭʃɀɜ-tempo" class="kobe">
 		<p class="ksakap2sa" data-oskakefani="ɭʃɀɜ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ"></p>
 
 		<p class="ksakat2xa" data-oskakefani="j͑ʃᴜ ı],ɔ }ʃꞇ"></p>
@@ -124,7 +158,7 @@
 		</table>
 	</thala>
 
-	<thala>
+	<thala id="ɭʃɀɜ-longo" class="kobe">
 		<p class="ksakap2sa" data-oskakefani="ɭʃɀɜ ſןᴜ j͐ʃэ"></p>
 
 		<sabosuc2w2q>
@@ -143,16 +177,18 @@
 		</sabosuc2w2q>
 	</thala>
 
-	<thala>
-		<p class="ksakap2sa" data-oskakefani="ɭʃɀɜ ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ"></p>
-
-		<p class="ksakat2xa" data-oskakefani="ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ"></p>
+	<thala id="loko-tabo">
 		<sabosuc2w2q>
-			<input type="text" id="temperaturo-loko-enigo" placeholder="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ı" style="flex: 1;">
-			<button id="temperaturo-loko-butono" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ"></button>
+			<input type="text" id="loko-enigo" placeholder="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ı" style="flex: 1;">
+			<button id="loko-butono" data-oskakefani="ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ"></button>
+			<button id="loko-mia" data-oskakefani="ſ͕ɭw ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ"></button>
 		</sabosuc2w2q>
-		<maxema id="temperaturo-loko-rezultoj" class="kobe"></maxema>
-		<p class="ksakat2xa" id="temperaturo-loko-stato"></p>
+		<maxema id="loko-rezultoj" class="kobe"></maxema>
+		<p class="ksakat2xa" id="loko-stato"></p>
+	</thala>
+
+	<thala id="ɭʃɀɜ-temperaturo" class="kobe">
+		<p class="ksakap2sa" data-oskakefani="ɭʃɀɜ ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ"></p>
 
 		<sabosuc2w2q>
 			<label>
@@ -170,8 +206,139 @@
 		</sabosuc2w2q>
 	</thala>
 
-	<thala>
-		<p class="ksakap2sa" data-oskakefani="ſɭc̗ᴜ ſᶘᴜƴ ꞁȷ̀ᴜꞇ"></p>
+	<p class="saxesukef" id="suno-titolo" data-oskakefani="j͑ʃƨᴜ ſȷͷ̗ɹ ꞁȷ̀ɔ ɭʃэ j͐ʃꞇ ŋᷠᴜ"></p>
+	<thala id="suno-tabo">
+		<p class="ksakat2xa" data-oskakefani="ſןᴜɔ˞ ɭʃꞇʞ ｡ ſɭɜ ʃɔ j͑ʃƨꞇʞ"></p>
+		<table>
+			<thead>
+				<tr>
+					<th data-oskakefani="ſןᴜɔ˞ ɭʃꞇʞ"></th>
+					<th data-oskakefani="j͑ʃᴜ ſןɔ˞ɔ ſᶘꞇ }ʃꞇ j͑ʃɔ j͑ʃƨᴜ ſȷͷ̗ɹ"></th>
+					<th data-oskakefani="ſɭɜ ʃɔ j͑ʃƨꞇʞ"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td id="suno-sunlevigo">—</td>
+					<td id="suno-tago-longeco">—</td>
+					<td id="suno-sunsubiro">—</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p class="ksakat2xa" data-oskakefani="ſɭɹ ꞙɭıɔɔ ſɟᴜ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ"></p>
+		<table>
+			<thead>
+				<tr>
+					<th data-oskakefani="ꭎ ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ"></th>
+					<th data-oskakefani="ꭎ ɘɘ ꞙɭɿ c ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ"></th>
+					<th data-oskakefani="ꭎ ɘɘ ꞙɭц c ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td id="suno-bazo64-ı">—</td>
+					<td id="suno-bazo64-ɿ">—</td>
+					<td id="suno-bazo64-ц">—</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p class="ksakat2xa" data-oskakefani="ſɟᴜ ı],ɹͷ̗ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬɔ"></p>
+		<table>
+			<thead>
+				<tr>
+					<th data-oskakefani="֭ſɭᴜ ſ͕ɭɔ"></th>
+					<th data-oskakefani="ſ͕ɭɔ"></th>
+					<th data-oskakefani="֭ſɭɔ"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td id="suno-kutima-haqe">—</td>
+					<td id="suno-kutima-qe">—</td>
+					<td id="suno-kutima-he">—</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p class="ksakat2xa" data-oskakefani="ʃэ ɭʃɔ ŋᷠɹ }ʃꞇ j͑ʃɔ j͑ʃƨᴜ ſȷͷ̗ɹ"></p>
+		<ciihii>
+			<p><span id="suno-progreso">—</span> % <span data-oskakefani="ɭʃэʞ ɭʃꞇʞ"></span></p>
+		</ciihii>
+
+	</thala>
+
+	<p class="saxesukef" id="temperaturo-titolo" data-oskakefani="ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ"></p>
+	<table id="temperaturo-tabo">
+		<thead>
+			<tr>
+				<th data-oskakefani="֭ſɭꞇ"></th>
+				<th data-oskakefani="ꞁȷ̀ᴜ ſɭɹ ſɭɹ ֭ſɭɹ"></th>
+				<th data-oskakefani="ꞁȷ̀ᴜ ſɭɹ"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td id="loko-hia">—</td>
+				<td id="loko-kelvino">—</td>
+				<td id="loko-celsius">—</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="saxesukef" id="subdividoj-titolo" data-oskakefani="ſɭᴜͷ̗ ɭʃɜƽ ꞁȷ̀ᴜ }ʃꞇ"></p>
+	<table id="subdividoj-tabo">
+			<thead>
+				<tr>
+					<th></th>
+					<th data-oskakefani="ꭎ ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ"></th>
+					<th data-oskakefani="ꭎ ɘɘ ꞙɭɿ c ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ"></th>
+					<th data-oskakefani="ꭎ ɘɘ ꞙɭц c ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td data-oskakefani="֭ſɭɔ ꞁȷ̀ꞇ }ʃᴜƽ"></td>
+					<td id="suno-sub-sek-ı">—</td>
+					<td id="suno-sub-sek-ɿ">—</td>
+					<td id="suno-sub-sek-ц">—</td>
+				</tr>
+				<tr>
+					<td data-oskakefani="ſ͕ɭɔ ꞁȷ̀ꞇ }ʃᴜƽ"></td>
+					<td id="suno-sub-min-ı">—</td>
+					<td id="suno-sub-min-ɿ">—</td>
+					<td id="suno-sub-min-ц">—</td>
+				</tr>
+				<tr>
+					<td data-oskakefani="֭ſɭᴜ ſ͕ɭɔ ꞁȷ̀ꞇ }ʃᴜƽ"></td>
+					<td id="suno-sub-hor-ı">—</td>
+					<td id="suno-sub-hor-ɿ">—</td>
+					<td id="suno-sub-hor-ц">—</td>
+				</tr>
+				<tr>
+					<td data-oskakefani="֭ſɭɔ"></td>
+					<td id="suno-sub-he-ı">—</td>
+					<td id="suno-sub-he-ɿ">—</td>
+					<td id="suno-sub-he-ц">—</td>
+				</tr>
+				<tr>
+					<td data-oskakefani="ſ͕ɭɔ"></td>
+					<td id="suno-sub-qe-ı">—</td>
+					<td id="suno-sub-qe-ɿ">—</td>
+					<td id="suno-sub-qe-ц">—</td>
+				</tr>
+				<tr>
+					<td data-oskakefani="֭ſɭᴜ ſ͕ɭɔ"></td>
+					<td id="suno-sub-haqe-ı">—</td>
+					<td id="suno-sub-haqe-ɿ">—</td>
+					<td id="suno-sub-haqe-ц">—</td>
+				</tr>
+			</tbody>
+	</table>
+
+	<p class="saxesukef kobe" id="tabelo-titolo" data-oskakefani="ſɭc̗ᴜ ſᶘᴜƴ ꞁȷ̀ᴜꞇ"></p>
+	<thala id="tabelo-tabo" class="kobe">
 
 		<p class="ksakat2xa" data-oskakefani="j͑ʃƨꞇ ſȷɔ ֭ſɭɹ"></p>
 		<table>
@@ -349,13 +516,38 @@
 			"j͑ʃɜƽ": "j͑ʃɜƽ",
 			"j͑ʃ j͑ʃᴜ ſɟᴜ": "j͑ʃ j͑ʃᴜ ſɟᴜ",
 
-			"ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ",
+			"ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ 📍",
 			"ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ": "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ",
 			"ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ı": "ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ( ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ )",
 
 			"֭ſɭꞇ": "֭ſɭꞇ",
 			"ꞁȷ̀ᴜ ſɭɹ ſɭɹ ֭ſɭɹ": "ꞁȷ̀ᴜ ſɭɹ ſɭɹ ֭ſɭɹ",
 			"ꞁȷ̀ᴜ ſɭɹ": "ꞁȷ̀ᴜ ſɭɹ",
+
+			"ſ͕ɭw ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "ſ͕ɭw ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ",
+			"ſɭᶗ‹ɔ ʌ ꞁȷ̀ɹ ʃᴜ v ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "ſɭᶗ‹ɔ ʌ ꞁȷ̀ɹ ʃᴜ v ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ⟅",
+			"ſ͕ȷɜ ſ͕ɭwȝ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "ſ͕ȷɜ ſ͕ɭwȝ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ⟅",
+			"ſ͕ȷɜ j͑ʃ'ɔ ɭʃɔ ŋᷠɹ ʌ j͑ʃɜ ſᶘɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ": "ſ͕ȷɜ j͑ʃ'ɔ ɭʃɔ ŋᷠɹ ʌ j͑ʃɜ ſᶘɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ ⟅",
+			"ſɭᶗ‹ɔ ʌ ſ͕ɭwȝ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ": "ſɭᶗ‹ɔ ʌ ſ͕ɭwȝ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ ⟅",
+			"j͑ʃw ſɭʞɹȝ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ʌ ſɭᴜ j͑ʃᴜ ʌ ſ͕ɭwȝ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ": "j͑ʃw ſɭʞɹȝ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ʌ ſɭᴜ j͑ʃᴜ ʌ ſ͕ɭwȝ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ ⟅",
+			"ſɭᶗ‹ɔ ʌ j͑ʃ'ɔƣ̋ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ʌ ꞁȷ̀ɔ ⸙ }ʃɹ ɭl̀э ſɭᶗ‹ꞇ ⸙ ʌ ſɭᴜͷ̗ ⟅": "ſɭᶗ‹ɔ ʌ j͑ʃ'ɔƣ̋ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ʌ ꞁȷ̀ɔ ⸙ }ʃɹ ɭl̀э ſɭᶗ‹ꞇ ⸙ ʌ ſɭᴜͷ̗ ⟅",
+			"ſɭᶗ‹ɔ j͐ʃ ʌ ꞁȷ̀ɜ j͑ʃᴜ ſɭᴜ ɭl̀ɜ ʌ j͑ʃ'ɔƣ̋ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ⟅": "ſɭᶗ‹ɔ j͐ʃ ʌ ꞁȷ̀ɜ j͑ʃᴜ ſɭᴜ ɭl̀ɜ ʌ j͑ʃ'ɔƣ̋ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ⟅",
+
+			"j͑ʃƨᴜ ſȷͷ̗ɹ ꞁȷ̀ɔ ɭʃэ j͐ʃꞇ ŋᷠᴜ": "j͑ʃƨᴜ ſȷͷ̗ɹ ꞁȷ̀ɔ ɭʃэ j͐ʃꞇ ŋᷠᴜ ☀️",
+			"ſןᴜɔ˞ ɭʃꞇʞ ｡ ſɭɜ ʃɔ j͑ʃƨꞇʞ": "ſןᴜɔ˞ ɭʃꞇʞ ｡ ſɭɜ ʃɔ j͑ʃƨꞇʞ",
+			"ſןᴜɔ˞ ɭʃꞇʞ": "ſןᴜɔ˞ ɭʃꞇʞ",
+			"ſɭɜ ʃɔ j͑ʃƨꞇʞ": "ſɭɜ ʃɔ j͑ʃƨꞇʞ",
+			"j͑ʃᴜ ſןɔ˞ɔ ſᶘꞇ }ʃꞇ j͑ʃɔ j͑ʃƨᴜ ſȷͷ̗ɹ": "j͑ʃᴜ ſןɔ˞ɔ ſᶘꞇ }ʃꞇ j͑ʃɔ j͑ʃƨᴜ ſȷͷ̗ɹ",
+			"ſɭɹ ꞙɭıɔɔ ſɟᴜ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ": "ſɭɹ ꞙɭıɔɔ ſɟᴜ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ",
+			"ſɟᴜ ı],ɹͷ̗ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬɔ": "ſɟᴜ ı],ɹͷ̗ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬɔ",
+			"ʃэ ɭʃɔ ŋᷠɹ }ʃꞇ j͑ʃɔ j͑ʃƨᴜ ſȷͷ̗ɹ": "ʃэ ɭʃɔ ŋᷠɹ }ʃꞇ j͑ʃɔ j͑ʃƨᴜ ſȷͷ̗ɹ",
+			"ɭʃэʞ ɭʃꞇʞ": "ɭʃэʞ ɭʃꞇʞ",
+			"ꭎ ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ": "ꭎ ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ",
+			"ꭎ ɘɘ ꞙɭɿ c ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ": "ꭎ ɘɘ ꞙɭɿ c ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ",
+			"ꭎ ɘɘ ꞙɭц c ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ": "ꭎ ɘɘ ꞙɭц c ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ",
+			"ſɭᴜͷ̗ ɭʃɜƽ ꞁȷ̀ᴜ }ʃꞇ": "ſɭᴜͷ̗ ɭʃɜƽ ꞁȷ̀ᴜ }ʃꞇ 📊",
+			"( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )": "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )",
+			"ɭʃɀɜ": "ɭʃɀɜ 🔄",
 
 			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ": "j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ⏱️",
 			"ſןᴜ j͐ʃэ": "ſןᴜ j͐ʃэ 📐",
@@ -370,20 +562,20 @@
 			"ſ͕ɭɔ ꞁȷ̀ꞇ }ʃᴜƽ": "ſ͕ɭɔ ꞁȷ̀ꞇ }ʃᴜƽ",
 			"֭ſɭɔ ꞁȷ̀ꞇ }ʃᴜƽ": "֭ſɭɔ ꞁȷ̀ꞇ }ʃᴜƽ",
 
-			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ı": "ɘɘ ꞙɭэɔ c ꞙɭɿ j͑ʃᴜꞇ ʌ ɩƨȏ̮ j͑ʃƨꞇʞ ʌ j͑ʃп́ɔ ɭʃɜ ŋᷠэ }ʃꞇ ʌ j͑ʃп́ɔ ꞙɭɿɔꞟ",
-			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ɿ": "ꞙɭıɔɔ ֭ſɭɔ",
-			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ц": "ꞙɭıɔɔ ſ͕ɭɔ",
-			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ э": "ꞙɭıɔɔ ֭ſɭᴜ ſ͕ɭɔ",
-			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ꞟ": "ꞙɭıɔɔ j͑ʃ ֭ſɭɔ",
-			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ɩ": "ꞙɭıɔɔ j͑ʃ ſ͕ɭɔ",
-			"ſןᴜ j͐ʃэ ı": "ıɿꞙɭɔ ıɿꞙɭɔɔɔ ıɿꞙɭɿɩэ ıɿꞙɭꞟƨ̵ц ıɿꞙɭц j͑ʃᴜꞇ ʌ ı],ſ̀ȷ}ʃ",
-			"ſןᴜ j͐ʃэ ɿ": "ɘ ꞙɭц c ɘ ɘɘ ›ꞙɭэɔ c ꞙɭɿ c ɘ ֭ſɭɔ c ſ͔ɭɔ j͑ʃɔ ֭ſɭɔ }ʃꞇ",
-			"ſןᴜ j͐ʃэ ц": "ɘɘ ꞙɭɿ ſןɔⅎ",
-			"ſןᴜ j͐ʃэ э": "ɘɘ ꞙɭц ſןɔⅎ",
-			"ſןwʞ ꞁȷ̀ᴜ ſןɜ }ʃꞇ ｡ j͑ʃᴜ ſɟᴜ ı": "ɘɘ ꞙɭɿ ꞙɭıцɔ ʌ ſןwʞ ꞁȷ̀ᴜ ſןɜ ֭ſɭƨw ֭ſɭw",
-			"ſןwʞ ꞁȷ̀ᴜ ſןɜ }ʃꞇ ｡ j͑ʃᴜ ſɟᴜ ɿ": "ɘ ꭎ ɘɘ ꞙɭɿ c ֭ſɭɔ c ɘɘ ꞙɭɿ c ſןɔⅎ c j͑ʃɜƽ",
-			"ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ ı": "ɘ ( ɘɘ ꞙɭıɔ c ꞙɭıɔ ) c ( ꭎ ( ɘɘ ꞙɭɿ c ꞙɭıɿ ) c ɘ ( ɘ ( ɘɘ ›ꞙɭɿц c ꞙɭıɔ ) c ꞙɭı /ꞟɩ ) c j͑ʃſɟ )",
-			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ ı": "ıɿꞙɭɿɔ ıɿꞙɭıɔ ʌ ꞙɭıı ʌ ꞙɭɩ",
+			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ı": "ɘɘ ꞙɭэɔ c ꞙɭɿ j͑ʃᴜꞇ ʌ ɩƨȏ̮ j͑ʃƨꞇʞ ʌ j͑ʃп́ɔ ɭʃɜ ŋᷠэ }ʃꞇ ʌ j͑ʃп́ɔ ꞙɭɿɔꞟ ⟅",
+			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ɿ": "ꞙɭıɔɔ ֭ſɭɔ ⟅",
+			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ц": "ꞙɭıɔɔ ſ͕ɭɔ ⟅",
+			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ э": "ꞙɭıɔɔ ֭ſɭᴜ ſ͕ɭɔ ⟅",
+			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ꞟ": "ꞙɭıɔɔ j͑ʃ ֭ſɭɔ ⟅",
+			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ɩ": "ꞙɭıɔɔ j͑ʃ ſ͕ɭɔ ⟅",
+			"ſןᴜ j͐ʃэ ı": "ıɿꞙɭɔ ıɿꞙɭɔɔɔ ıɿꞙɭɿɩэ ıɿꞙɭꞟƨ̵ц ıɿꞙɭц j͑ʃᴜꞇ ʌ ı],ᴜ ſ̀ȷɔ }ʃꞇ ⟅",
+			"ſןᴜ j͐ʃэ ɿ": "ɘ ꞙɭц c ɘ ɘɘ ›ꞙɭэɔ c ꞙɭɿ c ɘ ֭ſɭɔ c ſ͔ɭɔ j͑ʃɔ ֭ſɭɔ }ʃꞇ ⟅",
+			"ſןᴜ j͐ʃэ ц": "ɘɘ ꞙɭɿ ſןɔⅎ ⟅",
+			"ſןᴜ j͐ʃэ э": "ɘɘ ꞙɭц ſןɔⅎ ⟅",
+			"ſןwʞ ꞁȷ̀ᴜ ſןɜ }ʃꞇ ｡ j͑ʃᴜ ſɟᴜ ı": "ɘɘ ꞙɭɿ ꞙɭıцɔ ʌ ſןwʞ ꞁȷ̀ᴜ ſןɜ ֭ſɭƨw ֭ſɭw ⟅",
+			"ſןwʞ ꞁȷ̀ᴜ ſןɜ }ʃꞇ ｡ j͑ʃᴜ ſɟᴜ ɿ": "ɘ ꭎ ɘɘ ꞙɭɿ c ֭ſɭɔ c ɘɘ ꞙɭɿ c ſןɔⅎ c j͑ʃɜƽ ⟅",
+			"ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ ı": "ɘ ( ɘɘ ꞙɭıɔ c ꞙɭıɔ ) c ( ꭎ ( ɘɘ ꞙɭɿ c ꞙɭıɿ ) c ɘ ( ɘ ( ɘɘ ›ꞙɭɿц c ꞙɭıɔ ) c ꞙɭı /ꞟɩ ) c j͑ʃſɟ ) ⟅",
+			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ ı": "ıɿꞙɭɿɔ ıɿꞙɭıɔ ʌ ꞙɭıı ʌ ꞙɭɩ ⟅",
 			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ ɿ": "ꞙɭıц ɭ(ꞇ ʌ ſןᴜ j͐ʃɹ ( ſ͕ɭwȝ ʌ ꞙɭцꞟ ʌ ⺓ ʌ ꞙɭıı j͑ʃᴜꞇ ʌ ſןᴜ j͐ʃɹ ) ⟅",
 			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ ц": "ꞙɭцꞟ j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ( ſ͕ɭwȝ ʌ ꞙɭцꞟ ʌ ⺓ ʌ ɭʃᴜ ᶅſᴜ ɭ(ꞇ j͐ʃ ʌ ꞙɭıэ ɭ(ꞇ ʌ ſןᴜ j͐ʃɹ ) ⟅",
 			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ э": "ſɭᴜͷ̗ ɭʃɜƽ ʌ ꞙɭэ ʌ j͑ʃƨꞇ ʃꞇᶗ‹ ⟅",
@@ -435,13 +627,38 @@
 			"j͑ʃɜƽ": "Sok",
 			"j͑ʃ j͑ʃᴜ ſɟᴜ": "SSaca",
 
-			"ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "Location",
+			"ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "Location 📍",
 			"ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ": "Search",
 			"ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ı": "Search ( Location )",
 
 			"֭ſɭꞇ": "Hia",
 			"ꞁȷ̀ᴜ ſɭɹ ſɭɹ ֭ſɭɹ": "Kelvin",
 			"ꞁȷ̀ᴜ ſɭɹ": "Celcius",
+
+			"ſ͕ɭw ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "Use My Location",
+			"ſɭᶗ‹ɔ ʌ ꞁȷ̀ɹ ʃᴜ v ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "Searching location",
+			"ſ͕ȷɜ ſ͕ɭwȝ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ": "Location not found",
+			"ſ͕ȷɜ j͑ʃ'ɔ ɭʃɔ ŋᷠɹ ʌ j͑ʃɜ ſᶘɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ": "Could not load solar data",
+			"ſɭᶗ‹ɔ ʌ ſ͕ɭwȝ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ": "Tracking solar day",
+			"j͑ʃw ſɭʞɹȝ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ʌ ſɭᴜ j͑ʃᴜ ʌ ſ͕ɭwȝ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ": "Choose a location to track the solar day",
+			"ſɭᶗ‹ɔ ʌ j͑ʃ'ɔƣ̋ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ʌ ꞁȷ̀ɔ ⸙ }ʃɹ ɭl̀э ſɭᶗ‹ꞇ ⸙ ʌ ſɭᴜͷ̗ ⟅": "Using fallback location ( New York )",
+			"ſɭᶗ‹ɔ j͐ʃ ʌ ꞁȷ̀ɜ j͑ʃᴜ ſɭᴜ ɭl̀ɜ ʌ j͑ʃ'ɔƣ̋ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ⟅": "Using random location",
+
+			"j͑ʃƨᴜ ſȷͷ̗ɹ ꞁȷ̀ɔ ɭʃэ j͐ʃꞇ ŋᷠᴜ": "Solar Day ☀️",
+			"ſןᴜɔ˞ ɭʃꞇʞ ｡ ſɭɜ ʃɔ j͑ʃƨꞇʞ": "Sunrise and Sunset",
+			"ſןᴜɔ˞ ɭʃꞇʞ": "Sunrise",
+			"ſɭɜ ʃɔ j͑ʃƨꞇʞ": "Sunset",
+			"j͑ʃᴜ ſןɔ˞ɔ ſᶘꞇ }ʃꞇ j͑ʃɔ j͑ʃƨᴜ ſȷͷ̗ɹ": "Solar Day Length",
+			"ſɭɹ ꞙɭıɔɔ ſɟᴜ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ": "Base-64 Clock",
+			"ſɟᴜ ı],ɹͷ̗ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬɔ": "Custom Units Clock",
+			"ʃэ ɭʃɔ ŋᷠɹ }ʃꞇ j͑ʃɔ j͑ʃƨᴜ ſȷͷ̗ɹ": "Day Progress",
+			"ɭʃэʞ ɭʃꞇʞ": "of daylight",
+			"ꭎ ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ": "1 / 64 of a solar day",
+			"ꭎ ɘɘ ꞙɭɿ c ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ": "1 / 4096 of a solar day",
+			"ꭎ ɘɘ ꞙɭц c ꞙɭıɔɔ c ꞙɭı j͑ʃᴜꞇ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ": "1 / 262144 of a solar day",
+			"ſɭᴜͷ̗ ɭʃɜƽ ꞁȷ̀ᴜ }ʃꞇ": "Subdivisions 📊",
+			"( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )": "( Error )",
+			"ɭʃɀɜ": "Convert 🔄",
 
 			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ": "Time ⏱️",
 			"ſןᴜ j͐ʃэ": "Dimension 📐",
@@ -456,24 +673,24 @@
 			"ſ͕ɭɔ ꞁȷ̀ꞇ }ʃᴜƽ": "Minutes",
 			"֭ſɭɔ ꞁȷ̀ꞇ }ʃᴜƽ": "Seconds",
 
-			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ı": "4294967296 / 9192631770 s ( ~0.4672 s )",
-			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ɿ": "64 He ( ~29.9 s )",
-			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ц": "64 Qe ( ~31.9 min )",
-			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ э": "64 Haqe ( ~1.42 d )",
-			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ꞟ": "64 She ( ~90.7 d )",
-			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ɩ": "64 Sqe ( ~15.9 y )",
-			"ſןᴜ j͐ʃэ ı": "0.0002645833 m",
-			"ſןᴜ j͐ʃэ ɿ": "c × He ÷ 2^32 × 3 ( ~0.0978 m )",
-			"ſןᴜ j͐ʃэ ц": "Peu²",
-			"ſןᴜ j͐ʃэ э": "Peu³ ( ~0.9306 L )",
-			"ſןwʞ ꞁȷ̀ᴜ ſןɜ }ʃꞇ ｡ j͑ʃᴜ ſɟᴜ ı": "2^88 amu ( ~0.514 kg )",
-			"ſןwʞ ꞁȷ̀ᴜ ſןɜ }ʃꞇ ｡ j͑ʃᴜ ſɟᴜ ɿ": "Sok × Peu² ÷ He² ( ~0.0225 J )",
-			"ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ ı": "eV ÷ 2^12 ( ~2.833 K )",
-			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ ı": "2010 September 6 ( 1.1.1 )",
-			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ ɿ": "13 per year ( months 1 - 11 are 28 days )",
-			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ ц": "29 days ( month 12 has 29 on leap years )",
-			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ э": "years divisible by 4",
-			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ ꞟ": "ends on 2010 September 5",
+			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ı": "4294967296 / 9192631770 s ( ~0.4672 s ).",
+			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ɿ": "64 He ( ~29.9 s ).",
+			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ц": "64 Qe ( ~31.9 min ).",
+			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ э": "64 Haqe ( ~1.42 d ).",
+			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ꞟ": "64 She ( ~90.7 d ).",
+			"j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ɩ": "64 Sqe ( ~15.9 y ).",
+			"ſןᴜ j͐ʃэ ı": "0.0002645833 m.",
+			"ſןᴜ j͐ʃэ ɿ": "c × He ÷ 2^32 × 3 ( ~0.0978 m ).",
+			"ſןᴜ j͐ʃэ ц": "Peu².",
+			"ſןᴜ j͐ʃэ э": "Peu³ ( ~0.9306 L ).",
+			"ſןwʞ ꞁȷ̀ᴜ ſןɜ }ʃꞇ ｡ j͑ʃᴜ ſɟᴜ ı": "2^88 amu ( ~0.514 kg ).",
+			"ſןwʞ ꞁȷ̀ᴜ ſןɜ }ʃꞇ ｡ j͑ʃᴜ ſɟᴜ ɿ": "Sok × Peu² ÷ He² ( ~0.0225 J ).",
+			"ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ ı": "eV ÷ 2^12 ( ~2.833 K ).",
+			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ ı": "2010 9 6 ( 1.1.1 ).",
+			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ ɿ": "13 per year ( Months 1 - 11 are 28 days ).",
+			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ ц": "29 days ( Month 12 has 29 on leap years ).",
+			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ э": "Years divisible by 4.",
+			"ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜ ſȷͷ̗ɹ j͑ʃᴜꞇ ꞟ": "Ends on 2010 9 5.",
 
 			"֭ſɭɔ }ʃɔ ı],ɜ": "Epoch",
 			"ſןᴜ j͐ʃɹ j͑ʃƨꞇʞ": "Months",
