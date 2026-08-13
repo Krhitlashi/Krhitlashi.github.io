@@ -468,7 +468,7 @@ function renduSunanTagon(): void {
     // ⟨ Progreso de la taga lumo ⟩
     const lumoLongo = ( sunsubiro.getTime() - sunlevigo.getTime() ) / 1000;
     const progreso = Math.min( 1, Math.max( 0, ( ( nun.getTime() - sunlevigo.getTime() ) / 1000 ) / lumoLongo ) );
-    document.getElementById( "suno-progreso" )!.textContent = formatiNombron( progreso * 100 );
+    document.getElementById( "suno-progreso" )!.textContent = formatiNombron( progreso * ( uzuBazo10 ? 100 : 0o100 ) );
 }
 
 // ⟨ Subdividoj de la suna tago ⟩
