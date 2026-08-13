@@ -4,6 +4,13 @@
 
 let uzuBazo10 = false;
 
+// ⟨ Stato-ŝlosiloj 🔑 ⟩
+const ERARA_MARKO = "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )";
+const SERĈANTA_STATO = "ſɭᶗ‹ɔ ʌ ꞁȷ̀ɹ ʃᴜ v ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ";
+const ŜARGITA_STATO = "ſɭᶗ‹ɔ ʌ ſ͕ɭwȝ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ";
+const NEŜARGEBLA_STATO = "ſ͕ȷɜ j͑ʃ'ɔ ɭʃɔ ŋᷠɹ ʌ j͑ʃɜ ſᶘɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ";
+const NENIU_REZULTO = "ſ͕ȷɜ ſ͕ɭwȝ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ";
+
 // ⟨ Kalendaro 📅 ⟩
 const kalendaroEnigo = document.getElementById( "kalendaro-enigo" ) as HTMLInputElement;
 const nunButono = document.getElementById( "nun-butono" ) as HTMLButtonElement;
@@ -12,7 +19,7 @@ const nunButono = document.getElementById( "nun-butono" ) as HTMLButtonElement;
 const tempoHoroj = document.getElementById( "tempo-horoj" ) as HTMLInputElement;
 const tempoMinutoj = document.getElementById( "tempo-minutoj" ) as HTMLInputElement;
 const tempoSekundoj = document.getElementById( "tempo-sekundoj" ) as HTMLInputElement;
-let tempoSumo = 86400;
+let tempoSumo = 0o250600;
 
 const tempoUnuoj = [
     { nomo: "shaqe", valoro: SHAQE_L6VEM2 },
@@ -61,19 +68,19 @@ function parseBazo8( okef: string ): number {
 
     for ( const kp6 of partoj[ 0 ] ) {
         const ruva = K2FE.indexOf( kp6 );
-        if ( ruva !== -1 ) { valoro = valoro * 8 + ruva; continue; }
-        if ( kp6 >= "0" && kp6 <= "7" ) { valoro = valoro * 8 + ( kp6.charCodeAt( 0 ) - 48 ); continue; }
+        if ( ruva !== -1 ) { valoro = valoro * 0o10 + ruva; continue; }
+        if ( kp6 >= "0" && kp6 <= "7" ) { valoro = valoro * 0o10 + ( kp6.charCodeAt( 0 ) - 0o60 ); continue; }
         return NaN;
     }
 
     if ( partoj.length > 1 ) {
-        let dividanto = 8;
+        let dividanto = 0o10;
         for ( const kp6 of partoj[ 1 ] ) {
             const ruva = K2FE.indexOf( kp6 );
-            const cifero = ruva !== -1 ? ruva : ( kp6 >= "0" && kp6 <= "7" ? kp6.charCodeAt( 0 ) - 48 : NaN );
+            const cifero = ruva !== -1 ? ruva : ( kp6 >= "0" && kp6 <= "7" ? kp6.charCodeAt( 0 ) - 0o60 : NaN );
             if ( isNaN( cifero ) ) return NaN;
             valoro += cifero / dividanto;
-            dividanto *= 8;
+            dividanto *= 0o10;
         }
     }
 
@@ -109,6 +116,12 @@ function formatiKalendaron( valoro: number, ĉuDato: boolean ): string {
     return skakefK2fe( ( ĉuDato ? kp6Sak2fe : "" ) + vab6caja( valoro ) );
 }
 
+// ⟨ Nunaj loka dato-tempo kiel ĉeno por datetime-local ⟩
+function nunaLokaDatoKateno(): string {
+    const nun = new Date();
+    return new Date( nun.getTime() - nun.getTimezoneOffset() * 60000 ).toISOString().slice( 0, 16 );
+}
+
 function aktualigiKalendaron(): void {
     const valoro = kalendaroEnigo.value;
     if ( !valoro ) return;
@@ -117,7 +130,7 @@ function aktualigiKalendaron(): void {
     if ( isNaN( dato.getTime() ) ) return;
 
     const cax2l = cax2lStafl2( dato );
-    const stifeh2 = castifeh2( dato ) as unknown as { shaqe: number; sqe: number; she: number; haqe: number; qe: number; he: number };
+    const stifeh2 = castifeh2( dato );
 
     document.getElementById( "kalendaro-stibix" )!.textContent = formatiKalendaron( cax2l.stibix, true );
     document.getElementById( "kalendaro-pal2stif" )!.textContent = formatiKalendaron( cax2l.pal2stif, true );
@@ -141,8 +154,8 @@ function aktualigiTempon(): void {
     if ( isNaN( horoj ) && isNaN( minutoj ) && isNaN( sekundoj ) ) return;
 
     tempoSumo = Math.max( 0,
-        ( isNaN( horoj ) ? 0 : horoj ) * 3600 +
-        ( isNaN( minutoj ) ? 0 : minutoj ) * 60 +
+        ( isNaN( horoj ) ? 0 : horoj ) * 0o7000 +
+        ( isNaN( minutoj ) ? 0 : minutoj ) * 0o74 +
         ( isNaN( sekundoj ) ? 0 : sekundoj )
     );
 
@@ -152,8 +165,8 @@ function aktualigiTempon(): void {
 // ⟨ Reskribi horojn / minutojn / sekundojn el la suma sekund-valoro ⟩
 function renduTempoEnigojn(): void {
     let fusu = Math.floor( tempoSumo );
-    const horoj = Math.floor( fusu / 3600 ); fusu %= 3600;
-    const minutoj = Math.floor( fusu / 60 ); fusu %= 60;
+    const horoj = Math.floor( fusu / 0o7000 ); fusu %= 0o7000;
+    const minutoj = Math.floor( fusu / 0o74 ); fusu %= 0o74;
 
     skribiNombron( tempoHoroj, horoj );
     skribiNombron( tempoMinutoj, minutoj );
@@ -166,16 +179,11 @@ function renduTempoUnuojn(): void {
     for ( let i = 0; i < tempoUnuoj.length - 1; i++ ) {
         const unuo = tempoUnuoj[ i ];
         const kvanto = Math.floor( fusu / unuo.valoro );
-        document.getElementById( "tempo-" + unuo.nomo )!.textContent = uzuBazo10
-            ? String( kvanto )
-            : skakefK2fe( vab6caja( kvanto ) );
+        document.getElementById( "tempo-" + unuo.nomo )!.textContent = formatiNombron( kvanto );
         fusu %= unuo.valoro;
     }
 
-    const he = fusu / HE_L6VEM2;
-    document.getElementById( "tempo-he" )!.textContent = uzuBazo10
-        ? parseFloat( he.toFixed( 0o12 ) ).toString()
-        : skakefK2fe( vab6cajaDomani( he ) );
+    document.getElementById( "tempo-he" )!.textContent = formatiNombron( fusu / HE_L6VEM2 );
 }
 
 // ⟪ Longo ( Dimensiono ) 📏 ⟩
@@ -236,18 +244,18 @@ async function serĉiLokon(): Promise<void> {
     const demando = lokoEnigo.value.trim();
     if ( !demando ) return;
 
-    lokoRezultoj.innerHTML = "<p>" + skakefaniK2fe( "ſɭᶗ‹ɔ ʌ ꞁȷ̀ɹ ʃᴜ v ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ" ) + "</p>";
+    lokoRezultoj.innerHTML = "<p>" + skakefaniK2fe( SERĈANTA_STATO ) + "</p>";
     lokoRezultoj.classList.remove( "kobe" );
 
     try {
         const respondo = await fetch(
             `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent( demando )}&limit=5`
         );
-        if ( !respondo.ok ) throw new Error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )" );
+        if ( !respondo.ok ) throw new Error( ERARA_MARKO );
 
         const rezultoj: { lat: string; lon: string; display_name: string }[] = await respondo.json();
         if ( rezultoj.length === 0 ) {
-            lokoRezultoj.innerHTML = "<p>" + skakefaniK2fe( "ſ͕ȷɜ ſ͕ɭwȝ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ" ) + "</p>";
+            lokoRezultoj.innerHTML = "<p>" + skakefaniK2fe( NENIU_REZULTO ) + "</p>";
             return;
         }
 
@@ -262,37 +270,37 @@ async function serĉiLokon(): Promise<void> {
                 const nomo = decodeURIComponent( butono.getAttribute( "data-nomo" ) || "" );
                 lokoRezultoj.classList.add( "kobe" );
                 lokoRezultoj.innerHTML = "";
-                lokoStato.textContent = skakefaniK2fe( "ſɭᶗ‹ɔ ʌ ꞁȷ̀ɹ ʃᴜ v ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ" );
-                preniTemperaturon( lat, lon );
-                aktualigiSunalokon( lat, lon ).then( () => {
-                    lokoStato.textContent = skakefaniK2fe( "ſɭᶗ‹ɔ ʌ ſ͕ɭwȝ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ" ) + " ( " + nomo + " )";
-                } ).catch( eraro => {
-                    console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", eraro );
-                    lokoStato.textContent = skakefaniK2fe( "ſ͕ȷɜ j͑ʃ'ɔ ɭʃɔ ŋᷠɹ ʌ j͑ʃɜ ſᶘɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ" );
-                } );
+                lokoStato.textContent = skakefaniK2fe( SERĈANTA_STATO );
+                ŝargiLokon( lat, lon, ŜARGITA_STATO, nomo );
             } );
         } );
     } catch ( eraro ) {
-        console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", eraro );
-        lokoRezultoj.innerHTML = "<p>" + skakefaniK2fe( "ſ͕ȷɜ ſ͕ɭwȝ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ" ) + "</p>";
+        console.error( ERARA_MARKO, eraro );
+        lokoRezultoj.innerHTML = "<p>" + skakefaniK2fe( NENIU_REZULTO ) + "</p>";
     }
 }
+
+// ⟨ Veteraj fonoj ( WMO-kodoj → helaj / malhelaj koloroj ) ⟩
+const VETERAJ_FONOJ: { testas: ( kodo: number ) => boolean; hela: string; malhela: string }[] = [
+    { testas: kodo => kodo === 0, hela: "#88c8f8", malhela: "#58a8f8" },
+    { testas: kodo => kodo === 1 || kodo === 2, hela: "#a8c8e8", malhela: "#88b8e8" },
+    { testas: kodo => kodo === 3, hela: "#c8c8c8", malhela: "#a8a8a8" },
+    { testas: kodo => kodo === 45 || kodo === 48, hela: "#e8e8e8", malhela: "#c8c8c8" },
+    { testas: kodo => kodo >= 51 && kodo <= 57, hela: "#a8c8e8", malhela: "#88a8c8" },
+    { testas: kodo => kodo >= 61 && kodo <= 67, hela: "#7888c8", malhela: "#5868a8" },
+    { testas: kodo => kodo >= 71 && kodo <= 77, hela: "#f8f8f8", malhela: "#e8f8f8" },
+    { testas: kodo => kodo >= 80 && kodo <= 82, hela: "#6878c8", malhela: "#4868a8" },
+    { testas: kodo => kodo === 85 || kodo === 86, hela: "#f8f8f8", malhela: "#d8e8f8" },
+    { testas: kodo => kodo >= 95, hela: "#4818a8", malhela: "#2828a8" },
+];
+const VETERA_ORIGINALA: { hela: string; malhela: string } = { hela: "#a8c8f8", malhela: "#58a8f8" };
 
 // ⟨ Fono laŭ la vetera kodo ( WMO ) - duontravidebla al travidebla ⟩
 function veteroFono( kodo: number ): string {
     const gradiento = ( hela: string, malhela: string ) =>
         "linear-gradient( 45deg, " + koloroAlRgba( hela, 0o100 / 0xff ) + ", " + koloroAlRgba( malhela, 0 ) + " )";
-    if ( kodo === 0 ) return gradiento( "#88c8f8", "#58a8f8" );
-    if ( kodo === 1 || kodo === 2 ) return gradiento( "#a8c8e8", "#88b8e8" );
-    if ( kodo === 3 ) return gradiento( "#c8c8c8", "#a8a8a8" );
-    if ( kodo === 45 || kodo === 48 ) return gradiento( "#e8e8e8", "#c8c8c8" );
-    if ( kodo >= 51 && kodo <= 57 ) return gradiento( "#a8c8e8", "#88a8c8" );
-    if ( kodo >= 61 && kodo <= 67 ) return gradiento( "#7888c8", "#5868a8" );
-    if ( kodo >= 71 && kodo <= 77 ) return gradiento( "#f8f8f8", "#e8f8f8" );
-    if ( kodo >= 80 && kodo <= 82 ) return gradiento( "#6878c8", "#4868a8" );
-    if ( kodo === 85 || kodo === 86 ) return gradiento( "#f8f8f8", "#d8e8f8" );
-    if ( kodo >= 95 ) return gradiento( "#4818a8", "#2828a8" );
-    return gradiento( "#a8c8f8", "#58a8f8" );
+    const fono = VETERAJ_FONOJ.find( opcio => opcio.testas( kodo ) ) || VETERA_ORIGINALA;
+    return gradiento( fono.hela, fono.malhela );
 }
 
 // ⟨ Preni nunan temperaturon de elektita loko ( Open-Meteo ) ⟩
@@ -301,11 +309,11 @@ async function preniTemperaturon( lat: number, lon: number ): Promise<void> {
         const respondo = await fetch(
             `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`
         );
-        if ( !respondo.ok ) throw new Error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )" );
+        if ( !respondo.ok ) throw new Error( ERARA_MARKO );
 
         const datumoj: { current?: { temperature_2m?: number; weather_code?: number } } = await respondo.json();
         const celsiuso = datumoj.current?.temperature_2m;
-        if ( typeof celsiuso !== "number" ) throw new Error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )" );
+        if ( typeof celsiuso !== "number" ) throw new Error( ERARA_MARKO );
 
         temperaturoKelvino = celsiuso + 273.15;
         lokoTemperaturoPreta = true;
@@ -318,7 +326,7 @@ async function preniTemperaturon( lat: number, lon: number ): Promise<void> {
         renduTemperaturon();
         renduLokoTemperaturon();
     } catch ( eraro ) {
-        console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", eraro );
+        console.error( ERARA_MARKO, eraro );
         lokoTemperaturoPreta = false;
         renduLokoTemperaturon();
     }
@@ -340,17 +348,9 @@ let sunaTago = {
     tagoLongo: 0,
 };
 
-// ⟨ Formati horon kiel hh.mm laŭ loka tempo ( konvertita al la nuna nombrosistemo ) ⟩
+// ⟨ Formati horon kiel unuopan nombron en horoj ( sama kiel la aliaj valoroj ) ⟩
 function formatiHoron( dato: Date ): string {
-    return formatiNombron( dato.getHours() ) + "." + formatiNombron( dato.getMinutes() );
-}
-
-// ⟨ Formati daŭron kiel hh.mm.ss ( konvertita al la nuna nombrosistemo ) ⟩
-function formatiDaŭron( sekundoj: number ): string {
-    const h = formatiNombron( Math.floor( sekundoj / 3600 ) );
-    const m = formatiNombron( Math.floor( ( sekundoj % 3600 ) / 60 ) );
-    const s = formatiNombron( Math.floor( sekundoj % 60 ) );
-    return h + "." + m + "." + s;
+    return formatiNombron( dato.getHours() + dato.getMinutes() / 0o74 + dato.getSeconds() / 0o7000 );
 }
 
 // ⟨ Formati daton kiel aaaa-mm-tt laŭ loka tempo ⟩
@@ -366,9 +366,9 @@ async function preniSunlevigonSunsubiron( lat: number, lng: number, dato: Date )
     const datoKateno = formatiDaton( dato );
     const url = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&date=${datoKateno}&formatted=0&tzid=UTC`;
     const respondo = await fetch( url );
-    if ( !respondo.ok ) throw new Error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )" );
+    if ( !respondo.ok ) throw new Error( ERARA_MARKO );
     const datumoj = await respondo.json();
-    if ( datumoj.status !== "OK" ) throw new Error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )" );
+    if ( datumoj.status !== "OK" ) throw new Error( ERARA_MARKO );
     return {
         sunlevigo: new Date( datumoj.results.sunrise ),
         sunsubiro: new Date( datumoj.results.sunset ),
@@ -413,7 +413,7 @@ async function aktualigiSunalokon( lat: number, lng: number ): Promise<void> {
 
     if ( !isFinite( sunaTago.tagoLongo ) || sunaTago.tagoLongo <= 0 ) {
         sunaTago.preta = false;
-        throw new Error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )" );
+        throw new Error( ERARA_MARKO );
     }
 
     sunaTago.preta = true;
@@ -433,7 +433,7 @@ function renduSunanTagon(): void {
 
     document.getElementById( "suno-sunlevigo" )!.textContent = formatiHoron( sunlevigo );
     document.getElementById( "suno-sunsubiro" )!.textContent = formatiHoron( sunsubiro );
-    document.getElementById( "suno-tago-longeco" )!.textContent = formatiDaŭron( sunaTago.tagoLongo );
+    document.getElementById( "suno-tago-longeco" )!.textContent = formatiNombron( sunaTago.tagoLongo / 0o7000 );
 
     // ⟨ Pasita tempo ekde la plej lasta sunleviĝo ( mod la suna tago ) ⟩
     let pasis = ( nun.getTime() - sunlevigo.getTime() ) / 1000;
@@ -444,9 +444,9 @@ function renduSunanTagon(): void {
     if ( pasis < 0 ) pasis += sunaTago.tagoLongo;
 
     // ⟨ Bazo-64 horloĝo ( 64 3-niveloj ) ⟩
-    const nivelo1 = sunaTago.tagoLongo / 64;
-    const nivelo2 = sunaTago.tagoLongo / 4096;
-    const nivelo3 = sunaTago.tagoLongo / 262144;
+    const nivelo1 = sunaTago.tagoLongo / 0o100;
+    const nivelo2 = sunaTago.tagoLongo / 0o10000;
+    const nivelo3 = sunaTago.tagoLongo / 0o1000000;
     const kvanto1 = Math.floor( pasis / nivelo1 );
     const rest1 = pasis % nivelo1;
     const kvanto2 = Math.floor( rest1 / nivelo2 );
@@ -475,12 +475,12 @@ function renduSunanTagon(): void {
 function renduSubdividojn(): void {
     if ( !sunaTago.preta ) return;
     const tago = sunaTago.tagoLongo;
-    const valoroj = [ tago / 64, tago / 4096, tago / 262144 ];
+    const valoroj = [ tago / 0o100, tago / 0o10000, tago / 0o1000000 ];
     const sufiksoj = [ "ı", "ɿ", "ц" ];
     const unuoj = [
         { kodo: "sek", funkcio: ( sek: number ) => sek },
-        { kodo: "min", funkcio: ( sek: number ) => sek / 60 },
-        { kodo: "hor", funkcio: ( sek: number ) => sek / 3600 },
+        { kodo: "min", funkcio: ( sek: number ) => sek / 0o74 },
+        { kodo: "hor", funkcio: ( sek: number ) => sek / 0o7000 },
         { kodo: "he", funkcio: ( sek: number ) => sek / HE_L6VEM2 },
         { kodo: "qe", funkcio: ( sek: number ) => sek / QE_L6VEM2 },
         { kodo: "haqe", funkcio: ( sek: number ) => sek / HAQE_L6VEM2 },
@@ -518,8 +518,8 @@ function ŝargiLokon( lat: number, lon: number, statoteksto: string, konataNomo?
         aktualigiSunalokon( lat, lon ).then( () => {
             lokoStato.textContent = skakefaniK2fe( statoteksto ) + ( nomo ? " ( " + nomo + " )" : "" );
         } ).catch( eraro => {
-            console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", eraro );
-            lokoStato.textContent = skakefaniK2fe( "ſ͕ȷɜ j͑ʃ'ɔ ɭʃɔ ŋᷠɹ ʌ j͑ʃɜ ſᶘɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ" );
+            console.error( ERARA_MARKO, eraro );
+            lokoStato.textContent = skakefaniK2fe( NEŜARGEBLA_STATO );
         } );
     } );
 }
@@ -527,8 +527,18 @@ function ŝargiLokon( lat: number, lon: number, statoteksto: string, konataNomo?
 // ⟨ Elekti hazardan lokon ⟩
 function uziHazardanLokon(): void {
     const loko = HAZARDAJ_LOKOJ[ Math.floor( Math.random() * HAZARDAJ_LOKOJ.length ) ];
-    lokoStato.textContent = skakefaniK2fe( "ſɭᶗ‹ɔ ʌ ꞁȷ̀ɹ ʃᴜ v ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ" );
+    lokoStato.textContent = skakefaniK2fe( SERĈANTA_STATO );
     ŝargiLokon( loko.lat, loko.lon, "ſɭᶗ‹ɔ j͐ʃ ʌ ꞁȷ̀ɜ j͑ʃᴜ ſɭᴜ ɭl̀ɜ ʌ j͑ʃ'ɔƣ̋ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ⟅", loko.nomo );
+}
+
+// ⟨ Uzi la aparatan lokon ( se ne disponeblas aŭ malsukcesas, hazarda loko ) ⟩
+function uziAparatanLokon(): void {
+    lokoStato.textContent = skakefaniK2fe( SERĈANTA_STATO );
+    navigator.geolocation.getCurrentPosition(
+        pozicio => ŝargiLokon( pozicio.coords.latitude, pozicio.coords.longitude, ŜARGITA_STATO ),
+        () => uziHazardanLokon(),
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
+    );
 }
 
 // ⟨ Uzi la aparatan lokon ( defaŭlte hazarda loko ) ⟩
@@ -537,13 +547,7 @@ function uziMianLokon(): void {
         uziHazardanLokon();
         return;
     }
-
-    lokoStato.textContent = skakefaniK2fe( "ſɭᶗ‹ɔ ʌ ꞁȷ̀ɹ ʃᴜ v ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ" );
-    navigator.geolocation.getCurrentPosition(
-        pozicio => ŝargiLokon( pozicio.coords.latitude, pozicio.coords.longitude, "ſɭᶗ‹ɔ ʌ ſ͕ɭwȝ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ" ),
-        () => uziHazardanLokon(),
-        { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
-    );
+    uziAparatanLokon();
 }
 
 // ⟨ Aŭtomata ŝarĝo je komenco: jam-permesita loko aŭ hazarda loko ⟩
@@ -552,11 +556,7 @@ function inicialigiLokon(): void {
     if ( permiso && permiso.query ) {
         permiso.query( { name: "geolocation" } ).then( stato => {
             if ( stato.state === "granted" ) {
-                navigator.geolocation.getCurrentPosition(
-                    pozicio => ŝargiLokon( pozicio.coords.latitude, pozicio.coords.longitude, "ſɭᶗ‹ɔ ʌ ſ͕ɭwȝ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ" ),
-                    () => uziHazardanLokon(),
-                    { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
-                );
+                uziAparatanLokon();
             } else {
                 uziHazardanLokon();
             }
@@ -602,7 +602,7 @@ function interpoliKoloron( a: [ number, number, number ], b: [ number, number, n
 // ⟨ Kalkuli la nunan ĉielan gradienton laŭ la loka horo ⟩
 function kalkuliĈielon(): string {
     const nun = new Date();
-    const horo = nun.getHours() + nun.getMinutes() / 60;
+    const horo = nun.getHours() + nun.getMinutes() / 0o74;
     let de = ĈIELAJ_KOLOROJ[ 0 ];
     let al = ĈIELAJ_KOLOROJ[ ĈIELAJ_KOLOROJ.length - 1 ];
     for ( let i = 0; i < ĈIELAJ_KOLOROJ.length - 1; i++ ) {
@@ -614,7 +614,7 @@ function kalkuliĈielon(): string {
     }
     const t = ( horo - de.horo ) / ( al.horo - de.horo );
     const bazo = interpoliKoloron( de.koloro, al.koloro, t );
-    const hela = interpoliKoloron( bazo, [ 0xff, 0xff, 0xff ], 0.35 );
+    const hela = interpoliKoloron( bazo, [ 0xff, 0xff, 0xff ], 0o26 / 0o100 );
 
     // ⟨ Direkto: startas malsupre-maldekstre ( 45° ) kaj rotacias dekstrume laŭ la suna fazo ( tempo ĝis la sekva sunleviĝo ) ⟩
     let fazo: number;
@@ -623,9 +623,9 @@ function kalkuliĈielon(): string {
         fazo = 1 - tempoĜisSekvaSunlevigo / sunaTago.tagoLongo;
         fazo = ( ( fazo % 1 ) + 1 ) % 1;
     } else {
-        fazo = horo / 24;
+        fazo = horo / 0o30;
     }
-    const angulo = 0o55 + fazo * 360;
+    const angulo = 0o55 + fazo * 0o550;
 
     return "linear-gradient( " + angulo + "deg, " + koloroAlRgba( koloroKateno( hela ), 0o100 / 0xff ) + ", " + koloroAlRgba( koloroKateno( bazo ), 0 ) + " )";
 }
@@ -685,9 +685,7 @@ uzuBazo10Marko.addEventListener( "change", () => {
 
 kalendaroEnigo.addEventListener( "input", aktualigiKalendaron );
 nunButono.addEventListener( "click", () => {
-    const nun = new Date();
-    const loka = new Date( nun.getTime() - nun.getTimezoneOffset() * 60000 ).toISOString().slice( 0, 16 );
-    kalendaroEnigo.value = loka;
+    kalendaroEnigo.value = nunaLokaDatoKateno();
     aktualigiKalendaron();
 } );
 
@@ -713,8 +711,7 @@ lokoEnigo.addEventListener( "keypress", ( evento ) => {
 
 // ⟪ Inicialigo 🚀 ⟩
 
-const nun = new Date();
-kalendaroEnigo.value = new Date( nun.getTime() - nun.getTimezoneOffset() * 60000 ).toISOString().slice( 0, 16 );
+kalendaroEnigo.value = nunaLokaDatoKateno();
 aktualigiKalendaron();
 
 renduTempoEnigojn();

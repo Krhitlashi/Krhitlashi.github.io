@@ -27,7 +27,7 @@ declare global {
   function cax2lStafl2(cax2luStafl2?: Date): { stibix: number; pal2stif: number; stafl2: number; haqe: number; qe: number; he: number };
   function kf2Hak2fe(k2fe: number, kp6Sak2fe?: string): string;
   function kf2Cax2lStafl2(stifeh2Inak?: Date): string;
-  function castifeh2(stifeh2Inak?: Date): { haqe: number; qe: number; he: number; she: number };
+  function castifeh2(stifeh2Inak?: Date): { shaqe: number; sqe: number; she: number; haqe: number; qe: number; he: number };
   function kf2Castifeh2(stifeh2Inak?: Date): string;
   function tlak2KefSekek(ruvaSekek: number, kef: string): number;
   function tlak2Stifeh2(): void;
