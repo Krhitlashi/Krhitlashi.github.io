@@ -348,9 +348,17 @@ let sunaTago = {
     tagoLongo: 0,
 };
 
-// ⟨ Formati horon kiel unuopan nombron en horoj ( sama kiel la aliaj valoroj ) ⟩
-function formatiHoron( dato: Date ): string {
-    return formatiNombron( dato.getHours() + dato.getMinutes() / 0o74 + dato.getSeconds() / 0o7000 );
+// ⟨ Legi la bazo-64 horloĝon ( 3 niveloj de 64 ) por sekundoj pasintaj de la sunleviĝo ⟩
+function bazo64Legi( sekundoj: number, tagoLongo: number ): [ number, number, number ] {
+    const nivelo1 = tagoLongo / 0o100;
+    const nivelo2 = tagoLongo / 0o10000;
+    const nivelo3 = tagoLongo / 0o1000000;
+    const kvanto1 = Math.floor( sekundoj / nivelo1 );
+    const rest1 = sekundoj % nivelo1;
+    const kvanto2 = Math.floor( rest1 / nivelo2 );
+    const rest2 = rest1 % nivelo2;
+    const kvanto3 = Math.floor( rest2 / nivelo3 );
+    return [ kvanto1, kvanto2, kvanto3 ];
 }
 
 // ⟨ Formati daton kiel aaaa-mm-tt laŭ loka tempo ⟩
@@ -431,8 +439,13 @@ function renduSunanTagon(): void {
     const sekvaSunlevigo = sunaTago.sekvaSunlevigo as Date;
     if ( isNaN( sunlevigo.getTime() ) || isNaN( sunsubiro.getTime() ) || isNaN( sekvaSunlevigo.getTime() ) ) return;
 
-    document.getElementById( "suno-sunlevigo" )!.textContent = formatiHoron( sunlevigo );
-    document.getElementById( "suno-sunsubiro" )!.textContent = formatiHoron( sunsubiro );
+    // ⟨ Sunleviĝo kaj sunsubiro kiel bazo-64 horloĝaj valoroj ( 0 0 0 = sunleviĝo ) ⟩
+    const sunlevigo64 = bazo64Legi( 0, sunaTago.tagoLongo );
+    const sunsubiro64 = bazo64Legi( ( sunsubiro.getTime() - sunlevigo.getTime() ) / 1000, sunaTago.tagoLongo );
+    document.getElementById( "suno-sunlevigo" )!.textContent =
+        [ sunlevigo64[ 0 ], sunlevigo64[ 1 ], sunlevigo64[ 2 ] ].map( v => formatiNombron( v ) ).join( " " );
+    document.getElementById( "suno-sunsubiro" )!.textContent =
+        [ sunsubiro64[ 0 ], sunsubiro64[ 1 ], sunsubiro64[ 2 ] ].map( v => formatiNombron( v ) ).join( " " );
     document.getElementById( "suno-tago-longeco" )!.textContent = formatiNombron( sunaTago.tagoLongo / 0o7000 );
 
     // ⟨ Pasita tempo ekde la plej lasta sunleviĝo ( mod la suna tago ) ⟩
@@ -444,14 +457,7 @@ function renduSunanTagon(): void {
     if ( pasis < 0 ) pasis += sunaTago.tagoLongo;
 
     // ⟨ Bazo-64 horloĝo ( 64 3-niveloj ) ⟩
-    const nivelo1 = sunaTago.tagoLongo / 0o100;
-    const nivelo2 = sunaTago.tagoLongo / 0o10000;
-    const nivelo3 = sunaTago.tagoLongo / 0o1000000;
-    const kvanto1 = Math.floor( pasis / nivelo1 );
-    const rest1 = pasis % nivelo1;
-    const kvanto2 = Math.floor( rest1 / nivelo2 );
-    const rest2 = rest1 % nivelo2;
-    const kvanto3 = Math.floor( rest2 / nivelo3 );
+    const [ kvanto1, kvanto2, kvanto3 ] = bazo64Legi( pasis, sunaTago.tagoLongo );
 
     document.getElementById( "suno-bazo64-ı" )!.textContent = formatiNombron( kvanto1 );
     document.getElementById( "suno-bazo64-ɿ" )!.textContent = formatiNombron( kvanto2 );
