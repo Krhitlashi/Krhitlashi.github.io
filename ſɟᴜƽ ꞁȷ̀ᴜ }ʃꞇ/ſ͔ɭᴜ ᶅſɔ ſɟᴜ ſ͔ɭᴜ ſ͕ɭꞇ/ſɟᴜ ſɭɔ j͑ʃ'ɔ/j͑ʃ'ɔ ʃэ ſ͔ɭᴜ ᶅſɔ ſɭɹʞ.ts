@@ -505,13 +505,15 @@ function numeroAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string 
  * @returns string
  */
 function gawekiifAlKodigo(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    const { laŭlitera = false } = opcioj;
     const vortoj = String(teksto).split(/\s+/).filter(Boolean);
     return vortoj.map(vorto => {
-        return disigiEnGlifojn(vorto, KODIGAJ_KLAVOJ).map(glifo => {
+        const kodoj = disigiEnGlifojn(vorto, KODIGAJ_KLAVOJ).map(glifo => {
             const eniro = KODIGAJ_ENIROJ[glifo];
             if ( !eniro ) return glifo;
             return eniro.kategorio + eniro.valoro;
-        }).join("");
+        });
+        return laŭlitera ? kodoj.join(" ") : kodoj.join("");
     }).join(" ");
 }
 
@@ -581,14 +583,16 @@ function kodigoAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string 
  * @returns string
  */
 function gawekiifAlDuuma(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    const { laŭlitera = false } = opcioj;
     const vortoj = String(teksto).split(/\s+/).filter(Boolean);
     return vortoj.map(vorto => {
-        return disigiEnGlifojn(vorto, KODIGAJ_KLAVOJ).map(glifo => {
+        const duumoj = disigiEnGlifojn(vorto, KODIGAJ_KLAVOJ).map(glifo => {
             const eniro = KODIGAJ_ENIROJ[glifo];
             if ( !eniro ) return glifo;
             const kategorio = KODIGAJ_KATEGORIOJ[eniro.kategorio];
             return kategorio.duuma + valoroAlDuuma(ciferojAlValoro(eniro.valoro), 8);
-        }).join("");
+        });
+        return laŭlitera ? duumoj.join(" ") : duumoj.join("");
     }).join(" ");
 }
 
