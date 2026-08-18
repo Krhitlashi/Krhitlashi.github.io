@@ -191,6 +191,511 @@ for ( const m of INTERNAJ ) {
 SERXTABELO.la3os_ipa.keys = Object.keys(SERXTABELO.la3os_ipa.map).sort((a, b) => b.length - a.length);
 
 
+// ⟪ Bazo-8 Sistemoj 🔢 ⟫
+
+// ⟨ Ciferoj de la oktala sistemo ( ɔ-ƨ = 0-7 ) kaj de la kodigo ( ɔ-⌅̊ = 0-F ) ⟩
+const B8_CIFEROJ = [ "ɔ", "ı", "ɿ", "ц", "э", "ꞟ", "ɩ", "ƨ" ];
+const B8_CIFEROJ_MALO: Record<string, number> = { "ɔ": 0, "ı": 1, "ɿ": 2, "ц": 3, "э": 4, "ꞟ": 5, "ɩ": 6, "ƨ": 7 };
+
+const KODIGAJ_CIFEROJ = [ "ɔ", "ı", "ɿ", "ц", "э", "ꞟ", "ɩ", "ƨ", "ƨ̵", "ⱻ", "ɜ́", "ԏ", "u̵", "ᶔ", "ⲁ", "⌅̊" ];
+const KODIGAJ_CIFEROJ_MALO: Record<string, number> = {
+    "ɔ": 0, "ı": 1, "ɿ": 2, "ц": 3, "э": 4, "ꞟ": 5, "ɩ": 6, "ƨ": 7,
+    "ƨ̵": 8, "ⱻ": 9, "ɜ́": 10, "ԏ": 11, "u̵": 12, "ᶔ": 13, "ⲁ": 14, "⌅̊": 15
+};
+const KODIGAJ_CIFEROJ_LAŬVALORO: Record<number, string> = {
+    0: "ɔ", 1: "ı", 2: "ɿ", 3: "ц", 4: "э", 5: "ꞟ", 6: "ɩ", 7: "ƨ",
+    8: "ƨ̵", 9: "ⱻ", 10: "ɜ́", 11: "ԏ", 12: "u̵", 13: "ᶔ", 14: "ⲁ", 15: "⌅̊"
+};
+const KODIGAJ_CIFEROJ_LAŬLONGO = [ ...KODIGAJ_CIFEROJ ].sort((a, b) => b.length - a.length);
+
+// ⟨ Unua sistemo - la oktala valoro de ĉiu gawekiif ( vertikala, horizontala ) ⟩
+const OKTALA_GRIDO: Record<string, string> = {
+    "ᶅſ": "ɔɔ", "ſן": "ɔı", "ſȷ": "ɔɿ", "ŋᷠ": "ɔц",
+    "ʃ": "ıɔ", "ɽ͑ʃ'": "ıı", "j͑ʃ'": "ıɿ", "ſᶘ": "ıц", "ɭʃ'": "ıэ",
+    "ɭ(": "ɿɔ", "ɭʃ": "ɿı", "j͑ʃ": "ɿɿ", "}ʃ": "ɿц", "}ʃ'": "ɿэ",
+    "j͐ʃ": "цɔ", "ſ̀ȷ": "цı", "ſɭ,": "цɿ", "ſɭˬ": "цц", "oͩſ̀ȷ": "цэ",
+    "ɭl̀": "эɔ", "ſɟ": "эı", "ı],": "эɿ", "ſ͕ȷ": "эц",
+    "ſ͔ɭ": "ꞟɔ", "ſɭ": "ꞟı", "֭ſɭ": "ꞟɿ", "ſ͕ɭ": "ꞟц",
+    "ꞇ": "ɩɔ", "ɔ": "ɩı", "ɹ": "ɩɿ", "ᴜ": "ɩц", "ȏ": "ɩэ",
+    "w": "ƨɔ", "ɜ": "ƨı", "э": "ƨɿ", "ⅎ": "ƨц",
+    "⟅": "ꞟɔ", "｡": "ꞟı", "ʌ": "ꞟɿ", "v": "ꞟц", "⸙": "ꞟэ", "⸾": "ꞟꞟ", "⸰": "ꞟɩ"
+};
+
+// ⟨ IPA de la specialaj kolumnoj ( э ) en la oktala tabelo ⟩
+const OKTALAJ_SPECIALAJ_IPA: Record<string, string> = { "ɭʃ'": "ǃ", "}ʃ'": "ǃ̃", "oͩſ̀ȷ": "ǁ̃" };
+
+/**
+ * Trovu la grandan formon de interna ( malgranda ) formo per la3os aŭ IPA.
+ * @param malgranda ( Mapo , required ) - La interna formo.
+ * @param ĉuAkceptebla ( ( gk ) => boolean , required ) - Kontrolilo de la granda formo.
+ * @returns string | null
+ */
+function troviGrandanFormon(malgranda: Mapo, ĉuAkceptebla: (gk: string) => boolean): string | null {
+    const la3osa = KOMENCAJ.find(m => m.la3os === malgranda.la3os);
+    if ( la3osa && ĉuAkceptebla(la3osa.gk) ) return la3osa.gk;
+    const ipa = malgranda.ipa;
+    if ( ipa ) {
+        const speciala = Object.entries(OKTALAJ_SPECIALAJ_IPA).find(([ , p ]) => p === ipa);
+        if ( speciala && ĉuAkceptebla(speciala[0]) ) return speciala[0];
+        const perIpa = KOMENCAJ.find(m => m.ipa === ipa);
+        if ( perIpa && ĉuAkceptebla(perIpa.gk) ) return perIpa.gk;
+    }
+    return null;
+}
+
+// ⟨ Plena oktala tabelo - grandaj formoj plus la rekte tradukeblaj malgrandaj formoj ⟩
+const OKTALAJ_VALOROJ: Record<string, string> = { ...OKTALA_GRIDO };
+for ( const m of INTERNAJ ) {
+    const granda = troviGrandanFormon(m, gk => Boolean(OKTALA_GRIDO[gk]));
+    if ( granda && !OKTALAJ_VALOROJ[m.gk] ) {
+        OKTALAJ_VALOROJ[m.gk] = OKTALA_GRIDO[granda];
+    }
+}
+
+// ⟨ Inversa oktala tabelo - de oktala valoro al la granda formo ( unua venas unue ) ⟩
+const OKTALAJ_LAŬVALORO: Record<string, string> = {};
+for ( const [ gk, valoro ] of Object.entries(OKTALA_GRIDO) ) {
+    if ( !OKTALAJ_LAŬVALORO[valoro] ) {
+        OKTALAJ_LAŬVALORO[valoro] = gk;
+    }
+}
+
+// ⟨ Dua sistemo - la kodigo ( ſɭɘэ ſɭɘɹ ) ⟩
+
+// ⟨ Kategorioj de la kodigo ( cifero, duuma ) ⟩
+const KODIGAJ_KATEGORIOJ: Record<string, { cifero: string; duuma: string }> = {
+    "ɔ": { cifero: "ɔ", duuma: "ɔɔɔɔ" },
+    "ı": { cifero: "ı", duuma: "ɔɔɔı" },
+    "ɿ": { cifero: "ɿ", duuma: "ɔɔıɔ" },
+    "ц": { cifero: "ц", duuma: "ɔɔıı" },
+    "э": { cifero: "э", duuma: "ɔıɔɔ" }
+};
+
+// ⟨ Valoroj de la grandaj formoj ( du kodigaj ciferoj ) ⟩
+const KODIGAJ_GRANDAJ_VALOROJ: Record<string, string> = {
+    "ᶅſ": "00", "ſן": "01", "ſȷ": "02", "ŋᷠ": "07",
+    "ʃ": "08", "ɽ͑ʃ'": "33", "j͑ʃ'": "32", "ſᶘ": "E3", "ɭʃ'": "31",
+    "ɭ(": "48", "ɭʃ": "41", "j͑ʃ": "42", "}ʃ": "47", "}ʃ'": "37",
+    "j͐ʃ": "46", "ſ̀ȷ": "E6", "ſɭ,": "58", "ſɭˬ": "E8",
+    "ɭl̀": "60", "ſɟ": "61", "ı],": "62", "ſ͕ȷ": "67",
+    "ſ͔ɭ": "88", "ſɭ": "81", "֭ſɭ": "82", "ſ͕ɭ": "87",
+    "ꞁȷ̀": "B0"
+};
+
+// ⟨ Valoroj de la vokaloj ( ц-formo ) kaj de la specialaj ( э-formo ) ⟩
+const KODIGAJ_VOKALAJ_VALOROJ: Record<string, string> = {
+    "ꞇ": "07", "ɔ": "36", "ɹ": "13", "ᴜ": "45", "w": "23", "ɜ": "22", "э": "41"
+};
+const KODIGAJ_SPECIALAJ_VALOROJ: Record<string, string> = {
+    "ȏ": "14", "ⅎ": "22", "oͩ": "22",
+    "⟅": "50", "｡": "51", "ʌ": "52", "v": "53", "⸙": "54", "⸾": "55", "⸰": "56"
+};
+
+interface KodigaEniro {
+    kategorio: string;
+    valoro: string;
+}
+
+/**
+ * Konvertu ASCII-heksan valoron al kodigaj ciferoj.
+ * @param valoro ( string , required ) - ASCII-heksa valoro ( ekz. "E3" ).
+ * @returns string
+ */
+function asciiValoroAlCiferoj(valoro: string): string {
+    return valoroAlCiferoj(parseInt(valoro, 16), 2);
+}
+
+// ⟨ Plena kodiga tabelo - ĉiu gawekiif kun sia kategorio kaj valoro ⟩
+const KODIGAJ_ENIROJ: Record<string, KodigaEniro> = {};
+for ( const [ gk, valoro ] of Object.entries(KODIGAJ_GRANDAJ_VALOROJ) ) {
+    KODIGAJ_ENIROJ[gk] = { kategorio: "ı", valoro: asciiValoroAlCiferoj(valoro) };
+}
+for ( const [ gk, valoro ] of Object.entries(KODIGAJ_VOKALAJ_VALOROJ) ) {
+    KODIGAJ_ENIROJ[gk] = { kategorio: "ц", valoro: asciiValoroAlCiferoj(valoro) };
+}
+for ( const [ gk, valoro ] of Object.entries(KODIGAJ_SPECIALAJ_VALOROJ) ) {
+    KODIGAJ_ENIROJ[gk] = { kategorio: "э", valoro: asciiValoroAlCiferoj(valoro) };
+}
+for ( const m of INTERNAJ ) {
+    const granda = troviGrandanFormon(m, gk => Boolean(KODIGAJ_GRANDAJ_VALOROJ[gk]));
+    if ( granda && !KODIGAJ_ENIROJ[m.gk] ) {
+        KODIGAJ_ENIROJ[m.gk] = { kategorio: "ɿ", valoro: asciiValoroAlCiferoj(KODIGAJ_GRANDAJ_VALOROJ[granda]) };
+    }
+}
+
+// ⟨ Inversa kodiga tabelo - de kategorio plus valoro al la formo ⟩
+const KODIGAJ_LAŬENIRO: Record<string, string> = {};
+for ( const [ gk, eniro ] of Object.entries(KODIGAJ_ENIROJ) ) {
+    const klavo = `${eniro.kategorio}_${eniro.valoro}`;
+    if ( !KODIGAJ_LAŬENIRO[klavo] ) {
+        KODIGAJ_LAŬENIRO[klavo] = gk;
+    }
+}
+
+// ⟨ Ĵetonaj ŝlosiloj por glifo-detekto ⟩
+const OKTALAJ_KLAVOJ = Object.keys(OKTALAJ_VALOROJ).sort((a, b) => b.length - a.length);
+const KODIGAJ_KLAVOJ = Object.keys(KODIGAJ_ENIROJ).sort((a, b) => b.length - a.length);
+
+/**
+ * Disigu tekston en glifojn laŭ plej-longa-unua kongruo.
+ * @param teksto ( string , required ) - Teksto por disigi.
+ * @param klavoj ( string[] , required ) - Ĵetonaj ŝlosiloj.
+ * @returns string[]
+ */
+function disigiEnGlifojn(teksto: string, klavoj: string[]): string[] {
+    const rezulto: string[] = [];
+    let i = 0;
+    while ( i < teksto.length ) {
+        let kongruis = false;
+        for ( const klavo of klavoj ) {
+            if ( teksto.slice(i, i + klavo.length) === klavo ) {
+                rezulto.push(klavo);
+                i += klavo.length;
+                kongruis = true;
+                break;
+            }
+        }
+        if ( !kongruis ) {
+            rezulto.push(teksto[i]);
+            i++;
+        }
+    }
+    return rezulto;
+}
+
+/**
+ * Konvertu oktalajn ciferojn ( ɔ-ƨ ) al nombro.
+ * @param teksto ( string , required ) - Oktalaj ciferoj.
+ * @returns number
+ */
+function oktalaAlValoro(teksto: string): number {
+    let rezulto = 0;
+    for ( const cifero of teksto ) {
+        const valoro = B8_CIFEROJ_MALO[cifero];
+        if ( valoro === undefined ) return NaN;
+        rezulto = rezulto * 8 + valoro;
+    }
+    return rezulto;
+}
+
+/**
+ * Konvertu nombron al oktalaj ciferoj ( ɔ-ƨ ).
+ * @param valoro ( number , required ) - Nombro.
+ * @returns string
+ */
+function valoroAlOktala(valoro: number): string {
+    if ( valoro === 0 ) return "ɔ";
+    let rezulto = "";
+    let restanta = valoro;
+    while ( restanta > 0 ) {
+        rezulto = B8_CIFEROJ[restanta % 8] + rezulto;
+        restanta = Math.floor(restanta / 8);
+    }
+    return rezulto;
+}
+
+/**
+ * Konvertu kodigajn ciferojn al nombro.
+ * @param ciferoj ( string , required ) - Ciferaĵo per kodigaj ciferoj.
+ * @returns number
+ */
+function ciferojAlValoro(ciferoj: string): number {
+    let rezulto = 0;
+    let i = 0;
+    while ( i < ciferoj.length ) {
+        let kongruis = false;
+        for ( const cifero of KODIGAJ_CIFEROJ_LAŬLONGO ) {
+            if ( ciferoj.slice(i, i + cifero.length) === cifero ) {
+                const valoro = KODIGAJ_CIFEROJ_MALO[cifero];
+                if ( valoro === undefined ) return NaN;
+                rezulto = rezulto * 16 + valoro;
+                i += cifero.length;
+                kongruis = true;
+                break;
+            }
+        }
+        if ( !kongruis ) return NaN;
+    }
+    return rezulto;
+}
+
+/**
+ * Konvertu nombron al kodigaj ciferoj.
+ * @param valoro ( number , required ) - Nombra valoro.
+ * @param longo ( number = 2 , optional ) - Minimuma longo de la ciferaĵo.
+ * @returns string
+ */
+function valoroAlCiferoj(valoro: number, longo = 2): string {
+    let rezulto = valoro === 0 ? "ɔ" : "";
+    let restanta = valoro;
+    while ( restanta > 0 ) {
+        rezulto = KODIGAJ_CIFEROJ_LAŬVALORO[restanta % 16] + rezulto;
+        restanta = Math.floor(restanta / 16);
+    }
+    return rezulto.padStart(longo, "ɔ");
+}
+
+/**
+ * Konvertu nombron al duuma ĉeno per ɔ kaj ı.
+ * @param valoro ( number , required ) - Nombra valoro.
+ * @param longo ( number = 8 , optional ) - Longo de la duuma ĉeno.
+ * @returns string
+ */
+function valoroAlDuuma(valoro: number, longo = 8): string {
+    return valoro.toString(2).padStart(longo, "0").replace(/0/g, "ɔ").replace(/1/g, "ı");
+}
+
+/**
+ * Konvertu duuman ĉenon ( ɔ/ı ) al nombro.
+ * @param duuma ( string , required ) - Duuma ĉeno per ɔ kaj ı.
+ * @returns number
+ */
+function duumaAlValoro(duuma: string): number {
+    let rezulto = 0;
+    for ( const bito of duuma ) {
+        if ( bito !== "ɔ" && bito !== "ı" ) return NaN;
+        rezulto = rezulto * 2 + (bito === "ı" ? 1 : 0);
+    }
+    return rezulto;
+}
+
+/**
+ * Konvertu Gawekiif-tekston al oktalaj valoroj ( Sistemo 1 - ſɭɹ ſȷɔ ).
+ * @param teksto ( string , required ) - Gawekiif-teksto.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Opcioj.
+ * @returns string
+ */
+function gawekiifAlNumero(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    const vortoj = String(teksto).split(/\s+/).filter(Boolean);
+    return vortoj.map(vorto => {
+        return disigiEnGlifojn(vorto, OKTALAJ_KLAVOJ).map(glifo => {
+            return OKTALAJ_VALOROJ[glifo] || glifo;
+        }).join("");
+    }).join(" ");
+}
+
+/**
+ * Konvertu oktalajn valorojn al Gawekiif-teksto ( Sistemo 1 ).
+ * @param teksto ( string , required ) - Oktalaj valoroj.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Opcioj.
+ * @returns string
+ */
+function numeroAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    return String(teksto).split(/\s+/).map(vorto => {
+        let rezulto = "";
+        let i = 0;
+        while ( i < vorto.length ) {
+            const duopo = vorto.slice(i, i + 2);
+            if ( B8_CIFEROJ_MALO[duopo[0]] !== undefined && B8_CIFEROJ_MALO[duopo[1]] !== undefined && OKTALAJ_LAŬVALORO[duopo] ) {
+                rezulto += OKTALAJ_LAŬVALORO[duopo];
+                i += 2;
+            } else {
+                rezulto += vorto[i];
+                i++;
+            }
+        }
+        return rezulto;
+    }).join(" ");
+}
+
+/**
+ * Konvertu Gawekiif-tekston al la kodiga formo ( Sistemo 2 - ſɭɘэ ſɭɘɹ ).
+ * @param teksto ( string , required ) - Gawekiif-teksto.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Opcioj.
+ * @returns string
+ */
+function gawekiifAlKodigo(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    const vortoj = String(teksto).split(/\s+/).filter(Boolean);
+    return vortoj.map(vorto => {
+        return disigiEnGlifojn(vorto, KODIGAJ_KLAVOJ).map(glifo => {
+            const eniro = KODIGAJ_ENIROJ[glifo];
+            if ( !eniro ) return glifo;
+            return eniro.kategorio + eniro.valoro;
+        }).join("");
+    }).join(" ");
+}
+
+/**
+ * Disigu katenitan kodigan vorton en glifojn.
+ * Ĉiu glifo estas kategorio plus du kodigaj ciferoj.
+ * @param vorto ( string , required ) - Katenita kodiga vorto.
+ * @returns string[]
+ */
+function disigiKodigitajnGlifojn(vorto: string): string[] {
+    const glifoj: string[] = [];
+    let i = 0;
+    while ( i < vorto.length ) {
+        const kategorio = vorto[i];
+        if ( kategorio === "ɔ" ) {
+            glifoj.push(vorto.slice(i + 1));
+            break;
+        }
+        if ( kategorio !== "ı" && kategorio !== "ɿ" && kategorio !== "ц" && kategorio !== "э" ) {
+            glifoj.push(kategorio);
+            i++;
+            continue;
+        }
+        i++;
+        const postKategorio = i;
+        let ciferoj = "";
+        let trovita = false;
+        for ( let k = 0; k < 2; k++ ) {
+            trovita = false;
+            for ( const cifero of KODIGAJ_CIFEROJ_LAŬLONGO ) {
+                if ( vorto.slice(i, i + cifero.length) === cifero ) {
+                    ciferoj += cifero;
+                    i += cifero.length;
+                    trovita = true;
+                    break;
+                }
+            }
+            if ( !trovita ) break;
+        }
+        if ( trovita ) {
+            const glifo = KODIGAJ_LAŬENIRO[`${kategorio}_${ciferoj}`];
+            glifoj.push(glifo || (kategorio + ciferoj));
+        } else {
+            glifoj.push(kategorio);
+            i = postKategorio;
+        }
+    }
+    return glifoj;
+}
+
+/**
+ * Konvertu la kodigan formon al Gawekiif-teksto ( Sistemo 2 ).
+ * @param teksto ( string , required ) - Kodiga formo.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Opcioj.
+ * @returns string
+ */
+function kodigoAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    return String(teksto).split(/\s+/).filter(Boolean).map(vorto => {
+        return disigiKodigitajnGlifojn(vorto).join("");
+    }).join(" ");
+}
+
+/**
+ * Konvertu Gawekiif-tekston al la duuma formo ( Sistemo 2 ).
+ * @param teksto ( string , required ) - Gawekiif-teksto.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Opcioj.
+ * @returns string
+ */
+function gawekiifAlDuuma(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    const vortoj = String(teksto).split(/\s+/).filter(Boolean);
+    return vortoj.map(vorto => {
+        return disigiEnGlifojn(vorto, KODIGAJ_KLAVOJ).map(glifo => {
+            const eniro = KODIGAJ_ENIROJ[glifo];
+            if ( !eniro ) return glifo;
+            const kategorio = KODIGAJ_KATEGORIOJ[eniro.kategorio];
+            return kategorio.duuma + valoroAlDuuma(ciferojAlValoro(eniro.valoro), 8);
+        }).join("");
+    }).join(" ");
+}
+
+/**
+ * Disigu katenitan duuman vorton en glifojn.
+ * Ĉiu glifo estas dek du duumaj signoj ( kategorio plus valoro ).
+ * @param vorto ( string , required ) - Katenita duuma vorto.
+ * @returns string[]
+ */
+function disigiDuumajnGlifojn(vorto: string): string[] {
+    const glifoj: string[] = [];
+    let i = 0;
+    while ( i < vorto.length ) {
+        if ( i + 12 > vorto.length ) {
+            glifoj.push(vorto.slice(i));
+            break;
+        }
+        const ĵetono = vorto.slice(i, i + 12);
+        const kategorio = Object.entries(KODIGAJ_KATEGORIOJ).find(([ , v ]) => v.duuma === ĵetono.slice(0, 4))?.[0];
+        if ( !kategorio ) {
+            glifoj.push(ĵetono[0]);
+            i++;
+            continue;
+        }
+        const valoro = duumaAlValoro(ĵetono.slice(4));
+        if ( isNaN(valoro) ) {
+            glifoj.push(ĵetono[0]);
+            i++;
+            continue;
+        }
+        const glifo = KODIGAJ_LAŬENIRO[`${kategorio}_${valoroAlCiferoj(valoro, 2)}`];
+        glifoj.push(glifo || ĵetono);
+        i += 12;
+    }
+    return glifoj;
+}
+
+/**
+ * Konvertu la duuman formon al Gawekiif-teksto ( Sistemo 2 ).
+ * @param teksto ( string , required ) - Duuma formo.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Opcioj.
+ * @returns string
+ */
+function duumaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    return String(teksto).split(/\s+/).filter(Boolean).map(vorto => {
+        return disigiDuumajnGlifojn(vorto).join("");
+    }).join(" ");
+}
+
+/**
+ * Konvertu la kodigan aŭ duuman formon al Gawekiif-teksto.
+ * Akceptas la kodigan formon, la duuman formon, aŭ ambaŭn kun ⸙ apartigilo.
+ * @param teksto ( string , required ) - Eniga formo.
+ * @returns string
+ */
+function encodingAlGawekiif(teksto: string): string {
+    const ĉefa = String(teksto).split("⸙")[0] || "";
+    const ĵetonoj = ĉefa.split(/\s+/).filter(Boolean);
+    const ĉuDuuma = ĵetonoj.length > 0 && ĵetonoj.every(t => t.length === 12 && /^[ɔı]+$/.test(t));
+    return ĉuDuuma ? duumaAlGawekiif(ĉefa) : kodigoAlGawekiif(ĉefa);
+}
+
+/**
+ * Konvertu oktalajn ciferojn al la kodiga numero-formo.
+ * @param teksto ( string , required ) - Oktalaj ciferoj ( ɔ-ƨ ).
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Opcioj.
+ * @returns string
+ */
+function oktalaAlKodigo(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    return "ɔ" + String(teksto).replace(/\s+/g, "");
+}
+
+/**
+ * Konvertu la kodigan numero-formon al oktalaj ciferoj.
+ * @param teksto ( string , required ) - Kodiga numero-formo.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Opcioj.
+ * @returns string
+ */
+function kodigoAlOktala(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    return String(teksto).replace(/^ɔ/, "");
+}
+
+/**
+ * Konvertu oktalajn ciferojn al la duuma numero-formo.
+ * @param teksto ( string , required ) - Oktalaj ciferoj ( ɔ-ƨ ).
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Opcioj.
+ * @returns string
+ */
+function oktalaAlDuuma(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    const valoro = oktalaAlValoro(String(teksto).replace(/\s+/g, ""));
+    if ( isNaN(valoro) ) return String(teksto);
+    return "ɔɔɔɔ" + valoroAlDuuma(valoro, 8);
+}
+
+/**
+ * Konvertu la duuman numero-formon al oktalaj ciferoj.
+ * @param teksto ( string , required ) - Duuma numero-formo.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Opcioj.
+ * @returns string
+ */
+function duumaAlOktala(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    const valoro = duumaAlValoro(String(teksto).replace(/^ɔɔɔɔ/, ""));
+    if ( isNaN(valoro) ) return String(teksto);
+    return valoroAlOktala(valoro);
+}
+
+
 // ⟪ Helpaj Funkcioj (daŭrigo) 🔧 ⟫
 
 /**
@@ -597,7 +1102,15 @@ function konverti(teksto: string, de: string, al: string, opcioj: KonvertajOpcio
         "numerical_ipa": () => numerikaAlIpa(teksto, opciojLokala),
         "ipa_numerical": () => ipaAlNumerika(teksto, opciojLokala),
         "numerical_gawekiif": () => numerikaAlGawekiif(teksto, opciojLokala),
-        "gawekiif_numerical": () => gawekiifAlNumerika(teksto, opciojLokala)
+        "gawekiif_numerical": () => gawekiifAlNumerika(teksto, opciojLokala),
+        "gawekiif_numero": () => gawekiifAlNumero(teksto, opciojLokala),
+        "numero_gawekiif": () => numeroAlGawekiif(teksto, opciojLokala),
+        "gawekiif_kodigo": () => gawekiifAlKodigo(teksto, opciojLokala),
+        "kodigo_gawekiif": () => kodigoAlGawekiif(teksto, opciojLokala),
+        "gawekiif_duuma": () => gawekiifAlDuuma(teksto, opciojLokala),
+        "duuma_gawekiif": () => duumaAlGawekiif(teksto, opciojLokala),
+        "gawekiif_encoding": () => gawekiifAlKodigo(teksto, opciojLokala) + " ⸙ " + gawekiifAlDuuma(teksto, opciojLokala),
+        "encoding_gawekiif": () => encodingAlGawekiif(teksto)
     };
 
     const rektaKlavo = `${de}_${al}`;
@@ -637,6 +1150,17 @@ if ( typeof module !== "undefined" && module.exports ) {
         ipaAlGawekiif,
         numerikaAlGawekiif,
         gawekiifAlNumerika,
+        gawekiifAlNumero,
+        numeroAlGawekiif,
+        gawekiifAlKodigo,
+        kodigoAlGawekiif,
+        gawekiifAlDuuma,
+        duumaAlGawekiif,
+        encodingAlGawekiif,
+        oktalaAlKodigo,
+        kodigoAlOktala,
+        oktalaAlDuuma,
+        duumaAlOktala,
         konverti
     };
 }
@@ -653,11 +1177,15 @@ if ( typeof module !== "undefined" && module.exports ) {
         const outputs = {
             gk: document.getElementById("tlakakuG2") as HTMLElement | null,
             la3os: document.getElementById("tlakakuLa3os") as HTMLElement | null,
-            ipa: document.getElementById("tlakakuRat0") as HTMLElement | null
+            ipa: document.getElementById("tlakakuRat0") as HTMLElement | null,
+            number: document.getElementById("tlakakuK2fe") as HTMLElement | null,
+            encoding: document.getElementById("tlakakuKodigo") as HTMLElement | null
         };
         const checkboxes ={ outGk: document.getElementById("a1a3kkG2") as HTMLInputElement | null,
             outLa3os: document.getElementById("a1a3kkLa3os") as HTMLInputElement | null,
             outIpa: document.getElementById("a1a3kkRat0") as HTMLInputElement | null,
+            outNumber: document.getElementById("a1a3kkK2fe") as HTMLInputElement | null,
+            outEncoding: document.getElementById("a1a3kkKodigo") as HTMLInputElement | null,
             numbers: document.getElementById("a1aK2reK2fe") as HTMLInputElement | null,
             laŭlitera: document.getElementById("a1aKaj2xa") as HTMLInputElement | null
         };
@@ -688,7 +1216,7 @@ if ( typeof module !== "undefined" && module.exports ) {
                 laŭlitera: checkboxes.laŭlitera?.checked || false
             };
 
-            const eligo: Record<string, string> = { gk: "", la3os: "", ipa: "" };
+            const eligo: Record<string, string> = { gk: "", la3os: "", ipa: "", number: "", encoding: "" };
 
             if ( fontaFormo === "gawekiif" ) {
                 eligo.gk = eniraTeksto;
@@ -698,14 +1226,27 @@ if ( typeof module !== "undefined" && module.exports ) {
                 eligo.la3os = eniraTeksto;
                 eligo.gk = konverti(eligo.la3os, "la3os", "gawekiif", opcioj);
                 eligo.ipa = konverti(eligo.la3os, "la3os", "ipa", opcioj);
-            } else {
+            } else if ( fontaFormo === "ipa" ) {
                 eligo.ipa = eniraTeksto;
                 eligo.la3os = konverti(eligo.ipa, "ipa", "la3os", opcioj);
                 eligo.gk = konverti(eligo.la3os, "la3os", "gawekiif", opcioj);
+            } else if ( fontaFormo === "numero" ) {
+                eligo.number = eniraTeksto;
+                eligo.gk = konverti(eligo.number, "numero", "gawekiif", opcioj);
+                eligo.la3os = konverti(eligo.gk, "gawekiif", "la3os", opcioj);
+                eligo.ipa = konverti(eligo.gk, "gawekiif", "ipa", opcioj);
+            } else {
+                eligo.encoding = eniraTeksto;
+                eligo.gk = encodingAlGawekiif(eniraTeksto);
+                eligo.la3os = konverti(eligo.gk, "gawekiif", "la3os", opcioj);
+                eligo.ipa = konverti(eligo.gk, "gawekiif", "ipa", opcioj);
             }
 
-            const eligajKlavoj = [ "gk", "la3os", "ipa" ];
-            const eligajNomoj: Record<string, string> = { gk: "Gk", la3os: "La3os", ipa: "Ipa" };
+            eligo.number = gawekiifAlNumero(eligo.gk, opcioj);
+            eligo.encoding = gawekiifAlKodigo(eligo.gk, opcioj) + " ⸙ " + gawekiifAlDuuma(eligo.gk, opcioj);
+
+            const eligajKlavoj = [ "gk", "la3os", "ipa", "number", "encoding" ];
+            const eligajNomoj: Record<string, string> = { gk: "Gk", la3os: "La3os", ipa: "Ipa", number: "Number", encoding: "Encoding" };
             for ( const klavo of eligajKlavoj ) {
                 const markobutono = checkboxes[`out${eligajNomoj[klavo]}` as keyof typeof checkboxes];
                 const eligaElemento = outputs[klavo as keyof typeof outputs];
@@ -731,6 +1272,7 @@ if ( typeof module !== "undefined" && module.exports ) {
             saxesuOx2pewa,
             ...saxesuGawek2fRadios,
             checkboxes.outGk, checkboxes.outLa3os, checkboxes.outIpa,
+            checkboxes.outNumber, checkboxes.outEncoding,
             checkboxes.numbers, checkboxes.laŭlitera
         ].filter(Boolean) as Element[];
 

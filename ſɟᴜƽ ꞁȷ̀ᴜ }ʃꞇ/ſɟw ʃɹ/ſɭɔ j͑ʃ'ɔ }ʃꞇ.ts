@@ -1,7 +1,9 @@
 /// <reference types="vite/client" />
 
 // ≺⧼ ſɟw ʃɹ - Klavara Paĝo ⌨️ ⧽≻
-// Ŝarĝas la dezajnon el DOCUMENTATION/KEYBOARDLAYOUT.md kaj bildigas interagan klavaron.
+// Bildigas interagan klavaron el la enigita dezajno. La dezajndokumento
+// ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md ) estas ne spurita en git, do ĝia
+// enhavo estas enigita ĉi tie por ke la klavaro funkciu sen ĝi.
 // La dosiero difinas du aranĝojn - la Malgranda ( Cubii / ſɟw ʃɹ ) kun tri
 // tavoloj ( Unua, Ŝanĝo, Simbolo ) kaj la Granda ( Cutlii / ſɟw ſ̀ȷɹ ) kun
 // unu baza tavolo. La Granda aranĝo derivas siajn Ŝanĝan kaj Simbolan
@@ -61,7 +63,7 @@ const NOTAJAGOJ: Readonly<Record<string, KlavaFunkcio>> = {
 };
 
 // ⟨ Tradukitaj nomoj de la funkciaj klavoj. La Iikrhaiaj nomoj venas el la
-//    noto de la Granda aranĝo en DOCUMENTATION/KEYBOARDLAYOUT.md. ⟩
+//    noto de la Granda aranĝo en DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md. ⟩
 const FUNKCIO_NOMOJ: Readonly<Record<KlavaFunkcio, { en: string; aih: string }>> = {
 	shift: { en: "Shift", aih: "ſןw ſȷɹ" },
 	back: { en: "Back", aih: "֭ſɭɹͷ̗" },
@@ -81,12 +83,47 @@ const LONGA_PREMO_DAŬRO = HE_L6HEINAK;
 // ⟨ Daŭro de la konfirmo post kopiado ( 1 Heo ) ⟩
 const KOPII_KONFIRMA_DAŬRO = HE_L6HEINAK;
 
-// ⟨ Ŝarĝu la dezajndokumenton ( DOCUMENTATION/KEYBOARDLAYOUT.md ) ⟩
-const klavarajDosieroj = import.meta.glob( "../../DOCUMENTATION/KEYBOARDLAYOUT.md", {
-	query: "?raw",
-	import: "default",
-	eager: true,
-}) as Record<string, string>;
+// ⟨ La dezajndokumento ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md ) estas ne
+//    spurita en git, do ĝia enhavo estas enigita ĉi tie por ke la klavaro
+//    funkciu sen ĝi. ⟩
+const KLAVARA_DEZAJNO = `# Small ( Cubii / ſɟw ʃɹ )
+
+## First / ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ
+
+ɔ ı ɿ ц э ꞟ ɩ ƨ
+ɭl̀ ſɟ ı], ſ͔ɭ ſ͕ȷ ſ͕ɭ ſɭ, ſɭˬ
+ɽ͑ʃ' ɭʃ j͑ʃ' ɭ( }ʃ ֭ſɭ j͑ʃ j͐ʃ
+ᶅſ ſן ſȷ ʃ ŋᷠ ſɭ ſᶘ ſ̀ȷ
+ꞁȷ̀ ꞇ ɔ ɹ w ᴜ ɜ э ⅎ
+[Shift] [Back] ｡ [Space] ⟅ [Enter] [Symbol]
+
+## Second (Shift) / ſןɹ j͑ʃᴜ ɭ(ꞇ
+
+ƨ̵ ⱻ ɜ́ ԏ u̵ ᶔ ⲁ ⌅̊
+ᴎ ᴜ̭ ᶗ‹ ɴ ⱷ̮̀ ȝ ƴ ɯ
+ƣ̋ ƨ ⰱ ԏ͕ c̗ ᴜ̩ ɔ˞ ͷ̗
+п́ ɘ ʞ ɀ c̭ ƽ ꝛ̗ ŋ
+ȏ ɭʃ' ⱷ᷐ ⲝ o ℩ }ʃ' c̏ oͩ
+[Shift] [Back] v • ʌ [Enter] [Symbol]
+
+## Third (Symbol) / ɭʃɹ ı],ᴜ ɭ(ꞇ
+
+ꞙɭ [ x › ɘ ꭎ ] =
+¥ ~ | < > # ; ⸰
+ſ̋ȷ _ \ { } √ ‾ ⌑
+ȏ̮ - / ( ) ^ — ⋄
+≺ ⧼ ⟪ ⟨ ⺓ ⟩ ⟫ ⧽ ≻
+[Shift] [Back] ⸙ [Space] ⸾ [Enter] [Symbol]
+
+# Large ( Cutlii / ſɟw ſ̀ȷɹ )
+
+ɔ ı ɿ ц э ꞟ ɩ ƨ ｡ ⟅ [ Extra ]
+ɭl̀ ſɟ ı], ſ͔ɭ ꞇ ɹ ⅎ ſ͕ȷ ſ͕ɭ ſɭ, ſɭˬ
+ɽ͑ʃ' ɭʃ j͑ʃ' ɭ( ɔ w ɜ }ʃ ֭ſɭ j͑ʃ j͐ʃ
+ᶅſ ſן ſȷ ʃ ꞁȷ̀ ᴜ э ŋᷠ ſɭ ſᶘ ſ̀ȷ
+[ ſןw ſȷɹ ] [ ֭ſɭɹͷ̗ ] [ ꞁȷ̀ᴜ ɽ͑ʃ'ɔȝ ] [ ſɭw ſ̀ȷᴜ ] [ ſɭɘэ ]
+
+Also [ ſןw ſȷɹ ] is Shift, [ ֭ſɭɹͷ̗ ] is Back, [ ꞁȷ̀ᴜ ɽ͑ʃ'ɔȝ ] is Space, [ ſɭw ſ̀ȷᴜ ] is Enter, [ ſɭɘэ ] is Symbol.`;
 
 // ⟪ Stato 💾 ⟫
 
@@ -788,7 +825,7 @@ document.addEventListener( "DOMContentLoaded", () => {
 		return;
 	}
 
-	const krudaTeksto = Object.values( klavarajDosieroj )[ 0 ] ?? "";
+	const krudaTeksto = KLAVARA_DEZAJNO;
 	arangxoj = analiziArangxojn( krudaTeksto );
 	montriArangxon( 0 );
 
