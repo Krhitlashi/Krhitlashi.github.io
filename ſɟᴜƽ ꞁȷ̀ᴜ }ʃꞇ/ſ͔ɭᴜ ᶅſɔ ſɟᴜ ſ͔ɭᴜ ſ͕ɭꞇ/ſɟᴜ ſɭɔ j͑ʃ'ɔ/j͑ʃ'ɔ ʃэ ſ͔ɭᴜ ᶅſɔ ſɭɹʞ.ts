@@ -260,6 +260,16 @@ for ( const [ gk, valoro ] of Object.entries(OKTALA_GRIDO) ) {
     }
 }
 
+// ⟨ Duuma formo de la oktala sistemo - ĉiu oktala cifero ( ɔ-ƨ ) fariĝas tri bitoj ( ɔɔɔ-ııı ) ⟩
+const OKTALA_DUUMA: Record<string, string> = {
+    "ɔ": "ɔɔɔ", "ı": "ɔɔı", "ɿ": "ɔıɔ", "ц": "ɔıı",
+    "э": "ıɔɔ", "ꞟ": "ıɔı", "ɩ": "ııɔ", "ƨ": "ııı"
+};
+const OKTALA_DUUMA_MALO: Record<string, string> = {};
+for ( const [ cifero, duuma ] of Object.entries(OKTALA_DUUMA) ) {
+    OKTALA_DUUMA_MALO[duuma] = cifero;
+}
+
 // ⟨ Dua sistemo - la kodigo ( ſɭɘэ ſɭɘɹ ) ⟩
 
 // ⟨ Kategorioj de la kodigo ( cifero, duuma ) ⟩
@@ -466,22 +476,30 @@ function duumaAlValoro(duuma: string): number {
  * @returns string
  */
 function gawekiifAlNumero(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    const { laŭlitera = false } = opcioj;
     const vortoj = String(teksto).split(/\s+/).filter(Boolean);
     return vortoj.map(vorto => {
-        return disigiEnGlifojn(vorto, OKTALAJ_KLAVOJ).map(glifo => {
-            return OKTALAJ_VALOROJ[glifo] || glifo;
-        }).join("");
-    }).join(" ");
+        const valoroj = disigiEnGlifojn(vorto, OKTALAJ_KLAVOJ).map(glifo => {
+            return OKTALAJ_VALOROJ[glifo] || "";
+        }).filter(Boolean);
+        return laŭlitera ? valoroj.join(" ") : valoroj.join("");
+    }).filter(Boolean).join(" ");
 }
 
 /**
- * Konvertu oktalajn valorojn al Gawekiif-teksto ( Sistemo 1 ).
- * @param teksto ( string , required ) - Oktalaj valoroj.
+ * Konvertu oktalajn aŭ duumajn valorojn al Gawekiif-teksto ( Sistemo 1 ).
+ * Akceptas la oktalan formon, la duuman formon, aŭ ambaŭn kun / apartigilo.
+ * @param teksto ( string , required ) - Eniga formo.
  * @param opcioj ( KonvertajOpcioj = {} , optional ) - Opcioj.
  * @returns string
  */
-function numeroAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    return String(teksto).split(/\s+/).map(vorto => {
+/**
+ * Konvertu oktalajn valorojn al Gawekiif-teksto.
+ * @param teksto ( string , required ) - Oktalaj valoroj ( ɔ-ƨ ).
+ * @returns string
+ */
+function oktalaAlGawekiif(teksto: string): string {
+    return String(teksto).split(/\s+/).filter(Boolean).map(vorto => {
         let rezulto = "";
         let i = 0;
         while ( i < vorto.length ) {
@@ -496,6 +514,20 @@ function numeroAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string 
         }
         return rezulto;
     }).join(" ");
+}
+
+/**
+ * Konvertu oktalajn aŭ duumajn valorojn al Gawekiif-teksto ( Sistemo 1 ).
+ * Akceptas la oktalan formon, la duuman formon, aŭ ambaŭn kun / apartigilo.
+ * @param teksto ( string , required ) - Eniga formo.
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - Opcioj.
+ * @returns string
+ */
+function numeroAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+    const ĉefa = String(teksto).split("/")[0] || "";
+    const ĵetonoj = ĉefa.split(/\s+/).filter(Boolean);
+    const ĉuDuuma = ĵetonoj.length > 0 && ĵetonoj.every(t => t.length % 3 === 0 && /^[ɔı]+$/.test(t));
+    return ĉuDuuma ? oktalaAlGawekiif(duumaAlOktala(ĉefa)) : oktalaAlGawekiif(ĉefa);
 }
 
 /**
@@ -644,12 +676,12 @@ function duumaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 
 /**
  * Konvertu la kodigan aŭ duuman formon al Gawekiif-teksto.
- * Akceptas la kodigan formon, la duuman formon, aŭ ambaŭn kun ⸙ apartigilo.
+ * Akceptas la kodigan formon, la duuman formon, aŭ ambaŭn kun / apartigilo.
  * @param teksto ( string , required ) - Eniga formo.
  * @returns string
  */
 function encodingAlGawekiif(teksto: string): string {
-    const ĉefa = String(teksto).split("⸙")[0] || "";
+    const ĉefa = String(teksto).split("/")[0] || "";
     const ĵetonoj = ĉefa.split(/\s+/).filter(Boolean);
     const ĉuDuuma = ĵetonoj.length > 0 && ĵetonoj.every(t => t.length === 12 && /^[ɔı]+$/.test(t));
     return ĉuDuuma ? duumaAlGawekiif(ĉefa) : kodigoAlGawekiif(ĉefa);
@@ -682,9 +714,15 @@ function kodigoAlOktala(teksto: string, opcioj: KonvertajOpcioj = {}): string {
  * @returns string
  */
 function oktalaAlDuuma(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    const valoro = oktalaAlValoro(String(teksto).replace(/\s+/g, ""));
-    if ( isNaN(valoro) ) return String(teksto);
-    return "ɔɔɔɔ" + valoroAlDuuma(valoro, 8);
+    return String(teksto).split(/\s+/).filter(Boolean).map(vorto => {
+        let rezulto = "";
+        for ( const cifero of vorto ) {
+            const duuma = OKTALA_DUUMA[cifero];
+            if ( duuma === undefined ) return vorto;
+            rezulto += duuma;
+        }
+        return rezulto;
+    }).join(" ");
 }
 
 /**
@@ -694,9 +732,16 @@ function oktalaAlDuuma(teksto: string, opcioj: KonvertajOpcioj = {}): string {
  * @returns string
  */
 function duumaAlOktala(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    const valoro = duumaAlValoro(String(teksto).replace(/^ɔɔɔɔ/, ""));
-    if ( isNaN(valoro) ) return String(teksto);
-    return valoroAlOktala(valoro);
+    return String(teksto).split(/\s+/).filter(Boolean).map(vorto => {
+        if ( vorto.length % 3 !== 0 ) return vorto;
+        let rezulto = "";
+        for ( let i = 0; i < vorto.length; i += 3 ) {
+            const cifero = OKTALA_DUUMA_MALO[vorto.slice(i, i + 3)];
+            if ( cifero === undefined ) return vorto;
+            rezulto += cifero;
+        }
+        return rezulto;
+    }).join(" ");
 }
 
 
@@ -1107,13 +1152,17 @@ function konverti(teksto: string, de: string, al: string, opcioj: KonvertajOpcio
         "ipa_numerical": () => ipaAlNumerika(teksto, opciojLokala),
         "numerical_gawekiif": () => numerikaAlGawekiif(teksto, opciojLokala),
         "gawekiif_numerical": () => gawekiifAlNumerika(teksto, opciojLokala),
-        "gawekiif_numero": () => gawekiifAlNumero(teksto, opciojLokala),
+        "gawekiif_numero": () => {
+            const numero = gawekiifAlNumero(teksto, opciojLokala);
+            if ( !numero ) return "";
+            return numero + " / " + oktalaAlDuuma(numero);
+        },
         "numero_gawekiif": () => numeroAlGawekiif(teksto, opciojLokala),
         "gawekiif_kodigo": () => gawekiifAlKodigo(teksto, opciojLokala),
         "kodigo_gawekiif": () => kodigoAlGawekiif(teksto, opciojLokala),
         "gawekiif_duuma": () => gawekiifAlDuuma(teksto, opciojLokala),
         "duuma_gawekiif": () => duumaAlGawekiif(teksto, opciojLokala),
-        "gawekiif_encoding": () => gawekiifAlKodigo(teksto, opciojLokala) + " ⸙ " + gawekiifAlDuuma(teksto, opciojLokala),
+        "gawekiif_encoding": () => gawekiifAlKodigo(teksto, opciojLokala) + " / " + gawekiifAlDuuma(teksto, opciojLokala),
         "encoding_gawekiif": () => encodingAlGawekiif(teksto)
     };
 
@@ -1246,8 +1295,8 @@ if ( typeof module !== "undefined" && module.exports ) {
                 eligo.ipa = konverti(eligo.gk, "gawekiif", "ipa", opcioj);
             }
 
-            eligo.number = gawekiifAlNumero(eligo.gk, opcioj);
-            eligo.encoding = gawekiifAlKodigo(eligo.gk, opcioj) + " ⸙ " + gawekiifAlDuuma(eligo.gk, opcioj);
+            eligo.number = konverti(eligo.gk, "gawekiif", "numero", opcioj);
+            eligo.encoding = gawekiifAlKodigo(eligo.gk, opcioj) + " / " + gawekiifAlDuuma(eligo.gk, opcioj);
 
             const eligajKlavoj = [ "gk", "la3os", "ipa", "number", "encoding" ];
             const eligajNomoj: Record<string, string> = { gk: "Gk", la3os: "La3os", ipa: "Ipa", number: "Number", encoding: "Encoding" };
