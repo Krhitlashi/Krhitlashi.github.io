@@ -1232,7 +1232,9 @@ if ( typeof module !== "undefined" && module.exports ) {
             la3os: document.getElementById("tlakakuLa3os") as HTMLElement | null,
             ipa: document.getElementById("tlakakuRat0") as HTMLElement | null,
             number: document.getElementById("tlakakuK2fe") as HTMLElement | null,
-            encoding: document.getElementById("tlakakuKodigo") as HTMLElement | null
+            encoding: document.getElementById("tlakakuKodigo") as HTMLElement | null,
+            numberDuuma: document.getElementById("tlakakuK2feDuuma") as HTMLElement | null,
+            encodingDuuma: document.getElementById("tlakakuKodigoDuuma") as HTMLElement | null
         };
         const checkboxes ={ outGk: document.getElementById("a1a3kkG2") as HTMLInputElement | null,
             outLa3os: document.getElementById("a1a3kkLa3os") as HTMLInputElement | null,
@@ -1269,7 +1271,7 @@ if ( typeof module !== "undefined" && module.exports ) {
                 laŭlitera: checkboxes.laŭlitera?.checked || false
             };
 
-            const eligo: Record<string, string> = { gk: "", la3os: "", ipa: "", number: "", encoding: "" };
+            const eligo: Record<string, string> = { gk: "", la3os: "", ipa: "", number: "", encoding: "", numberDuuma: "", encodingDuuma: "" };
 
             if ( fontaFormo === "gawekiif" ) {
                 eligo.gk = eniraTeksto;
@@ -1295,8 +1297,11 @@ if ( typeof module !== "undefined" && module.exports ) {
                 eligo.ipa = konverti(eligo.gk, "gawekiif", "ipa", opcioj);
             }
 
-            eligo.number = konverti(eligo.gk, "gawekiif", "numero", opcioj);
-            eligo.encoding = gawekiifAlKodigo(eligo.gk, opcioj) + " / " + gawekiifAlDuuma(eligo.gk, opcioj);
+            const numero = gawekiifAlNumero(eligo.gk, opcioj);
+            eligo.number = numero;
+            eligo.numberDuuma = numero ? oktalaAlDuuma(numero) : "";
+            eligo.encoding = gawekiifAlKodigo(eligo.gk, opcioj);
+            eligo.encodingDuuma = gawekiifAlDuuma(eligo.gk, opcioj);
 
             const eligajKlavoj = [ "gk", "la3os", "ipa", "number", "encoding" ];
             const eligajNomoj: Record<string, string> = { gk: "Gk", la3os: "La3os", ipa: "Ipa", number: "Number", encoding: "Encoding" };
@@ -1315,10 +1320,19 @@ if ( typeof module !== "undefined" && module.exports ) {
                         titolo.style.display = videbla ? "block" : "none";
                     }
                     gepatro.style.display = videbla ? "flex" : "none";
+                    if ( klavo === "number" || klavo === "encoding" ) {
+                        const duumaKlavo = klavo === "number" ? "numberDuuma" : "encodingDuuma";
+                        const duumaElemento = outputs[duumaKlavo as keyof typeof outputs];
+                        if ( duumaElemento ) {
+                            duumaElemento.textContent = eligo[duumaKlavo] || "";
+                            const gepatroDuuma = duumaElemento.parentElement;
+                            if ( gepatroDuuma ) gepatroDuuma.style.display = videbla ? "flex" : "none";
+                        }
+                    }
                 }
             }
 
-            if ( maxemaSa10Gwk ) maxemaSa10Gwk.style.display = "block";
+            if ( maxemaSa10Gwk ) maxemaSa10Gwk.style.display = "flex";
         }
 
         const ciujElementoj: Element[] = [
