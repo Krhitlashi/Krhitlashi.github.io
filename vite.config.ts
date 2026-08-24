@@ -116,13 +116,17 @@ export default defineConfig({
             if ( rel ) {
               const dosierujo = dirname(rel);
               const fontaEtendo = extname(originalo);
-              // Vite 8 / Rolldown-aj `assetInfo.names[0]` estas malkonsekvencaj tra aktivaj tipoj. HTML-importita CSS uzas baznomon sen etendo ( `֭ſɭᴜ ı__ɔ` ), dum binaraj/tekstaj aktivaj dosieroj importitaj per CSS/JS-peĉoj ( TTF/PNG/ICO/JSON ) havas la etendon jam sur `nomo` ( `j͑ʃꞇȝ.ttf` ). Forigu la fontan etendon de `nomo` se ĉeestas, poste ĉiam re-almetu.
-              const senEtendo = fontaEtendo && nomo.endsWith(fontaEtendo)
-                ? nomo.slice(0, -fontaEtendo.length)
+              // Vite 8 / Rolldown-aj `assetInfo.names[0]` estas malkonsekvencaj tra aktivaj tipoj. HTML-importita CSS uzas baznomon sen etendo ( `֭ſɭᴜ ı__ɔ` ), dum binaraj/tekstaj aktivaj dosieroj importitaj per CSS/JS-peĉoj ( TTF/PNG/ICO/JSON ) havas la etendon jam sur `nomo` ( `j͑ʃꞇȝ.ttf` ).
+              //
+              // Atentu - `originalFileNames[0]` NE ĉiam estas la vera fonta dosiero. Kiam paĝo ligas du stilfoliojn kun la sama nomo ( ekz. la mapo-paĝo ligas kaj la radikan kaj lokan `֭ſɭᴜ ı],ɔ.css` ), Rolldown raportas la HTML-dosieron kiel la originalon, kaj `nomo` jam finiĝas per `.css`. Se ni tiam re-almetus la fontan etendon ( `.html` ), ni ricevus `....css.html`, kiun GitHub Pages servas kiel `text/html` - do la folio estas blokita kaj la mapo-ujo kolapsas. Sekve konservu la etendon de `nomo` mem kiam ĝi havas unu, kaj uzu la fontan etendon nur se `nomo` mankas etendo.
+              const nomoEtendo = extname(nomo);
+              const senEtendo = nomoEtendo
+                ? nomo.slice(0, -nomoEtendo.length)
                 : nomo;
+              const finaEtendo = nomoEtendo || fontaEtendo;
               return dosierujo && dosierujo !== "."
-                ? `${dosierujo}/${senEtendo}${fontaEtendo}`
-                : `${senEtendo}${fontaEtendo}`;
+                ? `${dosierujo}/${senEtendo}${finaEtendo}`
+                : `${senEtendo}${finaEtendo}`;
             }
           }
           return nomo;
