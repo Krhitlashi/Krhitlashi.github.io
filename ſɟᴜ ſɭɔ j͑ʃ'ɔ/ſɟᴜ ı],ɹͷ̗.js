@@ -252,7 +252,7 @@ setInterval(tlak2Stifeh2, TLAK2_STIFEH2);
 
 const GESEHENI = 299792458;
 
-const P0 = GESEHENI * HE_L6HEINAK * Math.pow(2, -0o40) * 3;
+const P0 = GESEHENI * HE_L6HEINAK * Math.pow(2, -0o40) / 2;
 const P2SP0 = Math.pow(P0, 2);
 const T2XP0 = Math.pow(P0, 3);
 
