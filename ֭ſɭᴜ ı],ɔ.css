@@ -33,18 +33,18 @@
 	--តានេកខេលេ: #ffffff10;
 	--តានេក: #ffffff18;
 	--តានេក២: #ffffff28;
-	--តានេក៣: #ffffff38;
+
+	--តានេកនេ១: #00000010;
 
 	--សាកព៏: 1px solid var(--តានេក);
 	--សាកព៏២: 1px solid var(--តានេក២);
-	--សាកព៏៣: 1px solid var(--តានេក៣);
 
-	--ខេលេសៃ: #000;
+	--អិតិល: #000;
 
-	--ខេលេសៃច្ហិ: #000000a0;
+	--អិតិលច្ហិ: #000000a0;
 
-	--កេភ: #fff;
-	--កេភ២: #c8c8c8;
+	--ក្ព៏: #fff;
+	--ក្ព៏២: #c8c8c8;
 
 	--អារេងព៏: 16px;
 	--អារេងចិ: 12px;
@@ -58,14 +58,15 @@
 		--តានេកខេលេ: #00000008;
 		--តានេក: #00000010;
 		--តានេក២: #00000020;
-		--តានេក៣: #00000030;
 
-		--ខេលេសៃ: #fff;
+		--តានេកនេ១: #ffffff18;
 
-		--ខេលេសៃច្ហិ: #ffffffa0;
+		--អិតិល: #fff;
 
-		--កេភ: #000;
-		--កេភ២: #484848;
+		--អិតិលច្ហិ: #ffffffa0;
+
+		--ក្ព៏: #000;
+		--ក្ព៏២: #484848;
 	}
 }
 
@@ -74,7 +75,7 @@
 * {
 	font-family: "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ", "ʃɹ ı],ɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬꞇᴜ";
 	font-size-adjust: 0.5;
-	color: var(--កេភ);
+	color: var(--ក្ព៏);
 	text-align: center;
 	scrollbar-width: thin;
 }
@@ -83,7 +84,7 @@
 }
 
 body {
-	background-color: var(--ខេលេសៃ);
+	background-color: var(--អិតិល);
 	margin: 0;
 	display: flex;
 	flex-direction: row; 
@@ -100,7 +101,7 @@ html {
 	overflow-inline: hidden;
 }
 sak {
-	background-color: var(--កេភ២);
+	background-color: var(--ក្ព៏២);
     border-radius: var(--ចិង);
     display: flex;
     text-align: center;
@@ -279,10 +280,10 @@ button[aria-pressed="true"] {
     border-radius: var(--ចិង);
 }
 button[aria-pressed="true"].caku1o {
-	background-color: var(--កេភ);
+	background-color: var(--ក្ព៏);
 }
 button[aria-pressed="true"].caku1o * {
-	color: var(--ខេលេសៃ);
+	color: var(--អិតិល);
 }
 .tahak2f p {
 	inline-size: 100%;
@@ -324,11 +325,11 @@ ciihii {
 /* j͑ʃɜ ſɭ,ᴜ 🪷 */
 
 .n2tase, ksaka {
-	background: linear-gradient(var(--តានេកខេលេ), var(--តានេកខេលេ)), linear-gradient(var(--ខេលេសៃច្ហិ), var(--ខេលេសៃច្ហិ));
+	background: linear-gradient(var(--តានេកខេលេ), var(--តានេកខេលេ)), linear-gradient(var(--អិតិលច្ហិ), var(--អិតិលច្ហិ));
 	backdrop-filter: var(--ច្ហិនី);
 }
 button.n2tase:hover, button.n2tase[aria-pressed="true"] {
-	background: linear-gradient(var(--តានេក), var(--តានេក)), linear-gradient(var(--តានេកខេលេ), var(--តានេកខេលេ)), linear-gradient(var(--ខេលេសៃច្ហិ), var(--ខេលេសៃច្ហិ));
+	background: linear-gradient(var(--តានេក), var(--តានេក)), linear-gradient(var(--តានេកខេលេ), var(--តានេកខេលេ)), linear-gradient(var(--អិតិលច្ហិ), var(--អិតិលច្ហិ));
 }
 .sozanu {
 	scale: 0;
@@ -503,16 +504,16 @@ input[type="file"] {
 }
 input[type="file"]::file-selector-button {
 	margin-inline-end: var(--អារេងចិ);
-	background-color: var(--តានេក២);
+	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេមិ);
 	border: var(--សាកព៏);
 	padding: var(--អារេងចិ);
-	color: var(--កេភ);
+	color: var(--ក្ព៏);
 	font-weight: bold;
 	transition: all 0.25s ease;
 }
 input[type="file"]::file-selector-button:hover {
-	background-color: var(--តានេក៣);
+	background-color: var(--តានេក២);
 }
 input[type="color"] {
 	min-inline-size: 24px; 
@@ -522,7 +523,7 @@ input[type="checkbox"], input[type="radio"] {
     inline-size: 24px;
     block-size: 24px;
     background-color: var(--តានេក);
-    border-radius: var(--អារេងមិ);
+    border-radius: 4px;
     border: var(--សាកព៏);
 	margin: var(--អារេងមិ);
 	padding: 0;
@@ -532,10 +533,10 @@ input[type="checkbox"], input[type="radio"] {
 	transition: all 0.25s ease;
 }
 input[type="checkbox"]:before {
-	height: 2px;
-    width: 14px;
-	background-color: var(--កេភ២);
-    border-radius: 2px;
+	height: 3px;
+    width: 12px;
+	background-color: var(--ក្ព៏);
+    border-radius: 4px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -544,18 +545,19 @@ input[type="checkbox"]:before {
     transform: translate(-50%, -50%) rotate(-45deg);
 }
 input[type="checkbox"]:checked, input[type="radio"]:checked {
-    background-color: var(--តានេក៣);
-    border-color: var(--កេភ);
+    background-color: var(--តានេក២);
+    border-color: var(--ក្ព៏);
+}
+input[type="checkbox"]:checked:before, input[type="radio"]:checked:before {
+	background-color: var(--ក្ព៏);
 }
 input[type="checkbox"]:checked:before {
-	background-color: var(--កេភ);
     transform: translate(-50%, -50%) rotate(45deg);
 }
 input[type="radio"]:checked:before {
 	height: 8px;
     width: 8px;
-	background-color: var(--កេភ២);
-    border-radius: var(--ចិង);
+    border-radius: 2px;
 	position: absolute;
 	right: 31.25%;
     bottom: 31.25%;
@@ -579,9 +581,9 @@ input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb
 	appearance: none;
 	inline-size: 16px;
 	block-size: 16px;
-	background-color: var(--កេភ);
+	background-color: var(--ក្ព៏);
 	border-radius: var(--ចិង);
-	border: 2px solid var(--ខេលេសៃ);
+	border: 2px solid var(--អិតិល);
 	transition: 0.25s;
 }
 input[type="range"]::-webkit-slider-thumb:hover, input[type="range"]::-moz-range-thumb:hover {
@@ -653,14 +655,6 @@ canvas {
 @media (prefers-color-scheme: light) {
 	.tahaqkef {
 		filter: invert();
-	}
-}
-@media (prefers-color-scheme: dark) {
-	body > button {
-		background-color: var(--តានេក២);
-	}
-	body > button:hover {
-		background-color: var(--តានេក៣) !important;
 	}
 }
 
