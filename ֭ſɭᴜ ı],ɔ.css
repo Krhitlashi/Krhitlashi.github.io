@@ -168,8 +168,8 @@ p {
 	align-self: center;
 	font-family: "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ";
 }
-.aihkosabo {
-	font-family: "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ";
+.aihkosabo, .aihkosabo * {
+	font-family: "j͑ʃꞇȝ", "ı],ᴜ }ʃᴜ" !important;
 }
 p:has(> .cepufalxez), h1:has(> .cepufalxez), h2:has(> .cepufalxez), h3:has(> .cepufalxez) {
 	display: flex;
