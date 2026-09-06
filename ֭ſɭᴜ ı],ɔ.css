@@ -388,7 +388,7 @@ ksaka p {
 	align-content: center;
 }
 ksaka button {
-	inline-size: 56px;
+	inline-size: 32px;
 	block-size: auto;
 	border-radius: var(--អិត្ភេចិ);
 	padding: 0;
