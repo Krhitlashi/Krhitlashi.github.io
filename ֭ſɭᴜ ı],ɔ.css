@@ -260,17 +260,6 @@ button {
 	font-size: inherit;
 	font-weight: inherit;
 }
-h {
-	block-size: 32px;
-	background-color: var(--តានេក២);
-	border: var(--សាកព៏);
-	border-radius: var(--អិត្ភេ);
-	padding: var(--អារេងចិ);
-	text-align: center;
-	text-decoration: none;
-	display: flex;
-	align-items: center;
-}
 button:hover:not(.n2tase), a:hover, a:active, button[aria-pressed="true"]:not(.n2tase) {
 	background-color: var(--តានេក២);
 }
@@ -278,15 +267,15 @@ button:active, a:active {
 	border-radius: var(--ចិង);
 	transform: scale(0.96875);
 }
-button[aria-pressed="true"] {
-    border: var(--សាកព៏២);
-    border-radius: var(--ចិង);
-}
 button[aria-pressed="true"].caku1o {
 	background-color: var(--ក្ព៏);
 }
 button[aria-pressed="true"].caku1o * {
 	color: var(--អិតិល);
+}
+button[aria-pressed="true"] {
+	background-color: var(--តានេក២);
+    border-radius: var(--ចិង);
 }
 .tahak2f p {
 	inline-size: 100%;
