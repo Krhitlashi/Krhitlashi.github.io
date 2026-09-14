@@ -470,10 +470,7 @@ ariiba {
 	flex-wrap: nowrap;
 	gap: var(--អារេងចិ);
 }
-input[type="color"] {
-	padding: 0;
-}
-input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]), textarea {
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]):not([type="color"]), textarea {
 	background-color: var(--តានេក);
 	border-radius: var(--អិត្ភេចិ);
 	border: var(--សាកព៏);
@@ -579,6 +576,25 @@ input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb
 }
 input[type="range"]::-webkit-slider-thumb:hover, input[type="range"]::-moz-range-thumb:hover {
 	transform: scale(1.25);
+}
+input[type="color"] {
+	background-color: var(--តានេក);
+	border-radius: var(--អិត្ភេមិ);
+	border: var(--សាកព៏);
+	padding: 0;
+	align-self: stretch;
+	appearance: none;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+	border: none;
+	border-radius: var(--អិត្ភេមិ);
+}
+input[type="color"]::-moz-color-swatch {
+	border: none;
+	border-radius: var(--អិត្ភេមិ);
 }
 select {
 	background-color: var(--តានេក);
