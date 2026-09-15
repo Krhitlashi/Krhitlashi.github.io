@@ -268,6 +268,7 @@ a {
 ca12na {
 	flex-wrap: wrap;
 	justify-content: flex-end;
+	padding: var(--អារេង);
 }
 button:hover:not(.n2tase), a:hover, a:active, button[aria-pressed="true"]:not(.n2tase), ca12na:hover:not(.n2tase):not(:has(> button:hover)) {
 	background-color: var(--តានេក២);
@@ -282,7 +283,7 @@ button[aria-pressed="true"].caku1o {
 button[aria-pressed="true"].caku1o * {
 	color: var(--អិតិល);
 }
-button[aria-pressed="true"] {
+button[aria-pressed="true"], ca12na[aria-pressed="true"] {
 	background-color: var(--តានេក២);
     border-radius: var(--ចិង);
 }
@@ -299,6 +300,8 @@ ca12na::before, ca12na::after {
 ca12na > button {
 	block-size: auto;
 	order: 1;
+	border-radius: var(--អិត្ភេចិ);
+	padding: var(--អារេង);
 }
 button[disabled], button[aria-disabled="true"], ca12na[disabled], ca12na[aria-disabled="true"] {
 	opacity: 0.5;
@@ -341,7 +344,7 @@ ciihii {
 	background: linear-gradient(var(--តានេកខេលេ), var(--តានេកខេលេ)), linear-gradient(var(--អិតិលច្ហិ), var(--អិតិលច្ហិ));
 	backdrop-filter: var(--ច្ហិនី);
 }
-button.n2tase:hover, button.n2tase[aria-pressed="true"], ca12na.n2tase:hover:not(:has(> button:hover)) {
+button.n2tase:hover, button.n2tase[aria-pressed="true"], ca12na.n2tase[aria-pressed="true"]:not(:has(> button[aria-pressed="true"])), ca12na.n2tase:hover:not(:has(> button:hover)) {
 	background: linear-gradient(var(--តានេក), var(--តានេក)), linear-gradient(var(--តានេកខេលេ), var(--តានេកខេលេ)), linear-gradient(var(--អិតិលច្ហិ), var(--អិតិលច្ហិ));
 }
 .sozanu {

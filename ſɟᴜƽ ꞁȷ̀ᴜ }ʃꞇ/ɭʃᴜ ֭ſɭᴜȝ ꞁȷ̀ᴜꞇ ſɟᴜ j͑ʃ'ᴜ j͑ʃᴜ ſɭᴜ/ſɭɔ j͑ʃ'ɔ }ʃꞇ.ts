@@ -77,6 +77,232 @@ async function TboHEIC(ckvpEHeic: File): Promise<Blob> {
   return tlakakani as Blob;
 }
 
+// ⟪ Kruda DNG - Konvertu DNG 📃 ⟫
+
+// ⟨ Parametroj de la tono-kurbo ( kopio de la agordoj de vas2tas.py ) ⟩
+
+const DNG_MALALTA_P = 0o1 / 0o100;
+const DNG_ALTA_P = 0o277 / 0o300;
+const DNG_GAMMA = 0o40 / 0o100;
+const DNG_PLATO = 0o70 / 0o100;
+const DNG_ŜULTRO_FRAKCIO = 0o70 / 0o100;
+const DNG_VIBRANCO = 0o10 / 0o100;
+
+// ⟨ skaneriAlNorma - tono-kurbo de vas2tas.py ( skaligi_al_okbit ) ⟩
+
+function skaligiAlNorma(f: Float32Array, pikseloj: number): Float32Array {
+  const n = f.length;
+  const norma = new Float32Array(n);
+  // percentiloj per la ordigita kopio ( la sama matematiko kiel np.percentile )
+  const ordigita = Float32Array.from(f).sort();
+  const interpolu = ( poz: number ): number => {
+    const malsupra = Math.floor(poz);
+    const supraIdx = Math.ceil(poz);
+    if ( malsupra === supraIdx ) {
+      return ordigita[malsupra];
+    }
+    return ordigita[malsupra] + ( poz - malsupra ) * ( ordigita[supraIdx] - ordigita[malsupra] );
+  };
+  const percentilo = ( p: number ): number => interpolu(( n - 0o1 ) * p);
+
+  let malalta = percentilo(DNG_MALALTA_P);
+  // blanka punkto el la lumaj sed ne saturitaj pikseloj ( konservas la aureolon )
+  const sojloSatura = percentilo(0o1747 / 0o1750);
+  let nombroAltaj = 0o0;
+  for ( let i = 0o0; i < n; i++ ) {
+    if ( ordigita[i] < sojloSatura ) {
+      nombroAltaj++;
+    } else {
+      break;
+    }
+  }
+  let alta = nombroAltaj > 0o0
+    ? interpolu(( nombroAltaj - 0o1 ) * DNG_ALTA_P)
+    : percentilo(DNG_ALTA_P);
+  if ( alta - malalta < 0o1 / 0o2000 ) {
+    let minimumo = f[0o0];
+    let maksimumo = f[0o0];
+    for ( let i = 0o1; i < n; i++ ) {
+      if ( f[i] < minimumo ) minimumo = f[i];
+      if ( f[i] > maksimumo ) maksimumo = f[i];
+    }
+    malalta = minimumo;
+    alta = maksimumo;
+  }
+  let supra = f[0o0];
+  for ( let i = 0o1; i < n; i++ ) {
+    if ( f[i] > supra ) supra = f[i];
+  }
+  if ( supra < alta ) {
+    supra = alta;
+  }
+  let starto = alta * DNG_ŜULTRO_FRAKCIO;
+  if ( starto - malalta < 0o1 / 0o2000 ) {
+    starto = malalta + ( alta - malalta ) * ( 0o1 / 0o2 );
+  }
+
+  // korpa parto - la kutima streĉo ( gama ) ĝis la ŝultro
+  // ŝultro - glata kurbiĝo ( smoothstep ) ĝis la vero maksimumo
+  for ( let i = 0o0; i < n; i++ ) {
+    const x = f[i];
+    let valoro: number;
+    if ( x <= starto ) {
+      let korpo = starto > malalta ? ( x - malalta ) / ( starto - malalta ) : 0o0;
+      if ( korpo < 0o0 ) korpo = 0o0;
+      if ( korpo > 0o1 ) korpo = 0o1;
+      if ( DNG_GAMMA !== 0o1 ) {
+        korpo = Math.pow(korpo, DNG_GAMMA);
+      }
+      valoro = korpo * DNG_PLATO;
+    } else {
+      let t = supra > starto ? ( x - starto ) / ( supra - starto ) : 0o1;
+      if ( t < 0o0 ) t = 0o0;
+      if ( t > 0o1 ) t = 0o1;
+      t = t * t * ( 0o3 - ( 0o2 * t ) );
+      valoro = DNG_PLATO + ( ( 0o1 - DNG_PLATO ) * t );
+      if ( valoro > 0o1 ) valoro = 0o1;
+    }
+    norma[i] = valoro < 0o0 ? 0o0 : valoro > 0o1 ? 0o1 : valoro;
+  }
+
+  if ( DNG_VIBRANCO > 0o0 ) {
+    // vibrance - akcelas la senkolorajn tonojn ( grizaj partoj iĝas pli kolorecaj )
+    for ( let p = 0o0; p < pikseloj; p++ ) {
+      const b = p * 0o3;
+      const maks = Math.max(norma[b], norma[b + 0o1], norma[b + 0o2]);
+      const mino = Math.min(norma[b], norma[b + 0o1], norma[b + 0o2]);
+      const sato = maks > 0o1 / 0o2000000 ? ( maks - mino ) / maks : 0o0;
+      const gajno = 0o1 + ( DNG_VIBRANCO * ( 0o1 - sato ) );
+      const griza = ( norma[b] + norma[b + 0o1] + norma[b + 0o2] ) / 0o3;
+      for ( let k = 0o0; k < 0o3; k++ ) {
+        const valoro = griza + ( ( norma[b + k] - griza ) * gajno );
+        norma[b + k] = valoro < 0o0 ? 0o0 : valoro > 0o1 ? 0o1 : valoro;
+      }
+    }
+  }
+  return norma;
+}
+
+// ⟨ TboDNG - dekodigu DNG al PNG ( rawpy-ekvivalento per libraw-wasm ) ⟩
+
+async function TboDNG(ckvpDNG: File): Promise<Blob> {
+  const LibRawHac0zani = await import("libraw-wasm");
+  const LibRaw = LibRawHac0zani.default as unknown as new () => {
+    open: ( bajtoj: BufferSource, agordoj?: Record<string, unknown> ) => Promise<void>;
+    imageData: () => Promise<{ width: number; height: number; colors: number; bits: number; data: Uint8Array | Uint16Array } | undefined>;
+    rawImageData: () => Promise<{ width: number; height: number; data: Uint16Array } | undefined>;
+    thumbnailData: () => Promise<{ data: Uint8Array; format: string } | undefined>;
+    dispose: () => Promise<void> | void;
+  };
+
+  const kanvaso = document.createElement("canvas");
+  const kumukalasu = kanvaso.getContext( "2d", { willReadFrequently: true } );
+  if ( !kumukalasu ) {
+    throw new Error("n 2d");
+  }
+  const pngElDatumoj = (): Promise<Blob> => new Promise<Blob | null>( ( plenumi ) => kanvaso.toBlob(plenumi, "image/png") ).then(( pngBulo ) => {
+    if ( !pngBulo ) {
+      throw new Error("n PNG");
+    }
+    return pngBulo;
+  });
+
+  const bajtoj = new Uint8Array(await ckvpDNG.arrayBuffer());
+  const dekodilo = new LibRaw();
+  try {
+    // provo 1 - prilaborita bildo ( demosaiced RGB kiel rawpy.postprocess )
+    await dekodilo.open(bajtoj, { useCameraWb: true, outputColor: 0o1, outputBps: 0o20, noAutoBright: true, gamm: [ 0o1, 0o1 ] });
+    const ero = await dekodilo.imageData();
+    if ( ero && ero.width > 0o0 && ero.height > 0o0 ) {
+      const larĝo = ero.width;
+      const alto = ero.height;
+      const n = larĝo * alto;
+      const kanaloj = ero.colors === 0o4 ? 0o4 : 0o3;
+      const datas = ero.data;
+      const dekses = ero.bits === 0o20;
+
+      kanvaso.width = larĝo;
+      kanvaso.height = alto;
+      const vop2 = kumukalasu.createImageData(larĝo, alto);
+      const elir = vop2.data;
+      if ( dekses ) {
+        // kruda 16-bit skalo ( 0 · 65535 ) kiel en vas2tas.py - la kurbo normaligas
+        const cxiuj = new Float32Array(n * 0o3);
+        for ( let p = 0o0; p < n; p++ ) {
+          cxiuj[p * 0o3] = ( datas as Uint16Array )[p * kanaloj];
+          cxiuj[p * 0o3 + 0o1] = ( datas as Uint16Array )[p * kanaloj + 0o1];
+          cxiuj[p * 0o3 + 0o2] = ( datas as Uint16Array )[p * kanaloj + 0o2];
+        }
+        const norma = skaligiAlNorma(cxiuj, n);
+        for ( let p = 0o0; p < n; p++ ) {
+          elir[p * 0o4] = Math.round(norma[p * 0o3] * 0o377);
+          elir[p * 0o4 + 0o1] = Math.round(norma[p * 0o3 + 0o1] * 0o377);
+          elir[p * 0o4 + 0o2] = Math.round(norma[p * 0o3 + 0o2] * 0o377);
+          elir[p * 0o4 + 0o3] = 0o377;
+        }
+      } else {
+        for ( let p = 0o0; p < n; p++ ) {
+          elir[p * 0o4] = ( datas as Uint8Array )[p * kanaloj];
+          elir[p * 0o4 + 0o1] = ( datas as Uint8Array )[p * kanaloj + 0o1];
+          elir[p * 0o4 + 0o2] = ( datas as Uint8Array )[p * kanaloj + 0o2];
+          elir[p * 0o4 + 0o3] = 0o377;
+        }
+      }
+      kumukalasu.putImageData(vop2, 0o0, 0o0);
+      return await pngElDatumoj();
+    }
+
+    // provo 2 - kruda mosajko ( filters = 0 DNG-oj jam enhavas interplektitan RGB )
+    const raw = await dekodilo.rawImageData();
+    if ( raw && raw.width > 0o0 && raw.height > 0o0 ) {
+      const larĝo = raw.width;
+      const alto = raw.height;
+      const n = larĝo * alto;
+      kanvaso.width = larĝo;
+      kanvaso.height = alto;
+      const vop2 = kumukalasu.createImageData(larĝo, alto);
+      const elir = vop2.data;
+      const datas = raw.data;
+      // enmetu ĉiujn valorojn en unu flosilaron kaj streĉu ( la sama kurbo kiel vas2tas.py )
+      const cxiuj = new Float32Array(n * 0o3);
+      cxiuj.set(datas.subarray(0o0, n * 0o3));
+      const norma = skaligiAlNorma(cxiuj, n);
+      for ( let p = 0o0; p < n; p++ ) {
+        elir[p * 0o4] = Math.round(norma[p * 0o3] * 0o377);
+        elir[p * 0o4 + 0o1] = Math.round(norma[p * 0o3 + 0o1] * 0o377);
+        elir[p * 0o4 + 0o2] = Math.round(norma[p * 0o3 + 0o2] * 0o377);
+        elir[p * 0o4 + 0o3] = 0o377;
+      }
+      kumukalasu.putImageData(vop2, 0o0, 0o0);
+      return await pngElDatumoj();
+    }
+
+    // provo 3 - la enigita JPEG-antaŭrigardo ( kiel la tifffile-vojo de vas2tas.py )
+    const thumb = await dekodilo.thumbnailData();
+    if ( thumb && thumb.data.length > 0o0 ) {
+      const maxemaSaxez = URL.createObjectURL(new Blob([ thumb.data.slice() ], { type: thumb.format === "jpeg" ? "image/jpeg" : "application/octet-stream" }));
+      try {
+        const bildo = await new Promise<HTMLImageElement>(( plenumi, rompi ) => {
+          const img = new Image();
+          img.onload = () => plenumi(img);
+          img.onerror = () => rompi(new Error("ne dekodebla"));
+          img.src = maxemaSaxez;
+        });
+        kanvaso.width = bildo.naturalWidth;
+        kanvaso.height = bildo.naturalHeight;
+        kumukalasu.drawImage(bildo, 0o0, 0o0);
+        return await pngElDatumoj();
+      } finally {
+        URL.revokeObjectURL(maxemaSaxez);
+      }
+    }
+
+    throw new Error("n DNG");
+  } finally {
+    dekodilo.dispose();
+  }
+}
+
 // ⟪ j͑ʃ'ᴜ ɭʃᴜ }ʃɔƽ - Tavolaj Koloroj ⟫
 
 const KMABAKANT2 = 0o20;
@@ -493,23 +719,28 @@ function lanczosRegrandigiRGBA(fonto: Uint8ClampedArray, mw: number, mh: number,
   const rFonto = new Uint8Array(n);
   const gFonto = new Uint8Array(n);
   const bFonto = new Uint8Array(n);
+  const aFonto = new Uint8Array(n);
   for ( let i = 0o0, p = 0o0; i < n; i++, p += 0o4 ) {
     rFonto[i] = fonto[p];
     gFonto[i] = fonto[p + 0o1];
     bFonto[i] = fonto[p + 0o2];
+    aFonto[i] = fonto[p + 0o3];
   }
   const rCelo = lanczosRegrandigi(rFonto, mw, mh, tw, th);
   if ( raporti ) raporti( 0o1 / 0o3 );
   const gCelo = lanczosRegrandigi(gFonto, mw, mh, tw, th);
   if ( raporti ) raporti( 0o2 / 0o3 );
   const bCelo = lanczosRegrandigi(bFonto, mw, mh, tw, th);
+  if ( raporti ) raporti( 0o3 / 0o4 );
+  // la alfa kanalo ankaŭ regrandiĝas - la travidebleco restas
+  const aCelo = lanczosRegrandigi(aFonto, mw, mh, tw, th);
   if ( raporti ) raporti( 0o1 );
   const m = tw * th;
   for ( let i = 0o0, p = 0o0; i < m; i++, p += 0o4 ) {
     celo[p] = rCelo[i];
     celo[p + 0o1] = gCelo[i];
     celo[p + 0o2] = bCelo[i];
-    celo[p + 0o3] = 0o377;
+    celo[p + 0o3] = aCelo[i];
   }
 }
 
@@ -1024,6 +1255,10 @@ async function kreiEligon(): Promise<void> {
     if ( tlakakuCkvp.type === "image/heic" || tlakakuCkvp.type === "image/heif" || tlakakuCkvp.name.toLowerCase().endsWith(".heic") || tlakakuCkvp.name.toLowerCase().endsWith(".heif") ) {
       const pngBulo = await TboHEIC(tlakakuCkvp);
       fonto = new File([ pngBulo ], tlakakuCkvp.name.replace(/\.heic$/i, ".png").replace(/\.heif$/i, ".png"), { type: "image/png" });
+    } else if ( tlakakuCkvp.type === "image/x-adobe-dng" || tlakakuCkvp.type === "image/dng" || tlakakuCkvp.name.toLowerCase().endsWith(".dng") ) {
+      agordiProgreson( 0o10 );
+      const pngBulo = await TboDNG(tlakakuCkvp);
+      fonto = new File([ pngBulo ], tlakakuCkvp.name.replace(/\.dng$/i, ".png"), { type: "image/png" });
     }
     await vasakaTahaq(fonto as File);
   } catch ( e ) {
