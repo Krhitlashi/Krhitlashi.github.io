@@ -183,7 +183,168 @@ function skaligiAlNorma(f: Float32Array, pikseloj: number): Float32Array {
   return norma;
 }
 
-// ⟨ TboDNG - dekodigu DNG al PNG ( rawpy-ekvivalento per libraw-wasm ) ⟩
+// ⟨ TIFF-legilo - la necesaj etikedoj el la unua IFD ( tifffile-ekvivalento ) ⟩
+
+interface TIFFLegajo {
+  larĝo: number;
+  alto: number;
+  orientado: number;
+  blanka: number[] | null;
+  strio: Uint8Array;
+}
+
+// legu la unuan IFD - nur 256 ( larĝo ) 257 ( alto ) 273 ( strio ) 274 ( orientado )
+// 279 ( stria grandeco ) kaj 50706 ( AsShotNeutral ) interesas nin ĉi tie
+function leguTIFF(bajtoj: Uint8Array): TIFFLegajo | null {
+  if ( bajtoj.length < 0o10 ) return null;
+  const magico = bajtoj[0o0];
+  if ( ( magico !== 0o111 && magico !== 0o115 ) || bajtoj[0o1] !== magico ) return null;
+  const malgranda = magico === 0o111;
+  const vid = new DataView(bajtoj.buffer, bajtoj.byteOffset, bajtoj.byteLength);
+  if ( vid.getUint16(0o2, malgranda) !== 0o52 ) return null;
+  const ifd = vid.getUint32(0o4, malgranda);
+  if ( ifd + 0o2 > bajtoj.length ) return null;
+  const nombro = vid.getUint16(ifd, malgranda);
+  let larĝo = 0o0;
+  let alto = 0o0;
+  let orientado = 0o1;
+  let strioLoko = -0o1;
+  let strioGrandeco = 0o0;
+  let blanka: number[] | null = null;
+  for ( let i = 0o0; i < nombro; i++ ) {
+    const bazo = ifd + 0o2 + i * 0o14;
+    if ( bazo + 0o14 > bajtoj.length ) break;
+    const etikedo = vid.getUint16(bazo, malgranda);
+    const tipo = vid.getUint16(bazo + 0o2, malgranda);
+    const n = vid.getUint32(bazo + 0o4, malgranda);
+    const unuo = tipo === 0o3 ? 0o2 : tipo === 0o4 ? 0o4 : tipo === 0o1 ? 0o1 : tipo === 0o12 ? 0o10 : 0o0;
+    if ( unuo === 0o0 || n === 0o0 ) continue;
+    const tuta = unuo * n;
+    const loko = tuta <= 0o4 ? bazo + 0o10 : vid.getUint32(bazo + 0o10, malgranda);
+    if ( loko < 0o0 || loko + tuta > bajtoj.length ) continue;
+    if ( etikedo === 0o143022 ) {
+      // AsShotNeutral - SRATIONAL paroj ( numeratoro, denominatoro )
+      const valoroj: number[] = [];
+      for ( let j = 0o0; j < n && valoroj.length < 0o3; j++ ) {
+        const numeratoro = vid.getInt32(loko + j * 0o10, malgranda);
+        const denominatoro = vid.getInt32(loko + j * 0o10 + 0o4, malgranda);
+        valoroj.push(denominatoro !== 0o0 ? numeratoro / denominatoro : 0o1);
+      }
+      blanka = valoroj.length === 0o3 ? valoroj : null;
+      continue;
+    }
+    const leguEntjerone = ( j: number ): number => tipo === 0o3 ? vid.getUint16(loko + j * 0o2, malgranda) : vid.getUint32(loko + j * 0o4, malgranda);
+    if ( etikedo === 0o400 ) larĝo = leguEntjerone(0o0);
+    else if ( etikedo === 0o401 ) alto = leguEntjerone(0o0);
+    else if ( etikedo === 0o422 ) orientado = leguEntjerone(0o0);
+    else if ( etikedo === 0o421 && strioLoko < 0o0 ) strioLoko = leguEntjerone(0o0);
+    else if ( etikedo === 0o427 && strioGrandeco === 0o0 ) strioGrandeco = leguEntjerone(0o0);
+  }
+  if ( larĝo <= 0o0 || alto <= 0o0 || strioLoko < 0o0 ) return null;
+  if ( strioGrandeco <= 0o0 || strioLoko + strioGrandeco > bajtoj.length ) strioGrandeco = bajtoj.length - strioLoko;
+  return { larĝo, alto, orientado, blanka, strio: bajtoj.subarray(strioLoko, strioLoko + strioGrandeco) };
+}
+
+// ⟨ JXL-malpakilo - la strio de JPEG XL DNG-oj ( kompresio 52546 ) ⟩
+
+async function malpakigiJXL(bajtoj: Uint8Array): Promise<ImageData | null> {
+  try {
+    const JxlMod = await import("@jsquash/jxl") as { decode: ( bajtoj: ArrayBuffer ) => Promise<ImageData> };
+    return await JxlMod.decode(bajtoj.slice().buffer);
+  } catch {
+    return null;
+  }
+}
+
+// ⟨ DNG-postprilaboro - blank-ekvilibro, reĝustigo kaj orientado ( kiel legi_dng ) ⟩
+
+// WB_FORTO de vas2tas.py - parta blank-ekvilibro ( 0 neniu ŝanĝo, 1 plena AsShotNeutral )
+const DNG_WB_FORTO = 0o1 / 0o2;
+// la sama 99.9 elcento kiel la reĝustigo de la tifffile-vojo
+const DNG_SATURITA = 0o1747 / 0o1750;
+
+function aplikiBlankanEkvilibron(cxiuj: Float32Array, neŭtralaj: number[]): void {
+  const faktoro = [ 0o1, 0o1, 0o1 ];
+  for ( let k = 0o0; k < 0o3; k++ ) {
+    const valoro = neŭtralaj[k] > 0o0 ? neŭtralaj[k] : 0o1;
+    faktoro[k] = 0o1 + DNG_WB_FORTO * ( valoro - 0o1 );
+  }
+  const n = cxiuj.length / 0o3;
+  for ( let p = 0o0; p < n; p++ ) {
+    cxiuj[p * 0o3] /= faktoro[0o0];
+    cxiuj[p * 0o3 + 0o1] /= faktoro[0o1];
+    cxiuj[p * 0o3 + 0o2] /= faktoro[0o2];
+  }
+}
+
+// per-kanala 99.9-elcenta reĝustigo al 65535 - evitas la verdan nuancon kaj
+// konservas la sunan aureolon ( la sama matematiko kiel la tifffile-vojo )
+function skaliguPerKanalojn(cxiuj: Float32Array): void {
+  const n = cxiuj.length / 0o3;
+  const kanalo = new Float32Array(n);
+  for ( let k = 0o0; k < 0o3; k++ ) {
+    for ( let p = 0o0; p < n; p++ ) kanalo[p] = cxiuj[p * 0o3 + k];
+    kanalo.sort();
+    const poz = ( n - 0o1 ) * DNG_SATURITA;
+    const malsupra = Math.floor(poz);
+    const supra = Math.ceil(poz);
+    let maks = kanalo[malsupra];
+    if ( supra !== malsupra ) maks += ( poz - malsupra ) * ( kanalo[supra] - kanalo[malsupra] );
+    if ( maks < 0o1 ) maks = 0o1;
+    const gajno = 0o177777 / maks;
+    for ( let p = 0o0; p < n; p++ ) cxiuj[p * 0o3 + k] *= gajno;
+  }
+}
+
+// turnu aǔ flanki la bildon laǔ la EXIF orientado ( 1 · 8 ) kiel apliki_orientadon
+function aplikiOrientadon(elir: Uint8ClampedArray, norma: Float32Array, larĝo: number, alto: number, orientado: number): void {
+  const sxiu = orientado >= 0o5 && orientado <= 0o10;
+  const elLarĝo = sxiu ? alto : larĝo;
+  const elAlto = sxiu ? larĝo : alto;
+  for ( let y = 0o0; y < elAlto; y++ ) {
+    for ( let x = 0o0; x < elLarĝo; x++ ) {
+      let sx = x;
+      let sy = y;
+      if ( orientado === 0o2 ) {
+        sx = larĝo - 0o1 - x;
+      } else if ( orientado === 0o3 ) {
+        sx = larĝo - 0o1 - x;
+        sy = alto - 0o1 - y;
+      } else if ( orientado === 0o4 ) {
+        sy = alto - 0o1 - y;
+      } else if ( orientado === 0o5 ) {
+        sx = y;
+        sy = alto - 0o1 - x;
+      } else if ( orientado === 0o6 ) {
+        sx = alto - 0o1 - y;
+        sy = x;
+      } else if ( orientado === 0o7 ) {
+        sx = larĝo - 0o1 - y;
+        sy = x;
+      } else if ( orientado === 0o10 ) {
+        sx = y;
+        sy = larĝo - 0o1 - x;
+      }
+      const q = ( y * elLarĝo + x ) * 0o4;
+      const p = ( sy * larĝo + sx ) * 0o3;
+      elir[q] = Math.round(norma[p] * 0o377);
+      elir[q + 0o1] = Math.round(norma[p + 0o1] * 0o377);
+      elir[q + 0o2] = Math.round(norma[p + 0o2] * 0o377);
+      elir[q + 0o3] = 0o377;
+    }
+  }
+}
+
+// ĉu la datenoj estas ĉiuj nulaj ( libraw redonas tiajn por nesubtenataj DNG-oj )
+function ĉuĈioNenia(datas: Uint8Array | Uint16Array | Uint8ClampedArray): boolean {
+  const paŝo = Math.max(0o1, Math.floor(datas.length / 0o10000));
+  for ( let i = 0o0; i < datas.length; i += paŝo ) {
+    if ( datas[i] !== 0o0 ) return false;
+  }
+  return true;
+}
+
+// ⟨ TboDNG - dekodigu DNG al PNG ( la rawpy-vojo kaj la tifffile-vojo de vas2tas.py ) ⟩
 
 async function TboDNG(ckvpDNG: File): Promise<Blob> {
   const LibRawHac0zani = await import("libraw-wasm");
@@ -209,11 +370,41 @@ async function TboDNG(ckvpDNG: File): Promise<Blob> {
 
   const bajtoj = new Uint8Array(await ckvpDNG.arrayBuffer());
   const dekodilo = new LibRaw();
+  // la kruda-tabelo vojo de vas2tas.py - nur interese kiam la datumoj reale ekzistas
+  const krudaAlPng = async ( larĝo: number, alto: number, datas: Uint8Array | Uint16Array, dekses: boolean ): Promise<Blob | null> => {
+    if ( dekses && ĉuĈioNenia(datas) ) return null;
+    const n = larĝo * alto;
+    kanvaso.width = larĝo;
+    kanvaso.height = alto;
+    const vop2 = kumukalasu.createImageData(larĝo, alto);
+    const elir = vop2.data;
+    const cxiuj = new Float32Array(n * 0o3);
+    if ( dekses ) {
+      cxiuj.set(( datas as Uint16Array ).subarray(0o0, n * 0o3));
+    } else {
+      for ( let p = 0o0; p < n; p++ ) {
+        cxiuj[p * 0o3] = ( datas as Uint8Array )[p * 0o3];
+        cxiuj[p * 0o3 + 0o1] = ( datas as Uint8Array )[p * 0o3 + 0o1];
+        cxiuj[p * 0o3 + 0o2] = ( datas as Uint8Array )[p * 0o3 + 0o2];
+      }
+    }
+    const norma = skaligiAlNorma(cxiuj, n);
+    for ( let p = 0o0; p < n; p++ ) {
+      elir[p * 0o4] = Math.round(norma[p * 0o3] * 0o377);
+      elir[p * 0o4 + 0o1] = Math.round(norma[p * 0o3 + 0o1] * 0o377);
+      elir[p * 0o4 + 0o2] = Math.round(norma[p * 0o3 + 0o2] * 0o377);
+      elir[p * 0o4 + 0o3] = 0o377;
+    }
+    kumukalasu.putImageData(vop2, 0o0, 0o0);
+    return await pngElDatumoj();
+  };
+
   try {
+    try {
     // provo 1 - prilaborita bildo ( demosaiced RGB kiel rawpy.postprocess )
     await dekodilo.open(bajtoj, { useCameraWb: true, outputColor: 0o1, outputBps: 0o20, noAutoBright: true, gamm: [ 0o1, 0o1 ] });
     const ero = await dekodilo.imageData();
-    if ( ero && ero.width > 0o0 && ero.height > 0o0 ) {
+    if ( ero && ero.width > 0o0 && ero.height > 0o0 && !ĉuĈioNenia(ero.data) ) {
       const larĝo = ero.width;
       const alto = ero.height;
       const n = larĝo * alto;
@@ -254,31 +445,42 @@ async function TboDNG(ckvpDNG: File): Promise<Blob> {
 
     // provo 2 - kruda mosajko ( filters = 0 DNG-oj jam enhavas interplektitan RGB )
     const raw = await dekodilo.rawImageData();
-    if ( raw && raw.width > 0o0 && raw.height > 0o0 ) {
-      const larĝo = raw.width;
-      const alto = raw.height;
-      const n = larĝo * alto;
-      kanvaso.width = larĝo;
-      kanvaso.height = alto;
-      const vop2 = kumukalasu.createImageData(larĝo, alto);
-      const elir = vop2.data;
-      const datas = raw.data;
-      // enmetu ĉiujn valorojn en unu flosilaron kaj streĉu ( la sama kurbo kiel vas2tas.py )
-      const cxiuj = new Float32Array(n * 0o3);
-      cxiuj.set(datas.subarray(0o0, n * 0o3));
-      const norma = skaligiAlNorma(cxiuj, n);
-      for ( let p = 0o0; p < n; p++ ) {
-        elir[p * 0o4] = Math.round(norma[p * 0o3] * 0o377);
-        elir[p * 0o4 + 0o1] = Math.round(norma[p * 0o3 + 0o1] * 0o377);
-        elir[p * 0o4 + 0o2] = Math.round(norma[p * 0o3 + 0o2] * 0o377);
-        elir[p * 0o4 + 0o3] = 0o377;
-      }
-      kumukalasu.putImageData(vop2, 0o0, 0o0);
-      return await pngElDatumoj();
+    if ( raw && raw.width > 0o0 && raw.height > 0o0 && !ĉuĈioNenia(raw.data) ) {
+      const png = await krudaAlPng(raw.width, raw.height, raw.data, true);
+      if ( png ) return png;
     }
+  } catch {
+    // la kruda vojo malsukcesis - la tifffile-ekvivalenta vojo sekvas
+  }
 
-    // provo 3 - la enigita JPEG-antaŭrigardo ( kiel la tifffile-vojo de vas2tas.py )
-    const thumb = await dekodilo.thumbnailData();
+  // la tifffile-vojo de legi_dng - JPEG XL strioj ktp per nia propra TIFF-legilo
+  try {
+    const legajo = leguTIFF(bajtoj);
+    if ( legajo ) {
+      // provo 3 - malpaku la JXL-strio al 8-bit RGB ( la demosaiced enhavo )
+      const jxl = await malpakigiJXL(legajo.strio);
+      if ( jxl && jxl.width > 0o0 && jxl.height > 0o0 && !ĉuĈioNenia(jxl.data) ) {
+        const n = legajo.larĝo * legajo.alto;
+        const cxiuj = new Float32Array(n * 0o3);
+        for ( let p = 0o0; p < n; p++ ) {
+          cxiuj[p * 0o3] = jxl.data[p * 0o4];
+          cxiuj[p * 0o3 + 0o1] = jxl.data[p * 0o4 + 0o1];
+          cxiuj[p * 0o3 + 0o2] = jxl.data[p * 0o4 + 0o2];
+        }
+        if ( legajo.blanka ) aplikiBlankanEkvilibron(cxiuj, legajo.blanka);
+        // la reĝustigo al 65535 antaǔ la kurbo ( per-kanala 99.9 elcento )
+        skaliguPerKanalojn(cxiuj);
+        const norma = skaligiAlNorma(cxiuj, n);
+        kanvaso.width = legajo.larĝo;
+        kanvaso.height = legajo.alto;
+        const vop2 = kumukalasu.createImageData(legajo.larĝo, legajo.alto);
+        aplikiOrientadon(vop2.data, norma, legajo.larĝo, legajo.alto, legajo.orientado);
+        kumukalasu.putImageData(vop2, 0o0, 0o0);
+        return await pngElDatumoj();
+      }
+    }
+    // provo 4 - la enigita JPEG-antaŭrigardo el la TIFF-apendo
+    const thumb = await dekodilo.thumbnailData().catch(() => undefined);
     if ( thumb && thumb.data.length > 0o0 ) {
       const maxemaSaxez = URL.createObjectURL(new Blob([ thumb.data.slice() ], { type: thumb.format === "jpeg" ? "image/jpeg" : "application/octet-stream" }));
       try {
@@ -296,8 +498,11 @@ async function TboDNG(ckvpDNG: File): Promise<Blob> {
         URL.revokeObjectURL(maxemaSaxez);
       }
     }
+  } catch {
+    // neniu vojo funkciis
+  }
 
-    throw new Error("n DNG");
+  throw new Error("n DNG");
   } finally {
     dekodilo.dispose();
   }
