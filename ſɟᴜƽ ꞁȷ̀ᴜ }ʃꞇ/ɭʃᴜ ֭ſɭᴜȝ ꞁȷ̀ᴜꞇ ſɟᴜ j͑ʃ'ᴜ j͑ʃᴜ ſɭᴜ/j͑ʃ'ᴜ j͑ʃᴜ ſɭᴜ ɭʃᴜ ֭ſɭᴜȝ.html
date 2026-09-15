@@ -24,7 +24,7 @@
 
     <thala>
         <p class="ksakap2sa" data-oskakefani="j͑ʃᴜ ı],ɔ }ʃꞇ"></p>
-        <input type="file" id="araq2q-tahaq" accept="image/*, .heic, .heif">
+        <input type="file" id="araq2q-tahaq" accept="image/*, .heic, .heif, .dng, .dng, .dng">
         <p class="ksakap2sa" data-oskakefani="j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃꞇ"></p>
         <sabosuc2w2q>
             <label>
@@ -32,17 +32,45 @@
                 <span data-oskakefani="j͑ʃ'ᴜ ſɟᴜ ɭl̀ᴜ ᶅſɔ ֭ſɭɹ"></span>
             </label>
             <label>
-                <input type="checkbox" id="a1a-vatanek" checked>
+                <input type="checkbox" id="a1a-vatanek">
                 <span data-oskakefani="j͑ʃ'ᴜ ɭʃᴜ }ʃɔƽ ᶅſɔ ֭ſɭɹ"></span>
             </label>
             <label>
-                <input type="checkbox" id="a1a-vaxaha" checked>
+                <input type="checkbox" id="a1a-vaxaha">
                 <span data-oskakefani="j͑ʃ'ᴜ ı],ᴜ ֭ſɭᴜ }ʃᴜ ſɭɜ ı],ᴜ"></span>
             </label>
+            <label>
+                <input type="checkbox" id="a1a-paxa-tahaq" checked>
+                <span data-oskakefani="ſɟᴜ ɭʃᴜ ɭʃᴜ ֭ſɭᴜȝ"></span>
+            </label>
+            <label>
+                <input type="checkbox" id="a1a-granda" checked>
+                <span data-oskakefani="j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ſןᴜ j͐ʃэ"></span>
+            </label>
+            <label>
+                <input type="checkbox" id="a1a-marko" checked>
+                <span data-oskakefani="j͑ʃɹ ɭʃᴜɔ˞"></span>
+            </label>
         </sabosuc2w2q>
+        <sabosuc2w2q>
+            <label>
+                <input type="checkbox" id="a1a-sweka-metadatumojn" checked>
+                <span data-oskakefani="j͑ʃɹ ᶅſɔ }ʃꞇ"></span>
+            </label>
+        </sabosuc2w2q>
+        <maxema id="bakanano">
+            <input type="text" id="bakanano-fabrikanto" data-oskakefani="ŋᷠᴜ ſɭʞɹ j͑ʃɔ ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ" placeholder="ŋᷠᴜ ſɭʞɹ j͑ʃɔ ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ" value="j͑ʃʞᴜ ſ͕ɭw j͑ʃꞇȝ">
+            <input type="text" id="bakanano-modelo" data-oskakefani="ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ" placeholder="ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ" value="j͑ʃɀᴜ ֭ſɭᴜƴ ꞙɭцɔ ſןw ſɭɹ ᶅſɹ">
+            <input type="text" id="bakanano-ĵɔƭᴜꞇ" data-oskakefani="ŋᷠᴜ ſɭʞɹ" placeholder="ŋᷠᴜ ſɭʞɹ" value="ſɭˬꞇ ſ̀ȷᴜ ı],ꞇ">
+            <input type="text" id="bakanano-j͑ʃɽ͑ʃꞇ" data-oskakefani="ſ͕ȷɜ ſɟw ɭʃᴜ }ʃꞇ" placeholder="ſ͕ȷɜ ſɟw ɭʃᴜ }ʃꞇ" value="ŋᷠᴜ ֭ſɭᴜ ſɭˬꞇͷ̗">
+            <input type="text" id="bakanano-scfali" data-oskakefani="ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ" placeholder="ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ" value="j͑ʃ'ᴜ j͑ʃɹ ɭʃᴜɔ˞">
+        </maxema>
     </thala>
 
-    <thala id="tlakakani" style="display: none;">
+    <button id="tenni" data-oskakefani="ſɭʞɹ" disabled></button>
+    <cab6tem2 id="cab6tem2" class="kobe"></cab6tem2>
+
+    <thala id="tlakakani" class="kobe">
         <p class="ksakap2sa" data-oskakefani="ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜ }ʃꞇ"></p>
         <ciihii>
             <img id="tlakaku-tahaq"></img>
@@ -50,7 +78,7 @@
         <button id="qumk2" data-oskakefani="ſ͕ɭwc̭ ſɭɹ"></button>
     </thala>
 
-    <thala id="tlohk2ni" style="display: none;">
+    <thala id="tlohk2ni" class="kobe">
         <p data-oskakefani="ſ͕ȷɜ ſɭʞɹ"></p>
     </thala>
 </body>
@@ -66,12 +94,20 @@
             "j͑ʃп́ɔ ɭʃᴜ ֭ſɭᴜȝ ſɟᴜ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ": "j͑ʃп́ɔ ɭʃᴜ ֭ſɭᴜȝ ſɟᴜ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ",
 
             "j͑ʃᴜ ı],ɔ }ʃꞇ": "j͑ʃᴜ ı],ɔ }ʃꞇ",
-            "ɭʃᴜ ֭ſɭᴜȝ": "ɭʃᴜ ֭ſɭᴜȝ ( ſɭɜ ɭʃɔ ſ͕ɭᴜƴ ꞁȷ̀ᴜꞇ )",
-
             "j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃꞇ": "j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃꞇ",
             "j͑ʃ'ᴜ ſɟᴜ ɭl̀ᴜ ᶅſɔ ֭ſɭɹ": "j͑ʃ'ᴜ ſɟᴜ ɭl̀ᴜ ᶅſɔ ֭ſɭɹ",
             "j͑ʃ'ᴜ ɭʃᴜ }ʃɔƽ ᶅſɔ ֭ſɭɹ": "j͑ʃ'ᴜ ɭʃᴜ }ʃɔƽ ᶅſɔ ֭ſɭɹ",
             "j͑ʃ'ᴜ ı],ᴜ ֭ſɭᴜ }ʃᴜ ſɭɜ ı],ᴜ": "j͑ʃ'ᴜ ı],ᴜ ֭ſɭᴜ }ʃᴜ ſɭɜ ı],ᴜ",
+            "ſɟᴜ ɭʃᴜ ɭʃᴜ ֭ſɭᴜȝ": "ſɟᴜ ɭʃᴜ ɭʃᴜ ֭ſɭᴜȝ",
+            "j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ſןᴜ j͐ʃэ": "j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ſןᴜ j͐ʃэ",
+            "j͑ʃɹ ɭʃᴜɔ˞": "j͑ʃɹ ɭʃᴜɔ˞",
+            "j͑ʃɹ ᶅſɔ }ʃꞇ": "j͑ʃɹ ᶅſɔ }ʃꞇ",
+            "ſɭʞɹ": "ſɭʞɹ",
+            "ŋᷠᴜ ſɭʞɹ j͑ʃɔ ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ": "ŋᷠᴜ ſɭʞɹ j͑ʃɔ ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ",
+            "ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ": "ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ",
+            "ŋᷠᴜ ſɭʞɹ": "ŋᷠᴜ ſɭʞɹ",
+            "ſ͕ȷɜ ſɟw ɭʃᴜ }ʃꞇ": "ſ͕ȷɜ ſɟw ɭʃᴜ }ʃꞇ",
+            "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ",
 
             "ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜ }ʃꞇ",
             "ſ͕ɭwc̭ ſɭɹ": "ſ͕ɭwc̭ ſɭɹ",
@@ -87,12 +123,21 @@
             "j͑ʃп́ɔ ɭʃᴜ ֭ſɭᴜȝ ſɟᴜ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ": "Image Modifier",
 
             "j͑ʃᴜ ı],ɔ }ʃꞇ": "Input",
-            "ɭʃᴜ ֭ſɭᴜȝ": "Image",
-
             "j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃꞇ": "Parameters",
             "j͑ʃ'ᴜ ſɟᴜ ɭl̀ᴜ ᶅſɔ ֭ſɭɹ": "Vacaja Colors",
             "j͑ʃ'ᴜ ɭʃᴜ }ʃɔƽ ᶅſɔ ֭ſɭɹ": "Layer Colors",
             "j͑ʃ'ᴜ ı],ᴜ ֭ſɭᴜ }ʃᴜ ſɭɜ ı],ᴜ": "Smoothen Strokes",
+            "ſɟᴜ ɭʃᴜ ɭʃᴜ ֭ſɭᴜȝ": "Crop to Target Size",
+            "j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ſןᴜ j͐ʃэ": "Resize to Target Size",
+            "j͑ʃɹ ɭʃᴜɔ˞": "Watermark",
+            "j͑ʃɹ ᶅſɔ }ʃꞇ": "Metadata",
+            "ſɭʞɹ": "Create",
+
+            "ŋᷠᴜ ſɭʞɹ j͑ʃɔ ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ": "Manufacturer Name",
+            "ſɟᴜ ɭʃᴜ ֭ſɭᴜȝ": "Camera Model",
+            "ŋᷠᴜ ſɭʞɹ": "Artist Name",
+            "ſ͕ȷɜ ſɟw ɭʃᴜ }ʃꞇ": "Copyright Notice",
+            "ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "Tool Name",
 
             "ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜ }ʃꞇ": "Output",
             "ſ͕ɭwc̭ ſɭɹ": "Download",

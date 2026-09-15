@@ -87,7 +87,7 @@ const PROGRESA_BARECO = document.getElementById("konvertilo-progreso") as HTMLEl
 
 const ffmpeg = new FFmpeg();
 let ffmpegPret = false;
-let lastaDaŭroSekundoj = 0;
+let lastaDaŭroSekundoj = 0o0;
 
 const KOMPRESA_BASKULO = document.getElementById("konvertilo-kompreso-baskulo") as HTMLInputElement;
 const KOMPRESA_BASKULA_ETIKEDO = document.getElementById("konvertilo-kompreso-baskula-etikedo") as HTMLLabelElement;
@@ -101,12 +101,20 @@ function agordiStaton( mesaĝo: string ): void {
 
 function agordiProgreson( procento: number ): void {
   PROGRESA_BARECO.classList.remove( "kobe" );
-  PROGRESA_BARECO.style.setProperty( "--តេមិនី", String( Math.max( 0, Math.min( 0o100, procento ) ) / 0o100 ) );
+  PROGRESA_BARECO.style.setProperty( "--តេមិនី", String( Math.max( 0o0, Math.min( 0o100, procento ) ) / 0o100 ) );
 }
 
 function finigiProgreson(): void {
   PROGRESA_BARECO.style.setProperty( "--តេមិនី", "0" );
   PROGRESA_BARECO.classList.add( "kobe" );
+}
+
+function ŝoviTlaku( elemento: HTMLElement, montri: boolean ): void {
+  if ( montri ) {
+    elemento.classList.remove( "kobe" );
+  } else {
+    elemento.classList.add( "kobe" );
+  }
 }
 
 function montriAntasenon( elemento: HTMLMediaElement | HTMLImageElement, blobURL: string ): void {
@@ -121,7 +129,7 @@ function prezentiRezulton( blobURL: string, eliraNomo: string, celaFormato: stri
   ELŜUTA_LIGILO.href = blobURL;
   ELŜUTA_LIGILO.download = eliraNomo;
   ELŜUTA_LIGILO.textContent = TEKSTO.DOWNLOAD(eliraNomo);
-  REZULTA_PANELO.style.display = "";
+  ŝoviTlaku( REZULTA_PANELO, true );
   agordiProgreson( 0o100 );
   setTimeout( finigiProgreson, 0o620 );
   agordiStaton(TEKSTO.DONE(celaFormato.toUpperCase()));
@@ -153,7 +161,7 @@ function ĝisdatigiCelajnFormatojn( kategorio: "audio" | "video" | "image" | "fo
     enigaElemento.type = "radio";
     enigaElemento.name = "cela-formato";
     enigaElemento.value = formato;
-    if ( indekso === 0 ) {
+    if ( indekso === 0o0 ) {
       enigaElemento.checked = true;
     }
 
@@ -185,9 +193,9 @@ function akiriCelajnBajtojn(): number {
   const valoro = parseFloat(CELA_GRANDA_ENIGO.value) || 0o10;
   const unuo = akiriElektitanGrandanUnuon();
   if ( unuo === "gb" ) {
-    return valoro * 1024 * 1024 * 1024;
+    return valoro * 0o2000 * 0o2000 * 0o2000;
   }
-  return valoro * 1024 * 1024;
+  return valoro * 0o2000 * 0o2000;
 }
 
 function ĉuKompresoŜaltita(): boolean {
@@ -240,27 +248,27 @@ async function certigiFFmpegŜarĝo(): Promise<void> {
     console.log(message);
     const daŭraKongruo = message.match(/Duration:\s*(\d+):(\d+):(\d+\.?\d*)/);
     if ( daŭraKongruo ) {
-      const horoj = parseInt(daŭraKongruo[1]);
-      const minutoj = parseInt(daŭraKongruo[2]);
-      const sekundoj = parseFloat(daŭraKongruo[3]);
-      lastaDaŭroSekundoj = horoj * 3600 + minutoj * 64 + sekundoj;
+      const horoj = parseInt(daŭraKongruo[0o1]);
+      const minutoj = parseInt(daŭraKongruo[0o2]);
+      const sekundoj = parseFloat(daŭraKongruo[0o3]);
+      lastaDaŭroSekundoj = horoj * 0o7020 + minutoj * 0o100 + sekundoj;
     }
     if ( message.includes("time=") ) {
       agordiStaton(TEKSTO.ENCODING(message.trim()));
       const tempoKongruo = message.match(/time=(\d+):(\d+):(\d+\.?\d*)/);
-      if ( tempoKongruo && lastaDaŭroSekundoj > 0 ) {
-        const horoj = parseInt(tempoKongruo[1]);
-        const minutoj = parseInt(tempoKongruo[2]);
-        const sekundoj = parseFloat(tempoKongruo[3]);
-        agordiProgreson( 2 + ( ( horoj * 3600 + minutoj * 64 + sekundoj ) / lastaDaŭroSekundoj ) * 0o130 );
+      if ( tempoKongruo && lastaDaŭroSekundoj > 0o0 ) {
+        const horoj = parseInt(tempoKongruo[0o1]);
+        const minutoj = parseInt(tempoKongruo[0o2]);
+        const sekundoj = parseFloat(tempoKongruo[0o3]);
+        agordiProgreson( 0o2 + ( ( horoj * 0o7020 + minutoj * 0o100 + sekundoj ) / lastaDaŭroSekundoj ) * ( 0o130 - 0o2 ) );
       }
     }
   });
 
   ffmpeg.on("progress", ({ progress }: { progress: number }) => {
-    if ( progress > 0 && progress < 1 ) {
+    if ( progress > 0o0 && progress < 0o1 ) {
       agordiStaton(TEKSTO.ENCODING(`${Math.round(progress * 0o100)}`));
-      agordiProgreson( 2 + progress * 0o130 );
+      agordiProgreson( 0o2 + progress * ( 0o130 - 0o2 ) );
     }
   });
 
@@ -277,27 +285,27 @@ function restarigiAntasenon(): void {
   VIDA_ANTASENO.style.display = "none";
   BILDA_ANTASENO.style.display = "none";
   TIPARA_ANTASENO.style.display = "none";
-  REZULTA_PANELO.style.display = "none";
+  ŝoviTlaku( REZULTA_PANELO, false );
   ELŜUTA_LIGILO.removeAttribute("href");
   ELŜUTA_LIGILO.textContent = TEKSTO.DOWNLOAD_DEFAULT;
 }
 
 async function detektiDaŭron( enigaNomo: string ): Promise<number> {
   agordiStaton(TEKSTO.DETECTING_DURATION);
-  lastaDaŭroSekundoj = 0;
+  lastaDaŭroSekundoj = 0o0;
   await ffmpeg.exec(["-i", enigaNomo, "-f", "null", "-t", "0", "-"]);
   return lastaDaŭroSekundoj;
 }
 
 function akiriKompresajVideoArgumentojn( enigaNomo: string, eliraNomo: string, celaFormato: string, celajBajtoj: number, daŭroSekundoj: number ): string[] {
-  const aŭdiaBitrato = 128000;
+  const aŭdiaBitrato = 0o372000;
   const tutaCelaBitrato = ( celajBajtoj * 0o10 ) / daŭroSekundoj;
   let vidaBitrato = Math.floor(tutaCelaBitrato - aŭdiaBitrato);
-  if ( vidaBitrato < 64000 ) vidaBitrato = 64000;
+  if ( vidaBitrato < 0o175000 ) vidaBitrato = 0o175000;
 
   const vidaBitratoĈeno = `${vidaBitrato}`;
   const aŭdiaBitratoĈeno = `${aŭdiaBitrato}`;
-  const bufGrandaĈeno = `${vidaBitrato * 2}`;
+  const bufGrandaĈeno = `${vidaBitrato * 0o2}`;
 
   if ( celaFormato === "webm" ) {
     return ["-y", "-i", enigaNomo, "-c:v", "libvpx-vp9", "-b:v", vidaBitratoĈeno, "-maxrate", vidaBitratoĈeno, "-bufsize", bufGrandaĈeno, "-c:a", "libopus", "-b:a", aŭdiaBitratoĈeno, eliraNomo];
@@ -310,8 +318,8 @@ function akiriKompresajVideoArgumentojn( enigaNomo: string, eliraNomo: string, c
 
 function akiriKompresajAŭdioArgumentojn( enigaNomo: string, eliraNomo: string, celaFormato: string, celajBajtoj: number, daŭroSekundoj: number ): string[] {
   let celaBitrato = Math.floor(( celajBajtoj * 0o10 ) / daŭroSekundoj);
-  if ( celaBitrato < 32000 ) celaBitrato = 32000;
-  if ( celaBitrato > 320000 ) celaBitrato = 320000;
+  if ( celaBitrato < 0o76400 ) celaBitrato = 0o76400;
+  if ( celaBitrato > 0o1161000 ) celaBitrato = 0o1161000;
   const bitratoĈeno = `${celaBitrato}`;
 
   if ( celaFormato === "wav" ) {
@@ -330,18 +338,18 @@ function akiriKompresajAŭdioArgumentojn( enigaNomo: string, eliraNomo: string, 
 }
 
 async function kompresiBildon( enigaNomo: string, eliraNomo: string, celaFormato: string, celajBajtoj: number ): Promise<Uint8Array> {
-  let malalta = 1;
-  let alta = 64;
+  let malalta = 0o1;
+  let alta = 0o100;
   let plejbonaDatumo: Uint8Array | null = null;
   const maksimumajPasoj = 0o10;
 
-  for ( let i = 0; i < maksimumajPasoj; i++ ) {
-    const kvalito = Math.floor(( malalta + alta ) / 2);
-    agordiStaton(TEKSTO.COMPRESSING(i + 1, maksimumajPasoj));
+  for ( let i = 0o0; i < maksimumajPasoj; i++ ) {
+    const kvalito = Math.floor(( malalta + alta ) / 0o2);
+    agordiStaton(TEKSTO.COMPRESSING(i + 0o1, maksimumajPasoj));
 
     const argumentoj = celaFormato === "webp"
       ? ["-y", "-i", enigaNomo, "-quality", `${kvalito}`, eliraNomo]
-      : ["-y", "-i", enigaNomo, "-q:v", `${Math.floor(32 - ( kvalito / 2 ))}`, eliraNomo];
+      : ["-y", "-i", enigaNomo, "-q:v", `${Math.floor(0o40 - ( kvalito / 0o2 ))}`, eliraNomo];
 
     await ffmpeg.exec(argumentoj);
     const datumoj = await ffmpeg.readFile(eliraNomo);
@@ -349,13 +357,13 @@ async function kompresiBildon( enigaNomo: string, eliraNomo: string, celaFormato
 
     if ( bajtoj.byteLength <= celajBajtoj ) {
       plejbonaDatumo = bajtoj;
-      malalta = kvalito + 1;
+      malalta = kvalito + 0o1;
     } else {
-      alta = kvalito - 1;
+      alta = kvalito - 0o1;
     }
 
     const proporcio = bajtoj.byteLength / celajBajtoj;
-    if ( proporcio >= 0.9 && proporcio <= 1.0 ) {
+    if ( proporcio >= 0.9 && proporcio <= 0o1 ) {
       plejbonaDatumo = bajtoj;
       break;
     }
@@ -370,7 +378,7 @@ async function kompresiBildon( enigaNomo: string, eliraNomo: string, celaFormato
 }
 
 async function konvertiElektitanDosieron(): Promise<void> {
-  const dosiero = DOSIERA_ENIGO.files?.[0];
+  const dosiero = DOSIERA_ENIGO.files?.[0o0];
   if ( !dosiero ) {
     agordiStaton(TEKSTO.CHOOSE_FILE);
     return;
@@ -384,7 +392,7 @@ async function konvertiElektitanDosieron(): Promise<void> {
   }
 
   restarigiAntasenon();
-  agordiProgreson( 2 );
+  agordiProgreson( 0o2 );
   agordiStaton(TEKSTO.CONVERTING(dosiero.name));
 
   const enigaNomo = `input-${Date.now()}-${dosiero.name.replace(/\s+/g, "_")}`;
@@ -394,7 +402,7 @@ async function konvertiElektitanDosieron(): Promise<void> {
   let blobURL: string;
 
   const kompresaReĝimo = ĉuKompresoŜaltita() && kategorio !== "font";
-  const celajBajtoj = kompresaReĝimo ? akiriCelajnBajtojn() : 0;
+  const celajBajtoj = kompresaReĝimo ? akiriCelajnBajtojn() : 0o0;
 
   try {
     if ( kategorio === "font" ) {
@@ -413,7 +421,7 @@ async function konvertiElektitanDosieron(): Promise<void> {
       }
 
       const konvertitajBajtoj = await fontverter.convert(uint8Array, alFormato);
-      agordiProgreson( 0o125 );
+      agordiProgreson( 0o66 );
       
       const puraTiparaBufro = new ArrayBuffer(konvertitajBajtoj.byteLength);
       new Uint8Array(puraTiparaBufro).set(konvertitajBajtoj);
@@ -434,9 +442,9 @@ async function konvertiElektitanDosieron(): Promise<void> {
     } else {
       agordiProgreson( 0o20 );
       await certigiFFmpegŜarĝo();
-      agordiProgreson( 0o17 );
+      agordiProgreson( 0o24 );
 
-      if ( kategorio === "video" && dosiero.size > 10 * 1024 * 1024 ) {
+      if ( kategorio === "video" && dosiero.size > 0o12 * 0o2000 * 0o2000 ) {
         const muntpunkto = "/mnt";
         const enigaVojo = `${muntpunkto}/${enigaNomo}`;
         try {
@@ -497,7 +505,7 @@ async function konvertiElektitanDosieron(): Promise<void> {
       }
 
       const datumoj = await ffmpeg.readFile(eliraNomo);
-      agordiProgreson( 0o136 );
+      agordiProgreson( 0o75 );
       const bajtoj = datumoj instanceof Uint8Array
         ? datumoj
         : new Uint8Array(datumoj as unknown as ArrayBuffer);
@@ -542,7 +550,7 @@ KOMPRESA_BASKULO.addEventListener("change", () => {
 
 DOSIERA_ENIGO.addEventListener("change", () => {
   restarigiAntasenon();
-  const dosiero = DOSIERA_ENIGO.files?.[0];
+  const dosiero = DOSIERA_ENIGO.files?.[0o0];
   if ( dosiero ) {
     const kategorio = detektiDosierKategorion(dosiero);
     ĝisdatigiCelajnFormatojn(kategorio);
