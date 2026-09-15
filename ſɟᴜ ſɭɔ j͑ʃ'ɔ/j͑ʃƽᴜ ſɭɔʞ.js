@@ -10,7 +10,24 @@ function k2regawe(gawe) {
     oskakefani.forEach(kek => {
         const kef = kek.dataset.oskakefani;
         const skakef = skakefani[gawe]?.[kef];
-        kek.textContent = skakef === "" ? skakefani["aih"]?.[kef] || kef : skakef || skakefani["aih"]?.[kef] || kef;
+        const sef4kef = skakef === "" ? skakefani["aih"]?.[kef] || kef : skakef || skakefani["aih"]?.[kef] || kef;
+        const k2h2Mal6xema = [ ...kek.childNodes ].filter(xaqasuKek => xaqasuKek.nodeType === Node.ELEMENT_NODE && !xaqasuKek.classList.contains("cepufalxez") && xaqasuKek.tagName !== "BR");
+        const vacepusu = [ ...kek.childNodes ].some(xaqasuKek => xaqasuKek.nodeType === Node.ELEMENT_NODE && xaqasuKek.classList.contains("cepufalxez"));
+        for ( const xaqasuKek of [ ...kek.childNodes ] ) {
+            if ( xaqasuKek.nodeType === Node.TEXT_NODE || xaqasuKek.classList?.contains("cepufalxez") || xaqasuKek.tagName === "BR" ) {
+                xaqasuKek.remove();
+            }
+        }
+        const kefKek = document.createTextNode(sef4kef);
+        if ( k2h2Mal6xema.length ) {
+            kek.insertBefore(kefKek, kek.firstChild);
+        } else {
+            kek.textContent = "";
+            kek.appendChild(kefKek);
+        }
+        if ( vacepusu ) {
+            sakaHaxez(kefKek);
+        }
     });
     if ( gawe != "aih" ) {
         document.querySelectorAll("a").forEach(cel2f => {

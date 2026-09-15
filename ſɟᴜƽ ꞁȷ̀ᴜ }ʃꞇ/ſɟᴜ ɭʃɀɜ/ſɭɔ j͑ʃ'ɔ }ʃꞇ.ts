@@ -83,6 +83,7 @@ const VIDA_ANTASENO = document.getElementById("konvertilo-antaseno-video") as HT
 const BILDA_ANTASENO = document.getElementById("konvertilo-antaseno-bildo") as HTMLImageElement;
 const TIPARA_ANTASENO = document.getElementById("konvertilo-antaseno-tiparo") as HTMLParagraphElement;
 const ELŜUTA_LIGILO = document.getElementById("konvertilo-elŝuto") as HTMLAnchorElement;
+const PROGRESA_BARECO = document.getElementById("konvertilo-progreso") as HTMLElement;
 
 const ffmpeg = new FFmpeg();
 let ffmpegPret = false;
@@ -98,6 +99,16 @@ function agordiStaton( mesaĝo: string ): void {
   STATO_TEKSTO.textContent = mesaĝo;
 }
 
+function agordiProgreson( procento: number ): void {
+  PROGRESA_BARECO.classList.remove( "kobe" );
+  PROGRESA_BARECO.style.setProperty( "--តេមិនី", String( Math.max( 0, Math.min( 0o100, procento ) ) / 0o100 ) );
+}
+
+function finigiProgreson(): void {
+  PROGRESA_BARECO.style.setProperty( "--តេមិនី", "0" );
+  PROGRESA_BARECO.classList.add( "kobe" );
+}
+
 function montriAntasenon( elemento: HTMLMediaElement | HTMLImageElement, blobURL: string ): void {
   elemento.src = blobURL;
   elemento.style.display = "";
@@ -111,6 +122,8 @@ function prezentiRezulton( blobURL: string, eliraNomo: string, celaFormato: stri
   ELŜUTA_LIGILO.download = eliraNomo;
   ELŜUTA_LIGILO.textContent = TEKSTO.DOWNLOAD(eliraNomo);
   REZULTA_PANELO.style.display = "";
+  agordiProgreson( 0o100 );
+  setTimeout( finigiProgreson, 0o620 );
   agordiStaton(TEKSTO.DONE(celaFormato.toUpperCase()));
 }
 
@@ -234,12 +247,20 @@ async function certigiFFmpegŜarĝo(): Promise<void> {
     }
     if ( message.includes("time=") ) {
       agordiStaton(TEKSTO.ENCODING(message.trim()));
+      const tempoKongruo = message.match(/time=(\d+):(\d+):(\d+\.?\d*)/);
+      if ( tempoKongruo && lastaDaŭroSekundoj > 0 ) {
+        const horoj = parseInt(tempoKongruo[1]);
+        const minutoj = parseInt(tempoKongruo[2]);
+        const sekundoj = parseFloat(tempoKongruo[3]);
+        agordiProgreson( 2 + ( ( horoj * 3600 + minutoj * 64 + sekundoj ) / lastaDaŭroSekundoj ) * 0o130 );
+      }
     }
   });
 
   ffmpeg.on("progress", ({ progress }: { progress: number }) => {
     if ( progress > 0 && progress < 1 ) {
       agordiStaton(TEKSTO.ENCODING(`${Math.round(progress * 0o100)}`));
+      agordiProgreson( 2 + progress * 0o130 );
     }
   });
 
@@ -363,6 +384,7 @@ async function konvertiElektitanDosieron(): Promise<void> {
   }
 
   restarigiAntasenon();
+  agordiProgreson( 2 );
   agordiStaton(TEKSTO.CONVERTING(dosiero.name));
 
   const enigaNomo = `input-${Date.now()}-${dosiero.name.replace(/\s+/g, "_")}`;
@@ -377,6 +399,7 @@ async function konvertiElektitanDosieron(): Promise<void> {
   try {
     if ( kategorio === "font" ) {
       agordiStaton(TEKSTO.LOADING_FONT_ENGINE);
+      agordiProgreson( 0o20 );
       const fontverterModulo = await import(/* @vite-ignore */ FONTA_CDN) as any;
       const fontverter = fontverterModulo.convert ? fontverterModulo : (fontverterModulo.default || fontverterModulo);
       agordiStaton(TEKSTO.CONVERTING_FONT);
@@ -390,6 +413,7 @@ async function konvertiElektitanDosieron(): Promise<void> {
       }
 
       const konvertitajBajtoj = await fontverter.convert(uint8Array, alFormato);
+      agordiProgreson( 0o125 );
       
       const puraTiparaBufro = new ArrayBuffer(konvertitajBajtoj.byteLength);
       new Uint8Array(puraTiparaBufro).set(konvertitajBajtoj);
@@ -408,7 +432,9 @@ async function konvertiElektitanDosieron(): Promise<void> {
       TIPARA_ANTASENO.style.fontFamily = tiparaNomo;
       TIPARA_ANTASENO.style.display = "";
     } else {
+      agordiProgreson( 0o20 );
       await certigiFFmpegŜarĝo();
+      agordiProgreson( 0o17 );
 
       if ( kategorio === "video" && dosiero.size > 10 * 1024 * 1024 ) {
         const muntpunkto = "/mnt";
@@ -471,6 +497,7 @@ async function konvertiElektitanDosieron(): Promise<void> {
       }
 
       const datumoj = await ffmpeg.readFile(eliraNomo);
+      agordiProgreson( 0o136 );
       const bajtoj = datumoj instanceof Uint8Array
         ? datumoj
         : new Uint8Array(datumoj as unknown as ArrayBuffer);
@@ -496,6 +523,7 @@ async function konvertiElektitanDosieron(): Promise<void> {
     prezentiRezulton(blobURL, eliraNomo, celaFormato);
   } catch ( eraro ) {
     console.error(eraro);
+    finigiProgreson();
     agordiStaton(TEKSTO.ERROR(String(eraro)));
   }
 }
