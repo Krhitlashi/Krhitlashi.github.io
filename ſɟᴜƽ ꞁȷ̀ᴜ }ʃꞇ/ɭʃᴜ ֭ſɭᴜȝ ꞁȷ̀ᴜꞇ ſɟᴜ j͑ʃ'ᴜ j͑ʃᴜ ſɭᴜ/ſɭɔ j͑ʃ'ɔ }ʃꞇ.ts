@@ -12,12 +12,25 @@ const A1A_PAXA_TAHAQ = document.getElementById("a1a-paxa-tahaq") as HTMLInputEle
 const A1A_GRANDA = document.getElementById("a1a-granda") as HTMLInputElement;
 const A1A_MARKO = document.getElementById("a1a-marko") as HTMLInputElement;
 const A1A_SWEKA_METADATUMOJN = document.getElementById("a1a-sweka-metadatumojn") as HTMLInputElement;
+const A1A_ANSTATAUX_METADATUMOJN = document.getElementById("a1a-anstataux-metadatumojn") as HTMLInputElement;
 const BAKANANO_FABRIKANTO = document.getElementById("bakanano-fabrikanto") as HTMLInputElement;
 const BAKANANO_MODELO = document.getElementById("bakanano-modelo") as HTMLInputElement;
 const BAKANANO_ĵɔƭᴜꞇ = document.getElementById("bakanano-ĵɔƭᴜꞇ") as HTMLInputElement;
 const BAKANANO_J͑ʃɽ͑ʃꞇ = document.getElementById("bakanano-j͑ʃɽ͑ʃꞇ") as HTMLInputElement;
 const BAKANANO_SCFALI = document.getElementById("bakanano-scfali") as HTMLInputElement;
 const BAKANANO = document.getElementById("bakanano") as HTMLElement;
+const BAKANANOJ: HTMLInputElement[] = [
+  BAKANANO_FABRIKANTO,
+  BAKANANO_MODELO,
+  BAKANANO_ĵɔƭᴜꞇ,
+  BAKANANO_J͑ʃɽ͑ʃꞇ,
+  BAKANANO_SCFALI
+];
+// la valoroj de la HTML-ŝablonoj - restarigitaj kiam la anstataŭigo malŝaltiĝas
+const BAKANANO_ŜABLONOJ = new Map<HTMLInputElement, string>();
+for ( const bakanano of BAKANANOJ ) {
+  BAKANANO_ŜABLONOJ.set(bakanano, bakanano.value);
+}
 const TLOHK2NI = document.getElementById("tlohk2ni") as HTMLElement;
 const QUMK2 = document.getElementById("qumk2") as HTMLButtonElement;
 const TENNI = document.getElementById("tenni") as HTMLButtonElement;
@@ -185,16 +198,20 @@ function skaligiAlNorma(f: Float32Array, pikseloj: number): Float32Array {
 
 // ⟨ TIFF-legilo - la necesaj etikedoj el la unua IFD ( tifffile-ekvivalento ) ⟩
 
+// la JPEG XL-densigo de la strioj - libraw-wasm ne subtenas ĝin ( 52546 )
+const JXL_DENSIGO = 0o146502;
+
 interface TIFFLegajo {
   larĝo: number;
   alto: number;
   orientado: number;
+  densigo: number;
   blanka: number[] | null;
   strio: Uint8Array;
 }
 
-// legu la unuan IFD - nur 256 ( larĝo ) 257 ( alto ) 273 ( strio ) 274 ( orientado )
-// 279 ( stria grandeco ) kaj 50706 ( AsShotNeutral ) interesas nin ĉi tie
+// legu la unuan IFD - nur 256 ( larĝo ) 257 ( alto ) 259 ( densigo ) 273 ( strio )
+// 274 ( orientado ) 279 ( stria grandeco ) kaj 50728 ( AsShotNeutral ) interesas nin
 function leguTIFF(bajtoj: Uint8Array): TIFFLegajo | null {
   if ( bajtoj.length < 0o10 ) return null;
   const magico = bajtoj[0o0];
@@ -208,6 +225,7 @@ function leguTIFF(bajtoj: Uint8Array): TIFFLegajo | null {
   let larĝo = 0o0;
   let alto = 0o0;
   let orientado = 0o1;
+  let densigo = 0o1;
   let strioLoko = -0o1;
   let strioGrandeco = 0o0;
   let blanka: number[] | null = null;
@@ -217,17 +235,18 @@ function leguTIFF(bajtoj: Uint8Array): TIFFLegajo | null {
     const etikedo = vid.getUint16(bazo, malgranda);
     const tipo = vid.getUint16(bazo + 0o2, malgranda);
     const n = vid.getUint32(bazo + 0o4, malgranda);
-    const unuo = tipo === 0o3 ? 0o2 : tipo === 0o4 ? 0o4 : tipo === 0o1 ? 0o1 : tipo === 0o12 ? 0o10 : 0o0;
+    // tipo 1 bajto 2 askio 3 mallonga 4 longa 5 racia 12 s-racia
+    const unuo = tipo === 0o1 ? 0o1 : tipo === 0o3 ? 0o2 : tipo === 0o4 ? 0o4 : ( tipo === 0o5 || tipo === 0o12 ) ? 0o10 : 0o0;
     if ( unuo === 0o0 || n === 0o0 ) continue;
     const tuta = unuo * n;
     const loko = tuta <= 0o4 ? bazo + 0o10 : vid.getUint32(bazo + 0o10, malgranda);
     if ( loko < 0o0 || loko + tuta > bajtoj.length ) continue;
-    if ( etikedo === 0o143022 ) {
-      // AsShotNeutral - SRATIONAL paroj ( numeratoro, denominatoro )
+    if ( etikedo === 0o143050 ) {
+      // AsShotNeutral - raciaj paroj ( numeratoro , denominatoro )
       const valoroj: number[] = [];
       for ( let j = 0o0; j < n && valoroj.length < 0o3; j++ ) {
-        const numeratoro = vid.getInt32(loko + j * 0o10, malgranda);
-        const denominatoro = vid.getInt32(loko + j * 0o10 + 0o4, malgranda);
+        const numeratoro = tipo === 0o12 ? vid.getInt32(loko + j * 0o10, malgranda) : vid.getUint32(loko + j * 0o10, malgranda);
+        const denominatoro = tipo === 0o12 ? vid.getInt32(loko + j * 0o10 + 0o4, malgranda) : vid.getUint32(loko + j * 0o10 + 0o4, malgranda);
         valoroj.push(denominatoro !== 0o0 ? numeratoro / denominatoro : 0o1);
       }
       blanka = valoroj.length === 0o3 ? valoroj : null;
@@ -236,21 +255,159 @@ function leguTIFF(bajtoj: Uint8Array): TIFFLegajo | null {
     const leguEntjerone = ( j: number ): number => tipo === 0o3 ? vid.getUint16(loko + j * 0o2, malgranda) : vid.getUint32(loko + j * 0o4, malgranda);
     if ( etikedo === 0o400 ) larĝo = leguEntjerone(0o0);
     else if ( etikedo === 0o401 ) alto = leguEntjerone(0o0);
+    else if ( etikedo === 0o403 ) densigo = leguEntjerone(0o0);
     else if ( etikedo === 0o422 ) orientado = leguEntjerone(0o0);
     else if ( etikedo === 0o421 && strioLoko < 0o0 ) strioLoko = leguEntjerone(0o0);
     else if ( etikedo === 0o427 && strioGrandeco === 0o0 ) strioGrandeco = leguEntjerone(0o0);
   }
   if ( larĝo <= 0o0 || alto <= 0o0 || strioLoko < 0o0 ) return null;
   if ( strioGrandeco <= 0o0 || strioLoko + strioGrandeco > bajtoj.length ) strioGrandeco = bajtoj.length - strioLoko;
-  return { larĝo, alto, orientado, blanka, strio: bajtoj.subarray(strioLoko, strioLoko + strioGrandeco) };
+  return { larĝo, alto, orientado, densigo, blanka, strio: bajtoj.subarray(strioLoko, strioLoko + strioGrandeco) };
 }
 
 // ⟨ JXL-malpakilo - la strio de JPEG XL DNG-oj ( kompresio 52546 ) ⟩
 
-async function malpakigiJXL(bajtoj: Uint8Array): Promise<ImageData | null> {
+// ⟨ la specimeno el la malfiltrita PNG-vico - 16-bita aǔ 8-bita ( etendita al 65535 ) ⟩
+
+function specimeno(kruda: Uint8Array, loko: number, profundo: number): number {
+  return profundo === 0o20 ? ( kruda[loko] << 0o10 ) | kruda[loko + 0o1] : kruda[loko] * 0o401;
+}
+
+// ⟨ la 16-bita PNG de jxl-oxide rekte al Float32-anoj de la krudaj valoroj ⟩
+
+// jxl-oxide liveras 16-bitan PNG-on en la lineara kruda skalo ; la 8-bita libjxl-vojo
+// perdis la malaltajn tonojn de la ombroj kaj lasis bendojn en la eliro
+async function pngAlKrudaj(bufro: Uint8Array): Promise<{ larĝo: number; alto: number; cxiuj: Float32Array } | null> {
+  if ( bufro.length < 0o10 || bufro[0o0] !== 0o211 || bufro[0o1] !== 0x50 || bufro[0o2] !== 0x4e || bufro[0o3] !== 0x47 ) {
+    return null;
+  }
+  let ruva = 0o10;
+  let larĝo = 0o0;
+  let alto = 0o0;
+  let profundo = 0o0;
+  let koloraSpeco = 0o0;
+  let interplektita = 0o0;
+  const idatPecoj: Array<Uint8Array> = [];
+  while ( ruva + 0o10 <= bufro.length ) {
+    const longo = ( bufro[ruva] << 0o30 ) | ( bufro[ruva + 0o1] << 0o20 ) | ( bufro[ruva + 0o2] << 0o10 ) | bufro[ruva + 0o3];
+    const speco = String.fromCharCode(bufro[ruva + 0o4], bufro[ruva + 0o5], bufro[ruva + 0o6], bufro[ruva + 0o7]);
+    const datumo = bufro.subarray(ruva + 0o10, ruva + 0o10 + longo);
+    if ( speco === "IHDR" ) {
+      larĝo = ( datumo[0o0] << 0o30 ) | ( datumo[0o1] << 0o20 ) | ( datumo[0o2] << 0o10 ) | datumo[0o3];
+      alto = ( datumo[0o4] << 0o30 ) | ( datumo[0o5] << 0o20 ) | ( datumo[0o6] << 0o10 ) | datumo[0o7];
+      profundo = datumo[0o10];
+      koloraSpeco = datumo[0o11];
+      interplektita = datumo[0o14];
+    } else if ( speco === "IDAT" ) {
+      idatPecoj.push(datumo);
+    } else if ( speco === "IEND" ) {
+      break;
+    }
+    ruva += 0o14 + longo;
+  }
+  const kanaloj = koloraSpeco === 0o6 ? 0o4 : koloraSpeco === 0o4 ? 0o2 : koloraSpeco === 0o2 ? 0o3 : 0o1;
+  if ( larĝo <= 0o0 || alto <= 0o0 || interplektita !== 0o0 || ( profundo !== 0o10 && profundo !== 0o20 ) ) {
+    return null;
+  }
+
+  const kunigita = new Uint8Array(idatPecoj.reduce(( s, p ) => s + p.length, 0o0));
+  let deŝovo = 0o0;
+  for ( const peco of idatPecoj ) {
+    kunigita.set(peco, deŝovo);
+    deŝovo += peco.length;
+  }
+  const fadeno = new DecompressionStream("deflate");
+  let premata: Uint8Array | null = new Uint8Array(await new Response(new Blob([ kunigita ]).stream().pipeThrough(fadeno)).arrayBuffer());
+
+  const unuBajtoj = profundo / 0o10;
+  const bajtojKanalo = kanaloj * unuBajtoj;
+  const paŝo = larĝo * bajtojKanalo;
+  let malfiltrita = new Uint8Array(alto * paŝo);
+  let ruvaPeceto = 0o0;
+  for ( let y = 0o0; y < alto; y++ ) {
+    const filtrilo = premata[ruvaPeceto++];
+    const celo = y * paŝo;
+    for ( let x = 0o0; x < paŝo; x++ ) {
+      const xAntaŭa = x >= bajtojKanalo ? malfiltrita[celo + x - bajtojKanalo] : 0o0;
+      const supro = y > 0o0 ? malfiltrita[celo - paŝo + x] : 0o0;
+      const suproMaldekstra = y > 0o0 && x >= bajtojKanalo ? malfiltrita[celo - paŝo + x - bajtojKanalo] : 0o0;
+      const valoro = premata[ruvaPeceto + x];
+      let malfiltraĵo = valoro;
+      if ( filtrilo === 0o1 ) {
+        malfiltraĵo = ( valoro + xAntaŭa ) & 0o377;
+      } else if ( filtrilo === 0o2 ) {
+        malfiltraĵo = ( valoro + supro ) & 0o377;
+      } else if ( filtrilo === 0o3 ) {
+        malfiltraĵo = ( valoro + ( ( xAntaŭa + supro ) >> 0o1 ) ) & 0o377;
+      } else if ( filtrilo === 0o4 ) {
+        const p = xAntaŭa + supro - suproMaldekstra;
+        const pa = Math.abs(p - xAntaŭa);
+        const pb = Math.abs(p - supro);
+        const pc = Math.abs(p - suproMaldekstra);
+        malfiltraĵo = ( valoro + ( pa <= pb && pa <= pc ? xAntaŭa : pb <= pc ? supro : suproMaldekstra ) ) & 0o377;
+      }
+      malfiltrita[celo + x] = malfiltraĵo;
+    }
+    ruvaPeceto += paŝo;
+  }
+  premata = null;
+
+  const cxiuj = new Float32Array(larĝo * alto * 0o3);
+  const krudaj = malfiltrita;
+  for ( let i = 0o0, p = 0o0; i < larĝo * alto; i++, p += 0o3 ) {
+    if ( koloraSpeco === 0o0 ) {
+      const griza = specimeno(krudaj, i * unuBajtoj, profundo);
+      cxiuj[p] = griza;
+      cxiuj[p + 0o1] = griza;
+      cxiuj[p + 0o2] = griza;
+      continue;
+    }
+    const bazo = i * bajtojKanalo;
+    const ruĝa = specimeno(krudaj, bazo, profundo);
+    cxiuj[p] = ruĝa;
+    if ( koloraSpeco === 0o4 ) {
+      cxiuj[p + 0o1] = ruĝa;
+      cxiuj[p + 0o2] = ruĝa;
+      continue;
+    }
+    cxiuj[p + 0o1] = specimeno(krudaj, bazo + unuBajtoj, profundo);
+    cxiuj[p + 0o2] = specimeno(krudaj, bazo + 0o2 * unuBajtoj, profundo);
+  }
+  return { larĝo, alto, cxiuj };
+}
+
+// ⟨ la JPEG XL strio malpakiĝas per jxl-oxide - 16 bitoj , lineara skalo ⟩
+
+async function malpakigiJXL(bajtoj: Uint8Array): Promise<{ larĝo: number; alto: number; cxiuj: Float32Array } | null> {
+  const JxlMod = await import("jxl-oxide-wasm");
+  // la wasm-modulo unue instaliĝas ( la dua voko tuj revenas )
+  await JxlMod.default( );
+  const bildo = new JxlMod.JxlImage();
   try {
-    const JxlMod = await import("@jsquash/jxl") as { decode: ( bajtoj: ArrayBuffer ) => Promise<ImageData> };
-    return await JxlMod.decode(bajtoj.slice().buffer);
+    // la strio estas lineara krudaĵo , do neniu sRGB-konverto
+    bildo.forceSrgb = false;
+    bildo.feedBytes(bajtoj);
+    if ( !bildo.tryInit() ) {
+      return null;
+    }
+    const rezulto = bildo.render();
+    // la wasm-memoro liberiĝas - malsukceso ĉi tie ne nuligas la rezulton
+    try {
+      const png = rezulto.encodeToPng( );
+      const krudaj = await pngAlKrudaj(png);
+      try {
+        bildo.free( );
+      } catch {
+        // la modulo jam liberigis ĝin
+      }
+      return krudaj;
+    } finally {
+      try {
+        rezulto.free( );
+      } catch {
+        // la modulo jam liberigis ĝin
+      }
+    }
   } catch {
     return null;
   }
@@ -296,6 +453,12 @@ function skaliguPerKanalojn(cxiuj: Float32Array): void {
   }
 }
 
+// la eliraj grandoj laǔ la orientado - la orientadoj 5 · 8 interŝanĝas la laterojn
+function orientitajGrandoj(larĝo: number, alto: number, orientado: number): { larĝo: number; alto: number } {
+  const sxiu = orientado >= 0o5 && orientado <= 0o10;
+  return { larĝo: sxiu ? alto : larĝo, alto: sxiu ? larĝo : alto };
+}
+
 // turnu aǔ flanki la bildon laǔ la EXIF orientado ( 1 · 8 ) kiel apliki_orientadon
 function aplikiOrientadon(elir: Uint8ClampedArray, norma: Float32Array, larĝo: number, alto: number, orientado: number): void {
   const sxiu = orientado >= 0o5 && orientado <= 0o10;
@@ -313,17 +476,21 @@ function aplikiOrientadon(elir: Uint8ClampedArray, norma: Float32Array, larĝo: 
       } else if ( orientado === 0o4 ) {
         sy = alto - 0o1 - y;
       } else if ( orientado === 0o5 ) {
+        // transpono - laŭ la ĉefa diagonalo
+        sx = y;
+        sy = x;
+      } else if ( orientado === 0o6 ) {
+        // turno 90 gradoj dekstrume
         sx = y;
         sy = alto - 0o1 - x;
-      } else if ( orientado === 0o6 ) {
-        sx = alto - 0o1 - y;
-        sy = x;
       } else if ( orientado === 0o7 ) {
+        // transverso - laŭ la malĉefa diagonalo
+        sx = larĝo - 0o1 - y;
+        sy = alto - 0o1 - x;
+      } else if ( orientado === 0o10 ) {
+        // turno 90 gradoj maldekstrume
         sx = larĝo - 0o1 - y;
         sy = x;
-      } else if ( orientado === 0o10 ) {
-        sx = y;
-        sy = larĝo - 0o1 - x;
       }
       const q = ( y * elLarĝo + x ) * 0o4;
       const p = ( sy * larĝo + sx ) * 0o3;
@@ -336,7 +503,7 @@ function aplikiOrientadon(elir: Uint8ClampedArray, norma: Float32Array, larĝo: 
 }
 
 // ĉu la datenoj estas ĉiuj nulaj ( libraw redonas tiajn por nesubtenataj DNG-oj )
-function ĉuĈioNenia(datas: Uint8Array | Uint16Array | Uint8ClampedArray): boolean {
+function ĉuĈioNenia(datas: Uint8Array | Uint16Array | Uint8ClampedArray | Float32Array): boolean {
   const paŝo = Math.max(0o1, Math.floor(datas.length / 0o10000));
   for ( let i = 0o0; i < datas.length; i += paŝo ) {
     if ( datas[i] !== 0o0 ) return false;
@@ -370,6 +537,10 @@ async function TboDNG(ckvpDNG: File): Promise<Blob> {
 
   const bajtoj = new Uint8Array(await ckvpDNG.arrayBuffer());
   const dekodilo = new LibRaw();
+  const legajo = leguTIFF(bajtoj);
+  // la JPEG XL-strioj iras rekte al la tifffile-vojo - libraw-wasm ne povas
+  // malpaki ilin , do la provo nur malrapidigus la konvertadon
+  const jxlStrio = legajo !== null && legajo.densigo === JXL_DENSIGO;
   // la kruda-tabelo vojo de vas2tas.py - nur interese kiam la datumoj reale ekzistas
   const krudaAlPng = async ( larĝo: number, alto: number, datas: Uint8Array | Uint16Array, dekses: boolean ): Promise<Blob | null> => {
     if ( dekses && ĉuĈioNenia(datas) ) return null;
@@ -401,84 +572,85 @@ async function TboDNG(ckvpDNG: File): Promise<Blob> {
 
   try {
     try {
-    // provo 1 - prilaborita bildo ( demosaiced RGB kiel rawpy.postprocess )
-    await dekodilo.open(bajtoj, { useCameraWb: true, outputColor: 0o1, outputBps: 0o20, noAutoBright: true, gamm: [ 0o1, 0o1 ] });
-    const ero = await dekodilo.imageData();
-    if ( ero && ero.width > 0o0 && ero.height > 0o0 && !ĉuĈioNenia(ero.data) ) {
-      const larĝo = ero.width;
-      const alto = ero.height;
-      const n = larĝo * alto;
-      const kanaloj = ero.colors === 0o4 ? 0o4 : 0o3;
-      const datas = ero.data;
-      const dekses = ero.bits === 0o20;
+      if ( !jxlStrio ) {
+      // la JPEG XL-strioj saltas ĉi tiun provon - libraw ne malpakas ilin
+      // provo 1 - prilaborita bildo ( demosaiced RGB kiel rawpy.postprocess )
+      // libraw transprenas la bufron , do ĝi ricevas kopion ( alie nia propra
+      // TIFF-legado poste vidas malplenan bufron )
+      await dekodilo.open(bajtoj.slice(), { useCameraWb: true, outputColor: 0o1, outputBps: 0o20, noAutoBright: true, gamm: [ 0o1, 0o1 ] });
+      const ero = await dekodilo.imageData();
+      if ( ero && ero.width > 0o0 && ero.height > 0o0 && !ĉuĈioNenia(ero.data) ) {
+        const larĝo = ero.width;
+        const alto = ero.height;
+        const n = larĝo * alto;
+        const kanaloj = ero.colors === 0o4 ? 0o4 : 0o3;
+        const datas = ero.data;
+        const dekses = ero.bits === 0o20;
 
-      kanvaso.width = larĝo;
-      kanvaso.height = alto;
-      const vop2 = kumukalasu.createImageData(larĝo, alto);
-      const elir = vop2.data;
-      if ( dekses ) {
-        // kruda 16-bit skalo ( 0 · 65535 ) kiel en vas2tas.py - la kurbo normaligas
-        const cxiuj = new Float32Array(n * 0o3);
-        for ( let p = 0o0; p < n; p++ ) {
-          cxiuj[p * 0o3] = ( datas as Uint16Array )[p * kanaloj];
-          cxiuj[p * 0o3 + 0o1] = ( datas as Uint16Array )[p * kanaloj + 0o1];
-          cxiuj[p * 0o3 + 0o2] = ( datas as Uint16Array )[p * kanaloj + 0o2];
+        kanvaso.width = larĝo;
+        kanvaso.height = alto;
+        const vop2 = kumukalasu.createImageData(larĝo, alto);
+        const elir = vop2.data;
+        if ( dekses ) {
+          // kruda 16-bit skalo ( 0 · 65535 ) kiel en vas2tas.py - la kurbo normaligas
+          const cxiuj = new Float32Array(n * 0o3);
+          for ( let p = 0o0; p < n; p++ ) {
+            cxiuj[p * 0o3] = ( datas as Uint16Array )[p * kanaloj];
+            cxiuj[p * 0o3 + 0o1] = ( datas as Uint16Array )[p * kanaloj + 0o1];
+            cxiuj[p * 0o3 + 0o2] = ( datas as Uint16Array )[p * kanaloj + 0o2];
+          }
+          const norma = skaligiAlNorma(cxiuj, n);
+          for ( let p = 0o0; p < n; p++ ) {
+            elir[p * 0o4] = Math.round(norma[p * 0o3] * 0o377);
+            elir[p * 0o4 + 0o1] = Math.round(norma[p * 0o3 + 0o1] * 0o377);
+            elir[p * 0o4 + 0o2] = Math.round(norma[p * 0o3 + 0o2] * 0o377);
+            elir[p * 0o4 + 0o3] = 0o377;
+          }
+        } else {
+          for ( let p = 0o0; p < n; p++ ) {
+            elir[p * 0o4] = ( datas as Uint8Array )[p * kanaloj];
+            elir[p * 0o4 + 0o1] = ( datas as Uint8Array )[p * kanaloj + 0o1];
+            elir[p * 0o4 + 0o2] = ( datas as Uint8Array )[p * kanaloj + 0o2];
+            elir[p * 0o4 + 0o3] = 0o377;
+          }
         }
-        const norma = skaligiAlNorma(cxiuj, n);
-        for ( let p = 0o0; p < n; p++ ) {
-          elir[p * 0o4] = Math.round(norma[p * 0o3] * 0o377);
-          elir[p * 0o4 + 0o1] = Math.round(norma[p * 0o3 + 0o1] * 0o377);
-          elir[p * 0o4 + 0o2] = Math.round(norma[p * 0o3 + 0o2] * 0o377);
-          elir[p * 0o4 + 0o3] = 0o377;
-        }
-      } else {
-        for ( let p = 0o0; p < n; p++ ) {
-          elir[p * 0o4] = ( datas as Uint8Array )[p * kanaloj];
-          elir[p * 0o4 + 0o1] = ( datas as Uint8Array )[p * kanaloj + 0o1];
-          elir[p * 0o4 + 0o2] = ( datas as Uint8Array )[p * kanaloj + 0o2];
-          elir[p * 0o4 + 0o3] = 0o377;
-        }
+        kumukalasu.putImageData(vop2, 0o0, 0o0);
+        return await pngElDatumoj();
       }
-      kumukalasu.putImageData(vop2, 0o0, 0o0);
-      return await pngElDatumoj();
-    }
-
-    // provo 2 - kruda mosajko ( filters = 0 DNG-oj jam enhavas interplektitan RGB )
-    const raw = await dekodilo.rawImageData();
-    if ( raw && raw.width > 0o0 && raw.height > 0o0 && !ĉuĈioNenia(raw.data) ) {
-      const png = await krudaAlPng(raw.width, raw.height, raw.data, true);
-      if ( png ) return png;
-    }
-  } catch {
-    // la kruda vojo malsukcesis - la tifffile-ekvivalenta vojo sekvas
+      }
+    } catch {
+    // la prilaborita vojo malsukcesis - la tifffile-ekvivalenta vojo sekvas
   }
 
   // la tifffile-vojo de legi_dng - JPEG XL strioj ktp per nia propra TIFF-legilo
   try {
-    const legajo = leguTIFF(bajtoj);
     if ( legajo ) {
-      // provo 3 - malpaku la JXL-strio al 8-bit RGB ( la demosaiced enhavo )
+      // provo 3 - malpaku la JXL-strion al 16-bitaj krudaj valoroj
       const jxl = await malpakigiJXL(legajo.strio);
-      if ( jxl && jxl.width > 0o0 && jxl.height > 0o0 && !ĉuĈioNenia(jxl.data) ) {
-        const n = legajo.larĝo * legajo.alto;
-        const cxiuj = new Float32Array(n * 0o3);
-        for ( let p = 0o0; p < n; p++ ) {
-          cxiuj[p * 0o3] = jxl.data[p * 0o4];
-          cxiuj[p * 0o3 + 0o1] = jxl.data[p * 0o4 + 0o1];
-          cxiuj[p * 0o3 + 0o2] = jxl.data[p * 0o4 + 0o2];
-        }
+      if ( jxl && jxl.larĝo > 0o0 && jxl.alto > 0o0 && !ĉuĈioNenia(jxl.cxiuj) ) {
+        const n = jxl.larĝo * jxl.alto;
+        const cxiuj = jxl.cxiuj;
         if ( legajo.blanka ) aplikiBlankanEkvilibron(cxiuj, legajo.blanka);
         // la reĝustigo al 65535 antaǔ la kurbo ( per-kanala 99.9 elcento )
         skaliguPerKanalojn(cxiuj);
         const norma = skaligiAlNorma(cxiuj, n);
-        kanvaso.width = legajo.larĝo;
-        kanvaso.height = legajo.alto;
-        const vop2 = kumukalasu.createImageData(legajo.larĝo, legajo.alto);
-        aplikiOrientadon(vop2.data, norma, legajo.larĝo, legajo.alto, legajo.orientado);
+        const orientitaj = orientitajGrandoj(jxl.larĝo, jxl.alto, legajo.orientado);
+        kanvaso.width = orientitaj.larĝo;
+        kanvaso.height = orientitaj.alto;
+        const vop2 = kumukalasu.createImageData(orientitaj.larĝo, orientitaj.alto);
+        aplikiOrientadon(vop2.data, norma, jxl.larĝo, jxl.alto, legajo.orientado);
         kumukalasu.putImageData(vop2, 0o0, 0o0);
         return await pngElDatumoj();
       }
     }
+    // provo 3 - kruda tabelo ( la linearaj DNG-oj liveras interplektitan RGB )
+    // nur uzebla kiam la tabelo vere havas tri valorojn po pikselo
+    const raw = await dekodilo.rawImageData();
+    if ( raw && raw.width > 0o0 && raw.height > 0o0 && raw.data.length >= raw.width * raw.height * 0o3 && !ĉuĈioNenia(raw.data) ) {
+      const png = await krudaAlPng(raw.width, raw.height, raw.data, true);
+      if ( png ) return png;
+    }
+
     // provo 4 - la enigita JPEG-antaŭrigardo el la TIFF-apendo
     const thumb = await dekodilo.thumbnailData().catch(() => undefined);
     if ( thumb && thumb.data.length > 0o0 ) {
@@ -1047,15 +1219,59 @@ function fariMetadatumojn(): string | null {
 
   const ha6zoj: string[] = [];
   for ( const [ nomo, valoro ] of kampoj ) {
-    if ( !valoro.trim() ) {
+    const pura = valoro.trim();
+    if ( !pura ) {
       continue;
     }
-    ha6zoj.push(`${nomo}\u0000${valoro}`);
+    ha6zoj.push(`${nomo}\u0000${pura}`);
   }
   if ( !ha6zoj.length ) {
     return null;
   }
   return ha6zoj.join("\u0001");
+}
+
+// ⟨ Serĉu la komencon de la TIFF-kapo ( JPEG APP1 · PNG eXIf · pura TIFF ) ⟩
+
+function trovuEksifon(aro: Uint8Array): number {
+  // JPEG - la unua APP1-peceto kun "Exif\u0000\u0000"
+  if ( aro.length > 0o10 && aro[0o0] === 0xff && aro[0o1] === 0xd8 ) {
+    let i = 0o2;
+    while ( i + 0o12 <= aro.length ) {
+      if ( aro[i] !== 0xff ) break;
+      const marko = aro[i + 0o1];
+      const longo = ( aro[i + 0o2] << 0o10 ) | aro[i + 0o3];
+      if ( marko === 0xda ) break;
+      if ( marko === 0xe1 && aro[i + 0o4] === 0x45 && aro[i + 0o5] === 0x78 &&
+        aro[i + 0o6] === 0x69 && aro[i + 0o7] === 0x66 ) {
+        return i + 0o12;
+      }
+      if ( longo < 0o2 ) break;
+      i += 0o2 + longo;
+    }
+    return -0o1;
+  }
+  // PNG - la eXIf-peceto
+  if ( aro.length > 0o10 && aro[0o0] === 0x89 && aro[0o1] === 0x50 ) {
+    let i = 0o10;
+    while ( i + 0o10 <= aro.length ) {
+      const longo = ( aro[i] << 0o30 ) | ( aro[i + 0o1] << 0o20 ) | ( aro[i + 0o2] << 0o10 ) | aro[i + 0o3];
+      if ( aro[i + 0o4] === 0x65 && aro[i + 0o5] === 0x58 && aro[i + 0o6] === 0x49 && aro[i + 0o7] === 0x66 ) {
+        return i + 0o10;
+      }
+      i += 0o14 + longo;
+    }
+    return -0o1;
+  }
+  // "Exif\u0000\u0000" + TIFF-kapo
+  if ( aro.length > 0o10 && aro[0o0] === 0x45 && aro[0o1] === 0x78 && aro[0o2] === 0x69 && aro[0o3] === 0x66 ) {
+    return 0o6;
+  }
+  // pura TIFF-kapo
+  if ( aro.length > 0o10 && ( aro[0o0] === 0x49 || aro[0o0] === 0x4d ) && aro[0o1] === aro[0o0] ) {
+    return 0o0;
+  }
+  return -0o1;
 }
 
 function legiMetadatumojn(aro: Uint8Array): void {
@@ -1073,68 +1289,90 @@ function legiMetadatumojn(aro: Uint8Array): void {
     }
   };
 
-  if ( aro[0o0] !== 0x45 || aro[0o1] !== 0x78 || aro[0o2] !== 0x69 || aro[0o3] !== 0x66 ) {
+  const bazo = trovuEksifon(aro);
+  if ( bazo < 0o0 || bazo + 0o10 > aro.length ) {
     return;
   }
-  if ( aro[0o6] !== 0x4d || aro[0o7] !== 0x4d ) {
+
+  const vid = new DataView(aro.buffer, aro.byteOffset, aro.byteLength);
+  const malgranda = aro[bazo] === 0x49;
+  if ( vid.getUint16(bazo + 0o2, malgranda) !== 0o52 ) {
+    return;
+  }
+  const ifd = bazo + vid.getUint32(bazo + 0o4, malgranda);
+  if ( ifd + 0o2 > aro.length ) {
     return;
   }
 
-  let ruva = 0o10;
-  const duBajtoj = ( ): number => {
-    const valoro = ( aro[ruva] << 0o10 ) | aro[ruva + 0o1];
-    ruva += 0o2;
-    return valoro;
-  };
-  const kvarBajtoj = ( ): number => {
-    const valoro = ( ( aro[ruva] << 0o30 ) | ( aro[ruva + 0o1] << 0o20 ) | ( aro[ruva + 0o2] << 0o10 ) | aro[ruva + 0o3] ) >>> 0o0;
-    ruva += 0o4;
-    return valoro;
-  };
-
-  duBajtoj();
-  const deŝovoIFD = kvarBajtoj();
-  ruva = 0o10 + deŝovoIFD;
-
-  const nombro = duBajtoj();
+  const nombro = vid.getUint16(ifd, malgranda);
   for ( let i = 0o0; i < nombro; i++ ) {
-    const etikedo = duBajtoj();
-    const tipo = duBajtoj();
-    const kvanto = kvarBajtoj();
+    const e = ifd + 0o2 + i * 0o14;
+    if ( e + 0o14 > aro.length ) {
+      break;
+    }
+    const etikedo = vid.getUint16(e, malgranda);
+    const tipo = vid.getUint16(e + 0o2, malgranda);
+    const kvanto = vid.getUint32(e + 0o4, malgranda);
+    if ( tipo !== 0o2 || kvanto === 0o0 ) {
+      continue;
+    }
+    const loko = kvanto <= 0o4 ? e + 0o10 : bazo + vid.getUint32(e + 0o10, malgranda);
+    if ( loko + kvanto > aro.length ) {
+      continue;
+    }
+    // la fina nul-bajto ne estas parto de la teksto
+    const valoro = new TextDecoder().decode(aro.slice(loko, loko + kvanto - 0o1));
 
-    const grandecoj: Record<number, number> = { 0o1: 0o1, 0o2: 0o1, 0o3: 0o2, 0o4: 0o4, 0o5: 0o10, 0o7: 0o1 };
-    const tipoGrandeco = grandecoj[tipo] ?? 0o1;
-    const grandeco = tipoGrandeco * kvanto;
-    const deŝovoValoro = grandeco > 0o4 ? kvarBajtoj() : ruva;
-
-    if ( tipo === 0o2 && ( etikedo === 0x010f || etikedo === 0x0110 || etikedo === 0x013b || etikedo === 0x8298 || etikedo === 0x0131 ) ) {
-      const fino = ruva;
-      ruva = 0o10 + deŝovoValoro;
-      const bajtoj = aro.slice(ruva, ruva + kvanto - 0o1);
-      const valoro = new TextDecoder().decode(bajtoj);
-      ruva = fino;
-
-      if ( etikedo === 0x010f ) {
-        redoni("Make", valoro);
-      } else if ( etikedo === 0x0110 ) {
-        redoni("Model", valoro);
-      } else if ( etikedo === 0x013b ) {
-        redoni("Artist", valoro);
-      } else if ( etikedo === 0x8298 ) {
-        redoni("Copyright", valoro);
-      } else if ( etikedo === 0x0131 ) {
-        redoni("Software", valoro);
-      }
-    } else if ( grandeco > 0o4 ) {
-      ruva += 0o4;
+    if ( etikedo === 0x010f ) {
+      redoni("Make", valoro);
+    } else if ( etikedo === 0x0110 ) {
+      redoni("Model", valoro);
+    } else if ( etikedo === 0x013b ) {
+      redoni("Artist", valoro);
+    } else if ( etikedo === 0x8298 ) {
+      redoni("Copyright", valoro);
+    } else if ( etikedo === 0x0131 ) {
+      redoni("Software", valoro);
     }
   }
 }
 
 async function legiDosierunanMetadatumojn(ckvp: File): Promise<void> {
-  const bufro = await ckvp.slice(0o0, 0o1000).arrayBuffer();
+  // sufiĉe por la tuta APP1-peceto de JPEG ( maksimume 64 KiB )
+  const bufro = await ckvp.slice(0o0, 0o200000).arrayBuffer();
   const aro = new Uint8Array(bufro);
   legiMetadatumojn(aro);
+}
+
+// ⟨ anstataŭigu la metadatumojn per la nova teksto - la kampoj malpleniĝas ⟩
+
+function malplenigiBakananon(): void {
+  for ( const bakanano of BAKANANOJ ) {
+    bakanano.value = "";
+  }
+}
+
+// ⟨ la originaj valoroj revenas - la enigita dosiero aǔ la HTML-ŝablono ⟩
+
+async function restarigiBakananon(): Promise<void> {
+  for ( const bakanano of BAKANANOJ ) {
+    bakanano.value = BAKANANO_ŜABLONOJ.get(bakanano) ?? "";
+  }
+  if ( tlakakuCkvp ) {
+    await legiDosierunanMetadatumojn(tlakakuCkvp);
+  }
+}
+
+// ⟨ laŭ la anstataŭiga elekto - aǔ la kampoj malplenas aǔ la dosiero plenigas ilin ⟩
+
+async function aranĝiBakananon(ckvp: File | null): Promise<void> {
+  if ( A1A_ANSTATAUX_METADATUMOJN.checked ) {
+    malplenigiBakananon();
+    return;
+  }
+  if ( ckvp ) {
+    await legiDosierunanMetadatumojn(ckvp);
+  }
 }
 
 function kunmetiExif(puraj: Array<[ string, string ]>): Uint8Array {
@@ -1165,6 +1403,9 @@ function kunmetiExif(puraj: Array<[ string, string ]>): Uint8Array {
     etikedoj.push({ etikedo, bajtoj: kodilo.encode(valoro) });
   }
 
+  // la etikedoj iras supren laŭ numero ( kiel piexif ) - kelkaj legiloj atendas tion
+  etikedoj.sort(( a, b ) => a.etikedo - b.etikedo);
+
   // la nombro estas la reala enir-nombro ; la sekva-IFD montrilo estas aparta 4-bajta kampo
   const ifdNombro = etikedoj.length;
   let grandecoIFD = 0o2 + ifdNombro * 0o14 + 0o4;
@@ -1176,7 +1417,8 @@ function kunmetiExif(puraj: Array<[ string, string ]>): Uint8Array {
     }
   }
 
-  let deŝovoValoro = grandecoIFD;
+  // la unuaj 8 bajtoj estas la TIFF-kapo , do la valoroj sekvas ĝin
+  let deŝovoValoro = 0o10 + grandecoIFD;
 
   const kapo = [ 0x4d, 0x4d, 0x00, 0x2a, 0x00, 0x00, 0x00, 0x08 ];
   naBajtoj.push(...kapo);
@@ -1291,8 +1533,8 @@ async function vasakaTahaq(tahaq: File): Promise<void> {
     await ŝarĝiMarkon();
     await procezigiTahaqn(tahaqBildo);
   } catch ( e ) {
-    TLOHK2NI.style.display = "flex";
-    TLAKAKANI.style.display = "none";
+    ŝoviTlaku( TLOHK2NI, true );
+    ŝoviTlaku( TLAKAKANI, false );
   } finally {
     URL.revokeObjectURL(maxemaSaxez);
   }
@@ -1486,7 +1728,7 @@ ARAQ2Q_TAHAQ.addEventListener( "change", async function(): Promise<void> {
   ŝoviTlaku( TLOHK2NI, false );
   ŝoviTlaku( TLAKAKANI, false );
 
-  await legiDosierunanMetadatumojn(ckvp);
+  await aranĝiBakananon(ckvp);
 
   ŝaltiTenni( true );
 } );
@@ -1512,8 +1754,19 @@ A1A_MARKO.addEventListener( "change", reKalkuli );
 
 A1A_SWEKA_METADATUMOJN.addEventListener( "change", reKalkuli );
 
-for ( const bakanano of [ BAKANANO_FABRIKANTO, BAKANANO_MODELO, BAKANANO_ĵɔƭᴜꞇ, BAKANANO_J͑ʃɽ͑ʃꞇ, BAKANANO_SCFALI ] ) {
+A1A_ANSTATAUX_METADATUMOJN.addEventListener( "change", async function(): Promise<void> {
+  if ( A1A_ANSTATAUX_METADATUMOJN.checked ) {
+    malplenigiBakananon();
+  } else {
+    await restarigiBakananon();
+  }
+  reKalkuli();
+} );
+
+for ( const bakanano of BAKANANOJ ) {
   bakanano.addEventListener( "change", reKalkuli );
 }
+
+aranĝiBakananon(tlakakuCkvp);
 
 ŝoviTlaku( BAKANANO, A1A_SWEKA_METADATUMOJN.checked );
