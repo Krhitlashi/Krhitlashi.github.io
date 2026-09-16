@@ -95,7 +95,7 @@ body {
 	justify-content: flex-start;
 	box-sizing: border-box;
 	gap: var(--អារេងចិ);
-	transition: all 0.25s ease;
+	transition: all 0.23360923201648052089875s ease;
 }
 html {
 	inline-size: 100%;
@@ -116,7 +116,7 @@ sak {
 	transform: scale(0.875);
 }
 .a3e3a {
-	animation: saxe 0.25s ease-out;
+	animation: saxe 0.23360923201648052089875s ease-out;
 }
 @keyframes saxe {
 	from {
@@ -254,7 +254,7 @@ button, a, ca12na {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	transition: all 0.125s ease;
+	transition: all 0.116804616008240260449375s ease;
 	
 }
 button {
@@ -303,7 +303,7 @@ ca12na > button {
 	border-radius: var(--អិត្ភេចិ);
 	padding: var(--អារេង);
 }
-button[disabled], button[aria-disabled="true"], ca12na[disabled], ca12na[aria-disabled="true"] {
+*[disabled], *[aria-disabled="true"] {
 	opacity: 0.5;
 	pointer-events: none;
 }
@@ -354,7 +354,7 @@ button.n2tase:hover, button.n2tase[aria-pressed="true"], ca12na.n2tase[aria-pres
 	display: flex;
 	flex-direction: column;
 	gap: var(--អារេងចិ);
-	transition: all 0.25s ease;
+	transition: all 0.23360923201648052089875s ease;
 }
 .er2ha {
 	inset: var(--អារេងព៏);
@@ -386,7 +386,7 @@ maxema {
 	display: flex;
 	flex-direction: column;
 	overflow: auto;
-	transition: all 0.25s ease;
+	transition: all 0.23360923201648052089875s ease;
 }
 ksaka {
 	border-radius: var(--ចិង);
@@ -434,12 +434,12 @@ ksaka button {
 	display: flex;
 	flex-direction: column;
 	opacity: 0;
-	transition: max-block-size 0.25s ease, opacity 0.25s ease;
+	transition: max-block-size 0.23360923201648052089875s ease, opacity 0.23360923201648052089875s ease;
 }
 .flak[open] .c2h2flak {
 	max-block-size: 4096px;
 	opacity: 1;
-	transition: max-block-size 0.25s ease, opacity 0.25s ease;
+	transition: max-block-size 0.23360923201648052089875s ease, opacity 0.23360923201648052089875s ease;
 }
 summary {
 	block-size: 100%;
@@ -449,7 +449,7 @@ summary {
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
-	transition: transform 0.25s ease;
+	transition: transform 0.23360923201648052089875s ease;
 }
 summary:active {
 	transform: scale(0.9375);
@@ -527,7 +527,7 @@ input[type="file"]::file-selector-button {
 	padding: var(--អារេងចិ);
 	color: var(--ក្ព៏);
 	font-weight: bold;
-	transition: all 0.25s ease;
+	transition: all 0.23360923201648052089875s ease;
 }
 input[type="file"]::file-selector-button:hover {
 	background-color: var(--តានេក២);
@@ -543,7 +543,7 @@ input[type="checkbox"], input[type="radio"] {
     transform: rotate(45deg);
 	appearance: none;
 	cursor: pointer;
-	transition: all 0.25s ease;
+	transition: all 0.23360923201648052089875s ease;
 }
 input[type="checkbox"]:before {
 	height: 3px;
@@ -554,7 +554,7 @@ input[type="checkbox"]:before {
 	top: 50%;
 	left: 50%;
     content: "";
-    transition: all 0.5s ease;
+    transition: all 0.4672184640329610417975s ease;
     transform: translate(-50%, -50%) rotate(-45deg);
 }
 input[type="checkbox"]:checked, input[type="radio"]:checked {
@@ -575,7 +575,7 @@ input[type="radio"]:checked:before {
 	right: 31.25%;
     bottom: 31.25%;
     content: "";
-    transition: all 0.5s ease;
+    transition: all 0.4672184640329610417975s ease;
 }
 label {
 	display: flex;
@@ -597,7 +597,7 @@ input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb
 	background-color: var(--ក្ព៏);
 	border-radius: var(--ចិង);
 	border: 2px solid var(--អិតិល);
-	transition: 0.25s;
+	transition: 0.23360923201648052089875s;
 }
 input[type="range"]::-webkit-slider-thumb:hover, input[type="range"]::-moz-range-thumb:hover {
 	transform: scale(1.25);
@@ -646,7 +646,7 @@ cab6tem2::before {
 	background-color: var(--ក្ព៏);
 	border: var(--សាកព៏នេ១);
 	inline-size: calc((100% - 4px) * var(--តេមិនី));
-	transition: inline-size 0.125s ease;
+	transition: inline-size 0.116804616008240260449375s ease;
 }
 
 /* ⟪ ſɟᴜ ı],ɹͷ̗ 🗃️ ⟫ */
