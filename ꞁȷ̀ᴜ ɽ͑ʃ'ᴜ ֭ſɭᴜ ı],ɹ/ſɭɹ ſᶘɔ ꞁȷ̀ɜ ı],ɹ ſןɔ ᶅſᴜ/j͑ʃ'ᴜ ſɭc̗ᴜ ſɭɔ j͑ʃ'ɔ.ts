@@ -53,7 +53,6 @@ function vefal(kp6: string): HTMLElement[] {
             const c2h2 = document.createElement("ciihii");
             for ( const xemani of kxesuXemani ) {
                 const j2qewa = document.createElement("p");
-                j2qewa.className = "ox2pewa";
                 j2qewa.innerHTML = xemani;
                 c2h2.appendChild(j2qewa);
             }
@@ -78,40 +77,61 @@ function vefal(kp6: string): HTMLElement[] {
 
         // Forigu sensignifajn prefiksajn ĵetonojn kiuj povas aperi ĉe la komenco de linio
         // apud signifplena ĵetono ( ekz. "<j͑ʃı],> <ſɭɔ˞>> Title <<ſɭɔ˞>" )
-        const strippedN2k = l6catasuN2k
-            .replace(/^<ʃ}ʃ>\s*/, "")
-            .replace(/^<ſᶘ>\s*/, "")
-            .replace(/^<j͑ʃı],>\s*/, "");
+        // Ripetu ĝis stabila, ĉar prefiksoj povas aperi en ajna ordo
+        // ( ekz. "<j͑ʃı],> <ʃ}ʃ> teksto" ) kaj "<j͑ʃı],>>" kun kroma ">" aperas en la txt.
+        let catasuN2k = l6catasuN2k;
+        let antawacatasuN2k = "";
+        while ( antawacatasuN2k !== catasuN2k ) {
+            antawacatasuN2k = catasuN2k;
+            catasuN2k = catasuN2k
+                .replace(/^<ʃ}ʃ>\s*/, "")
+                .replace(/^<ſᶘ>\s*/, "")
+                .replace(/^<j͑ʃı],>>?\s*/, "");
+        }
 
-        if ( strippedN2k === "" ) {
+        if ( catasuN2k === "" ) {
             continue;
         }
 
-        const a1aKsaka = strippedN2k.match(/^<ſɭɔ˞>>(.+?)<<ſɭɔ˞>$/);
+        const a1aSaxesukef = catasuN2k.match(/^<ſɭɔ˞ɔ>>(.+?)<<ſɭɔ˞ɔ>$/);
+        if ( a1aSaxesukef ) {
+            kf2J2qewa();
+            if ( kxesuThala.children.length > 0o0 ) {
+                thalaKek.push(kxesuThala);
+            }
+            kxesuThala = document.createElement("thala");
+            const j2qewa = document.createElement("p");
+            j2qewa.className = "saxesukef";
+            j2qewa.textContent = a1aSaxesukef[0o1];
+            thalaKek.push(j2qewa);
+            continue;
+        }
+
+        const a1aKsaka = catasuN2k.match(/^<ſɭɔ˞>>(.+?)<<ſɭɔ˞>$/);
         if ( a1aKsaka ) {
             tlunakJ2qewa("saxesukef", a1aKsaka[0o1]);
             continue;
         }
 
-        const a1aKsakaP2sa = l6catasuN2k.match(/^<ſɭɔ˞ɿ>>(.+?)<<ſɭɔ˞ɿ>$/);
+        const a1aKsakaP2sa = catasuN2k.match(/^<ſɭɔ˞ɿ>>(.+?)<<ſɭɔ˞ɿ>$/);
         if ( a1aKsakaP2sa ) {
             tlunakJ2qewa("ksakap2sa", a1aKsakaP2sa[0o1]);
             continue;
         }
 
-        const a1aKsakaT2xa = l6catasuN2k.match(/^<ſɭɔ˞ц>>(.+?)<<ſɭɔ˞ц>$/);
+        const a1aKsakaT2xa = catasuN2k.match(/^<ſɭɔ˞ц>>(.+?)<<ſɭɔ˞ц>$/);
         if ( a1aKsakaT2xa ) {
             tlunakJ2qewa("ksakat2xa", a1aKsakaT2xa[0o1]);
             continue;
         }
 
-        const a1aKefHuruq = l6catasuN2k.match(/^<֭ſɭɽ͑ʃ'>>(.+?)<<֭ſɭɽ͑ʃ'>$/);
+        const a1aKefHuruq = catasuN2k.match(/^<֭ſɭɽ͑ʃ'>>(.+?)<<֭ſɭɽ͑ʃ'>$/);
         if ( a1aKefHuruq ) {
             tlunakJ2qewa("kefhuruq", a1aKefHuruq[0o1]);
             continue;
         }
 
-        if ( l6catasuN2k === "<ſ̀ȷſɭ>" ) {
+        if ( catasuN2k === "<ſ̀ȷſɭ>" ) {
             kf2J2qewa();
             if ( kxesuThala.children.length > 0o0 ) {
                 thalaKek.push(kxesuThala);
@@ -120,19 +140,19 @@ function vefal(kp6: string): HTMLElement[] {
             continue;
         }
 
-        if ( l6catasuN2k === "<j͑ʃᴜƽ>" ) {
+        if ( catasuN2k === "<j͑ʃᴜƽ>" ) {
             kxesuXemani.push("<sak></sak>");
             continue;
         }
 
-        const a1aCa1ara = l6catasuN2k.match(/^<ſɟſᶘ>>(.+?)<<ſɟſᶘ>$/);
+        const a1aCa1ara = catasuN2k.match(/^<ſɟſᶘ>>(.+?)<<ſɟſᶘ>$/);
         if ( a1aCa1ara ) {
             kxesuXemani.push("- " + a1aCa1ara[0o1]);
             continue;
         }
 
-        if ( l6catasuN2k !== "" ) {
-            kxesuXemani.push(l6catasuN2k);
+        if ( catasuN2k !== "" ) {
+            kxesuXemani.push(catasuN2k);
         } else if ( kxesuXemani.length > 0o0 ) {
             kf2J2qewa();
         }
