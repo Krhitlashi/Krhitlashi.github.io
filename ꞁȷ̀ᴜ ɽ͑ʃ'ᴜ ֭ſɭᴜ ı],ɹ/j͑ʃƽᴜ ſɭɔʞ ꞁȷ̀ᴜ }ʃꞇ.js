@@ -79,6 +79,10 @@ skakefani.en = {
     "ſɭɔ˞ɜƴ ſɭˬꞇ ſ̀ȷᴜ j͑ʃƨꞇʞ ꞁȷ̀ᴜ }ʃꞇ": "Ksorh Krhitlastifani ( After Ice Age )",
     "ſ͔ɭꞇ ſɟꞇȝ ɭʃꞇʞ": "Chiciq Era",
     "ſ͔ɭꞇ ſɟꞇȝ ɭʃꞇʞ ı],ᴜ ſ̀ȷɔ": "Chiciq Era Plants",
+    "ſɭɹ ſןᴜ j͑ʃɔ ı],ᴜ ſ̀ȷɔ": "Cells of plants",
+    "ſɟɹ ֭ſɭɹ j͑ʃw j͑ʃɜȝ j͑ʃɔ ɭʃɘɹ": "Internal structure of Tpii",
+    "ɭl̀ɜ ſןɜ ɭl̀э • ı],ᴜ ſןɹ ſɟɔ": "Jopojaa • Xapiice",
+    "ʃэ }ʃɹ ɭʃᴜ j͑ʃɔ j͑ʃᴜꞇ ſɟᴜ ɭʃэ ֭ſɭэƽ ſᶘᴜ j͑ʃᴜꞇ": "Flying from water squirting organ",
 
     "oͮőſɭwᴎ́ő ō̍őɭʃᴜ őı]ꞇ": "Gʷəldáji 🏜️",
 },
