@@ -1,17 +1,19 @@
 /// <reference types="vite/client" />
 
-// ≺⧼ ſɟw ʃɹ - Klavara Paĝo ⌨️ ⧽≻
-// Bildigas interagan klavaron el la enigita dezajno. La dezajndokumento
-// ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md ) estas ne spurita en git, do ĝia
-// enhavo estas enigita ĉi tie por ke la klavaro funkciu sen ĝi.
-// La dosiero difinas du aranĝojn - la Malgranda ( Cubii / ſɟw ʃɹ ) kun tri
-// tavoloj ( Unua, Ŝanĝo, Simbolo ) kaj la Granda ( Cutlii / ſɟw ſ̀ȷɹ ) kun
-// unu baza tavolo. La Granda aranĝo derivas siajn Ŝanĝan kaj Simbolan
-// tavolojn laŭ sia bazo - ĉiu signo ricevas la derivitan version de la sama
-// signo el la Malgranda aranĝo. Nomo kun " / " montras nur la Iikrhaian
-// parton en aih kaj nur la anglan parton en en.
+/*
+* ≺⧼ ſɟw ʃɹ - ទំព័រក្រឡប់ចំណុចកណ្តាល ⌨️ ⧽≻
+* បង្កើតក្រឡប់ចំណុចកណ្តាលពីរចន្លោះដែលបានបញ្ចូល។ ឯកសាររចនាការ
+* ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md ) មិនត្រូវបានតាមដានក្នុង git ដូច្នេះមាតិការរបស់វា
+* ត្រូវបានបញ្ចូលទីនេះ ដើម្បីឱ្យក្រឡប់ចំណុចកណ្តាលដំណើរការដោយគ្មានវា។
+* ឯកសារកំណត់ការរៀបចំពីរ - តូច ( Cubii / ſɟw ʃɹ ) ដែលមានតារាងបី
+* ( Unua, Ŝanĝo, Simbolo ) និងធំ ( Cutlii / ſɟw ſ̀ȷɹ ) ដែលមាន
+* តារាងមូលដ្ឋានតែមួយ។ ការរៀបចំធំដូចជាដើមបង្កើតតារាង Ŝanĝa និង Simbolan របស់ខ្លួនវាតាមមូលដ្ឋាន
+* តាមមូលដ្ឋានរបស់ខ្លួនវា - សញ្ញានីមួយៗទទួលបានកំណែដែលបានបង្កើតនៃសញ្ញា
+* ដូចគ្នាពីការរៀបចំតូច។ ឈ្មោះដែលមាន " / " បង្ហាញតែផ្នែកជា Iikrhia
+* នៅក្នុង aih និងតែផ្នែកអង់គ្លេសនៅក្នុង en។
+*/
 
-// ⟪ Tipoj 📐 ⟫
+// ⟪ ប្រភេទ 📐 ⟫
 
 type KlavaFunkcio = "shift" | "back" | "space" | "enter" | "symbol" | "extra";
 
@@ -42,9 +44,9 @@ interface KlavarArangxo {
 	tavoloj: Tavolo[];
 }
 
-// ⟪ Konstantoj 📦 ⟫
+// ⟪ ថេរស្មែក 📦 ⟫
 
-// ⟨ Funkciaj klavoj de la Malgranda aranĝo ⟩
+// ⟨ ក្រឡប់ចំណុចកណ្តាលមុខងងឹតនៃការរៀបចំតូច ⟩
 const FUNKCIOJ: Readonly<Record<string, KlavaFunkcio>> = {
 	"[Shift]": "shift",
 	"[Back]": "back",
@@ -53,7 +55,7 @@ const FUNKCIOJ: Readonly<Record<string, KlavaFunkcio>> = {
 	"[Symbol]": "symbol",
 };
 
-// ⟨ Agoj laŭ la vortoj en la noto "Also ... is ..." de la Granda aranĝo ⟩
+// ⟨ សកម្មភាពតាមពាក្យក្នុងកំណត់ចំនាំ "Also ... is ..." នៃការរៀបចំធំ ⟩
 const NOTAJAGOJ: Readonly<Record<string, KlavaFunkcio>> = {
 	"shift": "shift",
 	"back": "back",
@@ -62,8 +64,10 @@ const NOTAJAGOJ: Readonly<Record<string, KlavaFunkcio>> = {
 	"symbol": "symbol",
 };
 
-// ⟨ Tradukitaj nomoj de la funkciaj klavoj. La Iikrhaiaj nomoj venas el la
-//    noto de la Granda aranĝo en DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md. ⟩
+/**
+* ⟨ ឈ្មោះបកប្ប័យសម្រាប់ក្រឡប់ចំណុចកណ្តាលមុខងងឹត។ ឈ្មោះជា Iikrhia មកពី
+*    កំណត់ចំនាំនៃការរៀបចំធំនៅក្នុង DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md។ ⟩
+*/
 const FUNKCIO_NOMOJ: Readonly<Record<KlavaFunkcio, { en: string; aih: string }>> = {
 	shift: { en: "Shift", aih: "ſןw ſȷɹ" },
 	back: { en: "Back", aih: "֭ſɭɹͷ̗" },
@@ -73,19 +77,23 @@ const FUNKCIO_NOMOJ: Readonly<Record<KlavaFunkcio, { en: string; aih: string }>>
 	extra: { en: "Extra", aih: "ꞁȷ̀ꞇ }ʃᴜƽ" },
 };
 
-// ⟨ Alternativaj signoj por ĉiu klava signo ( ekz. diakritaj formoj ).
-//    Malplenaj nun - plenigu ilin poste. ⟩
+/**
+* ⟨ សញ្ញាជំនួសសម្រាប់សញ្ញាចំណុចកណ្តាលនីមួយៗ ( ឧទាហរណ៍ទម្រង់អក្សរបំពោប )។
+*    មិនមានឥឡូវទេ - បំពេញវានៅពេលក្រោយ។ ⟩
+*/
 const VARIANTOJ: Readonly<Record<string, string[]>> = {};
 
-// ⟨ Daŭro de longa premo antaŭ montri la alternativajn signojn ( 1 Heo ) ⟩
+// ⟨ រយៈពេលនៃការចុចបន្តយោបល់មុនពេលបង្ហាញសញ្ញាជំនួស ( 1 ហេ ត្រ ) ⟩
 const LONGA_PREMO_DAŬRO = HE_L6HEINAK;
 
-// ⟨ Daŭro de la konfirmo post kopiado ( 1 Heo ) ⟩
+// ⟨ រយៈពេលនៃការបញ្ជាកែក្រោយពេលចម្លង ( 1 ហេ ត្រ ) ⟩
 const KOPII_KONFIRMA_DAŬRO = HE_L6HEINAK;
 
-// ⟨ La dezajndokumento ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md ) estas ne
-//    spurita en git, do ĝia enhavo estas enigita ĉi tie por ke la klavaro
-//    funkciu sen ĝi. ⟩
+/**
+* ⟨ ឯកសាររចនាការ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md ) មិន
+*    ត្រូវបានតាមដានក្នុង git ដូច្នេះមាតិការរបស់វាត្រូវបានបញ្ចូលទីនេះ ដើម្បីឱ្យក្រឡប់
+*    ចំណុចកណ្តាលដំណើរការដោយគ្មានវា។ ⟩
+*/
 const KLAVARA_DEZAJNO = `# Small ( Cubii / ſɟw ʃɹ )
 
 ## First / ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ
@@ -95,7 +103,7 @@ const KLAVARA_DEZAJNO = `# Small ( Cubii / ſɟw ʃɹ )
 ɽ͑ʃ' ɭʃ j͑ʃ' ɭ( }ʃ ֭ſɭ j͑ʃ j͐ʃ
 ᶅſ ſן ſȷ ʃ ŋᷠ ſɭ ſᶘ ſ̀ȷ
 ꞁȷ̀ ꞇ ɔ ɹ w ᴜ ɜ э ⅎ
-[Shift] [Back] ｡ [Space] ⟅ [Enter] [Symbol]
+[ Shift ] [ Back ] ｡ [ Space ] ⟅ [ Enter ] [ Symbol ]
 
 ## Second (Shift) / ſןɹ j͑ʃᴜ ɭ(ꞇ
 
@@ -104,7 +112,7 @@ const KLAVARA_DEZAJNO = `# Small ( Cubii / ſɟw ʃɹ )
 ƣ̋ ƨ ⰱ ԏ͕ c̗ ᴜ̩ ɔ˞ ͷ̗
 п́ ɘ ʞ ɀ c̭ ƽ ꝛ̗ ŋ
 ȏ ɭʃ' ⱷ᷐ ⲝ o ℩ }ʃ' c̏ oͩ
-[Shift] [Back] v • ʌ [Enter] [Symbol]
+[ Shift ] [ Back ] v • ʌ [ Enter ] [ Symbol ]
 
 ## Third (Symbol) / ɭʃɹ ı],ᴜ ɭ(ꞇ
 
@@ -113,7 +121,7 @@ ȏ ɭʃ' ⱷ᷐ ⲝ o ℩ }ʃ' c̏ oͩ
 ſ̋ȷ _ \ { } √ ‾ ⌑
 ȏ̮ - / ( ) ^ — ⋄
 ≺ ⧼ ⟪ ⟨ ⺓ ⟩ ⟫ ⧽ ≻
-[Shift] [Back] ⸙ [Space] ⸾ [Enter] [Symbol]
+[ Shift ] [ Back ] ⸙ [ Space ] ⸾ [ Enter ] [ Symbol ]
 
 # Large ( Cutlii / ſɟw ſ̀ȷɹ )
 
@@ -125,10 +133,10 @@ ȏ̮ - / ( ) ^ — ⋄
 
 Also [ ſןw ſȷɹ ] is Shift, [ ֭ſɭɹͷ̗ ] is Back, [ ꞁȷ̀ᴜ ɽ͑ʃ'ɔȝ ] is Space, [ ſɭw ſ̀ȷᴜ ] is Enter, [ ſɭɘэ ] is Symbol.`;
 
-// ⟪ Stato 💾 ⟫
+// ⟪ ស្ថានភាព 💾 ⟫
 
-let aktivaArangxoIndekso = 0;
-let aktivaTavolaIndekso = 0;
+let aktivaArangxoIndekso = 0o0;
+let aktivaTavolaIndekso = 0o0;
 let arangxoj: KlavarArangxo[] = [];
 let funkciaMapo: Readonly<Record<string, KlavaFunkcio>> = FUNKCIOJ;
 let enmetitaHistorio: string[] = [];
@@ -136,7 +144,7 @@ let ekstraReĝimo = false;
 let longaPremo = false;
 let ciklajIndeksoj = new Map<string, number>();
 
-// ⟪ DOM-Elementoj 🔧 ⟫
+// ⟪ ធាតុ DOM 🔧 ⟫
 
 let enigaKampo: HTMLTextAreaElement | null = null;
 let klavaraUjo: HTMLElement | null = null;
@@ -144,22 +152,22 @@ let tavolaEtikedElemento: HTMLElement | null = null;
 let arangxoButonojUjo: HTMLElement | null = null;
 let ekstraPanelo: HTMLElement | null = null;
 
-// ⟪ Analizo 📂 ⟫
+// ⟪ ការវិភាគ 📂 ⟫
 
 /**
-	Analizu la krudan tekston de KEYBOARDLAYOUT.md en aranĝojn.
-		krudaTeksto ( string ) - La kruda enhavo de la dezajna dosiero.
+	វិភាគអត្ថបទមូលដ្ឋាននៃ KEYBOARDLAYOUT.md ជាការរៀបចំ។
+		មាតិការមូលដ្ឋាននៃឯកសាររចនាការ។
 	@returns KlavarArangxo[]
 */
 function analiziArangxojn( krudaTeksto: string ): KlavarArangxo[] {
 	const linioj = krudaTeksto.replace(/\r/g, "").split( "\n" );
 
-	// ⟨ La noto difinas la funkciajn klavojn de la Granda aranĝo ⟩
+	// ⟨ កំណត់ចំនាំកំណត់ក្រឡប់ចំណុចកណ្តាលមុខងងឹតនៃការរៀបចំធំ ⟩
 	funkciaMapo = { ...FUNKCIOJ, ...analiziNoton( linioj ) };
 
 	const limoj: number[] = [];
-	for ( let i = 0; i < linioj.length; i++ ) {
-		const linio = linioj[ i ].trim();
+	for ( let i = 0o0; i < linioj.length; i++ ) {
+		const linio = linioj[i].trim();
 		const senMark = linio.replace( /^#+\s*/, "" );
 		if ( senMark.startsWith( "Small" ) || senMark.startsWith( "Large" ) ) {
 			limoj.push( i );
@@ -167,72 +175,74 @@ function analiziArangxojn( krudaTeksto: string ): KlavarArangxo[] {
 	}
 
 	const arangxoj: KlavarArangxo[] = [];
-	for ( let a = 0; a < limoj.length; a++ ) {
-		const komenco = limoj[ a ];
-		const fino = a + 1 < limoj.length ? limoj[ a + 1 ] : linioj.length;
+	for ( let a = 0o0; a < limoj.length; a++ ) {
+		const komenco = limoj[a];
+		const fino = a + 0o1 < limoj.length ? limoj[a + 0o1] : linioj.length;
 		arangxoj.push( analiziArangxon( linioj, komenco, fino ) );
 	}
 
-	// ⟨ La Granda aranĝo ( Cutlii ) havas nur bazon. Kreu ĝiajn Ŝanĝan kaj
-	//    Simbolan tavolojn laŭ la Granda aranĝo - ĉiu signo ricevas la
-	//    derivitan version de la sama signo el la Malgranda aranĝo. ⟩
-	const malgranda = arangxoj[ 0 ];
-	const granda = arangxoj[ 1 ];
-	if ( malgranda && granda && granda.tavoloj.length === 1 && malgranda.tavoloj.length >= 3 ) {
-		granda.tavoloj = kreiGrandajnTavolojn( granda.tavoloj[ 0 ], malgranda );
+	/*
+	* ⟨ ការរៀបចំធំ ( Cutlii ) មានតែមូលដ្ឋានតែមួយ។ បង្កើតតារាង Ŝanĝa និង
+	*    Simbolan តាមការរៀបចំធំ - សញ្ញានីមួយៗទទួលបាន
+	*    កំណែដែលបានបង្កើតនៃសញ្ញាដូចគ្នាពីការរៀបចំតូច។ ⟩
+	*/
+	const malgranda = arangxoj[0o0];
+	const granda = arangxoj[0o1];
+	if ( malgranda && granda && granda.tavoloj.length === 0o1 && malgranda.tavoloj.length >= 0o3 ) {
+		granda.tavoloj = kreiGrandajnTavolojn( granda.tavoloj[0o0], malgranda );
 	}
 
 	return arangxoj;
 }
 
 /**
-	Analizu unu aranĝon inter du limoj. Aranĝo kun tavolaj titoloj fariĝas
-	plurtavola, alie ĝi fariĝas unu-tavola.
-		linioj ( string[] ) - Ĉiuj linioj de la dezajna dosiero.
-		komenco ( number ) - Indekso de la titola linio de la aranĝo.
-		fino ( number ) - Indekso de la sekva titola linio ( aŭ fino de la dosiero ).
+	វិភាគការរៀបចំមួយរវាងពីរចំណុច។ ការរៀបចំដែលមានចំណងជើងតារាងនឹងក្លាយជា
+	ច្រើនតារាង បើកិត្តនឹងក្លាយជាតារាងតែមួយ។
+		បន្ទាត់ទាំងអស់នៃឯកសាររចនាការ។
+		លេខសន្ទាញ់នៃបន្ទាត់ចំណងជើងនៃការរៀបចំ។
+		លេខសន្ទាញ់នៃបន្ទាត់ចំណងជើងបន្ទាប់ ( ឬចុងនៃឯកសារ )។
 	@returns KlavarArangxo
 */
 function analiziArangxon( linioj: string[], komenco: number, fino: number ): KlavarArangxo {
-	const titolo = disigiNomon( linioj[ komenco ].replace( /^#+\s*/, "" ) );
+	const titolo = disigiNomon( linioj[komenco].replace( /^#+\s*/, "" ) );
 
 	const tavolajLimoj: number[] = [];
-	for ( let i = komenco + 1; i < fino; i++ ) {
-		const linio = linioj[ i ].trim();
+	for ( let i = komenco + 0o1; i < fino; i++ ) {
+		const linio = linioj[i].trim();
 		const senMark = linio.replace( /^#+\s*/, "" );
 		if ( senMark.startsWith( "First" ) || senMark.startsWith( "Second" ) || senMark.startsWith( "Third" ) ) {
 			tavolajLimoj.push( i );
 		}
 	}
 
-	if ( tavolajLimoj.length > 0 ) {
+	if ( tavolajLimoj.length > 0o0 ) {
 		const tavoloj: Tavolo[] = [];
-		for ( let t = 0; t < tavolajLimoj.length; t++ ) {
-			const tavolaKomenco = tavolajLimoj[ t ];
-			const tavolaFino = t + 1 < tavolajLimoj.length ? tavolajLimoj[ t + 1 ] : fino;
+		for ( let t = 0o0; t < tavolajLimoj.length; t++ ) {
+			const tavolaKomenco = tavolajLimoj[t];
+			const tavolaFino = t + 0o1 < tavolajLimoj.length ? tavolajLimoj[t + 0o1] : fino;
 			tavoloj.push( analiziTavolon( linioj, tavolaKomenco, tavolaFino ) );
 		}
 		return { titoloEn: titolo.en, titoloAih: titolo.aih, tavoloj };
 	}
 
-	// ⟨ Unu-tavola aranĝo ( ekz. Granda Cutlii ) ⟩
+	// ⟨ ការរៀបចំមួយតារាង ( ឧទាហរណ៍ធំ Cutlii ) ⟩
 	return { titoloEn: titolo.en, titoloAih: titolo.aih, tavoloj: [ analiziTavolon( linioj, komenco, fino ) ] };
 }
 
 /**
-	Analizu unu tavolon inter du limoj ( vicoj de signoj kaj la malsupra strio ).
-		linioj ( string[] ) - Ĉiuj linioj de la dezajna dosiero.
-		komenco ( number ) - Indekso de la titola linio de la tavolo.
-		fino ( number ) - Indekso de la sekva titola linio ( aŭ fino de la dosiero ).
+	វិភាគតារាងមួយរវាងពីរចំណុច ( ជួរសញ្ញា និងបន្ទាត់ខាងក្រោម )។
+		បន្ទាត់ទាំងអស់នៃឯកសាររចនាការ។
+		លេខសន្ទាញ់នៃបន្ទាត់ចំណងជើងនៃតារាង។
+		លេខសន្ទាញ់នៃបន្ទាត់ចំណងជើងបន្ទាប់ ( ឬចុងនៃឯកសារ )។
 	@returns Tavolo
 */
 function analiziTavolon( linioj: string[], komenco: number, fino: number ): Tavolo {
-	const nomo = disigiNomon( linioj[ komenco ].replace( /^#+\s*/, "" ) );
+	const nomo = disigiNomon( linioj[komenco].replace( /^#+\s*/, "" ) );
 	const vicaroj: Klavo[][] = [];
 	let malsupraStrio: Klavo[] = [];
 
-	for ( let i = komenco + 1; i < fino; i++ ) {
-		const linio = linioj[ i ].trim();
+	for ( let i = komenco + 0o1; i < fino; i++ ) {
+		const linio = linioj[i].trim();
 		if ( !linio || linio.startsWith( "Also" ) ) continue;
 
 		const ĵetonoj = ĵetonigiLinion( linio );
@@ -247,9 +257,9 @@ function analiziTavolon( linioj: string[], komenco: number, fino: number ): Tavo
 }
 
 /**
-	Ĵetonigu linion. Krampaj grupoj ( [ ... ] ) restas unu ĵetono kiam ili
-	estas unu klavo, alie ili disiĝas en siajn unuopajn signojn.
-		linio ( string ) - Unu linio de la dezajna dosiero.
+	បង្កើតស្លាក់មួយពីបន្ទាត់។ ក្រុមក្រឡប់ ( [ ... ] ) នៅតែជាស្លាក់តែមួយពេលពួកគេ
+	ជាក្រឡប់ចំណុចកណ្តាលតែមួយ បើកិត្តពួកគេបែងចែកជាសញ្ញាតាមតំនាំ។
+		បន្ទាត់តែមួយនៃឯកសាររចនាការ។
 	@returns string[]
 */
 function ĵetonigiLinion( linio: string ): string[] {
@@ -260,8 +270,8 @@ function ĵetonigiLinion( linio: string ): string[] {
 		if ( estasFunkciaGrupo( kruda ) || estasUnuvortaGrupo( kruda ) ) {
 			ĵetonoj.push( kruda );
 		} else if ( kruda.startsWith( "[" ) && kruda.endsWith( "]" ) ) {
-			// ⟨ Grupo ne estas unu klavo ( ekz. [ x › ɘ ꭎ ] ) - disigu ĝin ⟩
-			ĵetonoj.push( "[", ...kruda.slice( 1, -1 ).trim().split( /\s+/ ), "]" );
+			// ⟨ ក្រុមមិនមែនជាក្រឡប់ចំណុចកណ្តាលតែមួយ ( ឧទាហរណ៍ [ x › ɘ ꭎ ] ) - បំបែកវា ⟩
+			ĵetonoj.push( "[", ...kruda.slice( 0o1, -0o1 ).trim().split( /\s+/ ), "]" );
 		} else {
 			ĵetonoj.push( kruda );
 		}
@@ -271,34 +281,34 @@ function ĵetonigiLinion( linio: string ): string[] {
 }
 
 /**
-	Ĉu ĵetono estas konata funkcia klavo.
-		ĵetono ( string ) - La ĵetono por ekzameni.
+	តើស្លាក់មួយជាក្រឡប់ចំណុចកណ្តាលមុខងងឹតដែលស្គាល់បានឬទេ។
+		ស្លាក់សម្រាប់ការពិនិត្យ។
 	@returns boolean
 */
 function estasFunkciaGrupo( ĵetono: string ): boolean {
-	return !!funkciaMapo[ ĵetono ];
+	return !!funkciaMapo[ĵetono];
 }
 
 /**
-	Ĉu ĵetono estas krampa grupo kun unu sola vorto ( ekz. [ Shift ] aŭ
-	[ Empty ] ).
-		ĵetono ( string ) - La ĵetono por ekzameni.
+	តើស្លាក់មួយជាក្រុមក្រឡប់ដែលមានពាក្យតែមួយ ( ឧទាហរណ៍ [ Shift ] ឬ
+	[ Empty ] )។
+		ស្លាក់សម្រាប់ការពិនិត្យ។
 	@returns boolean
 */
 function estasUnuvortaGrupo( ĵetono: string ): boolean {
-	return ĵetono.startsWith( "[" ) && ĵetono.endsWith( "]" ) && ĵetono.slice( 1, -1 ).trim().split( /\s+/ ).length === 1;
+	return ĵetono.startsWith( "[" ) && ĵetono.endsWith( "]" ) && ĵetono.slice( 0o1, -0o1 ).trim().split( /\s+/ ).length === 0o1;
 }
 
 /**
-	Konvertu ĵetonon en klavon. Funkciaj ĵetonoj fariĝas funkciaj klavoj,
-	[ Empty ] fariĝas malplena ŝlosilo, ĉio alia fariĝas signa klavo.
-		ĵetono ( string ) - Unu ĵetono el la dezajna dosiero.
+	បម្លែកស្លាក់មួយទៅជាក្រឡប់ចំណុចកណ្តាល។ ស្លាក់មុខងងឹតនឹងក្លាយជាក្រឡប់ចំណុចកណ្តាលមុខងងឹត,
+	[ Empty ] នឹងក្លាយជាក្រឡប់ទទេ អ្នកផ្សេងទាំងអស់នឹងក្លាយជាក្រឡប់ចំណុចកណ្តាលសញ្ញា។
+		ស្លាក់តែមួយពីឯកសាររចនាការ។
 	@returns Klavo
 */
 function kreiKlavon( ĵetono: string ): Klavo {
-	const funkcio = funkciaMapo[ ĵetono ];
+	const funkcio = funkciaMapo[ĵetono];
 	if ( funkcio ) {
-		return { etiked: ĵetono.slice( 1, -1 ).trim(), speco: "funkcio", valoro: funkcio };
+		return { etiked: ĵetono.slice( 0o1, -0o1 ).trim(), speco: "funkcio", valoro: funkcio };
 	}
 	if ( ĵetono === "[ Extra ]" || ĵetono === "[ Empty ]" ) {
 		return { etiked: "", speco: "funkcio", valoro: "extra" };
@@ -307,8 +317,8 @@ function kreiKlavon( ĵetono: string ): Klavo {
 }
 
 /**
-	Eltiru la funkciajn klavojn el la noto "Also ... is ...".
-		linioj ( string[] ) - Ĉiuj linioj de la dezajna dosiero.
+	យកក្រឡប់ចំណុចកណ្តាលមុខងងឹតចេញពីកំណត់ចំនាំ "Also ... is ..."។
+		បន្ទាត់ទាំងអស់នៃឯកសាររចនាការ។
 	@returns Record<string, KlavaFunkcio>
 */
 function analiziNoton( linioj: string[] ): Record<string, KlavaFunkcio> {
@@ -319,10 +329,10 @@ function analiziNoton( linioj: string[] ): Record<string, KlavaFunkcio> {
 		if ( !t.startsWith( "Also" ) ) continue;
 
 		for ( const kongruo of t.matchAll( /(\[[^\]]*\])\s+is\s+([^\s,.]+)/g ) ) {
-			const grupo = kongruo[ 1 ];
-			const ago = kongruo[ 2 ].toLowerCase();
-			const funkcio = NOTAJAGOJ[ ago ];
-			if ( grupo && funkcio ) mapo[ grupo ] = funkcio;
+			const grupo = kongruo[0o1];
+			const ago = kongruo[0o2].toLowerCase();
+			const funkcio = NOTAJAGOJ[ago];
+			if ( grupo && funkcio ) mapo[grupo] = funkcio;
 		}
 	}
 
@@ -330,22 +340,22 @@ function analiziNoton( linioj: string[] ): Record<string, KlavaFunkcio> {
 }
 
 /**
-	Disigu nomon "Angla / Iikrhia" en ĝiajn du partojn. Titolo kiel
-	"Small ( Cubii / ſɟw ʃɹ )" fariĝas "Small ( Cubii )" kaj "ſɟw ʃɹ".
-		kruda ( string ) - Kruda nomo el la dezajna dosiero.
+	បំបែកឈ្មោះ "Angla / Iikrhia" ជាផ្នែកពីររបស់វា។ ចំណងជើងដូចជាក្នុង
+	"Small ( Cubii / ſɟw ʃɹ )" នឹងក្លាយជា "Small ( Cubii )" និង "ſɟw ʃɹ"។
+		ឈ្មោះមូលដ្ឋានពីឯកសាររចនាការ។
 	@returns { en: string; aih: string }
 */
 function disigiNomon( kruda: string ): { en: string; aih: string } {
 	const kongruo = kruda.match( /^(.+?)\s*\(\s*(.+?)\s*\/\s*(.+?)\s*\)$/ );
 	if ( kongruo ) {
-		return { en: `${kongruo[ 1 ].trim()} ( ${kongruo[ 2 ].trim()} )`, aih: kongruo[ 3 ].trim() };
+		return { en: `${kongruo[0o1].trim()} ( ${kongruo[0o2].trim()} )`, aih: kongruo[0o3].trim() };
 	}
 
 	const partoj = kruda.split( " / " );
-	if ( partoj.length >= 2 ) {
+	if ( partoj.length >= 0o2 ) {
 		return {
-			en: partoj[ 0 ].trim().replace( /\(\s*/g, "( " ).replace( /\s*\)/g, " )" ),
-			aih: partoj[ 1 ].trim(),
+			en: partoj[0o0].trim().replace( /\(\s*/g, "( " ).replace( /\s*\)/g, " )" ),
+			aih: partoj[0o1].trim(),
 		};
 	}
 
@@ -353,49 +363,49 @@ function disigiNomon( kruda: string ): { en: string; aih: string } {
 }
 
 /**
-	Kreu la Ŝanĝan kaj Simbolan tavolojn de la Granda aranĝo laŭ ĝia bazo.
-	Ĉiu signa klavo ricevas la ŝanĝitan / simbolan version de la sama signo
-	el la Malgranda aranĝo ( laŭ la signo mem, ne laŭ la pozicio );
-	funkciaj klavoj restas kiel ili estas. Signoj sen derivita versio
-	konservas sian propran valoron. La malsupra strio restas tiu de la
-	Granda aranĝo.
-		bazo ( Tavolo ) - La baza tavolo de la Granda aranĝo.
-		malgranda ( KlavarArangxo ) - La Malgranda aranĝo kun ĝiaj tri tavoloj.
+	បង្កើតតារាង Ŝanĝa និង Simbolan នៃការរៀបចំធំតាមមូលដ្ឋានរបស់ខ្លួនវា។
+	ក្រឡប់ចំណុចកណ្តាលសញ្ញានីមួយៗទទួលបានកំណែដែលបានបញ្ជាទាំងអស់ / សញ្ញានូសនៃសញ្ញា
+	ដូចគ្នាពីការរៀបចំតូច ( តាមសញ្ញាខ្លួនឯង មិនមែនតាមទីតាំង )។
+	ក្រឡប់ចំណុចកណ្តាលមុខងងឹតនៅតែដូចទេ។ សញ្ញាដែលគ្មានកំណែដែលបានបង្កើត
+	រក្សាតម្លៃផ្ទាល់ខ្លួនរបស់ខ្លួន។ បន្ទាត់ខាងក្រោមនៅតែជារបស់
+	ការរៀបចំធំ។
+		bazo ( Tavolo ) - តារាងមូលដ្ឋាននៃការរៀបចំធំ។
+		ការរៀបចំតូចដែលមានតារាងបីរបស់ខ្លួនវា។
 	@returns Tavolo[]
 */
 function kreiGrandajnTavolojn( bazo: Tavolo, malgranda: KlavarArangxo ): Tavolo[] {
-	const ŝanĝaMapo = kreiSignanMapon( malgranda.tavoloj[ 0 ], malgranda.tavoloj[ 0o1 ] );
-	const simbolaMapo = kreiSignanMapon( malgranda.tavoloj[ 0 ], malgranda.tavoloj[ 0o2 ] );
+	const ŝanĝaMapo = kreiSignanMapon( malgranda.tavoloj[0o0], malgranda.tavoloj[0o1] );
+	const simbolaMapo = kreiSignanMapon( malgranda.tavoloj[0o0], malgranda.tavoloj[0o2] );
 
 	const derivi = ( mapo: Record<string, string> ): Tavolo => ( {
 		nomoEn: "",
 		nomoAih: "",
 		vicaroj: bazo.vicaroj.map( vico => vico.map( klavo =>
-			klavo.speco === "signo" && mapo[ klavo.valoro ]
-				? { etiked: mapo[ klavo.valoro ], speco: "signo", valoro: mapo[ klavo.valoro ] }
+			klavo.speco === "signo" && mapo[klavo.valoro]
+				? { etiked: mapo[klavo.valoro], speco: "signo", valoro: mapo[klavo.valoro] }
 				: klavo
 		) ),
 		malsupraStrio: bazo.malsupraStrio,
 	} );
 
-	// ⟨ La nomoj de la derivitaj tavoloj venas de la Malgranda aranĝo ⟩
+	// ⟨ ឈ្មោះនៃតារាងដែលបានបង្កើតមកពីការរៀបចំតូច ⟩
 	const ŝanĝa = derivi( ŝanĝaMapo );
 	const simbola = derivi( simbolaMapo );
-	ŝanĝa.nomoEn = malgranda.tavoloj[ 0o1 ].nomoEn;
-	ŝanĝa.nomoAih = malgranda.tavoloj[ 0o1 ].nomoAih;
-	simbola.nomoEn = malgranda.tavoloj[ 0o2 ].nomoEn;
-	simbola.nomoAih = malgranda.tavoloj[ 0o2 ].nomoAih;
+	ŝanĝa.nomoEn = malgranda.tavoloj[0o1].nomoEn;
+	ŝanĝa.nomoAih = malgranda.tavoloj[0o1].nomoAih;
+	simbola.nomoEn = malgranda.tavoloj[0o2].nomoEn;
+	simbola.nomoAih = malgranda.tavoloj[0o2].nomoAih;
 
 	return [ bazo, ŝanĝa, simbola ];
 }
 
 /**
-	Konstruu signan mapon de unu tavolo al alia: ĉiu signa klavo de la fonta
-	tavolo ( la bazo ) ricevas la signon ĉe la sama pozicio de la cela tavolo
-	( la ŝanĝita / simbola versio ). La unua apero gajnas. Ankaŭ la malsupraj
-	strioj kontribuas ( ekz. ｡ → v, ⟅ → ʌ ).
-		fontaTavolo ( Tavolo ) - La baza tavolo.
-		celaTavolo ( Tavolo ) - La tavolo de la derivitaj versioj.
+	បង្កើតភ្លាក់សញ្ញាពីតារាងមួយទៅតារាងមួយទៀត៖ ក្រឡប់ចំណុចកណ្តាលសញ្ញានីមួយៗនៃតារាងប្រភព
+	នឹងទទួលបានសញ្ញានៅទីតាំងដូចគ្នានៃតារាងគោល
+	( កំណែដែលបានបញ្ជាទាំងអស់ / សញ្ញានូសន៍ )។ ការបង្ហាញលើកទី១ នឹងឈយកយក។ បន្ទាត់ខាងក្រោមក៏
+	ក៏ចូលរួមផ្ដល់ដែរ ( ឧទាហរណ៍ ｡ → v, ⟅ → ʌ )។
+		តារាងមូលដ្ឋាន។
+		តារាងនៃកំណែដែលបានបង្កើត។
 	@returns Record<string, string>
 */
 function kreiSignanMapon( fontaTavolo: Tavolo, celaTavolo: Tavolo ): Record<string, string> {
@@ -403,28 +413,28 @@ function kreiSignanMapon( fontaTavolo: Tavolo, celaTavolo: Tavolo ): Record<stri
 
 	const registri = ( fontaKlavo: Klavo, celaKlavo: Klavo | undefined ): void => {
 		if ( fontaKlavo.speco !== "signo" || !celaKlavo || celaKlavo.speco !== "signo" ) return;
-		if ( !( fontaKlavo.valoro in mapo ) ) mapo[ fontaKlavo.valoro ] = celaKlavo.valoro;
+		if ( !( fontaKlavo.valoro in mapo ) ) mapo[fontaKlavo.valoro] = celaKlavo.valoro;
 	};
 
-	for ( let v = 0; v < fontaTavolo.vicaroj.length; v++ ) {
-		const fontaVico = fontaTavolo.vicaroj[ v ];
-		const celaVico = celaTavolo.vicaroj[ v ];
-		for ( let k = 0; k < fontaVico.length; k++ ) {
-			registri( fontaVico[ k ], celaVico?.[ k ] );
+	for ( let v = 0o0; v < fontaTavolo.vicaroj.length; v++ ) {
+		const fontaVico = fontaTavolo.vicaroj[v];
+		const celaVico = celaTavolo.vicaroj[v];
+		for ( let k = 0o0; k < fontaVico.length; k++ ) {
+			registri( fontaVico[k], celaVico?.[ k ] );
 		}
 	}
 
-	for ( let k = 0; k < fontaTavolo.malsupraStrio.length; k++ ) {
-		registri( fontaTavolo.malsupraStrio[ k ], celaTavolo.malsupraStrio[ k ] );
+	for ( let k = 0o0; k < fontaTavolo.malsupraStrio.length; k++ ) {
+		registri( fontaTavolo.malsupraStrio[k], celaTavolo.malsupraStrio[k] );
 	}
 
 	return mapo;
 }
 
-// ⟪ Lingvo 🈯 ⟫
+// ⟪ ភាសា 🈯 ⟫
 
 /**
-	Akiru la nunan paĝlingvon el la html-elemento.
+	យកភាសាទំព័របច្ចុប្បន្នពីធាតុ html។
 	@returns string
 */
 function nunaLingvo(): string {
@@ -432,34 +442,34 @@ function nunaLingvo(): string {
 }
 
 /**
-	Elektu nomon laŭ la nuna lingvo. La Iikrhia versio montriĝas en aih
-	kaj la angla versio alie.
-		en ( string ) - La angla nomo.
-		aih ( string ) - La Iikrhia nomo.
+	ជ្រើសរើសឈ្មោះតាមភាសាបច្ចុប្បន្ន។ កំណែជា Iikrhia បង្ហាញក្នុង aih
+	ហើយកំណែជាអង់គ្លេសនៅផ្ដាក់ផ្សេងៗ។
+		ឈ្មោះជាអង់គ្លេស។
+		ឈ្មោះជា Iikrhia។
 	@returns string
 */
 function nomoPerLingvo( en: string, aih: string ): string {
 	return nunaLingvo() === "aih" ? aih : en;
 }
 
-// ⟪ Bildigo 🖥️ ⟫
+// ⟪ ការបង្ហាញ 🖥️ ⟫
 
 /**
-	Montru unu aranĝon. Rekonstruas la aranĝo-ŝaltilojn kaj montras la
-	unuan tavolon de la aranĝo.
-		indekso ( number ) - Indekso de la aranĝo por montri.
+	បង្ហាញការរៀបចំមួយ។ ស្ថាបថកឡើងវិញការបិទភ្ជាប់ការរៀបចំ ហើយបង្ហាញ
+	តារាងទី១ នៃការរៀបចំ។
+		លេខសន្ទាញ់នៃការរៀបចំសម្រាប់បង្ហាញ។
 	@returns void
 */
 function montriArangxon( indekso: number ): void {
-	const arangxo = arangxoj[ indekso ];
+	const arangxo = arangxoj[indekso];
 	if ( !arangxo || !arangxoButonojUjo ) return;
 	aktivaArangxoIndekso = indekso;
 
 	arangxoButonojUjo.replaceChildren();
-	for ( let i = 0; i < arangxoj.length; i++ ) {
+	for ( let i = 0o0; i < arangxoj.length; i++ ) {
 		const butono = document.createElement( "button" );
 		butono.type = "button";
-		butono.textContent = nomoPerLingvo( arangxoj[ i ].titoloEn, arangxoj[ i ].titoloAih );
+		butono.textContent = nomoPerLingvo( arangxoj[i].titoloEn, arangxoj[i].titoloAih );
 		if ( i === aktivaArangxoIndekso ) {
 			butono.setAttribute( "aria-pressed", "true" );
 		}
@@ -467,18 +477,18 @@ function montriArangxon( indekso: number ): void {
 		arangxoButonojUjo.appendChild( butono );
 	}
 
-	montriTavolon( 0 );
+	montriTavolon( 0o0 );
 }
 
 /**
-	Montru unu tavolon de la nuna aranĝo. Rekonstruas la klavaron kaj
-	ĝisdatigas la tavolan etikedon.
-		indekso ( number ) - Indekso de la tavolo por montri.
+	បង្ហាញតារាងមួយនៃការរៀបចំបច្ចុប្បន្ន។ ស្ថាបថកឡើងវិញក្រឡប់ចំណុចកណ្តាល និង
+	ធ្វើបច្ចុប្បន្នភាពស្លាក់តារាង។
+		លេខសន្ទាញ់នៃតារាងសម្រាប់បង្ហាញ។
 	@returns void
 */
 function montriTavolon( indekso: number ): void {
-	const arangxo = arangxoj[ aktivaArangxoIndekso ];
-	const tavolo = arangxo?.tavoloj[ indekso ];
+	const arangxo = arangxoj[aktivaArangxoIndekso];
+	const tavolo = arangxo?.tavoloj[indekso];
 	if ( !tavolo || !klavaraUjo || !tavolaEtikedElemento ) return;
 
 	aktivaTavolaIndekso = indekso;
@@ -493,13 +503,13 @@ function montriTavolon( indekso: number ): void {
 	}
 	klavaraUjo.appendChild( kreiVicon( tavolo.malsupraStrio ) );
 
-	// ⟨ Apliku vacepu al la nova teksto por ke ĝi montriĝu ĝuste en aih ⟩
+	// ⟨ អនុវត្ត vacepu ទៅអត្ថបទថ្មី ដើម្បីឱ្យវាបង្ហាញត្រឹមត្រូវក្នុង aih ⟩
 	vacepu( "cepufal" );
 }
 
 /**
-	Kreu unu vicon de klavoj kiel thala.cakaxa.
-		klavoj ( Klavo[] ) - La klavoj de la vico.
+	បង្កើតជួរក្រឡប់ចំណុចកណ្តាលតែមួយដោយប្រើ thala.cakaxa។
+		ក្រឡប់ចំណុចកណ្តាលនៃជួរ។
 	@returns HTMLElement
 */
 function kreiVicon( klavoj: Klavo[] ): HTMLElement {
@@ -513,17 +523,17 @@ function kreiVicon( klavoj: Klavo[] ): HTMLElement {
 }
 
 /**
-	Kreu butonon por unu klavo.
-		klavo ( Klavo ) - La klavo por bildigi.
+	បង្កើតប៊ូតុងសម្រាប់ក្រឡប់ចំណុចកណ្តាលតែមួយ។
+		ក្រឡប់ចំណុចកណ្តាលសម្រាប់បង្ហាញ។
 	@returns HTMLButtonElement
 */
 function kreiButonon( klavo: Klavo ): HTMLButtonElement {
 	const butono = document.createElement( "button" );
 	butono.type = "button";
 
-	// ⟨ Funkciaj klavoj montras tradukitajn nomojn laŭ la lingvo ⟩
+	// ⟨ ក្រឡប់ចំណុចកណ្តាលមុខងងឹតបង្ហាញឈ្មោះបកប្ប័យតាមភាសា ⟩
 	if ( klavo.speco === "funkcio" ) {
-		const nomo = FUNKCIO_NOMOJ[ klavo.valoro ];
+		const nomo = FUNKCIO_NOMOJ[klavo.valoro];
 		butono.textContent = nomoPerLingvo( nomo.en, nomo.aih );
 	} else {
 		butono.textContent = klavo.etiked;
@@ -544,12 +554,12 @@ function kreiButonon( klavo: Klavo ): HTMLButtonElement {
 }
 
 /**
-	Aldonu long-premajn gestojn al signa klavo. Teni la klavon malfermas la
-	panelon de alternativaj signoj: vico en la Granda aranĝo ( kiam la
-	Extra-ŝaltilo estas ŝaltita ) aŭ panelo de ekstraj signoj en la
-	Malgranda aranĝo. La posta klako estas forigita post longa premo.
-		butono ( HTMLButtonElement ) - La butono de la klavo.
-		klavo ( SignaKlavo ) - La signa klavo.
+	បញ្ចូលសកម្មភាពចុចបន្តយោបល់ទៅក្រឡប់ចំណុចកណ្តាលសញ្ញា។ ការសង្កប់ក្រឡប់នឹងបើក
+	ផ្ទាំងសញ្ញាជំនួស៖ ជួរនៅក្នុងការរៀបចំធំ ( ពេល
+	ប្រុង Extra ចាក់ផ្ដើម ) ឬផ្ទាំងសញ្ញាបន្ថែមនៅក្នុង
+	ការរៀបចំតូច។ ការចុចបន្ទាប់ត្រូវបានដកចេញបន្ទាប់ពីការចុចបន្តយោបល់។
+		ប៊ូតុងនៃក្រឡប់ចំណុចកណ្តាល។
+		ក្រឡប់ចំណុចកណ្តាលសញ្ញា។
 	@returns void
 */
 function aldoniLonganPremon( butono: HTMLButtonElement, klavo: SignaKlavo ): void {
@@ -574,10 +584,10 @@ function aldoniLonganPremon( butono: HTMLButtonElement, klavo: SignaKlavo ): voi
 			temporizilo = null;
 			longaPremo = true;
 			malfermiPanelon( klavo );
-		}, LONGA_PREMO_DAŬRO * 1000 ); // Heoj → ms
+		}, LONGA_PREMO_DAŬRO * 0o1750 ); // Heoj → ms
 	} );
 
-	// ⟨ Ne nuligu longaPremo ĉi tie: la sekva klako devas ĝin konsumi ⟩
+	// ⟨ កុំធ្វើឱ្យវាទទេនៅទីនេះ៖ ការចុចបន្ទាប់ត្រូវតែបង្ហាញវា ⟩
 	butono.addEventListener( "pointerup", () => {
 		nuligi();
 		fermiPanelon();
@@ -587,17 +597,17 @@ function aldoniLonganPremon( butono: HTMLButtonElement, klavo: SignaKlavo ): voi
 }
 
 /**
-	Malfermu la panelon de alternativaj signoj por unu klavo. En la Granda
-	aranĝo ĝi montras la variantojn en vico; en la Malgranda aranĝo ĝi
-	malfermas la panelon de ekstraj signoj. La variantoj estas malplenaj nun.
-		klavo ( SignaKlavo ) - La klavo, kies variantojn montri.
+	បើកផ្ទាំងសញ្ញាជំនួសសម្រាប់ក្រឡប់ចំណុចកណ្តាលតែមួយ។ នៅក្នុង
+	ការរៀបចំធំ វាបង្ហាញជម្រើសក្នុងជួរ។ នៅក្នុងការរៀបចំតូច វា
+	បើកផ្ទាំងសញ្ញាបន្ថែម។ ជម្រើសមិនមានឥឡូវទេ។
+		ក្រឡប់ចំណុចកណ្តាលដែលត្រូវបង្ហាញជម្រើស។
 	@returns void
 */
 function malfermiPanelon( klavo: SignaKlavo ): void {
 	if ( !ekstraPanelo ) return;
 
 	ekstraPanelo.replaceChildren();
-	for ( const varianto of VARIANTOJ[ klavo.valoro ] ?? [] ) {
+	for ( const varianto of VARIANTOJ[klavo.valoro] ?? [] ) {
 		const butono = document.createElement( "button" );
 		butono.type = "button";
 		butono.textContent = varianto;
@@ -613,7 +623,7 @@ function malfermiPanelon( klavo: SignaKlavo ): void {
 }
 
 /**
-	Fermu kaj malplenigu la panelon de alternativaj signoj.
+	បិទ និងលាក់ផ្ទាំងសញ្ញាជំនួស។
 	@returns void
 */
 function fermiPanelon(): void {
@@ -622,15 +632,15 @@ function fermiPanelon(): void {
 	ekstraPanelo.classList.add( "kobe" );
 }
 
-// ⟪ Prenado 🖱️ ⟫
+// ⟪ ការចុច និងអូស 🖱️ ⟫
 
 /**
-	Pritraktu klakan sur klavo.
-		klavo ( Klavo ) - La klakita klavo.
+	ដំណើរការនៃការចុចលើក្រឡប់ចំណុចកណ្តាល។
+		ក្រឡប់ចំណុចកណ្តាលដែលត្រូវបានចុច។
 	@returns void
 */
 function pritraktiKlavon( klavo: Klavo ): void {
-	// ⟨ Post longa premo la sekva klako nur malfermis la panelon - forigu ĝin ⟩
+	// ⟨ បន្ទាប់ពីការចុចបន្តយោបល់ ការចុចបន្ទាប់គ្រាន់តែបើកផ្ទាំង - ដកវាចេញ ⟩
 	if ( longaPremo ) {
 		longaPremo = false;
 		return;
@@ -644,19 +654,19 @@ function pritraktiKlavon( klavo: Klavo ): void {
 }
 
 /**
-	Enmetu la valoron de signa klavo. En la Granda aranĝo kun la
-	Extra-ŝaltilo ŝaltita, ripetaj klakoj trairas la alternativajn
-	variantojn de la signo ( malplenaj nun - la baza signo enmetiĝas ).
-		klavo ( SignaKlavo ) - La signa klavo.
+	បញ្ចូលតម្លៃនៃក្រឡប់ចំណុចកណ្តាលសញ្ញា។ នៅក្នុងការរៀបចំធំដែលមាន
+	ប្រុង Extra ចាក់ផ្ដើម ការចុចម្ដងហើយម្ដងទៀតឆ្លងកាត់តាមជម្រើស
+	ជម្រើសនៃសញ្ញា ( មិនមានឥឡូវទេ - សញ្ញាមូលដ្ឋាននឹងត្រូវបញ្ចូល )។
+		ក្រឡប់ចំណុចកណ្តាលសញ្ញា។
 	@returns void
 */
 function enmetiKlavon( klavo: SignaKlavo ): void {
-	if ( aktivaArangxoIndekso === 1 && ekstraReĝimo ) {
-		const variantoj = VARIANTOJ[ klavo.valoro ] ?? [];
-		if ( variantoj.length > 0 ) {
-			const indekso = ciklajIndeksoj.get( klavo.valoro ) ?? 0;
-			enmetiTekston( variantoj[ indekso ] );
-			ciklajIndeksoj.set( klavo.valoro, ( indekso + 1 ) % variantoj.length );
+	if ( aktivaArangxoIndekso === 0o1 && ekstraReĝimo ) {
+		const variantoj = VARIANTOJ[klavo.valoro] ?? [];
+		if ( variantoj.length > 0o0 ) {
+			const indekso = ciklajIndeksoj.get( klavo.valoro ) ?? 0o0;
+			enmetiTekston( variantoj[indekso] );
+			ciklajIndeksoj.set( klavo.valoro, ( indekso + 0o1 ) % variantoj.length );
 			return;
 		}
 	}
@@ -665,17 +675,17 @@ function enmetiKlavon( klavo: SignaKlavo ): void {
 }
 
 /**
-	Pritraktu funkcion de la malsupra strio.
-		funkcio ( KlavaFunkcio ) - La ago de la funkcia klavo.
+	ដំណើរការនៃមុខងងឹតនៃបន្ទាត់ខាងក្រោម។
+		សកម្មភាពនៃក្រឡប់ចំណុចកណ្តាលមុខងងឹត។
 	@returns void
 */
 function pritraktiFunkcion( funkcio: KlavaFunkcio ): void {
 	switch ( funkcio ) {
 		case "shift":
-			montriTavolon( aktivaTavolaIndekso === 0o1 ? 0 : 0o1 );
+			montriTavolon( aktivaTavolaIndekso === 0o1 ? 0o0 : 0o1 );
 			break;
 		case "symbol":
-			montriTavolon( aktivaTavolaIndekso === 0o2 ? 0 : 0o2 );
+			montriTavolon( aktivaTavolaIndekso === 0o2 ? 0o0 : 0o2 );
 			break;
 		case "extra":
 			ekstraReĝimo = !ekstraReĝimo;
@@ -695,8 +705,8 @@ function pritraktiFunkcion( funkcio: KlavaFunkcio ): void {
 }
 
 /**
-	Enmetu tekston ĉe la nuna kursora pozicio de la eniga kampo.
-		teksto ( string ) - La teksto por enmeti.
+	បញ្ចូលអត្ថបទនៅទីតាំងកូនុស្លែងបច្ចុប្បន្ននៃវាលបញ្ចូល។
+		អត្ថបទសម្រាប់បញ្ចូល។
 	@returns void
 */
 function enmetiTekston( teksto: string ): void {
@@ -704,18 +714,18 @@ function enmetiTekston( teksto: string ): void {
 	const komenco = enigaKampo.selectionStart ?? enigaKampo.value.length;
 	const fino = enigaKampo.selectionEnd ?? enigaKampo.value.length;
 
-	enigaKampo.value = enigaKampo.value.slice( 0, komenco ) + teksto + enigaKampo.value.slice( fino );
+	enigaKampo.value = enigaKampo.value.slice( 0o0, komenco ) + teksto + enigaKampo.value.slice( fino );
 	const novaPozicio = komenco + teksto.length;
 	enigaKampo.setSelectionRange( novaPozicio, novaPozicio );
 	enigaKampo.focus();
 
-	// ⟨ Konservu la enmetitan klavan ĵetonon por ke forigo forigu tutajn klavojn ⟩
+	// ⟨ រក្សាស្លាក់ចំណុចកណ្តាលក្រឡប់ដែលបានបញ្ចូល ដើម្បីឱ្យការលុបដកចំណុចកណ្តាលទាំងអស់ ⟩
 	enmetitaHistorio.push( teksto );
 }
 
 /**
-	Forigu la lastan grafemon ( signon kun ĉiuj ĝiaj kombinitaj diakritoj )
-	antaŭ la kursoro, aŭ la tutan elektitan tekston se ekzistas selektado.
+	ដកកូនុងអក្សរចុងក្រោយ ( សញ្ញាជាមួយអក្សរបំពោបតគ្រប់យ៉ាងរបស់វា )
+	មុនកូនុស្លែង ឬអត្ថបទបានជ្រើសរើសទាំងអស់ ប្រសិនបើមានការជ្រើសរើស។
 	@returns void
 */
 function forigiLastanGrafemon(): void {
@@ -723,29 +733,29 @@ function forigiLastanGrafemon(): void {
 	const komenco = enigaKampo.selectionStart ?? enigaKampo.value.length;
 	const fino = enigaKampo.selectionEnd ?? enigaKampo.value.length;
 
-	// ⟨ Se ekzistas selektado, forigu ĝin kaj forĵetu la historion ⟩
+	// ⟨ ប្រសិនបើមានការជ្រើសរើស ដកវាចេញ និងបោះចោលប្រវត្តិសាស្ត្រចេញ ⟩
 	if ( komenco !== fino ) {
-		enigaKampo.value = enigaKampo.value.slice( 0, komenco ) + enigaKampo.value.slice( fino );
+		enigaKampo.value = enigaKampo.value.slice( 0o0, komenco ) + enigaKampo.value.slice( fino );
 		enigaKampo.setSelectionRange( komenco, komenco );
 		enigaKampo.focus();
 		enmetitaHistorio = [];
 		return;
 	}
 
-	if ( komenco > 0 ) {
-		const antaŭa = enigaKampo.value.slice( 0, komenco );
-		const lastaĴetono = enmetitaHistorio[ enmetitaHistorio.length - 1 ];
+	if ( komenco > 0o0 ) {
+		const antaŭa = enigaKampo.value.slice( 0o0, komenco );
+		const lastaĴetono = enmetitaHistorio[enmetitaHistorio.length - 0o1];
 
-		// ⟨ Preferu forigi la lastan klavan ĵetonon tute ( ekz. ꞁȷ̀ ) ⟩
+		// ⟨ ចូលចិត្តលុបស្លាក់ក្រឡប់ចំណុចកណ្តាលចុងក្រោយទាំងអស់ ( ឧទាហរណ៍ ꞁȷ̀ ) ⟩
 		if ( lastaĴetono && antaŭa.endsWith( lastaĴetono ) ) {
 			const novaPozicio = komenco - lastaĴetono.length;
-			enigaKampo.value = enigaKampo.value.slice( 0, novaPozicio ) + enigaKampo.value.slice( komenco );
+			enigaKampo.value = enigaKampo.value.slice( 0o0, novaPozicio ) + enigaKampo.value.slice( komenco );
 			enigaKampo.setSelectionRange( novaPozicio, novaPozicio );
 			enmetitaHistorio.pop();
 		} else {
-			// ⟨ Alie forigu unu grafemon kaj forĵetu la historian sinsekvon ⟩
+			// ⟨ បើកិត្តដកកូនុងអក្សរមួយ និងបោះចោលលំដាប់ប្រវត្តិសាស្ត្រចេញ ⟩
 			const novaPozicio = komenco - longecoDeLastaGrafemo( antaŭa );
-			enigaKampo.value = enigaKampo.value.slice( 0, novaPozicio ) + enigaKampo.value.slice( komenco );
+			enigaKampo.value = enigaKampo.value.slice( 0o0, novaPozicio ) + enigaKampo.value.slice( komenco );
 			enigaKampo.setSelectionRange( novaPozicio, novaPozicio );
 			enmetitaHistorio = [];
 		}
@@ -754,30 +764,30 @@ function forigiLastanGrafemon(): void {
 }
 
 /**
-	Kalkulu la longecon de la lasta grafemo en ĉeno, uzante Intl.Segmenter
-	kiam ĝi disponeblas kaj falante reen al kodpunktoj alie.
-		teksto ( string ) - La ĉeno por ekzameni.
+	គណនាប្រវែងនៃកូនុងអក្សរចុងក្រោយក្នុងខ្សែ ដោយប្រើ Intl.Segmenter
+	ពេលវាអាចប្រើបាន និងត្រឡប់ទៅកំណត់លេខកូដវិញប្រសិនបើមិន។
+		ខ្សែសម្រាប់ការពិនិត្យ។
 	@returns number
 */
 function longecoDeLastaGrafemo( teksto: string ): number {
-	if ( !teksto ) return 0;
+	if ( !teksto ) return 0o0;
 
 	const Segmentero = ( Intl as { Segmenter?: new ( lokaĵo?: string, opcioj?: { granularity?: string } ) => { segment( t: string ): Iterable<{ segment: string }> } } ).Segmenter;
 
 	if ( Segmentero ) {
 		const segmentilo = new Segmentero( undefined, { granularity: "grapheme" } );
 		const segmentoj = [ ...segmentilo.segment( teksto ) ];
-		const lasta = segmentoj[ segmentoj.length - 1 ];
+		const lasta = segmentoj[segmentoj.length - 0o1];
 		if ( lasta ) return lasta.segment.length;
 	}
 
 	const kodpunktoj = Array.from( teksto );
-	const lastaKodpunkto = kodpunktoj[ kodpunktoj.length - 1 ];
-	return lastaKodpunkto ? lastaKodpunkto.length : 0;
+	const lastaKodpunkto = kodpunktoj[kodpunktoj.length - 0o1];
+	return lastaKodpunkto ? lastaKodpunkto.length : 0o0;
 }
 
 /**
-	Kopiu la tekston de la eniga kampo al la tondujo kaj montru konfirmon.
+	ចម្លងអត្ថបទពីវាលបញ្ចូលទៅកន្លោៀប័ណ្តប់ ហើយបង្ហាញការបញ្ជាកែ។
 	@returns Promise
 */
 async function kopiiTekston(): Promise<void> {
@@ -791,7 +801,7 @@ async function kopiiTekston(): Promise<void> {
 			butono.textContent = "✓";
 			setTimeout( () => {
 				butono.textContent = antaŭaEtiked;
-			}, KOPII_KONFIRMA_DAŬRO * 1000 ); // Heoj → ms
+			}, KOPII_KONFIRMA_DAŬRO * 0o1750 ); // Heoj → ms
 		}
 	} catch ( eraro ) {
 		console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Malsukcesis kopii la tekston.", eraro );
@@ -799,7 +809,7 @@ async function kopiiTekston(): Promise<void> {
 }
 
 /**
-	Viŝu la tutan tekston de la eniga kampo.
+	សម្អាតអត្ថបទទាំងអស់នៃវាលបញ្ចូល។
 	@returns void
 */
 function viŝiEnigon(): void {
@@ -809,7 +819,7 @@ function viŝiEnigon(): void {
 	enmetitaHistorio = [];
 }
 
-// ⟪ Inicialigo 🚀 ⟫
+// ⟪ ការចាប់ផ្ដើម 🚀 ⟫
 
 document.addEventListener( "DOMContentLoaded", () => {
 	enigaKampo = document.getElementById( "enigo" ) as HTMLTextAreaElement | null;
@@ -827,9 +837,9 @@ document.addEventListener( "DOMContentLoaded", () => {
 
 	const krudaTeksto = KLAVARA_DEZAJNO;
 	arangxoj = analiziArangxojn( krudaTeksto );
-	montriArangxon( 0 );
+	montriArangxon( 0o0 );
 
-	// ⟨ Mana redaktado de la uzanto rompas la historion - forĵetu ĝin ⟩
+	// ⟨ ការកែសម្រួលដោយដៃរបស់អ្នកប្រើបានបំផ្លាញប្រវត្តិសាស្ត្រ - បោះចោលវាចេញ ⟩
 	enigaKampo.addEventListener( "input", () => {
 		enmetitaHistorio = [];
 	} );

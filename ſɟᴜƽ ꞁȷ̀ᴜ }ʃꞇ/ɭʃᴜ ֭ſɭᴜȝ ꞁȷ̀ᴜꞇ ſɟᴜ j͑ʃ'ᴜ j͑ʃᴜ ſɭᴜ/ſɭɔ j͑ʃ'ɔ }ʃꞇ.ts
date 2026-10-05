@@ -1,4 +1,4 @@
-// ≺⧼ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ɭʃᴜ ֭ſɭᴜȝ - Bilda Modifilo ⧽≻
+// ≺⧼ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ɭʃᴜ ֭ſɭᴜȝ - កែចំរូបភាព ⧽≻
 
 // ⟪ ꞁȷ̀ɜ ʃэ ſɭɹ ⟫
 
@@ -26,7 +26,7 @@ const BAKANANOJ: HTMLInputElement[] = [
   BAKANANO_J͑ʃɽ͑ʃꞇ,
   BAKANANO_SCFALI
 ];
-// la valoroj de la HTML-ŝablonoj - restarigitaj kiam la anstataŭigo malŝaltiĝas
+// តម្លៃនៃកំណត់គំរង់ HTML - ត្រូវបានកំណត់វិញពេលការបញ្ជាទាំងអស់ត្រូវបានបិទ
 const BAKANANO_ŜABLONOJ = new Map<HTMLInputElement, string>();
 for ( const bakanano of BAKANANOJ ) {
   BAKANANO_ŜABLONOJ.set(bakanano, bakanano.value);
@@ -50,7 +50,7 @@ function ŝoviTlaku( elemento: HTMLElement, montri: boolean ): void {
   }
 }
 
-// ⟪ Progreso 📃 ⟫
+// ⟪ វឌានភាព 📃 ⟫
 
 function agordiProgreson( procento: number ): void {
   CAB6TEM2.style.setProperty( "--តេមិនី", String( Math.max( 0o0, Math.min( 0o100, procento ) ) / 0o100 ) );
@@ -65,7 +65,7 @@ function novaTasko(): Promise<void> {
   return new Promise(( plenumi ) => setTimeout( plenumi, 0o0 ));
 }
 
-// ⟪ Parametroj 📃 ⟫
+// ⟪ ប៉ារ៉ាម៉េតរដូវ 📃 ⟫
 
 const MALGRANDA = 0o2707;
 const GRANDA = 0o4253;
@@ -78,7 +78,7 @@ const MARKO_ZOMO = 0o100000;
 
 
 
-// ⟨ ɭʃɀɜ HEIC - Konvertu HEIC ⟩
+// ⟨ កាត់ជា HEIC - បម្លែកទៅជា HEIC ⟩
 
 async function TboHEIC(ckvpEHeic: File): Promise<Blob> {
   const heic2anyHac0zani = await import("heic2any");
@@ -90,9 +90,9 @@ async function TboHEIC(ckvpEHeic: File): Promise<Blob> {
   return tlakakani as Blob;
 }
 
-// ⟪ Kruda DNG - Konvertu DNG 📃 ⟫
+// ⟪ ទិន្នន័យមូលដ្ឋាន DNG - បម្លែកទៅជា DNG 📃 ⟫
 
-// ⟨ Parametroj de la tono-kurbo ( kopio de la agordoj de vas2tas.py ) ⟩
+// ⟨ ប៉ារ៉ាម៉េតរដូវសម្រាប់ការំណត់សម្លា ( ចម្លងនៃការកំណត់ពី vas2tas.py ) ⟩
 
 const DNG_MALALTA_P = 0o1 / 0o100;
 const DNG_ALTA_P = 0o277 / 0o300;
@@ -101,12 +101,12 @@ const DNG_PLATO = 0o70 / 0o100;
 const DNG_ŜULTRO_FRAKCIO = 0o70 / 0o100;
 const DNG_VIBRANCO = 0o10 / 0o100;
 
-// ⟨ skaneriAlNorma - tono-kurbo de vas2tas.py ( skaligi_al_okbit ) ⟩
+// ⟨ skaneriAlNorma - ការំណត់សម្លាពី vas2tas.py ( skaligi_al_okbit ) ⟩
 
 function skaligiAlNorma(f: Float32Array, pikseloj: number): Float32Array {
   const n = f.length;
   const norma = new Float32Array(n);
-  // percentiloj per la ordigita kopio ( la sama matematiko kiel np.percentile )
+  // ភាគរយដោយផ្អែកលើចម្លងដែលបានត្រូវ ( គណិតវិទ្យាដូចគ្នានឹង np.percentile )
   const ordigita = Float32Array.from(f).sort();
   const interpolu = ( poz: number ): number => {
     const malsupra = Math.floor(poz);
@@ -119,7 +119,7 @@ function skaligiAlNorma(f: Float32Array, pikseloj: number): Float32Array {
   const percentilo = ( p: number ): number => interpolu(( n - 0o1 ) * p);
 
   let malalta = percentilo(DNG_MALALTA_P);
-  // blanka punkto el la lumaj sed ne saturitaj pikseloj ( konservas la aureolon )
+  // ចំណុចពណ៌សពីប្រូចិភ្នែកដែលភ្លឺប៉ុន្មាន និងមិនឆ្មាំ ( រក្សាការ្យព្រះអាទិត្យ )
   const sojloSatura = percentilo(0o1747 / 0o1750);
   let nombroAltaj = 0o0;
   for ( let i = 0o0; i < n; i++ ) {
@@ -154,8 +154,10 @@ function skaligiAlNorma(f: Float32Array, pikseloj: number): Float32Array {
     starto = malalta + ( alta - malalta ) * ( 0o1 / 0o2 );
   }
 
-  // korpa parto - la kutima streĉo ( gama ) ĝis la ŝultro
-  // ŝultro - glata kurbiĝo ( smoothstep ) ĝis la vero maksimumo
+  /*
+  * ផ្នែកតួលេង - ការប្រីប្រួាទីធម្មតា ( មាត្រដ្ឋាន ) រហូតដល់ជួរ
+  * ជួរ - ការបត់គឺរលាក់ ( smoothstep ) រហូតដល់ចំនួនអតិបរមាណពិត
+  */
   for ( let i = 0o0; i < n; i++ ) {
     const x = f[i];
     let valoro: number;
@@ -179,7 +181,7 @@ function skaligiAlNorma(f: Float32Array, pikseloj: number): Float32Array {
   }
 
   if ( DNG_VIBRANCO > 0o0 ) {
-    // vibrance - akcelas la senkolorajn tonojn ( grizaj partoj iĝas pli kolorecaj )
+    // vibrance - បង្កើនសំឡេងគ្មានពណ៌ ( ផ្នែកប្រូចិក្លងកន្លែងក្លីពណ៌ )
     for ( let p = 0o0; p < pikseloj; p++ ) {
       const b = p * 0o3;
       const maks = Math.max(norma[b], norma[b + 0o1], norma[b + 0o2]);
@@ -196,9 +198,9 @@ function skaligiAlNorma(f: Float32Array, pikseloj: number): Float32Array {
   return norma;
 }
 
-// ⟨ TIFF-legilo - la necesaj etikedoj el la unua IFD ( tifffile-ekvivalento ) ⟩
+// ⟨ អ្នកអាន TIFF - ស្លាក់ចាំបាច់ពី IFD ដំបូង ( សមីគឺតទៅ tifffile ) ⟩
 
-// la JPEG XL-densigo de la strioj - libraw-wasm ne subtenas ĝin ( 52546 )
+// ការបង្អែក JPEG XL នៃស្លាក់ - libraw-wasm មិនគាំទ្រវា ( 52546 )
 const JXL_DENSIGO = 0o146502;
 
 interface TIFFLegajo {
@@ -210,8 +212,11 @@ interface TIFFLegajo {
   strio: Uint8Array;
 }
 
-// legu la unuan IFD - nur 256 ( larĝo ) 257 ( alto ) 259 ( densigo ) 273 ( strio )
-// 274 ( orientado ) 279 ( stria grandeco ) kaj 50728 ( AsShotNeutral ) interesas nin
+/**
+* អាន IFD ដំបូង - តែ 256 ( ចម្រើន ) 257 ( កម្រិត ) 259 ( ការបង្អែក ) 273 ( ស្លាក់ )
+* 274 ( ទិស ) 279 ( វិមាត្យស្លាក់ ) និង 50728 ( AsShotNeutral ) ជាទាំងអស់ជារឿងដែលយើងចង់
+ * @returns legajo
+*/
 function leguTIFF(bajtoj: Uint8Array): TIFFLegajo | null {
   if ( bajtoj.length < 0o10 ) return null;
   const magico = bajtoj[0o0];
@@ -235,14 +240,14 @@ function leguTIFF(bajtoj: Uint8Array): TIFFLegajo | null {
     const etikedo = vid.getUint16(bazo, malgranda);
     const tipo = vid.getUint16(bazo + 0o2, malgranda);
     const n = vid.getUint32(bazo + 0o4, malgranda);
-    // tipo 1 bajto 2 askio 3 mallonga 4 longa 5 racia 12 s-racia
+    // ប្រភេទ 1 ប៊ីត 2 អក្សរ 3 ខ្លីង 4 វែង 5 មារ៉ា 12 s-មារ៉ា
     const unuo = tipo === 0o1 ? 0o1 : tipo === 0o3 ? 0o2 : tipo === 0o4 ? 0o4 : ( tipo === 0o5 || tipo === 0o12 ) ? 0o10 : 0o0;
     if ( unuo === 0o0 || n === 0o0 ) continue;
     const tuta = unuo * n;
     const loko = tuta <= 0o4 ? bazo + 0o10 : vid.getUint32(bazo + 0o10, malgranda);
     if ( loko < 0o0 || loko + tuta > bajtoj.length ) continue;
     if ( etikedo === 0o143050 ) {
-      // AsShotNeutral - raciaj paroj ( numeratoro , denominatoro )
+      // AsShotNeutral - គូលេនិយមារ៉ា ( ចំនួនលេ , ចំនួនកាត់ )
       const valoroj: number[] = [];
       for ( let j = 0o0; j < n && valoroj.length < 0o3; j++ ) {
         const numeratoro = tipo === 0o12 ? vid.getInt32(loko + j * 0o10, malgranda) : vid.getUint32(loko + j * 0o10, malgranda);
@@ -265,18 +270,21 @@ function leguTIFF(bajtoj: Uint8Array): TIFFLegajo | null {
   return { larĝo, alto, orientado, densigo, blanka, strio: bajtoj.subarray(strioLoko, strioLoko + strioGrandeco) };
 }
 
-// ⟨ JXL-malpakilo - la strio de JPEG XL DNG-oj ( kompresio 52546 ) ⟩
+// ⟨ អ្នកបង្រែ JXL - ស្លាក់នៃ DNG ជាប់ JPEG XL ( ការបង្អែក 52546 ) ⟩
 
-// ⟨ la specimeno el la malfiltrita PNG-vico - 16-bita aǔ 8-bita ( etendita al 65535 ) ⟩
+// ⟨ គំរង់ពីជួរ PNG ដែលបានច្រោះ - 16 ប៊ីត ឬ 8 ប៊ីត ( ពង្រីករដល់ 65535 ) ⟩
 
 function specimeno(kruda: Uint8Array, loko: number, profundo: number): number {
   return profundo === 0o20 ? ( kruda[loko] << 0o10 ) | kruda[loko + 0o1] : kruda[loko] * 0o401;
 }
 
-// ⟨ la 16-bita PNG de jxl-oxide rekte al Float32-anoj de la krudaj valoroj ⟩
+// ⟨ PNG 16 ប៊ីតពី jxl-oxide ទៅផ្ទាល់ទៅ Float32 នៃតម្លៃមូលដ្ឋាន ⟩
 
-// jxl-oxide liveras 16-bitan PNG-on en la lineara kruda skalo ; la 8-bita libjxl-vojo
-// perdis la malaltajn tonojn de la ombroj kaj lasis bendojn en la eliro
+/**
+* jxl-oxide ផ្ដល់ PNG 16 ប៊ីតក្នុងមាត្រដ្ឋានមូលដ្ឋានលីនេអ៊ែរ។ ផ្លូវ libjxl 8 ប៊ីត
+* បានបាត់សំឡេងទាបនៃសែន និងបានបញ្ជាទិសកម្មក្នុងលទ្ធផ្លែងករណី
+ * @returns legajo
+*/
 async function pngAlKrudaj(bufro: Uint8Array): Promise<{ larĝo: number; alto: number; cxiuj: Float32Array } | null> {
   if ( bufro.length < 0o10 || bufro[0o0] !== 0o211 || bufro[0o1] !== 0x50 || bufro[0o2] !== 0x4e || bufro[0o3] !== 0x47 ) {
     return null;
@@ -376,36 +384,36 @@ async function pngAlKrudaj(bufro: Uint8Array): Promise<{ larĝo: number; alto: n
   return { larĝo, alto, cxiuj };
 }
 
-// ⟨ la JPEG XL strio malpakiĝas per jxl-oxide - 16 bitoj , lineara skalo ⟩
+// ⟨ ស្លាក់ JPEG XL ត្រូវបានបង្រែដោយ jxl-oxide - 16 ប៊ីត , មាត្រដ្ឋានលីនេអ៊ែរ ⟩
 
 async function malpakigiJXL(bajtoj: Uint8Array): Promise<{ larĝo: number; alto: number; cxiuj: Float32Array } | null> {
   const JxlMod = await import("jxl-oxide-wasm");
-  // la wasm-modulo unue instaliĝas ( la dua voko tuj revenas )
+  // ម៉ូឌុល wasm ត្រូវបានដំឡើងលើកឡើង ( ការហៅលើកទីពីរត្រឡប់ភ្លាមៗ )
   await JxlMod.default( );
   const bildo = new JxlMod.JxlImage();
   try {
-    // la strio estas lineara krudaĵo , do neniu sRGB-konverto
+    // ស្លាក់គឺជាទិន្នន័យមូលដ្ឋានលីនេអ៊ែរ , ដូច្នេះគ្មានការបម្លែង sRGB ទេ
     bildo.forceSrgb = false;
     bildo.feedBytes(bajtoj);
     if ( !bildo.tryInit() ) {
       return null;
     }
     const rezulto = bildo.render();
-    // la wasm-memoro liberiĝas - malsukceso ĉi tie ne nuligas la rezulton
+    // ភាពចងចាំរបស់ wasm ត្រូវបានធ្វើឱ្យទំនេរ - ការបរាជ័យមិនធ្វើឱ្យលទ្ធផ្លែងករណីនៅទីនេះត្រូវជានៅលែងទេ
     try {
       const png = rezulto.encodeToPng( );
       const krudaj = await pngAlKrudaj(png);
       try {
         bildo.free( );
       } catch {
-        // la modulo jam liberigis ĝin
+        // ម៉ូឌុលបានធ្វើឱ្យទំនេរវារួចហើយ
       }
       return krudaj;
     } finally {
       try {
         rezulto.free( );
       } catch {
-        // la modulo jam liberigis ĝin
+        // ម៉ូឌុលបានធ្វើឱ្យទំនេរវារួចហើយ
       }
     }
   } catch {
@@ -413,11 +421,11 @@ async function malpakigiJXL(bajtoj: Uint8Array): Promise<{ larĝo: number; alto:
   }
 }
 
-// ⟨ DNG-postprilaboro - blank-ekvilibro, reĝustigo kaj orientado ( kiel legi_dng ) ⟩
+// ⟨ ដំណើរការក្រោយ DNG - សមកាត្រភាពពណ៌ស, កំណត់ឡើងវិញ និងទិស ( ដូចដែលបានធ្វើក្នុង legi_dng ) ⟩
 
-// WB_FORTO de vas2tas.py - parta blank-ekvilibro ( 0 neniu ŝanĝo, 1 plena AsShotNeutral )
+// WB_FORTO ពី vas2tas.py - សមកាត្រភាពពណ៌សមួយផ្នែក ( 0 គ្មានការផ្លាស់ប្ដូរ , 1 AsShotNeutral ពេញលេញ )
 const DNG_WB_FORTO = 0o1 / 0o2;
-// la sama 99.9 elcento kiel la reĝustigo de la tifffile-vojo
+// ចំនួន 99.9 ភាគដូចគ្នានឹងការកំណត់ឡើងវិញនៃផ្លូវ tifffile
 const DNG_SATURITA = 0o1747 / 0o1750;
 
 function aplikiBlankanEkvilibron(cxiuj: Float32Array, neŭtralaj: number[]): void {
@@ -434,8 +442,11 @@ function aplikiBlankanEkvilibron(cxiuj: Float32Array, neŭtralaj: number[]): voi
   }
 }
 
-// per-kanala 99.9-elcenta reĝustigo al 65535 - evitas la verdan nuancon kaj
-// konservas la sunan aureolon ( la sama matematiko kiel la tifffile-vojo )
+/**
+* ការកំណត់ឡើងវិញប្រសិទ្ធិពាក់កំណត់ប្រឡប់ជា 99.9 ភាគទៅ 65535 - ជៀសពីសំឡេងខៀវ និង
+* រក្សាការ្យព្រះអាទិត្យព្រះអាទិត្យ ( គណិតវិទ្យាដូចគ្នានឹងផ្លូវ tifffile )
+ * @returns void
+*/
 function skaliguPerKanalojn(cxiuj: Float32Array): void {
   const n = cxiuj.length / 0o3;
   const kanalo = new Float32Array(n);
@@ -453,13 +464,13 @@ function skaliguPerKanalojn(cxiuj: Float32Array): void {
   }
 }
 
-// la eliraj grandoj laǔ la orientado - la orientadoj 5 · 8 interŝanĝas la laterojn
+// វិមាត្យលទ្ធផ្លែងករណីតាមទិស - ទិស 5 · 8 ប្តូរខាងចំនិតគ្នាគ្នាទេ
 function orientitajGrandoj(larĝo: number, alto: number, orientado: number): { larĝo: number; alto: number } {
   const sxiu = orientado >= 0o5 && orientado <= 0o10;
   return { larĝo: sxiu ? alto : larĝo, alto: sxiu ? larĝo : alto };
 }
 
-// turnu aǔ flanki la bildon laǔ la EXIF orientado ( 1 · 8 ) kiel apliki_orientadon
+// បង្វិល ឬប្តូរទិសរូបភាពតាមទិស EXIF ( 1 · 8 ) ដូចដែលបានធ្វើក្នុង apliki_orientadon
 function aplikiOrientadon(elir: Uint8ClampedArray, norma: Float32Array, larĝo: number, alto: number, orientado: number): void {
   const sxiu = orientado >= 0o5 && orientado <= 0o10;
   const elLarĝo = sxiu ? alto : larĝo;
@@ -476,19 +487,19 @@ function aplikiOrientadon(elir: Uint8ClampedArray, norma: Float32Array, larĝo: 
       } else if ( orientado === 0o4 ) {
         sy = alto - 0o1 - y;
       } else if ( orientado === 0o5 ) {
-        // transpono - laŭ la ĉefa diagonalo
+        // ប្តូរទិស - តាមជួរទិសគ្រោះចម្បង
         sx = y;
         sy = x;
       } else if ( orientado === 0o6 ) {
-        // turno 90 gradoj dekstrume
+        // បង្វិល 90 ដង់ទៅស្ដាំង
         sx = y;
         sy = alto - 0o1 - x;
       } else if ( orientado === 0o7 ) {
-        // transverso - laŭ la malĉefa diagonalo
+        // ប្តូរទិសឆ្លង - តាមជួរទិសគ្រោះចម្បងការត្រួតពិនិត្យ
         sx = larĝo - 0o1 - y;
         sy = alto - 0o1 - x;
       } else if ( orientado === 0o10 ) {
-        // turno 90 gradoj maldekstrume
+        // បង្វិល 90 ដង់ទៅឆ្វេង
         sx = larĝo - 0o1 - y;
         sy = x;
       }
@@ -502,7 +513,7 @@ function aplikiOrientadon(elir: Uint8ClampedArray, norma: Float32Array, larĝo: 
   }
 }
 
-// ĉu la datenoj estas ĉiuj nulaj ( libraw redonas tiajn por nesubtenataj DNG-oj )
+// ទិន្នន័យទាំងអស់ជាចំនួនគ្មានឬទេ ( libraw ជួយប្រគល់ចម្លងដូចនេះសម្រាប់ DNG ដែលមិនត្រូវបានគាំទ្រ )
 function ĉuĈioNenia(datas: Uint8Array | Uint16Array | Uint8ClampedArray | Float32Array): boolean {
   const paŝo = Math.max(0o1, Math.floor(datas.length / 0o10000));
   for ( let i = 0o0; i < datas.length; i += paŝo ) {
@@ -511,7 +522,7 @@ function ĉuĈioNenia(datas: Uint8Array | Uint16Array | Uint8ClampedArray | Floa
   return true;
 }
 
-// ⟨ TboDNG - dekodigu DNG al PNG ( la rawpy-vojo kaj la tifffile-vojo de vas2tas.py ) ⟩
+// ⟨ TboDNG - បម្លែង DNG ទៅជា PNG ( ផ្លូវ rawpy និងផ្លូវ tifffile ពី vas2tas.py ) ⟩
 
 async function TboDNG(ckvpDNG: File): Promise<Blob> {
   const LibRawHac0zani = await import("libraw-wasm");
@@ -538,10 +549,12 @@ async function TboDNG(ckvpDNG: File): Promise<Blob> {
   const bajtoj = new Uint8Array(await ckvpDNG.arrayBuffer());
   const dekodilo = new LibRaw();
   const legajo = leguTIFF(bajtoj);
-  // la JPEG XL-strioj iras rekte al la tifffile-vojo - libraw-wasm ne povas
-  // malpaki ilin , do la provo nur malrapidigus la konvertadon
+  /*
+  * ស្លាក់ JPEG XL ទៅផ្លូវ tifffile ដោយផ្ទាល់ - libraw-wasm មិនអាច
+  * បង្រែវាទៅបានទេ ដូច្នេះការព្យាយាមប៉ុន្មានតែធ្វើឱ្យការបម្លែងបង្រាយជាដែរ
+  */
   const jxlStrio = legajo !== null && legajo.densigo === JXL_DENSIGO;
-  // la kruda-tabelo vojo de vas2tas.py - nur interese kiam la datumoj reale ekzistas
+  // ផ្លូវតារាងមូលដ្ឋានពី vas2tas.py - មានអត្ថប្រយោជន៍តែពេលទិន្នន័យមានពិត
   const krudaAlPng = async ( larĝo: number, alto: number, datas: Uint8Array | Uint16Array, dekses: boolean ): Promise<Blob | null> => {
     if ( dekses && ĉuĈioNenia(datas) ) return null;
     const n = larĝo * alto;
@@ -573,10 +586,12 @@ async function TboDNG(ckvpDNG: File): Promise<Blob> {
   try {
     try {
       if ( !jxlStrio ) {
-      // la JPEG XL-strioj saltas ĉi tiun provon - libraw ne malpakas ilin
-      // provo 1 - prilaborita bildo ( demosaiced RGB kiel rawpy.postprocess )
-      // libraw transprenas la bufron , do ĝi ricevas kopion ( alie nia propra
-      // TIFF-legado poste vidas malplenan bufron )
+      /*
+      * ស្លាក់ JPEG XL រំលងការព្យាយាមនេះ - libraw មិនបង្រែវាទេ
+      * ការព្យាយាម 1 - រូបភាពដែលបានដំណើរការ ( បំបែកប្រទាក់តំបន់ RGB ដូចដែលបានធ្វើក្នុង rawpy.postprocess )
+      * libraw ប្តូរប្រាប់ទៅម៉ាស្គារឡើងវិញ ដូច្នេះវាទទួលបានចម្លង ( បើកិត្តក្រឡប់ផ្ទាល់ខ្លួនរបស់យើង
+      * ការអាន TIFF ក្រោយនេះនឹងឃើញទិន្នន័យចូលចិត្ត )
+      */
       await dekodilo.open(bajtoj.slice(), { useCameraWb: true, outputColor: 0o1, outputBps: 0o20, noAutoBright: true, gamm: [ 0o1, 0o1 ] });
       const ero = await dekodilo.imageData();
       if ( ero && ero.width > 0o0 && ero.height > 0o0 && !ĉuĈioNenia(ero.data) ) {
@@ -592,7 +607,7 @@ async function TboDNG(ckvpDNG: File): Promise<Blob> {
         const vop2 = kumukalasu.createImageData(larĝo, alto);
         const elir = vop2.data;
         if ( dekses ) {
-          // kruda 16-bit skalo ( 0 · 65535 ) kiel en vas2tas.py - la kurbo normaligas
+          // មាត្រដ្ឋានមូលដ្ឋាន 16 ប៊ីត ( 0 · 65535 ) ដូចដែលបានធ្វើក្នុង vas2tas.py - ការំណត់សម្លាធ្វើឱ្យធម្មតា
           const cxiuj = new Float32Array(n * 0o3);
           for ( let p = 0o0; p < n; p++ ) {
             cxiuj[p * 0o3] = ( datas as Uint16Array )[p * kanaloj];
@@ -619,19 +634,19 @@ async function TboDNG(ckvpDNG: File): Promise<Blob> {
       }
       }
     } catch {
-    // la prilaborita vojo malsukcesis - la tifffile-ekvivalenta vojo sekvas
+    // ផ្លូវដែលបានដំណើរការបរាជ័យ - ផ្លូវដែលសមីគឺតទៅ tifffile បន្តតាម
   }
 
-  // la tifffile-vojo de legi_dng - JPEG XL strioj ktp per nia propra TIFF-legilo
+  // ផ្លូវ tifffile ពី legi_dng - ស្លាក់ JPEG XL និងអ្នកផ្សេងៗតាមអ្នកអាន TIFF ផ្ទាល់ខ្លួនរបស់យើង
   try {
     if ( legajo ) {
-      // provo 3 - malpaku la JXL-strion al 16-bitaj krudaj valoroj
+      // ការព្យាយាម 3 - បង្រែស្លាក់ JXL ទៅជាតម្លៃមូលដ្ឋាន 16 ប៊ីត
       const jxl = await malpakigiJXL(legajo.strio);
       if ( jxl && jxl.larĝo > 0o0 && jxl.alto > 0o0 && !ĉuĈioNenia(jxl.cxiuj) ) {
         const n = jxl.larĝo * jxl.alto;
         const cxiuj = jxl.cxiuj;
         if ( legajo.blanka ) aplikiBlankanEkvilibron(cxiuj, legajo.blanka);
-        // la reĝustigo al 65535 antaǔ la kurbo ( per-kanala 99.9 elcento )
+        // ការកំណត់ឡើងវិញទៅ 65535 មុនពេលកំណត់សម្លា ( 99.9 ភាគប្រសិទ្ធិពាក់កំណត់ប្រឡប់ជា )
         skaliguPerKanalojn(cxiuj);
         const norma = skaligiAlNorma(cxiuj, n);
         const orientitaj = orientitajGrandoj(jxl.larĝo, jxl.alto, legajo.orientado);
@@ -643,15 +658,17 @@ async function TboDNG(ckvpDNG: File): Promise<Blob> {
         return await pngElDatumoj();
       }
     }
-    // provo 3 - kruda tabelo ( la linearaj DNG-oj liveras interplektitan RGB )
-    // nur uzebla kiam la tabelo vere havas tri valorojn po pikselo
+    /*
+    * ការព្យាយាម 3 - តារាងមូលដ្ឋាន ( DNG លីនេអែរផ្ដល់ RGB ធ្វើការជ័គជ្រាក់ខ្លង់ច្នាំ )
+    * អាចប្រើបានតែពេលតារាងមានពិតនូវតម្លៃបីក្នុងមួយប្រូចិភ្នែក
+    */
     const raw = await dekodilo.rawImageData();
     if ( raw && raw.width > 0o0 && raw.height > 0o0 && raw.data.length >= raw.width * raw.height * 0o3 && !ĉuĈioNenia(raw.data) ) {
       const png = await krudaAlPng(raw.width, raw.height, raw.data, true);
       if ( png ) return png;
     }
 
-    // provo 4 - la enigita JPEG-antaŭrigardo el la TIFF-apendo
+    // ការព្យាយាម 4 - រូបភាពមុនជាប់ JPEG ដែលបានបញ្ចូលពីកម្មវិធីបន្ថែម TIFF
     const thumb = await dekodilo.thumbnailData().catch(() => undefined);
     if ( thumb && thumb.data.length > 0o0 ) {
       const maxemaSaxez = URL.createObjectURL(new Blob([ thumb.data.slice() ], { type: thumb.format === "jpeg" ? "image/jpeg" : "application/octet-stream" }));
@@ -671,7 +688,7 @@ async function TboDNG(ckvpDNG: File): Promise<Blob> {
       }
     }
   } catch {
-    // neniu vojo funkciis
+    // គ្មានផ្លូវណាមួយដំណើរការបានសាកសម
   }
 
   throw new Error("n DNG");
@@ -680,7 +697,7 @@ async function TboDNG(ckvpDNG: File): Promise<Blob> {
   }
 }
 
-// ⟪ j͑ʃ'ᴜ ɭʃᴜ }ʃɔƽ - Tavolaj Koloroj ⟫
+// ⟪ j͑ʃ'ᴜ ɭʃᴜ }ʃɔƽ - ពណ៌តារាង ⟫
 
 const KMABAKANT2 = 0o20;
 const VATANEK_CAK2BAKANO = new Uint8Array(0o400);
@@ -697,7 +714,7 @@ function vatanekWeh2(vop2: Uint8ClampedArray): void {
   }
 }
 
-// ⟪ j͑ʃ'ᴜ ı],ᴜ ֭ſɭᴜ - Glatigu Strekojn ⟫
+// ⟪ j͑ʃ'ᴜ ı],ᴜ ֭ſɭᴜ - ធ្វើឱ្យស្រាក់កាត់ទំរល់ស្រាក់កាត់ទៀត ⟫
 
 const VAXAHA_PAL6 = 0o2;
 const VAXAHA_PUKA5IK = VAXAHA_PAL6 * 0o2 + 0o1;
@@ -768,7 +785,7 @@ function vaxahaNakoxa(vop2: Uint8ClampedArray, larĝo: number, alto: number): vo
   }
 }
 
-// ⟪ Rikoltu al Proporcio 📃 ⟫
+// ⟪ ប្រមូលតាមសមាមាត្រ 📃 ⟫
 
 function paxaAlProporcio(tahaq: HTMLImageElement, proporcio: number): { x: number; y: number; larĝo: number; alto: number } {
   const lar = tahaq.naturalWidth;
@@ -794,13 +811,13 @@ function grandigi(lar: number, alt: number): { larĝo: number; alto: number } {
   return { larĝo: GRANDA, alto: MALGRANDA };
 }
 
-// ⟪ Nevidebla Akvomarko 📃 ⟫
+// ⟪ ស្លាក់កាត់ទឹកមិនច្លាស់ 📃 ⟫
 
 let MARKO_BAZO: Uint8Array | null = null;
 let MARKO_LARĜO = 0o0;
 let MARKO_ALTO = 0o0;
 
-// ⟨ PNG-ekodi ⟩
+// ⟨ កាត់ទំហំ PNG ⟩
 
 async function pngAlRGB(ckvp: Blob): Promise<{ larĝo: number; alto: number; rgb: Uint8Array }> {
   const bufro = new Uint8Array(await ckvp.arrayBuffer());
@@ -910,8 +927,10 @@ function ŝarĝiMarkon(): Promise<void> {
     fetch(MARKO_DOSIERO).then(( respo ) => respo.blob()).then(( bulo ) => pngAlRGB(bulo)).then(( marko ) => {
       MARKO_LARĜO = marko.larĝo;
       MARKO_ALTO = marko.alto;
-      // PIL konvertas la markon al RGB kaj tiam al heleco ( L ) ;
-      // la masko estas la heleco mem ( la kahelo reĝustigiĝas poste )
+      /*
+      * PIL បម្លែងស្លាក់ទៅជា RGB បន្ទាប់មកទៅជាភ្លឺ ( L )។
+      * ម៉ាស្គារគឺជាភ្លឺដដែល ( ក្រឡប់ត្រូវបានកំណត់ឡើងវិញក្រោយ )
+      */
       const masko = new Uint8Array(MARKO_LARĜO * MARKO_ALTO);
       for ( let i = 0o0; i < masko.length; i++ ) {
         masko[i] = ( marko.rgb[i * 0o3] * 0o46213 + marko.rgb[i * 0o3 + 0o1] * 0o113106 + marko.rgb[i * 0o3 + 0o2] * 0o16457 + MARKO_ZOMO ) >>> 0o20;
@@ -995,7 +1014,7 @@ function semoBavek2feni(semo: number, W: number, H: number): Uint8Array {
   return ŝlosilo;
 }
 
-// ⟨ Lanczos-3 regrandigo ⟩
+// ⟨ បង្រួមវិមាត្យ Lanczos-3 ⟩
 
 function lanczosKernelo(x: number): number {
   const absX = Math.abs(x);
@@ -1009,7 +1028,7 @@ function lanczosKernelo(x: number): number {
   return ( 0o3 * Math.sin(piX) * Math.sin(piX / 0o3) ) / ( piX * piX );
 }
 
-// Pillow-ekzakta - Resample.c uzas 22-bitan fikspunkton ( PRECISION_BITS = 32-8-2 )
+// ត្រូវនឹងពិតនូវ Pillow - Resample.c ប្រើចំណុចស្មែាត់ 22 ប៊ីត ( PRECISION_BITS = 32-8-2 )
 const PRECIZO_BITOJ = 0o26;
 
 function konstruiKernelojn(fontoLongo: number, celoLongo: number): Array<[ number, Int32Array, number ]> {
@@ -1041,7 +1060,7 @@ function konstruiKernelojn(fontoLongo: number, celoLongo: number): Array<[ numbe
         pezoj[i] /= sumo;
       }
     }
-    // normalize_coeffs_8bpc - ( int )( ±0o1 / 0o2 + pezo * ( 0o1 << 0o26 ) )
+    // normalize_coeffs_8bpc - ( int )( ±0o1 / 0o2 + ទម្រង់ * ( 0o1 << 0o26 ) )
     const koeficientoj = new Int32Array(kielaGrando);
     for ( let i = 0o0; i < kielaGrando; i++ ) {
       const k = pezoj[i] * ( 0o1 << PRECIZO_BITOJ );
@@ -1056,8 +1075,10 @@ function lanczosRegrandigi(fonto: Uint8Array, mw: number, mh: number, tw: number
   const vicoj = konstruiKernelojn(mh, th);
   const kolumnoj = konstruiKernelojn(mw, tw);
 
-  // PIL konservas la horizontalan pasilon en 8-bita bufero kaj uzas
-  // entjeran akumulado kun 22-bita fikspunkto ( Resample.c 8bpc )
+  /*
+  * PIL រក្សាប្រភេទក្រឡប់ផ្លាក់កាត់ក្រឡាក្នុងទិន្នន័យ 8 ប៊ីត ហើយប្រើ
+  * ការបង្កើតជាចំនួនគត់ផ្សេងដោយមានចំណុចស្មែាត់ 22 ប៊ីត ( Resample.c 8bpc )
+  */
   const duono = 0o1 << ( PRECIZO_BITOJ - 0o1 );
   const linioj = new Uint8Array(tw * mh);
   for ( let y = 0o0; y < mh; y++ ) {
@@ -1090,7 +1111,7 @@ function lanczosRegrandigi(fonto: Uint8Array, mw: number, mh: number, tw: number
   return rezulto;
 }
 
-// Regrandigi RFC-kanalojn ( ImageData ) per la sama PIL-ekzakta Lanczos-filtero
+// បង្រួមវិមាត្យរបាក់ហ្វ្រី ( RFC ) ជាក់ស្តែង ( ImageData ) ដោយប្រើតម្រង់ Lanczos ដូចគ្នានឹងពិតនូវ PIL
 function lanczosRegrandigiRGBA(fonto: Uint8ClampedArray, mw: number, mh: number, tw: number, th: number, celo: Uint8ClampedArray, raporti?: ( frakcio: number ) => void): void {
   const n = mw * mh;
   const rFonto = new Uint8Array(n);
@@ -1109,7 +1130,7 @@ function lanczosRegrandigiRGBA(fonto: Uint8ClampedArray, mw: number, mh: number,
   if ( raporti ) raporti( 0o2 / 0o3 );
   const bCelo = lanczosRegrandigi(bFonto, mw, mh, tw, th);
   if ( raporti ) raporti( 0o3 / 0o4 );
-  // la alfa kanalo ankaŭ regrandiĝas - la travidebleco restas
+  // របាក់ហ្រូពណ៌ច្លាក់កាត់ក៏ត្រូវបានបង្រួមវិមាត្យដែរ - ភាពច្លាក់កាត់ត្រូវបានអភិរក្ស
   const aCelo = lanczosRegrandigi(aFonto, mw, mh, tw, th);
   if ( raporti ) raporti( 0o1 );
   const m = tw * th;
@@ -1152,7 +1173,7 @@ function fariSendiBiton(larĝo: number, alto: number): Uint8Array | null {
   return sendi;
 }
 
-// ⟪ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ᶅſɔ ֭ſɭɹ - Konvertu Koloron 📃 ⟫
+// ⟪ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ᶅſɔ ֭ſɭɹ - បម្លែងពណ៌ 📃 ⟫
 
 function dikti(a: Float32Array, larĝo: number, alto: number, sendi: Uint8Array | null, aplikiPaletro: boolean, eky: number, finy: number, elir: Uint8Array): void {
   const W = larĝo;
@@ -1202,7 +1223,7 @@ function dikti(a: Float32Array, larĝo: number, alto: number, sendi: Uint8Array 
   }
 }
 
-// ⟪ j͑ʃп́ɔ ꞁȷ̀ɜ ſꞇ ı],ɔ ꞁȷ̀ᴜꞇ - Metadatumoj 📃 ⟫
+// ⟪ j͑ʃп́ɔ ꞁȷ̀ɜ ſꞇ ı],ɔ ꞁȷ̀ᴜꞇ - ទិន្នន័យប្រទាប់ប្រទាប់ 📃 ⟫
 
 function fariMetadatumojn(): string | null {
   if ( !A1A_SWEKA_METADATUMOJN.checked ) {
@@ -1231,10 +1252,10 @@ function fariMetadatumojn(): string | null {
   return ha6zoj.join("\u0001");
 }
 
-// ⟨ Serĉu la komencon de la TIFF-kapo ( JPEG APP1 · PNG eXIf · pura TIFF ) ⟩
+// ⟨ ស្វែងរកចុងបំផុតនៃក្បាល TIFF ( JPEG APP1 · PNG eXIf · TIFF មូលដ្ឋាន ) ⟩
 
 function trovuEksifon(aro: Uint8Array): number {
-  // JPEG - la unua APP1-peceto kun "Exif\u0000\u0000"
+  // JPEG - បំព័រ APP1 ដែលមាន "Exif\u0000\u0000"
   if ( aro.length > 0o10 && aro[0o0] === 0xff && aro[0o1] === 0xd8 ) {
     let i = 0o2;
     while ( i + 0o12 <= aro.length ) {
@@ -1251,7 +1272,7 @@ function trovuEksifon(aro: Uint8Array): number {
     }
     return -0o1;
   }
-  // PNG - la eXIf-peceto
+  // PNG - បំព័រ eXIf
   if ( aro.length > 0o10 && aro[0o0] === 0x89 && aro[0o1] === 0x50 ) {
     let i = 0o10;
     while ( i + 0o10 <= aro.length ) {
@@ -1263,11 +1284,11 @@ function trovuEksifon(aro: Uint8Array): number {
     }
     return -0o1;
   }
-  // "Exif\u0000\u0000" + TIFF-kapo
+  // "Exif\u0000\u0000" + ក្បាល TIFF
   if ( aro.length > 0o10 && aro[0o0] === 0x45 && aro[0o1] === 0x78 && aro[0o2] === 0x69 && aro[0o3] === 0x66 ) {
     return 0o6;
   }
-  // pura TIFF-kapo
+  // ក្បាល TIFF មូលដ្ឋាន
   if ( aro.length > 0o10 && ( aro[0o0] === 0x49 || aro[0o0] === 0x4d ) && aro[0o1] === aro[0o0] ) {
     return 0o0;
   }
@@ -1320,7 +1341,7 @@ function legiMetadatumojn(aro: Uint8Array): void {
     if ( loko + kvanto > aro.length ) {
       continue;
     }
-    // la fina nul-bajto ne estas parto de la teksto
+    // ប៊ីតគ្មានចុងក្រោយមិនជាផ្នែកនៃអត្ថបទទេ
     const valoro = new TextDecoder().decode(aro.slice(loko, loko + kvanto - 0o1));
 
     if ( etikedo === 0x010f ) {
@@ -1338,13 +1359,13 @@ function legiMetadatumojn(aro: Uint8Array): void {
 }
 
 async function legiDosierunanMetadatumojn(ckvp: File): Promise<void> {
-  // sufiĉe por la tuta APP1-peceto de JPEG ( maksimume 64 KiB )
+  // គ្រប់គ្រាន់បំព័រ APP1 ទាំងអស់នៃ JPEG ( អតិបរមាណអតិបរមា 64 KiB )
   const bufro = await ckvp.slice(0o0, 0o200000).arrayBuffer();
   const aro = new Uint8Array(bufro);
   legiMetadatumojn(aro);
 }
 
-// ⟨ anstataŭigu la metadatumojn per la nova teksto - la kampoj malpleniĝas ⟩
+// ⟨ បញ្ជាទាំងអស់លើទិន្នន័យប្រទាប់អត្ថបទថ្មី - វាលវាងនឹងទទេ ⟩
 
 function malplenigiBakananon(): void {
   for ( const bakanano of BAKANANOJ ) {
@@ -1352,7 +1373,7 @@ function malplenigiBakananon(): void {
   }
 }
 
-// ⟨ la originaj valoroj revenas - la enigita dosiero aǔ la HTML-ŝablono ⟩
+// ⟨ តម្លៃដើមនឹងត្រឡប់មកវិញ - ឯកសារដែលបានបញ្ចូល ឬកំណត់គំរង់ HTML ⟩
 
 async function restarigiBakananon(): Promise<void> {
   for ( const bakanano of BAKANANOJ ) {
@@ -1363,7 +1384,7 @@ async function restarigiBakananon(): Promise<void> {
   }
 }
 
-// ⟨ laŭ la anstataŭiga elekto - aǔ la kampoj malplenas aǔ la dosiero plenigas ilin ⟩
+// ⟨ តាមជម្រើសនៃការបញ្ជាទាំងអស់ - ឬវាលវាងនឹងទទេ ឬឯកសារនឹងបំពេញវាលវាង ⟩
 
 async function aranĝiBakananon(ckvp: File | null): Promise<void> {
   if ( A1A_ANSTATAUX_METADATUMOJN.checked ) {
@@ -1399,14 +1420,14 @@ function kunmetiExif(puraj: Array<[ string, string ]>): Uint8Array {
     if ( !etikedo ) {
       continue;
     }
-    // piexif skribas la valorojn kiel UTF-8 bajtojn
+    // piexif សរសេរតម្លៃជាប៊ីត UTF-8
     etikedoj.push({ etikedo, bajtoj: kodilo.encode(valoro) });
   }
 
-  // la etikedoj iras supren laŭ numero ( kiel piexif ) - kelkaj legiloj atendas tion
+  // ស្លាក់ឡើងតាមចម្បង់តាមចំនួន ( ដូចដែលបានធ្វើក្នុង piexif ) - អ្នកអានខ្លះរង់ចាំទាំងនោះ
   etikedoj.sort(( a, b ) => a.etikedo - b.etikedo);
 
-  // la nombro estas la reala enir-nombro ; la sekva-IFD montrilo estas aparta 4-bajta kampo
+  // ចំនួនគឺជាចំនួនបញ្ចូលពិត។ កូនុងតូតបង្ហាញ IFD បន្ទាប់ គឺជាវាលវាង 4 ប៊ីតដ៏នៅដាច់ដែល
   const ifdNombro = etikedoj.length;
   let grandecoIFD = 0o2 + ifdNombro * 0o14 + 0o4;
   let grandecoValoroj = 0o0;
@@ -1417,7 +1438,7 @@ function kunmetiExif(puraj: Array<[ string, string ]>): Uint8Array {
     }
   }
 
-  // la unuaj 8 bajtoj estas la TIFF-kapo , do la valoroj sekvas ĝin
+  // ប៊ីតដំបូង 8 គឺជាក្បាល TIFF ដូច្នេះតម្លៃនឹងបន្សាស្វ័យបន្តក្រោយវា
   let deŝovoValoro = 0o10 + grandecoIFD;
 
   const kapo = [ 0x4d, 0x4d, 0x00, 0x2a, 0x00, 0x00, 0x00, 0x08 ];
@@ -1479,7 +1500,7 @@ function enigiExif(png: Uint8Array, exif: Uint8Array): Uint8Array<ArrayBuffer> {
     return korpo;
   };
 
-  // enmeti post IHDR ( antaǔ IDAT ) ; anstataǔigi ekzistantan eXIf
+  // បញ្ចូលក្រោយ IHDR ( មុន IDAT )។ បញ្ជាទាំងអស់លើ eXIf ដែលមានស្រាប់
   const pecoj: Array<Uint8Array> = [ png.slice(0o0, 0o10) ];
   let ruva = 0o10;
   let enmetita = false;
@@ -1544,8 +1565,10 @@ async function procezigiTahaqn(tahaqBildo: HTMLImageElement): Promise<void> {
   try {
     agordiProgreson( 0o20 );
 
-        // PIL-fluo - entjera centra rikolto unue , tiam Lanczos-regrandigo
-        // ( ne la retumilan skalon de drawImage , kiu estas bilineara )
+        /*
+        * ដំណើរការ PIL - ប្រមូលចាល់កណ្តាលជាចំនួនគត់ផ្សេងជាមុន បន្ទាប់មកបង្រួមវិមាត្យដោយ Lanczos
+        * ( មិនមែនជាមាត្រដ្ឋានរបៀបលើ របស់ drawImage ដែលជាពីរជើងពីរ )
+        */
         const celo = grandigi(tahaqBildo.naturalWidth, tahaqBildo.naturalHeight);
         const proporcio = celo.larĝo / celo.alto;
         const peco = A1A_PAXA_TAHAQ.checked
@@ -1557,7 +1580,7 @@ async function procezigiTahaqn(tahaqBildo: HTMLImageElement): Promise<void> {
           kanvaso.width = celo.larĝo;
           kanvaso.height = celo.alto;
         } else {
-          // sen regrandigo - la elira bildo konservas sian originan grandon
+          // ដោយគ្មានការបង្រួមវិមាត្យ - រូបភាពលទ្ធផ្លែងករណីរក្សាវិមាត្យដើមរបស់ខ្លួន
           kanvaso.width = peco.larĝo;
           kanvaso.height = peco.alto;
         }
@@ -1579,7 +1602,7 @@ async function procezigiTahaqn(tahaqBildo: HTMLImageElement): Promise<void> {
 
         let tahaqSwevop2: ImageData;
         if ( kanvaso.width === peco.larĝo && kanvaso.height === peco.alto ) {
-          // sen regrandigo - uzu la bildon rekte ( la origina bildo eliras )
+          // ដោយគ្មានការបង្រួមវិមាត្យ - ប្រើរូបភាពដោយផ្ទាល់ ( រូបភាពដើមនឹងបង្ហាញ )
           tahaqSwevop2 = new ImageData(new Uint8ClampedArray(fontaVop2.data), kanvaso.width, kanvaso.height);
           agordiProgreson( 0o60 );
         } else {
@@ -1720,7 +1743,7 @@ async function kreiEligon(): Promise<void> {
 }
 
 ARAQ2Q_TAHAQ.addEventListener( "change", async function(): Promise<void> {
-  const ckvp = this.files?.[0o0];
+  const ckvp = this.files?.[ 0o0 ];
   if ( !ckvp ) return;
 
   tlakakuCkvp = ckvp;

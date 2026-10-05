@@ -1,5 +1,7 @@
-// ≺⧼ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⧽≻
-// Dinamike malkovras .html hacavop2 en subdosierujoj kaj generas <thala> elementojn.
+/**
+* ≺⧼ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⧽≻
+* រកឃើញឯកសារ .html ដែលមាន hacavop2 នៅក្នុងថតរង្វេង ដោយផ្លាស់ប្ដូរ ហើយបង្កើតធាតុ <thala>។
+*/
 
 const ARAQ_SAR2BA = "ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ j͑ʃ'ɜ ſןɹ.html"
 
@@ -19,12 +21,12 @@ function quqHate (): Map<string, Aracavop2Cakani> {
 
 	for ( const cvp_swaraq of hataraq ) {
 		const hakek = cvp_swaraq.split("/")
-		const cvp_ksaka = hakek[hakek.length - 1]
+		const cvp_ksaka = hakek[hakek.length - 0o1]
 
-		if ( hakek.length === 2 && hakek[1] === ARAQ_SAR2BA ) continue
-		if ( hakek.length <= 2 ) continue
+		if ( hakek.length === 0o2 && hakek[0o1] === ARAQ_SAR2BA ) continue
+		if ( hakek.length <= 0o2 ) continue
 
-		const maxema_swaraq = hakek[hakek.length - 2]
+		const maxema_swaraq = hakek[hakek.length - 0o2]
 
 		if ( !hahate.has(maxema_swaraq) ) {
 			hahate.set(maxema_swaraq, { ksaka: maxema_swaraq, hacavop2: [] })

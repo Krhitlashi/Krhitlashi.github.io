@@ -1,10 +1,12 @@
-// ≺⧼ Iikrhia Vortara Paĝa Pritraktilo 🖱️ ⧽≻
-// Ŝarĝas ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬɔ.xlsx dum ruliĝo kaj analizas ĝin en la retumilo per
-// SheetJS ( `xlsx` pakaĵo ). Ne necesas antaŭkonstruita data.txt.
-// Listpaĝo. aldonas unu <tr> por ĉiu vico al #kef tbody kaj ligas klakadon + serĉon.
-// Detalpaĝo. serĉas vicon per ?i=N kaj plenigas la nomitajn sekciojn.
-//
-// Pozicia determinado kaj etiked-pritraktado ambaŭ spegulas xlsx_html_etym.py.
+/*
+* ≺⧼ Iikrhia Vortara Paĝa Pritraktilo 🖱️ ⧽≻
+* ផ្ទុក Ὶ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬɔ.xlsx ក្នុងពេលការដំណើរ ហើយវិភាគវាក្នុងកម្មវិធីរុករកដោយប្រើ
+* SheetJS ( ការបង្កប់ `xlsx` )។ មិនត្រូវការឯកសារ data.txt ដែលបានសាងជើងជាមុនៗទេ។
+* ទំព័របញ្ជី៖ បញ្ចូល <tr> មួយសម្រាប់គ្រាប់នីមួយៗទៅ #kef tbody ហើយភ្ជាប់ការចុច និងការស្វែងរក។
+* ទំព័រលម្អិត៖ ស្វែងរកគ្រាប់ដោយប្រើ ?i=N ហើយបំពេញផ្នែកដែលបានសម្គាល់។
+*
+* ការកំណត់ប្រភេទដ៏ន និងការដំណើរការលើស្លាក់ ទាំងពីរបៀបស្រួតតាម xlsx_html_etym.py។
+*/
 
 import * as XLSX from "xlsx";
 
@@ -44,10 +46,10 @@ const VASAKA_KSAKA: Record<string, string> = {
 };
 
 /**
- * Normalizu etikedĉenon al NFC por ke ĝi kompareblu kontraŭ la
- * laŭvortaj klavoj sendepende de kiel la xlsx stokis la originalajn signojn.
- *    @param s ( string ) - Kruda etikedĉeno.
- * @returns string
+ * ធ្វើធម្មតាឲ្យជួរស្លាក់ទៅជា NFC ដើម្បីឲ្យវាអាចប្រៀបធៀបជាមួយ
+ * កូនុងវាស្មែកកំណត់ដោយឯករាជ្យ មិនថែមទេថា xlsx បានរក្សាទុកសញ្ញាដើម។
+ * @param s ( string ) - ជួរស្លាក់មូលដ្ឋាន។
+ * @returns ĉeno
  */
 function normaliziEtikedon(s: string): string {
     return s.normalize("NFC");
@@ -62,11 +64,11 @@ const ETIKEDFORIGO_NFC: Set<string> = new Set(
 );
 
 /**
- * Decidu la pozicion kontrolante unue Temon, poste Estas Sub La Temo, por ĉiu
- * konata markilo.
- *    @param temo ( string ) - Temo-ĉelo ( kolumno 0 ).
- *    @param estasSub ( string ) - Estas Sub La Temo-ĉelo ( kolumno 1 ).
- * @returns string
+ * កំណត់ប្រភេទដ៏នដោយពិនិត្យប្រភេទកម្មវិធីជាមុន បន្ទាប់មកត្រូវបានរង្កងជាក្រោមប្រភេទកម្មវិធី។
+ * ស្លាក់ដែលស្គាល់បាន។
+ * @param temo ( string ) - ក្រឡប់ប្រភេទកម្មវិធី ( ជួនឈរ 0 )។
+ * @param estasSub ( string ) - ក្រឡប់ប្រភេទកម្មវិធីក្រោម ( ជួនឈរ 1 )។
+ * @returns ĉeno
  */
 function determiniPoŝon(temo: string, estasSub: string): string {
     for ( const markilo in KEFHAXE ) {
@@ -79,9 +81,9 @@ function determiniPoŝon(temo: string, estasSub: string): string {
 }
 
 /**
- * Konvertu folian ĉelon al tondita unulinia ĉeno.
- *    @param v ( unknown ) - Kruda ĉelvaloro ( string, number, bool, null ).
- * @returns string
+ * បម្លែកក្រឡប់សន្ទាស៊ីទៅជាខ្សែមួយក្រឡា ដែលបានកាត់។
+ * @param v ( unknown ) - តម្លៃក្រឡប់មូលដ្ឋាន ( string, number, bool, null )។
+ * @returns ĉeno
  */
 function ĉeloAlTeksto(v: unknown): string {
     if ( v === null || v === undefined ) return "";
@@ -89,16 +91,16 @@ function ĉeloAlTeksto(v: unknown): string {
 }
 
 /**
- * Formatu la krudan Etikedoj-ĉelon al montra ĉeno.
- *    @param kruda ( string ) - La kruda Etikedoj-kolumnvaloro.
- * @returns string
+ * ធ្វើទម្រង់ក្រឡប់ Etikedoj មូលដ្ឋានទៅជាខ្សែបង្ហាញ។
+ * @param kruda ( string ) - តម្លៃក្រឡប់ជួនស្លាក់មូលដ្ឋាន។
+ * @returns ĉeno
  */
 function formatiEtikedojn(kruda: string): string {
     if ( !kruda ) return "";
     const partoj = kruda.split("||");
     const eligo: string[] = [];
     for ( const parto of partoj ) {
-        // ⟨ NFC-normaligu por ke xlsx-datumoj kun malkomponitaj formoj kongruu kun la laŭvortaj klavoj ⟩
+        // ⟨ ធ្វើធម្មតាឲ្យជា NFC ដើម្បីឱ្យទិន្នន័យ xlsx ដែលមានទម្រង់បំព័នធៀបនឹងគ្រូសិទ្ធិកូនុងវាស្មែក ធ្វើឱ្យត្រូវគ្នា ⟩
         const tondita = normaliziEtikedon(parto.trim());
         if ( !tondita || ETIKEDFORIGO_NFC.has(tondita) ) continue;
         eligo.push(ETIKEDRENOMO_NFC[tondita] ?? tondita);
@@ -107,9 +109,9 @@ function formatiEtikedojn(kruda: string): string {
 }
 
 /**
- * Eskapu ampersandon, malpli-ol, kaj pli-ol por sekura HTML-enmeto.
- *    @param s ( string = "" ) - Simpla teksto por eskapi.
- * @returns string
+ * រក្សារការសញ្ញា & និងសញ្ញា < និង > ដើម្បីបញ្ចូល HTML ដោយសុវត្ថិភាព។
+ * @param s ( string = "" ) - អត្ថបទធម្មតាសម្រាប់ការរក្សាការសញ្ញា។
+ * @returns ĉeno
  */
 function eskapiHtml(s: string): string {
     return s
@@ -119,9 +121,9 @@ function eskapiHtml(s: string): string {
 }
 
 /**
- * Eskapu `s` se ĝi havas enhavon, alie redonu unuop spacon.
- *    @param s ( string = "" ) - Simpla teksto por eskapi.
- * @returns string
+ * រក្សារការសញ្ញា `s` ប្រសិនបើវាមានមាតិសម្មា បើកិត្តផ្តល់ចំនួនដំបូងមួយដែលគេចខាងស្អែក។
+ * @param s ( string = "" ) - អត្ថបទធម្មតាសម្រាប់ការរក្សាការសញ្ញា។
+ * @returns ĉeno
  */
 function ĉeloAŭSpaco(s: string): string {
     return s ? eskapiHtml(s) : " ";
@@ -130,9 +132,9 @@ function ĉeloAŭSpaco(s: string): string {
 let _datumPromeso: Promise<Falkefu_N2k[]> | null = null;
 
 /**
- * Alportu la xlsx-on unufoje, analizu ĝin per SheetJS, eligu POZ + krudajn etikedojn,
- * kaj kaŝmemoru la rezultan aron trans vokoj.
- * @returns Promise
+ * ផ្ទុក xlsx ម្តងតែ, វិភាគវាដោយប្រើ SheetJS, ទាញយកប្រភេទដ៏ន POZ និងស្លាក់មូលដ្ឋានទទេ
+ * ហើយរក្សាទិន្នន័យលទ្ធផ្លែងករណីទៅរវាងការហៅទៀតទៀត។
+ * @returns promessa
  */
 function ŝargiDatumojn(): Promise<Falkefu_N2k[]> {
     if ( !_datumPromeso ) {
@@ -145,30 +147,30 @@ function ŝargiDatumojn(): Promise<Falkefu_N2k[]> {
             } )
             .then(( bufro ) => {
                 const wb = XLSX.read(bufro, { type: "array" });
-                const folio = wb.Sheets[wb.SheetNames[0]!]!;
+                const folio = wb.Sheets[wb.SheetNames[0o0]!]!;
                 const vicoj = XLSX.utils.sheet_to_json<unknown[]>(folio, {
-                    header: 1,
+                    header: 0o1,
                     defval: "",
                     raw: false,
                 });
                 const eligo: Falkefu_N2k[] = [];
-                for ( let r = 1; r < vicoj.length; r++ ) {
+                for ( let r = 0o1; r < vicoj.length; r++ ) {
                     const vico = vicoj[r];
                     if ( !vico ) continue;
-                    const temo = ĉeloAlTeksto(vico[0]);
-                    const estasSub = ĉeloAlTeksto(vico[1]);
+                    const temo = ĉeloAlTeksto(vico[0o0]);
+                    const estasSub = ĉeloAlTeksto(vico[0o1]);
                     const poŝo = determiniPoŝon(temo, estasSub);
                     eligo.push({
                         i: eligo.length,
-                        vorto: ĉeloAlTeksto(vico[2]),
-                        traduko: ĉeloAlTeksto(vico[3]),
+                        vorto: ĉeloAlTeksto(vico[0o2]),
+                        traduko: ĉeloAlTeksto(vico[0o3]),
                         poŝo,
-                        etikedoj: ĉeloAlTeksto(vico[4]),
-                        prao: ĉeloAlTeksto(vico[5]),
-                        fontVorto: ĉeloAlTeksto(vico[6]),
-                        fontPriskribo: ĉeloAlTeksto(vico[7]),
-                        pruntVorto: ĉeloAlTeksto(vico[8]),
-                        kalko: ĉeloAlTeksto(vico[9]),
+                        etikedoj: ĉeloAlTeksto(vico[0o4]),
+                        prao: ĉeloAlTeksto(vico[0o5]),
+                        fontVorto: ĉeloAlTeksto(vico[0o6]),
+                        fontPriskribo: ĉeloAlTeksto(vico[0o7]),
+                        pruntVorto: ĉeloAlTeksto(vico[0o10]),
+                        kalko: ĉeloAlTeksto(vico[0o11]),
                     });
                 }
                 return eligo;
@@ -177,7 +179,7 @@ function ŝargiDatumojn(): Promise<Falkefu_N2k[]> {
     return _datumPromeso;
 }
 
-// ⟪ List Page 📋 ⟫
+// ⟪ ទំព័របញ្ជី 📋 ⟫
 async function agordiListPaĝon() {
     const tabelKorpo = document.querySelector("#falkefu tbody") as HTMLTableSectionElement | null;
     const enigo = document.getElementById("2bakano") as HTMLInputElement | null;
@@ -193,15 +195,15 @@ async function agordiListPaĝon() {
         return;
     }
 
-    // ⟨ Montru vicojn en DocumentFragment por ke la viva tbody restu netuŝita ⟩
+    // ⟨ បង្ហាញជួរក្នុង DocumentFragment ដើម្បីឱ្យធាតុ tbody រស់នៅមិនត្រូវបានបំពាន ⟩
     const fragmento = document.createDocumentFragment();
     for ( const vico of datumoj ) {
         const tr = document.createElement("tr");
         tr.dataset.i = String(vico.i);
-        tr.tabIndex = 0;
+        tr.tabIndex = 0o0;
 
         const iru = () => {
-            // ⟨ Konservu la nunan lang-parametron por ke lang=en daŭru tra paĝoj ⟩
+            // ⟨ រក្សាប៉ារ៉ាម៉េតរភាសាបច្ចុប្បន្ន ដើម្បីឱ្យ lang=en បន្តតាមទំព័រ ⟩
             const langParam = new URLSearchParams(window.location.search).get("lang");
             let url = "./ſɭɔʞ.html?i=" + vico.i;
             if ( langParam ) {
@@ -217,7 +219,7 @@ async function agordiListPaĝon() {
             }
         });
 
-        // ⟨ Pruntvorta kolumno spegulas xlsx_html_etym.py. 3 ĉeloj sen etikedo, 4 ĉeloj kun etikedo ⟩
+        // ⟨ ជួនអនុភាពពីគុណកម្ម ដែលស្រួតតាម xlsx_html_etym.py។ ក្រឡប់ 3 ដែលគ្មានស្លាក់, ក្រឡប់ 4 ដែលមានស្លាក់ ⟩
         const etiked = formatiEtikedojn(vico.etikedoj);
         const etikedĉelo = etiked
             ? "<td>" + eskapiHtml(etiked) + "</td>"
@@ -233,7 +235,7 @@ async function agordiListPaĝon() {
     }
     tabelKorpo.replaceChildren(fragmento);
 
-    // ⟨ Serĉa filtrilo ⟩
+    // ⟨ តម្រង់ស្វែងរក ⟩
     enigo?.addEventListener("input", () => {
         const q = ( enigo.value || "" ).trim().toLowerCase();
         tabelKorpo.querySelectorAll("tr[data-i]").forEach(( vico ) => {
@@ -243,19 +245,19 @@ async function agordiListPaĝon() {
     });
 }
 
-// ⟪ Detail Page 🔍 ⟫
+// ⟪ ទំព័រលម្អិត 🔍 ⟫
 function akiriVicanIndeksonDeUrl(): number {
     const kruda = new URLSearchParams(window.location.search).get("i");
-    if ( kruda === null ) return -1;
-    const indekso = parseInt(kruda, 10);
-    return Number.isSafeInteger(indekso) ? indekso : -1;
+    if ( kruda === null ) return -0o1;
+    const indekso = parseInt(kruda, 0o12);
+    return Number.isSafeInteger(indekso) ? indekso : -0o1;
 }
 
 /**
- * Montru aŭ kaŝu nomitan sekcion laŭ ĉu `valoro` estas malplena.
- *    @param elementoId ( string = "" ) - Korpa elemento kiu ricevu la tekston.
- *    @param sekcioId ( string = "" ) - Ĉirkaŭa sekcio kiu ricevas `hidden`.
- *    @param valoro ( string = "" ) - Teksto por montri.
+ * បង្ហាញ ឬលាក់ផ្នែកដែលបានសម្គាល់ តាមការដែល `valoro` ទទេឬអត់។
+ * @param elementoId ( string = "" ) - ធាតុប្រគល់ដែលទទួលអត្ថបទ។
+ * @param sekcioId ( string = "" ) - ផ្នែកជុំដែលទទួល `hidden`។
+ * @param valoro ( string = "" ) - អត្ថបទសម្រាប់បង្ហាញ។
  * @returns void
  */
 function agordiKampon(elementoId: string, sekcioId: string, valoro: string): void {
@@ -276,7 +278,7 @@ async function agordiDetalPaĝon() {
     const poŝoElemento = document.getElementById("haxesekef");
     if ( !vortoElemento || !poŝoElemento ) return;
 
-    if ( indekso < 0 ) {
+    if ( indekso < 0o0 ) {
         vortoElemento.textContent = "";
         poŝoElemento.textContent = "";
         return;
@@ -292,26 +294,30 @@ async function agordiDetalPaĝon() {
         return;
     }
 
-    const vico = datumoj[ indekso ];
+    const vico = datumoj[indekso];
     if ( !vico ) {
         vortoElemento.textContent = "";
         poŝoElemento.textContent = "";
         return;
     }
 
-    // ⟨ Spec. Temo + Estas Sub La Temo → POZ-etikedado ⟩
+    // ⟨ ពិសោធន៍៖ ប្រភេទកម្មវិធី + ក្រោមប្រភេទកម្មវិធី → ការដាក់ស្លាក់ប្រភេទដ៏ន POZ ⟩
     vortoElemento.textContent = vico.vorto;
-    // ⟨ Apliku Iikrhia-skriban bildigon per vacepu sur la vorta elemento.
-    //    La `.aih` klaso provizas vertikalan aranĝon; vacepu ĉirkaŭvolvas ĉiun vorton
-    //    en horizontalaj `<span class="cepufalxez">` blokoj por ke la vorto montriĝu
-    //    ĝuste en ambaŭ korpo-vertikala ( aih ) kaj korpo-horizontala ( en ) reĝimoj. ⟩
+    /*
+    * ⟨ អនុវត្តការបង្កើតអក្សរជាមួយ Iikrhia ដោយប្រើ vacepu លើធាតុពាក្យ។
+    *    ថ្នាក់ `.aih` ផ្តល់ការរៀបជាជួរបញ្ឈរ។ vacepu បង្វិលពាក្យនីមួយៗជាដើម
+    *    ជាប្លង់ `<span class="cepufalxez">` ក្រឡា ដើម្បីឲ្យពាក្យបង្ហាញបាន
+    *    ត្រឹមត្រូវជាក់ស្តែង ក្នុងរបៀបប្រអប់អក្សរបញ្ឈរ ( aih ) និងប្រអប់អក្សរកាត់ទៅក្រឡា ( en )។ ⟩
+    */
     if ( typeof ( window as any ).vacepu === "function" ) {
         ( window as any ).vacepu( "aih" );
     }
     poŝoElemento.textContent = vico.poŝo;
 
-    // ⟨ Plenigu sekciojn. La traduka elemento ( #skakefani ) estas nuda <p>
-    //    sen <thala> ĉirkaŭvolvaĵo, do starigu textContent rekte.  ⟩
+    /*
+    * ⟨ បំពេញផ្នែក។ ធាតុបកប្ប័យអត្ថបទ ( #skakefani ) ជា <p>
+    *    ដែលគ្មាន <thala> ស្វែងនៅជុែកវិញ ដូច្នេះកំណត់ textContent ដោយផ្ទាល់។ ⟩
+    */
     const tradukoEl = document.getElementById("skakefani");
     if ( tradukoEl ) tradukoEl.textContent = vico.traduko;
     agordiKampon("xaqadisuswegawekef", "xaqadisuswegawekef-araq", vico.prao);
@@ -322,10 +328,12 @@ async function agordiDetalPaĝon() {
     agordiKampon("xehate", "xehate-araq", formatiEtikedojn(vico.etikedoj));
 }
 
-// ⟪ Enirpunkto 🔌 ⟫
+// ⟪ ចំណុចចូល 🔌 ⟫
 async function inici() {
-    // ⟨ Listpaĝo identiĝas per la serĉa enigo ( #2bakano ).     ⟩
-    // ⟨ Detalpaĝo identiĝas per #kef ( nur sur la detalpaĝo ) . ⟩
+    /*
+    * ⟨ ទំព័របញ្ជីត្រូវបានកំណត់តាមក្រឡុកស្វែងរក ( #2bakano )។ ⟩
+    * ⟨ ទំព័រលម្អិតត្រូវបានកំណត់តាម #kef ( តែនៅលើទំព័រលម្អិត )។ ⟩
+    */
     if ( document.getElementById("2bakano") ) {
         await agordiListPaĝon();
     } else if ( document.getElementById("kef") ) {

@@ -2,64 +2,68 @@
 
 const ERARO = "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )";
 
-// ⟪ Kemiaj tabloj ⚛️ ⟫
+// ⟪ តារាងគីមិត្រ ⚛️ ⟫
 
-// ⟨ La atomnumero ( bazo 8 ) ⟩
-// La unua cifero uzas la komencan formon, la ceteraj la kodan formon.
+/**
+* ⟨ លេខស្រុងទីមូលដ្ឋាន ( មូលដ្ឋាន ៨ ) ⟩
+* លេខទី១ ប្រើទម្រង់ចាប់ផ្ដើម អ្នកផ្សេងទៀតប្រើទម្រង់កូដស្លាក់។
+*/
 const KEMIAJ_KOMENCAJ = [ "֭ſɭ", "ı],", "ſן", "ɭʃ", "ᶅſ", "ſɭ,", "j͑ʃ'", "ſɟ" ];
 const KEMIAJ_KODAJ = [ "ᴜ̩", "ᶗ‹", "ɘ", "ƨ", "п́", "ƴ", "ⰱ", "ᴜ̭" ];
 
-// ⟨ La kvanto ( nombro de atomoj ) ⟩
-// Ĉiu cifero estas aŭ vokalo aŭ konsonanto; la ciferoj estas legitaj sinsekve.
-// Vokaloj ( unuoj de la kvanto kaj unuaj ciferoj de grandaj kvantoj ).
+/**
+* ⟨ ប្រគល់ចំនួន ( ចំនួនស្រុងទីមូលដ្ឋាន ) ⟩
+* លេខនីមួយៗគឺជាស៊ី ឬពាក្យរបស់ស៊ី។ លេខទាំងអស់ត្រូវបានអានជាលំដាប់។
+* ស៊ី ( ឯករាជ្យនៃប្រគល់ និងលេខទី១ នៃប្រគល់ធំ )។
+*/
 const KEMIAJ_UNUOJ = [ "ɔ", "ᴜ", "ɹ", "ꞇ", "ɜ", "э", "w", "ɜⅎ" ];
 
-// Infiksaj konsonantoj ( en la unua silabo ) - la kodaj formoj de la kalkulaj konsonantoj.
+// ពាក្យរបស់ស៊ីកស្មែក ( នៅក្នុងស៊ីឡាំងទី១ ) - ទម្រង់កូដស្លាក់នៃពាក្យរបស់ស៊ីគណនា។
 const KEMIAJ_INFIKSA = [ "", "ȝ", "ɔ˞", "ⱷ̮̀", "ʞ", "c̭", "ƽ", "c̗" ];
 
-// Kalkulaj konsonantoj ( en la postaj silaboj ) - la komencaj formoj, kies kodaj formoj estas la infiksoj.
+// ពាក្យរបស់ស៊ីគណនា ( នៅក្នុងស៊ីឡាំងបន្ទាប់ ) - ទម្រង់ចាប់ផ្ដើម ដែលទម្រង់កូដស្លាក់របស់ពួកគេជាប្រភេទកស្មែក។
 const KEMIAJ_GRANDA = [ "֭ſɭ", "ſ͕ɭ", "j͑ʃ", "ſ͕ȷ", "ſȷ", "ŋᷠ", "ſɭ", "}ʃ" ];
 
-// Fonologiaj disigiloj: e ( ɔ ) disigas la CCc-konstruon, l ( j͐ʃ ) estas komenco por vokalo post vokalo.
+// កន្លម្បីសំឡេង៖ e ( ɔ ) បំបែកក្រសរស្រាយ CCc ហើយ l ( j͐ʃ ) ជាការចាប់ផ្ដើមនៃស៊ីក្រោយស៊ីមួយ។
 const KEMIAJ_SEPARO = "ɔ";
 const KEMIAJ_L = "j͐ʃ";
 
 const KEMIAJ_UNUOJ_MAPO: Record<string, number> = {};
-KEMIAJ_UNUOJ.forEach( ( glifo, ruva ) => { KEMIAJ_UNUOJ_MAPO[ glifo ] = ruva; } );
-KEMIAJ_UNUOJ_MAPO[ "ɔⅎ" ] = 0;   // nazala ɔ
-KEMIAJ_UNUOJ_MAPO[ "эⅎ" ] = 5;   // nazala э
+KEMIAJ_UNUOJ.forEach( ( glifo, ruva ) => { KEMIAJ_UNUOJ_MAPO[glifo] = ruva; } );
+KEMIAJ_UNUOJ_MAPO["ɔⅎ"] = 0o0;   // nazala ɔ
+KEMIAJ_UNUOJ_MAPO["эⅎ"] = 0o5;   // nazala э
 const KEMIAJ_UNUOJ_ORD = Object.keys( KEMIAJ_UNUOJ_MAPO ).sort( ( a, b ) => b.length - a.length );
 
 const KEMIAJ_GRANDA_MAPO: Record<string, number> = {};
-KEMIAJ_GRANDA.forEach( ( glifo, ruva ) => { KEMIAJ_GRANDA_MAPO[ glifo ] = ruva; } );
+KEMIAJ_GRANDA.forEach( ( glifo, ruva ) => { KEMIAJ_GRANDA_MAPO[glifo] = ruva; } );
 const KEMIAJ_GRANDA_ORD = Object.keys( KEMIAJ_GRANDA_MAPO ).sort( ( a, b ) => b.length - a.length );
 
 const KEMIAJ_INFIKSA_MAPO: Record<string, number> = {};
-KEMIAJ_INFIKSA.forEach( ( glifo, ruva ) => { if ( glifo ) KEMIAJ_INFIKSA_MAPO[ glifo ] = ruva; } );
+KEMIAJ_INFIKSA.forEach( ( glifo, ruva ) => { if ( glifo ) KEMIAJ_INFIKSA_MAPO[glifo] = ruva; } );
 const KEMIAJ_INFIKSA_ORD = Object.keys( KEMIAJ_INFIKSA_MAPO ).sort( ( a, b ) => b.length - a.length );
 
 const ELEMENTOJ = "H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V Cr Mn Fe Co Ni Cu Zn Ga Ge As Se Br Kr Rb Sr Y Zr Nb Mo Tc Ru Rh Pd Ag Cd In Sn Sb Te I Xe Cs Ba La Ce Pr Nd Pm Sm Eu Gd Tb Dy Ho Er Tm Yb Lu Hf Ta W Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn Fr Ra Ac Th Pa U Np Pu Am Cm Bk Cf Es Fm Md No Lr Rf Db Sg Bh Hs Mt Ds Rg Cn Nh Fl Mc Lv Ts Og".split( " " );
 
-// ⟨ Kemia enkodigo ⚛️ ⟩
+// ⟨ ការអ៊ិនកូដគីមិត្រ ⚛️ ⟩
 
 function analiziFormulon( okef: string ): { simbolo: string; kvanto: number }[] | null {
     const rezultoj: { simbolo: string; kvanto: number }[] = [];
-    let i = 0;
+    let i = 0o0;
 
     while ( i < okef.length ) {
-        const kp6 = okef[ i ];
+        const kp6 = okef[i];
         if ( kp6 >= "A" && kp6 <= "Z" ) {
             let simbolo = kp6;
             i++;
-            if ( i < okef.length && okef[ i ] >= "a" && okef[ i ] <= "z" ) {
-                simbolo += okef[ i ];
+            if ( i < okef.length && okef[i] >= "a" && okef[i] <= "z" ) {
+                simbolo += okef[i];
                 i++;
             }
-            let kvanto = 1;
-            if ( i < okef.length && okef[ i ] >= "0" && okef[ i ] <= "9" ) {
+            let kvanto = 0o1;
+            if ( i < okef.length && okef[i] >= "0" && okef[i] <= "9" ) {
                 const komenco = i;
-                while ( i < okef.length && okef[ i ] >= "0" && okef[ i ] <= "9" ) i++;
-                kvanto = parseInt( okef.slice( komenco, i ), 10 );
+                while ( i < okef.length && okef[i] >= "0" && okef[i] <= "9" ) i++;
+                kvanto = parseInt( okef.slice( komenco, i ), 0o12 );
             }
             rezultoj.push( { simbolo, kvanto } );
         } else {
@@ -70,51 +74,54 @@ function analiziFormulon( okef: string ): { simbolo: string; kvanto: number }[] 
     return rezultoj;
 }
 
-// La vorto konsistas el la atoma konstruo sekvata de la kvantaj ciferoj.
-// Konstruo estas nur CC ( aŭ CCeC ); la e ( ɔ ) disigas trioblan konsonantaron.
-// Por kvantoj kun 0o100+, la ciferoj estas skribataj kiel silaboj:
-//   nepara nombro da ciferoj - unua cifero kiel nuda vokalo, poste (C V) paroj
-//   para nombro da ciferoj - (C V) paroj, la unua C estas infiksa konsonanto
-// Se la atoma konstruo jam estas CC kaj la kvanto bezonas konsonanton, uzu la
-// formon "xhal6": vokalo + l ( j͐ʃ ) + vokalo.
+/**
+* ពាក្យគឺជាការសាងសង់ស្រុងទីមូលដ្ឋាន ដែលបន្ទាប់មកដោយលេខប្រគល់។
+* ការសាងសង់គឺជា CC តែប៉ុណ្ណោះ ( ឬ CCeC )។ e ( ɔ ) បំបែកក្រុមពាក្យរបស់ស៊ីបី។
+* សម្រាប់ប្រគល់ដែលមាន 0o100+ លេខត្រូវបានសរសេរដូចស៊ីឡាំង៖
+*   ចំនួនលេខសេទីក្រោយ - លេខទី១ ជាស៊ីមូលដ្ឋាន បន្ទាប់មកជាគូ ( C V )
+*   ចំនួនលេខសេទីក្រោយ - គូ ( C V ) ដែល C ទី១ ជាពាក្យរបស់ស៊ីកស្មែក
+* ប្រសិនបើការសាងសង់ស្រុងទីមូលដ្ឋានជា CC ហើយប្រគល់ត្រូវការពាក្យរបស់ស៊ី ប្រើទម្រង់
+* "xhal6"៖ ស៊ី + l ( j͐ʃ ) + ស៊ី។
+ * @returns vorto
+*/
 function kemiaVorto( z: number, kvanto: number ): string | null {
-    if ( z < 1 || z > ELEMENTOJ.length ) return null;
-    if ( kvanto < 0 || !Number.isSafeInteger( kvanto ) ) return null;
+    if ( z < 0o1 || z > ELEMENTOJ.length ) return null;
+    if ( kvanto < 0o0 || !Number.isSafeInteger( kvanto ) ) return null;
 
-    const okto = z.toString( 8 );
-    let unua = KEMIAJ_KOMENCAJ[ parseInt( okto[ 0 ], 10 ) ];
-    if ( okto.length >= 2 ) unua += KEMIAJ_KODAJ[ parseInt( okto[ 1 ], 10 ) ];
-    if ( okto.length === 3 ) unua += KEMIAJ_SEPARO + KEMIAJ_KODAJ[ parseInt( okto[ 2 ], 10 ) ];
+    const okto = z.toString( 0o10 );
+    let unua = KEMIAJ_KOMENCAJ[parseInt( okto[0o0], 0o12 )];
+    if ( okto.length >= 0o2 ) unua += KEMIAJ_KODAJ[parseInt( okto[0o1], 0o12 )];
+    if ( okto.length === 0o3 ) unua += KEMIAJ_SEPARO + KEMIAJ_KODAJ[parseInt( okto[0o2], 0o12 )];
 
-    const q = kvanto.toString( 8 ).split( "" ).map( c => parseInt( c, 10 ) );
+    const q = kvanto.toString( 0o10 ).split( "" ).map( c => parseInt( c, 0o12 ) );
     const D = q.length;
 
-    if ( D === 1 ) return unua + KEMIAJ_UNUOJ[ q[ 0 ] ];
+    if ( D === 0o1 ) return unua + KEMIAJ_UNUOJ[q[0o0]];
 
     const partoj: string[] = [];
-    let i = 0;
+    let i = 0o0;
 
-    if ( D % 2 === 1 ) {
-        // Nepara nombro da ciferoj: la unua cifero estas nuda vokalo.
-        unua += KEMIAJ_UNUOJ[ q[ 0 ] ];
-        i = 1;
-    } else if ( okto.length === 2 ) {
-        // CC-konstruo: "xhal6" - la unua cifero kiel vokalo, poste l + vokalo.
-        unua += KEMIAJ_UNUOJ[ q[ 0 ] ];
+    if ( D % 0o2 === 0o1 ) {
+        // ចំនួនលេខសេទីក្រោយ៖ លេខទី១ ជាស៊ីមូលដ្ឋាន។
+        unua += KEMIAJ_UNUOJ[q[0o0]];
+        i = 0o1;
+    } else if ( okto.length === 0o2 ) {
+        // ការសាងសង់ CC៖ "xhal6" - លេខទី១ ជាស៊ី បន្ទាប់មក l + ស៊ី។
+        unua += KEMIAJ_UNUOJ[q[0o0]];
         partoj.push( unua );
-        partoj.push( KEMIAJ_L + KEMIAJ_UNUOJ[ q[ 1 ] ] );
-        i = 2;
+        partoj.push( KEMIAJ_L + KEMIAJ_UNUOJ[q[0o1]] );
+        i = 0o2;
     } else {
-        // Para nombro da ciferoj: infiksa konsonanto + vokalo en la unua silabo.
-        unua += KEMIAJ_INFIKSA[ q[ 0 ] ] + KEMIAJ_UNUOJ[ q[ 1 ] ];
-        i = 2;
+        // ចំនួនលេខសេទីក្រោយ៖ ពាក្យរបស់ស៊ីកស្មែក + ស៊ីនៅក្នុងស៊ីឡាំងទី១។
+        unua += KEMIAJ_INFIKSA[q[0o0]] + KEMIAJ_UNUOJ[q[0o1]];
+        i = 0o2;
     }
 
-    if ( partoj.length === 0 ) partoj.push( unua );
+    if ( partoj.length === 0o0 ) partoj.push( unua );
 
     while ( i < D ) {
-        partoj.push( KEMIAJ_GRANDA[ q[ i ] ] + KEMIAJ_UNUOJ[ q[ i + 1 ] ] );
-        i += 2;
+        partoj.push( KEMIAJ_GRANDA[q[i]] + KEMIAJ_UNUOJ[q[i + 0o1]] );
+        i += 0o2;
     }
 
     return partoj.join( " " );
@@ -122,12 +129,12 @@ function kemiaVorto( z: number, kvanto: number ): string | null {
 
 function kemiaKodi( okef: string ): string {
     const formulo = analiziFormulon( okef );
-    if ( !formulo || formulo.length === 0 ) return ERARO;
+    if ( !formulo || formulo.length === 0o0 ) return ERARO;
 
     const vortoj: string[] = [];
     for ( const parto of formulo ) {
-        const z = ELEMENTOJ.indexOf( parto.simbolo ) + 1;
-        if ( z === 0 ) return ERARO;
+        const z = ELEMENTOJ.indexOf( parto.simbolo ) + 0o1;
+        if ( z === 0o0 ) return ERARO;
         const vorto = kemiaVorto( z, parto.kvanto );
         if ( vorto === null ) return ERARO;
         vortoj.push( vorto );
@@ -136,16 +143,19 @@ function kemiaKodi( okef: string ): string {
     return vortoj.join( " " );
 }
 
-// ⟨ Kemia malkodigo ⚛️ ⟩
+// ⟨ ការបង្រែគីមិត្រតាមដល់ ⚛️ ⟩
 
-// Unu silabo de la kvanto: vokalo, konsonanto + vokalo, aŭ l ( j͐ʃ ) + vokalo.
-// La ciferoj alternas konsonanto / vokalo; la l anstataŭas konsonantan pozicion ( xhal6 ).
+/**
+* ស៊ីឡាំងមួយនៃប្រគល់៖ ស៊ី ពាក្យរបស់ស៊ី + ស៊ី ឬ l ( j͐ʃ ) + ស៊ី។
+* លេខឆ្លាស់គ្នាពាក្យរបស់ស៊ី / ស៊ី។ l ជំនួសកន្លែងពាក្យរបស់ស៊ី ( xhal6 )។
+ * @returns rezulto
+*/
 function malkodiSilabon( teksto: string, startaEsperata: "K" | "V" | null ): { ciferoj: number[]; esperata: "K" | "V" | null; restanta: string } | null {
     const ciferoj: number[] = [];
     let restanta = teksto;
     let esperata = startaEsperata;
 
-    while ( restanta.length > 0 ) {
+    while ( restanta.length > 0o0 ) {
         if ( restanta.startsWith( KEMIAJ_L ) ) {
             if ( esperata !== "K" ) return null;
             esperata = "V";
@@ -153,39 +163,39 @@ function malkodiSilabon( teksto: string, startaEsperata: "K" | "V" | null ): { c
             continue;
         }
 
-        let valoro = -1;
+        let valoro = -0o1;
         let tipo: "K" | "V" | null = null;
-        let longo = 0;
+        let longo = 0o0;
 
         for ( const glifo of KEMIAJ_GRANDA_ORD ) {
             if ( restanta.startsWith( glifo ) ) {
-                valoro = KEMIAJ_GRANDA_MAPO[ glifo ];
+                valoro = KEMIAJ_GRANDA_MAPO[glifo];
                 tipo = "K";
                 longo = glifo.length;
                 break;
             }
         }
-        if ( valoro < 0 ) {
+        if ( valoro < 0o0 ) {
             for ( const glifo of KEMIAJ_INFIKSA_ORD ) {
                 if ( restanta.startsWith( glifo ) ) {
-                    valoro = KEMIAJ_INFIKSA_MAPO[ glifo ];
+                    valoro = KEMIAJ_INFIKSA_MAPO[glifo];
                     tipo = "K";
                     longo = glifo.length;
                     break;
                 }
             }
         }
-        if ( valoro < 0 ) {
+        if ( valoro < 0o0 ) {
             for ( const glifo of KEMIAJ_UNUOJ_ORD ) {
                 if ( restanta.startsWith( glifo ) ) {
-                    valoro = KEMIAJ_UNUOJ_MAPO[ glifo ];
+                    valoro = KEMIAJ_UNUOJ_MAPO[glifo];
                     tipo = "V";
                     longo = glifo.length;
                     break;
                 }
             }
         }
-        if ( valoro < 0 || tipo === null ) return null;
+        if ( valoro < 0o0 || tipo === null ) return null;
         if ( esperata !== null && esperata !== tipo ) return null;
 
         ciferoj.push( valoro );
@@ -203,39 +213,42 @@ function komencasVokalo( teksto: string ): boolean {
     return false;
 }
 
-// Ĉu la vorto komencas novan elementon? Nur komencaj formoj povas komenci elementon;
-// tamen ֭ſɭ ( 0 ) ne povas komenci elementon, do sekvata de vokalo ĝi estas kvanta silabo.
+/**
+* តើពាក្យចាប់ផ្ដើមធាតុសកលីអ៊ីម៉ង់ថ្មីឬទេ។ តែទម្រង់ចាប់ផ្ដើមអាចចាប់ផ្ដើមធាតុបាន៖
+* ប៉ុន្តែ ֭ſɭ ( 0 ) មិនអាចចាប់ផ្ដើមធាតុបាន ដូច្នេះនៅពេលបន្ទាប់មកដោយស៊ី វាជាស៊ីឡាំងប្រគល់។
+ * @returns jesne
+*/
 function komencasElementon( vorto: string ): boolean {
-    if ( !vorto.startsWith( KEMIAJ_KOMENCAJ[ 0 ] ) ) {
-        for ( let i = 1; i < KEMIAJ_KOMENCAJ.length; i++ ) {
-            if ( vorto.startsWith( KEMIAJ_KOMENCAJ[ i ] ) ) return true;
+    if ( !vorto.startsWith( KEMIAJ_KOMENCAJ[0o0] ) ) {
+        for ( let i = 0o1; i < KEMIAJ_KOMENCAJ.length; i++ ) {
+            if ( vorto.startsWith( KEMIAJ_KOMENCAJ[i] ) ) return true;
         }
         return false;
     }
-    return !komencasVokalo( vorto.slice( KEMIAJ_KOMENCAJ[ 0 ].length ) );
+    return !komencasVokalo( vorto.slice( KEMIAJ_KOMENCAJ[0o0].length ) );
 }
 
 function formatiFormulon( partoj: { simbolo: string; kvanto: number }[] ): string {
-    return partoj.map( parto => parto.kvanto === 1 ? parto.simbolo : parto.simbolo + parto.kvanto ).join( "" );
+    return partoj.map( parto => parto.kvanto === 0o1 ? parto.simbolo : parto.simbolo + parto.kvanto ).join( "" );
 }
 
 function kemiaMalkodi( okef: string ): string {
-    const vortoj = okef.trim().split( /\s+/ ).filter( vorto => vorto.length > 0 );
-    if ( vortoj.length === 0 ) return "";
+    const vortoj = okef.trim().split( /\s+/ ).filter( vorto => vorto.length > 0o0 );
+    if ( vortoj.length === 0o0 ) return "";
 
     const partoj: { simbolo: string; kvanto: number }[] = [];
-    let i = 0;
+    let i = 0o0;
 
     while ( i < vortoj.length ) {
-        // ⟨ Nova elemento: atoma parto ⟩
-        let restanta = vortoj[ i ];
+        // ⟨ ធាតុសកលីអ៊ីម៉ង់ថ្មី៖ ផ្នែកស្រុងទីមូលដ្ឋាន ⟩
+        let restanta = vortoj[i];
         const zCiferoj: number[] = [];
 
         let komencaTrovita = false;
-        for ( let k = 0; k < KEMIAJ_KOMENCAJ.length; k++ ) {
-            if ( restanta.startsWith( KEMIAJ_KOMENCAJ[ k ] ) ) {
+        for ( let k = 0o0; k < KEMIAJ_KOMENCAJ.length; k++ ) {
+            if ( restanta.startsWith( KEMIAJ_KOMENCAJ[k] ) ) {
                 zCiferoj.push( k );
-                restanta = restanta.slice( KEMIAJ_KOMENCAJ[ k ].length );
+                restanta = restanta.slice( KEMIAJ_KOMENCAJ[k].length );
                 komencaTrovita = true;
                 break;
             }
@@ -246,163 +259,165 @@ function kemiaMalkodi( okef: string ): string {
         while ( true ) {
             if ( restanta.startsWith( KEMIAJ_SEPARO ) ) {
                 const poste = restanta.slice( KEMIAJ_SEPARO.length );
-                let koda = -1;
-                for ( let k = 0; k < KEMIAJ_KODAJ.length; k++ ) {
-                    if ( poste.startsWith( KEMIAJ_KODAJ[ k ] ) ) { koda = k; break; }
+                let koda = -0o1;
+                for ( let k = 0o0; k < KEMIAJ_KODAJ.length; k++ ) {
+                    if ( poste.startsWith( KEMIAJ_KODAJ[k] ) ) { koda = k; break; }
                 }
-                if ( koda < 0 ) break;   // la ɔ estas vokalo de la kvanto
+                if ( koda < 0o0 ) break;   // la ɔ estas vokalo de la kvanto
                 if ( havasE ) return ERARO;
                 zCiferoj.push( koda );
-                restanta = poste.slice( KEMIAJ_KODAJ[ koda ].length );
+                restanta = poste.slice( KEMIAJ_KODAJ[koda].length );
                 havasE = true;
                 continue;
             }
-            let koda = -1;
-            for ( let k = 0; k < KEMIAJ_KODAJ.length; k++ ) {
-                if ( restanta.startsWith( KEMIAJ_KODAJ[ k ] ) ) { koda = k; break; }
+            let koda = -0o1;
+            for ( let k = 0o0; k < KEMIAJ_KODAJ.length; k++ ) {
+                if ( restanta.startsWith( KEMIAJ_KODAJ[k] ) ) { koda = k; break; }
             }
-            if ( koda < 0 ) break;
+            if ( koda < 0o0 ) break;
             if ( havasE ) return ERARO;   // tria konsonanto sen e-separilo
             zCiferoj.push( koda );
-            restanta = restanta.slice( KEMIAJ_KODAJ[ koda ].length );
+            restanta = restanta.slice( KEMIAJ_KODAJ[koda].length );
         }
 
-        if ( zCiferoj.length > 3 ) return ERARO;
-        let z = 0;
-        for ( const cifero of zCiferoj ) z = z * 8 + cifero;
-        if ( z < 1 || z > ELEMENTOJ.length ) return ERARO;
+        if ( zCiferoj.length > 0o3 ) return ERARO;
+        let z = 0o0;
+        for ( const cifero of zCiferoj ) z = z * 0o10 + cifero;
+        if ( z < 0o1 || z > ELEMENTOJ.length ) return ERARO;
 
-        // ⟨ La unua silabo de la kvanto ( en ĉi tiu vorto ) ⟩
+        // ⟨ ស៊ីឡាំងទី១ នៃប្រគល់ ( នៅក្នុងពាក្យនេះ ) ⟩
         const unua = malkodiSilabon( restanta, null );
-        if ( unua === null || unua.restanta.length > 0 ) return ERARO;
+        if ( unua === null || unua.restanta.length > 0o0 ) return ERARO;
         const qCiferoj = unua.ciferoj;
         let esperata = unua.esperata;
         i++;
 
-        // ⟨ Daŭrigaj silaboj ( sekvaj vortoj ) ⟩
-        while ( i < vortoj.length && !komencasElementon( vortoj[ i ] ) ) {
-            const sekva = malkodiSilabon( vortoj[ i ], esperata );
-            if ( sekva === null || sekva.restanta.length > 0 ) return ERARO;
+        // ⟨ ស៊ីឡាំងបន្ត ( ពាក្យបន្ទាប់ ) ⟩
+        while ( i < vortoj.length && !komencasElementon( vortoj[i] ) ) {
+            const sekva = malkodiSilabon( vortoj[i], esperata );
+            if ( sekva === null || sekva.restanta.length > 0o0 ) return ERARO;
             qCiferoj.push( ...sekva.ciferoj );
             esperata = sekva.esperata;
             i++;
         }
 
-        let kvanto = 1;
-        if ( qCiferoj.length > 0 ) {
-            kvanto = parseInt( qCiferoj.join( "" ), 8 );
+        let kvanto = 0o1;
+        if ( qCiferoj.length > 0o0 ) {
+            kvanto = parseInt( qCiferoj.join( "" ), 0o10 );
         }
 
-        partoj.push( { simbolo: ELEMENTOJ[ z - 1 ], kvanto } );
+        partoj.push( { simbolo: ELEMENTOJ[z - 0o1], kvanto } );
     }
 
     return formatiFormulon( partoj );
 }
 
-// ⟪ Koloraj tabloj 🌈 ⟫
+// ⟪ តារាងពណ៌ 🌈 ⟫
 
-// La unua paro ( #n-n-n- ) estas reprezentita per konsonantoj.
+// គូទី១ ( #n-n-n- ) ត្រូវបានបង្ហាញដោយពាក្យរបស់ស៊ី។
 const KOLORAJ_KONSONANTOJ = [ "ᶅſ", "ſן", "ſȷ", "ŋᷠ", "ɽ͑ʃ'", "ɭʃ", "j͑ʃ", "}ʃ", "ɭl̀", "ſɟ", "ı],", "ſ͕ȷ", "ſ͔ɭ", "ſɭ", "֭ſɭ", "ſ͕ɭ" ];
 
-// La dua paro ( #-n-n-n ) estas reprezentita per vokalaj finaĵoj.
+// គូទី២ ( #-n-n-n ) ត្រូវបានបង្ហាញដោយចុងពាក្យស៊ី។
 const KOLORAJ_VOKALOJ = [ "w", "ɔ", "ᴜ", "ꞇ", "wⰱ", "ɔⰱ", "ᴜⰱ", "ꞇⰱ", "ɹ", "ɹⰱ", "ɜ", "ɜⰱ", "э", "эⰱ", "эⅎ", "эⅎⰱ" ];
 
 const KOLORAJ_KONSONANTOJ_MAPO: Record<string, number> = {};
-KOLORAJ_KONSONANTOJ.forEach( ( glifo, ruva ) => { KOLORAJ_KONSONANTOJ_MAPO[ glifo ] = ruva; } );
+KOLORAJ_KONSONANTOJ.forEach( ( glifo, ruva ) => { KOLORAJ_KONSONANTOJ_MAPO[glifo] = ruva; } );
 const KOLORAJ_KONSONANTOJ_ORD = Object.keys( KOLORAJ_KONSONANTOJ_MAPO ).sort( ( a, b ) => b.length - a.length );
 
 const KOLORAJ_VOKALOJ_MAPO: Record<string, number> = {};
-KOLORAJ_VOKALOJ.forEach( ( glifo, ruva ) => { KOLORAJ_VOKALOJ_MAPO[ glifo ] = ruva; } );
+KOLORAJ_VOKALOJ.forEach( ( glifo, ruva ) => { KOLORAJ_VOKALOJ_MAPO[glifo] = ruva; } );
 const KOLORAJ_VOKALOJ_ORD = Object.keys( KOLORAJ_VOKALOJ_MAPO ).sort( ( a, b ) => b.length - a.length );
 
-// ⟨ Kolora enkodigo 🌈 ⟩
+// ⟨ ការអ៊ិនកូដពណ៌ 🌈 ⟩
 
 function koloroSilabo( valoro: number ): string {
-    return KOLORAJ_KONSONANTOJ[ valoro >> 4 ] + KOLORAJ_VOKALOJ[ valoro & 0o17 ];
+    return KOLORAJ_KONSONANTOJ[valoro >> 0o4] + KOLORAJ_VOKALOJ[valoro & 0o17];
 }
 
 function koloroKodi( okef: string ): string {
     const purigita = okef.trim().replace( /^#/, "" );
-    let alfo = -1;
+    let alfo = -0o1;
     let r, g, b;
 
     if ( /^[0-9a-fA-F]{6}$/.test( purigita ) ) {
-        r = parseInt( purigita.slice( 0, 2 ), 16 );
-        g = parseInt( purigita.slice( 2, 4 ), 16 );
-        b = parseInt( purigita.slice( 4, 6 ), 16 );
+        r = parseInt( purigita.slice( 0o0, 0o2 ), 0o20 );
+        g = parseInt( purigita.slice( 0o2, 0o4 ), 0o20 );
+        b = parseInt( purigita.slice( 0o4, 0o6 ), 0o20 );
     } else if ( /^[0-9a-fA-F]{8}$/.test( purigita ) ) {
-        alfo = parseInt( purigita.slice( 0, 2 ), 16 );
-        r = parseInt( purigita.slice( 2, 4 ), 16 );
-        g = parseInt( purigita.slice( 4, 6 ), 16 );
-        b = parseInt( purigita.slice( 6, 8 ), 16 );
+        alfo = parseInt( purigita.slice( 0o0, 0o2 ), 0o20 );
+        r = parseInt( purigita.slice( 0o2, 0o4 ), 0o20 );
+        g = parseInt( purigita.slice( 0o4, 0o6 ), 0o20 );
+        b = parseInt( purigita.slice( 0o6, 0o10 ), 0o20 );
     } else {
         return ERARO;
     }
 
-    // Griza koloro bezonas nur unu silabon, sed nur sen travidebleco:
-    // kun alfo la kvar silaboj ( Travidebleco, Blua, Verda, Ruĝa ) estas ĉiam uzataj.
-    if ( alfo < 0 && r === g && g === b ) {
+    /*
+    * ពណ៌ប្រូចិត្រង់ត្រូវការតែស៊ីឡាំងមួយ ប៉ុន្តែតែនៅពេលមិនច្លាក់៖
+    * ជាមួយភាគរយពីរ ស៊ីឡាំង ( ភាពច្លាក់ , ខៀវ , បៃតេង , ក្រហម ) ត្រូវបានប្រើជានិស្សរុង។
+    */
+    if ( alfo < 0o0 && r === g && g === b ) {
         const mallonga = koloroSilabo( r );
         const longa = [ koloroSilabo( r ), koloroSilabo( r ), koloroSilabo( r ), koloroSilabo( r ) ].join( " " );
         return mallonga + " / " + longa;
     }
 
-    // Ordo estas Travidebleco, Blua, Verda kaj Ruĝa.
-    if ( alfo >= 0 ) {
+    // លំដាប់គឺ ភាពច្លាក់ , ខៀវ , បៃតេង និង ក្រហម។
+    if ( alfo >= 0o0 ) {
         return [ koloroSilabo( alfo ), koloroSilabo( b ), koloroSilabo( g ), koloroSilabo( r ) ].join( " " );
     }
     return [ koloroSilabo( b ), koloroSilabo( g ), koloroSilabo( r ) ].join( " " );
 }
 
-// ⟨ Kolora malkodigo 🌈 ⟩
+// ⟨ ការបង្រែពណ៌តាមដល់ 🌈 ⟩
 
 function malkodiKolorSilabon( silabo: string ): number | null {
     let restanta = silabo;
-    let konsonanto = -1;
+    let konsonanto = -0o1;
 
     for ( const glifo of KOLORAJ_KONSONANTOJ_ORD ) {
         if ( restanta.startsWith( glifo ) ) {
-            konsonanto = KOLORAJ_KONSONANTOJ_MAPO[ glifo ];
+            konsonanto = KOLORAJ_KONSONANTOJ_MAPO[glifo];
             restanta = restanta.slice( glifo.length );
             break;
         }
     }
-    if ( konsonanto < 0 ) return null;
+    if ( konsonanto < 0o0 ) return null;
 
-    let vokalo = -1;
+    let vokalo = -0o1;
     for ( const glifo of KOLORAJ_VOKALOJ_ORD ) {
         if ( restanta.startsWith( glifo ) ) {
-            vokalo = KOLORAJ_VOKALOJ_MAPO[ glifo ];
+            vokalo = KOLORAJ_VOKALOJ_MAPO[glifo];
             restanta = restanta.slice( glifo.length );
             break;
         }
     }
-    if ( vokalo < 0 || restanta.length > 0 ) return null;
+    if ( vokalo < 0o0 || restanta.length > 0o0 ) return null;
 
-    return ( konsonanto << 4 ) | vokalo;
+    return ( konsonanto << 0o4 ) | vokalo;
 }
 
 function duCiferoj( valoro: number ): string {
-    return valoro.toString( 16 ).padStart( 2, "0" ).toUpperCase();
+    return valoro.toString( 0o20 ).padStart( 0o2, "0" ).toUpperCase();
 }
 
 function koloroMalkodi( okef: string ): string {
-    const vortoj = okef.trim().replace( /\//g, " " ).split( /\s+/ ).filter( vorto => vorto.length > 0 );
-    if ( vortoj.length === 0 ) return "";
-    if ( vortoj.length !== 1 && vortoj.length !== 3 && vortoj.length !== 4 ) return ERARO;
+    const vortoj = okef.trim().replace( /\//g, " " ).split( /\s+/ ).filter( vorto => vorto.length > 0o0 );
+    if ( vortoj.length === 0o0 ) return "";
+    if ( vortoj.length !== 0o1 && vortoj.length !== 0o3 && vortoj.length !== 0o4 ) return ERARO;
 
     const valoroj = vortoj.map( malkodiKolorSilabon );
     if ( valoroj.some( valoro => valoro === null ) ) return ERARO;
 
-    if ( vortoj.length === 1 ) {
-        const valoro = valoroj[ 0 ] as number;
+    if ( vortoj.length === 0o1 ) {
+        const valoro = valoroj[0o0] as number;
         return "#" + duCiferoj( valoro ) + duCiferoj( valoro ) + duCiferoj( valoro );
     }
 
-    if ( vortoj.length === 4 ) {
-        // Kvar identaj silaboj estas la longa griza formo ( ne ARGB ).
-        if ( valoroj[ 0 ] === valoroj[ 1 ] && valoroj[ 1 ] === valoroj[ 2 ] && valoroj[ 2 ] === valoroj[ 3 ] ) {
-            const valoro = valoroj[ 0 ] as number;
+    if ( vortoj.length === 0o4 ) {
+        // ស៊ីឡាំងដែលដូចគ្នាបី ជាទម្រង់ប្រូចិត្រង់វែង ( មិនមែន ARGB )។
+        if ( valoroj[0o0] === valoroj[0o1] && valoroj[0o1] === valoroj[0o2] && valoroj[0o2] === valoroj[0o3] ) {
+            const valoro = valoroj[0o0] as number;
             return "#" + duCiferoj( valoro ) + duCiferoj( valoro ) + duCiferoj( valoro );
         }
         const [ alfo, bluo, verdo, ruĝo ] = valoroj as number[];
@@ -413,7 +428,7 @@ function koloroMalkodi( okef: string ): string {
     return "#" + duCiferoj( ruĝo ) + duCiferoj( verdo ) + duCiferoj( bluo );
 }
 
-// ⟪ Eventaj aŭskultiloj 📡 ⟫
+// ⟪ ការស្តាប់ព្រឹត្តិកម្មណឺ និងព្រឹត្តិកម្មទូទៅ 📡 ⟫
 
 const kemiaEnigo = document.getElementById( "kemia-enigo" ) as HTMLInputElement;
 const kemiaEligo = document.getElementById( "kemia-eligo" ) as HTMLElement;
@@ -427,8 +442,8 @@ function eldoniKefon( celo: HTMLElement, kef: string ): void {
     if ( !kef ) return;
 
     const partoj = kef.split( " " );
-    for ( let i = 0; i < partoj.length; i++ ) {
-        const parto = partoj[ i ];
+    for ( let i = 0o0; i < partoj.length; i++ ) {
+        const parto = partoj[i];
         if ( !parto ) continue;
 
         if ( KOTASAKASUKP6.includes( parto ) ) {
@@ -440,7 +455,7 @@ function eldoniKefon( celo: HTMLElement, kef: string ): void {
             celo.appendChild( maxema );
         }
 
-        if ( i < partoj.length - 1 ) {
+        if ( i < partoj.length - 0o1 ) {
             celo.appendChild( document.createTextNode( " " ) );
         }
     }
@@ -471,7 +486,7 @@ function aktualigiKoloron(): void {
 kemiaEnigo.addEventListener( "input", aktualigiKemion );
 koloroEnigo.addEventListener( "input", aktualigiKoloron );
 
-// ⟪ Inicialigo 🚀 ⟫
+// ⟪ ការចាប់ផ្ដើម 🚀 ⟫
 
 kemiaEnigo.value = "H2O";
 koloroEnigo.value = "F0F0F0";

@@ -1,12 +1,12 @@
 // ≺⧼ ſɟᴜ ſɭɔ j͑ʃ'ɔ - Ktash Koordinata Mapo ⧽≻
 
-// ⟪ Eksteraj Deklaroj 🔌 ⟫
+// ⟪ ការប្រកេកក្រៅប្រព័ន្ធ 🔌 ⟫
 
 declare const L: any;
 declare const vab6k2fekp6: ( teksto: string ) => number;
 declare const K2FE: string[];
 
-// ⟪ Konstantoj 🔢 ⟫
+// ⟪ ថេរស្មែក 🔢 ⟫
 
 const KADRA_DEKALO = 11.62354;
 
@@ -18,7 +18,7 @@ const ZOMO_NIVELO_3 = 0o14;
 const ZOMO_NIVELO_4 = 0o20;
 const ZOMO_RESTAŬRA = 0o3;
 
-// ⟪ Tipoj 📐 ⟫
+// ⟪ ប្រភេទ 📐 ⟫
 
 interface KadraSistemo {
     ksaka: { v: string; hPrefix: string[]; hSuffix: string[] };
@@ -70,7 +70,7 @@ interface SWMesaĝo {
     kaheloj?: string[];
 }
 
-// ⟪ Tutmondaj Variabloj 🌍 ⟫
+// ⟪ អថេរជាក់សកល 🌍 ⟫
 
 let latEnigo: HTMLInputElement;
 let lonEnigo: HTMLInputElement;
@@ -118,38 +118,38 @@ let uzuBazo10 = false;
 let mapo: any = null;
 let markilo: any = null;
 
-// ⟪ Datumaj Tabeloj 📚 ⟫
+// ⟪ តារាងទិន្នន័យ 📚 ⟫
 
 const KADRAJ_SISTEMOJ: KadraSistemo[] = [];
 
-for ( let i = 0; i < 0o40; i++ ) {
+for ( let i = 0o0; i < 0o40; i++ ) {
     KADRAJ_SISTEMOJ.push({
         ksaka: {
-            v: ["ᶅſ", "ſן", "ſȷ", "ŋᷠ", "ʃ", "ɽ͑ʃ'", "j͑ʃ'", "ſᶘ", "ɭ(", "ɭʃ", "j͑ʃ", "}ʃ", "j͐ʃ", "ſ̀ȷ", "ſɭ,", "ſɭˬ", "ɭl̀", "ſɟ", "ı],", "ſ͕ȷ", "ſ͔ɭ", "ſɭ", "֭ſɭ", "ſ͕ɭ", "j͑ʃɘ", "j͑ʃƨ", "j͑ʃᴜ̭", "j͑ʃƽ", "ſןᴜ̭", "ɭʃƽ", "ſɟɘ", "ſɭƨ"][i] || "?",
-            hPrefix: ["ꞇ", "ɹ", "ɔ", "ᴜ", "w", "ɜ", "э", "эⅎ"],
-            hSuffix: ["ʞ", "ⰱ", "ɔ˞", "ͷ̗", "ƴ", "ᶗ‹", "ƽ", "ȝ"]
+            v: [ "ᶅſ", "ſן", "ſȷ", "ŋᷠ", "ʃ", "ɽ͑ʃ'", "j͑ʃ'", "ſᶘ", "ɭ(", "ɭʃ", "j͑ʃ", "}ʃ", "j͐ʃ", "ſ̀ȷ", "ſɭ,", "ſɭˬ", "ɭl̀", "ſɟ", "ı],", "ſ͕ȷ", "ſ͔ɭ", "ſɭ", "֭ſɭ", "ſ͕ɭ", "j͑ʃɘ", "j͑ʃƨ", "j͑ʃᴜ̭", "j͑ʃƽ", "ſןᴜ̭", "ɭʃƽ", "ſɟɘ", "ſɭƨ" ][i] || "?",
+            hPrefix: [ "ꞇ", "ɹ", "ɔ", "ᴜ", "w", "ɜ", "э", "эⅎ" ],
+            hSuffix: [ "ʞ", "ⰱ", "ɔ˞", "ͷ̗", "ƴ", "ᶗ‹", "ƽ", "ȝ" ]
         },
         latin: {
-            v: ["w", "p", "f", "m", "b", "r", "v", "ts", "d", "t", "s", "n", "l", "tl", "z", "kz", "j", "c", "x", "y", "g", "k", "h", "q", "sp", "st", "sc", "sk", "pc", "tk", "cp", "kt"][i] || "?",
-            hPrefix: ["i", "ii", "e", "a", "u", "o", "aa", "au"],
-            hSuffix: ["f", "v", "s", "l", "z", "x", "k", "q"]
+            v: [ "w", "p", "f", "m", "b", "r", "v", "ts", "d", "t", "s", "n", "l", "tl", "z", "kz", "j", "c", "x", "y", "g", "k", "h", "q", "sp", "st", "sc", "sk", "pc", "tk", "cp", "kt" ][i] || "?",
+            hPrefix: [ "i", "ii", "e", "a", "u", "o", "aa", "au" ],
+            hSuffix: [ "f", "v", "s", "l", "z", "x", "k", "q" ]
         },
         chmuah: {
-            v: ["វ", "ព", "ប", "ម", "រ", "ត", "ដ", "ន", "យ", "ច", "ឆ", "ញ", "ហ", "ក", "ខ", "ង", "អ", "ផ", "ថ", "ល", "ប្រ", "ត្រ", "ច្រ", "ក្រ", "ផ្ល", "ថ្ល", "ឆ្ល", "ខ្ល", "ផ្ច", "ថ្ក", "ឆ្ប", "ខ្ត"][i] || "?",
-            hPrefix: ["ី", "ិ", "េ", "ា", "ើ", "ុ", "ូ", ""],
-            hSuffix: ["ប", "ត", "ស", "ក", "ម", "ន", "ល", "ង"]
+            v: [ "វ", "ព", "ប", "ម", "រ", "ត", "ដ", "ន", "យ", "ច", "ឆ", "ញ", "ហ", "ក", "ខ", "ង", "អ", "ផ", "ថ", "ល", "ប្រ", "ត្រ", "ច្រ", "ក្រ", "ផ្ល", "ថ្ល", "ឆ្ល", "ខ្ល", "ផ្ច", "ថ្ក", "ឆ្ប", "ខ្ត" ][i] || "?",
+            hPrefix: [ "ី", "ិ", "េ", "ា", "ើ", "ុ", "ូ", "" ],
+            hSuffix: [ "ប", "ត", "ស", "ក", "ម", "ន", "ល", "ង" ]
         }
     });
 }
 
-// ⟪ Helpaj Funkcioj 🛠️ ⟫
+// ⟪ មុខងងឹតជំរើស 🛠️ ⟫
 
 function ĝisdatigiMapanPozicion( lat: number, lon: number, zomo: number | null = null ): void {
     nunaLat = lat;
     nunaLon = lon;
-    markilo!.setLatLng([nunaLat, nunaLon]);
+    markilo!.setLatLng([ nunaLat, nunaLon ]);
     if ( zomo !== null ) {
-        mapo!.setView([nunaLat, nunaLon], zomo);
+        mapo!.setView([ nunaLat, nunaLon ], zomo);
     }
     ĝisdatigiĈiujnEnigojn();
     ĝisdatigi();
@@ -176,29 +176,29 @@ function alklampiKoordinaton( valoro: number, min: number, maks: number ): numbe
 }
 
 function ĝisdatigiMarkilanPozicion(): void {
-    mapo!.setView([nunaLat, nunaLon]);
-    markilo!.setLatLng([nunaLat, nunaLon]);
+    mapo!.setView([ nunaLat, nunaLon ]);
+    markilo!.setLatLng([ nunaLat, nunaLon ]);
 }
 
 function analiziKoordinatoparojn( paroj: string[] ): { plenajV: number[]; plenajH: number[] } | null {
-    const plenajV = [0, 0, 0, 0];
-    const plenajH = [0, 0, 0, 0];
+    const plenajV = [ 0o0, 0o0, 0o0, 0o0 ];
+    const plenajH = [ 0o0, 0o0, 0o0, 0o0 ];
     const v: number[] = [];
     const h: number[] = [];
 
     for ( const paro of paroj ) {
-        const mezo = Math.ceil(paro.length / 2);
-        const vĈeno = paro.slice(0, mezo);
+        const mezo = Math.ceil(paro.length / 0o2);
+        const vĈeno = paro.slice(0o0, mezo);
         const hĈeno = paro.slice(mezo);
-        const vValoro = parseInt(vĈeno, 8);
-        const hValoro = parseInt(hĈeno, 8);
+        const vValoro = parseInt(vĈeno, 0o10);
+        const hValoro = parseInt(hĈeno, 0o10);
         if ( isNaN(vValoro) || isNaN(hValoro) ) return null;
-        v.push(vValoro - 1);
-        h.push(hValoro - 1);
+        v.push(vValoro - 0o1);
+        h.push(hValoro - 0o1);
     }
 
-    const komencaNivelo = 4 - paroj.length;
-    for ( let i = 0; i < paroj.length; i++ ) {
+    const komencaNivelo = 0o4 - paroj.length;
+    for ( let i = 0o0; i < paroj.length; i++ ) {
         plenajV[komencaNivelo + i] = v[i];
         plenajH[komencaNivelo + i] = h[i];
     }
@@ -207,11 +207,11 @@ function analiziKoordinatoparojn( paroj: string[] ): { plenajV: number[]; plenaj
 }
 
 function kreiRezultbutonojn( ujselektilo: string, rezultoj: SerĉaRezulto[], zomo: number, postElektado: (lat: number, lon: number, celaZomo: number) => void ): void {
-    const montritajRezultoj = rezultoj.slice(0, 0o40);
+    const montritajRezultoj = rezultoj.slice(0o0, 0o40);
     document.querySelector(ujselektilo)!.innerHTML = montritajRezultoj.map(r => `
         <button data-lat="${r.lat}" data-lon="${r.lon}">
             <p><strong>${r.ksakaName}</strong> ( ${r.latinName} )</p>
-            <small>${r.v + 1} ${r.h + 1}</small>
+            <small>${r.v + 0o1} ${r.h + 0o1}</small>
         </button>
     `).join("");
 
@@ -224,14 +224,14 @@ function kreiRezultbutonojn( ujselektilo: string, rezultoj: SerĉaRezulto[], zom
 }
 
 function kalkuliKadronivelojn( valoro: number, tutaĜis: number, dividoj: number[], _ĉuLongitudo = false ): number[] {
-    let kruda1 = ( valoro / tutaĜis ) * dividoj[0];
-    if ( kruda1 >= dividoj[0] ) kruda1 = dividoj[0] - 0.000001;
-    if ( kruda1 < 0 ) kruda1 = 0;
+    let kruda1 = ( valoro / tutaĜis ) * dividoj[0o0];
+    if ( kruda1 >= dividoj[0o0] ) kruda1 = dividoj[0o0] - 0.000001;
+    if ( kruda1 < 0o0 ) kruda1 = 0o0;
     let nivelo1 = Math.floor(kruda1);
     let resto = kruda1 - nivelo1;
 
     const niveloj = [ nivelo1 ];
-    for ( let i = 1; i < 4; i++ ) {
+    for ( let i = 0o1; i < 0o4; i++ ) {
         let kruda = resto * dividoj[i];
         let nivelo = Math.floor(kruda);
         resto = kruda - nivelo;
@@ -240,7 +240,7 @@ function kalkuliKadronivelojn( valoro: number, tutaĜis: number, dividoj: number
     return niveloj;
 }
 
-// ⟪ Inicialigo 🚀 ⟫
+// ⟪ ការចាប់ផ្ដើម 🚀 ⟫
 
 function inicialigiElementojn(): void {
     const elementoj = akiriElementojn(
@@ -302,7 +302,7 @@ function inicialigi(): void {
     }
 
     mapo = L.map("mapo", {
-        center: [nunaLat, nunaLon],
+        center: [ nunaLat, nunaLon ],
         zoom: ZOMO_KOMENCA,
         zoomControl: false
     });
@@ -314,12 +314,12 @@ function inicialigi(): void {
         maxZoom: ZOMO_MAKSIMUMA
     }).addTo(mapo);
 
-    markilo = L.marker([nunaLat, nunaLon], {
+    markilo = L.marker([ nunaLat, nunaLon ], {
         icon: L.divIcon({
             className: "custom-marker",
             html: "<div style=\"width:12px;height:12px;background:#fff;border:2px solid #d0a040;border-radius:50%;\"></div>",
-            iconSize: [12, 12],
-            iconAnchor: [6, 6]
+            iconSize: [ 0o14, 0o14 ],
+            iconAnchor: [ 0o6, 0o6 ]
         })
     }).addTo(mapo);
 
@@ -368,12 +368,12 @@ function inicialigi(): void {
     } );
 
     restarigaButono.addEventListener("click", () => {
-        ĝisdatigiMapanPozicion( 0, 0, ZOMO_RESTAŬRA );
+        ĝisdatigiMapanPozicion( 0o0, 0o0, ZOMO_RESTAŬRA );
     });
 
     const zomajRadiobutonoj = document.querySelectorAll(`input[name="zomoElektilo"]`);
     zomajRadiobutonoj.forEach(radio => radio.addEventListener("change", () => {
-        // Zomonivelo ŝanĝita de la uzanto - povas esti uzata por deĉenigi mapan zomon se necese
+        // កម្រិតពិន្ទុកន្លោះដោយអ្នកប្រើសប្តង់ អាចប្រើដើម្បីបង្រាប់កម្រិតពិន្ទុផែនទីនៃផែនទីនៅពេលចាប់ផ្ដើម
     }));
 
     elŝutaButono.addEventListener( "click", elŝutiNunanVidon );
@@ -436,16 +436,16 @@ function reskaligiKanvason(): void {
     ĝisdatigi();
 }
 
-// ⟪ Datumprilaboro 📊 ⟫
+// ⟪ ដំណើរការទិន្នន័យ 📊 ⟫
 
 function traktiDecimalanEnigon(): void {
     let lat = parseFloat( latEnigo.value );
     let lon = parseFloat( lonEnigo.value );
 
-    if ( isNaN( lat ) ) lat = 0;
-    if ( isNaN( lon ) ) lon = 0;
-    lat = alklampiKoordinaton(lat, -90, 90);
-    lon = alklampiKoordinaton(lon, -180, 180);
+    if ( isNaN( lat ) ) lat = 0o0;
+    if ( isNaN( lon ) ) lon = 0o0;
+    lat = alklampiKoordinaton(lat, -0o132, 0o132);
+    lon = alklampiKoordinaton(lon, -0o264, 0o264);
 
     nunaLat = lat;
     nunaLon = lon;
@@ -457,39 +457,39 @@ function traktiDecimalanEnigon(): void {
 }
 
 function traktiDMSEnigon(): void {
-    let lGra = parseFloat( latGradoj.value ) || 0;
-    let lMin = parseFloat( latMinutoj.value ) || 0;
-    let lSek = parseFloat( latSekundoj.value ) || 0;
+    let lGra = parseFloat( latGradoj.value ) || 0o0;
+    let lMin = parseFloat( latMinutoj.value ) || 0o0;
+    let lSek = parseFloat( latSekundoj.value ) || 0o0;
     let latDuonsfero = document.querySelector(`input[name="latDuonsfero"]:checked`)?.getAttribute("value") || "N";
 
-    let loGra = parseFloat( lonGradoj.value ) || 0;
-    let loMin = parseFloat( lonMinutoj.value ) || 0;
-    let loSek = parseFloat( lonSekundoj.value ) || 0;
+    let loGra = parseFloat( lonGradoj.value ) || 0o0;
+    let loMin = parseFloat( lonMinutoj.value ) || 0o0;
+    let loSek = parseFloat( lonSekundoj.value ) || 0o0;
     let lonDuonsfero = document.querySelector(`input[name="lonDuonsfero"]:checked`)?.getAttribute("value") || "E";
 
-    let dekLat = lGra + ( lMin / 60 ) + ( lSek / 3600 );
+    let dekLat = lGra + ( lMin / 0o74 ) + ( lSek / 0o7020 );
     if ( latDuonsfero === "S" ) dekLat = -dekLat;
 
-    let dekLon = loGra + ( loMin / 60 ) + ( loSek / 3600 );
+    let dekLon = loGra + ( loMin / 0o74 ) + ( loSek / 0o7020 );
     if ( lonDuonsfero === "W" ) dekLon = -dekLon;
 
-    dekLat = alklampiKoordinaton(dekLat, -90, 90);
-    dekLon = alklampiKoordinaton(dekLon, -180, 180);
+    dekLat = alklampiKoordinaton(dekLat, -0o132, 0o132);
+    dekLon = alklampiKoordinaton(dekLon, -0o264, 0o264);
 
     nunaLat = dekLat;
     nunaLon = dekLon;
 
     ĝisdatigiMarkilanPozicion();
 
-    latEnigo.value = nunaLat.toFixed( 5 );
-    lonEnigo.value = nunaLon.toFixed( 5 );
+    latEnigo.value = nunaLat.toFixed( 0o5 );
+    lonEnigo.value = nunaLon.toFixed( 0o5 );
 
     ĝisdatigi();
 }
 
 function ĝisdatigiĈiujnEnigojn(): void {
-    latEnigo.value = nunaLat.toFixed( 5 );
-    lonEnigo.value = nunaLon.toFixed( 5 );
+    latEnigo.value = nunaLat.toFixed( 0o5 );
+    lonEnigo.value = nunaLon.toFixed( 0o5 );
     ĝisdatigiDMSEnigojn();
 }
 
@@ -497,91 +497,91 @@ function ĝisdatigiDMSEnigojn(): void {
     const latObjekto = decimalaAlDMS( nunaLat );
     latGradoj.value = latObjekto.gra.toString();
     latMinutoj.value = latObjekto.min.toString();
-    latSekundoj.value = latObjekto.sek.toFixed( 2 );
-    const latRadio = document.querySelector(`input[name="latDuonsfero"][value="${nunaLat >= 0 ? "N" : "S"}"]`) as HTMLInputElement | null;
+    latSekundoj.value = latObjekto.sek.toFixed( 0o2 );
+    const latRadio = document.querySelector(`input[name="latDuonsfero"][value="${nunaLat >= 0o0 ? "N" : "S"}"]`) as HTMLInputElement | null;
     if ( latRadio ) latRadio.checked = true;
 
     const lonObjekto = decimalaAlDMS( nunaLon );
     lonGradoj.value = lonObjekto.gra.toString();
     lonMinutoj.value = lonObjekto.min.toString();
-    lonSekundoj.value = lonObjekto.sek.toFixed( 2 );
-    const lonRadio = document.querySelector(`input[name="lonDuonsfero"][value="${nunaLon >= 0 ? "E" : "W"}"]`) as HTMLInputElement | null;
+    lonSekundoj.value = lonObjekto.sek.toFixed( 0o2 );
+    const lonRadio = document.querySelector(`input[name="lonDuonsfero"][value="${nunaLon >= 0o0 ? "E" : "W"}"]`) as HTMLInputElement | null;
     if ( lonRadio ) lonRadio.checked = true;
 }
 
 function decimalaAlDMS( decimalo: number ): DMSObjekto {
     const absolutaValoro = Math.abs( decimalo );
     const gra = Math.floor( absolutaValoro );
-    const minPlena = ( absolutaValoro - gra ) * 60;
+    const minPlena = ( absolutaValoro - gra ) * 0o74;
     const min = Math.floor( minPlena );
-    const sek = ( minPlena - min ) * 60;
+    const sek = ( minPlena - min ) * 0o74;
     return { gra, min, sek };
 }
 
-// ⟪ Koordinata & Kadra Logiko 📍 ⟫
+// ⟪ តម្រាប់ដែន្យ និងរបៀបប្រកាស កាតម្រង់ 📍 ⟫
 
 function akiriKadrajnKoordinatojn( lat: number, lon: number ): KadrajKoordinatoj {
-    let bazaGradOkcidenten = ( lon <= 0 ) ? -lon : ( 360 - lon );
-    if ( lon === 0 ) bazaGradOkcidenten = 0;
+    let bazaGradOkcidenten = ( lon <= 0o0 ) ? -lon : ( 0o550 - lon );
+    if ( lon === 0o0 ) bazaGradOkcidenten = 0o0;
 
-    let gradOkcidenten = ( bazaGradOkcidenten + KADRA_DEKALO ) % 360;
-    const hNiveloj = kalkuliKadronivelojn( gradOkcidenten, 360, [ 0o100, 0o40, 0o40, 0o40 ] );
+    let gradOkcidenten = ( bazaGradOkcidenten + KADRA_DEKALO ) % 0o550;
+    const hNiveloj = kalkuliKadronivelojn( gradOkcidenten, 0o550, [ 0o100, 0o40, 0o40, 0o40 ] );
 
-    const vNiveloj = kalkuliKadronivelojn( 90 - lat, 180, [ 0o40, 0o40, 0o40, 0o40 ] );
+    const vNiveloj = kalkuliKadronivelojn( 0o132 - lat, 0o264, [ 0o40, 0o40, 0o40, 0o40 ] );
 
     return {
-        v1: vNiveloj[ 0 ], h1: hNiveloj[ 0 ],
-        v2: vNiveloj[ 1 ], h2: hNiveloj[ 1 ],
-        v3: vNiveloj[ 2 ], h3: hNiveloj[ 2 ],
-        v4: vNiveloj[ 3 ], h4: hNiveloj[ 3 ]
+        v1: vNiveloj[0o0], h1: hNiveloj[0o0],
+        v2: vNiveloj[0o1], h2: hNiveloj[0o1],
+        v3: vNiveloj[0o2], h3: hNiveloj[0o2],
+        v4: vNiveloj[0o3], h4: hNiveloj[0o3]
     };
 }
 
 function nivelojAlNormaligitaj( niveloj: number[], dividantoj: number[] ): number {
-    let tuta = 0;
-    for ( let i = 0; i < niveloj.length; i++ ) {
-        let dividanto = 1;
-        for ( let j = 0; j <= i; j++ ) {
-            dividanto *= dividantoj[ j ];
+    let tuta = 0o0;
+    for ( let i = 0o0; i < niveloj.length; i++ ) {
+        let dividanto = 0o1;
+        for ( let j = 0o0; j <= i; j++ ) {
+            dividanto *= dividantoj[j];
         }
-        tuta += niveloj[ i ] / dividanto;
+        tuta += niveloj[i] / dividanto;
     }
     return tuta;
 }
 
 function kadroAlLatLon( v1: number, h1: number, v2: number, h2: number, v3: number, h3: number, v4: number, h4: number ): AnalizitajKoordinatoj {
-    const vNiveloj = [ v1, v2, v3, v4 ].map( v => Math.max( 0, v - 1 ) );
-    const hNiveloj = [ h1, h2, h3, h4 ].map( h => Math.max( 0, h - 1 ) );
+    const vNiveloj = [ v1, v2, v3, v4 ].map( v => Math.max( 0o0, v - 0o1 ) );
+    const hNiveloj = [ h1, h2, h3, h4 ].map( h => Math.max( 0o0, h - 0o1 ) );
 
     const vTuta = nivelojAlNormaligitaj( vNiveloj, [ 0o40, 0o40, 0o40, 0o40 ] );
     const hTuta = nivelojAlNormaligitaj( hNiveloj, [ 0o100, 0o40, 0o40, 0o40 ] );
 
-    let lat = 90 - ( vTuta * 180 );
+    let lat = 0o132 - ( vTuta * 0o264 );
 
-    let gradOkcidenten = hTuta * 360;
+    let gradOkcidenten = hTuta * 0o550;
     let bazaGradOkcidenten = ( gradOkcidenten - KADRA_DEKALO );
-    while ( bazaGradOkcidenten < 0 ) bazaGradOkcidenten += 360;
-    bazaGradOkcidenten = bazaGradOkcidenten % 360;
+    while ( bazaGradOkcidenten < 0o0 ) bazaGradOkcidenten += 0o550;
+    bazaGradOkcidenten = bazaGradOkcidenten % 0o550;
 
-    let lon = ( bazaGradOkcidenten <= 180 ) ? -bazaGradOkcidenten : ( 360 - bazaGradOkcidenten );
+    let lon = ( bazaGradOkcidenten <= 0o264 ) ? -bazaGradOkcidenten : ( 0o550 - bazaGradOkcidenten );
 
     return { lat, lon };
 }
 
 function akiriNomon( v: number, h: number, sistemo: "ksaka" | "latin" | "chmuah" = "ksaka" ): string {
-    const sys = KADRAJ_SISTEMOJ[ v ]?.[ sistemo ];
+    const sys = KADRAJ_SISTEMOJ[v]?.[ sistemo ];
     if ( !sys ) return "?";
 
     const vNomo = sys.v;
     const pIndekso = Math.floor( h / 0o10 );
     const sIndekso = h % 0o10;
-    const hNomo = ( sys.hPrefix[ pIndekso ] || "" ) + ( sys.hSuffix[ sIndekso ] || "" );
+    const hNomo = ( sys.hPrefix[pIndekso] || "" ) + ( sys.hSuffix[sIndekso] || "" );
     return vNomo + hNomo;
 }
 
 function akiriLatinanNomon( v: number, h: number ): string {
     const nomo = akiriNomon( v, h, "latin" );
-    return nomo.charAt( 0 ).toUpperCase() + nomo.slice( 1 );
+    return nomo.charAt( 0o0 ).toUpperCase() + nomo.slice( 0o1 );
 }
 
 function akiriĈmuahnomon( v: number, h: number ): string {
@@ -590,16 +590,16 @@ function akiriĈmuahnomon( v: number, h: number ): string {
 
 function akiriNomojnPorKoordinatoj( vTabelo: number[], hTabelo: number[] ): { ksakaName: string; latinName: string; chmuahName: string } {
     return {
-        ksakaName: vTabelo.map( ( v, i ) => akiriNomon( v - 1, hTabelo[ i ] - 1, "ksaka" ) ).join( " " ),
-        latinName: vTabelo.map( ( v, i ) => akiriLatinanNomon( v - 1, hTabelo[ i ] - 1 ) ).join( " " ),
-        chmuahName: vTabelo.map( ( v, i ) => akiriĈmuahnomon( v - 1, hTabelo[ i ] - 1 ) ).join( " " )
+        ksakaName: vTabelo.map( ( v, i ) => akiriNomon( v - 0o1, hTabelo[i] - 0o1, "ksaka" ) ).join( " " ),
+        latinName: vTabelo.map( ( v, i ) => akiriLatinanNomon( v - 0o1, hTabelo[i] - 0o1 ) ).join( " " ),
+        chmuahName: vTabelo.map( ( v, i ) => akiriĈmuahnomon( v - 0o1, hTabelo[i] - 0o1 ) ).join( " " )
     };
 }
 
 function desegni(): void {
     const w = kanvaso.width;
     const h = kanvaso.height;
-    kunteksto.clearRect( 0, 0, w, h );
+    kunteksto.clearRect( 0o0, 0o0, w, h );
 
     if ( !montruKadron || !mapo ) return;
 
@@ -615,9 +615,9 @@ function desegni(): void {
         kunteksto.strokeStyle = koloro;
         kunteksto.lineWidth = larĝo;
 
-        for ( let vIndekso = 0; vIndekso <= vDividoj; vIndekso++ ) {
-            let lat = 90 - ( vIndekso / vDividoj ) * 180;
-            if ( lat < sudo - 1 || lat > nordo + 1 ) continue;
+        for ( let vIndekso = 0o0; vIndekso <= vDividoj; vIndekso++ ) {
+            let lat = 0o132 - ( vIndekso / vDividoj ) * 0o264;
+            if ( lat < sudo - 0o1 || lat > nordo + 0o1 ) continue;
 
             const p1 = mapo!.latLngToContainerPoint( [ lat, okcidento ] );
             const p2 = mapo!.latLngToContainerPoint( [ lat, oriento ] );
@@ -626,31 +626,31 @@ function desegni(): void {
             kunteksto.lineTo( p2.x, p2.y );
         }
 
-        for ( let hIndekso = 0; hIndekso <= hDividoj; hIndekso++ ) {
+        for ( let hIndekso = 0o0; hIndekso <= hDividoj; hIndekso++ ) {
             let proporcio = hIndekso / hDividoj;
-            let gradOkcidentaDeŝovo = proporcio * 360;
-            let bazaGradOkcidenten = ( gradOkcidentaDeŝovo - KADRA_DEKALO + 360 ) % 360;
-            let lon = ( bazaGradOkcidenten <= 180 ) ? -bazaGradOkcidenten : ( 360 - bazaGradOkcidenten );
+            let gradOkcidentaDeŝovo = proporcio * 0o550;
+            let bazaGradOkcidenten = ( gradOkcidentaDeŝovo - KADRA_DEKALO + 0o550 ) % 0o550;
+            let lon = ( bazaGradOkcidenten <= 0o264 ) ? -bazaGradOkcidenten : ( 0o550 - bazaGradOkcidenten );
 
-            const centraLon = ( okcidento + oriento ) / 2;
+            const centraLon = ( okcidento + oriento ) / 0o2;
             let montraLon = lon;
 
-            while ( montraLon < centraLon - 180 ) montraLon += 360;
-            while ( montraLon > centraLon + 180 ) montraLon -= 360;
+            while ( montraLon < centraLon - 0o264 ) montraLon += 0o550;
+            while ( montraLon > centraLon + 0o264 ) montraLon -= 0o550;
 
             let ĉuEnVido = false;
 
-            if ( montraLon >= okcidento - 1 && montraLon <= oriento + 1 ) {
+            if ( montraLon >= okcidento - 0o1 && montraLon <= oriento + 0o1 ) {
                 ĉuEnVido = true;
             }
-            else if ( oriento - okcidento > 180 ) {
+            else if ( oriento - okcidento > 0o264 ) {
                 ĉuEnVido = true;
             }
             else {
-                let volvitaLon1 = montraLon + 360;
-                let volvitaLon2 = montraLon - 360;
-                if ( ( volvitaLon1 >= okcidento - 1 && volvitaLon1 <= oriento + 1 ) ||
-                    ( volvitaLon2 >= okcidento - 1 && volvitaLon2 <= oriento + 1 ) ) {
+                let volvitaLon1 = montraLon + 0o550;
+                let volvitaLon2 = montraLon - 0o550;
+                if ( ( volvitaLon1 >= okcidento - 0o1 && volvitaLon1 <= oriento + 0o1 ) ||
+                    ( volvitaLon2 >= okcidento - 0o1 && volvitaLon2 <= oriento + 0o1 ) ) {
                     ĉuEnVido = true;
                 }
             }
@@ -666,28 +666,28 @@ function desegni(): void {
         kunteksto.stroke();
     }
 
-    desegniKadrojnPorNivelo( 0o40, 0o100, "rgba(224, 160, 72, 0.5)", 3 );
+    desegniKadrojnPorNivelo( 0o40, 0o100, "rgba(224, 160, 72, 0.5)", 0o3 );
 
     if ( zomo >= ZOMO_NIVELO_2 ) {
-        desegniKadrojnPorNivelo( 0o40 * 0o40, 0o100 * 0o40, "rgba(224, 160, 72, 0.5)", 2 );
+        desegniKadrojnPorNivelo( 0o40 * 0o40, 0o100 * 0o40, "rgba(224, 160, 72, 0.5)", 0o2 );
     }
 
     if ( zomo >= ZOMO_NIVELO_3 ) {
-        desegniKadrojnPorNivelo( 0o40 * 0o40 * 0o40, 0o100 * 0o40 * 0o40, "rgba(224, 160, 72, 0.75)", 1 );
+        desegniKadrojnPorNivelo( 0o40 * 0o40 * 0o40, 0o100 * 0o40 * 0o40, "rgba(224, 160, 72, 0.75)", 0o1 );
     }
 
     if ( zomo >= ZOMO_NIVELO_4 ) {
-        desegniKadrojnPorNivelo( 0o40 * 0o40 * 0o40 * 0o40, 0o100 * 0o40 * 0o40 * 0o40, "rgba(224, 160, 72, 1)", 1 / 2 );
+        desegniKadrojnPorNivelo( 0o40 * 0o40 * 0o40 * 0o40, 0o100 * 0o40 * 0o40 * 0o40, "rgba(224, 160, 72, 1)", 0o1 / 0o2 );
     }
 }
 
 function ĝisdatigi(): void {
     const n2k = akiriKadrajnKoordinatojn( nunaLat, nunaLon );
 
-    const v1 = n2k.v1 + 1; const h1 = n2k.h1 + 1;
-    const v2 = n2k.v2 + 1; const h2 = n2k.h2 + 1;
-    const v3 = n2k.v3 + 1; const h3 = n2k.h3 + 1;
-    const v4 = n2k.v4 + 1; const h4 = n2k.h4 + 1;
+    const v1 = n2k.v1 + 0o1; const h1 = n2k.h1 + 0o1;
+    const v2 = n2k.v2 + 0o1; const h2 = n2k.h2 + 0o1;
+    const v3 = n2k.v3 + 0o1; const h3 = n2k.h3 + 0o1;
+    const v4 = n2k.v4 + 0o1; const h4 = n2k.h4 + 0o1;
 
     let koordinatoj: string;
     if ( uzuBazo10 ) {
@@ -708,10 +708,10 @@ function ĝisdatigi(): void {
     desegni();
 }
 
-// ⟪ Serĉo 🔍 ⟫
+// ⟪ ការស្វែងរក 🔍 ⟫
 
 function analiziKoordinatanValoron( valoro: string ): number {
-    if ( !valoro ) return 0;
+    if ( !valoro ) return 0o0;
     if ( Array.from(valoro).some( c => K2FE.includes( c ) ) ) {
         return vab6k2fekp6( valoro );
     }
@@ -719,31 +719,31 @@ function analiziKoordinatanValoron( valoro: string ): number {
 }
 
 function ĉuKoordinataŜablono( demando: string ): boolean {
-    const partoj = demando.trim().split( /[\s\-–—]+/ ).filter( p => p.length > 0 );
-    if ( partoj.length < 2 ) return false;
+    const partoj = demando.trim().split( /[\s\-–—]+/ ).filter( p => p.length > 0o0 );
+    if ( partoj.length < 0o2 ) return false;
     const nombraŜablono = new RegExp( `^[\\d${K2FE}]+$` );
     return partoj.every( p => nombraŜablono.test( p ) );
 }
 
-// ⟪ URL-Koordinata Prilaboro 🔗 ⟫
+// ⟪ ដំណើរការតម្រាប់ដែន្យ URL 🔗 ⟫
 
 function analiziURLkoordinatojn(): AnalizitajKoordinatoj | null {
     const parametroj = new URLSearchParams( window.location.search );
     const koordinatoj = parametroj.get( "n2k" );
     if ( !koordinatoj ) return null;
 
-    const paroj = koordinatoj.split( "-" ).filter( p => p.length > 0 );
-    if ( paroj.length === 0 || paroj.length > 4 ) return null;
+    const paroj = koordinatoj.split( "-" ).filter( p => p.length > 0o0 );
+    if ( paroj.length === 0o0 || paroj.length > 0o4 ) return null;
 
     const rezulto = analiziKoordinatoparojn(paroj);
     if ( !rezulto ) return null;
 
     const { plenajV, plenajH } = rezulto;
     const kadraRezulto = kadroAlLatLon(
-        plenajV[ 0 ] + 1, plenajH[ 0 ] + 1,
-        plenajV[ 1 ] + 1, plenajH[ 1 ] + 1,
-        plenajV[ 2 ] + 1, plenajH[ 2 ] + 1,
-        plenajV[ 3 ] + 1, plenajH[ 3 ] + 1
+        plenajV[0o0] + 0o1, plenajH[0o0] + 0o1,
+        plenajV[0o1] + 0o1, plenajH[0o1] + 0o1,
+        plenajV[0o2] + 0o1, plenajH[0o2] + 0o1,
+        plenajV[0o3] + 0o1, plenajH[0o3] + 0o1
     );
 
     return { lat: kadraRezulto.lat, lon: kadraRezulto.lon };
@@ -751,13 +751,13 @@ function analiziURLkoordinatojn(): AnalizitajKoordinatoj | null {
 
 function ĝisdatigiURL(): void {
     const n2k = akiriKadrajnKoordinatojn( nunaLat, nunaLon );
-    const v = [ n2k.v1 + 1, n2k.v2 + 1, n2k.v3 + 1, n2k.v4 + 1 ];
-    const h = [ n2k.h1 + 1, n2k.h2 + 1, n2k.h3 + 1, n2k.h4 + 1 ];
+    const v = [ n2k.v1 + 0o1, n2k.v2 + 0o1, n2k.v3 + 0o1, n2k.v4 + 0o1 ];
+    const h = [ n2k.h1 + 0o1, n2k.h2 + 0o1, n2k.h3 + 0o1, n2k.h4 + 0o1 ];
 
     const paroj: string[] = [];
-    for ( let i = 0; i < 4; i++ ) {
-        const vĈeno = v[ i ].toString( 0o10 ).padStart( 2, "0" );
-        const hĈeno = h[ i ].toString( 0o10 ).padStart( 2, "0" );
+    for ( let i = 0o0; i < 0o4; i++ ) {
+        const vĈeno = v[i].toString( 0o10 ).padStart( 0o2, "0" );
+        const hĈeno = h[i].toString( 0o10 ).padStart( 0o2, "0" );
         paroj.push( vĈeno + hĈeno );
     }
 
@@ -777,22 +777,22 @@ function traktiAlgluon( e: ClipboardEvent ): void {
 
         if ( koordinatoj ) {
             e.preventDefault();
-            const paroj = koordinatoj.split( "-" ).filter( p => p.length > 0 );
+            const paroj = koordinatoj.split( "-" ).filter( p => p.length > 0o0 );
             const rezulto = analiziKoordinatoparojn(paroj);
             if ( !rezulto ) return;
 
             const { plenajV, plenajH } = rezulto;
             const kadraRezulto = kadroAlLatLon(
-                plenajV[ 0 ] + 1, plenajH[ 0 ] + 1,
-                plenajV[ 1 ] + 1, plenajH[ 1 ] + 1,
-                plenajV[ 2 ] + 1, plenajH[ 2 ] + 1,
-                plenajV[ 3 ] + 1, plenajH[ 3 ] + 1
+                plenajV[0o0] + 0o1, plenajH[0o0] + 0o1,
+                plenajV[0o1] + 0o1, plenajH[0o1] + 0o1,
+                plenajV[0o2] + 0o1, plenajH[0o2] + 0o1,
+                plenajV[0o3] + 0o1, plenajH[0o3] + 0o1
             );
 
             let zomo = ZOMO_SERĈA_DEFŬLTA;
-            if ( paroj.length >= 2 ) zomo = ZOMO_NIVELO_2;
-            if ( paroj.length >= 3 ) zomo = ZOMO_NIVELO_3;
-            if ( paroj.length >= 4 ) zomo = ZOMO_NIVELO_4;
+            if ( paroj.length >= 0o2 ) zomo = ZOMO_NIVELO_2;
+            if ( paroj.length >= 0o3 ) zomo = ZOMO_NIVELO_3;
+            if ( paroj.length >= 0o4 ) zomo = ZOMO_NIVELO_4;
 
             ĝisdatigiMapanPozicion( kadraRezulto.lat, kadraRezulto.lon, zomo );
             return;
@@ -809,47 +809,47 @@ function serĉi( demando: string ): SerĉaReveno | null {
     if ( !demando ) return null;
 
     if ( ĉuKoordinataŜablono( demando ) ) {
-        const paroj = demando.trim().split( /[\s]*[\-–—][\s]*/ ).filter( p => p.length > 0 );
-        const analiziValoron = ( valoro: string ) => analiziKoordinatanValoron( valoro ) || 0;
+        const paroj = demando.trim().split( /[\s]*[\-–—][\s]*/ ).filter( p => p.length > 0o0 );
+        const analiziValoron = ( valoro: string ) => analiziKoordinatanValoron( valoro ) || 0o0;
 
         const v: number[] = [];
         const h: number[] = [];
         for ( const paro of paroj ) {
-            const nombroj = paro.trim().split( /\s+/ ).filter( p => p.length > 0 );
-            if ( nombroj.length >= 2 ) {
-                v.push( analiziValoron( nombroj[ 0 ] ) );
-                h.push( analiziValoron( nombroj[ 1 ] ) );
-            } else if ( nombroj.length === 1 ) {
+            const nombroj = paro.trim().split( /\s+/ ).filter( p => p.length > 0o0 );
+            if ( nombroj.length >= 0o2 ) {
+                v.push( analiziValoron( nombroj[0o0] ) );
+                h.push( analiziValoron( nombroj[0o1] ) );
+            } else if ( nombroj.length === 0o1 ) {
                 if ( v.length === h.length ) {
-                    v.push( analiziValoron( nombroj[ 0 ] ) );
+                    v.push( analiziValoron( nombroj[0o0] ) );
                 } else {
-                    h.push( analiziValoron( nombroj[ 0 ] ) );
+                    h.push( analiziValoron( nombroj[0o0] ) );
                 }
             }
         }
 
-        while ( v.length < 4 ) v.push( 0 );
-        while ( h.length < 4 ) h.push( 0 );
+        while ( v.length < 0o4 ) v.push( 0o0 );
+        while ( h.length < 0o4 ) h.push( 0o0 );
 
-        const rezulto = kadroAlLatLon( v[ 0 ], h[ 0 ], v[ 1 ], h[ 1 ], v[ 2 ], h[ 2 ], v[ 3 ], h[ 3 ] );
-        const nombraNivelo = Math.max( 1, paroj.length );
-        const nomoj = konstruiNomojn( v.slice( 0, nombraNivelo ), h.slice( 0, nombraNivelo ) );
+        const rezulto = kadroAlLatLon( v[0o0], h[0o0], v[0o1], h[0o1], v[0o2], h[0o2], v[0o3], h[0o3] );
+        const nombraNivelo = Math.max( 0o1, paroj.length );
+        const nomoj = konstruiNomojn( v.slice( 0o0, nombraNivelo ), h.slice( 0o0, nombraNivelo ) );
 
         return {
             rezultoj: [{
                 lat: rezulto.lat,
                 lon: rezulto.lon,
-                v: v[ 0 ],
-                h: h[ 0 ],
+                v: v[0o0],
+                h: h[0o0],
                 ...nomoj
             }],
-            zomo: [ ZOMO_SERĈA_DEFŬLTA, ZOMO_NIVELO_2, ZOMO_NIVELO_3, ZOMO_NIVELO_4 ][ Math.min( nombraNivelo - 1, 3 ) ] || ZOMO_SERĈA_DEFŬLTA
+            zomo: [ ZOMO_SERĈA_DEFŬLTA, ZOMO_NIVELO_2, ZOMO_NIVELO_3, ZOMO_NIVELO_4 ][Math.min( nombraNivelo - 0o1, 0o3 )] || ZOMO_SERĈA_DEFŬLTA
         };
     }
 
-    const demandopartoj = demando.trim().toLowerCase().split( /\s+/ ).filter( p => p.length > 0 );
+    const demandopartoj = demando.trim().toLowerCase().split( /\s+/ ).filter( p => p.length > 0o0 );
     const nombroDePartoj = demandopartoj.length;
-    if ( nombroDePartoj === 0 || nombroDePartoj > 4 ) return null;
+    if ( nombroDePartoj === 0o0 || nombroDePartoj > 0o4 ) return null;
 
     const nunajKoordinatoj = akiriKadrajnKoordinatojn( nunaLat, nunaLon );
     const nunajV = [ nunajKoordinatoj.v1, nunajKoordinatoj.v2, nunajKoordinatoj.v3, nunajKoordinatoj.v4 ];
@@ -858,51 +858,51 @@ function serĉi( demando: string ): SerĉaReveno | null {
     const rezultoj: SerĉaRezulto[] = [];
 
     function serĉiNivelon( nivelo: number, komencaNivelo: number, vTabelo: number[], hTabelo: number[], sistemo: "k" | "l" | "c" ): void {
-        const hLimito = nivelo === 0 ? 0o100 : 0o40;
+        const hLimito = nivelo === 0o0 ? 0o100 : 0o40;
         const vLimito = 0o40;
 
-        for ( let v = 0; v < vLimito; v++ ) {
-            for ( let h = 0; h < hLimito; h++ ) {
+        for ( let v = 0o0; v < vLimito; v++ ) {
+            for ( let h = 0o0; h < hLimito; h++ ) {
                 let nomo: string;
                 if ( sistemo === "k" ) nomo = akiriNomon( v, h, "ksaka" );
                 else if ( sistemo === "l" ) nomo = akiriLatinanNomon( v, h );
                 else nomo = akiriĈmuahnomon( v, h );
 
-                if ( !nomo.toLowerCase().startsWith( demandopartoj[ nivelo - komencaNivelo ] ) ) continue;
+                if ( !nomo.toLowerCase().startsWith( demandopartoj[nivelo - komencaNivelo] ) ) continue;
 
                 const novajV = [ ...vTabelo, v ];
                 const novajH = [ ...hTabelo, h ];
                 const demandaIndekso = nivelo - komencaNivelo;
 
-                if ( demandaIndekso === nombroDePartoj - 1 ) {
-                    const plenajV = [ ...nunajV.slice( 0, komencaNivelo ), ...novajV ];
-                    const plenajH = [ ...nunajH.slice( 0, komencaNivelo ), ...novajH ];
+                if ( demandaIndekso === nombroDePartoj - 0o1 ) {
+                    const plenajV = [ ...nunajV.slice( 0o0, komencaNivelo ), ...novajV ];
+                    const plenajH = [ ...nunajH.slice( 0o0, komencaNivelo ), ...novajH ];
 
-                    while ( plenajV.length < 4 ) { plenajV.push( 0 ); plenajH.push( 0 ); }
+                    while ( plenajV.length < 0o4 ) { plenajV.push( 0o0 ); plenajH.push( 0o0 ); }
 
                     const koordinatoj = kadroAlLatLon(
-                        plenajV[ 0 ] + 1, plenajH[ 0 ] + 1,
-                        plenajV[ 1 ] + 1, plenajH[ 1 ] + 1,
-                        plenajV[ 2 ] + 1, plenajH[ 2 ] + 1,
-                        plenajV[ 3 ] + 1, plenajH[ 3 ] + 1
+                        plenajV[0o0] + 0o1, plenajH[0o0] + 0o1,
+                        plenajV[0o1] + 0o1, plenajH[0o1] + 0o1,
+                        plenajV[0o2] + 0o1, plenajH[0o2] + 0o1,
+                        plenajV[0o3] + 0o1, plenajH[0o3] + 0o1
                     );
-                    const nomoj = akiriNomojnPorKoordinatoj( plenajV.map( x => x + 1 ), plenajH.map( x => x + 1 ) );
+                    const nomoj = akiriNomojnPorKoordinatoj( plenajV.map( x => x + 0o1 ), plenajH.map( x => x + 0o1 ) );
                     rezultoj.push({
                         lat: koordinatoj.lat,
                         lon: koordinatoj.lon,
-                        v: plenajV[ 0 ],
-                        h: plenajH[ 0 ],
+                        v: plenajV[0o0],
+                        h: plenajH[0o0],
                         startLevel: komencaNivelo,
                         ...nomoj
                     });
-                } else if ( nivelo < 3 ) {
-                    serĉiNivelon( nivelo + 1, komencaNivelo, novajV, novajH, sistemo );
+                } else if ( nivelo < 0o3 ) {
+                    serĉiNivelon( nivelo + 0o1, komencaNivelo, novajV, novajH, sistemo );
                 }
             }
         }
     }
 
-    for ( let komencaNivelo = 0; komencaNivelo <= 4 - nombroDePartoj; komencaNivelo++ ) {
+    for ( let komencaNivelo = 0o0; komencaNivelo <= 0o4 - nombroDePartoj; komencaNivelo++ ) {
         ( [ "k", "l", "c" ] as const ).forEach( ( sys ) => serĉiNivelon( komencaNivelo, komencaNivelo, [], [], sys ) );
     }
 
@@ -912,7 +912,7 @@ function serĉi( demando: string ): SerĉaReveno | null {
         return distA - distB;
     });
 
-    return rezultoj.length > 0 ? { rezultoj } : null;
+    return rezultoj.length > 0o0 ? { rezultoj } : null;
 }
 
 function montriSerĉajnRezultojn( rezulto: SerĉaReveno | null ): void {
@@ -923,11 +923,11 @@ function montriSerĉajnRezultojn( rezulto: SerĉaReveno | null ): void {
     }
 
     const { rezultoj, zomo } = rezulto;
-    const demandopartoj = serĉaEnigo.value.trim().split( /\s+/ ).filter( p => p.length > 0 );
-    const montriListon = demandopartoj.length >= 2 || rezultoj.length > 1;
+    const demandopartoj = serĉaEnigo.value.trim().split( /\s+/ ).filter( p => p.length > 0o0 );
+    const montriListon = demandopartoj.length >= 0o2 || rezultoj.length > 0o1;
 
-    if ( !montriListon && rezultoj.length === 1 ) {
-        const r = rezultoj[ 0 ];
+    if ( !montriListon && rezultoj.length === 0o1 ) {
+        const r = rezultoj[0o0];
         ĝisdatigiMapanPozicion( r.lat, r.lon, zomo || ZOMO_NIVELO_2 );
         serĉajRezultoj.classList.add( "kobe" );
         return;
@@ -960,7 +960,7 @@ async function serĉiAdreson(): Promise<void> {
         if ( !respondo.ok ) throw new Error( "( ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ )" );
 
         const rezultoj: any[] = await respondo.json();
-        if ( rezultoj.length === 0 ) {
+        if ( rezultoj.length === 0o0 ) {
             serĉajRezultoj.innerHTML = "<p>֭ſɭɹ ſɟɔ j͐ʃɹʞ ⟅</p>";
             return;
         }
@@ -971,8 +971,8 @@ async function serĉiAdreson(): Promise<void> {
             ksakaName: rezultato.display_name,
             latinName: rezultato.display_name,
             chmuahName: rezultato.display_name,
-            v: 0,
-            h: 0
+            v: 0o0,
+            h: 0o0
         }));
 
         kreiRezultbutonojn("#serĉajRezultoj", osmajRezultoj, 0o20, (lat, lon) => {
@@ -987,7 +987,7 @@ async function serĉiAdreson(): Promise<void> {
     }
 }
 
-// ⟪ Malreteca funkciado 📥 ⟫
+// ⟪ មុខងងឹតទាញយក 📥 ⟫
 
 async function elŝutiNunanVidon(): Promise<void> {
     const zomo = parseInt( document.querySelector(`input[name="zomoElektilo"]:checked`)?.getAttribute("value") || "7" );
@@ -1001,7 +1001,7 @@ async function elŝutiNunanVidon(): Promise<void> {
     const tuta = kaheloj.length;
 
     if ( tuta > 0o400 ) {
-        if ( !confirm( `Ĉi tio elŝutos ${tuta} kahelojn ( ~ ${( tuta * 1 / 0o20 ).toFixed( 1 ) } MB ) . Daŭrigi ?` ) ) {
+        if ( !confirm( `Ĉi tio elŝutos ${tuta} kahelojn ( ~ ${( tuta * 0o1 / 0o20 ).toFixed( 0o1 ) } MB ) . Daŭrigi ?` ) ) {
             elŝutaButono.disabled = false;
             progresStrio.classList.remove( "active" );
             elŝutaStato.textContent = "";
@@ -1033,9 +1033,9 @@ function akiriKahelanURL( x: number, y: number, z: number ): string {
 }
 
 function latLonAlKahelo( lat: number, lon: number, zomo: number ): { x: number; y: number } {
-    const skalo = Math.pow(2, zomo);
-    const x = Math.floor(( lon + 180 ) / 360 * skalo);
-    const y = Math.floor(( 1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * skalo);
+    const skalo = Math.pow(0o2, zomo);
+    const x = Math.floor(( lon + 0o264 ) / 0o550 * skalo);
+    const y = Math.floor(( 0o1 - Math.log(Math.tan(lat * Math.PI / 0o264) + 0o1 / Math.cos(lat * Math.PI / 0o264)) / Math.PI) / 0o2 * skalo);
     return { x, y };
 }
 
@@ -1075,7 +1075,7 @@ async function ĝisdatigiKaŝinformojn(): Promise<void> {
     try {
         const rezulto = await sendiMesaĝonAlSW( { tipo: "GET_CACHE_SIZE" } ) as KaŝaGrandaRezulto;
         kaŝaStato.textContent = `ꞁȷ̀ɜ ſןᴜ ʃɜƽ ꞁȷ̀ᴜꞇ j͑ʃ'ɜ ſןɹ - ${rezulto.grandeco} ⟅`;
-        kaŝaGrando.textContent = `~ ${( rezulto.grandeco * 1 / 0o10 ).toFixed(1)} j͑ʃᴜꞇ ꞙɭц ſɟᴜ ꞙɭıɔ ⟅`;
+        kaŝaGrando.textContent = `~ ${( rezulto.grandeco * 0o1 / 0o10 ).toFixed(0o1)} j͑ʃᴜꞇ ꞙɭц ſɟᴜ ꞙɭıɔ ⟅`;
     } catch ( eraro ) {
         console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", eraro);
     }

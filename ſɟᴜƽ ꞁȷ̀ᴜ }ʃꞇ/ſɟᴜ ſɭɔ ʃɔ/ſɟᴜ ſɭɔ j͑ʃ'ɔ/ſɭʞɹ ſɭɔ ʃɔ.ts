@@ -162,7 +162,7 @@ function kreiId(): string {
   if ( typeof crypto !== "undefined" && "randomUUID" in crypto ) {
     return crypto.randomUUID();
   }
-  return `${Date.now().toString(0o10)}-${Math.random().toString(0o10).slice(2)}`;
+  return `${Date.now().toString(0o10)}-${Math.random().toString(0o10).slice(0o2)}`;
 }
 
 function migriAŭInicialigiStaton(): GeneratoraKonservo {
@@ -199,7 +199,7 @@ function migriAŭInicialigiStaton(): GeneratoraKonservo {
     aktivaGrupoId: null,
     malnetajPartoj: [],
     strukturoj: [],
-    evoluaKonservoj: [defaŭltaEvoluaKonservo],
+    evoluaKonservoj: [ defaŭltaEvoluaKonservo ],
     aktivaEvoluaKonservoId: defaŭltaEvoluaKonservo.id,
   };
 
@@ -215,7 +215,7 @@ function migriAŭInicialigiStaton(): GeneratoraKonservo {
     if ( Array.isArray(migritaGen.draftParts) ) {
       novaKonservo.malnetajPartoj = migritaGen.draftParts.map((p: any) => ({
         grupoId: p.groupId,
-        numeratoro: Math.min(64, Math.max(0, Math.floor(p.numerator || 0))),
+        numeratoro: Math.min(0o100, Math.max(0o0, Math.floor(p.numerator || 0o0))),
       }));
     }
 
@@ -224,14 +224,14 @@ function migriAŭInicialigiStaton(): GeneratoraKonservo {
         id: s.id,
         partoj: Array.isArray(s.parts) ? s.parts.map((p: any) => ({
           grupoId: p.groupId,
-          numeratoro: Math.min(64, Math.max(0, Math.floor(p.numerator || 0))),
+          numeratoro: Math.min(0o100, Math.max(0o0, Math.floor(p.numerator || 0o0))),
         })) : [],
       }));
     }
   }
 
   konservojStato = {
-    konservoj: [novaKonservo],
+    konservoj: [ novaKonservo ],
     aktivaKonservoId: novaKonservo.id,
   };
 
@@ -268,13 +268,13 @@ function mapiKrudaStaton( kruda: any ): KonservojStato {
       aktivaGrupoId: s.aktivaGrupoId ?? s.activeGroupId ?? null,
       malnetajPartoj: (s.malnetajPartoj ?? s.draftParts ?? []).map((p: any) => ({
         grupoId: p.grupoId,
-        numeratoro: p.numeratoro ?? p.numerator ?? 0,
+        numeratoro: p.numeratoro ?? p.numerator ?? 0o0,
       })),
       strukturoj: (s.strukturoj ?? s.structures ?? []).map((st: any) => ({
         id: st.id,
         partoj: (st.partoj ?? st.parts ?? []).map((p: any) => ({
           grupoId: p.grupoId,
-          numeratoro: p.numeratoro ?? p.numerator ?? 0,
+          numeratoro: p.numeratoro ?? p.numerator ?? 0o0,
         })),
       })),
       evoluaKonservoj: (s.evoluaKonservoj ?? s.evolveSaves ?? []).map((e: any) => ({
@@ -296,11 +296,11 @@ function ŝargiStaton(): GeneratoraKonservo {
       const analizita = JSON.parse(konservita);
       if ( analizita && ( Array.isArray(analizita.saves) || Array.isArray(analizita.konservoj) ) ) {
         const mapita = mapiKrudaStaton(analizita);
-        if ( mapita.konservoj.length > 0 ) {
+        if ( mapita.konservoj.length > 0o0 ) {
           konservojStato = mapita;
           let aktiva = konservojStato.konservoj.find(k => k.id === konservojStato.aktivaKonservoId);
           if ( !aktiva ) {
-            aktiva = konservojStato.konservoj[0];
+            aktiva = konservojStato.konservoj[0o0];
             konservojStato.aktivaKonservoId = aktiva.id;
           }
           return aktiva;
@@ -360,7 +360,7 @@ function troviSonon( sonoId: string ): SonoEniro | undefined {
 }
 
 function normaligiFraktion( parto: StrukturaParto ): StrukturaParto {
-  const numeratoro = Math.min(64, Math.max(0, Math.floor(parto.numeratoro || 0)));
+  const numeratoro = Math.min(0o100, Math.max(0o0, Math.floor(parto.numeratoro || 0o0)));
   return {
     grupoId: parto.grupoId,
     numeratoro,
@@ -371,7 +371,7 @@ function priskribiParton( parto: StrukturaParto ): string {
   const grupo = troviGrupon(parto.grupoId);
   const grupoNomo = grupo ? grupo.nomo : "?";
   const normaligitaParto = normaligiFraktion(parto);
-  if ( normaligitaParto.numeratoro === 64 ) {
+  if ( normaligitaParto.numeratoro === 0o100 ) {
     return `${grupoNomo} ${T.ALWAYS}`;
   }
   return `${grupoNomo} ${normaligitaParto.numeratoro}/64`;
@@ -414,7 +414,7 @@ function forigiSonon( sonoId: string ): void {
 
 function bildigiSonojn(): void {
   restarigiInfanojn(SONA_LISTO);
-  if ( stato.sonoj.length === 0 ) {
+  if ( stato.sonoj.length === 0o0 ) {
     SONA_LISTO.appendChild(kreiMalplenanMesaĝon(T.EMPTY_SOUNDS));
     return;
   }
@@ -460,10 +460,10 @@ function forigiGrupon( grupoId: string ): void {
       ...strukturo,
       partoj: strukturo.partoj.filter((parto) => parto.grupoId !== grupoId),
     }))
-    .filter((strukturo) => strukturo.partoj.length > 0);
+    .filter((strukturo) => strukturo.partoj.length > 0o0);
 
   if ( stato.aktivaGrupoId === grupoId ) {
-    stato.aktivaGrupoId = stato.grupoj[0]?.id ?? null;
+    stato.aktivaGrupoId = stato.grupoj[0o0]?.id ?? null;
   }
 
   konfirmi();
@@ -503,7 +503,7 @@ function baskuliSonanAsignon( sonoId: string, asignita: boolean ): void {
 
 function bildigiGrupojn(): void {
   restarigiInfanojn(GRUPA_LISTO);
-  if ( stato.grupoj.length === 0 ) {
+  if ( stato.grupoj.length === 0o0 ) {
     GRUPA_LISTO.appendChild(kreiMalplenanMesaĝon(T.EMPTY_GROUPS));
     return;
   }
@@ -552,7 +552,7 @@ function bildigiAsignojn(): void {
   restarigiInfanojn(ASIGNA_LISTO);
   const aktivaGrupo = stato.aktivaGrupoId ? troviGrupon(stato.aktivaGrupoId) : undefined;
 
-  if ( !aktivaGrupo || stato.sonoj.length === 0 ) {
+  if ( !aktivaGrupo || stato.sonoj.length === 0o0 ) {
     ASIGNA_LISTO.appendChild(kreiMalplenanMesaĝon(T.EMPTY_ASSIGNMENT));
     return;
   }
@@ -575,7 +575,7 @@ function bildigiAsignojn(): void {
 function aldoniMalnetanParton( grupoId: string ): void {
   stato.malnetajPartoj.push({
     grupoId,
-    numeratoro: 64,
+    numeratoro: 0o100,
   });
   konfirmi();
 }
@@ -594,23 +594,23 @@ function ĝisdatigiMalnetanParton( indekso: number, valoro: number ): void {
 }
 
 function moviMalnetanPartonSupren( indekso: number ): void {
-  if ( indekso <= 0 ) return;
+  if ( indekso <= 0o0 ) return;
   const portempa = stato.malnetajPartoj[indekso];
-  stato.malnetajPartoj[indekso] = stato.malnetajPartoj[indekso - 1];
-  stato.malnetajPartoj[indekso - 1] = portempa;
+  stato.malnetajPartoj[indekso] = stato.malnetajPartoj[indekso - 0o1];
+  stato.malnetajPartoj[indekso - 0o1] = portempa;
   konfirmi();
 }
 
 function moviMalnetanPartonMalsupren( indekso: number ): void {
-  if ( indekso >= stato.malnetajPartoj.length - 1 ) return;
+  if ( indekso >= stato.malnetajPartoj.length - 0o1 ) return;
   const portempa = stato.malnetajPartoj[indekso];
-  stato.malnetajPartoj[indekso] = stato.malnetajPartoj[indekso + 1];
-  stato.malnetajPartoj[indekso + 1] = portempa;
+  stato.malnetajPartoj[indekso] = stato.malnetajPartoj[indekso + 0o1];
+  stato.malnetajPartoj[indekso + 0o1] = portempa;
   konfirmi();
 }
 
 function forigiMalnetanParton( indekso: number ): void {
-  stato.malnetajPartoj.splice(indekso, 1);
+  stato.malnetajPartoj.splice(indekso, 0o1);
   konfirmi();
 }
 
@@ -621,7 +621,7 @@ function malplenigiMalneton(): void {
 }
 
 function konserviStrukturon(): void {
-  if ( stato.malnetajPartoj.length === 0 ) {
+  if ( stato.malnetajPartoj.length === 0o0 ) {
     agordiStaton(T.NEED_DRAFT);
     return;
   }
@@ -651,7 +651,7 @@ function redaktiStrukturon( strukturoId: string ): void {
 
 function bildigiStrukturgrupoButonojn(): void {
   restarigiInfanojn(STRUKTURA_GRUPA_LISTO);
-  if ( stato.grupoj.length === 0 ) {
+  if ( stato.grupoj.length === 0o0 ) {
     STRUKTURA_GRUPA_LISTO.appendChild(kreiMalplenanMesaĝon(T.NEED_GROUPS));
     return;
   }
@@ -663,7 +663,7 @@ function bildigiStrukturgrupoButonojn(): void {
 
 function bildigiMalnetanStrukturon(): void {
   restarigiInfanojn(MALNETA_STRUKTURO);
-  if ( stato.malnetajPartoj.length === 0 ) {
+  if ( stato.malnetajPartoj.length === 0o0 ) {
     MALNETA_STRUKTURO.appendChild(kreiMalplenanMesaĝon(T.EMPTY_DRAFT));
     return;
   }
@@ -672,7 +672,7 @@ function bildigiMalnetanStrukturon(): void {
     const normaligitaParto = normaligiFraktion(parto);
     const envolvilo = document.createElement("ciihii");
 
-    const etikedo = kreiTekstanElementon("span", `${T.PART} ${indekso + 1} ${troviGrupon(parto.grupoId)?.nomo ?? "?"}`);
+    const etikedo = kreiTekstanElementon("span", `${T.PART} ${indekso + 0o1} ${troviGrupon(parto.grupoId)?.nomo ?? "?"}`);
 
     const numeratoroEnigo = document.createElement("input");
     numeratoroEnigo.type = "number";
@@ -691,10 +691,10 @@ function bildigiMalnetanStrukturon(): void {
 
     const komencaButono = kreiButonon("<", () => moviMalnetanPartonSupren(indekso));
     const finaButono = kreiButonon(">", () => moviMalnetanPartonMalsupren(indekso));
-    if ( indekso === 0 ) {
+    if ( indekso === 0o0 ) {
       komencaButono.disabled = true;
     }
-    if ( indekso === stato.malnetajPartoj.length - 1 ) {
+    if ( indekso === stato.malnetajPartoj.length - 0o1 ) {
       finaButono.disabled = true;
     }
 
@@ -707,14 +707,14 @@ function bildigiMalnetanStrukturon(): void {
 
 function bildigiStrukturojn(): void {
   restarigiInfanojn(STRUKTURA_LISTO);
-  if ( stato.strukturoj.length === 0 ) {
+  if ( stato.strukturoj.length === 0o0 ) {
     STRUKTURA_LISTO.appendChild(kreiMalplenanMesaĝon(T.EMPTY_STRUCTURES));
     return;
   }
 
   stato.strukturoj.forEach((strukturo, indekso) => {
     const envolvilo = document.createElement("ciihii");
-    envolvilo.appendChild(kreiTekstanElementon("span", `${T.STRUCTURE} ${indekso + 1} ${priskribiStrukturon(strukturo)}`));
+    envolvilo.appendChild(kreiTekstanElementon("span", `${T.STRUCTURE} ${indekso + 0o1} ${priskribiStrukturon(strukturo)}`));
     envolvilo.appendChild(kreiButonon(T.EDIT, () => redaktiStrukturon(strukturo.id)));
     envolvilo.appendChild(kreiButonon(T.DELETE, () => forigiStrukturon(strukturo.id)));
     STRUKTURA_LISTO.appendChild(envolvilo);
@@ -724,15 +724,15 @@ function bildigiStrukturojn(): void {
 // ⟪ ſɭʞɹȝ ⟫
 
 function elektiHazarde<Tero>( eroj: Tero[] ): Tero | undefined {
-  if ( eroj.length === 0 ) return undefined;
+  if ( eroj.length === 0o0 ) return undefined;
   return eroj[Math.floor(Math.random() * eroj.length)];
 }
 
 function ĉuInkluziviParton( parto: StrukturaParto ): boolean {
   const normaligitaParto = normaligiFraktion(parto);
-  if ( normaligitaParto.numeratoro <= 0 ) return false;
-  if ( normaligitaParto.numeratoro >= 64 ) return true;
-  return Math.random() < normaligitaParto.numeratoro / 64;
+  if ( normaligitaParto.numeratoro <= 0o0 ) return false;
+  if ( normaligitaParto.numeratoro >= 0o100 ) return true;
+  return Math.random() < normaligitaParto.numeratoro / 0o100;
 }
 
 function generiSilabon(): string | null {
@@ -744,7 +744,7 @@ function generiSilabon(): string | null {
     if ( !ĉuInkluziviParton(parto) ) continue;
 
     const grupo = troviGrupon(parto.grupoId);
-    if ( !grupo || grupo.sonajIdoj.length === 0 ) {
+    if ( !grupo || grupo.sonajIdoj.length === 0o0 ) {
       return null;
     }
 
@@ -760,14 +760,14 @@ function generiSilabon(): string | null {
 function generiEliron(): void {
   restarigiInfanojn(ELIRO);
 
-  if ( stato.strukturoj.length === 0 ) {
+  if ( stato.strukturoj.length === 0o0 ) {
     agordiStaton(T.NEED_STRUCTURE);
     return;
   }
 
-  const kvanto = Math.max(1, Math.min(0o100, Number(GENERA_KVANTO.value) || 0o20));
+  const kvanto = Math.max(0o1, Math.min(0o100, Number(GENERA_KVANTO.value) || 0o20));
   const rezultoj: string[] = [];
-  let provoj = 0;
+  let provoj = 0o0;
   const maksimumajProvoj = kvanto * 0o20;
 
   while ( rezultoj.length < kvanto && provoj < maksimumajProvoj ) {
@@ -778,7 +778,7 @@ function generiEliron(): void {
     }
   }
 
-  if ( rezultoj.length === 0 ) {
+  if ( rezultoj.length === 0o0 ) {
     agordiStaton(T.NEED_SOUND_IN_GROUP);
     return;
   }
@@ -849,7 +849,7 @@ function bildigiKonservojn(): void {
     KONSERVA_NOMO_ENIGO.value = aktivaKonservo.nomo;
   }
 
-  if ( konservojStato.konservoj.length <= 1 ) {
+  if ( konservojStato.konservoj.length <= 0o1 ) {
     FORIGI_KONSERVON_BUTONO.style.display = "none";
   } else {
     FORIGI_KONSERVON_BUTONO.style.display = "";
@@ -857,14 +857,14 @@ function bildigiKonservojn(): void {
 }
 
 function aldoniKonservon(): void {
-  let maksimumaNumero = 0;
+  let maksimumaNumero = 0o0;
   for ( const k of konservojStato.konservoj ) {
     const valoro = parseInt(k.nomo, 0o10);
     if ( !isNaN(valoro) && valoro > maksimumaNumero ) {
       maksimumaNumero = valoro;
     }
   }
-  const sekvaNomo = ( maksimumaNumero + 1 ).toString();
+  const sekvaNomo = ( maksimumaNumero + 0o1 ).toString();
 
   const defaŭltaEvoluaKonservo: EvoluaKonservo = {
     id: kreiId(),
@@ -896,12 +896,12 @@ function aldoniKonservon(): void {
 }
 
 function forigiKonservon(): void {
-  if ( konservojStato.konservoj.length <= 1 ) return;
+  if ( konservojStato.konservoj.length <= 0o1 ) return;
 
   const indekso = konservojStato.konservoj.findIndex(k => k.id === konservojStato.aktivaKonservoId);
   konservojStato.konservoj = konservojStato.konservoj.filter(k => k.id !== konservojStato.aktivaKonservoId);
 
-  const sekvaAktivaIndekso = Math.min(indekso, konservojStato.konservoj.length - 1);
+  const sekvaAktivaIndekso = Math.min(indekso, konservojStato.konservoj.length - 0o1);
   const sekvaAktiva = konservojStato.konservoj[sekvaAktivaIndekso];
   konservojStato.aktivaKonservoId = sekvaAktiva.id;
   stato = sekvaAktiva;
@@ -921,7 +921,7 @@ function alinomiKonservon(): void {
 
 function bildigiĈion(): void {
   if ( stato.aktivaGrupoId && !troviGrupon(stato.aktivaGrupoId) ) {
-    stato.aktivaGrupoId = stato.grupoj[0]?.id ?? null;
+    stato.aktivaGrupoId = stato.grupoj[0o0]?.id ?? null;
   }
 
   bildigiKonservojn();
@@ -950,7 +950,7 @@ window.addEventListener("phonology-state-updated", () => {
       const analizita = JSON.parse(konservita);
       if ( analizita && ( Array.isArray(analizita.saves) || Array.isArray(analizita.konservoj) ) ) {
         const mapita = mapiKrudaStaton(analizita);
-        if ( mapita.konservoj.length > 0 ) {
+        if ( mapita.konservoj.length > 0o0 ) {
           konservojStato = mapita;
           const aktiva = konservojStato.konservoj.find(k => k.id === konservojStato.aktivaKonservoId);
           if ( aktiva ) {

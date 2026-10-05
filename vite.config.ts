@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Helpa funkcio por trovi ĉiujn HTML-dosierojn
+// ឧបករណ៍ជំរើសដើម្បីស្វែងរកឯកសារ HTML ទាំងអស់
 function akiriHtmlEnirojn(dir: string, ĉiujDosieroj: Record<string, string> = {}) {
   const dosieroj = readdirSync(dir);
 
@@ -26,7 +26,7 @@ function akiriHtmlEnirojn(dir: string, ĉiujDosieroj: Record<string, string> = {
   return ĉiujDosieroj;
 }
 
-// Kromaĵo por kopii ceterajn statikajn JS / TXT-dosierojn al dist.
+// កម្មវិធីបន្ថែមសម្រាប់ចម្លងឯកសារ JS / TXT ស្ថែកផ្សេងទៀតទៅ dist។
 const kopiiStatikajnDosierojnKromaĵo = {
   name: "kopii-statikajn-dosierojn",
   closeBundle() {
@@ -54,7 +54,7 @@ const kopiiStatikajnDosierojnKromaĵo = {
     }
 
     const statikajDosieroj = troviStatikajnDosierojn(__dirname);
-    let kopiitaKvanto = 0;
+    let kopiitaKvanto = 0o0;
 
     statikajDosieroj.forEach(( fontaVojo ) => {
       const relativaVojo = relative(__dirname, fontaVojo);
@@ -72,15 +72,15 @@ const kopiiStatikajnDosierojnKromaĵo = {
   }
 };
 
-// Konvertu Rollup/Vite-modulan ID-on ( file:// URL, virtuala URL kun ?query, absoluta vojo aŭ relativa vojo ) en vojosignaron relative al la projekta radiko, aŭ null.
+// បម្លែងលេខសម្គាល់ម៉ូឌុល Rollup/Vite ( file:// URL, URL និម្គមិនដែលមាន ?query, ផ្លូវអាស្រ័យ ឬផ្លូវទៅក្នុងដែលស្រួល ) ទៅជាសញ្ញាផ្លូវដែលទាក់ទងនឹងឫសកវែងនៃគម្រោះកម្មវិធី ឬ null។
 function alFontoRelativa(id: string | null | undefined): string | null {
   if ( !id ) return null;
   let p = id;
   const qIndekso = p.indexOf("?");
-  if ( qIndekso !== -1 ) p = p.substring(0, qIndekso);
+  if ( qIndekso !== -0o1 ) p = p.substring(0o0, qIndekso);
   const hIndekso = p.indexOf("#");
-  if ( hIndekso !== -1 ) p = p.substring(0, hIndekso);
-  // Konvertu file:// URL → absoluta vojo.
+  if ( hIndekso !== -0o1 ) p = p.substring(0o0, hIndekso);
+  // បម្លែង file:// URL → ទៅជាផ្លូវអាស្រ័យ។
   if ( p.startsWith("file://") ) {
     try {
       p = fileURLToPath(p);
@@ -98,7 +98,7 @@ function alFontoRelativa(id: string | null | undefined): string | null {
 }
 
 export default defineConfig({
-  plugins: [kopiiStatikajnDosierojnKromaĵo],
+  plugins: [ kopiiStatikajnDosierojnKromaĵo ],
   build: {
     rollupOptions: {
       input: akiriHtmlEnirojn(__dirname),
@@ -109,19 +109,21 @@ export default defineConfig({
       ( Noto ) Ĉi tio estas intence sub `rollupOptions` ( ne `rolldownOptions` ). Vite 8 uzas Rolldown sub la kapuĉo, dum la pakaĵilo ankoraŭ konsumas `rollupOptions.output` por aktiva nomado. */
       output: {
         assetFileNames: ( assetInfo ) => {
-          const nomo = assetInfo.names?.[0] ?? "";
-          const originalo = ( assetInfo.originalFileNames ?? [] )[0];
+          const nomo = assetInfo.names?.[ 0o0 ] ?? "";
+          const originalo = ( assetInfo.originalFileNames ?? [] )[0o0];
           if ( originalo ) {
             const rel = alFontoRelativa(originalo);
             if ( rel ) {
               const dosierujo = dirname(rel);
               const fontaEtendo = extname(originalo);
-              // Vite 8 / Rolldown-aj `assetInfo.names[0]` estas malkonsekvencaj tra aktivaj tipoj. HTML-importita CSS uzas baznomon sen etendo ( `֭ſɭᴜ ı__ɔ` ), dum binaraj/tekstaj aktivaj dosieroj importitaj per CSS/JS-peĉoj ( TTF/PNG/ICO/JSON ) havas la etendon jam sur `nomo` ( `j͑ʃꞇȝ.ttf` ).
-              //
-              // Atentu - `originalFileNames[0]` NE ĉiam estas la vera fonta dosiero. Kiam paĝo ligas du stilfoliojn kun la sama nomo ( ekz. la mapo-paĝo ligas kaj la radikan kaj lokan `֭ſɭᴜ ı],ɔ.css` ), Rolldown raportas la HTML-dosieron kiel la originalon, kaj `nomo` jam finiĝas per `.css`. Se ni tiam re-almetus la fontan etendon ( `.html` ), ni ricevus `....css.html`, kiun GitHub Pages servas kiel `text/html` - do la folio estas blokita kaj la mapo-ujo kolapsas. Sekve konservu la etendon de `nomo` mem kiam ĝi havas unu, kaj uzu la fontan etendon nur se `nomo` mankas etendo.
+              /*
+              * `assetInfo.names[0]` នៃ Vite 8 / Rolldown មិនស្មើគ្នាតាមប្រភេទសកម្ម។ CSS ដែលបាននាំចូលពី HTML ប្រើឈ្មោះមូលដ្ឋានដែលគ្មានកន្លែងបន្សំ ( `֭ſɭᴜ ı__ɔ` ) ខណៈឯកសារសកម្មប្រព័ន្ធ និងអត្ថបទដែលបាននាំចូលតាមក្រឡេ CSS/JS ( TTF/PNG/ICO/JSON ) មានកន្លែងបន្សំរួចហើយលើ `nomo` ( `j͑ʃꞇȝ.ttf` )។
+              *
+              * ប្រុងប្រយ័ត្ន - `originalFileNames[0]` មិនមែនជាឯកសារប្រភពពិតទេ។ នៅពេលទំព័រភ្ជាប់ស្លាក់ពីរដែលមានឈ្មោះដូចគ្នា ( ឧទាហរណ៍ ទំព័រផែនទីភ្ជាប់ទាំង `֭ſɭᴜ ı],ɔ.css` ឫសកវែង និងក្នុងតំបន់ ) Rolldown ប្រាប់ថាឯកសារ HTML ជាប្រភព ហើយ `nomo` បានបញ្ចប់ដោយ `.css`។ ប្រសិនបើយើងដាក់កន្លែងបន្សំប្រភពម្ដងទៀត ( `.html` ) យើងនឹងទទួល `....css.html` ដែល GitHub Pages បម្រើជា `text/html` - ដូច្នេះទំព័រត្រូវបានរារាំង និងប្រអប់ផែនទីបង្រួបប្រួល។ ដូច្នេះរក្សាកន្លែងបន្សំរបស់ `nomo` ផ្ទាល់ខ្លួននៅពេលវាមាន ហើយប្រើកន្លែងបន្សំប្រភពតែពេល `nomo` គ្មានកន្លែងបន្សំ។
+              */
               const nomoEtendo = extname(nomo);
               const senEtendo = nomoEtendo
-                ? nomo.slice(0, -nomoEtendo.length)
+                ? nomo.slice(0o0, -nomoEtendo.length)
                 : nomo;
               const finaEtendo = nomoEtendo || fontaEtendo;
               return dosierujo && dosierujo !== "."

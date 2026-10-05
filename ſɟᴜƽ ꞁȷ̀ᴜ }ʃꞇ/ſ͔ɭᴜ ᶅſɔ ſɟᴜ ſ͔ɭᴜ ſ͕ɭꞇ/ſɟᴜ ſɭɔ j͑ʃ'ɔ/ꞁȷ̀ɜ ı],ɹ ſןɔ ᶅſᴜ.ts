@@ -2,15 +2,15 @@ import * as XLSX from "xlsx";
 
 // ≺⧼ Iikrhia Hazarda Frazgenerilo 🌐 ⧽≻
 /**
- * Generas hazardajn frazojn laŭ la Iikrhia gramatiko.
- * - Striktan VOS ( Verbo-Objekto-Subjekto ) vortordon
- * - Ĝusta uzo de afiksoj, partikloj, kaj markiloj
- * - Uzas la ĉafalkefu vortaron por vortserĉo
+ * បង្កើតឃ្លាមានចង្វេកតាមវេទ្យាប័យីរហា Iikrhia។
+ * - ពាក្យរាប់ VOS ( ការ-វត្ថ-ប្រព័ន្ធ ) ចោលដោយត្រាំង។
+ * - ការប្រើប្រាក់ បុព្យបញ្ជា និងស្លាក់បៃឲ្យបានត្រឹមត្រូវ
+ * - ប្រើពាក្យមាត្រកម្មការងារស្វែងរកពាក្យ
  *
- * Fraza ŝablono - ( Tempo ) V ( Evi ) O ( ⺓ ( Evi ) ( Adj ) S )
+ * ទម្រង់ឃ្លា គឺជា ( Tempo ) V ( Evi ) O ( ⺓ ( Evi ) ( Adj ) S )
  */
 
-// ⟪ Konstantoj 📦 ⟫
+// ⟪ ថេរស្មែក 📦 ⟫
 
 const SUBJEKTA_MARKILO = "⺓";
 const DEMANDA_JEJNE = "ſɟɔƴ";
@@ -30,9 +30,9 @@ const KODOJ = [
     "ɴ", "ƽ", "ᴜ̩", "ȝ"
 ];
 
-// ⟪ Afiksoj 🔧 ⟫
+// ⟪ ប្រភេទប្រកប្រកប 🔧 ⟫
 
-const ADJEKTIVIGAJ_PREFIKSOJ: Record<string, [string, string]> = {
+const ADJEKTIVIGAJ_PREFIKSOJ: Record<string, [ string, string ]> = {
     "2R": [ "ꞁȷ̀ɹƣ̋", "ꞁȷ̀ɹ" ],
     "K2R": [ "ſɭɹƣ̋", "ſɭɹ" ],
     "J6R": [ "ɭl̀эƣ̋", "ɭl̀э" ],
@@ -42,25 +42,25 @@ const ADJEKTIVIGAJ_PREFIKSOJ: Record<string, [string, string]> = {
     "SER": [ "j͑ʃɔƣ̋", "j͑ʃɔ" ],
 };
 
-const MODALECAJ_PREFIKSOJ: Record<string, [string, string]> = {
+const MODALECAJ_PREFIKSOJ: Record<string, [ string, string ]> = {
     "OR": [ "ꞁȷ̀ɜƣ̋", "ꞁȷ̀ɜ" ],
     "YOR": [ "ſ͕ȷɜƣ̋", "ſ͕ȷɜ" ],
     "TAK": [ "ɭʃᴜƽ", "ɭʃᴜ" ],
     "KOTAK": [ "ſɭɜ ɭʃᴜƽ", "ſɭɜ ɭʃᴜ" ]
 };
 
-const GENERALAJ_NEGACIAJ_PREFIKSOJ: Record<string, [string, string]> = {
+const GENERALAJ_NEGACIAJ_PREFIKSOJ: Record<string, [ string, string ]> = {
     "KON": [ "ſɭɜc̗", "ſɭɜ" ],
 };
 
-const DERIVACIAJ_PREFIKSOJ: Record<string, [string, string]> = {
+const DERIVACIAJ_PREFIKSOJ: Record<string, [ string, string ]> = {
     "VER": [ "j͑ʃ'ɔƣ̋", "j͑ʃ'ɔ" ],
     "VES": [ "j͑ʃ'ɔɔ˞", "j͑ʃ'ᴜ" ],
     "B6N": [ "ʃэc̗", "ʃэ" ],
     "L6R": [ "j͐ʃэƣ̋", "j͐ʃэ" ],
 };
 
-const PREFIKSAJ_AFIKSOJ: Record<string, [string, string]> = {
+const PREFIKSAJ_AFIKSOJ: Record<string, [ string, string ]> = {
     ...ADJEKTIVIGAJ_PREFIKSOJ,
     ...MODALECAJ_PREFIKSOJ,
     ...GENERALAJ_NEGACIAJ_PREFIKSOJ,
@@ -76,7 +76,7 @@ const MODALECAJ_PAROJ: Record<string, string> = {
     "TAK": "KOTAK"
 };
 
-const SUFIKSAJ_AFIKSOJ: Record<string, [string, string]> = {
+const SUFIKSAJ_AFIKSOJ: Record<string, [ string, string ]> = {
     "SU": [ "j͑ʃᴜꞇ", "ꞁȷ̀ᴜꞇ" ],
     "AL": [ "j͐ʃ", "ꞁȷ̀ᴜͷ̗" ],
     "ANI": [ "}ʃꞇ", "ꞁȷ̀ᴜ }ʃꞇ" ],
@@ -85,7 +85,7 @@ const SUFIKSAJ_AFIKSOJ: Record<string, [string, string]> = {
     "STIF": [ "j͑ʃƨꞇʞ", "ɭʃꞇʞ" ],
 };
 
-// ⟨ Afiksaj Tradukoj 🔤 ⟩
+// ⟨ ភាសាប្រកប្រកប 🔤 ⟩
 
 const AFIKSAJ_TRADUKOJ: Record<string, string> = {
     "VER": "VERBALIZER",
@@ -115,7 +115,7 @@ const AFIKSAJ_TRADUKOJ: Record<string, string> = {
 const POS_AL_ETIKEDO: Record<string, string> = { Verb: "V", Noun: "N", Adjective: "ADJ", Evidential: "EVI" };
 
 
-// ⟪ Struktura Registro 📚 ⟫
+// ⟪ កំណត់ត្រាផ្សូរ និង ការ្រោះគណនា 📚 ⟫
 
 type GeneratoraFunkcio = () => unknown;
 
@@ -145,11 +145,13 @@ class StrukturaRegistro {
 const registraro = new StrukturaRegistro();
 
 
-// ⟪ Fonologiaj Helpiloj 🔤 ⟫
+// ⟪ ឧបករណ៍ជំរើសសំឡេង 🔤 ⟫
 
-/** Kontrolu ĉu vorto komenciĝas per vokalo.
- *     @param vorto ( string , required ) - Vorto por kontroli.
- * @returns boolean */
+/**
+ * ត្រួតពិនិត្យថា ពាក្យចាប់ផ្ដើមដោយស៊ី ឬអត់។
+ *     @param vorto ( string , required ) - ពាក្យសម្រាប់ការត្រួតពិនិត្យ។
+  *  @returns jesne
+ * */
 function cxuVokalaKomenco(vorto: string): boolean {
     if ( !vorto || !vorto.trim() ) {
         return false;
@@ -158,12 +160,14 @@ function cxuVokalaKomenco(vorto: string): boolean {
     if ( stripped.startsWith("ꞁȷ̀") ) {
         return true;
     }
-    return IIKRHIAJ_VOKALOJ.includes(stripped[0]);
+    return IIKRHIAJ_VOKALOJ.includes(stripped[0o0]);
 }
 
-/** Kontrolu ĉu vorto finiĝas per vokala sono.
- *     @param vorto ( string , required ) - Vorto por kontroli.
- * @returns boolean */
+/**
+ * ត្រួតពិនិត្យថា ពាក្យបញ្ចប់ដោយសំឡេងស៊ី ឬអត់។
+ *     @param vorto ( string , required ) - ពាក្យសម្រាប់ការត្រួតពិនិត្យ។
+  *  @returns jesne
+ * */
 function cxuVokalaFino(vorto: string): boolean {
     if ( !vorto ) {
         return true;
@@ -177,11 +181,11 @@ function cxuVokalaFino(vorto: string): boolean {
             return false;
         }
     }
-    return IIKRHIAJ_VOKALOJ.includes(stripped[stripped.length - 1]);
+    return IIKRHIAJ_VOKALOJ.includes(stripped[stripped.length - 0o1]);
 }
 
 
-// ⟪ Verba Modifo 🔧 ⟫
+// ⟪ កែចំទាក់ត្រា 🔧 ⟫
 
 interface VortEniro {
     gawekiif: string;
@@ -211,12 +215,12 @@ interface VerbModifiloOpcioj {
 }
 
 /**
- * Apliku modifilojn al verbo (afikso, modaleco, intensigilo).
- * Unuigita funkcio por ambaŭ ĉefaj verboj kaj VN-modifaj verboj.
- * Negativaj prefiksoj (YOR, KOTAK) ne povas kunekzisti kun siaj pozitivaj ekvivalentoj (OR, TAK).
-    * @param verbo ( VortEniro , required ) - Verba eniro kun gawekiif kaj traduko.
-    * @param opcioj ( VerbModifiloOpcioj = {} , optional ) - Modifaj opcioj.
- * @returns ModifitaVortEniro
+ * អនុវត្តម៉ូដ្ឋីទៅទាក់ត្រា ( ប្រភេទប្រកប្រកប , គ្រាប់មនុស្ស , ពង្រឹក្រឹមក )។
+ * មុខងងឹតត្រូវបានបង្កើតសម្រាប់ទាក់ត្រាចម្បង និងទាក់ត្រា VN ទាំងពីរ។
+ * ប្រភេទបុព្យបញ្ជាមិនអាច ( YOR, KOTAK ) មិនអាចធ្វើក្នុងពេលឯកជាមួយប្រភេទបុព្យបញ្ជាវិជីមិនជាទូទៅរបស់ខ្លួន ( OR, TAK )។
+    * @param verbo ( VortEniro , required ) - ទាក់ត្រាបញ្ចូលដែលមាន gawekiif និងការបកប្ប័យ។
+    * @param opcioj ( VerbModifiloOpcioj = {} , optional ) - ជម្រើសកែចំ។
+ * @returns vorto
  */
 function aplikiVerbModifilojn(verbo: VortEniro, opcioj: VerbModifiloOpcioj = {}): ModifitaVortEniro {
     let {
@@ -254,8 +258,8 @@ function aplikiVerbModifilojn(verbo: VortEniro, opcioj: VerbModifiloOpcioj = {})
     }
 
     if (!aplikitaModaleco && hazardaModaleco) {
-        const modalities: [string, boolean][] = [["can", false], ["should", false]];
-        const [elektitaModaleco, negata] = modalities[Math.floor(Math.random() * modalities.length)];
+        const modalities: [ string, boolean ][] = [ [ "can", false ], [ "should", false ] ];
+        const [ elektitaModaleco, negata ] = modalities[Math.floor(Math.random() * modalities.length)];
         const selectedPrefix = negata ? "YOR" : "OR";
         if (ekzistantaPrefikso && akiriKonfliktantanPrefikson(selectedPrefix) === ekzistantaPrefikso) {
         } else {
@@ -273,7 +277,7 @@ function aplikiVerbModifilojn(verbo: VortEniro, opcioj: VerbModifiloOpcioj = {})
             aplikitaSufikso = afikso;
         }
     } else if (hazardaAfikso) {
-        const afiksoj = ["L6R", "B6N"];
+        const afiksoj = [ "L6R", "B6N" ];
         const elektitaAfikso = afiksoj[Math.floor(Math.random() * afiksoj.length)];
         verboFormo = aplikiAfikson(verboFormo, elektitaAfikso);
         aplikitaPrefikso = elektitaAfikso;
@@ -297,27 +301,27 @@ function aplikiVerbModifilojn(verbo: VortEniro, opcioj: VerbModifiloOpcioj = {})
 }
 
 
-// ⟪ Afiksa Apliko 🔧 ⟫
+// ⟪ ការអនុវត្តប្រភេទប្រកប្រកប 🔧 ⟫
 
 /**
- * Apliku afikson laŭ fonologiaj reguloj.
- * Aŭtomate determinas ĉu prefikso aŭ sufikso laŭ afiksa tipo.
- * Elektas vokalan aŭ konsonantan formon laŭ vorta limo.
-    * @param vorto ( string , required ) - Vorto al kiu apliki afikson.
-    * @param afiksoTipo ( string , required ) - Tipo de afikso ( ekz. "OR", "KON", "SU", "AL" ).
- * @returns string
+ * អនុវត្តប្រភេទប្រកប្រកបតាមច្បាប់សំឡេង។
+ * កំណត់ដោយស្វ័យទស្សន៍ថា ប្រភេទបុព្យបញ្ជា ឬប្រភេទបទប្រភេទតាមប្រភេទប្រកប្រកប។
+ * ជ្រើសរើសទម្រង់ស៊ី ឬទម្រង់ពាក្យមុខតាមចំនាក់ពាក្យ។
+    * @param vorto ( string , required ) - ពាក្យដែលត្រូវអនុវត្តប្រភេទប្រកប្រកប។
+    * @param afiksoTipo ( string , required ) - ប្រភេទនៃប្រភេទប្រកប្រកប ( ឧទាហរណ៍ "OR", "KON", "SU", "AL" )។
+ * @returns ĉeno
  */
 function aplikiAfikson(vorto: string, afiksoTipo: string): string {
     if ( !vorto ) return vorto;
 
     if ( PREFIKSAJ_AFIKSOJ[afiksoTipo] ) {
-        const [vowelForm, consonantForm] = PREFIKSAJ_AFIKSOJ[afiksoTipo];
+        const [ vowelForm, consonantForm ] = PREFIKSAJ_AFIKSOJ[afiksoTipo];
         const form = cxuVokalaKomenco(vorto) ? vowelForm : consonantForm;
         return `${form} ${vorto}`;
     }
 
     if ( SUFIKSAJ_AFIKSOJ[afiksoTipo] ) {
-        const [vowelForm, consonantForm] = SUFIKSAJ_AFIKSOJ[afiksoTipo];
+        const [ vowelForm, consonantForm ] = SUFIKSAJ_AFIKSOJ[afiksoTipo];
         const form = cxuVokalaFino(vorto) ? vowelForm : consonantForm;
         return `${vorto} ${form}`;
     }
@@ -326,28 +330,28 @@ function aplikiAfikson(vorto: string, afiksoTipo: string): string {
 }
 
 /**
- * Kontrolu ĉu afikso estas adjektiviga (turnas vorton en adjektivon).
-    * @param afiksoTipo ( string , required ) - Tipo de afikso.
- * @returns boolean
+ * ត្រួតពិនិត្យថា ប្រភេទប្រកប្រកបគឺជាប្រភេទធ្វើឱ្យពាក្យជាបន្ទាន្ន ( បម្លែងពាក្យទៅជាបន្ទាន្ន )។
+    * @param afiksoTipo ( string , required ) - ប្រភេទនៃប្រភេទប្រកប្រកប។
+ * @returns jesne
  */
 function cxuAdjektivaAfikso(afiksoTipo: string): boolean {
     return ALL_ADJEKTIVIGAJ_PREFIKSOJ.has(afiksoTipo);
 }
 
 /**
- * Kontrolu ĉu vorto havas adjektivigan prefikson.
- * Adjektivigaj prefiksoj turnas substantivojn/verbojn en adjektivojn.
- * L6R adjektivigas nur ne-verbojn (por verboj ĝi estas pasiva voĉo).
- * Uzas akiriL6RUzon() por determini L6R-funkcion.
-    * @param vorto ( string , required ) - Vorto por kontroli.
-    * @param vortoEniro ( VortEniro | null = null , optional ) - Vorta eniro por kontroli ĉu L6R estas pasiva.
- * @returns boolean
+ * ត្រួតពិនិត្យថា ពាក្យមានប្រភេទបុព្យបញ្ជាធ្វើឱ្យពាក្យជាបន្ទាន្នឬទេ។
+ * ប្រភេទបុព្យបញ្ជាធ្វើឱ្យពាក្យជាបន្ទាន្នប្តូរពាក្យឈ្មោះ និងទាក់ត្រាទៅជាបន្ទាន្ន។
+ * L6R ធ្វើឱ្យពាក្យជាបន្ទាន្នតែនៅទាក់ត្រាដែលមិនមែនជាទាក់ត្រា ( សម្រាប់ទាក់ត្រា វាជាការសកម្ម )។
+ * ប្រើ akiriL6RUzon() ដើម្បីកំណត់មុខងងឹតរបស់ L6R។
+    * @param vorto ( string , required ) - ពាក្យសម្រាប់ការត្រួតពិនិត្យ។
+    * @param vortoEniro ( VortEniro | null = null , optional ) - ទាក់ត្រាបញ្ចូលដើម្បីត្រួតពិនិត្យថា L6R មានតួរការសកម្មឬអត់។
+ * @returns jesne
  */
 function cxuAdjektivaPrefikso(vorto: string, vortoEniro: VortEniro | null = null): boolean {
     if ( !vorto ) return false;
 
     for ( const prefix of Object.keys(ADJEKTIVIGAJ_PREFIKSOJ) ) {
-        const [vowelForm, consonantForm] = PREFIKSAJ_AFIKSOJ[prefix];
+        const [ vowelForm, consonantForm ] = PREFIKSAJ_AFIKSOJ[prefix];
         if ( vorto.startsWith(vowelForm + " ") || vorto.startsWith(consonantForm + " ") ) {
             return true;
         }
@@ -358,14 +362,14 @@ function cxuAdjektivaPrefikso(vorto: string, vortoEniro: VortEniro | null = null
 }
 
 /**
- * Kontrolu ĉu L6R-prefikso estas uzata kiel pasivo (sur verbo) aŭ adjektivigilo (sur ne-verbo).
-    * @param vorto ( string | null , required ) - Vorto por kontroli.
-    * @param vortoEniro ( VortEniro | null , required ) - Vorta eniro el la vortaro.
- * @returns string
+ * ត្រួតពិនិត្យថា ប្រភេទបុព្យបញ្ជា L6R ត្រូវបានប្រើជាការសកម្ម ( លើទាក់ត្រា ) ឬធ្វើឱ្យពាក្យជាបន្ទាន្ន ( លើអ្វីដែលមិនមែនជាទាក់ត្រា )។
+    * @param vorto ( string | null , required ) - ពាក្យសម្រាប់ការត្រួតពិនិត្យ។
+    * @param vortoEniro ( VortEniro | null , required ) - ទាក់ត្រាបញ្ចូលពីពាក្យមាត្រ។
+ * @returns ĉeno
  */
 function akiriL6RUzon(vorto: string | null, vortoEniro: VortEniro | null): string {
     if ( !vorto ) return "none";
-    const [l6rVowel, l6rConsonant] = PREFIKSAJ_AFIKSOJ["L6R"];
+    const [ l6rVowel, l6rConsonant ] = PREFIKSAJ_AFIKSOJ["L6R"];
     if ( vorto.startsWith(l6rVowel + " ") || vorto.startsWith(l6rConsonant + " ") ) {
         return cxuVerbo(vortoEniro) ? "passive" : "adjectivizer";
     }
@@ -373,9 +377,9 @@ function akiriL6RUzon(vorto: string | null, vortoEniro: VortEniro | null): strin
 }
 
 /**
- * Akiru hazardan adjektivigan prefiksan tipon.
- * Redonas unu el la adjektivigaj prefiksaj klavoj (2R, K2R, J6R, H2R, SAR, SWER, SER).
- * @returns string
+ * យកប្រភេទបុព្យបញ្ជាធ្វើឱ្យពាក្យជាបន្ទាន្នមួយដែលមានចង្វេក។
+ * ជួយប្រគល់ក្រឡប់ចំណុចប្រភេទបុព្យបញ្ជាធ្វើឱ្យពាក្យជាបន្ទាន្នមួយ ( 2R, K2R, J6R, H2R, SAR, SWER, SER )។
+ * @returns ĉeno
  */
 function akiriHazardanAdjektivanPrefikson(): string {
     const prefixes = Object.keys(ADJEKTIVIGAJ_PREFIKSOJ);
@@ -383,18 +387,18 @@ function akiriHazardanAdjektivanPrefikson(): string {
 }
 
 /**
- * Apliku adjektivigan prefikson al vorto, konvertante ĝin en adjektivon.
- * Adjektivigaj prefiksoj turnas substantivojn/verbojn en adjektivojn kun rilataj signifoj
- * - 2R. KUN (havante la kvaliton de)
- * - K2R. UZANTE (per rimedo de)
- * - J6R. EN (lokiĝanta ene de)
- * - H2R. SEN (mankanta)
- * - SAR. POR (celo/avantaĝo)
- * - SWER. PRI (koncernanta)
- * - SER. DE (posedo/rilato)
-    * @param vortoEniro ( VortEniro , required ) - Vorta eniro kun gawekiif, traduko, kaj poŝo.
-    * @param prefiksoTipo ( string | null = null , optional ) - Specifa prefiksa tipo, aŭ null por hazarda.
- * @returns VortEniro
+ * អនុវត្តប្រភេទបុព្យបញ្ជាធ្វើឱ្យពាក្យជាបន្ទាន្ន ដោយបម្លែងវាទៅជាបន្ទាន្ន។
+ * ប្រភេទបុព្យបញ្ជាធ្វើឱ្យពាក្យជាបន្ទាន្នប្តូរពាក្យឈ្មោះ និងទាក់ត្រាទៅជាបន្ទាន្នដោយមានអត្ថន័យពាក់ព័ន្ធ
+ * - 2R. KUN ( មានគុណលក្ខន្ធនៃ )
+ * - K2R. UZANTE ( ដោយផ្លូវនៃ )
+ * - J6R. EN ( ដែលនៅក្នុង )
+ * - H2R. SEN ( ដែលនៅមិនឃើញ )
+ * - SAR. POR ( គោល / ប្រយោជន៍ )
+ * - SWER. PRI ( ដែលជាកម្មសិទ្ធិនៃ )
+ * - SER. DE ( ការកាន់ស្នាល / ទំនាក់ទំនង )
+    * @param vortoEniro ( VortEniro , required ) - ទាក់ត្រាបញ្ចូលដែលមាន gawekiif, ការបកប្ប័យ និងក្រុមកម្មភាព។
+    * @param prefiksoTipo ( string | null = null , optional ) - ប្រភេទបុព្យបញ្ជាជាក់ស្តែង ឬ null សម្រាប់ការចង្វេក។
+ * @returns vorto
  */
 function aplikiAdjektivanPrefikson(vortoEniro: VortEniro, prefiksoTipo: string | null = null): VortEniro {
     if (!vortoEniro || !vortoEniro.gawekiif) {
@@ -419,11 +423,11 @@ function aplikiAdjektivanPrefikson(vortoEniro: VortEniro, prefiksoTipo: string |
 }
 
 /**
- * Kreu adjektivon el substantivo aŭ verbo uzante adjektivigajn prefiksojn.
- * Se neniu substantivo/verbo disponeblas, redonu null.
-    * @param fontoPoŝo ( "Noun" | "Verb" = "Noun" , optional ) - Fonto de parolparto.
-    * @param prefiksoTipo ( string | null = null , optional ) - Specifa prefiksa tipo, aŭ null por hazarda.
- * @returns VortEniro | null
+ * បង្កើតបន្ទាន្នពីពាក្យឈ្មោះ ឬទាក់ត្រាដោយប្រើប្រភេទបុព្យបញ្ជាធ្វើឱ្យពាក្យជាបន្ទាន្ន។
+ * ប្រសិនបើគ្មានពាក្យឈ្មោះ ឬទាក់ត្រាទំនេរ ត្រឡប់ null។
+    * @param fontoPoŝo ( "Noun" | "Verb" = "Noun" , optional ) - ប្រភពនៃក្រុមកម្មភាព។
+    * @param prefiksoTipo ( string | null = null , optional ) - ប្រភេទបុព្យបញ្ជាជាក់ស្តែង ឬ null សម្រាប់ការចង្វេក។
+ * @returns vorto
  */
 function kreiAdjektivon(fontoPoŝo: "Noun" | "Verb" = "Noun", prefiksoTipo: string | null = null): VortEniro | null {
     const fontoVorto = akiriVortonPerPoŝo(fontoPoŝo);
@@ -434,26 +438,26 @@ function kreiAdjektivon(fontoPoŝo: "Noun" | "Verb" = "Noun", prefiksoTipo: stri
 }
 
 /**
- * Kontrolu ĉu vorto estas verbo (por L6R-limigo).
-    * @param vortoEniro ( VortEniro | null , required ) - Vorta eniro el la vortaro.
- * @returns boolean
+ * ត្រួតពិនិត្យថា ពាក្យគឺជាទាក់ត្រា ( សម្រាប់ការកំណត់ចំណនៃ L6R )។
+    * @param vortoEniro ( VortEniro | null , required ) - ទាក់ត្រាបញ្ចូលពីពាក្យមាត្រ។
+ * @returns jesne
  */
 function cxuVerbo(vortoEniro: VortEniro | null): boolean {
     return vortoEniro !== null && vortoEniro.poŝo === "Verb";
 }
 
 /**
- * Akiru la konfliktantan modalecon-prefikson por donita prefikso.
- * Negativaj modalecaj prefiksoj (YOR, KOTAK) ne povas kunekzisti kun siaj pozitivaj ekvivalentoj (OR, TAK).
-    * @param prefiksoTipo ( string , required ) - La prefiksa tipo por kontroli.
- * @returns string | null
+ * យកប្រភេទបុព្យបញ្ជាគ្រាប់មនុស្សដែលជាទំនាប់សម្រាប់ប្រភេទបុព្យបញ្ជាដែលបានកំណត់។
+ * ប្រភេទបុព្យបញ្ជាគ្រាប់មនុស្សមិនអាច ( YOR, KOTAK ) មិនអាចធ្វើក្នុងពេលឯកជាមួយប្រភេទបុព្យបញ្ជាវិជីមិនជាទូទៅរបស់ខ្លួន ( OR, TAK )។
+    * @param prefiksoTipo ( string , required ) - ប្រភេទបុព្យបញ្ជាសម្រាប់ការត្រួតពិនិត្យ។
+ * @returns rezulto
  */
 function akiriKonfliktantanPrefikson(prefiksoTipo: string): string | null {
     return MODALECAJ_PAROJ[prefiksoTipo] || null;
 }
 
 
-// ⟪ Vortara Ŝarĝo 📖 ⟫
+// ⟪ ការផ្ទុកពាក្យមាត្រ 📖 ⟫
 
 const XLSX_CVPKSAKA = "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬɔ.xlsx";
 
@@ -476,22 +480,22 @@ const IIKRHIAJ_INTERNAJ = [
     "ꞇ", "ɔ", "ᴜ", "ɹ", "ɜ", "э", "ɔⅎ", "ɜⅎ", "эⅎ",
 ];
 
-const IIKRHIAJ_INTERPUNKCIOJ = ["⟅", "｡", "⸙", "ʌ"];
+const IIKRHIAJ_INTERPUNKCIOJ = [ "⟅", "｡", "⸙", "ʌ" ];
 
 const _vortaroKaso = new Map<string, VortEniro[]>();
 
 /**
- * Akiru ĉiujn Iikrhia-skribajn sekvencojn por signa detekto.
- * @returns string[]
+ * យកខ្សែសរសេរ Iikrhia ទាំងអស់សម្រាប់ការរកឃើញសញ្ញា។
+ * @returns listo
  */
 function akiriCxiujnIikrhiajnSekvencojn(): string[] {
-    return [...IIKRHIAJ_KOMENCAJ, ...IIKRHIAJ_INTERNAJ, ...IIKRHIAJ_INTERPUNKCIOJ];
+    return [ ...IIKRHIAJ_KOMENCAJ, ...IIKRHIAJ_INTERNAJ, ...IIKRHIAJ_INTERPUNKCIOJ ];
 }
 
 /**
- * Kontrolu ĉu teksto enhavas Iikrhia-skribajn signojn.
-    * @param teksto ( string , required ) - Teksto por kontroli.
- * @returns boolean
+ * ត្រួតពិនិត្យថា អត្ថបទមានសញ្ញាសរសេរ Iikrhia ឬអត់។
+    * @param teksto ( string , required ) - អត្ថបទសម្រាប់ការត្រួតពិនិត្យ។
+ * @returns jesne
  */
 function cxuEnhavasIikrhianSkribon(teksto: string): boolean {
     if (!teksto) {
@@ -501,9 +505,9 @@ function cxuEnhavasIikrhianSkribon(teksto: string): boolean {
 }
 
 /**
- * Elektu traduko-partojn kiuj ne enhavas Iikrhian skribon.
-    * @param tradukoPartoj ( string[] , required ) - Listo de traduko-alternativoj.
- * @returns string
+ * ជ្រើសរើសផ្នែកបកប្ប័យដែលមិនមានការសរសេរ Iikrhia។
+    * @param tradukoPartoj ( string[] , required ) - បញ្ជីជម្រើសបកប្ប័យ។
+ * @returns ĉeno
  */
 function elektiNeIikrhianTradukon(tradukoPartoj: string[]): string {
     for (const trans of tradukoPartoj) {
@@ -511,10 +515,10 @@ function elektiNeIikrhianTradukon(tradukoPartoj: string[]): string {
             return trans;
         }
     }
-    return tradukoPartoj[0] || "";
+    return tradukoPartoj[0o0] || "";
 }
 
-// ⟨ POZ-markiloj — samkiel la vortara paĝa pritraktilo ⟩
+// ⟨ ស្លាក់ POZ - ដូចគ្នានឹងកម្មវិធីដំណើរការទំព័រពាក្យមាត្រ ⟩
 const KEFHAXE: Readonly<Record<string, string>> = {
     "ſɟɹƽ ꞁȷ̀ᴜ }ʃꞇ": "Affix",
     "ſɭɔ ı],ɔ }ʃꞇ": "Evidential",
@@ -530,9 +534,9 @@ const KEFHAXE: Readonly<Record<string, string>> = {
 };
 
 /**
- * Konvertu folian ĉelon al tondita unulinia ĉeno.
- *    @param v ( unknown ) - Kruda ĉelvaloro.
- * @returns string
+ * បម្លែកក្រឡប់សន្ទាស៊ីទៅជាខ្សែមួយក្រឡា ដែលបានកាត់។
+ *    @param v ( unknown ) - តម្លៃក្រឡប់មូលដ្ឋាន។
+ * @returns ĉeno
  */
 function ĉeloAlTeksto(v: unknown): string {
     if ( v === null || v === undefined ) return "";
@@ -540,10 +544,10 @@ function ĉeloAlTeksto(v: unknown): string {
 }
 
 /**
- * Decidu la pozicion kontrolante unue Temon, poste Estas Sub La Temo.
- *    @param temo ( string ) - Temo-ĉelo ( kolumno 0 ).
- *    @param estasSub ( string ) - Estas Sub La Temo-ĉelo ( kolumno 1 ).
- * @returns string
+ * កំណត់ប្រភេទដ៏នដោយពិនិត្យប្រភេទកម្មវិធីជាមុន បន្ទាប់មកត្រូវបានរង្កងជាក្រោមប្រភេទកម្មវិធី។
+ *    @param temo ( string ) - ក្រឡប់ប្រភេទកម្មវិធី ( ជួនឈរ 0 )។
+ *    @param estasSub ( string ) - ក្រឡប់ប្រភេទកម្មវិធីក្រោម ( ជួនឈរ 1 )។
+ * @returns ĉeno
  */
 function determiniPoŝon(temo: string, estasSub: string): string {
     for ( const markilo in KEFHAXE ) {
@@ -556,25 +560,25 @@ function determiniPoŝon(temo: string, estasSub: string): string {
 }
 
 /**
- * Normaligu KEFHAXE-POZ-etikedon al sia baza tipo.
- * "Number ( Noun )" → "Noun", "Chemical ( Noun )" → "Noun", "Affix" → "Affix", ktp.
- * Ĉi tio spegulas la originalan `determinePos()` regul-espriman eltiron.
- *    @param poŝo ( string ) - Kruda POZ-etikedo.
- * @returns string
+ * ធ្វើធម្មតាស្លាក់ POZ នៃ KEFHAXE ទៅជាប្រភេទមូលដ្ឋានរបស់ខ្លួន។
+ * "Number ( Noun )" → "Noun", "Chemical ( Noun )" → "Noun", "Affix" → "Affix", និងអ្នកផ្សេងៗ។
+ * ទាំងនេះស្រួតតាមការដំណើរការបញ្ជាក់ឃ្លា `determinePos()` ដើមរបស់កូដដើម។
+ *    @param poŝo ( string ) - ស្លាក់ POZ មូលដ្ឋាន។
+ * @returns ĉeno
  */
 function normigiPoŝon(poŝo: string): string {
     const match = poŝo.match( /\((\w+)\)$/ );
-    if ( match ) return match[1];
+    if ( match ) return match[0o1];
     return poŝo;
 }
 
 /**
- * Alportu kaj analizu la xlsx-vortaron, redonante VortEniro[] rekte.
-    * @param xlsxVojo ( string | null = null , optional ) - Vojo al la xlsx-dosiero.
- * @returns VortEniro[]
+ * ផ្ទុក និងវិភាគពាក្យមាត្រ xlsx ដោយជួយប្រគល់ VortEniro[] ដោយផ្ទាល់។
+    * @param xlsxVojo ( string | null = null , optional ) - ផ្លូវទៅឯកសារ xlsx។
+ * @returns vortaro
  */
 async function sxargiVortaron(xlsxVojo: string | null = null): Promise<VortEniro[]> {
-    const path = xlsxVojo || VORTARAJ_PATHS[0];
+    const path = xlsxVojo || VORTARAJ_PATHS[0o0];
 
     if ( _vortaroKaso.has(path) ) {
         return _vortaroKaso.get(path)!;
@@ -587,34 +591,34 @@ async function sxargiVortaron(xlsxVojo: string | null = null): Promise<VortEniro
         }
         const bufro = await respondo.arrayBuffer();
         const wb = XLSX.read(bufro, { type: "array" });
-        const folio = wb.Sheets[wb.SheetNames[0]!]!;
+        const folio = wb.Sheets[wb.SheetNames[0o0]!]!;
         const vicoj = XLSX.utils.sheet_to_json<unknown[]>(folio, {
-            header: 1,
+            header: 0o1,
             defval: "",
             raw: false,
         });
         const eligo: VortEniro[] = [];
-        for ( let r = 1; r < vicoj.length; r++ ) {
+        for ( let r = 0o1; r < vicoj.length; r++ ) {
             const vico = vicoj[r];
             if ( !vico ) continue;
-            const temo = ĉeloAlTeksto(vico[0]);
-            const estasSub = ĉeloAlTeksto(vico[1]);
-            const vortoKruda = ĉeloAlTeksto(vico[2]);
-            const tradukoKruda = ĉeloAlTeksto(vico[3]);
+            const temo = ĉeloAlTeksto(vico[0o0]);
+            const estasSub = ĉeloAlTeksto(vico[0o1]);
+            const vortoKruda = ĉeloAlTeksto(vico[0o2]);
+            const tradukoKruda = ĉeloAlTeksto(vico[0o3]);
             if ( !vortoKruda ) continue;
             const poŝo = determiniPoŝon(temo, estasSub);
-            // ⟨ Disigu multi-vortajn ĉelojn per "｡" — samkiel la originala HTML-analizilo ⟩
+            // ⟨ បំបែកក្រឡប់ពហុពាក្យដោយ "｡" - ដូចគ្នានឹងកម្មវិធីវិភាគ HTML ដើម ⟩
             const vortoj = vortoKruda.split("｡").map(p => p.trim()).filter(p => p);
             const tradukoj = tradukoKruda ? tradukoKruda.split("｡").map(p => p.trim()).filter(p => p) : [];
             for ( const unuVorto of vortoj ) {
-                const trans = tradukoj.length > 0
+                const trans = tradukoj.length > 0o0
                     ? elektiNeIikrhianTradukon(tradukoj)
                     : unuVorto;
                 eligo.push({
                     gawekiif: unuVorto,
                     traduko: trans,
                     poŝo: poŝo,
-                    vico_indekso: r - 1,
+                    vico_indekso: r - 0o1,
                 });
             }
         }
@@ -630,13 +634,13 @@ async function sxargiVortaron(xlsxVojo: string | null = null): Promise<VortEniro
 }
 
 /**
- * Ŝarĝu la vortaron provante plurajn vojojn en ordo.
- * @returns VortEniro[]
+ * ផ្ទុកពាក្យមាត្រដោយព្យាយាមផ្លូវជាច្រើនតាមលំដាប់។
+ * @returns vortaro
  */
 async function sxargiVortaronKunFalreto(): Promise<VortEniro[]> {
     for ( const path of VORTARAJ_PATHS ) {
         const vortoj = await sxargiVortaron(path);
-        if ( vortoj.length > 0 ) {
+        if ( vortoj.length > 0o0 ) {
             console.log("( ſ̀ȷᴜ ſɭɹ ) Successfully loaded dictionary from " + path);
             return vortoj;
         }
@@ -645,8 +649,8 @@ async function sxargiVortaronKunFalreto(): Promise<VortEniro[]> {
 }
 
 /**
- * Ŝarĝu la vortaron sinkrone (se antaŭŝargita).
- * @returns VortEniro[]
+ * ផ្ទុកពាក្យមាត្រដោយស្ងាត់ ( ប្រសិនបើបានផ្ទុកទើបហើយ )។
+ * @returns vortaro
  */
 function sxargiVortaronSinkrone(): VortEniro[] {
     const firstEntry = _vortaroKaso.values().next();
@@ -654,21 +658,21 @@ function sxargiVortaronSinkrone(): VortEniro[] {
 }
 
 /**
- * Akiru hazardan vorton laŭ POZ.
-    * @param pos ( string , required ) - Parolparta etikedo.
- * @returns VortEniro | null
+ * យកពាក្យមួយដែលមានចង្វេកតាម POZ។
+    * @param pos ( string , required ) - ស្លាក់ក្រុមកម្មភាព។
+ * @returns vorto
  */
 function akiriVortonPerPoŝo(pos: string): VortEniro | null {
     const vortoj = sxargiVortaronSinkrone().filter(w => w.poŝo === pos);
-    if ( vortoj.length === 0 ) return null;
+    if ( vortoj.length === 0o0 ) return null;
     return vortoj[Math.floor(Math.random() * vortoj.length)];
 }
 
 
-// ⟪ Frazaj Komponantoj 🧱 ⟫
+// ⟪ សមាជិកឃ្លា 🧱 ⟫
 
 /**
- * Vortaj poziciaj tipoj en VOS-fraza strukturo.
+ * ប្រភេទទីតាំងពាក្យក្នុងក្រសរស្រាយឃ្លា VOS។
  */
 const VortPozicio = {
     TEMPORALA: "TEMPORALA",
@@ -708,9 +712,9 @@ interface VerbModifiloj {
 }
 
 /**
- * Komponantoj por konstrui frazon.
- * Uzas unuigitan vortoj-aron - ĉiuj vortoj (inkluzive adjektivojn, VN-sekvencojn, koordinatajn elementojn)
- * estas stokitaj kiel vortaj eniroj kun pozicia kaj modifa informo.
+ * សមាជិកសម្រាប់សាងសង់ឃ្លា។
+ * ប្រើបញ្ជីពាក្យដែលត្រូវបានបង្កើត - ពាក្យទាំងអស់ ( រួមមានបន្ទាន្ន ខ្សែ VN និងធាតុផ្សូរជាក់ស្តែង )
+ * ត្រូវបានរក្សាទុកជាទាក់ត្រាបញ្ចូលដែលមានព័ត្រនឹងទីតាំង និងព័ត្រនឹងកែចំ។
  */
 class FrazKomponantoj {
     tempo: VortEniro | null = null;
@@ -727,16 +731,16 @@ class FrazKomponantoj {
 }
 
 /**
- * Helpilo por akiri afikso-tradukon kun falreto al klavo.
-    * @param klavo ( string , required ) - Afiksa klavo.
- * @returns string | null
+ * ឧបករណ៍ជំរើសដើម្បីយកការបកប្ប័យនៃប្រភេទប្រកប្រកប ដោយត្រឡប់ទៅក្រឡប់ចំណុចកណ្តាលប្រសិនបើមាន។
+    * @param klavo ( string , required ) - ក្រឡប់ចំណុចកណ្តាលនៃប្រភេទប្រកប្រកប។
+ * @returns rezulto
  */
 function _akiriAfiksoTradukon(klavo: string): string | null {
     return AFIKSAJ_TRADUKOJ[klavo] || klavo;
 }
 
 
-// ⟪ Fraza Konstruilo 🔨 ⟫
+// ⟪ កន្សល់ឃ្លា 🔨 ⟫
 
 class FrazKonstruilo {
     components: FrazKomponantoj;
@@ -837,8 +841,8 @@ class FrazKonstruilo {
     }
 
     private _aplikiLimon(parts: string[]): string[] {
-        if (parts.length === 0) return parts;
-        const lastIdx = parts.length - 1;
+        if (parts.length === 0o0) return parts;
+        const lastIdx = parts.length - 0o1;
         if (!this._cxuSpecialaMarkilo(parts[lastIdx])) {
             parts[lastIdx] = aplikiAfikson(parts[lastIdx], "AL");
         }
@@ -873,8 +877,8 @@ class FrazKonstruilo {
         return `${prefixPart}[${baseTrans}${suffixPart}]`;
     }
 
-    private _akiriAfiksoTradukojn(modifiers: VerbModifiloj | ModifitaVortEniro | null, isWord: boolean = false): [string | null, string | null] {
-        if (!modifiers) return [null, null];
+    private _akiriAfiksoTradukojn(modifiers: VerbModifiloj | ModifitaVortEniro | null, isWord: boolean = false): [ string | null, string | null ] {
+        if (!modifiers) return [ null, null ];
 
         let prefix: string | null = null;
         let suffix: string | null = null;
@@ -904,7 +908,7 @@ class FrazKonstruilo {
             }
         }
 
-        return [prefix, suffix];
+        return [ prefix, suffix ];
     }
 
     private _aldoniVorton(
@@ -939,7 +943,7 @@ class FrazKonstruilo {
 
         const modifiedVerb = this._aplikiVerbModifojn();
         const modifiers = this.components.verboModifiloj;
-        const [verbPrefix, verbSuffix] = this._akiriAfiksoTradukojn(modifiers);
+        const [ verbPrefix, verbSuffix ] = this._akiriAfiksoTradukojn(modifiers);
         const hasIntensifier = this.components.intensigilo.aktiva && this.components.intensigilo.surVerbo;
         this._aldoniVorton(gawekiif, strukturo, traduko, modifiedVerb.gawekiif, this._konstruiVerbanStrukturon(modifiers, hasIntensifier), modifiedVerb.traduko, verbPrefix, verbSuffix);
 
@@ -1000,7 +1004,7 @@ class FrazKonstruilo {
 
         const suffix = aldoniIntensigilon ? "KOZ" : null;
 
-        if (gawekiif.length > 0) {
+        if (gawekiif.length > 0o0) {
             this._aplikiLimon(gawekiif);
             this._aplikiLimonAlStrukturo(strukturo);
         }
@@ -1021,7 +1025,7 @@ class FrazKonstruilo {
         strukturo: string[],
         traduko: string[]
     ): void {
-        if (!adjectives || adjectives.length === 0) return;
+        if (!adjectives || adjectives.length === 0o0) return;
 
         let intensifierApplied = this.components.intensigilo.aktiva && this.components.intensigilo.surVerbo;
 
@@ -1047,7 +1051,7 @@ class FrazKonstruilo {
         requireModifierAfterKal: boolean
     ): void {
         const vortoj = this.components.vortoj.filter(w => w.pozicio === position);
-        if (vortoj.length === 0) return;
+        if (vortoj.length === 0o0) return;
 
         let intensifierApplied = false;
         let pendingModifiers: FrazVortEniro[] = [];
@@ -1076,7 +1080,7 @@ class FrazKonstruilo {
                     this._aldoniVorton(gawekiif, strukturo, traduko, entry.temaMarkilo, "TOPIC", markerTrans);
                 }
 
-                if (entry.havasKalAntaŭe && gawekiif.length > 0) {
+                if (entry.havasKalAntaŭe && gawekiif.length > 0o0) {
                     this._aldoniVorton(gawekiif, strukturo, traduko, KAL, "KAL", "KAL");
                     expectModifierAfterKal = requireModifierAfterKal;
                 }
@@ -1113,11 +1117,13 @@ class FrazKonstruilo {
     }
 
     private _aplikiLimonAlStrukturo(strukturo: string[]): void {
-        if (strukturo.length === 0) return;
-        const lastIdx = strukturo.length - 1;
+        if (strukturo.length === 0o0) return;
+        const lastIdx = strukturo.length - 0o1;
         const label = strukturo[lastIdx];
-        // ⟨ CEZ kaj TACE strukturo-etikedoj ne estas en SPECALAJ_MARKILOJ ( kiu stokas
-        //    Iikrhiajn vortojn ), sed ili devas preterlasi -AL samkiel la subjekta markilo ⺓. ⟩
+        /*
+        * ⟨ ស្លាក់ផ្សូរផ្សូរនៃ CEZ និង TACE មិននៅក្នុង SPECALAJ_MARKILOJ ( ដែលរក្សាទុក
+        *    ពាក្យ Iikrhia ) ប៉ុន្តែពួកគេត្រូវបោះចោល -AL ដូចជាស្លាក់ប្រព័ន្ធ ⺓ ដូចខាងលើ។ ⟩
+        */
         if ( label === "CEZ" || label === "TACE" || this._cxuSpecialaMarkilo(label) ) {
             return;
         }
@@ -1126,23 +1132,23 @@ class FrazKonstruilo {
 }
 
 
-// ⟪ Modulaj Frazgeneriloj 🏗️ ⟫
+// ⟪ ម៉ូឌុលបង្កើតឃ្លា 🏗️ ⟫
 
-// ⟪ Helpaj Funkcioj por Oftaj Ŝablonoj 🔧 ⟫
+// ⟪ មុខងងឹតជំរើសសម្រាប់ទម្រង់ទូទៅ 🔧 ⟫
 
 /**
- * Ĝenerala helpilo por "eble"-ŝablono - aplikas modifilon kun 50% probablo.
-    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
-    * @param modifierFn ( Function , required ) - Funkcio kiu aplikas la modifilon.
-    * @param saltuSeVerbaAfikso ( boolean = false , optional ) - Saltu se verbo jam havas modaleco/afikson.
- * @returns FrazKonstruilo
+ * ឧបករណ៍ជំរើសទូទៅសម្រាប់ទម្រង់ "eble" - អនុវត្តម៉ូដ្ឋីដោយមានប្រូបរាយ ៥០%។
+    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+    * @param modifierFn ( Function , required ) - មុខងងឹតដែលអនុវត្តម៉ូដ្ឋី។
+    * @param saltuSeVerbaAfikso ( boolean = false , optional ) - បោះចោលប្រសិនបើទាក់ត្រាមានគ្រាប់មនុស្ស ឬប្រភេទប្រកប្រកបរួចហើយ។
+ * @returns konstruilo
  */
 function ebleAplikiModifilon(
     builder: FrazKonstruilo,
     modifierFn: (b: FrazKonstruilo) => FrazKonstruilo,
     saltuSeVerbaAfikso: boolean = false
 ): FrazKonstruilo {
-    if (Math.random() > 1 / 2) return builder;
+    if (Math.random() > 0o1 / 0o2) return builder;
     if (saltuSeVerbaAfikso && builder.components.verboModifiloj.afikso) return builder;
     return modifierFn(builder);
 }
@@ -1158,13 +1164,13 @@ interface VNModifiloOpcioj {
 }
 
 /**
- * VN-modifa funkcio - aldonas V+N sekvencon kiel modifilon antaŭ ĉefa substantivo.
- * V N funkcias kiel adjektivo - ĝi modifas la sekvantan substantivon.
- * VN estas V kaj N - ĉiu povas havi siajn proprajn modifilojn (adjektivoj, afiksoj, modaleco, intensigilo).
- * Strukturo. (Adj V) (Adj N) N por subjekto/objekto kun VN-modifilo.
-    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
-    * @param opcioj ( VNModifiloOpcioj = {} , optional ) - Opcia agordo.
- * @returns FrazKonstruilo
+ * មុខងងឹតកែចំ VN - បញ្ចូលខ្សែ V+N ជាម៉ូដ្ឋីមុនពាក្យឈ្មោះចម្បង។
+ * V N ដំណើរការដោយជាបន្ទាន្ន - វាកែចំពាក្យឈ្មោះដែលបន្ទាប់របស់វា។
+ * VN គឺជា V និង N - ទាំងពីរអាចមានម៉ូដ្ឋីផ្ទាល់ខ្លួន ( បន្ទាន្ន, ប្រភេទប្រកប្រកប, គ្រាប់មនុស្ស, ពង្រឹក្រឹមក )។
+ * ក្រសរស្រាយ៖ ( Adj V ) ( Adj N ) N សម្រាប់ប្រព័ន្ធ/វត្ថប្រង់ដែលមានម៉ូដ្ឋី VN។
+    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+    * @param opcioj ( VNModifiloOpcioj = {} , optional ) - ការកំណត់ជម្រើស។
+ * @returns konstruilo
  */
 function aplikiVNModifilonUnue(builder: FrazKonstruilo, opcioj: VNModifiloOpcioj = {}): FrazKonstruilo {
     const {
@@ -1191,13 +1197,14 @@ function aplikiVNModifilonUnue(builder: FrazKonstruilo, opcioj: VNModifiloOpcioj
 }
 
 /**
- * Aldonu VN-modifan sekvencon al pozicio.
- * VN estas V kaj N - ĉiu povas havi siajn proprajn modifilojn (adjektivoj, afiksoj, modaleco).
- * VN agas kiel modifilo kaj venas ANTAŬ la ĉefa substantivo kiun ĝi modifas.
- * Strukturo. (Adj) V (Adj) N - kie la tuta VN-sekvenco modifas la sekvantan ĉefan substantivon.
-    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
-    * @param pozicio ( VortPozicioTipo , required ) - VortPozicio al kiu aldoni.
-    * @param opcioj ( VNModifiloOpcioj , required ) - Modifaj opcioj.
+ * បញ្ចូលខ្សែកែចំ VN ទៅទីតាំង។
+ * VN គឺជា V និង N - ទាំងពីរអាចមានម៉ូដ្ឋីផ្ទាល់ខ្លួន ( បន្ទាន្ន, ប្រភេទប្រកប្រកប, គ្រាប់មនុស្ស )។
+ * VN ដំណើរការដោយជាម៉ូដ្ឋី និងមកមុនពាក្យឈ្មោះចម្បងដែលវាកែចំ។
+ * ក្រសរស្រាយ៖ ( Adj ) V ( Adj ) N - ដែលខ្សែ VN ទាំងអស់កែចំពាក្យឈ្មោះចម្បងដែលបន្ទាប់របស់វា។
+    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+    * @param pozicio ( VortPozicioTipo , required ) - ទីតាំងពាក្យដែលត្រូវបញ្ចូលទៅវា។
+    * @param opcioj ( VNModifiloOpcioj , required ) - ជម្រើសកែចំ។
+  * @returns void
  */
 function _aldoniVNModifilon(builder: FrazKonstruilo, pozicio: VortPozicioTipo, opcioj: VNModifiloOpcioj): void {
     const {
@@ -1223,8 +1230,8 @@ function _aldoniVNModifilon(builder: FrazKonstruilo, pozicio: VortPozicioTipo, o
     });
 
     if (addNounAdjectives) {
-        const nounAdjCount = Math.floor(Math.random() * 2);
-        for (let i = 0; i < nounAdjCount; i++) {
+        const nounAdjCount = Math.floor(Math.random() * 0o2);
+        for (let i = 0o0; i < nounAdjCount; i++) {
             const adj = kreiAdjektivon("Noun");
             if (adj) {
                 builder.components.vortoj.unshift({
@@ -1239,8 +1246,8 @@ function _aldoniVNModifilon(builder: FrazKonstruilo, pozicio: VortPozicioTipo, o
     });
 
     if (addVerbAdjectives) {
-        const verbAdjCount = Math.floor(Math.random() * 2);
-        for (let i = 0; i < verbAdjCount; i++) {
+        const verbAdjCount = Math.floor(Math.random() * 0o2);
+        for (let i = 0o0; i < verbAdjCount; i++) {
             const adj = kreiAdjektivon("Noun");
             if (adj) {
                 builder.components.vortoj.unshift({
@@ -1259,8 +1266,8 @@ interface BazajFrazKomponantoj {
 }
 
 /**
- * Akiru bazajn frazajn komponantojn (V, O, S).
- * @returns BazajFrazKomponantoj | null
+ * យកសមាជិកឃ្លាមូលដ្ឋាន ( V, O, S )។
+ * @returns bazaKomponanto
  */
 function akiriBazajnFrazKomponantojn(): BazajFrazKomponantoj | null {
     const verbo = akiriVortonPerPoŝo("Verb");
@@ -1273,9 +1280,9 @@ function akiriBazajnFrazKomponantojn(): BazajFrazKomponantoj | null {
 }
 
 /**
- * Eble aldonu temporalan kadron.
-    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
- * @returns FrazKonstruilo
+ * បញ្ចូលក្រ្លោ់ពេលវេលាបានជាជម្រើស។
+    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+ * @returns konstruilo
  */
 function ebleAldoniTemporalon(builder: FrazKonstruilo): FrazKonstruilo {
     return ebleAplikiModifilon(builder, (b) => {
@@ -1294,26 +1301,26 @@ interface AdjektivoOpcioj {
 }
 
 /**
- * Aldonu hazardajn adjektivojn al ajnaj pozicioj kun hazardaj kvantoj.
- * Ĉiu pozicio (verbo, objekto, subjekto) povas ricevi 0-2 adjektivojn hazarde.
-    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
-    * @param base ( BazajFrazKomponantoj , required ) - Bazaj komponantoj (verbo, obj, subj).
-    * @param opcioj ( AdjektivoOpcioj = {} , optional ) - Opcia agordo.
- * @returns FrazKonstruilo
+ * បញ្ចូលបន្ទាន្នមានចង្វេកទៅទីតាំងណាមួយជាមួយចំនួនចង្វេក។
+ * ទីតាំងនីមួយៗ ( ទាក់ត្រា, វត្ថប្រង់, ប្រព័ន្ធ ) អាចទទួលបន្ទាន្ន ០-២ ដោយចង្វេក។
+    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+    * @param base ( BazajFrazKomponantoj , required ) - សមាជិកមូលដ្ឋាន ( ទាក់ត្រា, វត្ថប្រង់, ប្រព័ន្ធ )។
+    * @param opcioj ( AdjektivoOpcioj = {} , optional ) - ការកំណត់ជម្រើស។
+ * @returns konstruilo
  */
 function aplikiAdjektivojn(builder: FrazKonstruilo, base: BazajFrazKomponantoj, opcioj: AdjektivoOpcioj = {}): FrazKonstruilo {
     const { useAdjectivizer = false, skipRandom = false } = opcioj;
 
-    if (!skipRandom && Math.random() > 1 / 2) {
+    if (!skipRandom && Math.random() > 0o1 / 0o2) {
         return builder;
     }
 
-    const positions: VortPozicioTipo[] = [VortPozicio.VERBO, VortPozicio.OBJEKTO, VortPozicio.SUBJEKTO];
+    const positions: VortPozicioTipo[] = [ VortPozicio.VERBO, VortPozicio.OBJEKTO, VortPozicio.SUBJEKTO ];
 
     for (const pos of positions) {
-        const adjCount = Math.floor(Math.random() * 3);
+        const adjCount = Math.floor(Math.random() * 0o3);
 
-        for (let i = 0; i < adjCount; i++) {
+        for (let i = 0o0; i < adjCount; i++) {
             let adj: VortEniro | null = null;
 
             if (useAdjectivizer) {
@@ -1326,7 +1333,7 @@ function aplikiAdjektivojn(builder: FrazKonstruilo, base: BazajFrazKomponantoj, 
             }
 
             if (adj) {
-                builder.aldoniAdjektivojn([adj], pos);
+                builder.aldoniAdjektivojn([ adj ], pos);
             }
         }
     }
@@ -1341,10 +1348,10 @@ interface EvidencialoOpcioj {
 }
 
 /**
- * Unuigita evidenciala funkcio - aplikas evidencialon al VP aŭ fraza amplekso.
-    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
-    * @param opcioj ( EvidencialoOpcioj = {} , optional ) - Opcia agordo.
- * @returns FrazKonstruilo
+ * មុខងងឹតភស្តីនិយមត្រនៃតាមប្រភព - អនុវត្តភស្តីនិយមត្រនៃតាមប្រភពទៅលើ VP ឬវិសល្បនៃឃ្លា។
+    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+    * @param opcioj ( EvidencialoOpcioj = {} , optional ) - ការកំណត់ជម្រើស។
+ * @returns konstruilo
  */
 function aplikiEvidencialonUnue(builder: FrazKonstruilo, opcioj: EvidencialoOpcioj = {}): FrazKonstruilo {
     const {
@@ -1368,13 +1375,13 @@ function aplikiEvidencialonUnue(builder: FrazKonstruilo, opcioj: EvidencialoOpci
 }
 
 /**
- * Eble aldonu unuigitan evidencialon al VP aŭ fraza amplekso.
-    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
- * @returns FrazKonstruilo
+ * បញ្ចូលភស្តីនិយមត្រនៃតាមប្រភពដែលត្រូវបានបង្កើតទៅលើ VP ឬវិសល្បនៃឃ្លាបានជាជម្រើស។
+    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+ * @returns konstruilo
  */
 function ebleAldoniEvidencialonUnue(builder: FrazKonstruilo): FrazKonstruilo {
     return ebleAplikiModifilon(builder, (b) => {
-        const useVp = Math.random() < 1 / 2;
+        const useVp = Math.random() < 0o1 / 0o2;
         return aplikiEvidencialonUnue(b, {
             addVpEvidential: useVp,
             addSentenceEvidential: !useVp
@@ -1383,28 +1390,28 @@ function ebleAldoniEvidencialonUnue(builder: FrazKonstruilo): FrazKonstruilo {
 }
 
 /**
- * Eble aldonu modalecon (can/should kun opcia negacio).
-    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
- * @returns FrazKonstruilo
+ * បញ្ចូលគ្រាប់មនុស្ស ( can/should ជាមួយការបដិសេធជម្រើស )បានជាជម្រើស។
+    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+ * @returns konstruilo
  */
 function ebleAldoniModalecojn(builder: FrazKonstruilo): FrazKonstruilo {
     return ebleAplikiModifilon(builder, (b) => {
-        const modalities: [string, boolean][] = [
-            ["can", false],
-            ["can", true],
-            ["should", false],
-            ["should", true]
+        const modalities: [ string, boolean ][] = [
+            [ "can", false ],
+            [ "can", true ],
+            [ "should", false ],
+            [ "should", true ]
         ];
-        const [modaleco, negata] = modalities[Math.floor(Math.random() * modalities.length)];
+        const [ modaleco, negata ] = modalities[Math.floor(Math.random() * modalities.length)];
         b.agordiVerbon(b.components.verbo!, null, modaleco, negata);
         return b;
     });
 }
 
 /**
- * Eble aldonu negacion (KON-).
-    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
- * @returns FrazKonstruilo
+ * បញ្ចូលការបដិសេធ ( KON- )បានជាជម្រើស។
+    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+ * @returns konstruilo
  */
 function ebleAldoniNegacion(builder: FrazKonstruilo): FrazKonstruilo {
     return ebleAplikiModifilon(builder, (b) => {
@@ -1419,10 +1426,10 @@ interface IntensigiloOpcioj {
 }
 
 /**
- * Eble aldonu intensigilon al objekta adjektivo aŭ verbo.
-    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
-    * @param opcioj ( IntensigiloOpcioj = {} , optional ) - Opcia agordo.
- * @returns FrazKonstruilo
+ * បញ្ចូលពង្រឹក្រឹមកទៅបន្ទាន្នវត្ថប្រង់ ឬទាក់ត្រាបានជាជម្រើស។
+    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+    * @param opcioj ( IntensigiloOpcioj = {} , optional ) - ការកំណត់ជម្រើស។
+ * @returns konstruilo
  */
 function ebleAldoniIntensigilon(builder: FrazKonstruilo, opcioj: IntensigiloOpcioj = {}): FrazKonstruilo {
     const { onVerb = false } = opcioj;
@@ -1451,10 +1458,10 @@ interface VerbaAfiksoOpcioj {
 }
 
 /**
- * Unuigita verba afiksa funkcio - aplikas verbajn afiksojn (pasivo, inkoativo, ktp).
-    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
-    * @param opcioj ( VerbaAfiksoOpcioj = {} , optional ) - Opcia agordo.
- * @returns FrazKonstruilo
+ * មុខងងឹតប្រភេទប្រកប្រកបនៃទាក់ត្រាដែលត្រូវបានបង្កើត - អនុវត្តប្រភេទប្រកប្រកបទាក់ត្រា ( ការសកម្ម, ការមិនសកម្ម និងអ្នកផ្សេងៗ )។
+    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+    * @param opcioj ( VerbaAfiksoOpcioj = {} , optional ) - ការកំណត់ជម្រើស។
+ * @returns konstruilo
  */
 function aplikiVerbanAfiksonUnue(builder: FrazKonstruilo, opcioj: VerbaAfiksoOpcioj = {}): FrazKonstruilo {
     const {
@@ -1471,14 +1478,14 @@ function aplikiVerbanAfiksonUnue(builder: FrazKonstruilo, opcioj: VerbaAfiksoOpc
 }
 
 /**
- * Eble aldonu unuigitan verban afikson (pasivo, inkoativo, ktp).
-    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
-    * @param afiksoTipo ( string | null = null , optional ) - Afiksa tipo.
- * @returns FrazKonstruilo
+ * បញ្ចូលប្រភេទប្រកប្រកបនៃទាក់ត្រាដែលត្រូវបានបង្កើត ( ការសកម្ម, ការមិនសកម្ម និងអ្នកផ្សេងៗ )បានជាជម្រើស។
+    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+    * @param afiksoTipo ( string | null = null , optional ) - ប្រភេទប្រភេទប្រកប្រកប។
+ * @returns konstruilo
  */
 function ebleAldoniVerbanAfiksonUnue(builder: FrazKonstruilo, afiksoTipo: string | null = null): FrazKonstruilo {
     if (!afiksoTipo) {
-        const afiksoj = ["L6R", "B6N"];
+        const afiksoj = [ "L6R", "B6N" ];
         afiksoTipo = afiksoj[Math.floor(Math.random() * afiksoj.length)];
     }
     return ebleAplikiModifilon(builder, (b) => {
@@ -1494,13 +1501,13 @@ interface KoordinatajElementojOpcioj {
 }
 
 /**
- * Koordinataj elementaj funkcio - aldonas koordinatajn objektojn kaj subjektojn.
- * Por objektoj. N KAL N (simpla koordinado permesita)
- * Por subjektoj. N KAL (modifilo) N - post KAL, devas havi adjektivon aŭ V N-modifilon
- * Strukturo. V O₁ KAL O₂ ⺓ S₁ KAL (Adj/V N) S₂
-    * @param builder ( FrazKonstruilo , required ) - Konstruilo por modifi.
-    * @param opcioj ( KoordinatajElementojOpcioj = {} , optional ) - Opcia agordo.
- * @returns FrazKonstruilo
+ * មុខងងឹតធាតុផ្សូរជាក់ស្តែង - បញ្ចូលវត្ថប្រង់ និងប្រព័ន្ធដែលជាក់ស្តែង។
+ * សម្រាប់វត្ថប្រង់៖ N KAL N ( អនុញ្ញាតការផ្សូរជាក់ស្តែងងាយ )
+ * សម្រាប់ប្រព័ន្ធ៖ N KAL ( ម៉ូដ្ឋី ) N - បន្ទាប់ KAL ត្រូវមានបន្ទាន្ន ឬម៉ូដ្ឋី V N
+ * ក្រសរស្រាយ៖ V O₁ KAL O₂ ⺓ S₁ KAL ( Adj / V N ) S₂
+    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+    * @param opcioj ( KoordinatajElementojOpcioj = {} , optional ) - ការកំណត់ជម្រើស។
+ * @returns konstruilo
  */
 function aplikiKoordinatajnElementojnUnue(builder: FrazKonstruilo, opcioj: KoordinatajElementojOpcioj = {}): FrazKonstruilo {
     const {
@@ -1522,7 +1529,7 @@ function aplikiKoordinatajnElementojnUnue(builder: FrazKonstruilo, opcioj: Koord
         if (subj2) {
             const adj = akiriVortonPerPoŝo("Adjective") || kreiAdjektivon("Noun");
             if (adj) {
-                builder.aldoniAdjektivojn([adj], VortPozicio.SUBJEKTO);
+                builder.aldoniAdjektivojn([ adj ], VortPozicio.SUBJEKTO);
             }
             builder.aldoniKoordinatanVorton(subj2, VortPozicio.SUBJEKTO, true);
         }
@@ -1532,9 +1539,9 @@ function aplikiKoordinatajnElementojnUnue(builder: FrazKonstruilo, opcioj: Koord
 }
 
 /**
- * Eble aldonu unuigitajn koordinatajn elementojn al ambaŭ objektoj kaj subjektoj.
-    * @param builder - Konstruilo por modifi.
- * @returns Modifita konstruilo.
+ * បញ្ចូលធាតុផ្សូរជាក់ស្តែងដែលត្រូវបានបង្កើតទៅលើវត្ថប្រង់ និងប្រព័ន្ធទាំងពីរបានជាជម្រើស។
+    * @param builder - កន្សល់សម្រាប់កែចំ។
+ * @returns konstruilo
  */
 function ebleAldoniKoordinatajnElementojnUnue(builder: FrazKonstruilo): FrazKonstruilo {
     return ebleAplikiModifilon(builder, (b) => {
@@ -1546,18 +1553,18 @@ function ebleAldoniKoordinatajnElementojnUnue(builder: FrazKonstruilo): FrazKons
 }
 
 /**
- * Eble aldonu unuigitan VN-modifilon al ambaŭ objekto kaj subjekto.
- * VN-komponantoj (V kaj N) povas ĉiu havi siajn proprajn modifilojn.
-    * @param builder - Konstruilo por modifi.
- * @returns Modifita konstruilo.
+ * បញ្ចូលម៉ូដ្ឋី VN ដែលត្រូវបានបង្កើតទៅលើវត្ថប្រង់ និងប្រព័ន្ធទាំងពីរបានជាជម្រើស។
+ * សមាជិក VN ( V និង N ) អាចមានម៉ូដ្ឋីផ្ទាល់ខ្លួននីមួយៗ។
+    * @param builder - កន្សល់សម្រាប់កែចំ។
+ * @returns konstruilo
  */
 function ebleAldoniUnuecanVNModifilon(builder: FrazKonstruilo): FrazKonstruilo {
     return ebleAplikiModifilon(builder, (b) => {
-        const addVerbAffix = Math.random() > 1 / 2;
-        const addModality = Math.random() > 1 / 2;
-        const aldoniIntensigilon = Math.random() > 1 / 2;
-        const addVerbAdjectives = Math.random() > 1 / 2;
-        const addNounAdjectives = Math.random() > 1 / 2;
+        const addVerbAffix = Math.random() > 0o1 / 0o2;
+        const addModality = Math.random() > 0o1 / 0o2;
+        const aldoniIntensigilon = Math.random() > 0o1 / 0o2;
+        const addVerbAdjectives = Math.random() > 0o1 / 0o2;
+        const addNounAdjectives = Math.random() > 0o1 / 0o2;
 
         return aplikiVNModifilonUnue(b, {
             applyToObject: true,
@@ -1572,12 +1579,12 @@ function ebleAldoniUnuecanVNModifilon(builder: FrazKonstruilo): FrazKonstruilo {
 }
 
 /**
- * Eble aldonu temajn markilojn (QU/MU) al objektoj kaj/aŭ subjektoj.
- * Temaj markiloj aperas antaŭ la substantivo kiun ili modifas.
- * QU = ĈI TIO/TOMO (markas la temon de diskuto)
- * MU = TIO/FOKUSO (markas fokusitan/komparan informon)
-    * @param builder - Konstruilo por modifi.
- * @returns Modifita konstruilo.
+ * បញ្ចូលស្លាក់ផ្សូរផ្សូរ ( QU / MU ) ទៅវត្ថប្រង់ និង ឬប្រព័ន្ធបានជាជម្រើស។
+ * ស្លាក់ផ្សូរផ្សូរបង្ហាញមុនពាក្យឈ្មោះដែលពួកគេកែចំ។
+ * QU = ĈI TIO / TOMO ( សម្គាល់ប្រធានបទនៃការជជែក )
+ * MU = TIO / FOKUSO ( សម្គាល់ព័ត្រនឹងតំណាប់ការ ឬការប្រៀបធៀប )
+    * @param builder - កន្សល់សម្រាប់កែចំ។
+ * @returns konstruilo
  */
 function ebleAldoniTemajnMarkilojn(builder: FrazKonstruilo): FrazKonstruilo {
     return ebleAplikiModifilon(builder, (b) => {
@@ -1585,8 +1592,8 @@ function ebleAldoniTemajnMarkilojn(builder: FrazKonstruilo): FrazKonstruilo {
 
         for (const entry of vortoj) {
             if (!entry.cxuAdjektivo && !entry.havasKalAntaŭe) {
-                if (Math.random() > 1 / 2) {
-                    entry.temaMarkilo = Math.random() > 1 / 2 ? QU : MU;
+                if (Math.random() > 0o1 / 0o2) {
+                    entry.temaMarkilo = Math.random() > 0o1 / 0o2 ? QU : MU;
                 }
             }
         }
@@ -1611,15 +1618,15 @@ interface EbligitajModifiloj {
 }
 
 /**
- * Eble konvertu al demando.
-    * @param builder - Konstruilo por modifi.
-    * @param ebligitajModifiloj - Kiuj modifiloj estas ebligitaj.
- * @returns Modifita konstruilo.
+ * បម្លែងទៅជាសំណួរបានជាជម្រើស។
+    * @param builder - កន្សល់សម្រាប់កែចំ។
+    * @param ebligitajModifiloj - ម៉ូដ្ឋីណាដែលត្រូវបានអនុញ្ញាត។
+ * @returns konstruilo
  */
 function ebleAldoniDemandon(builder: FrazKonstruilo, ebligitajModifiloj: EbligitajModifiloj): FrazKonstruilo {
     if (!ebligitajModifiloj.question) return builder;
     return ebleAplikiModifilon(builder, (b) => {
-        const cxuJesNe = Math.random() < 1 / 2;
+        const cxuJesNe = Math.random() < 0o1 / 0o2;
         b.agordiDemandon(cxuJesNe);
         return b;
     });
@@ -1633,11 +1640,11 @@ interface FrazaRezulto {
 }
 
 /**
- * Ĉefa fraza generatoro - konstruas frazon kun hazardaj opciaj modifiloj.
- * Uzas unuigitan vortan sistemon - ĉiuj vortoj aldonitaj per builder.aldoniVorton().
-    * @param strukturo - Specifa strukturo (neuzata en modula sistemo).
-    * @param ebligitajModifiloj - Kiuj modifiloj estas ebligitaj.
- * @returns Frazaj datumoj aŭ null.
+ * ម៉ូឌុលបង្កើតឃ្លាចម្បង - សាងសង់ឃ្លាដោយមានម៉ូដ្ឋីជម្រើសមានចង្វេក។
+ * ប្រើប្រព័ន្ធពាក្យដែលត្រូវបានបង្កើត - ពាក្យទាំងអស់ត្រូវបានបញ្ចូលដោយ builder.aldoniVorton()។
+    * @param strukturo - ក្រសរស្រាយជាក់ស្តែង ( មិនបានប្រើក្នុងប្រព័ន្ធម៉ូឌុល )។
+    * @param ebligitajModifiloj - ម៉ូដ្ឋីណាដែលត្រូវបានអនុញ្ញាត។
+ * @returns frazo
  */
 function generiFrazon(strukturo: string | null = null, ebligitajModifiloj: EbligitajModifiloj = {}): FrazaRezulto | null {
     if (strukturo) {
@@ -1664,7 +1671,7 @@ function generiFrazon(strukturo: string | null = null, ebligitajModifiloj: Eblig
     if (ebligitajModifiloj.negation !== false) builder = ebleAldoniNegacion(builder);
     if (ebligitajModifiloj.verbAffix !== false) builder = ebleAldoniVerbanAfiksonUnue(builder);
     if (ebligitajModifiloj.adjectivizer) {
-        if (Math.random() > 1 / 2) {
+        if (Math.random() > 0o1 / 0o2) {
             builder = aplikiAdjektivojn(builder, base, { useAdjectivizer: true, skipRandom: true });
         }
     } else if (ebligitajModifiloj.adjectives !== false) {
@@ -1672,7 +1679,7 @@ function generiFrazon(strukturo: string | null = null, ebligitajModifiloj: Eblig
     }
 
     if (ebligitajModifiloj.intensifier !== false) {
-        const onVerb = Math.random() < 1 / 2;
+        const onVerb = Math.random() < 0o1 / 0o2;
         builder = ebleAldoniIntensigilon(builder, { onVerb });
     }
     if (ebligitajModifiloj.vnModifier !== false) builder = ebleAldoniUnuecanVNModifilon(builder);
@@ -1684,11 +1691,12 @@ function generiFrazon(strukturo: string | null = null, ebligitajModifiloj: Eblig
 }
 
 
-// ⟪ UI Initialization 🖥️ ⟫
+// ⟪ ការចាប់ផ្ដើម UI 🖥️ ⟫
 
 /**
- * Iniciatu la frazan generatoran uzulinterfacon.
- * Agordas butonajn klakajn pritraktilojn kaj plenigas la strukturo-falmenuon.
+ * ចាប់ផ្ដើមចំណុចជាទំនាក់ចំណុចបង្កើតឃ្លា។
+ * កំណត់កម្មវិធីដំណើរការចុចលើប៊ូតុង និងបំពេញម៉ឺនុយរចនាសម្រាយ។
+  * @returns void
  */
 function iniciiFrazGeneratoranUI(): void {
     const generiButono = document.getElementById("kf2Ox2pewaCa12na");
@@ -1844,7 +1852,7 @@ function iniciiFrazGeneratoranUI(): void {
         try {
             const vortoj = await sxargiVortaronKunFalreto();
 
-            if (vortoj.length > 0) {
+            if (vortoj.length > 0o0) {
                 vortaroŜargita = true;
                 if (generiButono) (generiButono as HTMLButtonElement).disabled = false;
                 console.log("Dictionary loaded successfully. Ready to generi sentences.");
@@ -1878,7 +1886,7 @@ if (typeof document !== "undefined") {
 }
 
 
-// ⟪ Exports 📤 ⟫
+// ⟪ អត្ថបទលទ្ធផ្លែងករណី 📤 ⟫
 
 export {
     registraro,

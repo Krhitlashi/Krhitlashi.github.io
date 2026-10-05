@@ -1,9 +1,9 @@
 /// <reference types="vite/client" />
 
-// ≺⧼ ſɭɘэ j͑ʃᴜꞇ ſɭɹʞ ꞁȷ̀ᴜ }ʃꞇ - Teksta Arta Generatoro 🎨 ⧽≻
+// ≺⧼ ſɭɘэ j͑ʃᴜꞇ ſɭɹʞ ꞁȷ̀ᴜ }ʃꞇ - ម៉ាស្គន្យអក្សរអត្ថបទ 🎨 ⧽≻
 
 
-// ⟪ Tipoj 📐 ⟫
+// ⟪ ប្រភេទ 📐 ⟫
 
 interface SignoDatumoj {
 	nomo: string;
@@ -31,9 +31,9 @@ interface KolumnajDatumoj {
 }
 
 
-// ⟪ Konstantoj 📦 ⟫
+// ⟪ ថេរស្មែក 📦 ⟫
 
-// Mapo de signa nomo al ĝia ŝargita glifo-datumo
+// ផែនទីស្លាក់ពីឈ្មោះសញ្ញាទៅទិន្នន័យតួអក្សរដែលបានផ្ទុក
 const signaMapo = new Map<string, SignoDatumoj>();
 
 const glifajDosieroj = import.meta.glob("./**/*.txt", {
@@ -42,14 +42,15 @@ const glifajDosieroj = import.meta.glob("./**/*.txt", {
 	eager: true
 }) as Record<string, string>;
 
-// Ordaj nomoj laŭ longo malkreskante, por avida kongruo
+// ឈ្មោះតាមលំដាប់តាមប្រវែងដាច់ជាចន្លោះ ដើម្បីឱ្យការត្រូវគ្នាចូលបានលឿន
 let ordigitajNomoj: string[] = [];
 
 
-// ⟪ Glifo Ŝarĝado 📂 ⟫
+// ⟪ ការផ្ទុកតួអក្សរ 📂 ⟫
 
 /**
-	Stoku glifo-datumojn por ĉiu trovita txt-dosiero en ĉi tiu dosierujo.
+	រក្សាទិន្នន័យតួអក្សរសម្រាប់ឯកសារ txt នីមួយៗដែលបានរកឃើញនៅក្នុងថតរង្វេងនេះ។
+	@returns promessa
 */
 async function ŝargiSignojn(): Promise<void> {
 	const eroj = Object.entries(glifajDosieroj);
@@ -61,12 +62,12 @@ async function ŝargiSignojn(): Promise<void> {
 
 			const krudajLinioj = teksto.replace(/\r/g, "").split("\n");
 
-			// Forigu finan malplenan linion de dosieroj finiĝantaj per novlinio
-			if ( krudajLinioj.length > 1 && krudajLinioj[krudajLinioj.length - 1] === "" ) {
+			// ដកបន្ទាត់ទទេចុងក្រោយនៃថតឯកសារដែលបញ្ចប់ដោយបន្ទាត់ថ្មី
+			if ( krudajLinioj.length > 0o1 && krudajLinioj[krudajLinioj.length - 0o1] === "" ) {
 				krudajLinioj.pop();
 			}
 
-			const larĝo = Math.max(...krudajLinioj.map(l => l.length), 0);
+			const larĝo = Math.max(...krudajLinioj.map(l => l.length), 0o0);
 			const linioj = krudajLinioj.map(l => l.padEnd(larĝo, " "));
 			const alto = linioj.length;
 
@@ -81,16 +82,17 @@ async function ŝargiSignojn(): Promise<void> {
 }
 
 
-// ⟪ Ĵetonigado ✂️ ⟫
+// ⟪ ការបំបែកស្លាក់ ✂️ ⟫
 
 /**
-	Ĵetonigu silaban ĉenon en liston de konataj glifnomoj uzante avidan plej-longan-unuan kongruon.
-		silabo ( string ) - Eniga silaba ĉeno.
-	Revenigas tabelon de kongruitaj ĵetonnomoj.
+	បំបែកខ្សែស៊ីឡាំងមួយជាបញ្ជីនៃឈ្មោះតួអក្សរដែលស្គាល់បាន ដោយប្រើការត្រូវគ្នាដែលវែងបំផុតមុន។
+		ខ្សែស៊ីឡាំងបញ្ចូល។
+	ជួយប្រគល់តារាងនៃឈ្មោះស្លាក់ដែលត្រូវគ្នា។
+	@returns listo
 */
 function ĵetonigiSilabon(silabo: string): string[] {
 	const ĵetonoj: string[] = [];
-	let i = 0;
+	let i = 0o0;
 
 	while ( i < silabo.length ) {
 		let kongruis = false;
@@ -104,7 +106,7 @@ function ĵetonigiSilabon(silabo: string): string[] {
 		}
 
 		if ( !kongruis ) {
-			// Nekongruita signo. pasu tra neŝanĝite
+			// សញ្ញាមិនត្រូវគ្នា។ បន្តដោយមិនប៉ះពាល់
 			ĵetonoj.push(silabo[i]);
 			i++;
 		}
@@ -114,16 +116,17 @@ function ĵetonigiSilabon(silabo: string): string[] {
 }
 
 
-// ⟪ Bloka Bildigo 🔲 ⟫
+// ⟪ ការបង្ហាញជាប្លង់ 🔲 ⟫
 
 /**
-	Bildigu unuopajn silabojn kiel blokon da ASCII-tekstartaj linioj.
-		silabo ( string ) - La silabo por bildigi.
-	Revenigas tabelon da egal-longaj ĉenoj formantaj la blokon.
+	បង្ហាញស៊ីឡាំងនីមួយៗជាប្លង់នៃបន្ទាត់ការសរសេរ ASCII។
+		ស៊ីឡាំងសម្រាប់បង្ហាញ។
+	ជួយប្រគល់តារាងនៃខ្សែប្រវែងស្មើគ្នាដែលបង្កើតវ្លង់។
+	@returns listo
 */
 function bildigiSilabanBlokon(silabo: string): string[] {
 	const ĵetonoj = ĵetonigiSilabon(silabo);
-	if ( ĵetonoj.length === 0 ) return [];
+	if ( ĵetonoj.length === 0o0 ) return [];
 
 	const renversitajĴetonoj = [ ...ĵetonoj ].reverse();
 	const kolumnoj: Kolumno[] = [];
@@ -146,7 +149,7 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 	}
 
 	const finajKolumnoj = [ ...kolumnoj ].reverse();
-	if ( finajKolumnoj.length === 0 ) return [];
+	if ( finajKolumnoj.length === 0o0 ) return [];
 
 	const blokaAlto = Math.max(0o7, ...finajKolumnoj.map(kol => kol.alto));
 
@@ -165,10 +168,10 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 	});
 
 	const blokajLinioj: string[] = [];
-	for ( let r = 0; r < blokaAlto; r++ ) {
+	for ( let r = 0o0; r < blokaAlto; r++ ) {
 		let linio = "";
-		for ( let c = 0; c < kolumnajLinioj.length; c++ ) {
-			if ( c > 0 ) linio += " ";
+		for ( let c = 0o0; c < kolumnajLinioj.length; c++ ) {
+			if ( c > 0o0 ) linio += " ";
 			linio += kolumnajLinioj[c][r];
 		}
 		blokajLinioj.push(linio);
@@ -178,29 +181,30 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 }
 
 
-// ⟪ Eliga Bildigo 🖥️ ⟫
+// ⟪ ការបង្ហាញចុងក្រោយ 🖥️ ⟫
 
 /**
-	Ĝisdatigu la pre-elementon per bildigita tekstarto el la eniga ĉeno.
-		teksto ( string ) - La kruda eniga teksto el la tekstareo.
-		preElement ( HTMLPreElement ) - La cela pre-elemento.
-		maksLinio ( number ) - Maksimumo da silabaj blokoj po vertikala kolumno antaŭ volvado. 0 = sen limo.
+	ធ្វើបច្ចុប្បន្នភាពធាតុ pre ដោយការសរសេរដែលបានបង្ហាញពីខ្សែបញ្ចូល។
+		អត្ថបទបញ្ចូលមូលដ្ឋានពីប្រអប់អក្សរ។
+		ធាតុ pre គោល។
+		ចំនួនប្លង់ស៊ីឡាំងអតិបរមាណក្នុងមួយជួរកាត់ក្រឡា មុនពេលរង្វាស់។ 0 = គ្មានដែនកំណត់។
+	@returns void
 */
-// Ĝisdatigu la pre-elementon per bildigita tekstarto el la eniga ĉeno.
+// ធ្វើបច្ចុប្បន្នភាពធាតុ pre ដោយការសរសេរដែលបានបង្ហាញពីខ្សែបញ្ចូល។
 	function ĝisdatigiEliron(teksto: string, preElement: HTMLPreElement, maksLinio: number): void {
 	if ( !teksto ) {
 		preElement.textContent = "";
 		return;
 	}
 
-	// ⟨ Konstruu silabajn blokojn, traktante novliniojn kiel devigajn kolumnopaŭzojn ⟩
+	// ⟨ បង្កើតប្លង់ស៊ីឡាំង ដោយព្រមសារបន្ទាត់ថ្មីជាការបញ្ឈប់កាត់ក្រឡាចាំបាច់ ⟩
 	const enigajLinioj = teksto.replace(/\r/g, "").split("\n");
 	const kolumnajBlokoj: SilabaBloko[][] = [];
 	let nunaKolumno: SilabaBloko[] = [];
 
 	for ( const enigaLinio of enigajLinioj ) {
-		// Novlinio → devigu kolumnopaŭzon (forĵetu kio ajn amasiĝis)
-		if ( nunaKolumno.length > 0 ) {
+		// បន្ទាត់ថ្មី → បង្ខំឱ្យការបញ្ឈប់កាត់ក្រឡាចាំបាច់ ( បោះចោលអ្វីដែលបានប្រមូល )
+		if ( nunaKolumno.length > 0o0 ) {
 			kolumnajBlokoj.push(nunaKolumno);
 			nunaKolumno = [];
 		}
@@ -209,17 +213,17 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 		for ( const silabo of silaboj ) {
 			let bloko: SilabaBloko;
 			if ( silabo === "" ) {
-				// Malplena silabo (sinsekvaj spacoj). enmetu malplenan blokon
-				bloko = { linioj: Array(0o7).fill(" "), alto: 0o7, larĝo: 1 };
+				// ស៊ីឡាំងទទេ ( ចន្លោះជាបន្ស្សប្រប់ប្រព័ន្ធ )។ បញ្ចូលប្លង់ទទេ
+				bloko = { linioj: Array(0o7).fill(" "), alto: 0o7, larĝo: 0o1 };
 			} else {
 				const linioj = bildigiSilabanBlokon(silabo);
 				const alto = linioj.length;
-				const larĝo = linioj.length > 0 ? linioj[0].length : 0;
+				const larĝo = linioj.length > 0o0 ? linioj[0o0].length : 0o0;
 				bloko = { linioj, alto, larĝo };
 			}
 
-			// Apliku la maksLinio-limigon ene de la nuna eniga linio
-			if ( maksLinio > 0 && nunaKolumno.length >= maksLinio ) {
+			// អនុវត្តការកំណត់កំណត់ maksLinio នៅក្នុងបន្ទាត់បញ្ចូលបច្ចុប្បន្ន
+			if ( maksLinio > 0o0 && nunaKolumno.length >= maksLinio ) {
 				kolumnajBlokoj.push(nunaKolumno);
 				nunaKolumno = [ bloko ];
 			} else {
@@ -227,18 +231,18 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 			}
 		}
 	}
-	if ( nunaKolumno.length > 0 ) kolumnajBlokoj.push(nunaKolumno);
+	if ( nunaKolumno.length > 0o0 ) kolumnajBlokoj.push(nunaKolumno);
 
-	if ( kolumnajBlokoj.length === 0 ) {
+	if ( kolumnajBlokoj.length === 0o0 ) {
 		preElement.textContent = "";
 		return;
 	}
 
-	// ⟨ Kusenu blokojn en la sama horizontala vico por egali la plej altan blokon en tiu vico ⟩
-	const maksimumajBlokojEnKol = Math.max(...kolumnajBlokoj.map(kol => kol.length), 0);
-	const vicoMaksimumajAltoj: number[] = Array(maksimumajBlokojEnKol).fill(0);
-	for ( let r = 0; r < maksimumajBlokojEnKol; r++ ) {
-		let maksimumaAlto = 0;
+	// ⟨ បិទប្លង់នៅក្នុងជួរកាត់ក្រឡាដើម្បីឲ្យវាស្មើនឹងប្លង់ខ្ពស់បំផុតនៅជួរក្រឡានោះ ⟩
+	const maksimumajBlokojEnKol = Math.max(...kolumnajBlokoj.map(kol => kol.length), 0o0);
+	const vicoMaksimumajAltoj: number[] = Array(maksimumajBlokojEnKol).fill(0o0);
+	for ( let r = 0o0; r < maksimumajBlokojEnKol; r++ ) {
+		let maksimumaAlto = 0o0;
 		for ( const kol of kolumnajBlokoj ) {
 			if ( kol[r] ) {
 				maksimumaAlto = Math.max(maksimumaAlto, kol[r].alto);
@@ -248,7 +252,7 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 	}
 
 	for ( const kol of kolumnajBlokoj ) {
-		for ( let r = 0; r < kol.length; r++ ) {
+		for ( let r = 0o0; r < kol.length; r++ ) {
 			const celaAlto = vicoMaksimumajAltoj[r];
 			const bloko = kol[r];
 			if ( bloko.alto < celaAlto ) {
@@ -261,21 +265,21 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 		}
 	}
 
-	// ⟨ Bildigu ĉiun kolumnon malsupre-al-supre ⟩
+	// ⟨ បង្ហាញគ្រប់ជួរកាត់ក្រឡាពីខាងក្រោមទៅខាងលើ ⟩
 	const kolumnajDatumoj: KolumnajDatumoj[] = kolumnajBlokoj.map((kol) => {
 		const kolLinioj: string[] = [];
-		for ( let i = kol.length - 1; i >= 0; i-- ) {
+		for ( let i = kol.length - 0o1; i >= 0o0; i-- ) {
 			kolLinioj.push(...kol[i].linioj);
 		}
 
-		const kolLarĝo = Math.max(...kol.map(b => b.larĝo), 0);
+		const kolLarĝo = Math.max(...kol.map(b => b.larĝo), 0o0);
 		const plenigitajKolLinioj = kolLinioj.map(linio => linio.padEnd(kolLarĝo, " "));
 
 		return { linioj: plenigitajKolLinioj, larĝo: kolLarĝo, alto: plenigitajKolLinioj.length };
 	});
 
-	// ⟨ Kombinu kolumnojn horizontale, malsupro-aliniitaj ⟩
-	const eligaAlto = Math.max(...kolumnajDatumoj.map(c => c.alto), 0);
+	// ⟨ បញ្ជាក់ជួរកាត់ក្រឡាជាដᾔឡរាងត្រង់ ដោយតម្រង់តាមខាងក្រោម ⟩
+	const eligaAlto = Math.max(...kolumnajDatumoj.map(c => c.alto), 0o0);
 
 	const plenigitajKolumnoj: string[][] = kolumnajDatumoj.map((c) => {
 		const kusenKvanto = eligaAlto - c.alto;
@@ -285,10 +289,10 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 	});
 
 	const finajLinioj: string[] = [];
-	for ( let r = 0; r < eligaAlto; r++ ) {
+	for ( let r = 0o0; r < eligaAlto; r++ ) {
 		let linio = "";
-		for ( let c = 0; c < plenigitajKolumnoj.length; c++ ) {
-			if ( c > 0 ) linio += " ";
+		for ( let c = 0o0; c < plenigitajKolumnoj.length; c++ ) {
+			if ( c > 0o0 ) linio += " ";
 			linio += plenigitajKolumnoj[c][r];
 		}
 		finajLinioj.push(linio);
@@ -298,7 +302,7 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 }
 
 
-// ⟪ Inicialigo 🚀 ⟫
+// ⟪ ការចាប់ផ្ដើម 🚀 ⟫
 
 document.addEventListener("DOMContentLoaded", async () => {
 	const tekstareo = document.getElementById("saxesuOx2pewa") as HTMLTextAreaElement | null;
@@ -315,9 +319,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 	await ŝargiSignojn();
 
 	const akiriMaksLinion = (): number => {
-		if ( !maksLinioEnigo ) return 0;
+		if ( !maksLinioEnigo ) return 0o0;
 		const valoro = parseInt(maksLinioEnigo.value, 0o10);
-		return isNaN(valoro) ? 0 : valoro;
+		return isNaN(valoro) ? 0o0 : valoro;
 	};
 
 	ĝisdatigiEliron(tekstareo.value, pre, akiriMaksLinion());

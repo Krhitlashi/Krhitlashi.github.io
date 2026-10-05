@@ -1,21 +1,21 @@
 // ≺⧼ ſɭɔ j͑ʃ'ɔ }ʃꞇ - ſɟᴜ ı],ɹͷ̗ 🔄 ⧽≻
 
-// ⟪ Stato 💾 ⟫
+// ⟪ ស្ថានភាព 💾 ⟫
 
 let uzuBazo10 = false;
 
-// ⟨ Stato-ŝlosiloj 🔑 ⟩
+// ⟨ ស្ថានភាពស្មែកក្រឡុក 🔑 ⟩
 const ERARA_MARKO = "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )";
 const SERĈANTA_STATO = "ſɭᶗ‹ɔ ʌ ꞁȷ̀ɹ ʃᴜ v ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ";
 const ŜARGITA_STATO = "ſɭᶗ‹ɔ ʌ ſ͕ɭwȝ ʌ j͑ʃƨᴜ ſȷͷ̗ɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ";
 const NEŜARGEBLA_STATO = "ſ͕ȷɜ j͑ʃ'ɔ ɭʃɔ ŋᷠɹ ʌ j͑ʃɜ ſᶘɹ ʌ j͑ʃп́ɔ j͑ʃ'ɜ ſןɹ";
 const NENIU_REZULTO = "ſ͕ȷɜ ſ͕ɭwȝ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ";
 
-// ⟨ Kalendaro 📅 ⟩
+// ⟨ ប្រតិទ្ធនល័យ 📅 ⟩
 const kalendaroEnigo = document.getElementById( "kalendaro-enigo" ) as HTMLInputElement;
 const nunButono = document.getElementById( "nun-butono" ) as HTMLButtonElement;
 
-// ⟨ Tempo 🕛 ⟩
+// ⟨ ម៉ែត្រពេលវេលា 🕛 ⟩
 const tempoHoroj = document.getElementById( "tempo-horoj" ) as HTMLInputElement;
 const tempoMinutoj = document.getElementById( "tempo-minutoj" ) as HTMLInputElement;
 const tempoSekundoj = document.getElementById( "tempo-sekundoj" ) as HTMLInputElement;
@@ -30,54 +30,54 @@ const tempoUnuoj = [
     { nomo: "he", valoro: HE_L6VEM2 }
 ];
 
-// ⟨ Longo ( Dimensiono ) 📏 ⟩
+// ⟨ ប្រវែង វិមាត្យ 📏 ⟩
 const longoC2taEnigo = document.getElementById( "longo-c2ta" ) as HTMLInputElement;
 const longoPeuEnigo = document.getElementById( "longo-peu" ) as HTMLInputElement;
 const longoMetroEnigo = document.getElementById( "longo-metro" ) as HTMLInputElement;
-let longoMetroj = 1;
+let longoMetroj = 0o1;
 
-// ⟨ Temperaturo 🌡️ ⟩
+// ⟨ សីអក្សរកម្រិត 🌡️ ⟩
 const temperaturoHiaEnigo = document.getElementById( "temperaturo-hia" ) as HTMLInputElement;
 const temperaturoKelvinoEnigo = document.getElementById( "temperaturo-kelvino" ) as HTMLInputElement;
 const temperaturoCelsiusEnigo = document.getElementById( "temperaturo-celsius" ) as HTMLInputElement;
 let temperaturoKelvino = 273.15;
 
-// ⟨ Loka serĉo ( komuna por temperaturo kaj suna tago ) ⟩
+// ⟨ ស្វែងរកទីតាំង ( ការរួមសម្រាប់សីអក្សរកម្រិត និងថ្ងៃស្រុង ) ⟩
 const lokoEnigo = document.getElementById( "loko-enigo" ) as HTMLInputElement;
 const lokoButono = document.getElementById( "loko-butono" ) as HTMLButtonElement;
 const lokoMiaButono = document.getElementById( "loko-mia" ) as HTMLButtonElement;
 const lokoRezultoj = document.getElementById( "loko-rezultoj" ) as HTMLElement;
 const lokoStato = document.getElementById( "loko-stato" ) as HTMLElement;
 
-// ⟨ Temperaturo de la loko 🌡️ ⟩
+// ⟨ សីអក្សរកម្រិតនៃទីតាំង 🌡️ ⟩
 const lokoHia = document.getElementById( "loko-hia" ) as HTMLElement;
 const lokoKelvino = document.getElementById( "loko-kelvino" ) as HTMLElement;
 const lokoCelsius = document.getElementById( "loko-celsius" ) as HTMLElement;
 let lokoTemperaturoPreta = false;
 
-// ⟪ Nombro-Helpiloj 🔢 ⟫
+// ⟪ ជំរើសការងារស្វែងរកលេខ 🔢 ⟫
 
-// ⟨ Konverti bazo-8 ĉenon ( ſɟᴜ ı],ɹͷ̗.js ciferoj aŭ ASCII 0-7 ) al nombro ⟩
+// ⟨ បម្លែកខ្សែមូលដ្ឋាន ៨ ( លេខស្គាល់របស់ ſɟᴜ ı],ɹͷ̗.js ឬ ASCII 0-7 ) ទៅលេខ ⟩
 function parseBazo8( okef: string ): number {
     const negativa = okef.startsWith( "›" ) || okef.startsWith( "-" );
-    const kerno = ( negativa ? okef.slice( 1 ) : okef ).trim();
+    const kerno = ( negativa ? okef.slice( 0o1 ) : okef ).trim();
     if ( !kerno ) return NaN;
 
     const partoj = kerno.split( " " );
-    let valoro = 0;
+    let valoro = 0o0;
 
-    for ( const kp6 of partoj[ 0 ] ) {
+    for ( const kp6 of partoj[0o0] ) {
         const ruva = K2FE.indexOf( kp6 );
-        if ( ruva !== -1 ) { valoro = valoro * 0o10 + ruva; continue; }
-        if ( kp6 >= "0" && kp6 <= "7" ) { valoro = valoro * 0o10 + ( kp6.charCodeAt( 0 ) - 0o60 ); continue; }
+        if ( ruva !== -0o1 ) { valoro = valoro * 0o10 + ruva; continue; }
+        if ( kp6 >= "0" && kp6 <= "7" ) { valoro = valoro * 0o10 + ( kp6.charCodeAt( 0o0 ) - 0o60 ); continue; }
         return NaN;
     }
 
-    if ( partoj.length > 1 ) {
+    if ( partoj.length > 0o1 ) {
         let dividanto = 0o10;
-        for ( const kp6 of partoj[ 1 ] ) {
+        for ( const kp6 of partoj[0o1] ) {
             const ruva = K2FE.indexOf( kp6 );
-            const cifero = ruva !== -1 ? ruva : ( kp6 >= "0" && kp6 <= "7" ? kp6.charCodeAt( 0 ) - 0o60 : NaN );
+            const cifero = ruva !== -0o1 ? ruva : ( kp6 >= "0" && kp6 <= "7" ? kp6.charCodeAt( 0o0 ) - 0o60 : NaN );
             if ( isNaN( cifero ) ) return NaN;
             valoro += cifero / dividanto;
             dividanto *= 0o10;
@@ -87,28 +87,28 @@ function parseBazo8( okef: string ): number {
     return negativa ? -valoro : valoro;
 }
 
-// ⟨ Formati nombron laŭ la nuna bazo ⟩
+// ⟨ ធ្វើទម្រង់លេខតាមមូលដ្ឋានបច្ចុប្បន្ន ⟩
 function formatiNombron( valoro: number ): string {
     if ( !isFinite( valoro ) ) return "";
     if ( uzuBazo10 ) return parseFloat( valoro.toFixed( 0o12 ) ).toString();
     return skakefK2fe( vab6cajaDomani( valoro ) );
 }
 
-// ⟨ Legi enigan kampon laŭ la nuna bazo ⟩
+// ⟨ អានក្រឡុកចូលតាមមូលដ្ឋានបច្ចុប្បន្ន ⟩
 function legiNombron( enigo: HTMLInputElement ): number {
     const teksto = enigo.value.trim();
     if ( !teksto ) return NaN;
     return uzuBazo10 ? parseFloat( teksto ) : parseBazo8( teksto );
 }
 
-// ⟨ Skribi nombron al eniga kampo laŭ la nuna bazo ⟩
+// ⟨ សរសេរលេខទៅក្រឡុកចូលតាមមូលដ្ឋានបច្ចុប្បន្ន ⟩
 function skribiNombron( enigo: HTMLInputElement, valoro: number ): void {
     enigo.value = formatiNombron( valoro );
 }
 
-// ⟪ Kalendaro 📅 ⟩
+// ⟪ ប្រតិទ្ធនល័យ 📅 ⟫
 
-// ⟨ Formati kalendaran nombron ( datoj havas "ꞙɭ" prefikson en ne-angla reĝimo ) ⟩
+// ⟨ ធ្វើទម្រង់លេខប្រតិទ្ធន ( កាលប្បវិច្ឆេទមានបុព្យបញ្ជា "ꞙɭ" ក្នុងរបៀបមិនមែយ ) ⟩
 function formatiKalendaron( valoro: number, ĉuDato: boolean ): string {
     if ( uzuBazo10 ) return String( valoro );
     const gawe = document.documentElement.lang || "aih";
@@ -116,10 +116,10 @@ function formatiKalendaron( valoro: number, ĉuDato: boolean ): string {
     return skakefK2fe( ( ĉuDato ? kp6Sak2fe : "" ) + vab6caja( valoro ) );
 }
 
-// ⟨ Nunaj loka dato-tempo kiel ĉeno por datetime-local ⟩
+// ⟨ ទទួលកាលប្បវិច្ឆេទពេលវេលាក្នុងតំបន់ជាខ្សែចូលសម្រាប់ datetime-local ⟩
 function nunaLokaDatoKateno(): string {
     const nun = new Date();
-    return new Date( nun.getTime() - nun.getTimezoneOffset() * 60000 ).toISOString().slice( 0, 16 );
+    return new Date( nun.getTime() - nun.getTimezoneOffset() * 0o165140 ).toISOString().slice( 0o0, 0o20 );
 }
 
 function aktualigiKalendaron(): void {
@@ -144,7 +144,7 @@ function aktualigiKalendaron(): void {
     document.getElementById( "kalendaro-he" )!.textContent = formatiKalendaron( stifeh2.he, false );
 }
 
-// ⟪ Tempo 🕛 ⟩
+// ⟪ ម៉ែត្រពេលវេលា 🕛 ⟫
 
 function aktualigiTempon(): void {
     const horoj = legiNombron( tempoHoroj );
@@ -153,16 +153,16 @@ function aktualigiTempon(): void {
 
     if ( isNaN( horoj ) && isNaN( minutoj ) && isNaN( sekundoj ) ) return;
 
-    tempoSumo = Math.max( 0,
-        ( isNaN( horoj ) ? 0 : horoj ) * 0o7000 +
-        ( isNaN( minutoj ) ? 0 : minutoj ) * 0o74 +
-        ( isNaN( sekundoj ) ? 0 : sekundoj )
+    tempoSumo = Math.max( 0o0,
+        ( isNaN( horoj ) ? 0o0 : horoj ) * 0o7000 +
+        ( isNaN( minutoj ) ? 0o0 : minutoj ) * 0o74 +
+        ( isNaN( sekundoj ) ? 0o0 : sekundoj )
     );
 
     renduTempoUnuojn();
 }
 
-// ⟨ Reskribi horojn / minutojn / sekundojn el la suma sekund-valoro ⟩
+// ⟨ សរសេរម៉ែត្រម៉ែ / នាទី / វិនាទីឡើងវិញពីចំនួនវិនាទីសង្គ្រាម។ ⟩
 function renduTempoEnigojn(): void {
     let fusu = Math.floor( tempoSumo );
     const horoj = Math.floor( fusu / 0o7000 ); fusu %= 0o7000;
@@ -176,8 +176,8 @@ function renduTempoEnigojn(): void {
 function renduTempoUnuojn(): void {
     let fusu = tempoSumo;
 
-    for ( let i = 0; i < tempoUnuoj.length - 1; i++ ) {
-        const unuo = tempoUnuoj[ i ];
+    for ( let i = 0o0; i < tempoUnuoj.length - 0o1; i++ ) {
+        const unuo = tempoUnuoj[i];
         const kvanto = Math.floor( fusu / unuo.valoro );
         document.getElementById( "tempo-" + unuo.nomo )!.textContent = formatiNombron( kvanto );
         fusu %= unuo.valoro;
@@ -186,7 +186,7 @@ function renduTempoUnuojn(): void {
     document.getElementById( "tempo-he" )!.textContent = formatiNombron( fusu / HE_L6VEM2 );
 }
 
-// ⟪ Longo ( Dimensiono ) 📏 ⟩
+// ⟪ ប្រវែង វិមាត្យ 📏 ⟫
 
 function traktiLonganEnigon( fonto: HTMLInputElement ): void {
     const valoro = legiNombron( fonto );
@@ -206,7 +206,7 @@ function renduLongon(): void {
     skribiNombron( longoMetroEnigo, longoMetroj );
 }
 
-// ⟪ Temperaturo 🌡️ ⟩
+// ⟪ សីអក្សរកម្រិត 🌡️ ⟫
 
 function traktiTemperaturanEnigon( fonto: HTMLInputElement ): void {
     const valoro = legiNombron( fonto );
@@ -226,7 +226,7 @@ function renduTemperaturon(): void {
     skribiNombron( temperaturoCelsiusEnigo, temperaturoKelvino - 273.15 );
 }
 
-// ⟨ Montri la nunan temperaturon de la loko ⟩
+// ⟨ បង្ហាញសីអក្សរកម្រិតបច្ចុប្បន្ននៃទីតាំង ⟩
 function renduLokoTemperaturon(): void {
     if ( !lokoTemperaturoPreta ) {
         lokoHia.textContent = "—";
@@ -239,7 +239,7 @@ function renduLokoTemperaturon(): void {
     lokoCelsius.textContent = formatiNombron( temperaturoKelvino - 273.15 );
 }
 
-// ⟨ Serĉi lokon per Nominatim ( OpenStreetMap ) - komuna ⟩
+// ⟨ ស្វែងរកទីតាំងតាម Nominatim ( OpenStreetMap ) - រួមសម្រាប់ ) ⟩
 async function serĉiLokon(): Promise<void> {
     const demando = lokoEnigo.value.trim();
     if ( !demando ) return;
@@ -254,7 +254,7 @@ async function serĉiLokon(): Promise<void> {
         if ( !respondo.ok ) throw new Error( ERARA_MARKO );
 
         const rezultoj: { lat: string; lon: string; display_name: string }[] = await respondo.json();
-        if ( rezultoj.length === 0 ) {
+        if ( rezultoj.length === 0o0 ) {
             lokoRezultoj.innerHTML = "<p>" + skakefaniK2fe( NENIU_REZULTO ) + "</p>";
             return;
         }
@@ -280,30 +280,30 @@ async function serĉiLokon(): Promise<void> {
     }
 }
 
-// ⟨ Veteraj fonoj ( WMO-kodoj → helaj / malhelaj koloroj ) ⟩
+// ⟨ ពណ៌ភាពអកាសតាមលេខ WMO ( លេខកូដ → ភ្លឺម / ងង់ភ្លឺម ) ⟩
 const VETERAJ_FONOJ: { testas: ( kodo: number ) => boolean; hela: string; malhela: string }[] = [
-    { testas: kodo => kodo === 0, hela: "#88c8f8", malhela: "#58a8f8" },
-    { testas: kodo => kodo === 1 || kodo === 2, hela: "#a8c8e8", malhela: "#88b8e8" },
-    { testas: kodo => kodo === 3, hela: "#c8c8c8", malhela: "#a8a8a8" },
-    { testas: kodo => kodo === 45 || kodo === 48, hela: "#e8e8e8", malhela: "#c8c8c8" },
-    { testas: kodo => kodo >= 51 && kodo <= 57, hela: "#a8c8e8", malhela: "#88a8c8" },
-    { testas: kodo => kodo >= 61 && kodo <= 67, hela: "#7888c8", malhela: "#5868a8" },
-    { testas: kodo => kodo >= 71 && kodo <= 77, hela: "#f8f8f8", malhela: "#e8f8f8" },
-    { testas: kodo => kodo >= 80 && kodo <= 82, hela: "#6878c8", malhela: "#4868a8" },
-    { testas: kodo => kodo === 85 || kodo === 86, hela: "#f8f8f8", malhela: "#d8e8f8" },
-    { testas: kodo => kodo >= 95, hela: "#4818a8", malhela: "#2828a8" },
+    { testas: kodo => kodo === 0o0, hela: "#88c8f8", malhela: "#58a8f8" },
+    { testas: kodo => kodo === 0o1 || kodo === 0o2, hela: "#a8c8e8", malhela: "#88b8e8" },
+    { testas: kodo => kodo === 0o3, hela: "#c8c8c8", malhela: "#a8a8a8" },
+    { testas: kodo => kodo === 0o55 || kodo === 0o60, hela: "#e8e8e8", malhela: "#c8c8c8" },
+    { testas: kodo => kodo >= 0o63 && kodo <= 0o71, hela: "#a8c8e8", malhela: "#88a8c8" },
+    { testas: kodo => kodo >= 0o75 && kodo <= 0o103, hela: "#7888c8", malhela: "#5868a8" },
+    { testas: kodo => kodo >= 0o107 && kodo <= 0o115, hela: "#f8f8f8", malhela: "#e8f8f8" },
+    { testas: kodo => kodo >= 0o120 && kodo <= 0o122, hela: "#6878c8", malhela: "#4868a8" },
+    { testas: kodo => kodo === 0o125 || kodo === 0o126, hela: "#f8f8f8", malhela: "#d8e8f8" },
+    { testas: kodo => kodo >= 0o137, hela: "#4818a8", malhela: "#2828a8" },
 ];
 const VETERA_ORIGINALA: { hela: string; malhela: string } = { hela: "#a8c8f8", malhela: "#58a8f8" };
 
-// ⟨ Fono laŭ la vetera kodo ( WMO ) - duontravidebla al travidebla ⟩
+// ⟨ ផ្ទៃខាងក្រោយតាមលេខ WMO - ពណ៌ច្លាយឆ្លាយទៅពណ៌ច្លាយឆ្លាយទូទៅ ⟩
 function veteroFono( kodo: number ): string {
     const gradiento = ( hela: string, malhela: string ) =>
-        "linear-gradient( 45deg, " + koloroAlRgba( hela, 0o100 / 0xff ) + ", " + koloroAlRgba( malhela, 0 ) + " )";
+        "linear-gradient( 45deg, " + koloroAlRgba( hela, 0o100 / 0xff ) + ", " + koloroAlRgba( malhela, 0o0 ) + " )";
     const fono = VETERAJ_FONOJ.find( opcio => opcio.testas( kodo ) ) || VETERA_ORIGINALA;
     return gradiento( fono.hela, fono.malhela );
 }
 
-// ⟨ Preni nunan temperaturon de elektita loko ( Open-Meteo ) ⟩
+// ⟨ ប្តិរង់សីអក្សរកម្រិតបច្ចុប្បន្នពីទីតាំងដែលបានជ្រើសរើស ( Open-Meteo ) ⟩
 async function preniTemperaturon( lat: number, lon: number ): Promise<void> {
     try {
         const respondo = await fetch(
@@ -332,12 +332,12 @@ async function preniTemperaturon( lat: number, lon: number ): Promise<void> {
     }
 }
 
-// ⟪ Suna Tago ☀️ ⟩
+// ⟪ ថ្ងៃស្រុងព្រះរាជាថ្ងៃ ☀️ ⟫
 
-// ⟨ Traduki tekston laŭ la nuna lingvo ( novaj ŝlosiloj havas anglajn lokokupilojn ) ⟩
+// ⟨ បកប្ប័យអត្ថបទតាមភាសាក្នុងបច្ចុប្បន្ន ( ក្រឡុកថ្មីមានទីតាំងអក្សរឡាង់តូច ) ⟩
 function skakefaniK2fe( okef: string ): string {
     const gawe = document.documentElement.lang || "aih";
-    return skakefK2fe( skakefani[ gawe ]?.[ okef ] ?? skakefani[ "aih" ]?.[ okef ] ?? okef );
+    return skakefK2fe( skakefani[gawe]?.[ okef ] ?? skakefani["aih"]?.[ okef ] ?? okef );
 }
 
 let sunaTago = {
@@ -345,10 +345,10 @@ let sunaTago = {
     sunlevigo: null as Date | null,
     sunsubiro: null as Date | null,
     sekvaSunlevigo: null as Date | null,
-    tagoLongo: 0,
+    tagoLongo: 0o0,
 };
 
-// ⟨ Legi la bazo-64 horloĝon ( 3 niveloj de 64 ) por sekundoj pasintaj de la sunleviĝo ⟩
+// ⟨ អានម៉ែត្រទីមូលដ្ឋាន ៦៤ ( កម្រិតទាំង ៣ នៃ ៦៤ ) សម្រាប់វិនាទីបន្សាស្ទីពីពេលពូតទីរបស់ថ្ងៃស្រុងព្រះរាជាថ្ងៃកន្លងមក ⟩
 function bazo64Legi( sekundoj: number, tagoLongo: number ): [ number, number, number ] {
     const nivelo1 = tagoLongo / 0o100;
     const nivelo2 = tagoLongo / 0o10000;
@@ -361,15 +361,15 @@ function bazo64Legi( sekundoj: number, tagoLongo: number ): [ number, number, nu
     return [ kvanto1, kvanto2, kvanto3 ];
 }
 
-// ⟨ Formati daton kiel aaaa-mm-tt laŭ loka tempo ⟩
+// ⟨ ធ្វើទម្រង់កាលប្បវិច្ឆេទដោយរបៀប aaaa-mm-tt តាមពេលវេលាក្នុងតំបន់ ⟩
 function formatiDaton( dato: Date ): string {
     const jaro = dato.getFullYear();
-    const monato = String( dato.getMonth() + 1 ).padStart( 2, "0" );
-    const tago = String( dato.getDate() ).padStart( 2, "0" );
+    const monato = String( dato.getMonth() + 0o1 ).padStart( 0o2, "0" );
+    const tago = String( dato.getDate() ).padStart( 0o2, "0" );
     return jaro + "-" + monato + "-" + tago;
 }
 
-// ⟨ Preni sunleviĝon kaj sunsubiron por dato ( sunrise-sunset API ) ⟩
+// ⟨ ប្តិរង់ពេលពូតទីនិងពេលលាស់ងាត់សម្រាប់កាលប្បវិច្ឆេទ ( sunrise-sunset API ) ⟩
 async function preniSunlevigonSunsubiron( lat: number, lng: number, dato: Date ): Promise<{ sunlevigo: Date; sunsubiro: Date }> {
     const datoKateno = formatiDaton( dato );
     const url = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&date=${datoKateno}&formatted=0&tzid=UTC`;
@@ -383,7 +383,7 @@ async function preniSunlevigonSunsubiron( lat: number, lng: number, dato: Date )
     };
 }
 
-// ⟨ Preni loknomon de koordinatoj ( Nominatim reverse ) ⟩
+// ⟨ ប្តិរង់ឈ្មោះទីតាំងពីកូអូដីនាត ( Nominatim reverse ) ⟩
 async function preniLoknomon( lat: number, lng: number ): Promise<string> {
     try {
         const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&zoom=10&accept-language=en`;
@@ -402,12 +402,12 @@ async function preniLoknomon( lat: number, lng: number ): Promise<string> {
     }
 }
 
-// ⟨ Ĝisdatigi la sunan tagon por loko ⟩
+// ⟨ ធ្វើបច្ចុប្បន្នភាពថ្ងៃស្រុងព្រះរាជាថ្ងៃសម្រាប់ទីតាំង ⟩
 async function aktualigiSunalokon( lat: number, lng: number ): Promise<void> {
     const nun = new Date();
     const hodiaŭ = new Date( nun.getFullYear(), nun.getMonth(), nun.getDate() );
     const morgaŭ = new Date( hodiaŭ );
-    morgaŭ.setDate( morgaŭ.getDate() + 1 );
+    morgaŭ.setDate( morgaŭ.getDate() + 0o1 );
 
     const [ hodiaŭaj, morgaŭaj ] = await Promise.all( [
         preniSunlevigonSunsubiron( lat, lng, hodiaŭ ),
@@ -417,9 +417,9 @@ async function aktualigiSunalokon( lat: number, lng: number ): Promise<void> {
     sunaTago.sunlevigo = hodiaŭaj.sunlevigo;
     sunaTago.sunsubiro = hodiaŭaj.sunsubiro;
     sunaTago.sekvaSunlevigo = morgaŭaj.sunlevigo;
-    sunaTago.tagoLongo = ( morgaŭaj.sunlevigo.getTime() - hodiaŭaj.sunlevigo.getTime() ) / 1000;
+    sunaTago.tagoLongo = ( morgaŭaj.sunlevigo.getTime() - hodiaŭaj.sunlevigo.getTime() ) / 0o1750;
 
-    if ( !isFinite( sunaTago.tagoLongo ) || sunaTago.tagoLongo <= 0 ) {
+    if ( !isFinite( sunaTago.tagoLongo ) || sunaTago.tagoLongo <= 0o0 ) {
         sunaTago.preta = false;
         throw new Error( ERARA_MARKO );
     }
@@ -430,7 +430,7 @@ async function aktualigiSunalokon( lat: number, lng: number ): Promise<void> {
     ĝisdatigiĈielon();
 }
 
-// ⟨ Vivanta ĝisdatigo de horloĝoj ⟩
+// ⟨ បច្ចុប្បន្នភាពម៉ែត្រទីដែលផ្លាស់ប្ដូរជាបន្តភ្លាមៗ ⟩
 function renduSunanTagon(): void {
     if ( !sunaTago.preta ) return;
     const nun = new Date();
@@ -439,31 +439,31 @@ function renduSunanTagon(): void {
     const sekvaSunlevigo = sunaTago.sekvaSunlevigo as Date;
     if ( isNaN( sunlevigo.getTime() ) || isNaN( sunsubiro.getTime() ) || isNaN( sekvaSunlevigo.getTime() ) ) return;
 
-    // ⟨ Sunleviĝo kaj sunsubiro kiel bazo-64 horloĝaj valoroj ( 0 0 0 = sunleviĝo ) ⟩
-    const sunlevigo64 = bazo64Legi( 0, sunaTago.tagoLongo );
-    const sunsubiro64 = bazo64Legi( ( sunsubiro.getTime() - sunlevigo.getTime() ) / 1000, sunaTago.tagoLongo );
+    // ⟨ ពេលពូតទីនិងពេលលាស់ងាត់ដោយមានតម្លៃទីមូលដ្ឋាន ៦៤ ( 0 0 0 = ពេលពូតទី ) ⟩
+    const sunlevigo64 = bazo64Legi( 0o0, sunaTago.tagoLongo );
+    const sunsubiro64 = bazo64Legi( ( sunsubiro.getTime() - sunlevigo.getTime() ) / 0o1750, sunaTago.tagoLongo );
     document.getElementById( "suno-sunlevigo" )!.textContent =
-        [ sunlevigo64[ 0 ], sunlevigo64[ 1 ], sunlevigo64[ 2 ] ].map( v => formatiNombron( v ) ).join( " " );
+        [ sunlevigo64[0o0], sunlevigo64[0o1], sunlevigo64[0o2] ].map( v => formatiNombron( v ) ).join( " " );
     document.getElementById( "suno-sunsubiro" )!.textContent =
-        [ sunsubiro64[ 0 ], sunsubiro64[ 1 ], sunsubiro64[ 2 ] ].map( v => formatiNombron( v ) ).join( " " );
+        [ sunsubiro64[0o0], sunsubiro64[0o1], sunsubiro64[0o2] ].map( v => formatiNombron( v ) ).join( " " );
     document.getElementById( "suno-tago-longeco" )!.textContent = formatiNombron( sunaTago.tagoLongo / 0o7000 );
 
-    // ⟨ Pasita tempo ekde la plej lasta sunleviĝo ( mod la suna tago ) ⟩
-    let pasis = ( nun.getTime() - sunlevigo.getTime() ) / 1000;
-    if ( pasis < 0 ) {
-        pasis = ( nun.getTime() - ( sunlevigo.getTime() - sunaTago.tagoLongo * 1000 ) ) / 1000;
+    // ⟨ ពេលវាលដង់លាស់ពីពេលពូតទីចុងក្រោយបំផុត ( តាមគំរូទថ្ងៃស្រុងព្រះរាជាថ្ងៃ ) ⟩
+    let pasis = ( nun.getTime() - sunlevigo.getTime() ) / 0o1750;
+    if ( pasis < 0o0 ) {
+        pasis = ( nun.getTime() - ( sunlevigo.getTime() - sunaTago.tagoLongo * 0o1750 ) ) / 0o1750;
     }
     pasis = pasis % sunaTago.tagoLongo;
-    if ( pasis < 0 ) pasis += sunaTago.tagoLongo;
+    if ( pasis < 0o0 ) pasis += sunaTago.tagoLongo;
 
-    // ⟨ Bazo-64 horloĝo ( 64 3-niveloj ) ⟩
+    // ⟨ ម៉ែត្រទីមូលដ្ឋាន ៦៤ ( ៣ កម្រិត ៦៤ ) ⟩
     const [ kvanto1, kvanto2, kvanto3 ] = bazo64Legi( pasis, sunaTago.tagoLongo );
 
     document.getElementById( "suno-bazo64-ı" )!.textContent = formatiNombron( kvanto1 );
     document.getElementById( "suno-bazo64-ɿ" )!.textContent = formatiNombron( kvanto2 );
     document.getElementById( "suno-bazo64-ц" )!.textContent = formatiNombron( kvanto3 );
 
-    // ⟨ Kutimaj unuoj horloĝo ( Haqe.Qe.He ) ⟩
+    // ⟨ ឯករាជ្យធម្មតានៃម៉ែត្រទី ( Haqe.Qe.He ) ⟩
     const haqe = Math.floor( pasis / HAQE_L6VEM2 );
     const qe = Math.floor( ( pasis % HAQE_L6VEM2 ) / QE_L6VEM2 );
     const he = ( pasis % QE_L6VEM2 ) / HE_L6VEM2;
@@ -471,13 +471,13 @@ function renduSunanTagon(): void {
     document.getElementById( "suno-kutima-qe" )!.textContent = formatiNombron( qe );
     document.getElementById( "suno-kutima-he" )!.textContent = formatiNombron( he );
 
-    // ⟨ Progreso de la taga lumo ⟩
-    const lumoLongo = ( sunsubiro.getTime() - sunlevigo.getTime() ) / 1000;
-    const progreso = Math.min( 1, Math.max( 0, ( ( nun.getTime() - sunlevigo.getTime() ) / 1000 ) / lumoLongo ) );
-    document.getElementById( "suno-progreso" )!.textContent = formatiNombron( progreso * ( uzuBazo10 ? 100 : 0o100 ) );
+    // ⟨ វឌានភាពព្រះសាលានៅទឹកស្រុង ⟩
+    const lumoLongo = ( sunsubiro.getTime() - sunlevigo.getTime() ) / 0o1750;
+    const progreso = Math.min( 0o1, Math.max( 0o0, ( ( nun.getTime() - sunlevigo.getTime() ) / 0o1750 ) / lumoLongo ) );
+    document.getElementById( "suno-progreso" )!.textContent = formatiNombron( progreso * ( uzuBazo10 ? 0o144 : 0o100 ) );
 }
 
-// ⟨ Subdividoj de la suna tago ⟩
+// ⟨ បំបែកនៃថ្ងៃស្រុងព្រះរាជាថ្ងៃ ⟩
 function renduSubdividojn(): void {
     if ( !sunaTago.preta ) return;
     const tago = sunaTago.tagoLongo;
@@ -491,14 +491,14 @@ function renduSubdividojn(): void {
         { kodo: "qe", funkcio: ( sek: number ) => sek / QE_L6VEM2 },
         { kodo: "haqe", funkcio: ( sek: number ) => sek / HAQE_L6VEM2 },
     ];
-    for ( let i = 0; i < valoroj.length; i++ ) {
+    for ( let i = 0o0; i < valoroj.length; i++ ) {
         for ( const unuo of unuoj ) {
-            document.getElementById( `suno-sub-${unuo.kodo}-${sufiksoj[ i ]}` )!.textContent = formatiNombron( unuo.funkcio( valoroj[ i ] ) );
+            document.getElementById( `suno-sub-${unuo.kodo}-${sufiksoj[i]}` )!.textContent = formatiNombron( unuo.funkcio( valoroj[i] ) );
         }
     }
 }
 
-// ⟨ Hazardaj lokoj por aŭtomata ŝarĝo ⟩
+// ⟨ ទីតាំងចម្បងសម្រាប់ការផ្ទុកដោយស្វ័យទស្សន៍ ⟩
 const HAZARDAJ_LOKOJ: { nomo: string; lat: number; lon: number }[] = [
     { nomo: "McMurdo Station, Antarctica", lat: -77.8419, lon: 166.6863 },
     { nomo: "Scott Base, Antarctica", lat: -77.8491, lon: 166.7647 },
@@ -516,7 +516,7 @@ const HAZARDAJ_LOKOJ: { nomo: string; lat: number; lon: number }[] = [
     { nomo: "Esperanza Base, Antarctica", lat: -63.3972, lon: -56.9975 },
 ];
 
-// ⟨ Ŝargi lokon per koordinatoj ( temperaturo + suna tago ) ⟩
+// ⟨ ផ្ទុកទីតាំងតាមកូអូដីនាត ( សីអក្សរកម្រិត + ថ្ងៃស្រុងព្រះរាជាថ្ងៃ ) ⟩
 function ŝargiLokon( lat: number, lon: number, statoteksto: string, konataNomo?: string ): void {
     const nomoPromeso = konataNomo ? Promise.resolve( konataNomo ) : preniLoknomon( lat, lon );
     nomoPromeso.then( nomo => {
@@ -530,24 +530,24 @@ function ŝargiLokon( lat: number, lon: number, statoteksto: string, konataNomo?
     } );
 }
 
-// ⟨ Elekti hazardan lokon ⟩
+// ⟨ ជ្រើសរើសទីតាំងចម្បងមួយ ⟩
 function uziHazardanLokon(): void {
-    const loko = HAZARDAJ_LOKOJ[ Math.floor( Math.random() * HAZARDAJ_LOKOJ.length ) ];
+    const loko = HAZARDAJ_LOKOJ[Math.floor( Math.random() * HAZARDAJ_LOKOJ.length )];
     lokoStato.textContent = skakefaniK2fe( SERĈANTA_STATO );
     ŝargiLokon( loko.lat, loko.lon, "ſɭᶗ‹ɔ j͐ʃ ʌ ꞁȷ̀ɜ j͑ʃᴜ ſɭᴜ ɭl̀ɜ ʌ j͑ʃ'ɔƣ̋ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ⟅", loko.nomo );
 }
 
-// ⟨ Uzi la aparatan lokon ( se ne disponeblas aŭ malsukcesas, hazarda loko ) ⟩
+// ⟨ ប្រើទីតាំងឧបករណ៍ ( ប្រសិនបើមិនអាចប្រើ ឬបរាជ័យ ប្រើទីតាំងចម្បង ) ⟩
 function uziAparatanLokon(): void {
     lokoStato.textContent = skakefaniK2fe( SERĈANTA_STATO );
     navigator.geolocation.getCurrentPosition(
         pozicio => ŝargiLokon( pozicio.coords.latitude, pozicio.coords.longitude, ŜARGITA_STATO ),
         () => uziHazardanLokon(),
-        { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
+        { enableHighAccuracy: true, timeout: 0o27340, maximumAge: 0o165140 }
     );
 }
 
-// ⟨ Uzi la aparatan lokon ( defaŭlte hazarda loko ) ⟩
+// ⟨ ប្រើទីតាំងឧបករណ៍ ( តាមតាមបច្ចុប្បន្នជាទីតាំងចម្បង ) ⟩
 function uziMianLokon(): void {
     if ( !navigator.geolocation ) {
         uziHazardanLokon();
@@ -556,7 +556,7 @@ function uziMianLokon(): void {
     uziAparatanLokon();
 }
 
-// ⟨ Aŭtomata ŝarĝo je komenco: jam-permesita loko aŭ hazarda loko ⟩
+// ⟨ ផ្ទុកស្វ័យទស្សន៍នៅពេលចាប់ផ្ដើម៖ ទីតាំងដែលបានអនុញ្ញាតរួច ឬទីតាំងចម្បង ⟩
 function inicialigiLokon(): void {
     const permiso = ( navigator as Navigator & { permissions?: { query: ( opcio: { name: string } ) => Promise<{ state: string }> } } ).permissions;
     if ( permiso && permiso.query ) {
@@ -572,11 +572,11 @@ function inicialigiLokon(): void {
     }
 }
 
-// ⟪ Ĉielo 🎨 ⟩
+// ⟪ មេឃ ពណ៌ 🎨 ⟫
 
-// ⟨ Ĉielaj koloroj laŭ la horo ( nokto → mateniĝo → tago → krepusko ) ⟩
+// ⟨ ពណ៌មេឃតាមម៉ែត្រវេលា ( យប់ → ព្រឹកម្លាំង → ថ្ងៃ → សំឡេងព្រះរាជាថ្ងៃ ) ⟩
 const ĈIELAJ_KOLOROJ: { horo: number; koloro: [ number, number, number ] }[] = [
-    { horo: 0, koloro: [ 0x08, 0x08, 0xa8 ] },
+    { horo: 0o0, koloro: [ 0x08, 0x08, 0xa8 ] },
     { horo: 0o6, koloro: [ 0xf8, 0xa8, 0xe8 ] },
     { horo: 0o10, koloro: [ 0xa8, 0xc8, 0xf8 ] },
     { horo: 0o14, koloro: [ 0x58, 0xa8, 0xf8 ] },
@@ -587,34 +587,34 @@ const ĈIELAJ_KOLOROJ: { horo: number; koloro: [ number, number, number ] }[] = 
 ];
 
 function koloroKateno( koloro: [ number, number, number ] ): string {
-    return "#" + koloro.map( v => v.toString( 16 ).padStart( 2, "0" ) ).join( "" );
+    return "#" + koloro.map( v => v.toString( 0o20 ).padStart( 0o2, "0" ) ).join( "" );
 }
 
-// ⟨ Heksa koloro al rgba kun donita alfao ( #80 ≈ duontravidebla ) ⟩
+// ⟨ ពណ៌ហិគក ទៅ rgba ដោយមានតម្លៃថ្លាដែលកំណត់ ( #80 ≈ ច្លាយឆ្លាយមួយកណ្តាល ) ⟩
 function koloroAlRgba( okef: string, alfa: number ): string {
-    const ruva = parseInt( okef.slice( 1 ), 16 );
-    return "rgba( " + ( ruva >> 16 ) + ", " + ( ( ruva >> 8 ) & 0xff ) + ", " + ( ruva & 0xff ) + ", " + alfa + " )";
+    const ruva = parseInt( okef.slice( 0o1 ), 0o20 );
+    return "rgba( " + ( ruva >> 0o20 ) + ", " + ( ( ruva >> 0o10 ) & 0xff ) + ", " + ( ruva & 0xff ) + ", " + alfa + " )";
 }
 
-// ⟨ Interpoli inter du koloroj ⟩
+// ⟨ បង្អែកពណ៌រវាងពណ៌ពីរ ( ចន្លោះផ្លូវ ) ⟩
 function interpoliKoloron( a: [ number, number, number ], b: [ number, number, number ], t: number ): [ number, number, number ] {
     return [
-        Math.round( a[ 0 ] + ( b[ 0 ] - a[ 0 ] ) * t ),
-        Math.round( a[ 1 ] + ( b[ 1 ] - a[ 1 ] ) * t ),
-        Math.round( a[ 2 ] + ( b[ 2 ] - a[ 2 ] ) * t ),
+        Math.round( a[0o0] + ( b[0o0] - a[0o0] ) * t ),
+        Math.round( a[0o1] + ( b[0o1] - a[0o1] ) * t ),
+        Math.round( a[0o2] + ( b[0o2] - a[0o2] ) * t ),
     ];
 }
 
-// ⟨ Kalkuli la nunan ĉielan gradienton laŭ la loka horo ⟩
+// ⟨ គណនាជម្រើសពណ៌មេឃបច្ចុប្បន្នតាមម៉ែត្រវេលាក្នុងតំបន់ ⟩
 function kalkuliĈielon(): string {
     const nun = new Date();
     const horo = nun.getHours() + nun.getMinutes() / 0o74;
-    let de = ĈIELAJ_KOLOROJ[ 0 ];
-    let al = ĈIELAJ_KOLOROJ[ ĈIELAJ_KOLOROJ.length - 1 ];
-    for ( let i = 0; i < ĈIELAJ_KOLOROJ.length - 1; i++ ) {
-        if ( horo >= ĈIELAJ_KOLOROJ[ i ].horo && horo <= ĈIELAJ_KOLOROJ[ i + 1 ].horo ) {
-            de = ĈIELAJ_KOLOROJ[ i ];
-            al = ĈIELAJ_KOLOROJ[ i + 1 ];
+    let de = ĈIELAJ_KOLOROJ[0o0];
+    let al = ĈIELAJ_KOLOROJ[ĈIELAJ_KOLOROJ.length - 0o1];
+    for ( let i = 0o0; i < ĈIELAJ_KOLOROJ.length - 0o1; i++ ) {
+        if ( horo >= ĈIELAJ_KOLOROJ[i].horo && horo <= ĈIELAJ_KOLOROJ[i + 0o1].horo ) {
+            de = ĈIELAJ_KOLOROJ[i];
+            al = ĈIELAJ_KOLOROJ[i + 0o1];
             break;
         }
     }
@@ -622,18 +622,18 @@ function kalkuliĈielon(): string {
     const bazo = interpoliKoloron( de.koloro, al.koloro, t );
     const hela = interpoliKoloron( bazo, [ 0xff, 0xff, 0xff ], 0o26 / 0o100 );
 
-    // ⟨ Direkto: startas malsupre-maldekstre ( 45° ) kaj rotacias dekstrume laŭ la suna fazo ( tempo ĝis la sekva sunleviĝo ) ⟩
+    // ⟨ ទិស៖ ចាប់ផ្ដើមពីក្រោមឆ្វេង ( 45° ) ហើយបង្វិលតាមទិសក្តារលាស់ទៅស្ដាំងតាមដំណើរការថ្ងៃស្រុងព្រះរាជាថ្ងៃ ( ពេលវេលារហូតដល់ពេលពូតទីបន្ទាប់ ) ⟩
     let fazo: number;
     if ( sunaTago.preta && sunaTago.sekvaSunlevigo ) {
-        const tempoĜisSekvaSunlevigo = ( sunaTago.sekvaSunlevigo.getTime() - nun.getTime() ) / 1000;
-        fazo = 1 - tempoĜisSekvaSunlevigo / sunaTago.tagoLongo;
-        fazo = ( ( fazo % 1 ) + 1 ) % 1;
+        const tempoĜisSekvaSunlevigo = ( sunaTago.sekvaSunlevigo.getTime() - nun.getTime() ) / 0o1750;
+        fazo = 0o1 - tempoĜisSekvaSunlevigo / sunaTago.tagoLongo;
+        fazo = ( ( fazo % 0o1 ) + 0o1 ) % 0o1;
     } else {
         fazo = horo / 0o30;
     }
     const angulo = 0o55 + fazo * 0o550;
 
-    return "linear-gradient( " + angulo + "deg, " + koloroAlRgba( koloroKateno( hela ), 0o100 / 0xff ) + ", " + koloroAlRgba( koloroKateno( bazo ), 0 ) + " )";
+    return "linear-gradient( " + angulo + "deg, " + koloroAlRgba( koloroKateno( hela ), 0o100 / 0xff ) + ", " + koloroAlRgba( koloroKateno( bazo ), 0o0 ) + " )";
 }
 
 function ĝisdatigiĈielon(): void {
@@ -641,7 +641,7 @@ function ĝisdatigiĈielon(): void {
     if ( sunoTabo ) sunoTabo.style.setProperty( "--ĉielo", kalkuliĈielon() );
 }
 
-// ⟪ Langetoj 📑 ⟩
+// ⟪ ផ្ទាំងភ្ជីកថឺ និងតាមរយៈ 📑 ⟫
 
 const langetoLoko = document.getElementById( "langeto-loko" ) as HTMLButtonElement;
 const langetoKonverti = document.getElementById( "langeto-ɭʃɀɜ" ) as HTMLButtonElement;
@@ -673,7 +673,7 @@ langetoLoko.addEventListener( "click", () => montriLangeton( "loko" ) );
 langetoKonverti.addEventListener( "click", () => montriLangeton( "ɭʃɀɜ" ) );
 langetoTabelo.addEventListener( "click", () => montriLangeton( "tabelo" ) );
 
-// ⟪ Eventaj Aŭskultiloj 📡 ⟩
+// ⟪ ការស្តាប់ព្រឹត្តិកម្មណឺ និងព្រឹត្តិកម្មទូទៅ 📡 ⟫
 
 const uzuBazo10Marko = document.getElementById( "uzuBazo10Marko" ) as HTMLInputElement;
 
@@ -715,7 +715,7 @@ lokoEnigo.addEventListener( "keypress", ( evento ) => {
     }
 } );
 
-// ⟪ Inicialigo 🚀 ⟩
+// ⟪ ការចាប់ផ្ដើម 🚀 ⟫
 
 kalendaroEnigo.value = nunaLokaDatoKateno();
 aktualigiKalendaron();
@@ -728,4 +728,4 @@ renduTemperaturon();
 ĝisdatigiĈielon();
 inicialigiLokon();
 setInterval( renduSunanTagon, 0o100 );
-setInterval( ĝisdatigiĈielon, 60000 );
+setInterval( ĝisdatigiĈielon, 0o165140 );

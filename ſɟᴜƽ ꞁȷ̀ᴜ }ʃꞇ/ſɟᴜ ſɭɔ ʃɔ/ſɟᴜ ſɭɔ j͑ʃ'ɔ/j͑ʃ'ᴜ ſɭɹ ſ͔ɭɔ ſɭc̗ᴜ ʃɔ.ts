@@ -143,7 +143,7 @@ function ŝargiKonservojnStaton(): void {
     const kruda = localStorage.getItem("phonology-generator-saves-v2");
     if ( kruda ) {
       const analizita = JSON.parse(kruda);
-      if ( analizita && Array.isArray(analizita.konservoj) && analizita.konservoj.length > 0 ) {
+      if ( analizita && Array.isArray(analizita.konservoj) && analizita.konservoj.length > 0o0 ) {
         konservojStato = analizita;
         return;
       }
@@ -206,9 +206,9 @@ function konserviEvoluanStaton(statDatumoj: EvoluaStato): void {
 
 function ĵetonigi( vorto: string, konatajSonoj: string[] ): string[] {
   if ( !vorto ) return [];
-  const ordigitaj = [...konatajSonoj].filter(s => s.length > 0).sort((a, b) => b.length - a.length);
+  const ordigitaj = [ ...konatajSonoj ].filter(s => s.length > 0o0).sort((a, b) => b.length - a.length);
   const ĵetonoj: string[] = [];
-  let i = 0;
+  let i = 0o0;
 
   while ( i < vorto.length ) {
     let kongruis = false;
@@ -223,12 +223,12 @@ function ĵetonigi( vorto: string, konatajSonoj: string[] ): string[] {
     }
 
     if ( !kongruis ) {
-      // Prenu unu bazan signon plus ĉiujn sekvantajn kunigmarkojn
-      let fino = i + 1;
+      // យកសញ្ញាមូលដ្ឋានមួយ រួមមានសញ្ញាតែងទៅក្រោយទាំងអស់ដែលបានរួមព្រម
+      let fino = i + 0o1;
       while ( fino < vorto.length ) {
         const kp = vorto.codePointAt(fino);
         if ( kp === undefined || !estasKunigmarko(kp) ) break;
-        fino += kp > 0xFFFF ? 2 : 1;
+        fino += kp > 0xFFFF ? 0o2 : 0o1;
       }
       ĵetonoj.push(vorto.slice(i, fino));
       i = fino;
@@ -251,33 +251,33 @@ function estasKunigmarko( kp: number ): boolean {
 // ⟪ ſɭɹ ⟫ - Regulaj Analizaj Utilaĵoj
 
 function troviKongruanKrampon( ĉeno: string, komenco: number ): number {
-  let profundo = 0;
+  let profundo = 0o0;
   for ( let i = komenco; i < ĉeno.length; i++ ) {
     if ( ĉeno[i] === "[" ) profundo++;
     else if ( ĉeno[i] === "]" ) {
       profundo--;
-      if ( profundo === 0 ) return i;
+      if ( profundo === 0o0 ) return i;
     }
   }
-  return -1;
+  return -0o1;
 }
 
 function troviSupraNivelanSignon( ĉeno: string, signo: string ): number {
-  let krampaProfundo = 0;
-  for ( let i = 0; i < ĉeno.length; i++ ) {
+  let krampaProfundo = 0o0;
+  for ( let i = 0o0; i < ĉeno.length; i++ ) {
     if ( ĉeno[i] === "[" ) krampaProfundo++;
     else if ( ĉeno[i] === "]" ) krampaProfundo--;
-    else if ( krampaProfundo === 0 && ĉeno[i] === signo ) return i;
+    else if ( krampaProfundo === 0o0 && ĉeno[i] === signo ) return i;
   }
-  return -1;
+  return -0o1;
 }
 
 function disigiSupraNivela( ĉeno: string, disigilo: string ): string[] {
   const partoj: string[] = [];
   let nuna = "";
-  let krampaProfundo = 0;
-  let parentezaProfundo = 0;
-  let i = 0;
+  let krampaProfundo = 0o0;
+  let parentezaProfundo = 0o0;
+  let i = 0o0;
 
   while ( i < ĉeno.length ) {
     const signo = ĉeno[i];
@@ -298,7 +298,7 @@ function disigiSupraNivela( ĉeno: string, disigilo: string ): string[] {
       parentezaProfundo--;
       nuna += signo;
       i++;
-    } else if ( krampaProfundo === 0 && parentezaProfundo === 0 && ĉeno.startsWith(disigilo, i) ) {
+    } else if ( krampaProfundo === 0o0 && parentezaProfundo === 0o0 && ĉeno.startsWith(disigilo, i) ) {
       partoj.push(nuna);
       nuna = "";
       i += disigilo.length;
@@ -317,31 +317,31 @@ function disigiSupraNivela( ĉeno: string, disigilo: string ): string[] {
 function analiziKrampanEnhavon( enhavo: string ): Kongruilo {
   enhavo = enhavo.trim();
 
-  // Foriga markilo - en kongruila kunteksto redonas laŭvortan malplenan kongruon
+  // សញ្ញាដកចេញ - ក្នុងបរិភ័យព្រមត្រូវ វាជាករណីបង្កើតមានការត្រូវគ្នាទទេតាមពាក្យ
   if ( enhavo === "›" ) {
     return { tipo: "laŭvorta", valoro: "" };
   }
 
-  // Disigu per supra-nivela ｡ (U+FF61) por alternativoj
+  // បំបែកដោយសញ្ញាកម្រិតខាងលើ ｡ ( U+FF61 ) សម្រាប់ជម្រើសជំនួស
   const partoj = disigiSupraNivela(enhavo, "｡");
 
-  if ( partoj.length > 1 ) {
+  if ( partoj.length > 0o1 ) {
     const opcioj = partoj.map(parto => analiziUnuopKongruilon(parto.trim()));
     return { tipo: "alternativoj", opcioj };
   }
 
-  // Nestita krampesprimo
+  // ឃ្លាំងក្រោមក្រឡប់
   if ( enhavo.startsWith("[") && enhavo.endsWith("]") ) {
-    return analiziKrampanEnhavon(enhavo.slice(1, -1));
+    return analiziKrampanEnhavon(enhavo.slice(0o1, -0o1));
   }
 
-  // Grupo-referenco: finiĝas per 'o' kaj havas pli ol unu signon
-  if ( enhavo.length > 1 && enhavo.endsWith("o") ) {
-    const grupoNomo = enhavo.slice(0, -1);
+  // ការយោងក្រុម៖ បញ្ចប់ដោយ "o" ហើយមានសញ្ញាច្រើនជាងមួយ
+  if ( enhavo.length > 0o1 && enhavo.endsWith("o") ) {
+    const grupoNomo = enhavo.slice(0o0, -0o1);
     return { tipo: "grupo", grupoNomo };
   }
 
-  // Laŭvorta sono
+  // សំឡេងតាមពាក្យ
   return { tipo: "laŭvorta", valoro: enhavo };
 }
 
@@ -353,7 +353,7 @@ function analiziUnuopKongruilon( teksto: string ): Kongruilo {
   }
 
   if ( teksto.startsWith("[") && teksto.endsWith("]") ) {
-    return analiziKrampanEnhavon(teksto.slice(1, -1));
+    return analiziKrampanEnhavon(teksto.slice(0o1, -0o1));
   }
 
   return { tipo: "laŭvorta", valoro: teksto };
@@ -364,27 +364,27 @@ function analiziŜablonerojn( teksto: string ): Kongruilo[] {
   if ( !teksto ) return [];
 
   const kongruiloj: Kongruilo[] = [];
-  let i = 0;
+  let i = 0o0;
 
   while ( i < teksto.length ) {
-    // Preterlasu spacojn
+    // បោះចោលចន្លោះ
     while ( i < teksto.length && teksto[i] === " " ) i++;
     if ( i >= teksto.length ) break;
 
     if ( teksto[i] === "[" ) {
       const fino = troviKongruanKrampon(teksto, i);
-      if ( fino === -1 ) {
-        // Nekongrua krampo - prenu la reston kiel laŭvortan
+      if ( fino === -0o1 ) {
+        // ក្រឡប់មិនស្មើ - យកផ្នែកដែលនៅសល់ជាតាមពាក្យ
         kongruiloj.push({ tipo: "laŭvorta", valoro: teksto.slice(i) });
         break;
       }
-      kongruiloj.push(analiziKrampanEnhavon(teksto.slice(i + 1, fino)));
-      i = fino + 1;
+      kongruiloj.push(analiziKrampanEnhavon(teksto.slice(i + 0o1, fino)));
+      i = fino + 0o1;
     } else if ( teksto[i] === "#" ) {
       kongruiloj.push({ tipo: "limo" });
       i++;
     } else {
-      // Legu laŭvortan ĝis spaceto aŭ speciala signo
+      // អានតាមពាក្យរហូតដល់ចន្លោះ ឬសញ្ញាពិសេស
       let fino = i;
       while ( fino < teksto.length && teksto[fino] !== " " && teksto[fino] !== "[" && teksto[fino] !== "#" && teksto[fino] !== "(" && teksto[fino] !== ")" ) {
         fino++;
@@ -403,15 +403,15 @@ function analiziŜablonerojn( teksto: string ): Kongruilo[] {
 function analiziAnstataŭigon( teksto: string, konatajSonoj: string[] ): string[] {
   teksto = teksto.trim();
 
-  // Forigaj markiloj
+  // សញ្ញាដកចេញ
   if ( teksto === "[›]" ) return [];
   if ( teksto.startsWith("[") && teksto.endsWith("]") ) {
-    const interno = teksto.slice(1, -1).trim();
+    const interno = teksto.slice(0o1, -0o1).trim();
     if ( interno === "›" ) return [];
   }
 
-  // Ĵetonigu ĉiun spaceton-disigitan segmenton uzante konatajn sonojn
-  const segmentoj = teksto.split(/\s+/).filter(s => s.length > 0);
+  // បង្កើតសំឡេងសម្រាប់ផ្នែកនីមួយៗដែលបែងចែកដោយចន្លោះ ដោយប្រើសំឡេងដែលស្គាល់បាន
+  const segmentoj = teksto.split(/\s+/).filter(s => s.length > 0o0);
   const rezulto: string[] = [];
   for ( const segmento of segmentoj ) {
     rezulto.push(...ĵetonigi(segmento, konatajSonoj));
@@ -423,29 +423,29 @@ function analiziRegulon( linio: string, konatajSonoj: string[] ): AnalizitaRegul
   linio = linio.trim();
   if ( !linio ) return null;
 
-  // Disigu per ' / ' (spacita oblikvo), defaŭlte al '/'
+  // បំបែកដោយ " / " ( រជ្ជកម្មដែលមានចន្លោះ ), តាមលំនាំដែរជា "/ "
   let flankoj = disigiSupraNivela(linio, " / ");
   let dekstraFlanko: string;
 
-  if ( flankoj.length >= 2 ) {
-    dekstraFlanko = flankoj.slice(1).join(" / ").trim();
+  if ( flankoj.length >= 0o2 ) {
+    dekstraFlanko = flankoj.slice(0o1).join(" / ").trim();
   } else {
     flankoj = disigiSupraNivela(linio, "/");
-    if ( flankoj.length < 2 ) return null;
-    dekstraFlanko = flankoj.slice(1).join("/").trim();
+    if ( flankoj.length < 0o2 ) return null;
+    dekstraFlanko = flankoj.slice(0o1).join("/").trim();
   }
 
-  const maldekstraFlanko = flankoj[0].trim();
+  const maldekstraFlanko = flankoj[0o0].trim();
   const anstataŭigo = analiziAnstataŭigon(dekstraFlanko, konatajSonoj);
 
-  // Kontrolu eksplicitan celon per ( )
+  // ត្រួតពិនិត្យគោលដោយមួយថ្លាក់ដោយ ( )
   const malfermaParentezo = troviSupraNivelanSignon(maldekstraFlanko, "(");
   const fermaParentezo = troviSupraNivelanSignon(maldekstraFlanko, ")");
 
-  if ( malfermaParentezo !== -1 && fermaParentezo !== -1 && fermaParentezo > malfermaParentezo ) {
-    const antaŭTeksto = maldekstraFlanko.slice(0, malfermaParentezo).trim();
-    const celoTeksto = maldekstraFlanko.slice(malfermaParentezo + 1, fermaParentezo).trim();
-    const postTeksto = maldekstraFlanko.slice(fermaParentezo + 1).trim();
+  if ( malfermaParentezo !== -0o1 && fermaParentezo !== -0o1 && fermaParentezo > malfermaParentezo ) {
+    const antaŭTeksto = maldekstraFlanko.slice(0o0, malfermaParentezo).trim();
+    const celoTeksto = maldekstraFlanko.slice(malfermaParentezo + 0o1, fermaParentezo).trim();
+    const postTeksto = maldekstraFlanko.slice(fermaParentezo + 0o1).trim();
 
     return {
       antaŭKunteksto: analiziŜablonerojn(antaŭTeksto),
@@ -455,17 +455,17 @@ function analiziRegulon( linio: string, konatajSonoj: string[] ): AnalizitaRegul
     };
   }
 
-  // Sen parentezoj: komenca # iĝas antaŭ-kunteksto, fina # iĝas post-kunteksto
+  // ដោយគ្មានរជ្ជកម្ម៖ # ដើមកនៅកំឡង់ ក្លាយជាបរិភ័យមុន និង # នៅចុងក្លាយជាបរិភ័យក្រោយ
   const ĉiuj = analiziŜablonerojn(maldekstraFlanko);
 
-  let antaŭFino = 0;
+  let antaŭFino = 0o0;
   while ( antaŭFino < ĉiuj.length && ĉiuj[antaŭFino].tipo === "limo" ) antaŭFino++;
 
   let postKomenco = ĉiuj.length;
-  while ( postKomenco > antaŭFino && ĉiuj[postKomenco - 1].tipo === "limo" ) postKomenco--;
+  while ( postKomenco > antaŭFino && ĉiuj[postKomenco - 0o1].tipo === "limo" ) postKomenco--;
 
   return {
-    antaŭKunteksto: ĉiuj.slice(0, antaŭFino),
+    antaŭKunteksto: ĉiuj.slice(0o0, antaŭFino),
     celo: ĉiuj.slice(antaŭFino, postKomenco),
     postKunteksto: ĉiuj.slice(postKomenco),
     anstataŭigo,
@@ -495,42 +495,42 @@ function kongruasKongruilo( kongruilo: Kongruilo, ĵetono: string, fonologiaStat
 
 function kongruiAntaŭen( ŝablono: Kongruilo[], ĵetonoj: string[], komenco: number, fonologiaStato: FonologiaStato ): boolean {
   if ( komenco + ŝablono.length > ĵetonoj.length ) return false;
-  for ( let i = 0; i < ŝablono.length; i++ ) {
+  for ( let i = 0o0; i < ŝablono.length; i++ ) {
     if ( !kongruasKongruilo(ŝablono[i], ĵetonoj[komenco + i], fonologiaStato) ) return false;
   }
   return true;
 }
 
 function kongruiMalantaŭen( ŝablono: Kongruilo[], ĵetonoj: string[], fino: number, fonologiaStato: FonologiaStato ): boolean {
-  const komenco = fino - ŝablono.length + 1;
-  if ( komenco < 0 ) return false;
+  const komenco = fino - ŝablono.length + 0o1;
+  if ( komenco < 0o0 ) return false;
   return kongruiAntaŭen(ŝablono, ĵetonoj, komenco, fonologiaStato);
 }
 
 // ⟪ j͑ʃ'ᴜ ʃɔ ⟫ - Regula Apliko
 
 function aplikiRegulon( regulo: AnalizitaRegulo, vortajĴetonoj: string[], fonologiaStato: FonologiaStato ): string[] {
-  if ( regulo.celo.length === 0 ) return vortajĴetonoj;
+  if ( regulo.celo.length === 0o0 ) return vortajĴetonoj;
 
-  // Plenigu per limaj ĵetonoj por # kongruo
-  const plenigita = [LIMO, ...vortajĴetonoj, LIMO];
+  // បំពេញដោយសំឡេងសញ្ញាកំណត់សម្រាប់ការត្រូវគ្នា #
+  const plenigita = [ LIMO, ...vortajĴetonoj, LIMO ];
   const rezulto: string[] = [];
-  let i = 1; // Komencu post la komenca #
-  const lastaReala = plenigita.length - 2; // Indekso de lasta reala ĵetono
+  let i = 0o1; // Komencu post la komenca #
+  const lastaReala = plenigita.length - 0o2; // Indekso de lasta reala ĵetono
 
   while ( i <= lastaReala ) {
     let anstataŭigita = false;
 
-    // Ĉu la celo povas eniri komencante je pozicio i ene de la realaj ĵetonoj?
-    if ( i + regulo.celo.length - 1 <= lastaReala ) {
+    // តើគោលអាចចូលបានដោយចាប់ផ្ដើមពីទីតាំង i ក្នុងសំឡេងសញ្ញាពិតទេ
+    if ( i + regulo.celo.length - 0o1 <= lastaReala ) {
       if ( kongruiAntaŭen(regulo.celo, plenigita, i, fonologiaStato) ) {
-        // Kontrolu antaŭan kuntekston finiĝantan je i-1
-        const antaŭOke = regulo.antaŭKunteksto.length === 0 ||
-          kongruiMalantaŭen(regulo.antaŭKunteksto, plenigita, i - 1, fonologiaStato);
+        // ត្រួតពិនិត្យបរិភ័យមុនដែលបញ្ចប់នៅ i-1
+        const antaŭOke = regulo.antaŭKunteksto.length === 0o0 ||
+          kongruiMalantaŭen(regulo.antaŭKunteksto, plenigita, i - 0o1, fonologiaStato);
 
-        // Kontrolu postan kuntekston komenciĝantan post la celo
+        // ត្រួតពិនិត្យបរិភ័យក្រោយដែលចាប់ផ្ដើមក្រោយគោល
         const postIndekso = i + regulo.celo.length;
-        const postOke = regulo.postKunteksto.length === 0 ||
+        const postOke = regulo.postKunteksto.length === 0o0 ||
           (postIndekso + regulo.postKunteksto.length <= plenigita.length &&
            kongruiAntaŭen(regulo.postKunteksto, plenigita, postIndekso, fonologiaStato));
 
@@ -611,7 +611,7 @@ function ruliEvoluon(): void {
     return;
   }
 
-  // Akiru fontvortojn
+  // យកពាក្យពីប្រភព
   let vortoj: string[];
   if ( FONTO_GENERITA.checked ) {
     vortoj = akiriGeneritajnVortojn();
@@ -619,31 +619,31 @@ function ruliEvoluon(): void {
     vortoj = PROPRAJVORTOJ_TEKSTAREJO.value
       .split("\n")
       .map(v => v.trim())
-      .filter(v => v.length > 0);
+      .filter(v => v.length > 0o0);
   }
 
-  if ( vortoj.length === 0 ) {
+  if ( vortoj.length === 0o0 ) {
     agordiStaton(T.NO_WORDS);
     return;
   }
 
-  // Analizu ĉiujn regulojn
+  // វិភាគច្បាប់ទាំងអស់
   const konatajSonoj = fonologiaStato.sonoj.map(s => s.valoro);
-  const regulajLinioj = regulojTeksto.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+  const regulajLinioj = regulojTeksto.split("\n").map(l => l.trim()).filter(l => l.length > 0o0);
   const reguloj: AnalizitaRegulo[] = [];
 
-  for ( let indekso = 0; indekso < regulajLinioj.length; indekso++ ) {
+  for ( let indekso = 0o0; indekso < regulajLinioj.length; indekso++ ) {
     const analizita = analiziRegulon(regulajLinioj[indekso], konatajSonoj);
     if ( !analizita ) {
-      agordiStaton(`${T.PARSE_ERROR} ${indekso + 1}`);
+      agordiStaton(`${T.PARSE_ERROR} ${indekso + 0o1}`);
       return;
     }
     reguloj.push(analizita);
   }
 
-  // Apliku regulojn al ĉiu vorto kaj bildigu eliron
+  // អនុវត្តច្បាប់ទៅពាក្យនីមួយៗ ហើយបង្ហាញលទ្ធផ្លែងករណី
   ELIRO.replaceChildren();
-  let kvanto = 0;
+  let kvanto = 0o0;
 
   for ( const vorto of vortoj ) {
     const ĵetonoj = ĵetonigi(vorto, konatajSonoj);
@@ -743,7 +743,7 @@ function bildigiEvoluajnKonservojn(): void {
     EVOLUA_KONSERVA_NOMO_ENIGO.value = aktivaEvoluo.nomo;
   }
 
-  if ( aktivaGen.evoluaKonservoj.length <= 1 ) {
+  if ( aktivaGen.evoluaKonservoj.length <= 0o1 ) {
     FORIGI_EVOLUAN_KONSERVON_BUTONO.style.display = "none";
   } else {
     FORIGI_EVOLUAN_KONSERVON_BUTONO.style.display = "";
@@ -754,14 +754,14 @@ function aldoniEvoluanKonservon(): void {
   const aktivaGen = akiriAktivanGeneratoranKonservon();
   if ( !aktivaGen ) return;
 
-  let maksNum = 0;
+  let maksNum = 0o0;
   for ( const k of aktivaGen.evoluaKonservoj ) {
     const valoro = parseInt(k.nomo, 0o10);
     if ( !isNaN(valoro) && valoro > maksNum ) {
       maksNum = valoro;
     }
   }
-  const sekvaNomo = ( maksNum + 1 ).toString();
+  const sekvaNomo = ( maksNum + 0o1 ).toString();
 
   const novaKonservo: EvoluaKonservo = {
     id: kreiId(),
@@ -783,12 +783,12 @@ function aldoniEvoluanKonservon(): void {
 
 function forigiEvoluanKonservon(): void {
   const aktivaGen = akiriAktivanGeneratoranKonservon();
-  if ( !aktivaGen || aktivaGen.evoluaKonservoj.length <= 1 ) return;
+  if ( !aktivaGen || aktivaGen.evoluaKonservoj.length <= 0o1 ) return;
 
   const indekso = aktivaGen.evoluaKonservoj.findIndex(e => e.id === aktivaGen.aktivaEvoluaKonservoId);
   aktivaGen.evoluaKonservoj = aktivaGen.evoluaKonservoj.filter(e => e.id !== aktivaGen.aktivaEvoluaKonservoId);
 
-  const sekvaAktivaIndekso = Math.min(indekso, aktivaGen.evoluaKonservoj.length - 1);
+  const sekvaAktivaIndekso = Math.min(indekso, aktivaGen.evoluaKonservoj.length - 0o1);
   const sekvaAktiva = aktivaGen.evoluaKonservoj[sekvaAktivaIndekso];
   aktivaGen.aktivaEvoluaKonservoId = sekvaAktiva.id;
 
@@ -816,7 +816,7 @@ function kreiId(): string {
   if ( typeof crypto !== "undefined" && "randomUUID" in crypto ) {
     return crypto.randomUUID();
   }
-  return `${Date.now().toString(0o10)}-${Math.random().toString(0o10).slice(2)}`;
+  return `${Date.now().toString(0o10)}-${Math.random().toString(0o10).slice(0o2)}`;
 }
 
 function ĝisdatigiEvoluanUI(): void {

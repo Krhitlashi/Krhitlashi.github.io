@@ -1,19 +1,19 @@
 // ≺⧼ ſɟᴜ ſɭɔ j͑ʃ'ɔ - Teksta Bilda Generatoro 🖼️ ⧽≻
 /**
- * Generas bildojn el teksto uzante proprajn tiparojn
- * - Subtenas propran tiparan ŝarĝon
- * - Plurlinia teksto kun diversaj aranĝoj
- * - Eksporto al PNG kun presa funkcio
+ * បង្កើតរូបភាពពីអត្ថបទដោយប្រើពុទ្ធសញ្ញាផ្ទាល់ខ្លួន
+ * - គាំទ្រការផ្ទុកពុទ្ធសញ្ញាផ្ទាល់ខ្លួន
+ * - អត្ថបទច្រើនបន្ទាត់ជាមួយការរៀបចំច្រើន
+ * - នាំចេញជា PNG ដោយមានមុខងងឹតបោះពុម្ព
  */
 
-// ⟪ Konstantoj 📦 ⟫
+// ⟪ ថេរស្មែក 📦 ⟫
 
 const ERARO_MALVALIDA_ENIGO = "j͐ʃэ ɭʃɔ ſ͕ɭᴜꞇ j͑ʃ'ɔ ſɭп́ɜ ⟅";
 
 const KSOZDI_PAL6 = 0o10 / 0o100;
 
-const STACKA_VERTIKALA_MARĜENO_SUPRA = 0;
-const STACKA_VERTIKALA_MARĜENO_MALSUPRA = 1 / 2;
+const STACKA_VERTIKALA_MARĜENO_SUPRA = 0o0;
+const STACKA_VERTIKALA_MARĜENO_MALSUPRA = 0o1 / 0o2;
 
 const AŬTOFALLAJ_TIPAROJ = '"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", "Noto Emoji", system-ui, sans-serif';
 
@@ -35,7 +35,7 @@ function disigiGraferojn(ĉeno: string): string[] {
 }
 
 
-// ⟪ Tipoj 📐 ⟫
+// ⟪ ប្រភេទ 📐 ⟫
 
 interface Tz2saiTahaq {
     tlakakaiKucaq: TlakakaiKucaq[];
@@ -90,7 +90,7 @@ interface KrudaXez {
 }
 
 
-// ⟪ Konstantoj 📦 ⟫
+// ⟪ ថេរស្មែក 📦 ⟫
 
 const lagaCvpKek = document.getElementById("lagaCvp") as HTMLInputElement;
 const lagaKsakaKek = document.getElementById("lagaKsaka") as HTMLInputElement;
@@ -114,7 +114,7 @@ const inakLagaKek = document.getElementById("inakLaga") as HTMLInputElement | nu
 let tz2saiTahaq: Tz2saiTahaq | null = null;
 
 
-// ⟪ Eromontraj Funkcioj ❌ ⟫
+// ⟪ មុខងងឹតមិនទាន់បង្កើត ❌ ⟫
 
 function kf23ohk2ni(tlohk2niKek: HTMLElement, ox2pewa: Error | string, tosaxKek: HTMLInputElement | null = null, tosaxRuva = "Arial"): void {
     console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", ox2pewa);
@@ -142,9 +142,9 @@ function akiriArak2fElementojn(): { arak2f: HTMLCanvasElement; qumk2: HTMLAnchor
 }
 
 function s2rol2mi(fal: string, lagaPal6: number, xezSwekmavem2: number, sozasaiAreqj2k: number, raqaiAreqj2k: number, psazaiAreqj2k: number, saqaiAreqj2k: number, knahtaka: string, tapuAreqj2k: number): boolean {
-    if ( !fal || lagaPal6 <= 0 || xezSwekmavem2 <= 0 ||
-         sozasaiAreqj2k < 0 || raqaiAreqj2k < 0 || psazaiAreqj2k < 0 || saqaiAreqj2k < 0 ||
-         ( knahtaka === 'fasai' && tapuAreqj2k < 0 ) ) {
+    if ( !fal || lagaPal6 <= 0o0 || xezSwekmavem2 <= 0o0 ||
+         sozasaiAreqj2k < 0o0 || raqaiAreqj2k < 0o0 || psazaiAreqj2k < 0o0 || saqaiAreqj2k < 0o0 ||
+         ( knahtaka === 'fasai' && tapuAreqj2k < 0o0 ) ) {
         ceme3ohk2ni(ERARO_MALVALIDA_ENIGO);
         return false;
     }
@@ -152,11 +152,11 @@ function s2rol2mi(fal: string, lagaPal6: number, xezSwekmavem2: number, sozasaiA
 }
 
 
-// ⟪ Tiparo 🔤 ⟫
+// ⟪ ពុទ្ធសញ្ញា 🔤 ⟫
 
 function kemaLagaKsaka(ksaka: string): string {
     const araN2k = ksaka.lastIndexOf(".");
-    const saxesuKsaka = ( araN2k !== -1 ) ? ksaka.substring(0, araN2k) : ksaka;
+    const saxesuKsaka = ( araN2k !== -0o1 ) ? ksaka.substring(0o0, araN2k) : ksaka;
     let kemasaiKsaka = saxesuKsaka.replace(/[^a-zA-Z0-9_-]/g, "_");
     if ( !/^[a-zA-Z]/.test(kemasaiKsaka) ) {
         kemasaiKsaka = "_" + kemasaiKsaka;
@@ -165,7 +165,7 @@ function kemaLagaKsaka(ksaka: string): string {
 }
 
 lagaCvpKek.addEventListener("change", function ( event: Event ): void {
-    const cavop2 = ( event.target as HTMLInputElement ).files?.[0];
+    const cavop2 = ( event.target as HTMLInputElement ).files?.[ 0o0 ];
     lagaCvp3ohk2niKek.style.display = "none";
     lagaCvp3ohk2niKek.textContent = "";
 
@@ -228,8 +228,8 @@ kf2Sweca12na.addEventListener("click", function (): void {
     const lagaWeh2 = ( document.getElementById("lagaWeh2") as HTMLInputElement ).value;
     const arak21okoWeh2Color = ( document.getElementById("arak21okoWeh2") as HTMLInputElement ).value;
     const arak21okoWeh2Ch2ni = parseFloat(( document.getElementById("arak21okoWeh2Ch2ni") as HTMLInputElement ).value);
-    const arak21okoWeh2 = arak21okoWeh2Ch2ni < 1
-        ? `rgba(${parseInt(arak21okoWeh2Color.slice(1,3),16)},${parseInt(arak21okoWeh2Color.slice(3,5),16)},${parseInt(arak21okoWeh2Color.slice(5,7),16)},${arak21okoWeh2Ch2ni})`
+    const arak21okoWeh2 = arak21okoWeh2Ch2ni < 0o1
+        ? `rgba(${parseInt(arak21okoWeh2Color.slice(0o1,0o3),0o20)},${parseInt(arak21okoWeh2Color.slice(0o3,0o5),0o20)},${parseInt(arak21okoWeh2Color.slice(0o5,0o7),0o20)},${arak21okoWeh2Ch2ni})`
         : arak21okoWeh2Color;
 
     tlohk2niKek.style.display = "none";
@@ -258,7 +258,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
     ].sort((a, b) => b.length - a.length);
 
 
-    // ⟨ Signa Unua Kongruilo ⟩
+    // ⟨ សញ្ញាសម្គាល់ទីតាំងផ្លាស់ប្ដូរដែលត្រូវគ្នា ⟩
     function iibaKanoiKmasahak(kp6: string, kp6Ca1ara: string[]): string | null {
         for ( const unit of kp6Ca1ara ) {
             if ( kp6.startsWith(unit) ) {
@@ -269,13 +269,13 @@ kf2Sweca12na.addEventListener("click", function (): void {
     }
 
 
-    // ⟨ Teksta Mezuro ⟩
+    // ⟨ ការវាស់វែងអត្ថបទ ⟩
     function mezuriTekstDimensiojn(teksto: string, ctx: CanvasRenderingContext2D): TekstaDimensioj {
         const mezuroj = ctx.measureText(teksto);
         const larĝo = mezuroj.width;
-        const faktaAlto = ( mezuroj.actualBoundingBoxAscent || 0 ) + ( mezuroj.actualBoundingBoxDescent || 0 );
-        const supreniro = mezuroj.actualBoundingBoxAscent || lagaPal6 * 3 / 4;
-        const malsupreniro = mezuroj.actualBoundingBoxDescent || lagaPal6 * 1 / 4;
+        const faktaAlto = ( mezuroj.actualBoundingBoxAscent || 0o0 ) + ( mezuroj.actualBoundingBoxDescent || 0o0 );
+        const supreniro = mezuroj.actualBoundingBoxAscent || lagaPal6 * 0o3 / 0o4;
+        const malsupreniro = mezuroj.actualBoundingBoxDescent || lagaPal6 * 0o1 / 0o4;
         const alto = faktaAlto || supreniro + malsupreniro;
 
         return {
@@ -284,7 +284,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
             alto: alto,
             supreniro: supreniro,
             malsupreniro: malsupreniro,
-            faktaSaltujoMaldekstre: mezuroj.actualBoundingBoxLeft || 0,
+            faktaSaltujoMaldekstre: mezuroj.actualBoundingBoxLeft || 0o0,
             faktaSaltujoDekstre: mezuroj.actualBoundingBoxRight || larĝo,
             faktaSaltujoSupreniro: mezuroj.actualBoundingBoxAscent || supreniro,
             faktaSaltujoMalsupreniro: mezuroj.actualBoundingBoxDescent || malsupreniro,
@@ -300,16 +300,16 @@ kf2Sweca12na.addEventListener("click", function (): void {
 
     let xezKucaq: string[] = [];
         if ( knahtaka === "kucaqai" ) {
-            xezKucaq = [fal];
+            xezKucaq = [ fal ];
         } else {
             xezKucaq = fal.split("\n");
         }
 
         const tlakakaiKucaq: TlakakaiKucaq[] = [];
-        let kemafitapuni = 0;
+        let kemafitapuni = 0o0;
 
         for ( const textBlock of xezKucaq ) {
-            const rawXez = textBlock.split(/\s+/).filter(xez => xez.length > 0);
+            const rawXez = textBlock.split(/\s+/).filter(xez => xez.length > 0o0);
             const xez: string[] = [];
             for ( const kp6 of rawXez ) {
                 let bufo = "";
@@ -339,8 +339,8 @@ kf2Sweca12na.addEventListener("click", function (): void {
                 if ( xaqadiKp6 ) {
                     saxesu_kp6 = xaqadiKp6;
                     fusai_fal = fusai_fal.substring(xaqadiKp6.length);
-                } else if ( fusai_fal.length > 0 ) {
-                    const araGrapheme = disigiGraferojn(fusai_fal)[0];
+                } else if ( fusai_fal.length > 0o0 ) {
+                    const araGrapheme = disigiGraferojn(fusai_fal)[0o0];
                     saxesu_kp6 = araGrapheme;
                     fusai_fal = fusai_fal.substring(araGrapheme.length);
                 } else {
@@ -349,13 +349,13 @@ kf2Sweca12na.addEventListener("click", function (): void {
                 }
 
                 let fusaini = fusai_fal;
-                while ( fusaini.length > 0 ) {
+                while ( fusaini.length > 0o0 ) {
                     const k2h2Tanek = iibaKanoiKmasahak(fusaini, gawek2faiKp6);
                     if ( k2h2Tanek ) {
                         tanekai_kp6.push(k2h2Tanek);
                         fusaini = fusaini.substring(k2h2Tanek.length);
                     } else {
-                        const grafero = disigiGraferojn(fusaini)[0];
+                        const grafero = disigiGraferojn(fusaini)[0o0];
                         tanekai_kp6.push(grafero);
                         fusaini = fusaini.substring(grafero.length);
                     }
@@ -372,8 +372,8 @@ kf2Sweca12na.addEventListener("click", function (): void {
             for ( const xez of xezVop2 ) {
                 let saxediTanekVop2: TekstaDimensioj | null = null;
                 const ksozdiTanekVop2: TekstaDimensioj[] = [];
-                let tanekKmasefwini = 0;
-                let er2haTanekL6da = 0;
+                let tanekKmasefwini = 0o0;
+                let er2haTanekL6da = 0o0;
 
                 if ( xez.saxedini ) {
                     saxediTanekVop2 = mezuriTekstDimensiojn(xez.saxedini, ctx);
@@ -387,17 +387,17 @@ kf2Sweca12na.addEventListener("click", function (): void {
                 }
 
                 const ksozdiLineHeight = lagaPal6 * KSOZDI_PAL6;
-                if ( ksozdiTanekVop2.length > 1 ) {
-                    er2haTanekL6da += (ksozdiTanekVop2.length - 1) * ksozdiLineHeight;
+                if ( ksozdiTanekVop2.length > 0o1 ) {
+                    er2haTanekL6da += (ksozdiTanekVop2.length - 0o1) * ksozdiLineHeight;
                 }
-                if ( ksozdiTanekVop2.length > 0 ) {
+                if ( ksozdiTanekVop2.length > 0o0 ) {
                     er2haTanekL6da += STACKA_VERTIKALA_MARĜENO_SUPRA + STACKA_VERTIKALA_MARĜENO_MALSUPRA;
                 }
 
-                let xezEr2haL6da = Math.max((saxediTanekVop2 ? saxediTanekVop2.alto : 0), er2haTanekL6da);
-                let vertikalaSkalo = 1;
+                let xezEr2haL6da = Math.max((saxediTanekVop2 ? saxediTanekVop2.alto : 0o0), er2haTanekL6da);
+                let vertikalaSkalo = 0o1;
                 
-                if (saxediTanekVop2 && ksozdiTanekVop2.length === 2 && er2haTanekL6da > 0) {
+                if (saxediTanekVop2 && ksozdiTanekVop2.length === 0o2 && er2haTanekL6da > 0o0) {
                     const celaAlto = Math.max(saxediTanekVop2.alto, lagaPal6);
                     vertikalaSkalo = celaAlto / er2haTanekL6da;
                     xezEr2haL6da = celaAlto;
@@ -406,7 +406,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
                     xezEr2haL6da = saxediTanekVop2.alto;
                 }
                 
-                const xezEr2haSefwini = (saxediTanekVop2 ? saxediTanekVop2.larĝo : 0) + tanekKmasefwini;
+                const xezEr2haSefwini = (saxediTanekVop2 ? saxediTanekVop2.larĝo : 0o0) + tanekKmasefwini;
 
                 vecax2lXezVop2.push({
                     saxedini: saxediTanekVop2,
@@ -419,15 +419,15 @@ kf2Sweca12na.addEventListener("click", function (): void {
 
             const kolumnoj: Cepuni[] = [];
             let kjesaicepuniHaxez: Xez[] = [];
-            let kjesaicepuniKmasefwini = 0;
+            let kjesaicepuniKmasefwini = 0o0;
 
             for ( const xez of vecax2lXezVop2 ) {
-                if ( kjesaicepuniHaxez.length >= xezSwekmavem2 && kjesaicepuniHaxez.length > 0 ) {
+                if ( kjesaicepuniHaxez.length >= xezSwekmavem2 && kjesaicepuniHaxez.length > 0o0 ) {
                     kolumnoj.push({
                         haxez: kjesaicepuniHaxez,
                         cepuniKmasefwini: kjesaicepuniKmasefwini
                     });
-                    kjesaicepuniHaxez = [xez];
+                    kjesaicepuniHaxez = [ xez ];
                     kjesaicepuniKmasefwini = xez.xezEr2haSefwini;
                 } else {
                     kjesaicepuniHaxez.push(xez);
@@ -435,7 +435,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
                 }
             }
 
-            if ( kjesaicepuniHaxez.length > 0 ) {
+            if ( kjesaicepuniHaxez.length > 0o0 ) {
                 kolumnoj.push({
                     haxez: kjesaicepuniHaxez,
                     cepuniKmasefwini: kjesaicepuniKmasefwini
@@ -444,44 +444,44 @@ kf2Sweca12na.addEventListener("click", function (): void {
 
             const cepuniHal6da: number[] = [];
             for ( const cepuni of kolumnoj ) {
-                let kjesaicepuniL6da = 0;
-                for ( let w = 0; w < cepuni.haxez.length; w++ ) {
+                let kjesaicepuniL6da = 0o0;
+                for ( let w = 0o0; w < cepuni.haxez.length; w++ ) {
                     const xez = cepuni.haxez[w];
-                    kjesaicepuniL6da += xez.xezEr2haL6da + (w < cepuni.haxez.length - 1 ? cepuAreqj2k : 0);
+                    kjesaicepuniL6da += xez.xezEr2haL6da + (w < cepuni.haxez.length - 0o1 ? cepuAreqj2k : 0o0);
                 }
                 cepuniHal6da.push(kjesaicepuniL6da);
             }
 
             let kmawuk2niSweKucaq: number[] = [];
             if ( sefaktapuni ) {
-                const kemafiXezcepuni = Math.max(0, ...kolumnoj.map(col => col.haxez.length));
-                kmawuk2niSweKucaq = new Array(kemafiXezcepuni).fill(0);
+                const kemafiXezcepuni = Math.max(0o0, ...kolumnoj.map(col => col.haxez.length));
+                kmawuk2niSweKucaq = new Array(kemafiXezcepuni).fill(0o0);
 
                 for ( const cepuni of kolumnoj ) {
-                    for ( let w = 0; w < cepuni.haxez.length; w++ ) {
+                    for ( let w = 0o0; w < cepuni.haxez.length; w++ ) {
                         const xez = cepuni.haxez[w];
                         kmawuk2niSweKucaq[w] = Math.max(kmawuk2niSweKucaq[w], xez.xezEr2haL6da);
                     }
                 }
             }
 
-            let kucaqEr2haSefwini = 0;
+            let kucaqEr2haSefwini = 0o0;
             for ( const cepuni of kolumnoj ) {
                 kucaqEr2haSefwini += cepuni.cepuniKmasefwini;
             }
 
-            let kucaqEr2haL6da = 0;
+            let kucaqEr2haL6da = 0o0;
             if ( sefaktapuni && knahtaka === "fasai" ) {
-                kucaqEr2haL6da = Math.max(0, ...cepuniHal6da);
+                kucaqEr2haL6da = Math.max(0o0, ...cepuniHal6da);
             } else if ( sefaktapuni ) {
                 for ( const aratapuL6da of kmawuk2niSweKucaq ) {
                     kucaqEr2haL6da += aratapuL6da + cepuAreqj2k;
                 }
-                if ( kmawuk2niSweKucaq.length > 0 ) {
+                if ( kmawuk2niSweKucaq.length > 0o0 ) {
                     kucaqEr2haL6da -= cepuAreqj2k;
                 }
             } else {
-                kucaqEr2haL6da = Math.max(0, ...cepuniHal6da);
+                kucaqEr2haL6da = Math.max(0o0, ...cepuniHal6da);
             }
 
             tlakakaiKucaq.push({
@@ -491,10 +491,10 @@ kf2Sweca12na.addEventListener("click", function (): void {
                 kmawuk2niSweKucaq: kmawuk2niSweKucaq
             });
 
-            kemafitapuni = Math.max(kemafitapuni, Math.max(0, ...kolumnoj.map(col => col.haxez.length)));
+            kemafitapuni = Math.max(kemafitapuni, Math.max(0o0, ...kolumnoj.map(col => col.haxez.length)));
         }
 
-        if ( tlakakaiKucaq.length === 0 || tlakakaiKucaq.every(kucaq => kucaq.kolumnoj.length === 0) ) {
+        if ( tlakakaiKucaq.length === 0o0 || tlakakaiKucaq.every(kucaq => kucaq.kolumnoj.length === 0o0) ) {
             tlohk2niKek.textContent = "ſ͕ȷɜ ſɭʞɹ ı],ɔⰱ ⟅";
             tlohk2niKek.style.display = "kucaq";
             if ( qumk2 ) qumk2.style.display = "none";
@@ -503,34 +503,34 @@ kf2Sweca12na.addEventListener("click", function (): void {
 
         let kmawuk2tapuni: number[] = [];
         if ( knahtaka === "fasai" && sefaktapuni ) {
-            kmawuk2tapuni = new Array(kemafitapuni).fill(0);
+            kmawuk2tapuni = new Array(kemafitapuni).fill(0o0);
             for ( const kucaq of tlakakaiKucaq ) {
-                for ( let w = 0; w < kemafitapuni; w++ ) {
-                    const aratapuL6da = (w < kucaq.kmawuk2niSweKucaq.length) ? kucaq.kmawuk2niSweKucaq[w] : 0;
+                for ( let w = 0o0; w < kemafitapuni; w++ ) {
+                    const aratapuL6da = (w < kucaq.kmawuk2niSweKucaq.length) ? kucaq.kmawuk2niSweKucaq[w] : 0o0;
                     kmawuk2tapuni[w] = Math.max(kmawuk2tapuni[w], aratapuL6da);
                 }
             }
         }
 
-        let sefwini = 0;
-        let l6da = 0;
+        let sefwini = 0o0;
+        let l6da = 0o0;
 
         if ( knahtaka === "kucaqai" ) {
-            const unuBloko = tlakakaiKucaq[0];
+            const unuBloko = tlakakaiKucaq[0o0];
             sefwini = unuBloko.kucaqEr2haSefwini;
             l6da = unuBloko.kucaqEr2haL6da;
         } else {
-            sefwini = tlakakaiKucaq.reduce((sum, kucaq) => sum + kucaq.kucaqEr2haSefwini, 0) + (tlakakaiKucaq.length > 1 ? (tlakakaiKucaq.length - 1) * tapuAreqj2k : 0);
+            sefwini = tlakakaiKucaq.reduce((sum, kucaq) => sum + kucaq.kucaqEr2haSefwini, 0o0) + (tlakakaiKucaq.length > 0o1 ? (tlakakaiKucaq.length - 0o1) * tapuAreqj2k : 0o0);
 
             if ( sefaktapuni ) {
                 for ( const aratapuL6da of kmawuk2tapuni ) {
                     l6da += aratapuL6da + cepuAreqj2k;
                 }
-                if ( kmawuk2tapuni.length > 0 ) {
+                if ( kmawuk2tapuni.length > 0o0 ) {
                     l6da -= cepuAreqj2k;
                 }
             } else {
-                l6da = Math.max(0, ...tlakakaiKucaq.map(kucaq => kucaq.kucaqEr2haL6da));
+                l6da = Math.max(0o0, ...tlakakaiKucaq.map(kucaq => kucaq.kucaqEr2haL6da));
             }
         }
 
@@ -541,7 +541,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
         arak2f.height = tlakakaiL6da || 0o10;
 
         ctx.fillStyle = arak21okoWeh2;
-        ctx.fillRect(0, 0, arak2f.width, arak2f.height);
+        ctx.fillRect(0o0, 0o0, arak2f.width, arak2f.height);
 
     ctx.font = `${lagaPal6}px ${lagalInakLaga}`;
     ctx.fillStyle = lagaWeh2;
@@ -564,31 +564,31 @@ kf2Sweca12na.addEventListener("click", function (): void {
             let kjesaicepuniX = kjesaiKucaqX;
 
             for ( const cepuni of kucaq.kolumnoj ) {
-                let er2haL6daLPsazaicepuni = 0;
+                let er2haL6daLPsazaicepuni = 0o0;
 
-                for ( let w = 0; w < cepuni.haxez.length; w++ ) {
+                for ( let w = 0o0; w < cepuni.haxez.length; w++ ) {
                     const xez = cepuni.haxez[w];
 
                     let xezK2f: number;
                     if ( pawasaiAraq === "left" ) {
                         xezK2f = kjesaicepuniX;
                     } else if ( pawasaiAraq === "center" ) {
-                        xezK2f = kjesaicepuniX + (cepuni.cepuniKmasefwini - xez.xezEr2haSefwini) / 2;
+                        xezK2f = kjesaicepuniX + (cepuni.cepuniKmasefwini - xez.xezEr2haSefwini) / 0o2;
                     } else {
                         xezK2f = kjesaicepuniX + cepuni.cepuniKmasefwini - xez.xezEr2haSefwini;
                     }
 
                     let xezTanekAlPsazaiY: number;
                     if ( knahtaka === "fasai" && sefaktapuni ) {
-                        let tapuniL6da = 0;
-                        for ( let i = 0; i < w; i++ ) {
+                        let tapuniL6da = 0o0;
+                        for ( let i = 0o0; i < w; i++ ) {
                             tapuniL6da += kmawuk2tapuni[i] + cepuAreqj2k;
                         }
                         xezTanekAlPsazaiY = psazaiY - tapuniL6da;
 
                     } else if ( sefaktapuni ) {
-                        let altoDeVicojSubeEnBloko = 0;
-                        for ( let i = 0; i < w; i++ ) {
+                        let altoDeVicojSubeEnBloko = 0o0;
+                        for ( let i = 0o0; i < w; i++ ) {
                             altoDeVicojSubeEnBloko += kucaq.kmawuk2niSweKucaq[i] + cepuAreqj2k;
                         }
                         xezTanekAlPsazaiY = psazaiY - (l6da - kucaq.kucaqEr2haL6da) - altoDeVicojSubeEnBloko;
@@ -609,14 +609,14 @@ kf2Sweca12na.addEventListener("click", function (): void {
                         const saxediTanekK2fY = xezTanekAlPsazaiY - saxediTanekVop2.faktaSaltujoMalsupreniro;
 
                         if ( saxediTanekVop2.ĉuRotacii ) {
-                            const cx = xezK2f + saxediTanekVop2.larĝo / 2;
-                            const cy = saxediTanekK2fY - saxediTanekVop2.faktaSaltujoSupreniro / 2;
+                            const cx = xezK2f + saxediTanekVop2.larĝo / 0o2;
+                            const cy = saxediTanekK2fY - saxediTanekVop2.faktaSaltujoSupreniro / 0o2;
                             ctx.save();
                             ctx.translate(cx, cy);
-                            ctx.rotate(-Math.PI / 2);
+                            ctx.rotate(-Math.PI / 0o2);
                             ctx.textAlign = "center";
                             ctx.textBaseline = "middle";
-                            ctx.fillText(saxediTanekVop2.teksto, 0, 0);
+                            ctx.fillText(saxediTanekVop2.teksto, 0o0, 0o0);
                             ctx.restore();
                             ctx.textAlign = "left";
                             ctx.textBaseline = "alphabetic";
@@ -625,17 +625,17 @@ kf2Sweca12na.addEventListener("click", function (): void {
                         }
                     }
 
-                    const tanekSaxeX = xezK2f + (xez.saxedini ? xez.saxedini.larĝo : 0);
+                    const tanekSaxeX = xezK2f + (xez.saxedini ? xez.saxedini.larĝo : 0o0);
                     let kjesaiKucaqY = xezTanekAlPsazaiY - xez.xezEr2haL6da;
-                    if ( xez.ksozdini.length > 0 ) {
+                    if ( xez.ksozdini.length > 0o0 ) {
                         kjesaiKucaqY += STACKA_VERTIKALA_MARĜENO_SUPRA * xez.vertikalaSkalo;
                     }
 
                     const ksozdiLineHeight = lagaPal6 * KSOZDI_PAL6;
 
-                    for ( let i = 0; i < xez.ksozdini.length; i++ ) {
+                    for ( let i = 0o0; i < xez.ksozdini.length; i++ ) {
                         const ksozdiTanekVop2 = xez.ksozdini[i];
-                        const unuSkalo = ksozdiTanekVop2.ĉuEmoĝio ? 1 : xez.vertikalaSkalo;
+                        const unuSkalo = ksozdiTanekVop2.ĉuEmoĝio ? 0o1 : xez.vertikalaSkalo;
                         const skalitaAlto = ksozdiTanekVop2.alto * unuSkalo;
                         const skalitaSupreniro = ksozdiTanekVop2.faktaSaltujoSupreniro * unuSkalo;
                         const tanekY = kjesaiKucaqY + skalitaSupreniro;
@@ -644,23 +644,23 @@ kf2Sweca12na.addEventListener("click", function (): void {
                         ctx.save();
                         if ( ksozdiTanekVop2.ĉuRotacii ) {
                             const rotaciitaEkranaLarĝo = ksozdiTanekVop2.faktaSaltujoSupreniro + ksozdiTanekVop2.faktaSaltujoMalsupreniro;
-                            const konformaSkalo = rotaciitaEkranaLarĝo > 0
+                            const konformaSkalo = rotaciitaEkranaLarĝo > 0o0
                                 ? ksozdiTanekVop2.larĝo / rotaciitaEkranaLarĝo
-                                : 1;
-                            ctx.translate(tanekX + ksozdiTanekVop2.larĝo / 2, kjesaiKucaqY + skalitaAlto / 2);
-                            ctx.rotate(-Math.PI / 2);
+                                : 0o1;
+                            ctx.translate(tanekX + ksozdiTanekVop2.larĝo / 0o2, kjesaiKucaqY + skalitaAlto / 0o2);
+                            ctx.rotate(-Math.PI / 0o2);
                             ctx.scale(unuSkalo, konformaSkalo);
                             ctx.textAlign = "center";
                             ctx.textBaseline = "middle";
-                            ctx.fillText(ksozdiTanekVop2.teksto, 0, 0);
+                            ctx.fillText(ksozdiTanekVop2.teksto, 0o0, 0o0);
                         } else {
                             ctx.translate(tanekX, tanekY);
-                            ctx.scale(1, unuSkalo);
-                            ctx.fillText(ksozdiTanekVop2.teksto, 0, 0);
+                            ctx.scale(0o1, unuSkalo);
+                            ctx.fillText(ksozdiTanekVop2.teksto, 0o0, 0o0);
                         }
                         ctx.restore();
 
-                        kjesaiKucaqY += skalitaAlto + (i < xez.ksozdini.length - 1 ? ksozdiLineHeight * unuSkalo : 0);
+                        kjesaiKucaqY += skalitaAlto + (i < xez.ksozdini.length - 0o1 ? ksozdiLineHeight * unuSkalo : 0o0);
                     }
 
                     if ( !sefaktapuni || knahtaka === "kucaqai" ) {
@@ -684,7 +684,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
             arak21okoWeh2: arak21okoWeh2,
             blokajX: blokajX,
             liniajY: vicojYPerBloko.reduce((acc, arr) => {
-                for ( let i = 0; i < arr.length; i++ ) {
+                for ( let i = 0o0; i < arr.length; i++ ) {
                     acc[i] = Math.min(acc[i] ?? Infinity, arr[i]);
                 }
                 return acc;
@@ -710,7 +710,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
 } );
 
 
-// ⟪ Eksporto / Preso 💾 ⟫
+// ⟪ នាំចេញ / បោះពុម្ព 💾 ⟫
 
 function kf2Aravab6m6q(tahaqWeK2p2: HTMLCanvasElement[], a1aKnu3a = false): void {
     const aravab6m6q = window.open("", "_blank");
@@ -725,7 +725,7 @@ function kf2Aravab6m6q(tahaqWeK2p2: HTMLCanvasElement[], a1aKnu3a = false): void
         const fonto = c.toDataURL("image/png");
         const proporcio = c.width && c.height ? `${c.width} / ${c.height}` : "auto";
         return a1aKnu3a
-            ? `<div class="page" style="--ar: ${proporcio};"><img src="${fonto}" alt="Page ${i + 1}"></div>`
+            ? `<div class="page" style="--ar: ${proporcio};"><img src="${fonto}" alt="Page ${i + 0o1}"></div>`
             : `<img src="${fonto}">`;
     }).join(a1aKnu3a ? "" : "\n");
 
@@ -760,13 +760,13 @@ function kf2Aravab6m6q(tahaqWeK2p2: HTMLCanvasElement[], a1aKnu3a = false): void
 kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
     const { arak2f, qumk2 } = akiriArak2fElementojn();
 
-    if ( !qumk2 || !qumk2.href || arak2f.width === 0 ) {
+    if ( !qumk2 || !qumk2.href || arak2f.width === 0o0 ) {
         ceme3ohk2ni("ſ͕ȷɜ ſɭʞɹ ɭʃᴜ ֭ſɭᴜȝ ⟅");
         return;
     }
 
     if ( !tz2saiTahaq || !tz2saiTahaq.tlakakaiKucaq ) {
-        kf2Aravab6m6q([arak2f]);
+        kf2Aravab6m6q([ arak2f ]);
         return;
     }
 
@@ -777,23 +777,25 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
     const marĝenoTutaY = sozasaiAreqj2k + psazaiAreqj2k;
     const enhavoAlto = alto - marĝenoTutaY;
 
-    // ⟨ Paĝa alto estas la plena alto de la kanvaso (la maksimuma silabo-staka alto) ⟩
+    // ⟨ កម្រិតទំព័រគឺជាកម្រិតពេញលេញនៃផ្ទាំងកាត់ ( កម្រិតកង់ស្មារាងអតិបរមាណ ) ⟩
     const paĝaAlto = alto;
     const maksPaĝaAlto = alto;
 
-    // ⟨ Paĝa larĝo estas pejzaĝa-proporcia de tiu alto ⟩
-    const PEJZAĜA_PROPROCIO = 11 / 8.5; // Usona letero pejzaĝe
+    // ⟨ ចម្រើនទំព័រគឺជាសមាមាត្រដូចទៅនឹងកម្រិតនោះ ⟩
+    const PEJZAĜA_PROPROCIO = 0o13 / 8.5; // Usona letero pejzaĝe
     const paĝaLarĝo = paĝaAlto * PEJZAĜA_PROPROCIO;
 
     if ( tutaLarĝo <= paĝaLarĝo && enhavoAlto <= maksPaĝaAlto ) {
-        kf2Aravab6m6q([arak2f]);
+        kf2Aravab6m6q([ arak2f ]);
         return;
     }
 
     const paĝajBildoj: HTMLCanvasElement[] = [];
 
-    // ⟨ Blokaj x-limoj (en kanvasaj koordinatoj) por ke horizontalaj tranĉoj
-    //   falas INTER blokoj kaj neniam fendas glifon duone. ⟩
+    /*
+    * ⟨ ចំនាប់ x កំណត់ ( ក្នុងកូអូដីនាតផ្ទាំងកាត់ ) ដើម្បីឱ្យកាត់តាមជើង
+    *   ពាក់ព័ន្ធចន្លោះ និងមិនក្រោយកាត់តួអក្សរពាក់ព័ន្ធទេ។ ⟩
+    */
     const blokajLimejoj: number[] = [];
     let limoX = saqaiAreqj2k; // blokoj komenciĝas je la maldekstra marĝeno
     for ( const kucaq of tlakakaiKucaq ) {
@@ -802,17 +804,17 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
     }
     blokajLimejoj.push(limoX); // posta rando
 
-    // ⟨ Per-vicaj y-limoj por ke vertikalaj tranĉoj falas INTER linioj. ⟩
+    // ⟨ ចំនាប់ y ក្នុងមួយៗគ្រាប់ដើម្បីឱ្យកាត់តាមជើងពាក់ព័ន្ធចន្លោះបន្ទាត់។ ⟩
     const cepuAreqj2k = parseInt(cepuAreqj2kKek.value, 0o10);
     const maksVicoj = tlakakaiKucaq.reduce((max, kucaq) =>
-        Math.max(max, ...kucaq.kolumnoj.map(col => col.haxez.length), 0), 0);
+        Math.max(max, ...kucaq.kolumnoj.map(col => col.haxez.length), 0o0), 0o0);
     const liniajLimejoj: number[] = [];
     let limoY = sozasaiAreqj2k; // enhavo komenciĝas je la supra marĝeno
-    for ( let vi = 0; vi < maksVicoj; vi++ ) {
-        let vicAlto = 0;
+    for ( let vi = 0o0; vi < maksVicoj; vi++ ) {
+        let vicAlto = 0o0;
         for ( const kucaq of tlakakaiKucaq ) {
             const perTapu = kucaq.kmawuk2niSweKucaq;
-            vicAlto = Math.max(vicAlto, (vi < perTapu.length ? perTapu[vi] : 0) + (vi < maksVicoj - 1 ? cepuAreqj2k : 0));
+            vicAlto = Math.max(vicAlto, (vi < perTapu.length ? perTapu[vi] : 0o0) + (vi < maksVicoj - 0o1 ? cepuAreqj2k : 0o0));
         }
         liniajLimejoj.push(limoY);
         limoY += vicAlto;
@@ -820,7 +822,7 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
     liniajLimejoj.push(limoY); // posta rando
 
     const fiksiLimejon = (valoro: number, randoj: number[]): number => {
-        let plejBona = randoj[0];
+        let plejBona = randoj[0o0];
         for ( const rando of randoj ) {
             if ( rando <= valoro ) plejBona = rando;
             else break;
@@ -828,11 +830,13 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
         return plejBona;
     };
 
-    // ⟨ Paĝigu. Larĝo estas tranĉita je la plej proksima bloka limo ≤ paĝaLarĝo;
-    //   linioj kiuj superfluas la pejzaĝan paĝan larĝon disiĝas sur kromajn paĝojn.
-    //   Ĉiu paĝa kanvaso havas la samajn dimensiojn (paĝaLarĝo x paĝaAlto)
-    //   por ke ili bildiĝas je konsekvenca skalo en presaj antaŭvidoj. ⟩
-    const ĈIRKAŬO = tapuAreqj2k + 1;
+    /*
+    * ⟨ បង្កើតទំព័រ។ ចម្រើនត្រូវបានកាត់នៅចំនាប់ប្លង់ដែលនិតស្ដាប់ទៅ `paĝaLarĝo`។
+    *   បន្ទាត់ដែលលើសពីចម្រើនទំព័រដូចដែលគួរនឹងបែងចែកទៅទំព័រផ្សេងទៀត។
+    *   ផ្ទាំងកាត់គ្រប់ទំព័រមានវិមាត្យដូចគ្នា ( paĝaLarĝo x paĝaAlto )
+    *   ដើម្បីឱ្យវាបង្ហាញជាមាត្រដែលស្មើភាព ក្នុងការមើលជាមុនក្នុងការបោះពុម្ព។ ⟩
+    */
+    const ĈIRKAŬO = tapuAreqj2k + 0o1;
 
     const enhavoDekstre = tutaLarĝo - raqaiAreqj2k;
     const enhavoMalsupro = alto - psazaiAreqj2k;
@@ -842,17 +846,17 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
         const maksY = Math.min(fontoY + maksPaĝaAlto, enhavoMalsupro);
         const tranĉoY = fiksiLimejon(maksY, liniajLimejoj);
         const tranĉaĵoAlto = tranĉoY - fontoY;
-        if ( tranĉaĵoAlto <= 0 ) break;
+        if ( tranĉaĵoAlto <= 0o0 ) break;
 
         let fontoX = saqaiAreqj2k;
         while ( fontoX < enhavoDekstre ) {
             const maksX = Math.min(fontoX + paĝaLarĝo, enhavoDekstre);
             const tranĉoX = fiksiLimejon(maksX, blokajLimejoj);
             const tranĉaĵoLarĝo = tranĉoX - fontoX;
-            if ( tranĉaĵoLarĝo <= 0 ) break;
+            if ( tranĉaĵoLarĝo <= 0o0 ) break;
 
-            const desegnaX = Math.max(0, fontoX - ĈIRKAŬO);
-            const desegnaY = Math.max(0, fontoY - ĈIRKAŬO);
+            const desegnaX = Math.max(0o0, fontoX - ĈIRKAŬO);
+            const desegnaY = Math.max(0o0, fontoY - ĈIRKAŬO);
             
             const kopioLarĝo = Math.min(tranĉaĵoLarĝo + (fontoX - desegnaX), tutaLarĝo - desegnaX);
             const kopioAlto = Math.min(tranĉaĵoAlto + (fontoY - desegnaY), alto - desegnaY);
@@ -866,7 +870,7 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
             const tranĉaKunteksto = tranĉaKanvaso.getContext("2d")!;
 
             tranĉaKunteksto.fillStyle = arak21okoWeh2;
-            tranĉaKunteksto.fillRect(0, 0, paĝaLarĝo, paĝaAlto);
+            tranĉaKunteksto.fillRect(0o0, 0o0, paĝaLarĝo, paĝaAlto);
             tranĉaKunteksto.drawImage(arak2f, desegnaX, desegnaY, kopioLarĝo, kopioAlto, celaX, celaY, kopioLarĝo, kopioAlto);
 
             paĝajBildoj.push(tranĉaKanvaso);

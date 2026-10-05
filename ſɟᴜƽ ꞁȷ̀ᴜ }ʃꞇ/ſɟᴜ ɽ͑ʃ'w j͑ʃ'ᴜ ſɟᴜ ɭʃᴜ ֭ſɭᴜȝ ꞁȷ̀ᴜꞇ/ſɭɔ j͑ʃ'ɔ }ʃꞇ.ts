@@ -12,9 +12,9 @@ const VOP2_RUVACATAHAQU = "ɭʃɔ";
 // ⟪ ŋᷠᴜ ſȷɔ ſɭ,ꞇ 🔧 ⟫
 
 /**
- * Ŝarĝas bildon el URL kaj revenigas kiel promeson
- * @param src - Bilda fonta URL
- * @returns Promeso solvanta al HTMLImageElement
+ * ផ្ទុករូបភាពពី URL ហើយជួបជាសញ្ញា
+ * @param src - URL ប្រភពនៃរូបភាព
+ * @returns សញ្ញាដែលដំណោះទៅ HTMLImageElement
  */
 function q2qTahaq( src: string ): Promise<HTMLImageElement> {
     return new Promise( ( resolve, reject ) => {
@@ -26,20 +26,20 @@ function q2qTahaq( src: string ): Promise<HTMLImageElement> {
 }
 
 /**
- * Centrigas pli malgrandan dimension ene de pli granda
- * @param pliGranda - La uja grandeco
- * @param pliMalgranda - La enhava grandeco
- * @returns La deŝovo por centrigi la enhavon
+ * ជិតមជ្រើសវិមាត្យតូចជាងមាននៅជុំក្នុងវិមាត្យធំជាង
+ * @param pliGranda - វិមាត្យបច្ចុប្បន្ន
+ * @param pliMalgranda - វិមាត្យមាតិសម្មា
+ * @returns teksto
  */
 function neq2qCepu( pliGranda: number, pliMalgranda: number ): number {
-    return Math.floor( ( pliGranda - pliMalgranda ) / 2 );
+    return Math.floor( ( pliGranda - pliMalgranda ) / 0o2 );
 }
 
 /**
- * Kreas kanvason kun specifitaj dimensioj
- * @param larĝo - Kanvasa larĝo
- * @param alto - Kanvasa alto
- * @returns HTMLCanvasElement kun dimensioj agorditaj
+ * បង្កើតផ្ទាំងកាត់ដែលមានវិមាត្យជាក់ស្តែង
+ * @param larĝo - ចម្រើនផ្ទាំងកាត់
+ * @param alto - កម្រិតផ្ទាំងកាត់
+ * @returns kanvaso
  */
 function k2falTahaq( larĝo: number, alto: number ): HTMLCanvasElement {
     const tahaq = document.createElement( "canvas" );
@@ -51,28 +51,28 @@ function k2falTahaq( larĝo: number, alto: number ): HTMLCanvasElement {
 // ⟪ ſ͔ɭɔ }ʃɔɔ˞ ֭ſɭᴜ ı],ɔ �🖌️ ⟫
 
 /**
- * Kalkulas kurbecon por angulo
- * @param sost2 ( [ number, number ] ) - Centra punkto [ x, y ]
- * @param ka5ik ( number ) - Radiuso
- * @param sefini_saxe ( number ) - Komenca angulo en gradoj
- * @param sefini_tlakak ( number ) - Fina angulo en gradoj
- * @param tafani_swek2fe ( number = 0o40 ) - Nombro da punktoj ( defaŭlte 0o40 por pli glataj kurboj )
- * @returns [ number, number ][]
- *     Tabelo de punktoj laŭ la arko
+ * គណនាសមការ្យសម្រាប់មុង
+ * @param sost2 ( [ number, number ] ) - ចំណុចកណ្តាល [ x, y ]
+ * @param ka5ik ( number ) - រាវ្យ
+ * @param sefini_saxe ( number ) - មុងចាប់ផ្ដើមជាដង់
+ * @param sefini_tlakak ( number ) - មុងចុងជាដង់
+ * @param tafani_swek2fe ( number = 0o40 ) - ចំនួនចំណុច ( 0o40 តាមតាមដើម ដើម្បីឱ្យសមការ្យរលាក់ទៀត )
+ * @returns punktoj
+ *     តារាងចំណុចតាមបាងរង្វេង
  */
 function quq_vem2_fkabe(
-    sost2: [number, number],
+    sost2: [ number, number ],
     ka5ik: number,
     sefini_saxe: number,
     sefini_tlakak: number,
     tafani_swek2fe: number = 0o40
-): [number, number][] {
-    const er2ha_vem2ni: [number, number][] = [];
-    for ( let i = 0; i <= tafani_swek2fe; i++ ) {
-        const tafkaq = ( sefini_saxe + ( sefini_tlakak - sefini_saxe ) * i / tafani_swek2fe ) * ( Math.PI / 180 );
+): [ number, number ][] {
+    const er2ha_vem2ni: [ number, number ][] = [];
+    for ( let i = 0o0; i <= tafani_swek2fe; i++ ) {
+        const tafkaq = ( sefini_saxe + ( sefini_tlakak - sefini_saxe ) * i / tafani_swek2fe ) * ( Math.PI / 0o264 );
         er2ha_vem2ni.push( [
-            sost2[0] + ka5ik * Math.cos( tafkaq ),
-            sost2[1] + ka5ik * Math.sin( tafkaq )
+            sost2[0o0] + ka5ik * Math.cos( tafkaq ),
+            sost2[0o1] + ka5ik * Math.sin( tafkaq )
         ] );
     }
     return er2ha_vem2ni;
@@ -81,7 +81,7 @@ function quq_vem2_fkabe(
 interface SakKu1o {
     kuba_swepal6?: number;
     catu5ek?: number;
-    kx2k2f_sweweh2?: [number, number, number, number];
+    kx2k2f_sweweh2?: [ number, number, number, number ];
     araqal_c2h2su_tahaq?: string;
     [ kxesu_araq: string ]: unknown;
 }
@@ -97,7 +97,7 @@ class IitbesuRuvaCatahaqu {
     private araqal_c2h2su_tahaq: string | undefined;
     public kuba_swepal6: number;
     public catu5ek: number;
-    public kx2k2f_sweweh2: [number, number, number, number];
+    public kx2k2f_sweweh2: [ number, number, number, number ];
     public KANAQANIDOMA_2TBE: number = KANAQANIDOMA_2TBE;
 
     constructor(
@@ -105,12 +105,12 @@ class IitbesuRuvaCatahaqu {
         opcioj: SakKu1o = {}
     ) {
         this.kuba_swepal6 = opcioj.kuba_swepal6 || 0o10;
-        this.catu5ek = opcioj.catu5ek || 4;
-        this.kx2k2f_sweweh2 = opcioj.kx2k2f_sweweh2 || [ 0, 0, 0, 255 ];
+        this.catu5ek = opcioj.catu5ek || 0o4;
+        this.kx2k2f_sweweh2 = opcioj.kx2k2f_sweweh2 || [ 0o0, 0o0, 0o0, 0o377 ];
         this.araqal_c2h2su_tahaq = opcioj.araqal_c2h2su_tahaq;
 
         const hakek_swek2fe = moduloj.length;
-        const grandeco = ( hakek_swek2fe + this.catu5ek * 2 ) * this.kuba_swepal6;
+        const grandeco = ( hakek_swek2fe + this.catu5ek * 0o2 ) * this.kuba_swepal6;
         this._tahaq = document.createElement( "canvas" );
         this._tahaq.width = grandeco;
         this._tahaq.height = grandeco;
@@ -123,12 +123,12 @@ class IitbesuRuvaCatahaqu {
         const tahaq = await q2qTahaq( this.araqal_c2h2su_tahaq );
         const sf = this._tahaq.width;
         const ld = this._tahaq.height;
-        const araq: [number, number] = [
+        const araq: [ number, number ] = [
             neq2qCepu( sf, tahaq.width ),
             neq2qCepu( ld, tahaq.height )
         ];
 
-        this.kunteksto.drawImage( tahaq, araq[0], araq[1] );
+        this.kunteksto.drawImage( tahaq, araq[0o0], araq[0o1] );
     }
 
     desegni_rectangulan_kuntekston( tapuni: number, cepuni: number, ruva: RuvaCatahaquVop2, a1a_kozeq?: Set<string> ): void {
@@ -138,9 +138,9 @@ class IitbesuRuvaCatahaqu {
 
         if ( this.k2fIibanu( tapuni, cepuni, ruva ) ) {
             const sefini = ruva.moduloj.length;
-            const a1a_ls = tapuni === 0 && cepuni === 0;
-            const a1a_lr = tapuni === 0 && cepuni === sefini - 7;
-            const a1a_ks = tapuni === sefini - 7 && cepuni === 0;
+            const a1a_ls = tapuni === 0o0 && cepuni === 0o0;
+            const a1a_lr = tapuni === 0o0 && cepuni === sefini - 0o7;
+            const a1a_ks = tapuni === sefini - 0o7 && cepuni === 0o0;
 
             if ( a1a_ls || a1a_lr || a1a_ks ) {
                 this.k2f_2banusost2su( tapuni, cepuni, a1a_ls, a1a_lr, a1a_ks );
@@ -153,9 +153,9 @@ class IitbesuRuvaCatahaqu {
 
     private k2fIibanu( tapuni: number, cepuni: number, ruva: RuvaCatahaquVop2 ): boolean {
         const sefini = ruva.moduloj.length;
-        const sozaCtama = tapuni < 7 && cepuni < 7;
-        const sozaPtama = tapuni < 7 && cepuni >= sefini - 7;
-        const psazCtama = tapuni >= sefini - 7 && cepuni < 7;
+        const sozaCtama = tapuni < 0o7 && cepuni < 0o7;
+        const sozaPtama = tapuni < 0o7 && cepuni >= sefini - 0o7;
+        const psazCtama = tapuni >= sefini - 0o7 && cepuni < 0o7;
         return sozaCtama || sozaPtama || psazCtama;
     }
 
@@ -163,15 +163,15 @@ class IitbesuRuvaCatahaqu {
         if ( !this.kunteksto ) return;
         if ( !ruva.moduloj[tapuni][cepuni] ) return;
 
-        // Preterlasu se jam a1a_kozeq ( parto de antaŭa vertikala sinsekvo )
+        // បោះចោលប្រសិនបើមាន a1a_kozeq រួចហើយ ( ផ្នែកនៃដំណើរការបញ្ឈរមុន )
         const kxesu_araq = `${tapuni},${cepuni}`;
         if ( a1a_kozeq && a1a_kozeq.has( kxesu_araq ) ) return;
 
-        // Marku la nunan modulon kiel a1a_kozeq
+        // សម្គាល់ម៉ូឌុលបច្ចុប្បន្នថាជា a1a_kozeq
         if ( a1a_kozeq ) a1a_kozeq.add( kxesu_araq );
 
-        // Trovu vertikalan sinsekvon - kalkulu sinsekvajn modulojn sube de ĉi tiu
-        let hacepuni_swel6da = 1;
+        // ស្វែងរកដំណើរការបញ្ឈរ - គណនាម៉ូឌុលបន្ស្សបន្តខាងក្រោមនេះ
+        let hacepuni_swel6da = 0o1;
         while ( tapuni + hacepuni_swel6da < ruva.moduloj.length && ruva.moduloj[tapuni + hacepuni_swel6da][cepuni] ) {
             if ( a1a_kozeq ) a1a_kozeq.add( `${tapuni + hacepuni_swel6da},${cepuni}` );
             hacepuni_swel6da++;
@@ -180,37 +180,37 @@ class IitbesuRuvaCatahaqu {
         const x = ( cepuni + this.catu5ek ) * this.kuba_swepal6;
         const y = ( tapuni + this.catu5ek ) * this.kuba_swepal6;
 
-        // Vertikala pilolo - pli mallarĝa larĝo, plena alto kun rondigitaj supro/malsupro
+        // បន្ទាក់បញ្ឈរ - ចម្រើនតូចជាង, កម្រិតពេញលេញ ដោយមានកំណត់សមីគឺចុងស្មែក និងចុងខាងក្រោមទស្រញៃ
         const sakSwesefi = this.kuba_swepal6 * 0o6 / 0o10; // 6/8 = 3/4 de kestogrando
-        const sakSwetapu = x + ( this.kuba_swepal6 - sakSwesefi ) / 2;
-        const ka5ik = sakSwesefi / 2;
+        const sakSwetapu = x + ( this.kuba_swepal6 - sakSwesefi ) / 0o2;
+        const ka5ik = sakSwesefi / 0o2;
         const sost2Swetapu = sakSwetapu + ka5ik;
 
-        // Por longigita pilolo, supra arko ĉe komenco, malsupra arko ĉe fino de la sinsekvo
+        // សម្រាប់បន្ទាក់បញ្ឈរបន្ថែម, បាងខាងលើនៅចុងផ្ដើម និងបាងខាងក្រោមនៅចុងនៃដំណើរការ
         const sozaFkabeSost2Cepuni = y + ka5ik;
         const psazFkabeSost2Cepuni = y + ( hacepuni_swel6da * this.kuba_swepal6 ) - ka5ik;
 
-        // Desegnu longigitan vertikalan pilolformon ( horloĝdirekta vojo )
+        // គូរបន្ទាក់បញ្ឈរបញ្ឈរបន្ថែម ( ផ្លូវតាមទិសម៉ែត្រទី )
         this.kunteksto.fillStyle = `rgba( ${ this.kx2k2f_sweweh2.join( "," ) } )`;
         this.kunteksto.beginPath();
-        // Komencu ĉe supro-maldekstre ( 9-a horloĝo de la supra arko )
+        // ចាប់ផ្ដើមនៅខាងលើឆ្វេង ( ម៉ែត្រទី 9 នៃបាងខាងលើ )
         this.kunteksto.moveTo( sost2Swetapu - ka5ik, sozaFkabeSost2Cepuni );
-        // Desegnu supran duoncirklo ( maldekstre al dekstre tra supro ) - horloĝdirekte de π al 2π
-        this.kunteksto.arc( sost2Swetapu, sozaFkabeSost2Cepuni, ka5ik, Math.PI, 2 * Math.PI, false );
-        // Desegnu rektan linion malsupren laŭ la dekstra flanko al la malsupra arko
+        // គូរធម្មតារង្វេងខាងលើ ( ពីឆ្វេងទៅស្ដាំងតាមខាងលើ ) - តាមទិសម៉ែត្រទីពី π ទៅ 2π
+        this.kunteksto.arc( sost2Swetapu, sozaFkabeSost2Cepuni, ka5ik, Math.PI, 0o2 * Math.PI, false );
+        // គូរបន្ទាត់ត្រង់ចុះទៅតាមជុំខាងស្ដាំងទៅបាងខាងក្រោម
         this.kunteksto.lineTo( sost2Swetapu + ka5ik, psazFkabeSost2Cepuni );
-        // Desegnu malsupran duoncirklo ( dekstre al maldekstre tra malsupro ) - horloĝdirekte de 0 al π
-        this.kunteksto.arc( sost2Swetapu, psazFkabeSost2Cepuni, ka5ik, 0, Math.PI, false );
-        // Desegnu rektan linion supren laŭ la maldekstra flanko por fermi
+        // គូរធម្មតារង្វេងខាងក្រោម ( ពីស្ដាំងទៅឆ្វេងតាមខាងក្រោម ) - តាមទិសម៉ែត្រទីពី 0 ទៅ π
+        this.kunteksto.arc( sost2Swetapu, psazFkabeSost2Cepuni, ka5ik, 0o0, Math.PI, false );
+        // គូរបន្ទាត់ត្រង់ឡើងទៅតាមជុំខាងឆ្វេងដើម្បីបិទ
         this.kunteksto.lineTo( sost2Swetapu - ka5ik, sozaFkabeSost2Cepuni );
         this.kunteksto.closePath();
         this.kunteksto.fill();
     }
 
     private k2f_nakoxa(
-        kuba: [number, number, number, number],
-        tafani: [boolean, boolean, boolean, boolean],
-        tem2ni: [number, number, number, number]
+        kuba: [ number, number, number, number ],
+        tafani: [ boolean, boolean, boolean, boolean ],
+        tem2ni: [ number, number, number, number ]
     ): void {
         if ( !this.kunteksto ) return;
 
@@ -218,60 +218,60 @@ class IitbesuRuvaCatahaqu {
         const sf = tp_xaqa - tp_heta;
         const ld = cp_xaqa - cp_heta;
 
-        // Por vertikalaj piloloj, uzu larĝo-bazitan ka5ik por supro/malsupro
-        const kemafi_fkabe = sf / 2;
+        // សម្រាប់បន្ទាក់បញ្ឈរ, ប្រើ ka5ik ដែលផ្អែកលើចម្រើន សម្រាប់ខាងលើ និងខាងក្រោម
+        const kemafi_fkabe = sf / 0o2;
         const ka5ik = kemafi_fkabe * this.KANAQANIDOMA_2TBE;
         const fkabe_cibe = kemafi_fkabe * 0o2 / 0o10;
 
-        const er2ha_vem2: [number, number][] = [];
+        const er2ha_vem2: [ number, number ][] = [];
 
-        // TL ( 180 ĝis 270 ) , Centro ( tp_heta + ka5ik , cp_heta + ka5ik )
-        if ( tafani[0] ) {
-            const sost2: [number, number] = [ tp_heta + fkabe_cibe, cp_heta + fkabe_cibe ];
-            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, fkabe_cibe, 180, 270 ) );
+        // ខាងលឿងខាងលើ ( 180 ដល់ 270 ) , ចាល់កណ្តាល ( tp_heta + ka5ik , cp_heta + ka5ik )
+        if ( tafani[0o0] ) {
+            const sost2: [ number, number ] = [ tp_heta + fkabe_cibe, cp_heta + fkabe_cibe ];
+            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, fkabe_cibe, 0o264, 0o416 ) );
         } else {
-            const sost2: [number, number] = [ tp_heta + ka5ik, cp_heta + ka5ik ];
-            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, ka5ik, 180, 270 ) );
+            const sost2: [ number, number ] = [ tp_heta + ka5ik, cp_heta + ka5ik ];
+            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, ka5ik, 0o264, 0o416 ) );
         }
 
-        // TR ( 270 ĝis 360 ) , Centro ( tp_xaqa - ka5ik , cp_heta + ka5ik )
-        if ( tafani[1] ) {
-            const sost2: [number, number] = [ tp_xaqa - fkabe_cibe, cp_heta + fkabe_cibe ];
-            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, fkabe_cibe, 270, 360 ) );
+        // ខាងលឿងខាងស្ដាំង ( 270 ដល់ 360 ) , ចាល់កណ្តាល ( tp_xaqa - ka5ik , cp_heta + ka5ik )
+        if ( tafani[0o1] ) {
+            const sost2: [ number, number ] = [ tp_xaqa - fkabe_cibe, cp_heta + fkabe_cibe ];
+            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, fkabe_cibe, 0o416, 0o550 ) );
         } else {
-            const sost2: [number, number] = [ tp_xaqa - ka5ik, cp_heta + ka5ik ];
-            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, ka5ik, 270, 360 ) );
+            const sost2: [ number, number ] = [ tp_xaqa - ka5ik, cp_heta + ka5ik ];
+            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, ka5ik, 0o416, 0o550 ) );
         }
 
-        // BR ( 0 ĝis 90 ) , Centro ( tp_xaqa - ka5ik , cp_xaqa - ka5ik )
-        if ( tafani[2] ) {
-            const sost2: [number, number] = [ tp_xaqa - fkabe_cibe, cp_xaqa - fkabe_cibe ];
-            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, fkabe_cibe, 0, 90 ) );
+        // ខាងក្រោមខាងស្ដាំង ( 0 ដល់ 90 ) , ចាល់កណ្តាល ( tp_xaqa - ka5ik , cp_xaqa - ka5ik )
+        if ( tafani[0o2] ) {
+            const sost2: [ number, number ] = [ tp_xaqa - fkabe_cibe, cp_xaqa - fkabe_cibe ];
+            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, fkabe_cibe, 0o0, 0o132 ) );
         } else {
-            const sost2: [number, number] = [ tp_xaqa - ka5ik, cp_xaqa - ka5ik ];
-            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, ka5ik, 0, 90 ) );
+            const sost2: [ number, number ] = [ tp_xaqa - ka5ik, cp_xaqa - ka5ik ];
+            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, ka5ik, 0o0, 0o132 ) );
         }
 
-        // BL ( 90 ĝis 180 ) , Centro ( tp_heta + ka5ik , cp_xaqa - ka5ik )
-        if ( tafani[3] ) {
-            const sost2: [number, number] = [ tp_heta + fkabe_cibe, cp_xaqa - fkabe_cibe ];
-            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, fkabe_cibe, 90, 180 ) );
+        // ខាងក្រោមខាងឆ្វេង ( 90 ដល់ 180 ) , ចាល់កណ្តាល ( tp_heta + ka5ik , cp_xaqa - ka5ik )
+        if ( tafani[0o3] ) {
+            const sost2: [ number, number ] = [ tp_heta + fkabe_cibe, cp_xaqa - fkabe_cibe ];
+            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, fkabe_cibe, 0o132, 0o264 ) );
         } else {
-            const sost2: [number, number] = [ tp_heta + ka5ik, cp_xaqa - ka5ik ];
-            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, ka5ik, 90, 180 ) );
+            const sost2: [ number, number ] = [ tp_heta + ka5ik, cp_xaqa - ka5ik ];
+            er2ha_vem2.push( ...quq_vem2_fkabe( sost2, ka5ik, 0o132, 0o264 ) );
         }
 
         this.kunteksto.beginPath();
-        if ( er2ha_vem2.length > 0 ) {
-            this.kunteksto.moveTo( er2ha_vem2[0][0], er2ha_vem2[0][1] );
-            for ( let i = 1; i < er2ha_vem2.length; i++ ) {
-                this.kunteksto.lineTo( er2ha_vem2[i][0], er2ha_vem2[i][1] );
+        if ( er2ha_vem2.length > 0o0 ) {
+            this.kunteksto.moveTo( er2ha_vem2[0o0][0o0], er2ha_vem2[0o0][0o1] );
+            for ( let i = 0o1; i < er2ha_vem2.length; i++ ) {
+                this.kunteksto.lineTo( er2ha_vem2[i][0o0], er2ha_vem2[i][0o1] );
             }
         }
         this.kunteksto.closePath();
 
-        // Se tute travidebla, malplenigu la forman areon anstataŭ plenigi
-        if ( tem2ni[3] === 0 ) {
+        // ប្រសិនបើទាំងអស់ច្លាយដោយពេញលេញ បង្រួមតំបន់របស់រាង្វាស់ជំនួសការបំពេញ
+        if ( tem2ni[0o3] === 0o0 ) {
             this.kunteksto.save();
             this.kunteksto.clip();
             this.kunteksto.clearRect( tp_heta, cp_heta, sf, ld );
@@ -290,49 +290,49 @@ class IitbesuRuvaCatahaqu {
         a1a_lr: boolean,
         a1a_ks: boolean
     ): void {
-        // Ekstera Kadro ( 7x7 moduloj )
+        // ក្រ្លោ្រខាងក្រៅ ( ម៉ូឌុល 7x7 )
         const tlkk_sc = this.c2tasu_kuba( tapuni, cepuni );
-        const tlkk_pp = this.c2tasu_kuba( tapuni + 6, cepuni + 6 );
-        const kuba_3akak: [number, number, number, number] = [
-            tlkk_sc[0][0], tlkk_sc[0][1], tlkk_pp[1][0], tlkk_pp[1][1]
+        const tlkk_pp = this.c2tasu_kuba( tapuni + 0o6, cepuni + 0o6 );
+        const kuba_3akak: [ number, number, number, number ] = [
+            tlkk_sc[0o0][0o0], tlkk_sc[0o0][0o1], tlkk_pp[0o1][0o0], tlkk_pp[0o1][0o1]
         ];
 
-        // Interna Truo ( 5x5 moduloj , unu modulo enigita de la kadro )
-        const sx_sc = this.c2tasu_kuba( tapuni + 1, cepuni + 1 );
-        const sx_pp = this.c2tasu_kuba( tapuni + 5, cepuni + 5 );
-        const kuba_saxe: [number, number, number, number] = [
-            sx_sc[0][0], sx_sc[0][1], sx_pp[1][0], sx_pp[1][1]
+        // រលោខាងក្នុង ( ម៉ូឌុល 5x5 , ម៉ូឌុលមួយចែកដោយក្រ្លោ់ )
+        const sx_sc = this.c2tasu_kuba( tapuni + 0o1, cepuni + 0o1 );
+        const sx_pp = this.c2tasu_kuba( tapuni + 0o5, cepuni + 0o5 );
+        const kuba_saxe: [ number, number, number, number ] = [
+            sx_sc[0o0][0o0], sx_sc[0o0][0o1], sx_pp[0o1][0o0], sx_pp[0o1][0o1]
         ];
 
-        // Okulglobeto ( 3x3 moduloj , du moduloj enigitaj de la kadro )
-        const iibanu_sc = this.c2tasu_kuba( tapuni + 2, cepuni + 2 );
-        const iibanu_pp = this.c2tasu_kuba( tapuni + 4, cepuni + 4 );
-        const kuba_2banusost2su: [number, number, number, number] = [
-            iibanu_sc[0][0], iibanu_sc[0][1], iibanu_pp[1][0], iibanu_pp[1][1]
+        // ភ្នៀតភ្នែក ( ម៉ូឌុល 3x3 , ម៉ូឌុលពីរចែកដោយក្រ្លោ់ )
+        const iibanu_sc = this.c2tasu_kuba( tapuni + 0o2, cepuni + 0o2 );
+        const iibanu_pp = this.c2tasu_kuba( tapuni + 0o4, cepuni + 0o4 );
+        const kuba_2banusost2su: [ number, number, number, number ] = [
+            iibanu_sc[0o0][0o0], iibanu_sc[0o0][0o1], iibanu_pp[0o1][0o0], iibanu_pp[0o1][0o1]
         ];
 
-        // Difinu Angulan Akrecon
-        const fkabe_2banu: [boolean, boolean, boolean, boolean] = [ false, false, false, false ];
-        const fkabe_2banusost2: [boolean, boolean, boolean, boolean] = [ false, false, false, false ];
+        // កំណត់ការច្រត់ពាល់មុង
+        const fkabe_2banu: [ boolean, boolean, boolean, boolean ] = [ false, false, false, false ];
+        const fkabe_2banusost2: [ boolean, boolean, boolean, boolean ] = [ false, false, false, false ];
 
         if ( a1a_ls ) {
-            fkabe_2banu[0] = fkabe_2banu[2] = true;
-            fkabe_2banusost2[0] = true;
+            fkabe_2banu[0o0] = fkabe_2banu[0o2] = true;
+            fkabe_2banusost2[0o0] = true;
         } else if ( a1a_lr ) {
-            fkabe_2banu[1] = fkabe_2banu[3] = true;
-            fkabe_2banusost2[1] = true;
+            fkabe_2banu[0o1] = fkabe_2banu[0o3] = true;
+            fkabe_2banusost2[0o1] = true;
         } else if ( a1a_ks ) {
-            fkabe_2banu[3] = fkabe_2banu[1] = true;
-            fkabe_2banusost2[3] = true;
+            fkabe_2banu[0o3] = fkabe_2banu[0o1] = true;
+            fkabe_2banusost2[0o3] = true;
         }
 
-        // Desegnu la formojn
+        // គូររាង្វាស់
         this.k2f_nakoxa( kuba_3akak, fkabe_2banu, this.kx2k2f_sweweh2 );
-        this.k2f_nakoxa( kuba_saxe, fkabe_2banu, [ 0, 0, 0, 0 ] );
+        this.k2f_nakoxa( kuba_saxe, fkabe_2banu, [ 0o0, 0o0, 0o0, 0o0 ] );
         this.k2f_nakoxa( kuba_2banusost2su, fkabe_2banusost2, this.kx2k2f_sweweh2 );
     }
 
-    private c2tasu_kuba( tapuni: number, cepuni: number ): [[number, number], [number, number]] {
+    private c2tasu_kuba( tapuni: number, cepuni: number ): [ [ number, number ], [ number, number ] ] {
         const x = ( cepuni + this.catu5ek ) * this.kuba_swepal6;
         const y = ( tapuni + this.catu5ek ) * this.kuba_swepal6;
         return [ [ x, y ], [ x + this.kuba_swepal6, y + this.kuba_swepal6 ] ];
@@ -344,10 +344,10 @@ class IitbesuRuvaCatahaqu {
 }
 
 /**
- * Kreas folioforman maskan kanvason
- * @param vem2 ( number ) - Grandeco de la kanvaso
- * @returns HTMLCanvasElement
- *     Kanvaso kun folioformo desegnita blanke
+ * បង្កើតផ្ទាំងកាត់ម៉ាស្គារមានទម្រង់តាមស្លីរកថា
+ * @param vem2 ( number ) - វិមាត្យផ្ទាំងកាត់
+ * @returns kanvaso
+ *     ផ្ទាំងកាត់ដែលគូរទម្រង់តាមស្លីរកថាជាពណ៌ស
  */
 function kf2_k6liqani_2tbesu( vem2: number ): HTMLCanvasElement {
     const kanvaso = document.createElement( "canvas" );
@@ -356,33 +356,33 @@ function kf2_k6liqani_2tbesu( vem2: number ): HTMLCanvasElement {
     const kumukalasu = kanvaso.getContext( "2d" );
     if ( !kumukalasu ) return kanvaso;
 
-    const tp_heta = 0, cp_heta = 0, tp_xaqa = vem2, cp_xaqa = vem2;
-    const er2ha_vem2ni: [number, number][] = [];
+    const tp_heta = 0o0, cp_heta = 0o0, tp_xaqa = vem2, cp_xaqa = vem2;
+    const er2ha_vem2ni: [ number, number ][] = [];
 
-    const fkabe_taf = ( vem2 / 2 ) * KANAQANIDOMA_2TBE;
-    const fkabe_cibe = ( vem2 / 2 ) * 0o2 / 0o10;
+    const fkabe_taf = ( vem2 / 0o2 ) * KANAQANIDOMA_2TBE;
+    const fkabe_cibe = ( vem2 / 0o2 ) * 0o2 / 0o10;
 
-    // ( Rondigita ) 180-270
-    const sost2_sc: [number, number] = [ tp_heta + fkabe_taf, cp_heta + fkabe_taf ];
-    er2ha_vem2ni.push( ...quq_vem2_fkabe( sost2_sc, fkabe_taf, 180, 270 ) );
+    // ( សមីគឺ ) 180-270
+    const sost2_sc: [ number, number ] = [ tp_heta + fkabe_taf, cp_heta + fkabe_taf ];
+    er2ha_vem2ni.push( ...quq_vem2_fkabe( sost2_sc, fkabe_taf, 0o264, 0o416 ) );
 
-    // ( Akra ) 270-360
-    const sost2_sr: [number, number] = [ tp_xaqa - fkabe_cibe, cp_heta + fkabe_cibe ];
-    er2ha_vem2ni.push( ...quq_vem2_fkabe( sost2_sr, fkabe_cibe, 270, 360 ) );
+    // ( ច្លងស្រប ) 270-360
+    const sost2_sr: [ number, number ] = [ tp_xaqa - fkabe_cibe, cp_heta + fkabe_cibe ];
+    er2ha_vem2ni.push( ...quq_vem2_fkabe( sost2_sr, fkabe_cibe, 0o416, 0o550 ) );
 
-    // ( Rondigita ) 0-90
-    const sost2_pr: [number, number] = [ tp_xaqa - fkabe_taf, cp_xaqa - fkabe_taf ];
-    er2ha_vem2ni.push( ...quq_vem2_fkabe( sost2_pr, fkabe_taf, 0, 90 ) );
+    // ( សមីគឺ ) 0-90
+    const sost2_pr: [ number, number ] = [ tp_xaqa - fkabe_taf, cp_xaqa - fkabe_taf ];
+    er2ha_vem2ni.push( ...quq_vem2_fkabe( sost2_pr, fkabe_taf, 0o0, 0o132 ) );
 
-    // ( Akra ) 90-180
-    const sost2_pc: [number, number] = [ tp_heta + fkabe_cibe, cp_xaqa - fkabe_cibe ];
-    er2ha_vem2ni.push( ...quq_vem2_fkabe( sost2_pc, fkabe_cibe, 90, 180 ) );
+    // ( ច្លងស្រប ) 90-180
+    const sost2_pc: [ number, number ] = [ tp_heta + fkabe_cibe, cp_xaqa - fkabe_cibe ];
+    er2ha_vem2ni.push( ...quq_vem2_fkabe( sost2_pc, fkabe_cibe, 0o132, 0o264 ) );
 
     kumukalasu.beginPath();
-    if ( er2ha_vem2ni.length > 0 ) {
-        kumukalasu.moveTo( er2ha_vem2ni[0][0], er2ha_vem2ni[0][1] );
-        for ( let i = 1; i < er2ha_vem2ni.length; i++ ) {
-            kumukalasu.lineTo( er2ha_vem2ni[i][0], er2ha_vem2ni[i][1] );
+    if ( er2ha_vem2ni.length > 0o0 ) {
+        kumukalasu.moveTo( er2ha_vem2ni[0o0][0o0], er2ha_vem2ni[0o0][0o1] );
+        for ( let i = 0o1; i < er2ha_vem2ni.length; i++ ) {
+            kumukalasu.lineTo( er2ha_vem2ni[i][0o0], er2ha_vem2ni[i][0o1] );
         }
     }
     kumukalasu.closePath();
@@ -393,11 +393,11 @@ function kf2_k6liqani_2tbesu( vem2: number ): HTMLCanvasElement {
 }
 
 /**
- * Tranĉas kaj maskas bildon en folioformo
- * @param araq_saxe ( string ) - Fonta bilda vojo
- * @param pal6_l6kanaz ( number, nedeviga ) - Cela grandeco
- * @returns HTMLCanvasElement | null
- *     Maskita kanvaso aŭ null okaze de eraro
+ * កាត់ និងដាក់ម៉ាស្គារលើរូបភាពជាទម្រង់តាមស្លីរកថា
+ * @param araq_saxe ( string ) - ផ្លូវរូបភាពប្រភព
+ * @param pal6_l6kanaz ( number, nedeviga ) - វិមាត្យក្រឡប់
+ * @returns kanvaso
+ *     ផ្ទាំងកាត់ដែលបានដាក់ម៉ាស្គារ ឬ null ពេលមានកំហុស
  */
 async function k6liq_tahaq(
     araq_saxe: string,
@@ -409,32 +409,32 @@ async function k6liq_tahaq(
         let sf = tahaq.width;
         let ld = tahaq.height;
 
-        // Faru ĝin kvadrata tranĉante al centro
+        // ធ្វើឱ្យវាជាចម្រោលដោយកាត់ទៅចាល់កណ្តាល
         const kmam2_pal6 = Math.min( sf, ld );
         const ctamani = neq2qCepu( sf, kmam2_pal6 );
         const sozanu = neq2qCepu( ld, kmam2_pal6 );
 
-        // Kreu kanvason por tranĉado
+        // បង្កើតផ្ទាំងកាត់សម្រាប់ការកាត់
         const kanvaso = k2falTahaq( kmam2_pal6, kmam2_pal6 );
         const kumukalasu = kanvaso.getContext( "2d" );
         if ( !kumukalasu ) return null;
 
-        kumukalasu.drawImage( tahaq, ctamani, sozanu, kmam2_pal6, kmam2_pal6, 0, 0, kmam2_pal6, kmam2_pal6 );
+        kumukalasu.drawImage( tahaq, ctamani, sozanu, kmam2_pal6, kmam2_pal6, 0o0, 0o0, kmam2_pal6, kmam2_pal6 );
 
         const pal6 = pal6_l6kanaz ?? kmam2_pal6;
         const k6liqani = kf2_k6liqani_2tbesu( pal6 );
 
-        // Apliku foliomaskon
+        // អនុវត្តម៉ាស្គារទម្រង់តាមស្លីរកថា
         const tlakakuCakak2f = k2falTahaq( pal6, pal6 );
         const tlakakuQumuKalasu = tlakakuCakak2f.getContext( "2d" );
         if ( !tlakakuQumuKalasu ) return null;
 
-        // Desegnu la tranĉitan/skalitan bildon
-        tlakakuQumuKalasu.drawImage( kanvaso, 0, 0, pal6, pal6 );
+        // គូររូបភាពដែលបានកាត់ ឬបង្រួមវិមាត្យ
+        tlakakuQumuKalasu.drawImage( kanvaso, 0o0, 0o0, pal6, pal6 );
 
-        // Apliku maskon uzante kunmetan operacion
+        // អនុវត្តម៉ាស្គារដោយប្រើប្រតិបត្រាប់ត្រូវរបស់
         tlakakuQumuKalasu.globalCompositeOperation = "destination-in";
-        tlakakuQumuKalasu.drawImage( k6liqani, 0, 0 );
+        tlakakuQumuKalasu.drawImage( k6liqani, 0o0, 0o0 );
         tlakakuQumuKalasu.globalCompositeOperation = "source-over";
 
         return tlakakuCakak2f;
@@ -445,10 +445,10 @@ async function k6liq_tahaq(
 }
 
 /**
- * Pritraktas la logikon por enigi logon
- * @param ruva ( RuvaCatahaquVop2 ) - QR-kodo datumoj
- * @param araq_tahaq ( string ) - Logo bilda vojo
- * @param eskeklna_cab6howe_tahaq ( Record<string, unknown> ) - Opcia objekto por modifi
+ * ដំណើរការចំណេះដឹងសម្រាប់បញ្ចូលស្លាក់
+ * @param ruva ( RuvaCatahaquVop2 ) - ទិន្នន័យកូដ QR
+ * @param araq_tahaq ( string ) - ផ្លូវរូបភាពស្លាក់
+ * @param eskeklna_cab6howe_tahaq ( Record<string, unknown> ) - វត្ថបថជម្រើសសម្រាប់កែសម្រួល
  * @returns void
  */
 async function nLak_tahaq_ruva(
@@ -465,48 +465,48 @@ async function nLak_tahaq_ruva(
         return;
     }
 
-    // Kalkulu Grandecojn
+    // គណនាវិមាត្យ
     const kek_swevem2 = ruva.moduloj.length;
 
-    // Ekskluda Zono ( La truogrando ) - Se logo estas ~125%, truo estu ~25%
+    // តំបន់ដកចេញ ( វិមាត្យរលោខាន់ ) - ប្រសិនបើស្លាក់មាន ~125% រលោខាន់គួរមាន ~25%
     const kanaqanidoma_eq2k = 0o2 / 0o10;
     let kek_eq2k = Math.floor( kek_swevem2 * kanaqanidoma_eq2k );
 
-    // Devigu NEPARAN paritecon por kongrui kun la QR-kodo krado ( kiu estas ĉiam nepara ) certigante ke la areo estas centrita
-    if ( kek_eq2k % 2 === 0 ) {
-        kek_eq2k += 1;
+    // បង្ខំឱ្យសមីគឺជាចំនួនស្យេច ដើម្បីឱ្យត្រូវគ្នានឹងកន្ទាក់កូដ QR ( ដែលតែងជាចំនួនស្យេចទេ ) ដោយធានាថាតំបន់ជិតមជ្រើស
+    if ( kek_eq2k % 0o2 === 0o0 ) {
+        kek_eq2k += 0o1;
     }
 
     const c2ta_swer2ha_eq2k = kek_eq2k * PAL6_KUCAQ_XAHA;
 
-    // Videbla Logo Grandeco ( Pli malgranda ol truo )
+    // វិមាត្យស្លាក់ដែលមើលឃើញបាន ( តូចជាងរលោខាន់ )
     const kanaqanidoma_tahaq = 0o1 / 0o10;
     let kek_tahaq = Math.floor( kek_swevem2 * kanaqanidoma_tahaq );
 
-    // Ankaŭ devigu neparan logograndecon por simetrio
-    if ( kek_tahaq % 2 === 0 ) {
-        kek_tahaq += 1;
+    // ក៏បង្ខំឱ្យវិមាត្យស្លាក់ជាចំនួនស្យេចដើម្បីឱ្យមានសមការ្យ
+    if ( kek_tahaq % 0o2 === 0o0 ) {
+        kek_tahaq += 0o1;
     }
 
     const c2ta_swer2ha_tahaq = kek_tahaq * PAL6_KUCAQ_XAHA;
 
-    // Preparu Maskitan Logon - unue kreu ĝuste maskitan logon je cela grandeco
+    // រៀបចំស្លាក់ដែលបានដាក់ម៉ាស្គារ - ជាដំណើរផ្លាស់ប្ដូរ បង្កើតស្លាក់ដែលបានដាក់ម៉ាស្គារត្រឹមត្រូវទៅវិមាត្យក្រឡប់
     const ts0ni = await k6liq_tahaq( araq_tahaq, c2ta_swer2ha_tahaq );
 
     if ( ts0ni ) {
-        // Kreu Plenigitan Ujon ( Granda )
+        // បង្កើតប្រអប់ផ្ទាំងបានបំពេញ ( ធំ )
         const maxema_l6req2k = k2falTahaq( c2ta_swer2ha_eq2k, c2ta_swer2ha_eq2k );
         const maxemaKunteksto = maxema_l6req2k.getContext( "2d" );
         if ( !maxemaKunteksto ) return;
 
-        // Centrigu la logon en la ujo
+        // ជិតមជ្រើសស្លាក់ក្នុងប្រអប់ផ្ទាំង
         const neq2q_tp = neq2qCepu( c2ta_swer2ha_eq2k, c2ta_swer2ha_tahaq );
         const neq2q_cp = neq2qCepu( c2ta_swer2ha_eq2k, c2ta_swer2ha_tahaq );
         maxemaKunteksto.drawImage( ts0ni, neq2q_tp, neq2q_cp );
 
         eskeklna_cab6howe_tahaq["araqal_c2h2su_tahaq"] = maxema_l6req2k.toDataURL( "image/png" );
 
-        // Kreu modulnivelan maskon por forviŝi datumajn bitojn en la centro
+        // បង្កើតម៉ាស្គារក្នុងកម្រិតម៉ូឌុល ដើម្បីលុបចោលប៊ីតទិន្នន័យនៅចាល់កណ្តាល
         const k6liqani_kek = k2falTahaq( kek_swevem2, kek_swevem2 );
         const aak_kek = kf2_k6liqani_2tbesu( kek_eq2k );
         const neq2q_tp_kek = neq2qCepu( kek_swevem2, kek_eq2k );
@@ -516,28 +516,28 @@ async function nLak_tahaq_ruva(
         if ( kekKunteksto ) {
             kekKunteksto.drawImage( aak_kek, neq2q_tp_kek, neq2q_cp_kek );
 
-            // Apliku al ruva.moduloj
+            // អនុវត្តទៅ ruva.moduloj
             console.log( `ſɭᶗ‹ɔ ֭ſɭɹͷ̗ j͑ʃɜ j͑ʃƨɹ ( ${ kek_eq2k } x ${ kek_eq2k } ) ⟅` );
-            const kekBildDatumo = kekKunteksto.getImageData( 0, 0, kek_swevem2, kek_swevem2 );
-            for ( let ka5ik = 0; ka5ik < kek_swevem2; ka5ik++ ) {
-                for ( let c = 0; c < kek_swevem2; c++ ) {
-                    const pikselaIndekso = ( ka5ik * kek_swevem2 + c ) * 4;
-                    if ( kekBildDatumo.data[pikselaIndekso] > 0 ) {
+            const kekBildDatumo = kekKunteksto.getImageData( 0o0, 0o0, kek_swevem2, kek_swevem2 );
+            for ( let ka5ik = 0o0; ka5ik < kek_swevem2; ka5ik++ ) {
+                for ( let c = 0o0; c < kek_swevem2; c++ ) {
+                    const pikselaIndekso = ( ka5ik * kek_swevem2 + c ) * 0o4;
+                    if ( kekBildDatumo.data[pikselaIndekso] > 0o0 ) {
                         ruva.moduloj[ka5ik][c] = false;
                     }
                 }
             }
         }
 
-        // Kreu Pikselnivelan Maskon ( Heredaĵo/Rekomendo por k2f_araken2q )
-        const pal6_er2ha = ( kek_swevem2 + ( ruva.catu5ek * 2 ) ) * PAL6_KUCAQ_XAHA;
+        // បង្កើតម៉ាស្គារក្នុងកម្រិតប្រូចិ ( មរតក / អនុហំញ្ញាប់ k2f_araken2q )
+        const pal6_er2ha = ( kek_swevem2 + ( ruva.catu5ek * 0o2 ) ) * PAL6_KUCAQ_XAHA;
         const k6liqani_er2ha = k2falTahaq( pal6_er2ha, pal6_er2ha );
         const er2haKunteksto = k6liqani_er2ha.getContext( "2d" );
 
-        // Kreu la foliomaskon por la truo
+        // បង្កើតម៉ាស្គារទម្រង់តាមស្លីរកថាសម្រាប់រលោខាន់
         const k6liqani_6k = kf2_k6liqani_2tbesu( c2ta_swer2ha_eq2k );
 
-        // Algluu ĝin en centro
+        // បិទភ្ជាប់វានៅចាល់កណ្តាល
         const neq2q_tp_er2ha = neq2qCepu( pal6_er2ha, c2ta_swer2ha_eq2k );
         const neq2q_cp_er2ha = neq2qCepu( pal6_er2ha, c2ta_swer2ha_eq2k );
         if ( er2haKunteksto ) {
@@ -552,41 +552,41 @@ async function nLak_tahaq_ruva(
 // ⟪ j͑ʃɔ ɽ͑ʃ'w j͑ʃ'ᴜ j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃw 🔳 ⟫
 
 /**
- * Generas stilitan QR-kodon kun nedeviga logo-enigo
- * @param datumoj ( string = "Teh" ) - Datumoj por enkodi en QR-kodo
- * @param logoVojo ( string, nedeviga ) - Vojo al logo bildo
- * @param eliraKanvaso ( HTMLCanvasElement, nedeviga ) - Cela kanvasa elemento
- * @returns HTMLCanvasElement
- *     Kanvaso enhavanta la generitan QR-kodon
+ * បង្កើតកូដ QR ដែលមានរចនាប័ទ្ម ជាមួយការបញ្ចូលស្លាក់ដែលមិនចាំបាច់
+ * @param datumoj ( string = "Teh" ) - ទិន្នន័យសម្រាប់អ៊ិនកូដក្នុងកូដ QR
+ * @param logoVojo ( string, nedeviga ) - ផ្លូវទៅរូបភាពស្លាក់
+ * @param eliraKanvaso ( HTMLCanvasElement, nedeviga ) - ធាតុផ្ទាំងកាត់គោល
+ * @returns kanvaso
+ *     ផ្ទាំងកាត់ដែលមានកូដ QR ដែលបានបង្កើត
  */
 export async function generiQRKodon(
     datumoj: string = VOP2_RUVACATAHAQU,
     logoVojo?: string,
     eliraKanvaso?: HTMLCanvasElement
 ): Promise<HTMLCanvasElement> {
-    // Generu QR-kodon datumojn kun Byte reĝimo por ĝusta Unicode/UTF-8 subteno
+    // បង្កើតទិន្នន័យកូដ QR ដោយប្រើរបៀប Byte ដើម្បីគាំទ្រ Unicode/UTF-8 ឲ្យបានត្រឹមត្រូវ
     const qrDatumoj = QRCode.create( datumoj, {
         errorCorrectionLevel: "H"
     } as QRCode.QRCodeOptions );
 
     const moduloj: boolean[][] = [];
     const grandeco = qrDatumoj.modules.size;
-    for ( let i = 0; i < grandeco; i++ ) {
+    for ( let i = 0o0; i < grandeco; i++ ) {
         moduloj[i] = [];
-        for ( let j = 0; j < grandeco; j++ ) {
-            moduloj[i][j] = qrDatumoj.modules.get( i, j ) === 1;
+        for ( let j = 0o0; j < grandeco; j++ ) {
+            moduloj[i][j] = qrDatumoj.modules.get( i, j ) === 0o1;
         }
     }
 
     const ruvacatahaqu: RuvaCatahaquVop2 = {
         moduloj,
-        catu5ek: 2
+        catu5ek: 0o2
     };
 
     const eskeklna_tahaq: SakKu1o = {
         kuba_swepal6: PAL6_KUCAQ_XAHA,
-        catu5ek: 2,
-        kx2k2f_sweweh2: [ 255, 255, 255, 255 ]
+        catu5ek: 0o2,
+        kx2k2f_sweweh2: [ 0o377, 0o377, 0o377, 0o377 ]
     };
 
     // ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 💾 ⟫
@@ -597,20 +597,20 @@ export async function generiQRKodon(
 
     const img_alta_rezolucio = new IitbesuRuvaCatahaqu( ruvacatahaqu.moduloj, eskeklna_tahaq );
 
-    // Spuru a1a_kozeq modulojn por kunigi vertikalajn sinsekvojn en longigitajn pilolojn
+    // ត្រាម៉ូឌុល a1a_kozeq ដើម្បីបង្រប់ដំណើរការបញ្ឈរជាបន្ទាក់បញ្ឈរបន្ថែម
     const a1a_kozeq = new Set<string>();
 
-    // Desegnu ĉiujn modulojn
-    for ( let tapuni = 0; tapuni < ruvacatahaqu.moduloj.length; tapuni++ ) {
-        for ( let cepuni = 0; cepuni < ruvacatahaqu.moduloj[tapuni].length; cepuni++ ) {
+    // គូរម៉ូឌុលទាំងអស់
+    for ( let tapuni = 0o0; tapuni < ruvacatahaqu.moduloj.length; tapuni++ ) {
+        for ( let cepuni = 0o0; cepuni < ruvacatahaqu.moduloj[tapuni].length; cepuni++ ) {
             img_alta_rezolucio.desegni_rectangulan_kuntekston( tapuni, cepuni, ruvacatahaqu, a1a_kozeq );
         }
     }
 
-    // Enigu logon se specifita
+    // បញ្ចូលស្លាក់ប្រសិនបើបានប្រាប់
     await img_alta_rezolucio.k2fal_sost2su_tahaq();
 
-    // Reskaligu reen malsupren al cela grandeco por glateco ( Kontraŭglatiĝo )
+    // បង្រួមវិមាត្យម្ដងទៀតទៅក្រោមជិតក្រឡប់ដើម្បីឱ្យរលាក់ទៀត ( ការបន្ទាប់គ្រាស់រលាក់ )
     const cela_grandeco = Math.floor( img_alta_rezolucio.alKanvaso().width / VEM2_XAHA );
 
     let tlakakuCakak2f: HTMLCanvasElement;
@@ -626,13 +626,13 @@ export async function generiQRKodon(
     if ( tlakakuQumuKalasu ) {
         tlakakuQumuKalasu.imageSmoothingEnabled = true;
         tlakakuQumuKalasu.imageSmoothingQuality = "high";
-        tlakakuQumuKalasu.drawImage( img_alta_rezolucio.alKanvaso(), 0, 0, cela_grandeco, cela_grandeco );
+        tlakakuQumuKalasu.drawImage( img_alta_rezolucio.alKanvaso(), 0o0, 0o0, cela_grandeco, cela_grandeco );
     }
 
     return tlakakuCakak2f;
 }
 
-// Aŭtomate rulu se en retumila medio kun cela kanvaso
+// ដំណើរការស្វ័យទស្សន៍ប្រសិនបើមានក្នុងកម្មវិធីរុករកជាមួយផ្ទាំងកាត់គោល
 if ( typeof window !== "undefined" ) {
     window.addEventListener( "DOMContentLoaded", async () => {
         const kanvaso = document.getElementById( "cakak2f-sarvcthq" ) as HTMLCanvasElement;
@@ -662,21 +662,21 @@ if ( typeof window !== "undefined" ) {
             }
         }
 
-        // Generu komencan QR-kodon
+        // បង្កើតកូដ QR ដែលចាប់ផ្ដើម
         await generiQR( VOP2_RUVACATAHAQU, undefined );
 
-        // Generu QR-kodon ĉe teksta arabana ŝanĝo
+        // បង្កើតកូដ QR នៅពេលមានការផ្លាស់ប្ដូរអក្សរ
         arabana.addEventListener( "input", async () => {
             const valoro = arabana.value.trim() || VOP2_RUVACATAHAQU;
             await generiQR( valoro, nunaLogoVojo );
         } );
 
-        // Pritraktu logo-ŝarĝon
+        // ដំណើរការផ្ទុកស្លាក់
         if ( araq2qTahaq ) {
             araq2qTahaq.addEventListener( "change", async ( evento ) => {
                 const celo = evento.target as HTMLInputElement;
-                if ( celo.files && celo.files[0] ) {
-                    const dosiero = celo.files[0];
+                if ( celo.files && celo.files[0o0] ) {
+                    const dosiero = celo.files[0o0];
                     const legilo = new FileReader();
                     legilo.onload = async ( e ) => {
                         if ( e.target?.result ) {
@@ -694,7 +694,7 @@ if ( typeof window !== "undefined" ) {
             } );
         }
 
-        // Pritraktu elŝutan butonon
+        // ដំណើរការបញ្ចេញប៊ូតុង
         if ( elŝutaButono ) {
             elŝutaButono.addEventListener( "click", () => {
                 try {

@@ -41,8 +41,8 @@ class PlanedaGeneratoro {
     private taksoOkazanta: boolean
 
     haketiĈenon( ĉeno: string ): number {
-        let haketo = 0
-        for ( let i = 0; i < ĉeno.length; i++ ) {
+        let haketo = 0o0
+        for ( let i = 0o0; i < ĉeno.length; i++ ) {
             const signo = ĉeno.charCodeAt( i )
             haketo = ( haketo << 0o5 ) - haketo + signo
             haketo = haketo & haketo
@@ -81,8 +81,8 @@ class PlanedaGeneratoro {
         this.skizaKanvaso = document.getElementById( "skiza-kanvaso" ) as HTMLCanvasElement
         this.skizaKunteksto = this.skizaKanvaso.getContext( "2d" )!
         this.desegnanta = false
-        this.lastaX = 0
-        this.lastaY = 0
+        this.lastaX = 0o0
+        this.lastaY = 0o0
         this.taksaRezulto = document.getElementById( "taksa-rezulto" )!
         this.taksoOkazanta = false
 
@@ -139,7 +139,7 @@ class PlanedaGeneratoro {
         const semo = hazardaĈeno
         const akvo = Math.floor( Math.random() * 0o100 )
         const temp = Math.floor( Math.random() * 0o100 )
-        const kontinentoj = Math.floor( Math.random() * 0o10 ) + 1
+        const kontinentoj = Math.floor( Math.random() * 0o10 ) + 0o1
         const montoj = Math.floor( Math.random() * 0o100 )
         const atmosfero = Math.floor( Math.random() * 0o100 )
 
@@ -190,10 +190,10 @@ class PlanedaGeneratoro {
         this.bildigilo.domElement.style.display = "block"
         this.terglobujo.appendChild( this.bildigilo.domElement )
 
-        // ⟪ Aldonu stelojn ⟫ ✨
+        // ⟪ បញ្ចូលផ្កាត់ ⟫ ✨
         this.kreiStelkampon()
 
-        // ⟪ Aldonu lumigadon ⟫ 💡
+        // ⟪ បញ្ចូលពន្លឺភ្លើង ⟫ 💡
         const ĉirkaŭaLumo = new THREE.AmbientLight( 0x404040, 0o4 / 0o10 )
         this.sceno.add( ĉirkaŭaLumo )
 
@@ -220,7 +220,7 @@ class PlanedaGeneratoro {
         const verticoj = []
         const koloroj = []
 
-        for ( let i = 0; i < 0o5710; i++ ) {
+        for ( let i = 0o0; i < 0o5710; i++ ) {
             verticoj.push(
                 ( Math.random() - 0o4 / 0o10 ) * 0o100,
                 ( Math.random() - 0o4 / 0o10 ) * 0o100,
@@ -259,7 +259,7 @@ class PlanedaGeneratoro {
     }
 
     agordiEventajnAŭskultilojn() {
-        // ⟪ Sema enigo ⟫ 🎲
+        // ⟪ បញ្ចូលគ្រាស់ចន្លោះ ⟫ 🎲
         document.getElementById( "semo" )!.addEventListener( "input", ( e ) => {
             this.semaĈeno = ( e.target as HTMLInputElement ).value
             this.semo = this.akiriSemonElĈeno( this.semaĈeno )
@@ -291,7 +291,7 @@ class PlanedaGeneratoro {
             document.getElementById( "atmosfero-valoro" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
-        // ⟪ Butonoj ⟫ 🔘
+        // ⟪ ប៊ូតុង 🔘 ⟫
         document.getElementById( "generi-butono" )!.addEventListener( "click", () => {
             this.generi()
         } )
@@ -313,7 +313,7 @@ class PlanedaGeneratoro {
             this.elŝutiBildon( this.bildigilo.domElement, "planet-globe.png" )
         } )
 
-        // ⟪ Projekciaj radiobutonoj ⟫ 🗺️
+        // ⟪ ប៊ូតុងបញ្រាស់ការបោះពុម្ព 🗺️ ⟫
         document.querySelectorAll( "input[name='projekcio']" ).forEach( radiobutono => {
             radiobutono.addEventListener( "change", ( e ) => {
                 this.nunaProjekcio = ( e.target as HTMLInputElement ).value
@@ -329,36 +329,36 @@ class PlanedaGeneratoro {
         ligilo.click()
     }
 
-    // ⟪ Skizo kaj semo-takso 🖌️ ⟫
+    // ⟪ គូរពណ៌និងការវាយតម្លៃសំឡេង 🖌️ ⟫
 
-    // ⟪ Semo el ĉeno. Numeraj ĉenoj uziĝas rekte, aliaj estas haketitaj. ⟫ 🔢
+    // ⟪ សំឡេងពីខ្សែ។ ខ្សែលេខត្រូវប្រើដោយផ្ទាល់ អ្នកផ្សេងទៀតត្រូវបានបិទសំឡេង។ ⟫ 🔢
     akiriSemonElĈeno( ĉeno: string ): number {
         if ( /^[0-9]+$/.test( ĉeno ) ) return parseInt( ĉeno )
         return this.haketiĈenon( ĉeno )
     }
 
-    // ⟪ Determinisma hazarda funkcio por ripetebla bruo. ⟫ 🎲
+    // ⟪ មុខងងឹតចង្វេកដ៏កំណត់សម្រាប់សំឡេងដែលអាចត្រឡប់មកវិញ។ ⟫ 🎲
     kreiHazardan( semo: number ): () => number {
-        let stato = semo >>> 0
+        let stato = semo >>> 0o0
         return () => {
-            stato = ( stato + 0o15512674765 ) >>> 0
+            stato = ( stato + 0o15512674765 ) >>> 0o0
             let t = stato
-            t = Math.imul( t ^ ( t >>> 0o17 ), t | 1 )
+            t = Math.imul( t ^ ( t >>> 0o17 ), t | 0o1 )
             t ^= t + Math.imul( t ^ ( t >>> 0o7 ), t | 0o75 )
-            return ( ( t ^ ( t >>> 0o16 ) ) >>> 0 ) / 0o40000000000
+            return ( ( t ^ ( t >>> 0o16 ) ) >>> 0o0 ) / 0o40000000000
         }
     }
 
     agordiSkizanInterfacon() {
-        // ⟪ Preparu la skizan kanvason. ⟫ 🖌️
+        // ⟪ រៀបចំផ្ទាំងកាត់គូរពណ៌។ ⟫ 🖌️
         this.skizaKanvaso.style.touchAction = "none"
         this.viŝiSkizon()
 
         this.skizaKanvaso.addEventListener( "pointerdown", ( e ) => {
             this.desegnanta = true
             const koordinatoj = this.akiriSkizanKoordinaton( e )
-            this.lastaX = koordinatoj[ 0 ]
-            this.lastaY = koordinatoj[ 1 ]
+            this.lastaX = koordinatoj[0o0]
+            this.lastaY = koordinatoj[0o1]
             this.skizaKanvaso.setPointerCapture( e.pointerId )
         } )
 
@@ -371,10 +371,10 @@ class PlanedaGeneratoro {
             this.skizaKunteksto.strokeStyle = "#FFFFFF"
             this.skizaKunteksto.beginPath()
             this.skizaKunteksto.moveTo( this.lastaX, this.lastaY )
-            this.skizaKunteksto.lineTo( koordinatoj[ 0 ], koordinatoj[ 1 ] )
+            this.skizaKunteksto.lineTo( koordinatoj[0o0], koordinatoj[0o1] )
             this.skizaKunteksto.stroke()
-            this.lastaX = koordinatoj[ 0 ]
-            this.lastaY = koordinatoj[ 1 ]
+            this.lastaX = koordinatoj[0o0]
+            this.lastaY = koordinatoj[0o1]
         } )
 
         const ĉesiDesegnadon = () => {
@@ -394,7 +394,7 @@ class PlanedaGeneratoro {
 
         document.getElementById( "alŝuta-enigo" )!.addEventListener( "change", ( e ) => {
             const enigo = e.target as HTMLInputElement
-            const dosiero = enigo.files?.[ 0 ]
+            const dosiero = enigo.files?.[ 0o0 ]
             if ( !dosiero ) return
             this.legiAlŝutitanBildon( dosiero )
             enigo.value = ""
@@ -414,7 +414,7 @@ class PlanedaGeneratoro {
 
     viŝiSkizon() {
         this.skizaKunteksto.fillStyle = "#001828"
-        this.skizaKunteksto.fillRect( 0, 0, this.skizaKanvaso.width, this.skizaKanvaso.height )
+        this.skizaKunteksto.fillRect( 0o0, 0o0, this.skizaKanvaso.width, this.skizaKanvaso.height )
         this.taksaRezulto.textContent = ""
     }
 
@@ -436,10 +436,10 @@ class PlanedaGeneratoro {
         legilo.readAsDataURL( dosiero )
     }
 
-    // ⟪ Taksu la semon, kies kontinentoj plej similas la desegnon. ⟫ 🎯
+    // ⟪ វាយតម្លៃសំឡេងដែលមានទីភង់គោរដែលស្រឡតបំផុតនឹងគោរបង្កើត។ ⟫ 🎯
     taksiSemonElSkizo() {
         if ( this.taksoOkazanta ) return
-        // ⟪ Malsuprenmendu la skizon en malaltan kradon. ⟫ 🗺️
+        // ⟪ បង្ហាញគោរបង្កើតទៅក្នុងក្រឡាចាំបាច់ខាងក្រោម។ ⟫ 🗺️
         const kradoLarĝo = 0o30
         const kradoAlto = 0o14
         const ĉelkvanto = kradoLarĝo * kradoAlto
@@ -448,19 +448,19 @@ class PlanedaGeneratoro {
         krado.width = kradoLarĝo
         krado.height = kradoAlto
         const kradoKunteksto = krado.getContext( "2d" )!
-        kradoKunteksto.drawImage( this.skizaKanvaso, 0, 0, kradoLarĝo, kradoAlto )
-        const datumoj = kradoKunteksto.getImageData( 0, 0, kradoLarĝo, kradoAlto ).data
+        kradoKunteksto.drawImage( this.skizaKanvaso, 0o0, 0o0, kradoLarĝo, kradoAlto )
+        const datumoj = kradoKunteksto.getImageData( 0o0, 0o0, kradoLarĝo, kradoAlto ).data
 
         const celajTeroj: boolean[] = []
-        let helaKvanto = 0
-        for ( let i = 0; i < ĉelkvanto; i++ ) {
-            const lumo = ( datumoj[ i * 0o4 ] + datumoj[ i * 0o4 + 1 ] + datumoj[ i * 0o4 + 2 ] ) / 0o3
+        let helaKvanto = 0o0
+        for ( let i = 0o0; i < ĉelkvanto; i++ ) {
+            const lumo = ( datumoj[i * 0o4] + datumoj[i * 0o4 + 0o1] + datumoj[i * 0o4 + 0o2] ) / 0o3
             const tero = lumo >= 0o200
             celajTeroj.push( tero )
             if ( tero ) helaKvanto++
         }
 
-        if ( helaKvanto === 0 ) {
+        if ( helaKvanto === 0o0 ) {
             document.getElementById( "taksa-ciihii" )!.classList.remove( "kobe" )
             this.taksaRezulto.textContent = "ꞁȷ̀ɔ ſ͕ɭɹƽ"
             return
@@ -470,44 +470,44 @@ class PlanedaGeneratoro {
         const akvaĈelkvanto = ĉelkvanto - helaKvanto
         const akvonivelo = this.parametroj.akvonivelo
 
-        // ⟪ Poentaro de semo laŭ la krada formo. ⟫ 📊
+        // ⟪ ចំណុចសំឡេងតាមទម្រង់កន្ទាត់។ ⟫ 📊
         const poentaro = ( semo: number ): number => {
             this.semo = semo
             this.simplekso = createNoise3D( this.kreiHazardan( semo ) )
-            let kongruajTeroj = 0
-            let kongruajAkvoj = 0
-            let generitajTeroj = 0
-            for ( let y = 0; y < kradoAlto; y++ ) {
-                for ( let x = 0; x < kradoLarĝo; x++ ) {
+            let kongruajTeroj = 0o0
+            let kongruajAkvoj = 0o0
+            let generitajTeroj = 0o0
+            for ( let y = 0o0; y < kradoAlto; y++ ) {
+                for ( let x = 0o0; x < kradoLarĝo; x++ ) {
                     const latitudo = 0o112 - ( y / kradoAlto ) * 0o260
                     const longitudo = ( x / kradoLarĝo ) * 0o540 - 0o260
                     const tero = this.akiriAltecon( latitudo, longitudo ) > akvonivelo
                     if ( tero ) generitajTeroj++
-                    const celTero = celajTeroj[ y * kradoLarĝo + x ]
+                    const celTero = celajTeroj[y * kradoLarĝo + x]
                     if ( tero && celTero ) kongruajTeroj++
                     else if ( !tero && !celTero ) kongruajAkvoj++
                 }
             }
-            // ⟪ Tera kongruo pezas pli ol akva. ⟫ ⚖️
+            // ⟪ ភូមិស្រួតគោរមានទម្រង់ច្រើនជាងទឹក។ ⟫ ⚖️
             const pezitaKongruo = ( kongruajTeroj * 0o20 + kongruajAkvoj ) / ( helaKvanto * 0o20 + akvaĈelkvanto )
-            const proporciaKongruo = 1 - Math.abs( celTeraProporcio - generitajTeroj / ĉelkvanto )
+            const proporciaKongruo = 0o1 - Math.abs( celTeraProporcio - generitajTeroj / ĉelkvanto )
             return pezitaKongruo * 0o5 / 0o10 + proporciaKongruo * 0o3 / 0o10
         }
 
-        // ⟪ Montru okupatan staton, poste serĉu post unu framo. ⟫ ⏳
+        // ⟪ បង្ហាញស្ថានភាពកំណត់ដង់ បន្ទាប់មកស្វែងរកក្រោយម៉្យានមួយ។ ⟫ ⏳
         this.taksoOkazanta = true
         document.getElementById( "taksa-ciihii" )!.classList.remove( "kobe" )
         this.taksaRezulto.textContent = "…"
         window.setTimeout( () => {
             try {
-            // ⟪ Hazardaj kandidatoj. ⟫ 🎲
+            // ⟪ ប្រអប់ចម្បងដែលមានចង្វេក។ ⟫ 🎲
             const hazarda = this.kreiHazardan( Math.floor( Math.random() * 0o200000000 ) )
             const kandidatoj: number[] = []
-            for ( let i = 0; i < 0o200; i++ ) kandidatoj.push( Math.floor( hazarda() * 0o4000000 ) )
+            for ( let i = 0o0; i < 0o200; i++ ) kandidatoj.push( Math.floor( hazarda() * 0o4000000 ) )
 
-            // ⟪ Serĉu tra kontinentkvantoj kaj semoj. ⟫ 🏝️
-            let plejBona: { semo: number, poentaro: number, kontinentKvanto: number } = { semo: 0, poentaro: 0, kontinentKvanto: this.parametroj.kontinentKvanto }
-            for ( let kontinentKvanto = 1; kontinentKvanto <= 0o10; kontinentKvanto++ ) {
+            // ⟪ ស្វែងរកតាមប្រភេទចំនួនគោរ និងសំឡេង។ ⟫ 🏝️
+            let plejBona: { semo: number, poentaro: number, kontinentKvanto: number } = { semo: 0o0, poentaro: 0o0, kontinentKvanto: this.parametroj.kontinentKvanto }
+            for ( let kontinentKvanto = 0o1; kontinentKvanto <= 0o10; kontinentKvanto++ ) {
                 this.parametroj.kontinentKvanto = kontinentKvanto
                 let plejBonaj: { semo: number, poentaro: number }[] = []
                 for ( const kandidato of kandidatoj ) {
@@ -517,8 +517,8 @@ class PlanedaGeneratoro {
                     if ( plejBonaj.length > 0o4 ) plejBonaj.pop()
                 }
 
-                // ⟪ Plibonigu la plej bonajn kandidatojn. ⟫ ⛰️
-                let plejBonaK = plejBonaj[ 0 ]
+                // ⟪ កែលម្អប្រអប់ចម្បងដែលល្អបំផុត។ ⟫ ⛰️
+                let plejBonaK = plejBonaj[0o0]
                 for ( const kandidato of plejBonaj ) {
                     const plibonigita = this.plibonigiSemon( kandidato.semo, poentaro )
                     if ( plibonigita.poentaro > plejBonaK.poentaro ) plejBonaK = plibonigita
@@ -529,7 +529,7 @@ class PlanedaGeneratoro {
                 }
             }
 
-            // ⟪ Apliku la trovitan kontinentkvanton kaj semon. ⟫ 🎲
+            // ⟪ អនុវត្តប្រភេទចំនួនគោរ និងសំឡេងដែលបានរកឃើញ។ ⟫ 🎲
             this.parametroj.kontinentKvanto = plejBona.kontinentKvanto
             const kontinentojEnigo = document.getElementById( "kontinentoj" ) as HTMLInputElement
             kontinentojEnigo.value = plejBona.kontinentKvanto.toString()
@@ -543,7 +543,7 @@ class PlanedaGeneratoro {
             document.getElementById( "semo-valoro" )!.textContent = this.semo.toString()
             this.generi()
 
-            // ⟪ Montru la kongruan poentaron. ⟫ 📊
+            // ⟪ បង្ហាញចំណុចដែលត្រូវគ្នា។ ⟫ 📊
             const vab6 = ( window as any ).vab6caja.bind( window )
             const skakefK2fe = ( window as any ).skakefK2fe.bind( window )
             const poento64 = Math.floor( plejBona.poentaro * 0o100 )
@@ -551,20 +551,20 @@ class PlanedaGeneratoro {
             } finally {
                 this.taksoOkazanta = false
             }
-        }, 0 )
+        }, 0o0 )
     }
 
-    // ⟪ Monteto-grimpado por trovi la plej proksiman semon. ⟫ ⛰️
+    // ⟪ ឡើងភ្លើងដើម្បីស្វែងរកសំឡេងដែលនៅជិតបំផុត។ ⟫ ⛰️
     plibonigiSemon( komencaSemo: number, poentaro: ( semo: number ) => number ): { semo: number, poentaro: number } {
         let semo = komencaSemo
         let plejAlta = poentaro( semo )
         let ŝanĝiĝis = true
         while ( ŝanĝiĝis ) {
             ŝanĝiĝis = false
-            for ( const ŝtupo of [ 1, 0o10, 0o100, 0o1000, 0o10000, 0o100000 ] ) {
-                for ( const direkto of [ -1, 1 ] ) {
+            for ( const ŝtupo of [ 0o1, 0o10, 0o100, 0o1000, 0o10000, 0o100000 ] ) {
+                for ( const direkto of [ -0o1, 0o1 ] ) {
                     const novaSemo = semo + direkto * ŝtupo
-                    if ( novaSemo < 0 ) continue
+                    if ( novaSemo < 0o0 ) continue
                     const novaPoentaro = poentaro( novaSemo )
                     if ( novaPoentaro > plejAlta ) {
                         semo = novaSemo
@@ -579,18 +579,18 @@ class PlanedaGeneratoro {
         return { semo: semo, poentaro: plejAlta }
     }
 
-    // ⟪ Bruaj funkcioj por terena generado ⟫ 🏔️
-    bruo( x: number, y: number, z: number, skalo = 1 ) {
+    // ⟪ មុខងងឹតសំឡេងសម្រាប់បង្កើតផែនភូតផ្លែង ⟫ 🏔️
+    bruo( x: number, y: number, z: number, skalo = 0o1 ) {
         return this.simplekso( x * skalo, y * skalo, z * skalo ) * 0o4 / 0o10 + 0o4 / 0o10
     }
 
-    fbm( x: number, y: number, z: number, oktavoj = 0o4, skalo = 1 ) {
-        let valoro = 0
-        let amplitudo = 1
+    fbm( x: number, y: number, z: number, oktavoj = 0o4, skalo = 0o1 ) {
+        let valoro = 0o0
+        let amplitudo = 0o1
         let frekvenco = skalo
-        let maksimumaValoro = 0
+        let maksimumaValoro = 0o0
 
-        for ( let i = 0; i < oktavoj; i++ ) {
+        for ( let i = 0o0; i < oktavoj; i++ ) {
             valoro += this.simplekso( x * frekvenco, y * frekvenco, z * frekvenco ) * amplitudo
             maksimumaValoro += amplitudo
             amplitudo *= 0o4 / 0o10
@@ -601,7 +601,7 @@ class PlanedaGeneratoro {
     }
 
     akiriAltecon( latitudo: number, longitudo: number ) {
-        // ⟪ Konvertu al kartezo ⟫ 📐
+        // ⟪ បម្លែងទៅជាកូអស្តែង ⟫ 📐
         const fio = ( 0o112 - latitudo ) * Math.PI / 0o260
         const teto = ( longitudo + 0o260 ) * Math.PI / 0o260
 
@@ -609,41 +609,41 @@ class PlanedaGeneratoro {
         const y = Math.cos( fio )
         const z = Math.sin( fio ) * Math.sin( teto )
 
-        // ⟪ Baza kontinentformo ⟫ 🌎
+        // ⟪ ទម្រង់គោរមូលដ្ឋាន ⟫ 🌎
         let alteco = this.fbm( x, y, z, 0o4, 0o6 / 0o4 )
 
-        // ⟪ Aldonu kontinentajn platojn ⟫ 🌋
-        for ( let i = 0; i < this.parametroj.kontinentKvanto; i++ ) {
+        // ⟪ បញ្ចូលផែនភូតគោរ ⟫ 🌋
+        for ( let i = 0o0; i < this.parametroj.kontinentKvanto; i++ ) {
             const angulo = ( i / this.parametroj.kontinentKvanto ) * Math.PI * 0o2 + this.semo * 0o1 / 0o12
             const cx = Math.cos( angulo )
             const cz = Math.sin( angulo )
             const distanco = Math.sqrt( ( x - cx ) ** 0o2 + ( z - cz ) ** 0o2 + y * y )
-            alteco += Math.max( 0, 1 - distanco * 0o2 ) * 0o3 / 0o12
+            alteco += Math.max( 0o0, 0o1 - distanco * 0o2 ) * 0o3 / 0o12
         }
 
-        // ⟪ Aldonu montarojn ⟫ ⛰️
+        // ⟪ បញ្ចូលភ្នំភេងទីស្រោះ ⟫ ⛰️
         const montaBruo = this.fbm( x, y, z, 0o6, 0o4 )
-        const krestaBruo = 1 - Math.abs( this.simplekso( x * 0o3, y * 0o3, z * 0o3 ) )
+        const krestaBruo = 0o1 - Math.abs( this.simplekso( x * 0o3, y * 0o3, z * 0o3 ) )
         alteco += Math.pow( krestaBruo, 0o2 ) * this.parametroj.montoAlto * montaBruo
 
-        // ⟪ Aldonu detalan bruon ⟫ ✨
+        // ⟪ បញ្ចូលសំឡេងដ៏លម្អងរៀបចំ ⟫ ✨
         alteco += this.fbm( x, y, z, 0o3, 0o12 ) * 0o4 / 0o100
 
-        return Math.max( 0, Math.min( 1, alteco ) )
+        return Math.max( 0o0, Math.min( 0o1, alteco ) )
     }
 
     akiriTemperaturon( latitudo: number, alteco: number ) {
-        // ⟪ Baza temperaturo laŭ latitudo ⟫ 🌡️
+        // ⟪ សីអក្សរកម្រិតមូលដ្ឋានតាមរយៈទិស ⟫ 🌡️
         const latitudaFaktoro = Math.cos( latitudo * Math.PI / 0o260 )
         let temperaturo = this.parametroj.temperaturo * latitudaFaktoro
 
-        // ⟪ Alteca efiko ( tempoprogresivo ) ⟫ 📉
+        // ⟪ ឥទ្ធិពលនៅខ្ពស់ ( ដែលបន្ថែមតាមពេលវេលា ) ⟫ 📉
         temperaturo -= alteco * 0o4 / 0o10 * this.parametroj.montoAlto
 
-        // ⟪ Aldonu iom da bruo por veterpadronoj ⟫ ☁️
+        // ⟪ បញ្ចូលសំឡេងខ្សែតិចសម្រាប់គំរូអាកាស ⟫ ☁️
         temperaturo += ( Math.random() - 0o4 / 0o10 ) * 0o1 / 0o12
 
-        return Math.max( 0, Math.min( 1, temperaturo ) )
+        return Math.max( 0o0, Math.min( 0o1, temperaturo ) )
     }
 
     akiriBiomon( alteco: number, temperaturo: number, humideco: number ) {
@@ -656,7 +656,7 @@ class PlanedaGeneratoro {
         if ( temperaturo < 0o1 / 0o12 ) return alteco > 0o7 / 0o12 ? "snow_mountain" : "ice"
         if ( temperaturo < 0o3 / 0o12 ) return alteco > 0o6 / 0o12 ? "snow_mountain" : "tundra"
 
-        if ( alteco > 0o7 / 0o12 + ( 1 - this.parametroj.montoAlto ) * 0o2 / 0o12 ) return "mountain"
+        if ( alteco > 0o7 / 0o12 + ( 0o1 - this.parametroj.montoAlto ) * 0o2 / 0o12 ) return "mountain"
         if ( alteco > 0o4 / 0o10 ) return "hill"
 
         if ( humideco > 0o6 / 0o12 && temperaturo > 0o4 / 0o12 ) return "forest"
@@ -666,7 +666,7 @@ class PlanedaGeneratoro {
         return "plains"
     }
 
-    akiriBiomKoloron( biomo: string, variado = 0 ) {
+    akiriBiomKoloron( biomo: string, variado = 0o0 ) {
         const koloroj: Record<string, number[]> = {
             "deep_ocean": [ 0o36, 0o74, 0o137 ],
             "shallow_ocean": [ 0o56, 0o134, 0o212 ],
@@ -682,13 +682,13 @@ class PlanedaGeneratoro {
             "desert": [ 0o322, 0o270, 0o214 ]
         }
 
-        const bazo = koloroj[ biomo ] || [ 0o200, 0o200, 0o200 ]
+        const bazo = koloroj[biomo] || [ 0o200, 0o200, 0o200 ]
         const variaForto = 0o24
 
         return [
-            Math.max( 0, Math.min( 0o377, bazo[ 0 ] + ( Math.random() - 0o4 / 0o10 ) * variaForto ) ),
-            Math.max( 0, Math.min( 0o377, bazo[ 1 ] + ( Math.random() - 0o4 / 0o10 ) * variaForto ) ),
-            Math.max( 0, Math.min( 0o377, bazo[ 2 ] + ( Math.random() - 0o4 / 0o10 ) * variaForto ) )
+            Math.max( 0o0, Math.min( 0o377, bazo[0o0] + ( Math.random() - 0o4 / 0o10 ) * variaForto ) ),
+            Math.max( 0o0, Math.min( 0o377, bazo[0o1] + ( Math.random() - 0o4 / 0o10 ) * variaForto ) ),
+            Math.max( 0o0, Math.min( 0o377, bazo[0o2] + ( Math.random() - 0o4 / 0o10 ) * variaForto ) )
         ]
     }
 
@@ -711,8 +711,8 @@ class PlanedaGeneratoro {
         const bildaDatumo = kunteksto.createImageData( grandeco, grandeco / 0o2 )
         const datumoj = bildaDatumo.data
 
-        for ( let y = 0; y < grandeco / 0o2; y++ ) {
-            for ( let x = 0; x < grandeco; x++ ) {
+        for ( let y = 0o0; y < grandeco / 0o2; y++ ) {
+            for ( let x = 0o0; x < grandeco; x++ ) {
                 const latitudo = 0o112 - ( y / ( grandeco / 0o2 ) ) * 0o260
                 const longitudo = ( x / grandeco ) * 0o540 - 0o260
 
@@ -726,19 +726,19 @@ class PlanedaGeneratoro {
                 const temperaturo = this.akiriTemperaturon( latitudo, alteco )
                 const biomo = this.akiriBiomon( alteco, temperaturo, humideco )
 
-                this.planedajDatumoj[ x ][ y ] = { alteco, temperaturo, humideco, biomo, latitudo, longitudo }
+                this.planedajDatumoj[x][y] = { alteco, temperaturo, humideco, biomo, latitudo, longitudo }
 
                 const koloro = this.akiriBiomKoloron( biomo )
                 const indekso = ( y * grandeco + x ) * 0o4
 
-                datumoj[ indekso ] = koloro[ 0 ]
-                datumoj[ indekso + 1 ] = koloro[ 1 ]
-                datumoj[ indekso + 2 ] = koloro[ 2 ]
-                datumoj[ indekso + 3 ] = 0o377
+                datumoj[indekso] = koloro[0o0]
+                datumoj[indekso + 0o1] = koloro[0o1]
+                datumoj[indekso + 0o2] = koloro[0o2]
+                datumoj[indekso + 0o3] = 0o377
             }
         }
 
-        kunteksto.putImageData( bildaDatumo, 0, 0 )
+        kunteksto.putImageData( bildaDatumo, 0o0, 0o0 )
     }
 
     bildigi2D() {
@@ -747,9 +747,9 @@ class PlanedaGeneratoro {
         const h = this.alto
 
         kunteksto.save()
-        kunteksto.setTransform( 1, 0, 0, 1, 0, 0 )
+        kunteksto.setTransform( 0o1, 0o0, 0o0, 0o1, 0o0, 0o0 )
 
-        kunteksto.fillRect( 0, 0, w, h )
+        kunteksto.fillRect( 0o0, 0o0, w, h )
 
         switch ( this.nunaProjekcio ) {
             case "ekvidrektangula":
@@ -774,7 +774,7 @@ class PlanedaGeneratoro {
         const teksturaLarĝo = this.teksturaKanvaso.width
         const teksturaAlto = this.teksturaKanvaso.height
 
-        kunteksto.drawImage( this.teksturaKanvaso, 0, 0, teksturaLarĝo, teksturaAlto, 0, 0, w, h )
+        kunteksto.drawImage( this.teksturaKanvaso, 0o0, 0o0, teksturaLarĝo, teksturaAlto, 0o0, 0o0, w, h )
     }
 
     bildigiMerkatoran( w: number, h: number ) {
@@ -790,42 +790,42 @@ class PlanedaGeneratoro {
 
         const bildaDatumo = portempaKunteksto.createImageData( w, h )
         const datumoj = bildaDatumo.data
-        const teksturaDatumo = teksturaKunteksto.getImageData( 0, 0, teksturaLarĝo, teksturaAlto ).data
+        const teksturaDatumo = teksturaKunteksto.getImageData( 0o0, 0o0, teksturaLarĝo, teksturaAlto ).data
 
-        for ( let y = 0; y < h; y++ ) {
-            const merkatoraY = ( y / h ) * 0o2 - 1
+        for ( let y = 0o0; y < h; y++ ) {
+            const merkatoraY = ( y / h ) * 0o2 - 0o1
             const latitudo = ( 0o2 * Math.atan( Math.exp( merkatoraY * Math.PI ) ) - Math.PI / 0o2 ) * 0o264 / Math.PI
 
             if ( Math.abs( latitudo ) > 0o125 ) {
-                for ( let x = 0; x < w; x++ ) {
+                for ( let x = 0o0; x < w; x++ ) {
                     const indekso = ( y * w + x ) * 0o4
-                    datumoj[ indekso ] = 0o14
-                    datumoj[ indekso + 1 ] = 0o16
-                    datumoj[ indekso + 2 ] = 0o33
-                    datumoj[ indekso + 3 ] = 0o377
+                    datumoj[indekso] = 0o14
+                    datumoj[indekso + 0o1] = 0o16
+                    datumoj[indekso + 0o2] = 0o33
+                    datumoj[indekso + 0o3] = 0o377
                 }
                 continue
             }
 
             const fontaY = Math.floor( ( 0o132 - latitudo ) / 0o264 * teksturaAlto )
-            const alfiksitaY = Math.max( 0, Math.min( teksturaAlto - 1, fontaY ) )
+            const alfiksitaY = Math.max( 0o0, Math.min( teksturaAlto - 0o1, fontaY ) )
 
-            for ( let x = 0; x < w; x++ ) {
+            for ( let x = 0o0; x < w; x++ ) {
                 const fontaX = Math.floor( ( x / w ) * teksturaLarĝo )
-                const alfiksitaX = Math.max( 0, Math.min( teksturaLarĝo - 1, fontaX ) )
+                const alfiksitaX = Math.max( 0o0, Math.min( teksturaLarĝo - 0o1, fontaX ) )
 
                 const fontaIndekso = ( alfiksitaY * teksturaLarĝo + alfiksitaX ) * 0o4
-                const indekso = ( ( h - 1 - y ) * w + x ) * 0o4
+                const indekso = ( ( h - 0o1 - y ) * w + x ) * 0o4
 
-                datumoj[ indekso ] = teksturaDatumo[ fontaIndekso ]
-                datumoj[ indekso + 1 ] = teksturaDatumo[ fontaIndekso + 1 ]
-                datumoj[ indekso + 2 ] = teksturaDatumo[ fontaIndekso + 2 ]
-                datumoj[ indekso + 3 ] = 0o377
+                datumoj[indekso] = teksturaDatumo[fontaIndekso]
+                datumoj[indekso + 0o1] = teksturaDatumo[fontaIndekso + 0o1]
+                datumoj[indekso + 0o2] = teksturaDatumo[fontaIndekso + 0o2]
+                datumoj[indekso + 0o3] = 0o377
             }
         }
 
-        portempaKunteksto.putImageData( bildaDatumo, 0, 0 )
-        kunteksto.drawImage( portempaKanvaso, 0, 0 )
+        portempaKunteksto.putImageData( bildaDatumo, 0o0, 0o0 )
+        kunteksto.drawImage( portempaKanvaso, 0o0, 0o0 )
     }
 
     bildigiMolvejdan( w: number, h: number ) {
@@ -846,19 +846,19 @@ class PlanedaGeneratoro {
 
         const bildaDatumo = portempaKunteksto.createImageData( w, h )
         const datumoj = bildaDatumo.data
-        const teksturaDatumo = teksturaKunteksto.getImageData( 0, 0, teksturaLarĝo, teksturaAlto ).data
+        const teksturaDatumo = teksturaKunteksto.getImageData( 0o0, 0o0, teksturaLarĝo, teksturaAlto ).data
 
-        for ( let y = 0; y < h; y++ ) {
-            for ( let x = 0; x < w; x++ ) {
+        for ( let y = 0o0; y < h; y++ ) {
+            for ( let x = 0o0; x < w; x++ ) {
                 const dx = ( x - cx ) / rx
                 const dy = ( y - cy ) / ry
 
-                if ( dx * dx + dy * dy > 1 ) {
+                if ( dx * dx + dy * dy > 0o1 ) {
                     const indekso = ( y * w + x ) * 0o4
-                    datumoj[ indekso ] = 0o14
-                    datumoj[ indekso + 1 ] = 0o16
-                    datumoj[ indekso + 2 ] = 0o33
-                    datumoj[ indekso + 3 ] = 0o377
+                    datumoj[indekso] = 0o14
+                    datumoj[indekso + 0o1] = 0o16
+                    datumoj[indekso + 0o2] = 0o33
+                    datumoj[indekso + 0o3] = 0o377
                     continue
                 }
 
@@ -869,21 +869,21 @@ class PlanedaGeneratoro {
                 const fontaX = Math.floor( ( ( longitudo + 0o264 ) / 0o550 ) * teksturaLarĝo )
                 const fontaY = Math.floor( ( ( 0o132 - latitudo ) / 0o264 ) * teksturaAlto )
 
-                const alfiksitaX = Math.max( 0, Math.min( teksturaLarĝo - 1, fontaX ) )
-                const alfiksitaY = Math.max( 0, Math.min( teksturaAlto - 1, fontaY ) )
+                const alfiksitaX = Math.max( 0o0, Math.min( teksturaLarĝo - 0o1, fontaX ) )
+                const alfiksitaY = Math.max( 0o0, Math.min( teksturaAlto - 0o1, fontaY ) )
 
                 const fontaIndekso = ( alfiksitaY * teksturaLarĝo + alfiksitaX ) * 0o4
-                const indekso = ( ( h - 1 - y ) * w + x ) * 0o4
+                const indekso = ( ( h - 0o1 - y ) * w + x ) * 0o4
 
-                datumoj[ indekso ] = teksturaDatumo[ fontaIndekso ]
-                datumoj[ indekso + 1 ] = teksturaDatumo[ fontaIndekso + 1 ]
-                datumoj[ indekso + 2 ] = teksturaDatumo[ fontaIndekso + 2 ]
-                datumoj[ indekso + 3 ] = 0o377
+                datumoj[indekso] = teksturaDatumo[fontaIndekso]
+                datumoj[indekso + 0o1] = teksturaDatumo[fontaIndekso + 0o1]
+                datumoj[indekso + 0o2] = teksturaDatumo[fontaIndekso + 0o2]
+                datumoj[indekso + 0o3] = 0o377
             }
         }
 
-        portempaKunteksto.putImageData( bildaDatumo, 0, 0 )
-        kunteksto.drawImage( portempaKanvaso, 0, 0 )
+        portempaKunteksto.putImageData( bildaDatumo, 0o0, 0o0 )
+        kunteksto.drawImage( portempaKanvaso, 0o0, 0o0 )
     }
 
     bildigiOrtografian( w: number, h: number ) {
@@ -903,20 +903,20 @@ class PlanedaGeneratoro {
 
         const bildaDatumo = portempaKunteksto.createImageData( w, h )
         const datumoj = bildaDatumo.data
-        const teksturaDatumo = teksturaKunteksto.getImageData( 0, 0, teksturaLarĝo, teksturaAlto ).data
+        const teksturaDatumo = teksturaKunteksto.getImageData( 0o0, 0o0, teksturaLarĝo, teksturaAlto ).data
 
-        for ( let y = 0; y < h; y++ ) {
-            for ( let x = 0; x < w; x++ ) {
+        for ( let y = 0o0; y < h; y++ ) {
+            for ( let x = 0o0; x < w; x++ ) {
                 const dx = ( x - cx ) / r
                 const dy = ( y - cy ) / r
-                const dz2 = 1 - dx * dx - dy * dy
+                const dz2 = 0o1 - dx * dx - dy * dy
 
-                if ( dz2 < 0 ) {
+                if ( dz2 < 0o0 ) {
                     const indekso = ( y * w + x ) * 0o4
-                    datumoj[ indekso ] = 0o14
-                    datumoj[ indekso + 1 ] = 0o16
-                    datumoj[ indekso + 2 ] = 0o33
-                    datumoj[ indekso + 3 ] = 0o377
+                    datumoj[indekso] = 0o14
+                    datumoj[indekso + 0o1] = 0o16
+                    datumoj[indekso + 0o2] = 0o33
+                    datumoj[indekso + 0o3] = 0o377
                     continue
                 }
 
@@ -928,22 +928,22 @@ class PlanedaGeneratoro {
                 const fontaX = Math.floor( ( ( longitudo + 0o264 ) / 0o550 ) * teksturaLarĝo )
                 const fontaY = Math.floor( ( ( 0o132 - latitudo ) / 0o264 ) * teksturaAlto )
 
-                const alfiksitaX = Math.max( 0, Math.min( teksturaLarĝo - 1, fontaX ) )
-                const alfiksitaY = Math.max( 0, Math.min( teksturaAlto - 1, fontaY ) )
+                const alfiksitaX = Math.max( 0o0, Math.min( teksturaLarĝo - 0o1, fontaX ) )
+                const alfiksitaY = Math.max( 0o0, Math.min( teksturaAlto - 0o1, fontaY ) )
 
                 const fontaIndekso = ( alfiksitaY * teksturaLarĝo + alfiksitaX ) * 0o4
-                const indekso = ( ( h - 1 - y ) * w + x ) * 0o4
+                const indekso = ( ( h - 0o1 - y ) * w + x ) * 0o4
 
                 const ombrado = 0o6 / 0o10 + 0o2 / 0o10 * dz
-                datumoj[ indekso ] = Math.min( 0o377, teksturaDatumo[ fontaIndekso ] * ombrado )
-                datumoj[ indekso + 1 ] = Math.min( 0o377, teksturaDatumo[ fontaIndekso + 1 ] * ombrado )
-                datumoj[ indekso + 2 ] = Math.min( 0o377, teksturaDatumo[ fontaIndekso + 2 ] * ombrado )
-                datumoj[ indekso + 3 ] = 0o377
+                datumoj[indekso] = Math.min( 0o377, teksturaDatumo[fontaIndekso] * ombrado )
+                datumoj[indekso + 0o1] = Math.min( 0o377, teksturaDatumo[fontaIndekso + 0o1] * ombrado )
+                datumoj[indekso + 0o2] = Math.min( 0o377, teksturaDatumo[fontaIndekso + 0o2] * ombrado )
+                datumoj[indekso + 0o3] = 0o377
             }
         }
 
-        portempaKunteksto.putImageData( bildaDatumo, 0, 0 )
-        kunteksto.drawImage( portempaKanvaso, 0, 0 )
+        portempaKunteksto.putImageData( bildaDatumo, 0o0, 0o0 )
+        kunteksto.drawImage( portempaKanvaso, 0o0, 0o0 )
     }
 
     ĝisdatigi3DTerglobon() {
@@ -954,15 +954,15 @@ class PlanedaGeneratoro {
             this.sceno.remove( this.atmosfero )
         }
 
-        // ⟪ Kreu planedan geometrion ⟫ 🌍
-        const geometrio = new THREE.SphereGeometry( 1, 0o200, 0o200 )
+        // ⟪ បង្កើតធរគឹលភាពផែនភូត ⟫ 🌍
+        const geometrio = new THREE.SphereGeometry( 0o1, 0o200, 0o200 )
 
-        // ⟪ Kreu teksturon el kanvaso ⟫ 🎨
+        // ⟪ បង្កើតរចនាទាស្ព័ព្ធពីផ្ទាំងកាត់ ⟫ 🎨
         const teksturo = new THREE.CanvasTexture( this.teksturaKanvaso )
         teksturo.wrapS = THREE.RepeatWrapping
         teksturo.wrapT = THREE.ClampToEdgeWrapping
 
-        // ⟪ Kreu reliefmapon el alteco ⟫ 🗻
+        // ⟪ បង្កើតផែនភូតកម្ពស់ពីកម្រិតកស្ថិតភាព ⟫ 🗻
         const reliefaTeksturo = this.kreiReliefmapon()
 
         const materialo = new THREE.MeshPhongMaterial( {
@@ -976,7 +976,7 @@ class PlanedaGeneratoro {
         this.terglobo = new THREE.Mesh( geometrio, materialo )
         this.sceno.add( this.terglobo )
 
-        // ⟪ Aldonu atmosferon ⟫ 🌌
+        // ⟪ បញ្ចូលបរិយាកាស ⟫ 🌌
         const atmosferaGeometrio = new THREE.SphereGeometry( 0o103 / 0o100, 0o100, 0o100 )
         const atmosferaMaterialo = new THREE.MeshPhongMaterial( {
             color: 0x4488ff,
@@ -989,7 +989,7 @@ class PlanedaGeneratoro {
         this.atmosfero = new THREE.Mesh( atmosferaGeometrio, atmosferaMaterialo )
         this.sceno.add( this.atmosfero )
 
-        // ⟪ Aldonu nubojn ⟫ ☁️
+        // ⟪ បញ្ចូលពុក្លាំង ⟫ ☁️
         this.aldoniNubojn()
     }
 
@@ -1001,29 +1001,29 @@ class PlanedaGeneratoro {
         const bildaDatumo = kunteksto.createImageData( 0o1000, 0o400 )
         const datumoj = bildaDatumo.data
 
-        for ( let y = 0; y < 0o400; y++ ) {
-            for ( let x = 0; x < 0o1000; x++ ) {
+        for ( let y = 0o0; y < 0o400; y++ ) {
+            for ( let x = 0o0; x < 0o1000; x++ ) {
                 const latitudo = 0o112 - ( y / 0o400 ) * 0o260
                 const longitudo = ( x / 0o1000 ) * 0o540 - 0o260
                 const alteco = this.akiriAltecon( latitudo, longitudo )
 
                 const valoro = Math.floor( alteco * 0o377 )
                 const indekso = ( y * 0o1000 + x ) * 0o4
-                datumoj[ indekso ] = valoro
-                datumoj[ indekso + 1 ] = valoro
-                datumoj[ indekso + 2 ] = valoro
-                datumoj[ indekso + 3 ] = 0o377
+                datumoj[indekso] = valoro
+                datumoj[indekso + 0o1] = valoro
+                datumoj[indekso + 0o2] = valoro
+                datumoj[indekso + 0o3] = 0o377
             }
         }
 
-        kunteksto.putImageData( bildaDatumo, 0, 0 )
+        kunteksto.putImageData( bildaDatumo, 0o0, 0o0 )
         return new THREE.CanvasTexture( kanvaso )
     }
 
     aldoniNubojn() {
         const nubaGeometrio = new THREE.SphereGeometry( 0o104 / 0o100, 0o100, 0o100 )
 
-        // ⟪ Generu nuban teksturon ⟫ ☁️
+        // ⟪ បង្កើតរចនាទាស្ព័ព្ធពុក្លាំង ⟫ ☁️
         const kanvaso = document.createElement( "canvas" )
         kanvaso.width = 0o1000
         kanvaso.height = 0o400
@@ -1031,8 +1031,8 @@ class PlanedaGeneratoro {
         const bildaDatumo = kunteksto.createImageData( 0o1000, 0o400 )
         const datumoj = bildaDatumo.data
 
-        for ( let y = 0; y < 0o400; y++ ) {
-            for ( let x = 0; x < 0o1000; x++ ) {
+        for ( let y = 0o0; y < 0o400; y++ ) {
+            for ( let x = 0o0; x < 0o1000; x++ ) {
                 const latitudo = 0o112 - ( y / 0o400 ) * 0o260
                 const longitudo = ( x / 0o1000 ) * 0o540 - 0o260
 
@@ -1043,19 +1043,19 @@ class PlanedaGeneratoro {
                 const cz = Math.sin( fio ) * Math.sin( teto )
 
                 const nubaBruo = this.fbm( cx, cy, cz, 0o4, 0o3 )
-                const kovro = Math.max( 0, nubaBruo - 0o4 / 0o12 ) * 0o2
+                const kovro = Math.max( 0o0, nubaBruo - 0o4 / 0o12 ) * 0o2
 
                 const indekso = ( y * 0o1000 + x ) * 0o4
                 const alfa = Math.floor( kovro * 0o310 * this.parametroj.atmosferaDenso )
 
-                datumoj[ indekso ] = 0o377
-                datumoj[ indekso + 1 ] = 0o377
-                datumoj[ indekso + 2 ] = 0o377
-                datumoj[ indekso + 3 ] = alfa
+                datumoj[indekso] = 0o377
+                datumoj[indekso + 0o1] = 0o377
+                datumoj[indekso + 0o2] = 0o377
+                datumoj[indekso + 0o3] = alfa
             }
         }
 
-        kunteksto.putImageData( bildaDatumo, 0, 0 )
+        kunteksto.putImageData( bildaDatumo, 0o0, 0o0 )
 
         const nubaTeksturo = new THREE.CanvasTexture( kanvaso )
         const nubaMaterialo = new THREE.MeshPhongMaterial( {
@@ -1084,19 +1084,19 @@ class PlanedaGeneratoro {
     }
 
     ĝisdatigiStatistikojn() {
-        // ⟪ Kalkulu realajn statistikojn el generitaj datumoj ⟫ 📊
-        let teraKvanto = 0
-        let akvaKvanto = 0
-        let maksimumaAlteco = 0
-        let tutaTemperaturo = 0
-        let kvanto = 0
+        // ⟪ គណនាស្ថិតភាពពិតពីទិន្នន័យដែលបានបង្កើត ⟫ 📊
+        let teraKvanto = 0o0
+        let akvaKvanto = 0o0
+        let maksimumaAlteco = 0o0
+        let tutaTemperaturo = 0o0
+        let kvanto = 0o0
 
         const akvonivelo = this.parametroj.akvonivelo
 
-        if ( !this.teksturaKanvaso || this.teksturaKanvaso.width === 0 ) return
+        if ( !this.teksturaKanvaso || this.teksturaKanvaso.width === 0o0 ) return
 
-        for ( let x = 0; x < this.teksturaKanvaso.width; x += 0o10 ) {
-            for ( let y = 0; y < this.teksturaKanvaso.height; y += 0o10 ) {
+        for ( let x = 0o0; x < this.teksturaKanvaso.width; x += 0o10 ) {
+            for ( let y = 0o0; y < this.teksturaKanvaso.height; y += 0o10 ) {
                 const latitudo = 0o112 - ( y / this.teksturaKanvaso.height ) * 0o260
                 const longitudo = ( x / this.teksturaKanvaso.width ) * 0o540 - 0o260
                 const alteco = this.akiriAltecon( latitudo, longitudo )
@@ -1114,7 +1114,7 @@ class PlanedaGeneratoro {
             }
         }
 
-        if ( kvanto === 0 ) return
+        if ( kvanto === 0o0 ) return
 
         const teraKvanto64 = Math.floor( teraKvanto / kvanto * 0o100 )
         const akvaKvanto64 = 0o100 - teraKvanto64
@@ -1124,11 +1124,11 @@ class PlanedaGeneratoro {
         const maksAltecoMetroj = Math.floor( maksimumaAlteco * 0o23210 )
         const maksAltecoPeu = ( window as any ).vap0_c2ta( maksAltecoMetroj )
 
-        // ⟪ Kalkulu loĝeblecon laŭ parametroj ⟫ 🏠
-        const akvaPoentaro = 1 - Math.abs( this.parametroj.akvonivelo - 0o6 / 0o10 ) * 0o2
-        const tempPoentaro = 1 - Math.abs( this.parametroj.temperaturo - 0o4 / 0o10 ) * 0o2
+        // ⟪ គណនាភាពអាចរស់នៅតាមប៉ារ៉ាម៉េតរដូវ ⟫ 🏠
+        const akvaPoentaro = 0o1 - Math.abs( this.parametroj.akvonivelo - 0o6 / 0o10 ) * 0o2
+        const tempPoentaro = 0o1 - Math.abs( this.parametroj.temperaturo - 0o4 / 0o10 ) * 0o2
         const atmoPoentaro = this.parametroj.atmosferaDenso
-        const loĝebleco = Math.max( 0, Math.min( 1, ( akvaPoentaro + tempPoentaro + atmoPoentaro ) / 0o3 ) )
+        const loĝebleco = Math.max( 0o0, Math.min( 0o1, ( akvaPoentaro + tempPoentaro + atmoPoentaro ) / 0o3 ) )
         const loĝebleco64 = Math.floor( loĝebleco * 0o100 )
 
         const statTero = document.getElementById( "stat-tero" )
@@ -1150,7 +1150,7 @@ class PlanedaGeneratoro {
     }
 }
 
-// ⟪ Inicialigu kiam la DOM estas preta ⟫ 🚀
+// ⟪ ចាប់ផ្ដើមពេលដែល DOM រួចរាល់ ⟫ 🚀
 document.addEventListener( "DOMContentLoaded", () => {
     new PlanedaGeneratoro()
 } )

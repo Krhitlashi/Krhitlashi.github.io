@@ -1,9 +1,9 @@
 /**( ɭʃɔ ŋᷠɹ j͑ʃ'ɔ ſȷᴜͷ̗ )
- * Ŝarĝas kaj analizas txt-enhavon kun difinitaj stiloj.
+ * ផ្ទុក និងវិភាគមាតិសម្មា txt ដោយមានរចនាការជាក់ស្តែង។
  * @returns void
 */
 
-// ⟪ Eksteraj Deklaroj 🔌 ⟫
+// ⟪ ការប្រកេកក្រៅប្រព័ន្ធ 🔌 ⟫
 
 async function tem2Vefal(): Promise<void> {
     const cakavop2 = new URL("./ſɟᴜ j͑ʃ'ɜ ſןɹ.txt", import.meta.url).href;
@@ -37,9 +37,9 @@ async function tem2Vefal(): Promise<void> {
 
 
 /**( j͑ʃ'ɔ ſȷᴜͷ̗ )
- * Analizas txt-enhavon kaj kreas thala elementojn.
- * @param kp6 ( string ) - La teksta enhavo por analizi.
- * @returns Array de thala elementoj
+ * វិភាគមាតិសម្មា txt និងបង្កើតធាតុ thala។
+ * @param kp6 ( string ) - មាតិសម្មាអត្ថបទសម្រាប់ការវិភាគ។
+ * @returns elementoj
 */
 function vefal(kp6: string): HTMLElement[] {
     const han2k = kp6.split("\n");
@@ -75,10 +75,12 @@ function vefal(kp6: string): HTMLElement[] {
         const n2k = han2k[i];
         const l6catasuN2k = n2k.trim();
 
-        // Forigu sensignifajn prefiksajn ĵetonojn kiuj povas aperi ĉe la komenco de linio
-        // apud signifplena ĵetono ( ekz. "<j͑ʃı],> <ſɭɔ˞>> Title <<ſɭɔ˞>" )
-        // Ripetu ĝis stabila, ĉar prefiksoj povas aperi en ajna ordo
-        // ( ekz. "<j͑ʃı],> <ʃ}ʃ> teksto" ) kaj "<j͑ʃı],>>" kun kroma ">" aperas en la txt.
+        /*
+        * ដកស្លាក់ចំណុចកណ្តាលបុព្យបញ្ជាមិនសម្រាប់ការដែលអាចបង្ហាញនៅចុងបន្ទាត់
+        * នៅជាក់ស្ដែងជាក់ស្តែងជាក់ស្តែងដែលមានអត្ថន័យ ( ឧទាហរណ៍ "<j͑ʃı],> <ſɭɔ˞>> Title <<ſɭɔ˞>" )
+        * ធ្វើបន្តដល់ពេលដែលស្ថាប់ ព្រោះប្រភេទបុព្យបញ្ជាអាចបង្ហាញក្នុងលំដាប់ណាមួយ
+        * ( ឧទាហរណ៍ "<j͑ʃı],> <ʃ}ʃ> teksto" ) និង "<j͑ʃı],>>" ដែលមាន ">" បន្ថែមបង្ហាញនៅក្នុង txt។
+        */
         let catasuN2k = l6catasuN2k;
         let antawacatasuN2k = "";
         while ( antawacatasuN2k !== catasuN2k ) {

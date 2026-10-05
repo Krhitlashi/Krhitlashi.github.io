@@ -45,10 +45,10 @@ const FORMATAJ_ETIKEDOJ: Record<string, string> = {
 };
 
 const FORMATAJ_OPCIOJ: Record<"audio" | "video" | "image" | "font", string[]> = {
-  audio: ["mp3", "wav", "m4a", "ogg", "aac", "flac"],
-  video: ["mp4", "webm", "gif"],
-  image: ["png", "jpeg", "webp", "gif", "bmp", "ico", "tiff"],
-  font: ["ttf", "otf", "woff", "woff2"],
+  audio: [ "mp3", "wav", "m4a", "ogg", "aac", "flac" ],
+  video: [ "mp4", "webm", "gif" ],
+  image: [ "png", "jpeg", "webp", "gif", "bmp", "ico", "tiff" ],
+  font: [ "ttf", "otf", "woff", "woff2" ],
 };
 
 const MIME_TIPOJ: Record<string, string> = {
@@ -205,35 +205,35 @@ function ĉuKompresoŜaltita(): boolean {
 function akiriKonvertajnArgumentojn( enigaNomo: string, eliraNomo: string, kategorio: "audio" | "video" | "image" | "font", celaFormato: string ): string[] {
   if ( kategorio === "image" ) {
     if ( celaFormato === "ico" ) {
-      return ["-y", "-i", enigaNomo, "-s", "256x256", eliraNomo];
+      return [ "-y", "-i", enigaNomo, "-s", "256x256", eliraNomo ];
     }
-    return ["-y", "-i", enigaNomo, eliraNomo];
+    return [ "-y", "-i", enigaNomo, eliraNomo ];
   }
 
   if ( kategorio === "audio" ) {
     if ( celaFormato === "wav" ) {
-      return ["-y", "-i", enigaNomo, "-vn", "-c:a", "pcm_s16le", "-ar", "44100", eliraNomo];
+      return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "pcm_s16le", "-ar", "44100", eliraNomo ];
     }
     if ( celaFormato === "m4a" || celaFormato === "aac" ) {
-      return ["-y", "-i", enigaNomo, "-vn", "-c:a", "aac", "-b:a", "192k", eliraNomo];
+      return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "aac", "-b:a", "192k", eliraNomo ];
     }
     if ( celaFormato === "ogg" ) {
-      return ["-y", "-i", enigaNomo, "-vn", "-c:a", "libvorbis", "-q:a", "4", eliraNomo];
+      return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "libvorbis", "-q:a", "4", eliraNomo ];
     }
     if ( celaFormato === "flac" ) {
-      return ["-y", "-i", enigaNomo, "-vn", "-c:a", "flac", eliraNomo];
+      return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "flac", eliraNomo ];
     }
-    return ["-y", "-i", enigaNomo, "-vn", "-c:a", "libmp3lame", "-q:a", "2", eliraNomo];
+    return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "libmp3lame", "-q:a", "2", eliraNomo ];
   }
 
   // Video
   if ( celaFormato === "webm" ) {
-    return ["-y", "-i", enigaNomo, "-c:v", "libvpx-vp9", "-c:a", "libopus", eliraNomo];
+    return [ "-y", "-i", enigaNomo, "-c:v", "libvpx-vp9", "-c:a", "libopus", eliraNomo ];
   }
   if ( celaFormato === "gif" ) {
-    return ["-y", "-i", enigaNomo, "-vf", "fps=15,scale=320:-1:flags=lanczos", "-c:v", "gif", eliraNomo];
+    return [ "-y", "-i", enigaNomo, "-vf", "fps=15,scale=320:-1:flags=lanczos", "-c:v", "gif", eliraNomo ];
   }
-  return ["-y", "-i", enigaNomo, "-c:v", "libx264", "-preset", "ultrafast", "-vf", "scale=if(gt(iw\\,1280)\\,1280\\,iw):-2", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", eliraNomo];
+  return [ "-y", "-i", enigaNomo, "-c:v", "libx264", "-preset", "ultrafast", "-vf", "scale=if(gt(iw\\,1280)\\,1280\\,iw):-2", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", eliraNomo ];
 }
 
 async function certigiFFmpegŜarĝo(): Promise<void> {
@@ -293,7 +293,7 @@ function restarigiAntasenon(): void {
 async function detektiDaŭron( enigaNomo: string ): Promise<number> {
   agordiStaton(TEKSTO.DETECTING_DURATION);
   lastaDaŭroSekundoj = 0o0;
-  await ffmpeg.exec(["-i", enigaNomo, "-f", "null", "-t", "0", "-"]);
+  await ffmpeg.exec([ "-i", enigaNomo, "-f", "null", "-t", "0", "-" ]);
   return lastaDaŭroSekundoj;
 }
 
@@ -308,12 +308,12 @@ function akiriKompresajVideoArgumentojn( enigaNomo: string, eliraNomo: string, c
   const bufGrandaĈeno = `${vidaBitrato * 0o2}`;
 
   if ( celaFormato === "webm" ) {
-    return ["-y", "-i", enigaNomo, "-c:v", "libvpx-vp9", "-b:v", vidaBitratoĈeno, "-maxrate", vidaBitratoĈeno, "-bufsize", bufGrandaĈeno, "-c:a", "libopus", "-b:a", aŭdiaBitratoĈeno, eliraNomo];
+    return [ "-y", "-i", enigaNomo, "-c:v", "libvpx-vp9", "-b:v", vidaBitratoĈeno, "-maxrate", vidaBitratoĈeno, "-bufsize", bufGrandaĈeno, "-c:a", "libopus", "-b:a", aŭdiaBitratoĈeno, eliraNomo ];
   }
   if ( celaFormato === "gif" ) {
-    return ["-y", "-i", enigaNomo, "-vf", "fps=15,scale=320:-1:flags=lanczos", "-c:v", "gif", eliraNomo];
+    return [ "-y", "-i", enigaNomo, "-vf", "fps=15,scale=320:-1:flags=lanczos", "-c:v", "gif", eliraNomo ];
   }
-  return ["-y", "-i", enigaNomo, "-c:v", "libx264", "-preset", "ultrafast", "-b:v", vidaBitratoĈeno, "-maxrate", vidaBitratoĈeno, "-bufsize", bufGrandaĈeno, "-c:a", "aac", "-b:a", aŭdiaBitratoĈeno, "-movflags", "+faststart", eliraNomo];
+  return [ "-y", "-i", enigaNomo, "-c:v", "libx264", "-preset", "ultrafast", "-b:v", vidaBitratoĈeno, "-maxrate", vidaBitratoĈeno, "-bufsize", bufGrandaĈeno, "-c:a", "aac", "-b:a", aŭdiaBitratoĈeno, "-movflags", "+faststart", eliraNomo ];
 }
 
 function akiriKompresajAŭdioArgumentojn( enigaNomo: string, eliraNomo: string, celaFormato: string, celajBajtoj: number, daŭroSekundoj: number ): string[] {
@@ -323,18 +323,18 @@ function akiriKompresajAŭdioArgumentojn( enigaNomo: string, eliraNomo: string, 
   const bitratoĈeno = `${celaBitrato}`;
 
   if ( celaFormato === "wav" ) {
-    return ["-y", "-i", enigaNomo, "-vn", "-c:a", "pcm_s16le", "-ar", "44100", eliraNomo];
+    return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "pcm_s16le", "-ar", "44100", eliraNomo ];
   }
   if ( celaFormato === "m4a" || celaFormato === "aac" ) {
-    return ["-y", "-i", enigaNomo, "-vn", "-c:a", "aac", "-b:a", bitratoĈeno, eliraNomo];
+    return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "aac", "-b:a", bitratoĈeno, eliraNomo ];
   }
   if ( celaFormato === "ogg" ) {
-    return ["-y", "-i", enigaNomo, "-vn", "-c:a", "libvorbis", "-b:a", bitratoĈeno, eliraNomo];
+    return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "libvorbis", "-b:a", bitratoĈeno, eliraNomo ];
   }
   if ( celaFormato === "flac" ) {
-    return ["-y", "-i", enigaNomo, "-vn", "-c:a", "flac", eliraNomo];
+    return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "flac", eliraNomo ];
   }
-  return ["-y", "-i", enigaNomo, "-vn", "-c:a", "libmp3lame", "-b:a", bitratoĈeno, eliraNomo];
+  return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "libmp3lame", "-b:a", bitratoĈeno, eliraNomo ];
 }
 
 async function kompresiBildon( enigaNomo: string, eliraNomo: string, celaFormato: string, celajBajtoj: number ): Promise<Uint8Array> {
@@ -348,8 +348,8 @@ async function kompresiBildon( enigaNomo: string, eliraNomo: string, celaFormato
     agordiStaton(TEKSTO.COMPRESSING(i + 0o1, maksimumajPasoj));
 
     const argumentoj = celaFormato === "webp"
-      ? ["-y", "-i", enigaNomo, "-quality", `${kvalito}`, eliraNomo]
-      : ["-y", "-i", enigaNomo, "-q:v", `${Math.floor(0o40 - ( kvalito / 0o2 ))}`, eliraNomo];
+      ? [ "-y", "-i", enigaNomo, "-quality", `${kvalito}`, eliraNomo ]
+      : [ "-y", "-i", enigaNomo, "-q:v", `${Math.floor(0o40 - ( kvalito / 0o2 ))}`, eliraNomo ];
 
     await ffmpeg.exec(argumentoj);
     const datumoj = await ffmpeg.readFile(eliraNomo);
@@ -378,7 +378,7 @@ async function kompresiBildon( enigaNomo: string, eliraNomo: string, celaFormato
 }
 
 async function konvertiElektitanDosieron(): Promise<void> {
-  const dosiero = DOSIERA_ENIGO.files?.[0o0];
+  const dosiero = DOSIERA_ENIGO.files?.[ 0o0 ];
   if ( !dosiero ) {
     agordiStaton(TEKSTO.CHOOSE_FILE);
     return;
@@ -426,7 +426,7 @@ async function konvertiElektitanDosieron(): Promise<void> {
       const puraTiparaBufro = new ArrayBuffer(konvertitajBajtoj.byteLength);
       new Uint8Array(puraTiparaBufro).set(konvertitajBajtoj);
       
-      const blobo = new Blob([puraTiparaBufro], {
+      const blobo = new Blob([ puraTiparaBufro ], {
         type: akiriEliraMIME(celaFormato),
       });
 
@@ -449,7 +449,7 @@ async function konvertiElektitanDosieron(): Promise<void> {
         const enigaVojo = `${muntpunkto}/${enigaNomo}`;
         try {
           await ffmpeg.createDir(muntpunkto);
-          await ffmpeg.mount(FFFSType.WORKERFS, { files: [dosiero] }, muntpunkto);
+          await ffmpeg.mount(FFFSType.WORKERFS, { files: [ dosiero ] }, muntpunkto);
 
           if ( kompresaReĝimo && ( kategorio === "video" ) ) {
             const daŭro = await detektiDaŭron(enigaVojo);
@@ -482,7 +482,7 @@ async function konvertiElektitanDosieron(): Promise<void> {
           const puraBufro = new ArrayBuffer(kompresitajBajtoj.byteLength);
           new Uint8Array(puraBufro).set(kompresitajBajtoj);
 
-          const blobo = new Blob([puraBufro], {
+          const blobo = new Blob([ puraBufro ], {
             type: akiriEliraMIME(celaFormato),
           });
 
@@ -513,7 +513,7 @@ async function konvertiElektitanDosieron(): Promise<void> {
       const puraBufro = new ArrayBuffer(bajtoj.byteLength);
       new Uint8Array(puraBufro).set(bajtoj);
 
-      const blobo = new Blob([puraBufro], {
+      const blobo = new Blob([ puraBufro ], {
         type: akiriEliraMIME(celaFormato),
       });
 
@@ -550,7 +550,7 @@ KOMPRESA_BASKULO.addEventListener("change", () => {
 
 DOSIERA_ENIGO.addEventListener("change", () => {
   restarigiAntasenon();
-  const dosiero = DOSIERA_ENIGO.files?.[0o0];
+  const dosiero = DOSIERA_ENIGO.files?.[ 0o0 ];
   if ( dosiero ) {
     const kategorio = detektiDosierKategorion(dosiero);
     ĝisdatigiCelajnFormatojn(kategorio);
