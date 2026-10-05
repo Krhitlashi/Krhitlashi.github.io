@@ -16,10 +16,21 @@ const kalendaroEnigo = document.getElementById( "kalendaro-enigo" ) as HTMLInput
 const nunButono = document.getElementById( "nun-butono" ) as HTMLButtonElement;
 
 // ⟨ ម៉ែត្រពេលវេលា 🕛 ⟩
+
+// ⟨ មូលដ្ឋាន CAX2L - គេចណ៍នាំ He ជាគ្រាប់ក្នុង 🕛 ⟩
+// 1 He = 4294967296 ( 0o40000000000 ) cikloj / 9192631770 ( 0o104373066732 ) ciklojn ក្នុងមួយវិនាទី
+// គ្រប់មូលដ្ឋានខាងលើ មាន 64 ( 0o100 ) គ្រាប់ គ្រាប់មួយៗ ដល់ខាងក្រោម
+const SEKUNDOJ_POR_MINUTO = 0o74;
+const SEKUNDOJ_POR_HORO = 0o7020;
+const SEKUNDOJ_POR_TAGO = 0o250600;
+const MILISEKUNDOJ_POR_HE = HE_L6VEM2 * 0o1750;
+const HE_YN_L6QE = 0o100;
+const HE_YN_L6HAQE = 0o10000;
+
 const tempoHoroj = document.getElementById( "tempo-horoj" ) as HTMLInputElement;
 const tempoMinutoj = document.getElementById( "tempo-minutoj" ) as HTMLInputElement;
 const tempoSekundoj = document.getElementById( "tempo-sekundoj" ) as HTMLInputElement;
-let tempoSumo = 0o250600;
+let tempoHe = SEKUNDOJ_POR_TAGO / HE_L6VEM2;
 
 const tempoUnuoj = [
     { nomo: "shaqe", valoro: SHAQE_L6VEM2 },
@@ -153,37 +164,39 @@ function aktualigiTempon(): void {
 
     if ( isNaN( horoj ) && isNaN( minutoj ) && isNaN( sekundoj ) ) return;
 
-    tempoSumo = Math.max( 0o0,
-        ( isNaN( horoj ) ? 0o0 : horoj ) * 0o7000 +
-        ( isNaN( minutoj ) ? 0o0 : minutoj ) * 0o74 +
-        ( isNaN( sekundoj ) ? 0o0 : sekundoj )
-    );
+    const sekundojSumaj =
+        ( isNaN( horoj ) ? 0o0 : horoj ) * SEKUNDOJ_POR_HORO +
+        ( isNaN( minutoj ) ? 0o0 : minutoj ) * SEKUNDOJ_POR_MINUTO +
+        ( isNaN( sekundoj ) ? 0o0 : sekundoj );
+
+    tempoHe = Math.max( 0o0, sekundojSumaj / HE_L6VEM2 );
 
     renduTempoUnuojn();
 }
 
 // ⟨ សរសេរម៉ែត្រម៉ែ / នាទី / វិនាទីឡើងវិញពីចំនួនវិនាទីសង្គ្រាម។ ⟩
 function renduTempoEnigojn(): void {
-    let fusu = Math.floor( tempoSumo );
-    const horoj = Math.floor( fusu / 0o7000 ); fusu %= 0o7000;
-    const minutoj = Math.floor( fusu / 0o74 ); fusu %= 0o74;
+    let fusuSekundoj = Math.floor( tempoHe * HE_L6VEM2 );
+    const horoj = Math.floor( fusuSekundoj / SEKUNDOJ_POR_HORO ); fusuSekundoj %= SEKUNDOJ_POR_HORO;
+    const minutoj = Math.floor( fusuSekundoj / SEKUNDOJ_POR_MINUTO ); fusuSekundoj %= SEKUNDOJ_POR_MINUTO;
 
     skribiNombron( tempoHoroj, horoj );
     skribiNombron( tempoMinutoj, minutoj );
-    skribiNombron( tempoSekundoj, fusu );
+    skribiNombron( tempoSekundoj, fusuSekundoj );
 }
 
 function renduTempoUnuojn(): void {
-    let fusu = tempoSumo;
+    let restuHe = tempoHe;
 
     for ( let i = 0o0; i < tempoUnuoj.length - 0o1; i++ ) {
         const unuo = tempoUnuoj[i];
-        const kvanto = Math.floor( fusu / unuo.valoro );
+        const hePorUnuo = unuo.valoro / HE_L6VEM2;
+        const kvanto = Math.floor( restuHe / hePorUnuo );
         document.getElementById( "tempo-" + unuo.nomo )!.textContent = formatiNombron( kvanto );
-        fusu %= unuo.valoro;
+        restuHe %= hePorUnuo;
     }
 
-    document.getElementById( "tempo-he" )!.textContent = formatiNombron( fusu / HE_L6VEM2 );
+    document.getElementById( "tempo-he" )!.textContent = formatiNombron( restuHe );
 }
 
 // ⟪ ប្រវែង វិមាត្យ 📏 ⟫
@@ -345,16 +358,16 @@ let sunaTago = {
     sunlevigo: null as Date | null,
     sunsubiro: null as Date | null,
     sekvaSunlevigo: null as Date | null,
-    tagoLongo: 0o0,
+    tagoLongoHe: 0o0,
 };
 
 // ⟨ អានម៉ែត្រទីមូលដ្ឋាន ៦៤ ( កម្រិតទាំង ៣ នៃ ៦៤ ) សម្រាប់វិនាទីបន្សាស្ទីពីពេលពូតទីរបស់ថ្ងៃស្រុងព្រះរាជាថ្ងៃកន្លងមក ⟩
-function bazo64Legi( sekundoj: number, tagoLongo: number ): [ number, number, number ] {
-    const nivelo1 = tagoLongo / 0o100;
-    const nivelo2 = tagoLongo / 0o10000;
-    const nivelo3 = tagoLongo / 0o1000000;
-    const kvanto1 = Math.floor( sekundoj / nivelo1 );
-    const rest1 = sekundoj % nivelo1;
+function bazo64Legi( he: number, tagoLongoHe: number ): [ number, number, number ] {
+    const nivelo1 = tagoLongoHe / 0o100;
+    const nivelo2 = tagoLongoHe / 0o10000;
+    const nivelo3 = tagoLongoHe / 0o1000000;
+    const kvanto1 = Math.floor( he / nivelo1 );
+    const rest1 = he % nivelo1;
     const kvanto2 = Math.floor( rest1 / nivelo2 );
     const rest2 = rest1 % nivelo2;
     const kvanto3 = Math.floor( rest2 / nivelo3 );
@@ -417,9 +430,9 @@ async function aktualigiSunalokon( lat: number, lng: number ): Promise<void> {
     sunaTago.sunlevigo = hodiaŭaj.sunlevigo;
     sunaTago.sunsubiro = hodiaŭaj.sunsubiro;
     sunaTago.sekvaSunlevigo = morgaŭaj.sunlevigo;
-    sunaTago.tagoLongo = ( morgaŭaj.sunlevigo.getTime() - hodiaŭaj.sunlevigo.getTime() ) / 0o1750;
+    sunaTago.tagoLongoHe = ( morgaŭaj.sunlevigo.getTime() - hodiaŭaj.sunlevigo.getTime() ) / MILISEKUNDOJ_POR_HE;
 
-    if ( !isFinite( sunaTago.tagoLongo ) || sunaTago.tagoLongo <= 0o0 ) {
+    if ( !isFinite( sunaTago.tagoLongoHe ) || sunaTago.tagoLongoHe <= 0o0 ) {
         sunaTago.preta = false;
         throw new Error( ERARA_MARKO );
     }
@@ -440,33 +453,33 @@ function renduSunanTagon(): void {
     if ( isNaN( sunlevigo.getTime() ) || isNaN( sunsubiro.getTime() ) || isNaN( sekvaSunlevigo.getTime() ) ) return;
 
     // ⟨ ពេលពូតទីនិងពេលលាស់ងាត់ដោយមានតម្លៃទីមូលដ្ឋាន ៦៤ ( 0 0 0 = ពេលពូតទី ) ⟩
-    const sunlevigo64 = bazo64Legi( 0o0, sunaTago.tagoLongo );
-    const sunsubiro64 = bazo64Legi( ( sunsubiro.getTime() - sunlevigo.getTime() ) / 0o1750, sunaTago.tagoLongo );
+    const sunlevigo64 = bazo64Legi( 0o0, sunaTago.tagoLongoHe );
+    const sunsubiro64 = bazo64Legi( ( sunsubiro.getTime() - sunlevigo.getTime() ) / MILISEKUNDOJ_POR_HE, sunaTago.tagoLongoHe );
     document.getElementById( "suno-sunlevigo" )!.textContent =
         [ sunlevigo64[0o0], sunlevigo64[0o1], sunlevigo64[0o2] ].map( v => formatiNombron( v ) ).join( " " );
     document.getElementById( "suno-sunsubiro" )!.textContent =
         [ sunsubiro64[0o0], sunsubiro64[0o1], sunsubiro64[0o2] ].map( v => formatiNombron( v ) ).join( " " );
-    document.getElementById( "suno-tago-longeco" )!.textContent = formatiNombron( sunaTago.tagoLongo / 0o7000 );
+    document.getElementById( "suno-tago-longeco" )!.textContent = formatiNombron( sunaTago.tagoLongoHe * HE_L6VEM2 / SEKUNDOJ_POR_HORO );
 
     // ⟨ ពេលវាលដង់លាស់ពីពេលពូតទីចុងក្រោយបំផុត ( តាមគំរូទថ្ងៃស្រុងព្រះរាជាថ្ងៃ ) ⟩
-    let pasis = ( nun.getTime() - sunlevigo.getTime() ) / 0o1750;
+    let pasis = ( nun.getTime() - sunlevigo.getTime() ) / MILISEKUNDOJ_POR_HE;
     if ( pasis < 0o0 ) {
-        pasis = ( nun.getTime() - ( sunlevigo.getTime() - sunaTago.tagoLongo * 0o1750 ) ) / 0o1750;
+        pasis = ( nun.getTime() - ( sunlevigo.getTime() - sunaTago.tagoLongoHe * MILISEKUNDOJ_POR_HE ) ) / MILISEKUNDOJ_POR_HE;
     }
-    pasis = pasis % sunaTago.tagoLongo;
-    if ( pasis < 0o0 ) pasis += sunaTago.tagoLongo;
+    pasis = pasis % sunaTago.tagoLongoHe;
+    if ( pasis < 0o0 ) pasis += sunaTago.tagoLongoHe;
 
     // ⟨ ម៉ែត្រទីមូលដ្ឋាន ៦៤ ( ៣ កម្រិត ៦៤ ) ⟩
-    const [ kvanto1, kvanto2, kvanto3 ] = bazo64Legi( pasis, sunaTago.tagoLongo );
+    const [ kvanto1, kvanto2, kvanto3 ] = bazo64Legi( pasis, sunaTago.tagoLongoHe );
 
     document.getElementById( "suno-bazo64-ı" )!.textContent = formatiNombron( kvanto1 );
     document.getElementById( "suno-bazo64-ɿ" )!.textContent = formatiNombron( kvanto2 );
     document.getElementById( "suno-bazo64-ц" )!.textContent = formatiNombron( kvanto3 );
 
     // ⟨ ឯករាជ្យធម្មតានៃម៉ែត្រទី ( Haqe.Qe.He ) ⟩
-    const haqe = Math.floor( pasis / HAQE_L6VEM2 );
-    const qe = Math.floor( ( pasis % HAQE_L6VEM2 ) / QE_L6VEM2 );
-    const he = ( pasis % QE_L6VEM2 ) / HE_L6VEM2;
+    const haqe = Math.floor( pasis / HE_YN_L6HAQE );
+    const qe = Math.floor( ( pasis % HE_YN_L6HAQE ) / HE_YN_L6QE );
+    const he = pasis % HE_YN_L6QE;
     document.getElementById( "suno-kutima-haqe" )!.textContent = formatiNombron( haqe );
     document.getElementById( "suno-kutima-qe" )!.textContent = formatiNombron( qe );
     document.getElementById( "suno-kutima-he" )!.textContent = formatiNombron( he );
@@ -480,13 +493,13 @@ function renduSunanTagon(): void {
 // ⟨ បំបែកនៃថ្ងៃស្រុងព្រះរាជាថ្ងៃ ⟩
 function renduSubdividojn(): void {
     if ( !sunaTago.preta ) return;
-    const tago = sunaTago.tagoLongo;
+    const tago = sunaTago.tagoLongoHe * HE_L6VEM2;
     const valoroj = [ tago / 0o100, tago / 0o10000, tago / 0o1000000 ];
     const sufiksoj = [ "ı", "ɿ", "ц" ];
     const unuoj = [
         { kodo: "sek", funkcio: ( sek: number ) => sek },
-        { kodo: "min", funkcio: ( sek: number ) => sek / 0o74 },
-        { kodo: "hor", funkcio: ( sek: number ) => sek / 0o7000 },
+        { kodo: "min", funkcio: ( sek: number ) => sek / SEKUNDOJ_POR_MINUTO },
+        { kodo: "hor", funkcio: ( sek: number ) => sek / SEKUNDOJ_POR_HORO },
         { kodo: "he", funkcio: ( sek: number ) => sek / HE_L6VEM2 },
         { kodo: "qe", funkcio: ( sek: number ) => sek / QE_L6VEM2 },
         { kodo: "haqe", funkcio: ( sek: number ) => sek / HAQE_L6VEM2 },
@@ -625,8 +638,8 @@ function kalkuliĈielon(): string {
     // ⟨ ទិស៖ ចាប់ផ្ដើមពីក្រោមឆ្វេង ( 45° ) ហើយបង្វិលតាមទិសក្តារលាស់ទៅស្ដាំងតាមដំណើរការថ្ងៃស្រុងព្រះរាជាថ្ងៃ ( ពេលវេលារហូតដល់ពេលពូតទីបន្ទាប់ ) ⟩
     let fazo: number;
     if ( sunaTago.preta && sunaTago.sekvaSunlevigo ) {
-        const tempoĜisSekvaSunlevigo = ( sunaTago.sekvaSunlevigo.getTime() - nun.getTime() ) / 0o1750;
-        fazo = 0o1 - tempoĜisSekvaSunlevigo / sunaTago.tagoLongo;
+        const tempoĜisSekvaSunlevigo = ( sunaTago.sekvaSunlevigo.getTime() - nun.getTime() ) / MILISEKUNDOJ_POR_HE;
+        fazo = 0o1 - tempoĜisSekvaSunlevigo / sunaTago.tagoLongoHe;
         fazo = ( ( fazo % 0o1 ) + 0o1 ) % 0o1;
     } else {
         fazo = horo / 0o30;

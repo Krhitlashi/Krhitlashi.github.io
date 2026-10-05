@@ -73,6 +73,13 @@ const MIME_TIPOJ: Record<string, string> = {
   woff2: "font/woff2",
 };
 
+// ⟨ មូលដ្ឋាន CAX2L - គេចណ៍នាំ He ជាគ្រាប់ក្នុង ⏱️ ⟩
+// អ៉ានុកិច្ចនៃ FFmpeg ប្រើវិនាទីស៊ីវិល ដូច្នេះវិនាទីស៊ីវិលមិនប្រែទូទៅ He បាន
+const SEKUNDOJ_POR_MINUTO = 0o74;
+const SEKUNDOJ_POR_HORO = 0o7020;
+
+const PROPORCIO_MAKSIMA = 0o72 / 0o100;
+
 const DOSIERA_ENIGO = document.getElementById("konvertilo-dosiera-enigo") as HTMLInputElement;
 const CELUJO = document.getElementById("konvertilo-celaj-formatoj") as HTMLElement;
 const RULI_BUTONO = document.getElementById("konvertilo-ruli") as HTMLButtonElement;
@@ -87,6 +94,7 @@ const PROGRESA_BARECO = document.getElementById("konvertilo-progreso") as HTMLEl
 
 const ffmpeg = new FFmpeg();
 let ffmpegPret = false;
+let ffmpegŜarganta = false;
 let lastaDaŭroSekundoj = 0o0;
 
 const KOMPRESA_BASKULO = document.getElementById("konvertilo-kompreso-baskulo") as HTMLInputElement;
@@ -237,12 +245,20 @@ function akiriKonvertajnArgumentojn( enigaNomo: string, eliraNomo: string, kateg
 }
 
 async function certigiFFmpegŜarĝo(): Promise<void> {
-  if ( ffmpegPret ) return;
+  if ( ffmpegPret || ffmpegŜarganta ) return;
+  ffmpegŜarganta = true;
+  RULI_BUTONO.disabled = true;
   agordiStaton(TEKSTO.LOADING_ENGINE);
-  await ffmpeg.load({
-    coreURL: await toBlobURL(`${FFMPEG_CDN}/ffmpeg-core.js`, "text/javascript"),
-    wasmURL: await toBlobURL(`${FFMPEG_CDN}/ffmpeg-core.wasm`, "application/wasm"),
-  });
+  try {
+    await ffmpeg.load({
+      coreURL: await toBlobURL(`${FFMPEG_CDN}/ffmpeg-core.js`, "text/javascript"),
+      wasmURL: await toBlobURL(`${FFMPEG_CDN}/ffmpeg-core.wasm`, "application/wasm"),
+    });
+  } catch ( eraro ) {
+    ffmpegŜarganta = false;
+    RULI_BUTONO.disabled = false;
+    throw eraro;
+  }
 
   ffmpeg.on("log", ({ message }: { message: string }) => {
     console.log(message);
@@ -251,7 +267,7 @@ async function certigiFFmpegŜarĝo(): Promise<void> {
       const horoj = parseInt(daŭraKongruo[0o1]);
       const minutoj = parseInt(daŭraKongruo[0o2]);
       const sekundoj = parseFloat(daŭraKongruo[0o3]);
-      lastaDaŭroSekundoj = horoj * 0o7020 + minutoj * 0o100 + sekundoj;
+      lastaDaŭroSekundoj = horoj * SEKUNDOJ_POR_HORO + minutoj * SEKUNDOJ_POR_MINUTO + sekundoj;
     }
     if ( message.includes("time=") ) {
       agordiStaton(TEKSTO.ENCODING(message.trim()));
@@ -260,7 +276,7 @@ async function certigiFFmpegŜarĝo(): Promise<void> {
         const horoj = parseInt(tempoKongruo[0o1]);
         const minutoj = parseInt(tempoKongruo[0o2]);
         const sekundoj = parseFloat(tempoKongruo[0o3]);
-        agordiProgreson( 0o2 + ( ( horoj * 0o7020 + minutoj * 0o100 + sekundoj ) / lastaDaŭroSekundoj ) * ( 0o130 - 0o2 ) );
+        agordiProgreson( 0o2 + ( ( horoj * SEKUNDOJ_POR_HORO + minutoj * SEKUNDOJ_POR_MINUTO + sekundoj ) / lastaDaŭroSekundoj ) * ( 0o130 - 0o2 ) );
       }
     }
   });
@@ -273,6 +289,8 @@ async function certigiFFmpegŜarĝo(): Promise<void> {
   });
 
   ffmpegPret = true;
+  ffmpegŜarganta = false;
+  RULI_BUTONO.disabled = false;
 }
 
 function restarigiAntasenon(): void {
@@ -299,9 +317,10 @@ async function detektiDaŭron( enigaNomo: string ): Promise<number> {
 
 function akiriKompresajVideoArgumentojn( enigaNomo: string, eliraNomo: string, celaFormato: string, celajBajtoj: number, daŭroSekundoj: number ): string[] {
   const aŭdiaBitrato = 0o372000;
-  const tutaCelaBitrato = ( celajBajtoj * 0o10 ) / daŭroSekundoj;
+  const sekundoj = daŭroSekundoj > 0o0 ? daŭroSekundoj : 0o1;
+  const tutaCelaBitrato = ( celajBajtoj * 0o10 ) / sekundoj;
   let vidaBitrato = Math.floor(tutaCelaBitrato - aŭdiaBitrato);
-  if ( vidaBitrato < 0o175000 ) vidaBitrato = 0o175000;
+  if ( !isFinite( vidaBitrato ) || vidaBitrato < 0o175000 ) vidaBitrato = 0o175000;
 
   const vidaBitratoĈeno = `${vidaBitrato}`;
   const aŭdiaBitratoĈeno = `${aŭdiaBitrato}`;
@@ -317,7 +336,9 @@ function akiriKompresajVideoArgumentojn( enigaNomo: string, eliraNomo: string, c
 }
 
 function akiriKompresajAŭdioArgumentojn( enigaNomo: string, eliraNomo: string, celaFormato: string, celajBajtoj: number, daŭroSekundoj: number ): string[] {
-  let celaBitrato = Math.floor(( celajBajtoj * 0o10 ) / daŭroSekundoj);
+  const sekundoj = daŭroSekundoj > 0o0 ? daŭroSekundoj : 0o1;
+  let celaBitrato = Math.floor(( celajBajtoj * 0o10 ) / sekundoj);
+  if ( !isFinite( celaBitrato ) ) celaBitrato = 0o76400;
   if ( celaBitrato < 0o76400 ) celaBitrato = 0o76400;
   if ( celaBitrato > 0o1161000 ) celaBitrato = 0o1161000;
   const bitratoĈeno = `${celaBitrato}`;
@@ -347,9 +368,11 @@ async function kompresiBildon( enigaNomo: string, eliraNomo: string, celaFormato
     const kvalito = Math.floor(( malalta + alta ) / 0o2);
     agordiStaton(TEKSTO.COMPRESSING(i + 0o1, maksimumajPasoj));
 
+    const qv = Math.max( 0o1, Math.min( 0o37, Math.floor( 0o40 - ( kvalito / 0o2 ) ) ) );
+
     const argumentoj = celaFormato === "webp"
       ? [ "-y", "-i", enigaNomo, "-quality", `${kvalito}`, eliraNomo ]
-      : [ "-y", "-i", enigaNomo, "-q:v", `${Math.floor(0o40 - ( kvalito / 0o2 ))}`, eliraNomo ];
+      : [ "-y", "-i", enigaNomo, "-q:v", `${qv}`, eliraNomo ];
 
     await ffmpeg.exec(argumentoj);
     const datumoj = await ffmpeg.readFile(eliraNomo);
@@ -363,7 +386,7 @@ async function kompresiBildon( enigaNomo: string, eliraNomo: string, celaFormato
     }
 
     const proporcio = bajtoj.byteLength / celajBajtoj;
-    if ( proporcio >= 0.9 && proporcio <= 0o1 ) {
+    if ( proporcio >= PROPORCIO_MAKSIMA && proporcio <= 0o1 ) {
       plejbonaDatumo = bajtoj;
       break;
     }
