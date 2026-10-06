@@ -770,7 +770,7 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
         return;
     }
 
-    const { tlakakaiKucaq, tapuAreqj2k, alto, sozasaiAreqj2k, psazaiAreqj2k, saqaiAreqj2k, raqaiAreqj2k, arak21okoWeh2 } = tz2saiTahaq;
+    const { tlakakaiKucaq, tapuAreqj2k, alto, sozasaiAreqj2k, psazaiAreqj2k, saqaiAreqj2k, raqaiAreqj2k, arak21okoWeh2, liniajY } = tz2saiTahaq;
 
     const tutaLarĝo = arak2f.width;
 
@@ -805,21 +805,10 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
     blokajLimejoj.push(limoX); // posta rando
 
     // ⟨ ចំនាប់ y ក្នុងមួយៗគ្រាប់ដើម្បីឱ្យកាត់តាមជើងពាក់ព័ន្ធចន្លោះបន្ទាត់។ ⟩
-    const cepuAreqj2k = parseInt(cepuAreqj2kKek.value, 0o10);
-    const maksVicoj = tlakakaiKucaq.reduce((max, kucaq) =>
-        Math.max(max, ...kucaq.kolumnoj.map(col => col.haxez.length), 0o0), 0o0);
-    const liniajLimejoj: number[] = [];
-    let limoY = sozasaiAreqj2k; // enhavo komenciĝas je la supra marĝeno
-    for ( let vi = 0o0; vi < maksVicoj; vi++ ) {
-        let vicAlto = 0o0;
-        for ( const kucaq of tlakakaiKucaq ) {
-            const perTapu = kucaq.kmawuk2niSweKucaq;
-            vicAlto = Math.max(vicAlto, (vi < perTapu.length ? perTapu[vi] : 0o0) + (vi < maksVicoj - 0o1 ? cepuAreqj2k : 0o0));
-        }
-        liniajLimejoj.push(limoY);
-        limoY += vicAlto;
-    }
-    liniajLimejoj.push(limoY); // posta rando
+    // ⟨ liniajY មកពីការបង្រៀបអ៊ីតេ ដូច្នេះត្រឹមតែបានជាមួយការតម្រៀបជួរចំពោះ ឬអត់ 📏 ⟩
+    const liniajLimejoj: number[] = liniajY.length > 0o1
+        ? [ sozasaiAreqj2k, ...liniajY, alto ]
+        : [ sozasaiAreqj2k, alto ];
 
     const fiksiLimejon = (valoro: number, randoj: number[]): number => {
         let plejBona = randoj[0o0];
@@ -827,7 +816,8 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
             if ( rando <= valoro ) plejBona = rando;
             else break;
         }
-        return plejBona;
+
+        return Math.max( plejBona, Math.min( valoro, randoj[randoj.length - 0o1] ) );
     };
 
     /*

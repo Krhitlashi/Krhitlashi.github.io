@@ -47,6 +47,16 @@ const longoPeuEnigo = document.getElementById( "longo-peu" ) as HTMLInputElement
 const longoMetroEnigo = document.getElementById( "longo-metro" ) as HTMLInputElement;
 let longoMetroj = 0o1;
 
+// ⟨ ការរក្សាទុកអក្សរ HTML ដូច្នេះមិនឲ្យវាប្រែជាកូដ 🛡️ ⟩
+function kuirigiHTML( teksto: string ): string {
+    return teksto
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&apos;");
+}
+
 // ⟨ សីអក្សរកម្រិត 🌡️ ⟩
 const temperaturoHiaEnigo = document.getElementById( "temperaturo-hia" ) as HTMLInputElement;
 const temperaturoKelvinoEnigo = document.getElementById( "temperaturo-kelvino" ) as HTMLInputElement;
@@ -273,7 +283,7 @@ async function serĉiLokon(): Promise<void> {
         }
 
         lokoRezultoj.innerHTML = rezultoj.map( r =>
-            `<button data-lat="${r.lat}" data-lon="${r.lon}" data-nomo="${encodeURIComponent( r.display_name )}">${r.display_name}</button>`
+            `<button data-lat="${r.lat}" data-lon="${r.lon}" data-nomo="${encodeURIComponent( r.display_name )}">${kuirigiHTML( r.display_name )}</button>`
         ).join( "" );
 
         lokoRezultoj.querySelectorAll( "button" ).forEach( butono => {

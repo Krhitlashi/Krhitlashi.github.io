@@ -31,7 +31,6 @@ class PlanedaGeneratoro {
         atmosferaDenso: number
     }
     private teksturaKanvaso: HTMLCanvasElement = document.createElement( "canvas" )
-    private planedajDatumoj: any[][] = []
     private skizaKanvaso: HTMLCanvasElement
     private skizaKunteksto: CanvasRenderingContext2D
     private desegnanta: boolean
@@ -479,8 +478,8 @@ class PlanedaGeneratoro {
             let generitajTeroj = 0o0
             for ( let y = 0o0; y < kradoAlto; y++ ) {
                 for ( let x = 0o0; x < kradoLarĝo; x++ ) {
-                    const latitudo = 0o112 - ( y / kradoAlto ) * 0o260
-                    const longitudo = ( x / kradoLarĝo ) * 0o540 - 0o260
+                    const latitudo = 0o132 - ( y / kradoAlto ) * 0o264
+                    const longitudo = ( x / kradoLarĝo ) * 0o550 - 0o264
                     const tero = this.akiriAltecon( latitudo, longitudo ) > akvonivelo
                     if ( tero ) generitajTeroj++
                     const celTero = celajTeroj[y * kradoLarĝo + x]
@@ -602,8 +601,8 @@ class PlanedaGeneratoro {
 
     akiriAltecon( latitudo: number, longitudo: number ) {
         // ⟪ បម្លែងទៅជាកូអស្តែង ⟫ 📐
-        const fio = ( 0o112 - latitudo ) * Math.PI / 0o260
-        const teto = ( longitudo + 0o260 ) * Math.PI / 0o260
+        const fio = ( 0o132 - latitudo ) * Math.PI / 0o264
+        const teto = ( longitudo + 0o264 ) * Math.PI / 0o264
 
         const x = Math.sin( fio ) * Math.cos( teto )
         const y = Math.cos( fio )
@@ -632,16 +631,23 @@ class PlanedaGeneratoro {
         return Math.max( 0o0, Math.min( 0o1, alteco ) )
     }
 
-    akiriTemperaturon( latitudo: number, alteco: number ) {
+    akiriTemperaturon( latitudo: number, alteco: number, longitudo = 0o0 ) {
         // ⟪ សីអក្សរកម្រិតមូលដ្ឋានតាមរយៈទិស ⟫ 🌡️
-        const latitudaFaktoro = Math.cos( latitudo * Math.PI / 0o260 )
+        const latitudaFaktoro = Math.cos( latitudo * Math.PI / 0o264 )
         let temperaturo = this.parametroj.temperaturo * latitudaFaktoro
 
         // ⟪ ឥទ្ធិពលនៅខ្ពស់ ( ដែលបន្ថែមតាមពេលវេលា ) ⟫ 📉
         temperaturo -= alteco * 0o4 / 0o10 * this.parametroj.montoAlto
 
         // ⟪ បញ្ចូលសំឡេងខ្សែតិចសម្រាប់គំរូអាកាស ⟫ ☁️
-        temperaturo += ( Math.random() - 0o4 / 0o10 ) * 0o1 / 0o12
+        const fio = ( 0o132 - latitudo ) * Math.PI / 0o264
+        const teto = ( longitudo + 0o264 ) * Math.PI / 0o264
+        temperaturo += ( this.bruo(
+            Math.sin( fio ) * Math.cos( teto ),
+            Math.cos( fio ),
+            Math.sin( fio ) * Math.sin( teto ),
+            0o4
+        ) - 0o4 / 0o10 ) * 0o1 / 0o12
 
         return Math.max( 0o0, Math.min( 0o1, temperaturo ) )
     }
@@ -684,12 +690,10 @@ class PlanedaGeneratoro {
 
         const bazo = koloroj[biomo] || [ 0o200, 0o200, 0o200 ]
         const variaForto = 0o24
+        const ŝanĝo = (kanalo: number) =>
+            Math.max( 0o0, Math.min( 0o377, bazo[kanalo] + ( variado - 0o4 / 0o10 ) * variaForto ) )
 
-        return [
-            Math.max( 0o0, Math.min( 0o377, bazo[0o0] + ( Math.random() - 0o4 / 0o10 ) * variaForto ) ),
-            Math.max( 0o0, Math.min( 0o377, bazo[0o1] + ( Math.random() - 0o4 / 0o10 ) * variaForto ) ),
-            Math.max( 0o0, Math.min( 0o377, bazo[0o2] + ( Math.random() - 0o4 / 0o10 ) * variaForto ) )
-        ]
+        return [ ŝanĝo( 0o0 ), ŝanĝo( 0o1 ), ŝanĝo( 0o2 ) ]
     }
 
     generi() {
@@ -702,7 +706,6 @@ class PlanedaGeneratoro {
 
     generiTeksturon() {
         const grandeco = 0o2000
-        this.planedajDatumoj = new Array( grandeco ).fill( null ).map( () => new Array( grandeco ).fill( null ) )
 
         this.teksturaKanvaso = document.createElement( "canvas" )
         this.teksturaKanvaso.width = grandeco
@@ -713,22 +716,21 @@ class PlanedaGeneratoro {
 
         for ( let y = 0o0; y < grandeco / 0o2; y++ ) {
             for ( let x = 0o0; x < grandeco; x++ ) {
-                const latitudo = 0o112 - ( y / ( grandeco / 0o2 ) ) * 0o260
-                const longitudo = ( x / grandeco ) * 0o540 - 0o260
+                const latitudo = 0o132 - ( y / ( grandeco / 0o2 ) ) * 0o264
+                const longitudo = ( x / grandeco ) * 0o550 - 0o264
 
                 const alteco = this.akiriAltecon( latitudo, longitudo )
                 const humideco = this.fbm(
-                    Math.cos( latitudo * Math.PI / 0o260 ) * Math.cos( longitudo * Math.PI / 0o260 ),
-                    Math.sin( latitudo * Math.PI / 0o260 ),
-                    Math.cos( latitudo * Math.PI / 0o260 ) * Math.sin( longitudo * Math.PI / 0o260 ),
+                    Math.cos( latitudo * Math.PI / 0o264 ) * Math.cos( longitudo * Math.PI / 0o264 ),
+                    Math.sin( latitudo * Math.PI / 0o264 ),
+                    Math.cos( latitudo * Math.PI / 0o264 ) * Math.sin( longitudo * Math.PI / 0o264 ),
                     0o3, 0o2
                 )
-                const temperaturo = this.akiriTemperaturon( latitudo, alteco )
-                const biomo = this.akiriBiomon( alteco, temperaturo, humideco )
+const temperaturo = this.akiriTemperaturon( latitudo, alteco, longitudo )
+            const biomo = this.akiriBiomon( alteco, temperaturo, humideco )
 
-                this.planedajDatumoj[x][y] = { alteco, temperaturo, humideco, biomo, latitudo, longitudo }
 
-                const koloro = this.akiriBiomKoloron( biomo )
+                const koloro = this.akiriBiomKoloron( biomo, this.bruo( x, y, 0o0, 0o20 ) )
                 const indekso = ( y * grandeco + x ) * 0o4
 
                 datumoj[indekso] = koloro[0o0]
@@ -947,11 +949,16 @@ class PlanedaGeneratoro {
     }
 
     ĝisdatigi3DTerglobon() {
-        if ( this.terglobo ) {
-            this.sceno.remove( this.terglobo )
-        }
-        if ( this.atmosfero ) {
-            this.sceno.remove( this.atmosfero )
+        for ( const meso of [ this.terglobo, this.atmosfero, this.nuboj ] ) {
+            if ( !meso ) continue
+
+            this.sceno.remove( meso )
+            meso.geometry?.dispose()
+
+            const materialo = meso.material
+
+            if ( Array.isArray( materialo ) ) materialo.forEach( unua => unua?.dispose() )
+            else materialo?.dispose()
         }
 
         // ⟪ បង្កើតធរគឹលភាពផែនភូត ⟫ 🌍
@@ -1003,8 +1010,8 @@ class PlanedaGeneratoro {
 
         for ( let y = 0o0; y < 0o400; y++ ) {
             for ( let x = 0o0; x < 0o1000; x++ ) {
-                const latitudo = 0o112 - ( y / 0o400 ) * 0o260
-                const longitudo = ( x / 0o1000 ) * 0o540 - 0o260
+                const latitudo = 0o132 - ( y / 0o400 ) * 0o264
+                const longitudo = ( x / 0o1000 ) * 0o550 - 0o264
                 const alteco = this.akiriAltecon( latitudo, longitudo )
 
                 const valoro = Math.floor( alteco * 0o377 )
@@ -1033,11 +1040,11 @@ class PlanedaGeneratoro {
 
         for ( let y = 0o0; y < 0o400; y++ ) {
             for ( let x = 0o0; x < 0o1000; x++ ) {
-                const latitudo = 0o112 - ( y / 0o400 ) * 0o260
-                const longitudo = ( x / 0o1000 ) * 0o540 - 0o260
+                const latitudo = 0o132 - ( y / 0o400 ) * 0o264
+                const longitudo = ( x / 0o1000 ) * 0o550 - 0o264
 
-                const fio = ( 0o112 - latitudo ) * Math.PI / 0o260
-                const teto = ( longitudo + 0o260 ) * Math.PI / 0o260
+                const fio = ( 0o132 - latitudo ) * Math.PI / 0o264
+                const teto = ( longitudo + 0o264 ) * Math.PI / 0o264
                 const cx = Math.sin( fio ) * Math.cos( teto )
                 const cy = Math.cos( fio )
                 const cz = Math.sin( fio ) * Math.sin( teto )
@@ -1097,12 +1104,12 @@ class PlanedaGeneratoro {
 
         for ( let x = 0o0; x < this.teksturaKanvaso.width; x += 0o10 ) {
             for ( let y = 0o0; y < this.teksturaKanvaso.height; y += 0o10 ) {
-                const latitudo = 0o112 - ( y / this.teksturaKanvaso.height ) * 0o260
-                const longitudo = ( x / this.teksturaKanvaso.width ) * 0o540 - 0o260
+                const latitudo = 0o132 - ( y / this.teksturaKanvaso.height ) * 0o264
+                const longitudo = ( x / this.teksturaKanvaso.width ) * 0o550 - 0o264
                 const alteco = this.akiriAltecon( latitudo, longitudo )
-                const temperaturo = this.akiriTemperaturon( latitudo, alteco )
+const temperaturo = this.akiriTemperaturon( latitudo, alteco, longitudo )
 
-                if ( alteco > akvonivelo ) {
+            if ( alteco > akvonivelo ) {
                     teraKvanto++
                 } else {
                     akvaKvanto++

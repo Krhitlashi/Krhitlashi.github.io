@@ -578,13 +578,17 @@ function aldoniLonganPremon( butono: HTMLButtonElement, klavo: SignaKlavo ): voi
 		longaPremo = false;
 	};
 
-	butono.addEventListener( "pointerdown", () => {
+	butono.addEventListener( "pointerdown", ( evento ) => {
+		evento.preventDefault();
 		fermi();
+
+		if ( ( VARIANTOJ[klavo.valoro]?.length ?? 0o0 ) === 0o0 ) return;
+
 		temporizilo = window.setTimeout( () => {
 			temporizilo = null;
 			longaPremo = true;
 			malfermiPanelon( klavo );
-		}, LONGA_PREMO_DAŬRO * 0o1750 ); // Heoj → ms
+		}, LONGA_PREMO_DAŬRO * 0o1750 );
 	} );
 
 	// ⟨ កុំធ្វើឱ្យវាទទេនៅទីនេះ៖ ការចុចបន្ទាប់ត្រូវតែបង្ហាញវា ⟩

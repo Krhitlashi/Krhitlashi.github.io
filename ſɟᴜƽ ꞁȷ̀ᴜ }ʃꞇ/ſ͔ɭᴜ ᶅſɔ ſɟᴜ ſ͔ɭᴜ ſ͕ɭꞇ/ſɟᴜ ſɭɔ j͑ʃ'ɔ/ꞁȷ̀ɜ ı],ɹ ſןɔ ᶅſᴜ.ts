@@ -567,7 +567,7 @@ function determiniPoŝon(temo: string, estasSub: string): string {
  * @returns ĉeno
  */
 function normigiPoŝon(poŝo: string): string {
-    const match = poŝo.match( /\((\w+)\)$/ );
+    const match = poŝo.match( /\(\s*(\w+)\s*\)$/ );
     if ( match ) return match[0o1];
     return poŝo;
 }
@@ -610,10 +610,12 @@ async function sxargiVortaron(xlsxVojo: string | null = null): Promise<VortEniro
             // ⟨ បំបែកក្រឡប់ពហុពាក្យដោយ "｡" - ដូចគ្នានឹងកម្មវិធីវិភាគ HTML ដើម ⟩
             const vortoj = vortoKruda.split("｡").map(p => p.trim()).filter(p => p);
             const tradukoj = tradukoKruda ? tradukoKruda.split("｡").map(p => p.trim()).filter(p => p) : [];
-            for ( const unuVorto of vortoj ) {
-                const trans = tradukoj.length > 0o0
-                    ? elektiNeIikrhianTradukon(tradukoj)
-                    : unuVorto;
+for ( let i = 0o0; i < vortoj.length; i++ ) {
+            const unuVorto = vortoj[i];
+            const unuaTraduko = tradukoj[i];
+            const trans = tradukoj.length > 0o0
+            ? elektiNeIikrhianTradukon( unuaTraduko !== undefined ? [ unuaTraduko ] : tradukoj )
+            : unuVorto;
                 eligo.push({
                     gawekiif: unuVorto,
                     traduko: trans,
@@ -628,7 +630,6 @@ async function sxargiVortaron(xlsxVojo: string | null = null): Promise<VortEniro
     } catch ( eraro ) {
         console.warn("( ſ̀ȷᴜ ſɭɹ ) Could not load dictionary from " + path, eraro);
         const malplena: VortEniro[] = [];
-        _vortaroKaso.set(path, malplena);
         return malplena;
     }
 }
@@ -653,8 +654,11 @@ async function sxargiVortaronKunFalreto(): Promise<VortEniro[]> {
  * @returns vortaro
  */
 function sxargiVortaronSinkrone(): VortEniro[] {
-    const firstEntry = _vortaroKaso.values().next();
-    return firstEntry.value || [];
+    for ( const vortoj of _vortaroKaso.values() ) {
+        if ( vortoj.length > 0o0 ) return vortoj;
+    }
+
+    return [];
 }
 
 /**
@@ -741,6 +745,8 @@ function _akiriAfiksoTradukon(klavo: string): string | null {
 
 
 // ⟪ កន្សល់ឃ្លា 🔨 ⟫
+
+const ERARO_SEN_VERBO = "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Neenkonata sen verbo";
 
 class FrazKonstruilo {
     components: FrazKomponantoj;
@@ -830,7 +836,11 @@ class FrazKonstruilo {
     }
 
     private _aplikiVerbModifojn(): ModifitaVortEniro {
-        const modifiedVerb = aplikiVerbModifilojn(this.components.verbo!, {
+        const verbo = this.components.verbo;
+
+        if ( !verbo ) throw new Error( ERARO_SEN_VERBO );
+
+        const modifiedVerb = aplikiVerbModifilojn(verbo, {
             afikso: this.components.verboModifiloj.afikso,
             modaleco: this.components.verboModifiloj.modaleco,
             modalecoNegata: this.components.verboModifiloj.negata,
@@ -1403,7 +1413,7 @@ function ebleAldoniModalecojn(builder: FrazKonstruilo): FrazKonstruilo {
             [ "should", true ]
         ];
         const [ modaleco, negata ] = modalities[Math.floor(Math.random() * modalities.length)];
-        b.agordiVerbon(b.components.verbo!, null, modaleco, negata);
+        if ( b.components.verbo ) b.agordiVerbon(b.components.verbo, null, modaleco, negata);
         return b;
     });
 }
@@ -1416,7 +1426,7 @@ function ebleAldoniModalecojn(builder: FrazKonstruilo): FrazKonstruilo {
 function ebleAldoniNegacion(builder: FrazKonstruilo): FrazKonstruilo {
     return ebleAplikiModifilon(builder, (b) => {
         if (b.components.verboModifiloj.modaleco) return b;
-        b.agordiVerbon(b.components.verbo!, "KON");
+        if ( b.components.verbo ) b.agordiVerbon(b.components.verbo, "KON");
         return b;
     });
 }
@@ -1473,7 +1483,7 @@ function aplikiVerbanAfiksonUnue(builder: FrazKonstruilo, opcioj: VerbaAfiksoOpc
         return builder;
     }
 
-    builder.agordiVerbon(builder.components.verbo!, afiksoTipo, builder.components.verboModifiloj.modaleco, builder.components.verboModifiloj.negata);
+    if ( builder.components.verbo ) builder.agordiVerbon(builder.components.verbo, afiksoTipo, builder.components.verboModifiloj.modaleco, builder.components.verboModifiloj.negata);
     return builder;
 }
 

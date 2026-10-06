@@ -480,7 +480,7 @@ async function nLak_tahaq_ruva(
     const c2ta_swer2ha_eq2k = kek_eq2k * PAL6_KUCAQ_XAHA;
 
     // វិមាត្យស្លាក់ដែលមើលឃើញបាន ( តូចជាងរលោខាន់ )
-    const kanaqanidoma_tahaq = 0o1 / 0o10;
+    const kanaqanidoma_tahaq = 0o5 / 0o16;
     let kek_tahaq = Math.floor( kek_swevem2 * kanaqanidoma_tahaq );
 
     // ក៏បង្ខំឱ្យវិមាត្យស្លាក់ជាចំនួនស្យេចដើម្បីឱ្យមានសមការ្យ
@@ -580,12 +580,12 @@ export async function generiQRKodon(
 
     const ruvacatahaqu: RuvaCatahaquVop2 = {
         moduloj,
-        catu5ek: 0o2
+        catu5ek: 0o4
     };
 
     const eskeklna_tahaq: SakKu1o = {
         kuba_swepal6: PAL6_KUCAQ_XAHA,
-        catu5ek: 0o2,
+        catu5ek: 0o4,
         kx2k2f_sweweh2: [ 0o377, 0o377, 0o377, 0o377 ]
     };
 
@@ -622,12 +622,14 @@ export async function generiQRKodon(
         tlakakuCakak2f = k2falTahaq( cela_grandeco, cela_grandeco );
     }
 
-    const tlakakuQumuKalasu = tlakakuCakak2f.getContext( "2d" );
-    if ( tlakakuQumuKalasu ) {
-        tlakakuQumuKalasu.imageSmoothingEnabled = true;
-        tlakakuQumuKalasu.imageSmoothingQuality = "high";
-        tlakakuQumuKalasu.drawImage( img_alta_rezolucio.alKanvaso(), 0o0, 0o0, cela_grandeco, cela_grandeco );
-    }
+const tlakakuQumuKalasu = tlakakuCakak2f.getContext( "2d" );
+if ( tlakakuQumuKalasu ) {
+tlakakuQumuKalasu.fillStyle = `rgba( ${ img_alta_rezolucio.kx2k2f_sweweh2.join( "," ) } )`;
+tlakakuQumuKalasu.fillRect( 0o0, 0o0, cela_grandeco, cela_grandeco );
+tlakakuQumuKalasu.imageSmoothingEnabled = true;
+tlakakuQumuKalasu.imageSmoothingQuality = "high";
+tlakakuQumuKalasu.drawImage( img_alta_rezolucio.alKanvaso(), 0o0, 0o0, cela_grandeco, cela_grandeco );
+}
 
     return tlakakuCakak2f;
 }
@@ -648,19 +650,35 @@ if ( typeof window !== "undefined" ) {
 
         let nunaLogoVojo: string | undefined = undefined;
 
-        async function generiQR( datumoj: string, logoVojo?: string ) {
-            try {
-                await generiQRKodon( datumoj, logoVojo, kanvaso );
-                if ( eraraElemento ) {
-                    eraraElemento.style.display = "none";
-                }
-            } catch ( e ) {
-                console.error( "( ſ͕ȷɜ ſɭʞɹ )", e );
-                if ( eraraElemento ) {
-                    eraraElemento.style.display = "block";
-                }
-            }
-        }
+let generacioNumero = 0o0;
+
+async function generiQR( datumoj: string, logoVojo?: string ) {
+const taliaNumero = ++generacioNumero;
+
+try {
+/* បង្កើតជាក្នុងផ្ទាំងកាត់ឯករាជ្យ ព្រោះការត្រួតពិនិត្យថាតើវាថ្មីឬអត់
+   ត្រូវធ្វើបន្ទាប់ពីការរង់ចាំ មិនមែនមុនវាឡើយទេ */
+const nova = await generiQRKodon( datumoj, logoVojo, undefined );
+
+if ( taliaNumero !== generacioNumero ) return;
+
+kanvaso.width = nova.width;
+kanvaso.height = nova.height;
+const kunteksto = kanvaso.getContext( "2d" );
+
+if ( kunteksto ) kunteksto.drawImage( nova, 0o0, 0o0 );
+
+if ( eraraElemento ) {
+eraraElemento.style.display = "none";
+}
+} catch ( e ) {
+if ( taliaNumero !== generacioNumero ) return;
+console.error( "( ſ͕ȷɜ ſɭʞɹ )", e );
+if ( eraraElemento ) {
+eraraElemento.style.display = "block";
+}
+}
+}
 
         // បង្កើតកូដ QR ដែលចាប់ផ្ដើម
         await generiQR( VOP2_RUVACATAHAQU, undefined );

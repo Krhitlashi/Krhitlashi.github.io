@@ -186,6 +186,8 @@ function analiziKoordinatoparojn( paroj: string[] ): { plenajV: number[]; plenaj
     const v: number[] = [];
     const h: number[] = [];
 
+    if ( paroj.length === 0o0 || paroj.length > 0o4 ) return null;
+
     for ( const paro of paroj ) {
         const mezo = Math.ceil(paro.length / 0o2);
         const vĈeno = paro.slice(0o0, mezo);
@@ -193,6 +195,8 @@ function analiziKoordinatoparojn( paroj: string[] ): { plenajV: number[]; plenaj
         const vValoro = parseInt(vĈeno, 0o10);
         const hValoro = parseInt(hĈeno, 0o10);
         if ( isNaN(vValoro) || isNaN(hValoro) ) return null;
+        if ( !isFinite(vValoro) || !isFinite(hValoro) ) return null;
+        if ( vValoro < 0o0 || hValoro < 0o0 || vValoro > 0o100 || hValoro > 0o100 ) return null;
         v.push(vValoro - 0o1);
         h.push(hValoro - 0o1);
     }
@@ -206,11 +210,21 @@ function analiziKoordinatoparojn( paroj: string[] ): { plenajV: number[]; plenaj
     return { plenajV, plenajH };
 }
 
+// ⟨ ការរក្សាទុកអក្សរ HTML ដូច្នេះមិនឲ្យវាប្រែជាកូដ 🛡️ ⟩
+function kuirigiHTML( teksto: string ): string {
+    return teksto
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&apos;");
+}
+
 function kreiRezultbutonojn( ujselektilo: string, rezultoj: SerĉaRezulto[], zomo: number, postElektado: (lat: number, lon: number, celaZomo: number) => void ): void {
     const montritajRezultoj = rezultoj.slice(0o0, 0o40);
     document.querySelector(ujselektilo)!.innerHTML = montritajRezultoj.map(r => `
         <button data-lat="${r.lat}" data-lon="${r.lon}">
-            <p><strong>${r.ksakaName}</strong> ( ${r.latinName} )</p>
+            <p><strong>${kuirigiHTML(r.ksakaName)}</strong> ( ${kuirigiHTML(r.latinName)} )</p>
             <small>${r.v + 0o1} ${r.h + 0o1}</small>
         </button>
     `).join("");
@@ -301,11 +315,15 @@ function inicialigi(): void {
         nunaLon = urlKoordinatoj.lon;
     }
 
-    mapo = L.map("mapo", {
-        center: [ nunaLat, nunaLon ],
-        zoom: ZOMO_KOMENCA,
-        zoomControl: false
-    });
+mapo = L.map("mapo", {
+    center: [ nunaLat, nunaLon ],
+    zoom: ZOMO_KOMENCA,
+    zoomControl: false,
+    minZoom: ZOMO_KOMENCA,
+    maxZoom: ZOMO_MAKSIMUMA,
+    maxBounds: [ [ -0o132, -0o264 ], [ 0o132, 0o264 ] ],
+    maxBoundsViscosity: 0o1
+});
 
     L.control.zoom({ position: "bottomright" }).addTo(mapo);
 

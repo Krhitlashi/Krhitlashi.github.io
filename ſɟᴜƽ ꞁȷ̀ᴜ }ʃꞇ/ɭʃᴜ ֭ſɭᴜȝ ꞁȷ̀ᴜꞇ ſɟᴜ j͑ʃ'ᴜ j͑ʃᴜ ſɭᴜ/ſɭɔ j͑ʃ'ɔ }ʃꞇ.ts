@@ -1669,6 +1669,7 @@ async function procezigiTahaqn(tahaqBildo: HTMLImageElement): Promise<void> {
         }
 
         agordiProgreson( 0o77 );
+        if ( tlakakuTahaqSweruva ) URL.revokeObjectURL(tlakakuTahaqSweruva);
         tlakakuTahaqSweruva = URL.createObjectURL(new Blob([ pngBajtoj ], { type: "image/png" }));
         metadatumojKp6 = metadatumoj;
         TLAKAKU_TAHAQ.src = tlakakuTahaqSweruva;

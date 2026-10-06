@@ -12,7 +12,7 @@
 const NUMERIKA: Record<string, string> = { "ts": "1", "ii": "2", "tl": "3", "au": "4", "kz": "5", "aa": "6", "ou": "7", "eu": "0" };
 const NUMERIKA_MALO: Record<string, string> = { "1": "ts", "2": "ii", "3": "tl", "4": "au", "5": "kz", "6": "aa", "7": "ou", "0": "eu" };
 
-const VOKALOJ_ORDIGITAJ: string[] = [ "ii", "aa", "eu", "ou", "au", "i", "e", "a", "u", "o", "2", "6", "0", "7", "4" ].sort( ( a, b ) => b.length - a.length );
+const VOKALOJ_ORDIGITAJ: string[] = [ "ii", "aa", "eu", "ou", "au", "ai", "i", "e", "a", "u", "o", "2", "6", "0", "7", "4" ].sort( ( a, b ) => b.length - a.length );
 
 
 // ⟪ ផែនទីស្លាក់ត្រូវបានបង្កើត 🗺️ ⟫
@@ -112,6 +112,11 @@ const INTERNAJ: Mapo[] = [
 
 const MAPOJ: Mapo[] = [ ...KOMENCAJ, ...INTERNAJ ];
 
+/* សំណុំ IPA ដែលជាពាក្យស៊ីឡាំង ដកសេចក្តីពីតារាង ដូច្នេះមិនមានកំហុសប៉ុណ្ណោះ។ */
+const VOKALOJ_IPA: string[] = Array.from(
+    new Set( MAPOJ.filter( m => VOKALOJ_ORDIGITAJ.includes( m.la3os ) ).map( m => m.ipa ) )
+).sort( ( a, b ) => b.length - a.length );
+
 
 // ⟪ មុខងងឹតជំរើស 🔧 ⟫
 
@@ -180,7 +185,9 @@ const SERXTABELO = {
     la3os_gk_initial: konstruiSerxtabelon(KOMENCAJ, "la3os", "gk"),
     la3os_gk_internal: konstruiSerxtabelon(INTERNAJ, "la3os", "gk"),
     la3os_ipa: konstruiSerxtabelon(KOMENCAJ, "la3os", "ipa"),
-    ipa_la3os: konstruiSerxtabelon([ ...KOMENCAJ, ...INTERNAJ ], "ipa", "la3os")
+    ipa_la3os: konstruiSerxtabelon([ ...KOMENCAJ, ...INTERNAJ ], "ipa", "la3os", true),
+    ipa_gk_initial: konstruiSerxtabelon(KOMENCAJ, "ipa", "gk", true),
+    ipa_gk_internal: konstruiSerxtabelon(INTERNAJ, "ipa", "gk", true)
 };
 
 for ( const m of INTERNAJ ) {
@@ -218,7 +225,8 @@ const OKTALA_GRIDO: Record<string, string> = {
     "ſ͔ɭ": "ꞟɔ", "ſɭ": "ꞟı", "֭ſɭ": "ꞟɿ", "ſ͕ɭ": "ꞟц",
     "ꞇ": "ɩɔ", "ɔ": "ɩı", "ɹ": "ɩɿ", "ᴜ": "ɩц", "ȏ": "ɩэ",
     "w": "ƨɔ", "ɜ": "ƨı", "э": "ƨɿ", "ⅎ": "ƨц",
-    "⟅": "ꞟɔ", "｡": "ꞟı", "ʌ": "ꞟɿ", "v": "ꞟц", "⸙": "ꞟэ", "⸾": "ꞟꞟ", "⸰": "ꞟɩ"
+    "⟅": "эꞟɔ", "｡": "эꞟı", "ʌ": "эꞟɿ", "v": "эꞟц", "⸙": "эꞟэ", "⸾": "эꞟꞟ", "⸰": "эꞟɩ",
+    "ꞁȷ̀": "ƨꞟ"
 };
 
 // ⟨ IPA នៃជួរឈរពិសេស ( э ) ក្នុងតារាងបៃ ⟩
@@ -502,16 +510,23 @@ function oktalaAlGawekiif(teksto: string): string {
     return String(teksto).split(/\s+/).filter(Boolean).map(vorto => {
         let rezulto = "";
         let i = 0o0;
-        while ( i < vorto.length ) {
-            const duopo = vorto.slice(i, i + 0o2);
-            if ( B8_CIFEROJ_MALO[duopo[0o0]] !== undefined && B8_CIFEROJ_MALO[duopo[0o1]] !== undefined && OKTALAJ_LAŬVALORO[duopo] ) {
-                rezulto += OKTALAJ_LAŬVALORO[duopo];
-                i += 0o2;
-            } else {
-                rezulto += vorto[i];
-                i++;
-            }
+while ( i < vorto.length ) {
+        /* លេខបៃមានបីតួ ឬពីតួ ដូច្នេះត្រូវស្វែងរកច្រើនជាចម្បង។ */
+        let kongruis = false;
+        for ( const longo of [ 0o3, 0o2 ] ) {
+            const kodo = vorto.slice( i, i + longo );
+            if ( kodo.length !== longo || !OKTALAJ_LAŬVALORO[kodo] ) continue;
+            if ( !Array.from( kodo ).every( cifero => B8_CIFEROJ_MALO[cifero] !== undefined ) ) continue;
+            rezulto += OKTALAJ_LAŬVALORO[kodo];
+            i += longo;
+            kongruis = true;
+            break;
         }
+        if ( !kongruis ) {
+            rezulto += vorto[i];
+            i++;
+        }
+    }
         return rezulto;
     }).join(" ");
 }
@@ -762,7 +777,7 @@ function normigiLa3osEnigon(teksto: string): string {
  * @param serxtabelo ( Serxtabelo , required ) - តារាងស្វែងរក។
  * @returns ĉeno
  */
-function konvertiPerSerxtabelo(teksto: string, serxtabelo: Serxtabelo): string {
+function konvertiPerSerxtabelo(teksto: string, serxtabelo: Serxtabelo, strikta = false): string {
     if ( !serxtabelo || !serxtabelo.keys ) return teksto;
 
     let rezulto = "";
@@ -777,7 +792,11 @@ function konvertiPerSerxtabelo(teksto: string, serxtabelo: Serxtabelo): string {
                 break;
             }
         }
-        if ( !kongruis ) { rezulto += teksto[i]; i++; }
+        /* ក្នុងរបៀបមិនត្រឹមត្រូវ អក្សរដែលមិនជា IPA ត្រូវបានលុបចោល។ */
+        if ( !kongruis ) {
+            if ( !strikta ) rezulto += teksto[i];
+            i++;
+        }
     }
     return rezulto;
 }
@@ -906,10 +925,21 @@ function disigiEnSilabojn(teksto: string): string {
 }
 
 /**
- * បម្លែងស៊ីឡាំង La3os តែមួយទៅជា Gawekiif។
- * @param silabo ( string , required ) - ស៊ីឡាំងសម្រាប់បម្លែង។
- * @returns ĉeno
- */
+* បញ្ចួលសញ្ញាមើល លើស៊ីឡាំងដែលចាប់ផ្ដើមដោយស៊ីឡាំងដែលមិនមានផ្ដើមក្នុងពាក្យ។
+* @param valoro ( string , required ) - ស៊ីឡាំង Gawekiif ដែលបានបម្លែងរួច។
+* @param silabo ( string , required ) - ស៊ីឡាំង La3os ដើម។
+* @returns valoro
+*/
+function aldonuKomenconSilabo(valoro: string, silabo: string): string {
+    if ( !valoro || valoro.startsWith("ꞁȷ̀") ) return valoro;
+    return troviVokalonJe( silabo, 0o0 ) ? "ꞁȷ̀" + valoro : valoro;
+}
+
+/**
+* បម្លែងស៊ីឡាំង La3os តែមួយទៅជា Gawekiif។
+* @param silabo ( string , required ) - ស៊ីឡាំងសម្រាប់បម្លែង។
+* @returns ĉeno
+*/
 function konvertiSilabon(silabo: string): string {
     if ( cxuMalplenaAUBlanko(silabo) ) return "";
 
@@ -917,7 +947,12 @@ function konvertiSilabon(silabo: string): string {
     const internaSerxtabelo = SERXTABELO.la3os_gk_internal;
 
     if ( !komencaSerxtabelo?.map || !internaSerxtabelo?.map ) return "ꞁȷ̀";
-    if ( internaSerxtabelo.map[silabo] ) return internaSerxtabelo.map[silabo];
+
+    if ( !troviVokalonJe( silabo, 0o0 ) ) {
+        if ( komencaSerxtabelo.map[silabo] ) return aldonuKomenconSilabo( komencaSerxtabelo.map[silabo], silabo );
+    } else if ( internaSerxtabelo.map[silabo] ) {
+        return aldonuKomenconSilabo( internaSerxtabelo.map[silabo], silabo );
+    }
 
     let rezulto = "";
     let i = 0o0;
@@ -1006,8 +1041,8 @@ function konvertiGawekiif(teksto: string, serxtabelo: Serxtabelo, opcioj: Konver
             if ( majuskligi ) konvertita = konvertita.replace(/^./, c => c.toUpperCase());
             return konvertita;
         });
-        const disigilo = laŭlitera ? silabaDisigilo : "";
-        return konvertitajSilaboj.join(disigilo);
+const disigilo = laŭlitera ? silabaDisigilo : "";
+return konvertitajSilaboj.join(disigilo);
     });
 
     const rezulto = konvertitaj.join(" ");
@@ -1036,7 +1071,7 @@ function la3osAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 
     const rezulto = vortoj.map(w => {
         return konvertiVorton(w);
-    }).join("ʌ");
+    }).join(" ʌ ");
 
     return rezulto;
 }
@@ -1086,13 +1121,16 @@ function la3osAlIpa(teksto: string, opcioj: KonvertajOpcioj = {}): string {
  * @returns ĉeno
  */
 function ipaAlLa3os(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    const { laŭlitera = false, uziNumerikan = true } = opcioj;
+    const { uziNumerikan = true } = opcioj;
     const serxtabelo = SERXTABELO.ipa_la3os;
 
-    const silaboj = teksto.split(".").map(s => s.trim()).filter(Boolean);
-    const konvertitaj = silaboj.map(silabo => konvertiPerSerxtabelo(silabo, serxtabelo));
+    /* ចំនាប់នៅ IPA គឺជាពាក្យ ហើយ "េ" គឺជាសញ្ញាស៊ីឡាំងក្នុងពាក្យ។ ចំនាប់ធម្មតាគឺសម្លោះ
+       ហើយក្នុងរបៀបអក្សរធម្មតាវាជាពាក្យភ្លោះណាស់។ ដូច្នេះយើងរក្សាប្រព័ន្ធនឹងអក្សររបស់បំណែក។
+       ចំនាប់ "េ" ត្រូវបានដកចេញ ដូច្នេះ La3os មិនមានស៊ីឡាំងក្នុងពាក្យទេ តែមានសម្លោះជាដង់។ */
+    const vortoj = String(teksto).split(/\s+/).filter(Boolean);
 
-    const kunigita = laŭlitera ? konvertitaj.join(".") : konvertitaj.join("");
+    const kunigita = vortoj.map(vorto => vorto.split(".").map(silabo => konvertiPerSerxtabelo(silabo, serxtabelo, true)).filter(Boolean).join("")).filter(Boolean).join(" ");
+
     return uziNumerikan ? kunigita : konvertiNumerikanAlLa3os(kunigita);
 }
 
@@ -1107,21 +1145,134 @@ function gawekiifAlIpa(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 }
 
 /**
- * បម្លែង IPA ទៅជា Gawekiif ដោយផ្ទាល់។
- * @param teksto ( string , required ) - អត្ថបទ IPA។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { laŭlitera? }។
- * @returns ĉeno
- */
-function ipaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    const { laŭlitera = false } = opcioj;
-    const serxtabelo = SERXTABELO.ipa_la3os;
+* រក IPA ស៊ីឡាំងមួយដែលចាប់ផ្ដើមដោយស៊ីឡាំងទៅចុង។
+* @param silabo ( string , required ) - ស៊ីឡាំង IPA។
+* @param pozicio ( number = 0o0 , optional ) - ទីតាំងចាប់ផ្ដើមស្វែងសម្រាប់បន្ថែម។
+* @returns kungruo
+*/
+function troviVokalonIpaJe( silabo: string, pozicio: number = 0o0 ): { pozicio: number, vokalo: string, longo: number } | null {
+    for ( let i = pozicio; i < silabo.length; i++ ) {
+        for ( const vokalo of VOKALOJ_IPA ) {
+            if ( silabo.slice(i, i + vokalo.length) === vokalo ) return { pozicio: i, vokalo, longo: vokalo.length };
+        }
+    }
+    return null;
+}
 
-    const vortoj = laŭlitera ? teksto.split(".").map(s => s.trim()).filter(Boolean) : [ teksto ];
+/**
+* បំបែកស៊ីឡាំង IPA ដោយផ្ទាល់ ដោយមិនឆ្លងកាត់ La3os ទេ។
+* @param teksto ( string , required ) - អត្ថបទ IPA។
+* @returns silaboj
+*/
+function disigiIpaEnSilabojn( teksto: string ): string[] {
+    /* ចំនាប់ "េ" ក្នុង IPA បំបែកស៊ីឡាំង ដូច្នេះមិនត្រូវចូលក្នុងស៊ីឡាំងទេ។ */
+    const rezulto: string[] = [];
+    for ( const segmento of teksto.split(".") ) {
+        if ( !segmento ) continue;
+
+        const vokalajPozicioj: { pozicio: number, vokalo: string, longo: number }[] = [];
+        let i = 0o0;
+        while ( i < segmento.length ) {
+            let kongruis = false;
+            for ( const vokalo of VOKALOJ_IPA ) {
+                if ( segmento.slice( i, i + vokalo.length ) === vokalo ) {
+                    vokalajPozicioj.push( { pozicio: i, vokalo, longo: vokalo.length } );
+                    i += vokalo.length;
+                    kongruis = true;
+                    break;
+                }
+            }
+            if ( !kongruis ) i++;
+        }
+
+        if ( vokalajPozicioj.length <= 0o1 ) {
+            rezulto.push( segmento );
+            continue;
+        }
+
+        for ( let j = 0o0; j < vokalajPozicioj.length; j++ ) {
+            const kongruo = vokalajPozicioj[j];
+            const start = j === 0o0 ? 0o0 : vokalajPozicioj[j - 0o1].pozicio + vokalajPozicioj[j - 0o1].longo;
+            const end = j < vokalajPozicioj.length - 0o1 ? kongruo.pozicio + kongruo.longo : segmento.length;
+            const silabo = segmento.slice( start, end );
+            if ( silabo ) rezulto.push( silabo );
+        }
+    }
+    return rezulto;
+}
+
+/**
+* បម្លែងស៊ីឡាំង IPA តែមួយទៅជា Gawekiif ដោយផ្ទាល់ ដោយមិនឆ្លងកាត់ La3os ទេ។
+* @param silabo ( string , required ) - ស៊ីឡាំង IPA។
+* @param estasKomenca ( boolean = false , optional ) - ស៊ីឡាំងនេះជាស៊ីឡាំងដំបូងនៃពាក្យ។
+* @returns ĉeno
+*/
+function konvertiIpaSilabon( silabo: string ): string {
+    if ( cxuMalplenaAUBlanko(silabo) ) return "";
+
+    const komencaSerxtabelo = SERXTABELO.ipa_gk_initial;
+    const internaSerxtabelo = SERXTABELO.ipa_gk_internal;
+
+    if ( !komencaSerxtabelo?.map || !internaSerxtabelo?.map ) return "";
+
+    const vokalo = troviVokalonIpaJe( silabo, 0o0 );
+    if ( !vokalo ) return "";
+
+    let rezulto = "";
+
+    /* ផ្ដើមស៊ីឡាំង - របៀបផ្ដើម ព្រោះស៊ីឡាំងនីមួយៗ ត្រូវចាន់ស្នាក់ដោយឯករាជ្យ។ */
+    let unuaKonsonanto = true;
+    for ( let i = 0o0; i < vokalo.pozicio; ) {
+        let kongruis = false;
+        const serxtabelo = unuaKonsonanto ? komencaSerxtabelo : internaSerxtabelo;
+        for ( const klavo of serxtabelo.keys ) {
+            if ( klavo.length <= vokalo.pozicio - i && silabo.slice(i).startsWith(klavo) ) {
+                rezulto += serxtabelo.map[klavo];
+                i += klavo.length;
+                unuaKonsonanto = false;
+                kongruis = true;
+                break;
+            }
+        }
+        if ( !kongruis ) i++;
+    }
+
+    rezulto += internaSerxtabelo.map[vokalo.vokalo] || komencaSerxtabelo.map[vokalo.vokalo] || "";
+
+    /* ក្រោយស៊ីឡាំង - របៀបក្នុងពាក្យ។ */
+    const resto = silabo.slice( vokalo.pozicio + vokalo.longo );
+    for ( const klavo of internaSerxtabelo.keys ) {
+        if ( VOKALOJ_IPA.includes( klavo ) ) continue;
+        if ( resto.includes( klavo ) ) rezulto += internaSerxtabelo.map[klavo];
+    }
+
+    if ( !vokalo.pozicio && !rezulto.startsWith("ꞁȷ̀") ) rezulto = "ꞁȷ̀" + rezulto;
+
+    return rezulto || "ꞁȷ̀";
+}
+
+/**
+* បម្លែង IPA ទៅជា Gawekiif ដោយផ្ទាល់។
+* @param teksto ( string , required ) - អត្ថបទ IPA។
+* @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { laŭlitera? }។
+* @returns ĉeno
+*/
+function ipaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
+const vortoj = String(teksto).split(/\s+/).filter(Boolean);
 
     const rezulto = vortoj.map(vorto => {
-        const la3osSilabo = konvertiPerSerxtabelo(vorto, serxtabelo);
-        return konvertiSilabon(la3osSilabo);
-    }).join("ʌ");
+        const segmentoj = vorto.split(".");
+        const gkSilaboj: string[] = [];
+        for ( let j = 0o0; j < segmentoj.length; j++ ) {
+            const segmento = segmentoj[j].trim();
+            if ( !segmento ) continue;
+            const eksteraj = disigiIpaEnSilabojn( segmento );
+            for ( let k = 0o0; k < eksteraj.length; k++ ) {
+                gkSilaboj.push( konvertiIpaSilabon( eksteraj[k] ) );
+            }
+        }
+        return gkSilaboj.filter( Boolean ).join(" ");
+    }).join(" ʌ ");
 
     return rezulto;
 }
@@ -1283,8 +1434,8 @@ if ( typeof module !== "undefined" && module.exports ) {
                 eligo.ipa = konverti(eligo.la3os, "la3os", "ipa", opcioj);
             } else if ( fontaFormo === "ipa" ) {
                 eligo.ipa = eniraTeksto;
-                eligo.la3os = konverti(eligo.ipa, "ipa", "la3os", opcioj);
-                eligo.gk = konverti(eligo.la3os, "la3os", "gawekiif", opcioj);
+                eligo.gk = konverti(eligo.ipa, "ipa", "gawekiif", opcioj);
+                eligo.la3os = konverti(eligo.gk, "gawekiif", "la3os", opcioj);
             } else if ( fontaFormo === "numero" ) {
                 eligo.number = eniraTeksto;
                 eligo.gk = konverti(eligo.number, "numero", "gawekiif", opcioj);
