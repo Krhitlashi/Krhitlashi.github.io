@@ -107,7 +107,9 @@ const INTERNAJ: Mapo[] = [
     { gk: "ɔⅎ", la3os: "0", ipa: "ɛ̃" },
     { gk: "ɜⅎ", la3os: "7", ipa: "ɤ̃" },
     { gk: "эⅎ", la3os: "4", ipa: "ɑ̃" },
-    { gk: "ᴜꞇ", la3os: "ai", ipa: "ə" }
+    { gk: "ᴜꞇ", la3os: "ai", ipa: "ə" },
+    { gk: "⟅", la3os: ".", ipa: "\\" },
+    { gk: "｡", la3os: ",", ipa: "," }
 ];
 
 const MAPOJ: Mapo[] = [ ...KOMENCAJ, ...INTERNAJ ];
@@ -1019,8 +1021,60 @@ function konvertiVorton(vorto: string): string {
     }).join(" ");
 }
 
+// ⟨ សញ្ញាវណ្ណយុត្តដែលឈរតែម្នាក់ឯង ( ".", ",", "|" ) ភ្ជាប់ដោយចន្លោះ មិនមែន "ʌ" ⟩
+const INTERPUNKCIAJ_LA3OS: Record<string, string> = { ".": "⟅", ",": "｡" };
+const INTERPUNKCIAJ_IPA: Record<string, string> = { "/": "⟅", ",": "｡" };
+
+/**
+ * ត្រួតពិនិត្យថា ពាក្យមានតែសញ្ញាវណ្ណយុត្ត La3os។
+ * @param vorto ( string , required ) - ពាក្យសម្រាប់ត្រួតពិនិត្យ។
+ * @returns jesne
+ */
+function cxuNurLa3osInterpunkcio(vorto: string): boolean {
+    if ( !vorto ) return false;
+    return Array.from(vorto).every(c => INTERPUNKCIAJ_LA3OS[c] !== undefined);
+}
+
+/**
+ * បម្លែងសញ្ញាវណ្ណយុត្ត La3os ទៅជា Gawekiif ដោយផ្ទាល់។
+ * @param vorto ( string , required ) - ពាក្យសញ្ញាវណ្ណយុត្ត។
+ * @returns ĉeno
+ */
+function konvertiLa3osInterpunkcion(vorto: string): string {
+    return Array.from(vorto).map(c => INTERPUNKCIAJ_LA3OS[c] || c).join("");
+}
+
+/**
+ * ត្រួតពិនិត្យថា ពាក្យមានតែសញ្ញាវណ្ណយុត្ត IPA។
+ * @param vorto ( string , required ) - ពាក្យសម្រាប់ត្រួតពិនិត្យ។
+ * @returns jesne
+ */
+function cxuNurIpaInterpunkcio(vorto: string): boolean {
+    if ( !vorto ) return false;
+    return Array.from(vorto).every(c => INTERPUNKCIAJ_IPA[c] !== undefined);
+}
+
+/**
+ * បម្លែងសញ្ញាវណ្ណយុត្ត IPA ទៅជា Gawekiif ដោយផ្ទាល់។
+ * @param vorto ( string , required ) - ពាក្យសញ្ញាវណ្ណយុត្ត។
+ * @returns ĉeno
+ */
+function konvertiIpaInterpunkcion(vorto: string): string {
+    return Array.from(vorto).map(c => INTERPUNKCIAJ_IPA[c] || c).join("");
+}
+
 
 // ⟪ មុខងងឹតបម្លែង 🔄 ⟫
+
+/**
+ * ត្រួតពិនិត្យថា លទ្ធផលបម្លែងមានតែសញ្ញាវណ្ណយុត្ត ( ".", ",", "/" )។
+ * @param konvertita ( string , required ) - លទ្ធផលបម្លែងសម្រាប់ត្រួតពិនិត្យ។
+ * @returns jesne
+ */
+function cxuNurEligaInterpunkcio(konvertita: string): boolean {
+    if ( !konvertita ) return false;
+    return Array.from(konvertita).every(c => c === "." || c === "," || c === "/");
+}
 
 /**
  * បម្លែង Gawekiif ទៅជាទម្រង់ផ្សេងទៀត ( La3os ឬ IPA )។
@@ -1040,9 +1094,24 @@ function konvertiGawekiif(teksto: string, serxtabelo: Serxtabelo, opcioj: Konver
             let konvertita = konvertiPerSerxtabelo(silabo, serxtabelo);
             if ( majuskligi ) konvertita = konvertita.replace(/^./, c => c.toUpperCase());
             return konvertita;
-        });
-const disigilo = laŭlitera ? silabaDisigilo : "";
-return konvertitajSilaboj.join(disigilo);
+        }).filter(s => s !== "");
+        if ( laŭlitera ) {
+            let kunigita = "";
+            for ( const s of konvertitajSilaboj ) {
+                if ( cxuNurEligaInterpunkcio(s) ) {
+                    kunigita += (kunigita && !kunigita.endsWith(" ") ? " " : "") + s + " ";
+                } else {
+                    kunigita += (kunigita && !kunigita.endsWith(" ") ? silabaDisigilo : "") + s;
+                }
+            }
+            return kunigita.trim();
+        }
+        let kunigita = "";
+        for ( const s of konvertitajSilaboj ) {
+            kunigita += s;
+            if ( cxuNurEligaInterpunkcio(s) ) kunigita += " ";
+        }
+        return kunigita.trim();
     });
 
     const rezulto = konvertitaj.join(" ");
@@ -1069,9 +1138,17 @@ function la3osAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
     const normaligitaTeksto = normigiLa3osEnigon(teksto);
     const vortoj = disigiPerSpacoj(normaligitaTeksto);
 
-    const rezulto = vortoj.map(w => {
-        return konvertiVorton(w);
-    }).join(" ʌ ");
+    let rezulto = "";
+    let lastWasPunct = false;
+    for ( const v of vortoj ) {
+        if ( cxuNurLa3osInterpunkcio(v) ) {
+            rezulto += (rezulto ? " " : "") + konvertiLa3osInterpunkcion(v);
+            lastWasPunct = true;
+        } else {
+            rezulto += (rezulto ? (lastWasPunct ? " " : " ʌ ") : "") + konvertiVorton(v);
+            lastWasPunct = false;
+        }
+    }
 
     return rezulto;
 }
@@ -1260,7 +1337,14 @@ function konvertiIpaSilabon( silabo: string ): string {
 function ipaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 const vortoj = String(teksto).split(/\s+/).filter(Boolean);
 
-    const rezulto = vortoj.map(vorto => {
+    let rezulto = "";
+    let lastWasPunct = false;
+    for ( const vorto of vortoj ) {
+        if ( cxuNurIpaInterpunkcio(vorto) ) {
+            rezulto += (rezulto ? " " : "") + konvertiIpaInterpunkcion(vorto);
+            lastWasPunct = true;
+            continue;
+        }
         const segmentoj = vorto.split(".");
         const gkSilaboj: string[] = [];
         for ( let j = 0o0; j < segmentoj.length; j++ ) {
@@ -1271,8 +1355,12 @@ const vortoj = String(teksto).split(/\s+/).filter(Boolean);
                 gkSilaboj.push( konvertiIpaSilabon( eksteraj[k] ) );
             }
         }
-        return gkSilaboj.filter( Boolean ).join(" ");
-    }).join(" ʌ ");
+        const gkVorto = gkSilaboj.filter( Boolean ).join(" ");
+        if ( gkVorto ) {
+            rezulto += (rezulto ? (lastWasPunct ? " " : " ʌ ") : "") + gkVorto;
+            lastWasPunct = false;
+        }
+    }
 
     return rezulto;
 }
