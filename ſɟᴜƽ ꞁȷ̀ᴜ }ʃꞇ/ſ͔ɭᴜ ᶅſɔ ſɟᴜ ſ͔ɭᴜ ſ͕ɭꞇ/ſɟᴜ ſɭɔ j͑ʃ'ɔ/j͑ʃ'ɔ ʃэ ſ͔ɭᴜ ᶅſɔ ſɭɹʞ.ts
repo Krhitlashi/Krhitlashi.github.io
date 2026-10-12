@@ -9,21 +9,21 @@
 
 // ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 📦 ⟫
 
-const NUMERIKA: Record<string, string> = { "ts": "1", "ii": "2", "tl": "3", "au": "4", "kz": "5", "aa": "6", "ou": "7", "eu": "0" };
-const NUMERIKA_MALO: Record<string, string> = { "1": "ts", "2": "ii", "3": "tl", "4": "au", "5": "kz", "6": "aa", "7": "ou", "0": "eu" };
+const LA3OS_K2FE: Record<string, string> = { "ts": "1", "ii": "2", "tl": "3", "au": "4", "kz": "5", "aa": "6", "ou": "7", "eu": "0" };
+const K2FE_LA3OS: Record<string, string> = { "1": "ts", "2": "ii", "3": "tl", "4": "au", "5": "kz", "6": "aa", "7": "ou", "0": "eu" };
 
-const VOKALOJ_ORDIGITAJ: string[] = [ "ii", "aa", "eu", "ou", "au", "ai", "i", "e", "a", "u", "o", "2", "6", "0", "7", "4" ].sort( ( a, b ) => b.length - a.length );
+const AWA_CA1ARA: string[] = [ "ii", "aa", "eu", "ou", "au", "ai", "i", "e", "a", "u", "o", "2", "6", "0", "7", "4" ].sort( ( a, b ) => b.length - a.length );
 
 
 // ⟪ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ 🗺️ ⟫
 
-interface Mapo {
+interface Ca1araKef {
     gk: string;
     la3os: string;
     ipa: string;
 }
 
-const KOMENCAJ: Mapo[] = [
+const XAQADI_CA1ARA: Ca1araKef[] = [
     { gk: "ᶅſ", la3os: "w", ipa: "ⱱ̥" },
     { gk: "ſן", la3os: "p", ipa: "p" },
     { gk: "ſȷ", la3os: "f", ipa: "ɸ" },
@@ -62,7 +62,7 @@ const KOMENCAJ: Mapo[] = [
     { gk: "⺓", la3os: "piise", ipa: "pɪ̈sɛ" }
 ];
 
-const INTERNAJ: Mapo[] = [
+const C2H2_CA1ARA: Ca1araKef[] = [
     { gk: "п́", la3os: "w", ipa: "ⱱ̥" },
     { gk: "ɘ", la3os: "p", ipa: "p" },
     { gk: "ʞ", la3os: "f", ipa: "ɸ" },
@@ -112,113 +112,113 @@ const INTERNAJ: Mapo[] = [
     { gk: "｡", la3os: ",", ipa: "," }
 ];
 
-const MAPOJ: Mapo[] = [ ...KOMENCAJ, ...INTERNAJ ];
+const KEF_CA1ARA: Ca1araKef[] = [ ...XAQADI_CA1ARA, ...C2H2_CA1ARA ];
 
 /* ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃᴜƽ ( IPA ) ⟩ */
-const VOKALOJ_IPA: string[] = Array.from(
-    new Set( MAPOJ.filter( m => VOKALOJ_ORDIGITAJ.includes( m.la3os ) ).map( m => m.ipa ) )
+const AWA_IPA: string[] = Array.from(
+    new Set( KEF_CA1ARA.filter( m => AWA_CA1ARA.includes( m.la3os ) ).map( m => m.ipa ) )
 ).sort( ( a, b ) => b.length - a.length );
 
 
 // ⟪ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ 🔧 ⟫
 
-interface Serxtabelo {
-    map: Record<string, string>;
-    keys: string[];
+interface Veracel2f {
+    stakefani: Record<string, string>;
+    ca3aqCa1ara: string[];
 }
 
-interface KonvertajOpcioj {
-    laŭlitera?: boolean;
-    majuskligi?: boolean;
-    silabaDisigilo?: string;
-    uziNumerikan?: boolean;
-    enigaDisigilo?: string;
-    eligaDisigilo?: string;
-    antaŭprilabori?: ((teksto: string) => string) | null;
+interface TboSukf2q {
+    kaj2xa?: boolean;
+    puf2?: boolean;
+    xezKp6catasai?: string;
+    k2K2fe?: boolean;
+    saxeKp6catasai?: string;
+    ara3akakKp6catasai?: string;
+    saxeVasaka?: ((kp6k2p2: string) => string) | null;
 }
 
 /**
  * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
- * @returns jesne
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
+ * @returns ſɭc̗ᴜ ſɭɹ ֭ſɭɹ
  */
-function cxuMalplenaAUBlanko(teksto: string): boolean {
-    return !teksto || /^[ ʌ-]*$/.test(teksto);
+function eq2k(kp6k2p2: string): boolean {
+    return !kp6k2p2 || /^[ ʌ-]*$/.test(kp6k2p2);
 }
 
 /**
  * ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
- * @returns listo
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
+ * @returns ᶅſɔ ſɭɹ ſןɹ
  */
-function disigiPerSpacoj(teksto: string): string[] {
-    return teksto.toLowerCase().split(/\s+/).filter(Boolean);
+function kaltokKp6catasai(kp6k2p2: string): string[] {
+    return kp6k2p2.toLowerCase().split(/\s+/).filter(Boolean);
 }
 
 /**
- * ſɭʞɹ ʌ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( serxtabelo )
- * @param eroj ( T[] , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @param fontoKlavo ( keyof T , required ) - ſɭɔ˞ᴜ ſɭᴜ
- * @param celoKlavo ( keyof T , required ) - ſɭɔ˞ᴜ ſɭᴜ
- * @param saltiEkzistantan ( boolean , optional ) - ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns serxtabelo
+ * ſɭʞɹ ʌ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( veracel2f )
+ * @param kefCa1ara ( T[] , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param saxeCa3aq ( keyof T , required ) - ſɭɔ˞ᴜ ſɭᴜ
+ * @param ara3akakCa3aq ( keyof T , required ) - ſɭɔ˞ᴜ ſɭᴜ
+ * @param xaqadi ( boolean , optional ) - ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns veracel2f
  */
-function konstruiSerxtabelon<T extends Mapo>(eroj: T[], fontoKlavo: keyof T, celoKlavo: keyof T, saltiEkzistantan = false): Serxtabelo {
-    const serxtabelo: Serxtabelo = { map: {}, keys: [] };
-    for ( const m of eroj ) {
-        const fonto = m[fontoKlavo] as string;
-        const celo = m[celoKlavo] as string;
-        if ( fonto && celo !== undefined ) {
-            if ( !saltiEkzistantan || !serxtabelo.map[fonto] ) {
-                serxtabelo.map[fonto] = celo;
+function vasakaVeracel2f<T extends Ca1araKef>(kefCa1ara: T[], saxeCa3aq: keyof T, ara3akakCa3aq: keyof T, xaqadi = false): Veracel2f {
+    const veracel2f: Veracel2f = { stakefani: {}, ca3aqCa1ara: [] };
+    for ( const kef of kefCa1ara ) {
+        const saxe = kef[saxeCa3aq] as string;
+        const ara3akak = kef[ara3akakCa3aq] as string;
+        if ( saxe && ara3akak !== undefined ) {
+            if ( !xaqadi || !veracel2f.stakefani[saxe] ) {
+                veracel2f.stakefani[saxe] = ara3akak;
             }
         }
     }
-    serxtabelo.keys = Object.keys(serxtabelo.map).sort((a, b) => b.length - a.length);
-    return serxtabelo;
+    veracel2f.ca3aqCa1ara = Object.keys(veracel2f.stakefani).sort((a, b) => b.length - a.length);
+    return veracel2f;
 }
 
 
 // ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ 🔍 ⟫
 
-const SERXTABELO = {
-    gk_la3os: konstruiSerxtabelon(MAPOJ, "gk", "la3os"),
-    gk_ipa: konstruiSerxtabelon(MAPOJ, "gk", "ipa"),
-    la3os_gk_initial: konstruiSerxtabelon(KOMENCAJ, "la3os", "gk"),
-    la3os_gk_internal: konstruiSerxtabelon(INTERNAJ, "la3os", "gk"),
-    la3os_ipa: konstruiSerxtabelon(KOMENCAJ, "la3os", "ipa"),
-    ipa_la3os: konstruiSerxtabelon([ ...KOMENCAJ, ...INTERNAJ ], "ipa", "la3os", true),
-    ipa_gk_initial: konstruiSerxtabelon(KOMENCAJ, "ipa", "gk", true),
-    ipa_gk_internal: konstruiSerxtabelon(INTERNAJ, "ipa", "gk", true)
+const VERACEL2F = {
+    gk_la3os: vasakaVeracel2f(KEF_CA1ARA, "gk", "la3os"),
+    gk_ipa: vasakaVeracel2f(KEF_CA1ARA, "gk", "ipa"),
+    la3os_gk_xaqadi: vasakaVeracel2f(XAQADI_CA1ARA, "la3os", "gk"),
+    la3os_gk_c2h2: vasakaVeracel2f(C2H2_CA1ARA, "la3os", "gk"),
+    la3os_ipa: vasakaVeracel2f(XAQADI_CA1ARA, "la3os", "ipa"),
+    ipa_la3os: vasakaVeracel2f([ ...XAQADI_CA1ARA, ...C2H2_CA1ARA ], "ipa", "la3os", true),
+    ipa_gk_xaqadi: vasakaVeracel2f(XAQADI_CA1ARA, "ipa", "gk", true),
+    ipa_gk_c2h2: vasakaVeracel2f(C2H2_CA1ARA, "ipa", "gk", true)
 };
 
-for ( const m of INTERNAJ ) {
-    if ( m.la3os && m.ipa && !SERXTABELO.la3os_ipa.map[m.la3os] ) {
-        SERXTABELO.la3os_ipa.map[m.la3os] = m.ipa;
+for ( const m of C2H2_CA1ARA ) {
+    if ( m.la3os && m.ipa && !VERACEL2F.la3os_ipa.stakefani[m.la3os] ) {
+        VERACEL2F.la3os_ipa.stakefani[m.la3os] = m.ipa;
     }
 }
-SERXTABELO.la3os_ipa.keys = Object.keys(SERXTABELO.la3os_ipa.map).sort((a, b) => b.length - a.length);
+VERACEL2F.la3os_ipa.ca3aqCa1ara = Object.keys(VERACEL2F.la3os_ipa.stakefani).sort((a, b) => b.length - a.length);
 
 
 // ⟪ ſɭc̗ᴜ ſɭɹ ſȷɔ 🔢 ⟫
 
 // ⟨ ſɭɹ ſȷɔ ( ɔ-ƨ 0-7 ɔ-⌅̊ 0-F ) ⟩
-const B8_CIFEROJ = [ "ɔ", "ı", "ɿ", "ц", "э", "ꞟ", "ɩ", "ƨ" ];
-const B8_CIFEROJ_MALO: Record<string, number> = { "ɔ": 0o0, "ı": 0o1, "ɿ": 0o2, "ц": 0o3, "э": 0o4, "ꞟ": 0o5, "ɩ": 0o6, "ƨ": 0o7 };
+const CAJA_K2FE = [ "ɔ", "ı", "ɿ", "ц", "э", "ꞟ", "ɩ", "ƨ" ];
+const CAJA_K2FE_VEM2: Record<string, number> = { "ɔ": 0o0, "ı": 0o1, "ɿ": 0o2, "ц": 0o3, "э": 0o4, "ꞟ": 0o5, "ɩ": 0o6, "ƨ": 0o7 };
 
-const KODIGAJ_CIFEROJ = [ "ɔ", "ı", "ɿ", "ц", "э", "ꞟ", "ɩ", "ƨ", "ƨ̵", "ⱻ", "ɜ́", "ԏ", "u̵", "ᶔ", "ⲁ", "⌅̊" ];
-const KODIGAJ_CIFEROJ_MALO: Record<string, number> = {
+const S2KANTA_K2FE = [ "ɔ", "ı", "ɿ", "ц", "э", "ꞟ", "ɩ", "ƨ", "ƨ̵", "ⱻ", "ɜ́", "ԏ", "u̵", "ᶔ", "ⲁ", "⌅̊" ];
+const S2KANTA_VEM2: Record<string, number> = {
     "ɔ": 0o0, "ı": 0o1, "ɿ": 0o2, "ц": 0o3, "э": 0o4, "ꞟ": 0o5, "ɩ": 0o6, "ƨ": 0o7,
     "ƨ̵": 0o10, "ⱻ": 0o11, "ɜ́": 0o12, "ԏ": 0o13, "u̵": 0o14, "ᶔ": 0o15, "ⲁ": 0o16, "⌅̊": 0o17
 };
-const KODIGAJ_CIFEROJ_LAŬVALORO: Record<number, string> = {
+const VEM2_S2KANTA_K2FE: Record<number, string> = {
     0o0: "ɔ", 0o1: "ı", 0o2: "ɿ", 0o3: "ц", 0o4: "э", 0o5: "ꞟ", 0o6: "ɩ", 0o7: "ƨ",
     0o10: "ƨ̵", 0o11: "ⱻ", 0o12: "ɜ́", 0o13: "ԏ", 0o14: "u̵", 0o15: "ᶔ", 0o16: "ⲁ", 0o17: "⌅̊"
 };
-const KODIGAJ_CIFEROJ_LAŬLONGO = [ ...KODIGAJ_CIFEROJ ].sort((a, b) => b.length - a.length);
+const S2KANTA_K2FE_PUF2 = [ ...S2KANTA_K2FE ].sort((a, b) => b.length - a.length);
 
 // ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ ʌ ſɭɹ ſȷɔ ( Gawekiif ) ⟩
-const OKTALA_GRIDO: Record<string, string> = {
+const CAJA_CA1ARA: Record<string, string> = {
     "ᶅſ": "ɔɔ", "ſן": "ɔı", "ſȷ": "ɔɿ", "ŋᷠ": "ɔц",
     "ʃ": "ıɔ", "ɽ͑ʃ'": "ıı", "j͑ʃ'": "ıɿ", "ſᶘ": "ıц", "ɭʃ'": "ıэ",
     "ɭ(": "ɿɔ", "ɭʃ": "ɿı", "j͑ʃ": "ɿɿ", "}ʃ": "ɿц", "}ʃ'": "ɿэ",
@@ -232,67 +232,67 @@ const OKTALA_GRIDO: Record<string, string> = {
 };
 
 // ⟨ ʃɔ ( э ) ⟩
-const OKTALAJ_SPECIALAJ_IPA: Record<string, string> = { "ɭʃ'": "ǃ", "}ʃ'": "ǃ̃", "oͩſ̀ȷ": "ǁ̃" };
+const CAJA_IPA: Record<string, string> = { "ɭʃ'": "ǃ", "}ʃ'": "ǃ̃", "oͩſ̀ȷ": "ǁ̃" };
 
 /**
  * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os IPA )
- * @param malgranda ( Mapo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @param ĉuAkceptebla ( ( gk ) => boolean , required ) - ꞁȷ̀ꞇ j͑ʃ'ɹƴ
- * @returns rezulto
+ * @param c2h2Kef ( Ca1araKef , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param sem2 ( ( gk ) => boolean , required ) - ꞁȷ̀ꞇ j͑ʃ'ɹƴ
+ * @returns caxef2
  */
-function troviGrandanFormon(malgranda: Mapo, ĉuAkceptebla: (gk: string) => boolean): string | null {
-    const la3osa = KOMENCAJ.find(m => m.la3os === malgranda.la3os);
-    if ( la3osa && ĉuAkceptebla(la3osa.gk) ) return la3osa.gk;
-    const ipa = malgranda.ipa;
+function b6n2baPuf2(c2h2Kef: Ca1araKef, sem2: (gk: string) => boolean): string | null {
+    const la3osKef = XAQADI_CA1ARA.find(m => m.la3os === c2h2Kef.la3os);
+    if ( la3osKef && sem2(la3osKef.gk) ) return la3osKef.gk;
+    const ipa = c2h2Kef.ipa;
     if ( ipa ) {
-        const speciala = Object.entries(OKTALAJ_SPECIALAJ_IPA).find(([ , p ]) => p === ipa);
-        if ( speciala && ĉuAkceptebla(speciala[0o0]) ) return speciala[0o0];
-        const perIpa = KOMENCAJ.find(m => m.ipa === ipa);
-        if ( perIpa && ĉuAkceptebla(perIpa.gk) ) return perIpa.gk;
+        const gel = Object.entries(CAJA_IPA).find(([ , p ]) => p === ipa);
+        if ( gel && sem2(gel[0o0]) ) return gel[0o0];
+        const ipaKef = XAQADI_CA1ARA.find(m => m.ipa === ipa);
+        if ( ipaKef && sem2(ipaKef.gk) ) return ipaKef.gk;
     }
     return null;
 }
 
 // ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ ⟩
-const OKTALAJ_VALOROJ: Record<string, string> = { ...OKTALA_GRIDO };
-for ( const m of INTERNAJ ) {
-    const granda = troviGrandanFormon(m, gk => Boolean(OKTALA_GRIDO[gk]));
-    if ( granda && !OKTALAJ_VALOROJ[m.gk] ) {
-        OKTALAJ_VALOROJ[m.gk] = OKTALA_GRIDO[granda];
+const CAJA_VEM2: Record<string, string> = { ...CAJA_CA1ARA };
+for ( const m of C2H2_CA1ARA ) {
+    const puf2 = b6n2baPuf2(m, gk => Boolean(CAJA_CA1ARA[gk]));
+    if ( puf2 && !CAJA_VEM2[m.gk] ) {
+        CAJA_VEM2[m.gk] = CAJA_CA1ARA[puf2];
     }
 }
 
 // ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ ⟩
-const OKTALAJ_LAŬVALORO: Record<string, string> = {};
-for ( const [ gk, valoro ] of Object.entries(OKTALA_GRIDO) ) {
-    if ( !OKTALAJ_LAŬVALORO[valoro] ) {
-        OKTALAJ_LAŬVALORO[valoro] = gk;
+const VEM2_CAXEF2: Record<string, string> = {};
+for ( const [ gk, vem2 ] of Object.entries(CAJA_CA1ARA) ) {
+    if ( !VEM2_CAXEF2[vem2] ) {
+        VEM2_CAXEF2[vem2] = gk;
     }
 }
 
 // ⟨ ſɭɹ ſȷɔ ( ɔ-ƨ ɔɔɔ-ııı ) ⟩
-const OKTALA_DUUMA: Record<string, string> = {
+const P2SA: Record<string, string> = {
     "ɔ": "ɔɔɔ", "ı": "ɔɔı", "ɿ": "ɔıɔ", "ц": "ɔıı",
     "э": "ıɔɔ", "ꞟ": "ıɔı", "ɩ": "ııɔ", "ƨ": "ııı"
 };
-const OKTALA_DUUMA_MALO: Record<string, string> = {};
-for ( const [ cifero, duuma ] of Object.entries(OKTALA_DUUMA) ) {
-    OKTALA_DUUMA_MALO[duuma] = cifero;
+const P2SA_CAJA: Record<string, string> = {};
+for ( const [ k2fe, p2sa ] of Object.entries(P2SA) ) {
+    P2SA_CAJA[p2sa] = k2fe;
 }
 
 // ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ ( ſɭɘэ ſɭɘɹ ) ⟩
 
 // ⟨ ֭ſɭᴜ ı],ɔ ʌ ſɭɹ ſȷɔ ⟩
-const KODIGAJ_KATEGORIOJ: Record<string, { cifero: string; duuma: string }> = {
-    "ɔ": { cifero: "ɔ", duuma: "ɔɔɔɔ" },
-    "ı": { cifero: "ı", duuma: "ɔɔɔı" },
-    "ɿ": { cifero: "ɿ", duuma: "ɔɔıɔ" },
-    "ц": { cifero: "ц", duuma: "ɔɔıı" },
-    "э": { cifero: "э", duuma: "ɔıɔɔ" }
+const S2KANTA_HAXE: Record<string, { k2fe: string; p2sa: string }> = {
+    "ɔ": { k2fe: "ɔ", p2sa: "ɔɔɔɔ" },
+    "ı": { k2fe: "ı", p2sa: "ɔɔɔı" },
+    "ɿ": { k2fe: "ɿ", p2sa: "ɔɔıɔ" },
+    "ц": { k2fe: "ц", p2sa: "ɔɔıı" },
+    "э": { k2fe: "э", p2sa: "ɔıɔɔ" }
 };
 
 // ⟨ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ ⟩
-const KODIGAJ_GRANDAJ_VALOROJ: Record<string, string> = {
+const S2KANTA_PUF2_VEM2: Record<string, string> = {
     "ᶅſ": "00", "ſן": "01", "ſȷ": "02", "ŋᷠ": "07",
     "ʃ": "08", "ɽ͑ʃ'": "33", "j͑ʃ'": "32", "ſᶘ": "E3", "ɭʃ'": "31",
     "ɭ(": "48", "ɭʃ": "41", "j͑ʃ": "42", "}ʃ": "47", "}ʃ'": "37",
@@ -303,461 +303,448 @@ const KODIGAJ_GRANDAJ_VALOROJ: Record<string, string> = {
 };
 
 // ⟨ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ ⟩
-const KODIGAJ_VOKALAJ_VALOROJ: Record<string, string> = {
+const S2KANTA_AWA_VEM2: Record<string, string> = {
     "ꞇ": "07", "ɔ": "36", "ɹ": "13", "ᴜ": "45", "w": "23", "ɜ": "22", "э": "41"
 };
-const KODIGAJ_SPECIALAJ_VALOROJ: Record<string, string> = {
+const S2KANTA_GEL_VEM2: Record<string, string> = {
     "ȏ": "14", "ⅎ": "22", "oͩ": "22",
     "⟅": "50", "｡": "51", "ʌ": "52", "v": "53", "⸙": "54", "⸾": "55", "⸰": "56"
 };
 
-interface KodigaEniro {
-    kategorio: string;
-    valoro: string;
+interface S2kantaKef {
+    haxe: string;
+    vem2: string;
 }
 
 /**
  * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param valoro ( string , required ) - ɭl̀э ſȷꞇ }ʃꞇ ( ASCII E3 )
- * @returns ĉeno
+ * @param vem2 ( string , required ) - ɭl̀э ſȷꞇ }ʃꞇ ( ASCII E3 )
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function asciiValoroAlCiferoj(valoro: string): string {
-    return valoroAlCiferoj(parseInt(valoro, 0o20), 0o2);
+function asciiVem2K2fe(vem2: string): string {
+    return vem2K2fe(parseInt(vem2, 0o20), 0o2);
 }
 
 // ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ ⟩
-const KODIGAJ_ENIROJ: Record<string, KodigaEniro> = {};
-for ( const [ gk, valoro ] of Object.entries(KODIGAJ_GRANDAJ_VALOROJ) ) {
-    KODIGAJ_ENIROJ[gk] = { kategorio: "ı", valoro: asciiValoroAlCiferoj(valoro) };
+const S2KANTA_CA1ARA: Record<string, S2kantaKef> = {};
+for ( const [ gk, vem2 ] of Object.entries(S2KANTA_PUF2_VEM2) ) {
+    S2KANTA_CA1ARA[gk] = { haxe: "ı", vem2: asciiVem2K2fe(vem2) };
 }
-for ( const [ gk, valoro ] of Object.entries(KODIGAJ_VOKALAJ_VALOROJ) ) {
-    KODIGAJ_ENIROJ[gk] = { kategorio: "ц", valoro: asciiValoroAlCiferoj(valoro) };
+for ( const [ gk, vem2 ] of Object.entries(S2KANTA_AWA_VEM2) ) {
+    S2KANTA_CA1ARA[gk] = { haxe: "ц", vem2: asciiVem2K2fe(vem2) };
 }
-for ( const [ gk, valoro ] of Object.entries(KODIGAJ_SPECIALAJ_VALOROJ) ) {
-    KODIGAJ_ENIROJ[gk] = { kategorio: "э", valoro: asciiValoroAlCiferoj(valoro) };
+for ( const [ gk, vem2 ] of Object.entries(S2KANTA_GEL_VEM2) ) {
+    S2KANTA_CA1ARA[gk] = { haxe: "э", vem2: asciiVem2K2fe(vem2) };
 }
-for ( const m of INTERNAJ ) {
-    const granda = troviGrandanFormon(m, gk => Boolean(KODIGAJ_GRANDAJ_VALOROJ[gk]));
-    if ( granda && !KODIGAJ_ENIROJ[m.gk] ) {
-        KODIGAJ_ENIROJ[m.gk] = { kategorio: "ɿ", valoro: asciiValoroAlCiferoj(KODIGAJ_GRANDAJ_VALOROJ[granda]) };
+for ( const m of C2H2_CA1ARA ) {
+    const puf2 = b6n2baPuf2(m, gk => Boolean(S2KANTA_PUF2_VEM2[gk]));
+    if ( puf2 && !S2KANTA_CA1ARA[m.gk] ) {
+        S2KANTA_CA1ARA[m.gk] = { haxe: "ɿ", vem2: asciiVem2K2fe(S2KANTA_PUF2_VEM2[puf2]) };
     }
 }
 
 // ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ ⟩
-const KODIGAJ_LAŬENIRO: Record<string, string> = {};
-for ( const [ gk, eniro ] of Object.entries(KODIGAJ_ENIROJ) ) {
-    const klavo = `${eniro.kategorio}_${eniro.valoro}`;
-    if ( !KODIGAJ_LAŬENIRO[klavo] ) {
-        KODIGAJ_LAŬENIRO[klavo] = gk;
+const HAXE_VEM2_KEF: Record<string, string> = {};
+for ( const [ gk, ca1araKef ] of Object.entries(S2KANTA_CA1ARA) ) {
+    const ca3aq = `${ca1araKef.haxe}_${ca1araKef.vem2}`;
+    if ( !HAXE_VEM2_KEF[ca3aq] ) {
+        HAXE_VEM2_KEF[ca3aq] = gk;
     }
 }
 
 // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ʌ ſɭɔʞ ⟩
-const OKTALAJ_KLAVOJ = Object.keys(OKTALAJ_VALOROJ).sort((a, b) => b.length - a.length);
-const KODIGAJ_KLAVOJ = Object.keys(KODIGAJ_ENIROJ).sort((a, b) => b.length - a.length);
+const CAJA_CA3AQ = Object.keys(CAJA_VEM2).sort((a, b) => b.length - a.length);
+const S2KANTA_CA3AQ = Object.keys(S2KANTA_CA1ARA).sort((a, b) => b.length - a.length);
 
 /**
  * ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
- * @param klavoj ( string[] , required ) - j͑ʃɹ ɭʃᴜɔ˞
- * @returns listo
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
+ * @param ca3aqCa1ara ( string[] , required ) - j͑ʃɹ ɭʃᴜɔ˞
+ * @returns ᶅſɔ ſɭɹ ſןɹ
  */
-function disigiEnGlifojn(teksto: string, klavoj: string[]): string[] {
-    const rezulto: string[] = [];
+function kaltokCaxef2(kp6k2p2: string, ca3aqCa1ara: string[]): string[] {
+    const caxef2Ca1ara: string[] = [];
     let i = 0o0;
-    while ( i < teksto.length ) {
-        let kongruis = false;
-        for ( const klavo of klavoj ) {
-            if ( teksto.slice(i, i + klavo.length) === klavo ) {
-                rezulto.push(klavo);
-                i += klavo.length;
-                kongruis = true;
-                break;
-            }
-        }
-        if ( !kongruis ) {
-            rezulto.push(teksto[i]);
+    while ( i < kp6k2p2.length ) {
+        const ca3aq = ca3aqCa1ara.find(k => kp6k2p2.slice(i, i + k.length) === k);
+        if ( ca3aq === undefined ) {
+            caxef2Ca1ara.push(kp6k2p2[i]);
             i++;
+            continue;
         }
+        caxef2Ca1ara.push(ca3aq);
+        i += ca3aq.length;
     }
-    return rezulto;
+    return caxef2Ca1ara;
 }
 
 /**
  * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ɔ-ƨ )
- * @param teksto ( string , required ) - ſɭɹ ſȷɔ ( ɔ-ƨ )
- * @returns nombro
+ * @param kp6k2p2 ( string , required ) - ſɭɹ ſȷɔ ( ɔ-ƨ )
+ * @returns ſɭɹ ſȷɔ
  */
-function oktalaAlValoro(teksto: string): number {
-    let rezulto = 0o0;
-    for ( const cifero of teksto ) {
-        const valoro = B8_CIFEROJ_MALO[cifero];
-        if ( valoro === undefined ) return NaN;
-        rezulto = rezulto * 0o10 + valoro;
+function cajaVem2(kp6k2p2: string): number {
+    let vem2 = 0o0;
+    for ( const k2fe of kp6k2p2 ) {
+        const b6n2baVem2 = CAJA_K2FE_VEM2[k2fe];
+        if ( b6n2baVem2 === undefined ) return NaN;
+        vem2 = vem2 * 0o10 + b6n2baVem2;
     }
-    return rezulto;
+    return vem2;
 }
 
 /**
  * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param valoro ( number , required ) - ſɭɹ ſȷɔ
- * @returns ĉeno
+ * @param vem2 ( number , required ) - ſɭɹ ſȷɔ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function valoroAlOktala(valoro: number): string {
-    if ( valoro === 0o0 ) return "ɔ";
-    let rezulto = "";
-    let restanta = valoro;
-    while ( restanta > 0o0 ) {
-        rezulto = B8_CIFEROJ[restanta % 0o10] + rezulto;
-        restanta = Math.floor(restanta / 0o10);
+function vem2Caja(vem2: number): string {
+    if ( vem2 === 0o0 ) return "ɔ";
+    let nejeqana = "";
+    let baVem2 = vem2;
+    while ( baVem2 > 0o0 ) {
+        nejeqana = CAJA_K2FE[baVem2 % 0o10] + nejeqana;
+        baVem2 = Math.floor(baVem2 / 0o10);
     }
-    return rezulto;
+    return nejeqana;
 }
 
 /**
  * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param ciferoj ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns nombro
+ * @param s2kantaK2fe ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ſɭɹ ſȷɔ
  */
-function ciferojAlValoro(ciferoj: string): number {
-    let rezulto = 0o0;
+function k2feVem2(s2kantaK2fe: string): number {
+    let vem2 = 0o0;
     let i = 0o0;
-    while ( i < ciferoj.length ) {
-        let kongruis = false;
-        for ( const cifero of KODIGAJ_CIFEROJ_LAŬLONGO ) {
-            if ( ciferoj.slice(i, i + cifero.length) === cifero ) {
-                const valoro = KODIGAJ_CIFEROJ_MALO[cifero];
-                if ( valoro === undefined ) return NaN;
-                rezulto = rezulto * 0o20 + valoro;
-                i += cifero.length;
-                kongruis = true;
-                break;
-            }
-        }
-        if ( !kongruis ) return NaN;
+    while ( i < s2kantaK2fe.length ) {
+        const ca3aq = S2KANTA_K2FE_PUF2.find(k => s2kantaK2fe.slice(i, i + k.length) === k);
+        if ( ca3aq === undefined ) return NaN;
+        const vem2S2kanta = S2KANTA_VEM2[ca3aq];
+        if ( vem2S2kanta === undefined ) return NaN;
+        vem2 = vem2 * 0o20 + vem2S2kanta;
+        i += ca3aq.length;
     }
-    return rezulto;
+    return vem2;
 }
 
 /**
  * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param valoro ( number , required ) - ɭl̀э ſȷꞇ }ʃꞇ
- * @param longo ( number = 2 , optional ) - ſןᴜ j͐ʃэ
- * @returns ĉeno
+ * @param vem2 ( number , required ) - ɭl̀э ſȷꞇ }ʃꞇ
+ * @param puf2 ( number = 2 , optional ) - ſןᴜ j͐ʃэ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function valoroAlCiferoj(valoro: number, longo = 0o2): string {
-    let rezulto = valoro === 0o0 ? "ɔ" : "";
-    let restanta = valoro;
-    while ( restanta > 0o0 ) {
-        rezulto = KODIGAJ_CIFEROJ_LAŬVALORO[restanta % 0o20] + rezulto;
-        restanta = Math.floor(restanta / 0o20);
+function vem2K2fe(vem2: number, puf2 = 0o2): string {
+    let nejeqana = vem2 === 0o0 ? "ɔ" : "";
+    let baVem2 = vem2;
+    while ( baVem2 > 0o0 ) {
+        nejeqana = VEM2_S2KANTA_K2FE[baVem2 % 0o20] + nejeqana;
+        baVem2 = Math.floor(baVem2 / 0o20);
     }
-    return rezulto.padStart(longo, "ɔ");
+    return nejeqana.padStart(puf2, "ɔ");
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ɔ ı )
- * @param valoro ( number , required ) - ɭl̀э ſȷꞇ }ʃꞇ
- * @param longo ( number = 8 , optional ) - ſןᴜ j͐ʃэ
- * @returns ĉeno
+ * @param vem2 ( number , required ) - ɭl̀э ſȷꞇ }ʃꞇ
+ * @param puf2 ( number = 8 , optional ) - ſןᴜ j͐ʃэ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function valoroAlDuuma(valoro: number, longo = 0o10): string {
-    return valoro.toString(0o2).padStart(longo, "0").replace(/0/g, "ɔ").replace(/1/g, "ı");
+function vem2P2sa(vem2: number, puf2 = 0o10): string {
+    return vem2.toString(0o2).padStart(puf2, "0").replace(/0/g, "ɔ").replace(/1/g, "ı");
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ɔ ı )
- * @param duuma ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( ɔ ı )
- * @returns nombro
+ * @param p2sa ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( ɔ ı )
+ * @returns ſɭɹ ſȷɔ
  */
-function duumaAlValoro(duuma: string): number {
-    let rezulto = 0o0;
-    for ( const bito of duuma ) {
-        if ( bito !== "ɔ" && bito !== "ı" ) return NaN;
-        rezulto = rezulto * 0o2 + (bito === "ı" ? 0o1 : 0o0);
+function p2saVem2(p2sa: string): number {
+    let vem2 = 0o0;
+    for ( const k2fe of p2sa ) {
+        if ( k2fe !== "ɔ" && k2fe !== "ı" ) return NaN;
+        vem2 = vem2 * 0o2 + (k2fe === "ı" ? 0o1 : 0o0);
     }
-    return rezulto;
+    return vem2;
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif 1 ſɭɹ ſȷɔ )
- * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function gawekiifAlNumero(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    const { laŭlitera = false } = opcioj;
-    const vortoj = String(teksto).split(/\s+/).filter(Boolean);
-    return vortoj.map(vorto => {
-        const valoroj = disigiEnGlifojn(vorto, OKTALAJ_KLAVOJ).map(glifo => {
-            return OKTALAJ_VALOROJ[glifo] || "";
+function tboGawekiifCaja(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    const { kaj2xa = false } = sukf2q;
+    const kefCa1ara = String(kp6k2p2).split(/\s+/).filter(Boolean);
+    return kefCa1ara.map(kef => {
+        const vem2Ca1ara = kaltokCaxef2(kef, CAJA_CA3AQ).map(caxef2 => {
+            return CAJA_VEM2[caxef2] || "";
         }).filter(Boolean);
-        return laŭlitera ? valoroj.join(" ") : valoroj.join("");
+        return kaj2xa ? vem2Ca1ara.join(" ") : vem2Ca1ara.join("");
     }).filter(Boolean).join(" ");
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif 1 )
  * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif )
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( ɔ-ƨ )
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( ɔ-ƨ )
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function oktalaAlGawekiif(teksto: string): string {
-    return String(teksto).split(/\s+/).filter(Boolean).map(vorto => {
-        let rezulto = "";
+function tboCajaGawekiif(kp6k2p2: string): string {
+    return String(kp6k2p2).split(/\s+/).filter(Boolean).map(kef => {
+        let nejeqana = "";
         let i = 0o0;
-while ( i < vorto.length ) {
+while ( i < kef.length ) {
         /* ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɹ ſȷɔ ⟩ */
-        let kongruis = false;
-        for ( const longo of [ 0o3, 0o2 ] ) {
-            const kodo = vorto.slice( i, i + longo );
-            if ( kodo.length !== longo || !OKTALAJ_LAŬVALORO[kodo] ) continue;
-            if ( !Array.from( kodo ).every( cifero => B8_CIFEROJ_MALO[cifero] !== undefined ) ) continue;
-            rezulto += OKTALAJ_LAŬVALORO[kodo];
-            i += longo;
-            kongruis = true;
-            break;
-        }
-        if ( !kongruis ) {
-            rezulto += vorto[i];
+        const puf2 = [ 0o3, 0o2 ].find(n => {
+            const s2kanta = kef.slice( i, i + n );
+            return s2kanta.length === n && VEM2_CAXEF2[s2kanta] && Array.from( s2kanta ).every( k2fe => CAJA_K2FE_VEM2[k2fe] !== undefined );
+        });
+        if ( puf2 === undefined ) {
+            nejeqana += kef[i];
             i++;
+            continue;
         }
+        const s2kanta = kef.slice( i, i + puf2 );
+        nejeqana += VEM2_CAXEF2[s2kanta];
+        i += puf2;
     }
-        return rezulto;
+        return nejeqana;
     }).join(" ");
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif 1 )
  * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function numeroAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    const ĉefa = String(teksto).split("/")[0o0] || "";
-    const ĵetonoj = ĉefa.split(/\s+/).filter(Boolean);
-    const ĉuDuuma = ĵetonoj.length > 0o0 && ĵetonoj.every(t => t.length % 0o3 === 0o0 && /^[ɔı]+$/.test(t));
-    return ĉuDuuma ? oktalaAlGawekiif(duumaAlOktala(ĉefa)) : oktalaAlGawekiif(ĉefa);
+function tboCajaP2saGawekiif(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    const saxeKp6k2p2 = String(kp6k2p2).split("/")[0o0] || "";
+    const kefCa1ara = saxeKp6k2p2.split(/\s+/).filter(Boolean);
+    const p2sa = kefCa1ara.length > 0o0 && kefCa1ara.every(t => t.length % 0o3 === 0o0 && /^[ɔı]+$/.test(t));
+    return p2sa ? tboCajaGawekiif(p2saCaja(saxeKp6k2p2)) : tboCajaGawekiif(saxeKp6k2p2);
 }
 
 /**
  * ɭʃɀɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ſɭɘэ ſɭɘɹ 2 )
- * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function gawekiifAlKodigo(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    const { laŭlitera = false } = opcioj;
-    const vortoj = String(teksto).split(/\s+/).filter(Boolean);
-    return vortoj.map(vorto => {
-        const kodoj = disigiEnGlifojn(vorto, KODIGAJ_KLAVOJ).map(glifo => {
-            const eniro = KODIGAJ_ENIROJ[glifo];
-            if ( !eniro ) return glifo;
-            return eniro.kategorio + eniro.valoro;
+function tboGawekiifS2kanta(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    const { kaj2xa = false } = sukf2q;
+    const kefCa1ara = String(kp6k2p2).split(/\s+/).filter(Boolean);
+    return kefCa1ara.map(kef => {
+        const s2kantaCa1ara = kaltokCaxef2(kef, S2KANTA_CA3AQ).map(caxef2 => {
+            const ca1araKef = S2KANTA_CA1ARA[caxef2];
+            if ( !ca1araKef ) return caxef2;
+            return ca1araKef.haxe + ca1araKef.vem2;
         });
-        return laŭlitera ? kodoj.join(" ") : kodoj.join("");
+        return kaj2xa ? s2kantaCa1ara.join(" ") : s2kantaCa1ara.join("");
     }).join(" ");
 }
 
 /**
  * ſɟᴜ ɭʃᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
  * ſɭɔʞ ʌ ſɭɹ ſȷɔ
- * @param vorto ( string , required ) - ſɭɔʞ
- * @returns listo
+ * @param kef ( string , required ) - ſɭɔʞ
+ * @returns ᶅſɔ ſɭɹ ſןɹ
  */
-function disigiKodigitajnGlifojn(vorto: string): string[] {
-    const glifoj: string[] = [];
+function kaltokS2kantaCaxef2(kef: string): string[] {
+    const caxef2Ca1ara: string[] = [];
     let i = 0o0;
-    while ( i < vorto.length ) {
-        const kategorio = vorto[i];
-        if ( kategorio === "ɔ" ) {
-            glifoj.push(vorto.slice(i + 0o1));
+    while ( i < kef.length ) {
+        const haxe = kef[i];
+        if ( haxe === "ɔ" ) {
+            caxef2Ca1ara.push(kef.slice(i + 0o1));
             break;
         }
-        if ( kategorio !== "ı" && kategorio !== "ɿ" && kategorio !== "ц" && kategorio !== "э" ) {
-            glifoj.push(kategorio);
+        if ( haxe !== "ı" && haxe !== "ɿ" && haxe !== "ц" && haxe !== "э" ) {
+            caxef2Ca1ara.push(haxe);
             i++;
             continue;
         }
         i++;
-        const postKategorio = i;
-        let ciferoj = "";
-        let trovita = false;
+        const postHaxe = i;
+        let s2kantaK2fe = "";
+        let b6n2ba = false;
         for ( let k = 0o0; k < 0o2; k++ ) {
-            trovita = false;
-            for ( const cifero of KODIGAJ_CIFEROJ_LAŬLONGO ) {
-                if ( vorto.slice(i, i + cifero.length) === cifero ) {
-                    ciferoj += cifero;
-                    i += cifero.length;
-                    trovita = true;
+            b6n2ba = false;
+            for ( const k2fe of S2KANTA_K2FE_PUF2 ) {
+                if ( kef.slice(i, i + k2fe.length) === k2fe ) {
+                    s2kantaK2fe += k2fe;
+                    i += k2fe.length;
+                    b6n2ba = true;
                     break;
                 }
             }
-            if ( !trovita ) break;
+            if ( !b6n2ba ) break;
         }
-        if ( trovita ) {
-            const glifo = KODIGAJ_LAŬENIRO[`${kategorio}_${ciferoj}`];
-            glifoj.push(glifo || (kategorio + ciferoj));
+        if ( b6n2ba ) {
+            const caxef2 = HAXE_VEM2_KEF[`${haxe}_${s2kantaK2fe}`];
+            caxef2Ca1ara.push(caxef2 || (haxe + s2kantaK2fe));
         } else {
-            glifoj.push(kategorio);
-            i = postKategorio;
+            caxef2Ca1ara.push(haxe);
+            i = postHaxe;
         }
     }
-    return glifoj;
+    return caxef2Ca1ara;
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( 2 Gawekiif )
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function kodigoAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    return String(teksto).split(/\s+/).filter(Boolean).map(vorto => {
-        return disigiKodigitajnGlifojn(vorto).join("");
+function tboS2kantaGawekiif(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    return String(kp6k2p2).split(/\s+/).filter(Boolean).map(kef => {
+        return kaltokS2kantaCaxef2(kef).join("");
     }).join(" ");
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif 2 )
- * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function gawekiifAlDuuma(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    const { laŭlitera = false } = opcioj;
-    const vortoj = String(teksto).split(/\s+/).filter(Boolean);
-    return vortoj.map(vorto => {
-        const duumoj = disigiEnGlifojn(vorto, KODIGAJ_KLAVOJ).map(glifo => {
-            const eniro = KODIGAJ_ENIROJ[glifo];
-            if ( !eniro ) return glifo;
-            const kategorio = KODIGAJ_KATEGORIOJ[eniro.kategorio];
-            return kategorio.duuma + valoroAlDuuma(ciferojAlValoro(eniro.valoro), 0o10);
+function tboGawekiifP2sa(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    const { kaj2xa = false } = sukf2q;
+    const kefCa1ara = String(kp6k2p2).split(/\s+/).filter(Boolean);
+    return kefCa1ara.map(kef => {
+        const duumoj = kaltokCaxef2(kef, S2KANTA_CA3AQ).map(caxef2 => {
+            const ca1araKef = S2KANTA_CA1ARA[caxef2];
+            if ( !ca1araKef ) return caxef2;
+            const haxe = S2KANTA_HAXE[ca1araKef.haxe];
+            return haxe.p2sa + vem2P2sa(k2feVem2(ca1araKef.vem2), 0o10);
         });
-        return laŭlitera ? duumoj.join(" ") : duumoj.join("");
+        return kaj2xa ? duumoj.join(" ") : duumoj.join("");
     }).join(" ");
 }
 
 /**
  * ſɟᴜ ɭʃᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
  * ſɭɔʞ ʌ ֭ſɭᴜ ı],ɔ
- * @param vorto ( string , required ) - ſɭɔʞ
- * @returns listo
+ * @param kef ( string , required ) - ſɭɔʞ
+ * @returns ᶅſɔ ſɭɹ ſןɹ
  */
-function disigiDuumajnGlifojn(vorto: string): string[] {
-    const glifoj: string[] = [];
+function kaltokP2saCaxef2(kef: string): string[] {
+    const caxef2Ca1ara: string[] = [];
     let i = 0o0;
-    while ( i < vorto.length ) {
-        if ( i + 0o14 > vorto.length ) {
-            glifoj.push(vorto.slice(i));
+    while ( i < kef.length ) {
+        if ( i + 0o14 > kef.length ) {
+            caxef2Ca1ara.push(kef.slice(i));
             break;
         }
-        const ĵetono = vorto.slice(i, i + 0o14);
-        const kategorio = Object.entries(KODIGAJ_KATEGORIOJ).find(([ , v ]) => v.duuma === ĵetono.slice(0o0, 0o4))?.[ 0o0 ];
-        if ( !kategorio ) {
-            glifoj.push(ĵetono[0o0]);
+        const ĵetono = kef.slice(i, i + 0o14);
+        const haxe = Object.entries(S2KANTA_HAXE).find(([ , v ]) => v.p2sa === ĵetono.slice(0o0, 0o4))?.[ 0o0 ];
+        if ( !haxe ) {
+            caxef2Ca1ara.push(ĵetono[0o0]);
             i++;
             continue;
         }
-        const valoro = duumaAlValoro(ĵetono.slice(0o4));
-        if ( isNaN(valoro) ) {
-            glifoj.push(ĵetono[0o0]);
+        const vem2 = p2saVem2(ĵetono.slice(0o4));
+        if ( isNaN(vem2) ) {
+            caxef2Ca1ara.push(ĵetono[0o0]);
             i++;
             continue;
         }
-        const glifo = KODIGAJ_LAŬENIRO[`${kategorio}_${valoroAlCiferoj(valoro, 0o2)}`];
-        glifoj.push(glifo || ĵetono);
+        const caxef2 = HAXE_VEM2_KEF[`${haxe}_${vem2K2fe(vem2, 0o2)}`];
+        caxef2Ca1ara.push(caxef2 || ĵetono);
         i += 0o14;
     }
-    return glifoj;
+    return caxef2Ca1ara;
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif 2 )
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function duumaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    return String(teksto).split(/\s+/).filter(Boolean).map(vorto => {
-        return disigiDuumajnGlifojn(vorto).join("");
+function tboP2saGawekiif(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    return String(kp6k2p2).split(/\s+/).filter(Boolean).map(kef => {
+        return kaltokP2saCaxef2(kef).join("");
     }).join(" ");
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
  * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function encodingAlGawekiif(teksto: string): string {
-    const ĉefa = String(teksto).split("/")[0o0] || "";
-    const ĵetonoj = ĉefa.split(/\s+/).filter(Boolean);
-    const ĉuDuuma = ĵetonoj.length > 0o0 && ĵetonoj.every(t => t.length % 0o3 === 0o0 && /^[ɔı]+$/.test(t));
-    return ĉuDuuma ? duumaAlGawekiif(ĉefa) : kodigoAlGawekiif(ĉefa);
+function tboS2kantaP2saGawekiif(kp6k2p2: string): string {
+    const saxeKp6k2p2 = String(kp6k2p2).split("/")[0o0] || "";
+    const kefCa1ara = saxeKp6k2p2.split(/\s+/).filter(Boolean);
+    const p2sa = kefCa1ara.length > 0o0 && kefCa1ara.every(t => t.length % 0o3 === 0o0 && /^[ɔı]+$/.test(t));
+    return p2sa ? tboP2saGawekiif(saxeKp6k2p2) : tboS2kantaGawekiif(saxeKp6k2p2);
 }
 
 /**
  * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param teksto ( string , required ) - ſɭɹ ſȷɔ ( ɔ-ƨ )
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ſɭɹ ſȷɔ ( ɔ-ƨ )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function oktalaAlKodigo(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    return "ɔ" + String(teksto).replace(/\s+/g, "");
+function cajaS2kanta(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    return "ɔ" + String(kp6k2p2).replace(/\s+/g, "");
 }
 
 /**
  * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function kodigoAlOktala(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    return String(teksto).replace(/^ɔ/, "");
+function s2kantaCaja(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    return String(kp6k2p2).replace(/^ɔ/, "");
 }
 
 /**
  * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param teksto ( string , required ) - ſɭɹ ſȷɔ ( ɔ-ƨ )
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ſɭɹ ſȷɔ ( ɔ-ƨ )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function oktalaAlDuuma(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    return String(teksto).split(/\s+/).filter(Boolean).map(vorto => {
-        let rezulto = "";
-        for ( const cifero of vorto ) {
-            const duuma = OKTALA_DUUMA[cifero];
-            if ( duuma === undefined ) return vorto;
-            rezulto += duuma;
+function cajaP2sa(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    return String(kp6k2p2).split(/\s+/).filter(Boolean).map(kef => {
+        let nejeqana = "";
+        for ( const k2fe of kef ) {
+            const b6n2baP2sa = P2SA[k2fe];
+            if ( b6n2baP2sa === undefined ) return kef;
+            nejeqana += b6n2baP2sa;
         }
-        return rezulto;
+        return nejeqana;
     }).join(" ");
 }
 
 /**
  * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function duumaAlOktala(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    return String(teksto).split(/\s+/).filter(Boolean).map(vorto => {
-        if ( vorto.length % 0o3 !== 0o0 ) return vorto;
-        let rezulto = "";
-        for ( let i = 0o0; i < vorto.length; i += 0o3 ) {
-            const cifero = OKTALA_DUUMA_MALO[vorto.slice(i, i + 0o3)];
-            if ( cifero === undefined ) return vorto;
-            rezulto += cifero;
+function p2saCaja(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    return String(kp6k2p2).split(/\s+/).filter(Boolean).map(kef => {
+        if ( kef.length % 0o3 !== 0o0 ) return kef;
+        let nejeqana = "";
+        for ( let i = 0o0; i < kef.length; i += 0o3 ) {
+            const k2fe = P2SA_CAJA[kef.slice(i, i + 0o3)];
+            if ( k2fe === undefined ) return kef;
+            nejeqana += k2fe;
         }
-        return rezulto;
+        return nejeqana;
     }).join(" ");
 }
 
@@ -765,127 +752,135 @@ function duumaAlOktala(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 // ⟪ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ 🔧 ⟫
 
 /**
- * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os )
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * ɭʃɀɜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅ ( La3os ſɭɹ ſȷɔ )
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( La3os )
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function normigiLa3osEnigon(teksto: string): string {
-    return konvertiLa3osAlNumerika(teksto);
+function tboLa3osK2fe(kp6k2p2: string): string {
+    let nejeqana = kp6k2p2;
+    const hateCa1ara = Object.entries(LA3OS_K2FE).sort((a, b) => b[0o0].length - a[0o0].length);
+    for ( const [ hate, k2fe ] of hateCa1ara ) {
+        nejeqana = nejeqana.replace(new RegExp(hate, "g"), k2fe);
+    }
+    return nejeqana;
 }
 
 /**
- * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( serxtabelo )
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @param serxtabelo ( Serxtabelo , required ) - ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗
- * @returns ĉeno
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( veracel2f )
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param veracel2f ( Veracel2f , required ) - ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function konvertiPerSerxtabelo(teksto: string, serxtabelo: Serxtabelo, strikta = false): string {
-    if ( !serxtabelo || !serxtabelo.keys ) return teksto;
+function tboVeracel2f(kp6k2p2: string, veracel2f: Veracel2f, kaj2xa = false): string {
+    if ( !veracel2f || !veracel2f.ca3aqCa1ara ) return kp6k2p2;
 
-    let rezulto = "";
+    let nejeqana = "";
     let i = 0o0;
-    while ( i < teksto.length ) {
-        let kongruis = false;
-        for ( const klavo of serxtabelo.keys ) {
-            if ( teksto.slice(i, i + klavo.length) === klavo ) {
-                rezulto += serxtabelo.map[klavo];
-                i += klavo.length;
-                kongruis = true;
-                break;
-            }
-        }
-        /* ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩ */
-        if ( !kongruis ) {
-            if ( !strikta ) rezulto += teksto[i];
+    while ( i < kp6k2p2.length ) {
+        const ca3aq = veracel2f.ca3aqCa1ara.find(k => kp6k2p2.slice(i, i + k.length) === k);
+        if ( ca3aq === undefined ) {
+            /* ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩ */
+            if ( !kaj2xa ) nejeqana += kp6k2p2[i];
             i++;
+            continue;
         }
+        nejeqana += veracel2f.stakefani[ca3aq];
+        i += ca3aq.length;
     }
-    return rezulto;
+    return nejeqana;
 }
 
 /**
  * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os )
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function konvertiNumerikanAlLa3os(teksto: string): string {
-    let rezulto = "";
-    for ( const char of teksto ) {
-        rezulto += NUMERIKA_MALO[char] || char;
+function tboK2feLa3os(kp6k2p2: string): string {
+    let nejeqana = "";
+    for ( const caxef2 of kp6k2p2 ) {
+        nejeqana += K2FE_LA3OS[caxef2] || caxef2;
     }
-    return rezulto;
+    return nejeqana;
+}
+
+function tboK2feIpa(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    const { kaj2xa = false } = sukf2q;
+    const kefCa1ara = String(kp6k2p2).split(/\s+/).filter(Boolean);
+    return kefCa1ara.map(kef => {
+        const ipa = Array.from(kef).map(c => {
+            return VERACEL2F.la3os_ipa.stakefani[c] || c;
+        }).join("");
+        const xezCa1ara = kaltokIpaXez(ipa);
+        return kaj2xa ? xezCa1ara.join(".") : xezCa1ara.join("");
+    }).join(" ");
 }
 
 /**
- * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os )
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( La3os )
- * @returns ĉeno
+ * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA numerical )
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function konvertiLa3osAlNumerika(teksto: string): string {
-    let rezulto = teksto;
-    const ordigitajGrupoj = Object.entries(NUMERIKA).sort((a, b) => b[0o0].length - a[0o0].length);
-    for ( const [ grupo, cifero ] of ordigitajGrupoj ) {
-        rezulto = rezulto.replace(new RegExp(grupo, "g"), cifero);
-    }
-    return rezulto;
-}
-
-/**
- * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os IPA )
- * @param teksto ( string , required ) - ſɭɹ ſȷɔ
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
- * @returns ĉeno
- */
-function numerikaAlIpa(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    return la3osAlIpa(konvertiNumerikanAlLa3os(teksto), opcioj);
-}
-
-/**
- * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os IPA )
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
- * @returns ĉeno
- */
-function ipaAlNumerika(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    return konvertiLa3osAlNumerika(ipaAlLa3os(teksto, opcioj));
+function tboIpaK2fe(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    const veracel2f = VERACEL2F.ipa_la3os;
+    const kefCa1ara = String(kp6k2p2).split(/\s+/).filter(Boolean);
+    return kefCa1ara.map(kef => {
+        const xezCa1ara = kaltokIpaXez(kef);
+        return xezCa1ara.map(xez => {
+            let nejeqana = "";
+            let i = 0o0;
+            while ( i < xez.length ) {
+                const ca3aq = veracel2f.ca3aqCa1ara.find(k => xez.slice(i).startsWith(k));
+                if ( ca3aq === undefined ) {
+                    nejeqana += xez[i];
+                    i++;
+                    continue;
+                }
+                const la3os = veracel2f.stakefani[ca3aq];
+                nejeqana += LA3OS_K2FE[la3os] || la3os;
+                i += ca3aq.length;
+            }
+            return nejeqana;
+        }).join("");
+    }).join(" ");
 }
 
 /**
  * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif )
- * @param teksto ( string , required ) - ſɭɹ ſȷɔ
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ſɭɹ ſȷɔ
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function numerikaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    return la3osAlGawekiif(konvertiNumerikanAlLa3os(teksto), opcioj);
+function tboK2feGawekiif(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    return tboLa3osGawekiif(tboK2feLa3os(kp6k2p2), sukf2q);
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif )
- * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function gawekiifAlNumerika(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    return konvertiLa3osAlNumerika(gawekiifAlLa3os(teksto, opcioj));
+function tboGawekiifK2fe(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    return tboLa3osK2fe(tboGawekiifLa3os(kp6k2p2, sukf2q));
 }
 
-interface VokalaKongruo {
-    pozicio: number;
-    vokalo: string;
-    longo: number;
+interface AwaB6n2ba {
+    n2k: number;
+    awa: string;
+    puf2: number;
 }
 
 /**
  * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
- * @param pozicio ( number , required ) - ſɭɹ ſȷɔ
- * @returns kongruo
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
+ * @param n2k ( number , required ) - ſɭɹ ſȷɔ
+ * @returns awaB6n2ba
  */
-function troviVokalonJe(teksto: string, pozicio: number): VokalaKongruo | null {
-    for ( const v of VOKALOJ_ORDIGITAJ ) {
-        if ( teksto.slice(pozicio).startsWith(v) ) {
-            return { pozicio, vokalo: v, longo: v.length };
+function b6n2baAwa(kp6k2p2: string, n2k: number): AwaB6n2ba | null {
+    for ( const awa of AWA_CA1ARA ) {
+        if ( kp6k2p2.slice(n2k).startsWith(awa) ) {
+            return { n2k, awa, puf2: awa.length };
         }
     }
     return null;
@@ -893,174 +888,163 @@ function troviVokalonJe(teksto: string, pozicio: number): VokalaKongruo | null {
 
 /**
  * ſɟᴜ ɭʃᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os )
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function disigiEnSilabojn(teksto: string): string {
-    if ( !teksto ) return "";
-    if ( teksto.includes(" ") ) return teksto;
+function kaltokXez(kp6k2p2: string): string {
+    if ( !kp6k2p2 ) return "";
+    if ( kp6k2p2.includes(" ") ) return kp6k2p2;
 
-    const vokalajPozicioj: VokalaKongruo[] = [];
+    const awaN2kCa1ara: AwaB6n2ba[] = [];
     let i = 0o0;
-    while ( i < teksto.length ) {
-        const kongruo = troviVokalonJe(teksto, i);
-        if ( kongruo ) {
-            vokalajPozicioj.push(kongruo);
-            i += kongruo.longo;
+    while ( i < kp6k2p2.length ) {
+        const awaN2k = b6n2baAwa(kp6k2p2, i);
+        if ( awaN2k ) {
+            awaN2kCa1ara.push(awaN2k);
+            i += awaN2k.puf2;
         } else {
             i++;
         }
     }
 
-    if ( vokalajPozicioj.length <= 0o1 ) return teksto;
+    if ( awaN2kCa1ara.length <= 0o1 ) return kp6k2p2;
 
-    const rezulto: string[] = [];
-    for ( let j = 0o0; j < vokalajPozicioj.length; j++ ) {
-        const kongruo = vokalajPozicioj[j];
-        const start = j === 0o0 ? 0o0 : vokalajPozicioj[j - 0o1].pozicio + vokalajPozicioj[j - 0o1].longo;
-        const end = j < vokalajPozicioj.length - 0o1 ? kongruo.pozicio + kongruo.longo : teksto.length;
-        const silabo = teksto.slice(start, end);
-        if ( silabo ) rezulto.push(silabo);
+    const tboXezCa1ara: string[] = [];
+    for ( let j = 0o0; j < awaN2kCa1ara.length; j++ ) {
+        const awaN2k = awaN2kCa1ara[j];
+        const saxeN2k = j === 0o0 ? 0o0 : awaN2kCa1ara[j - 0o1].n2k + awaN2kCa1ara[j - 0o1].puf2;
+        const ara3akakN2k = j < awaN2kCa1ara.length - 0o1 ? awaN2k.n2k + awaN2k.puf2 : kp6k2p2.length;
+        const xez = kp6k2p2.slice(saxeN2k, ara3akakN2k);
+        if ( xez ) tboXezCa1ara.push(xez);
     }
 
-    return rezulto.join(" ");
+    return tboXezCa1ara.join(" ");
 }
 
 /**
-* j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
-* @param valoro ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( Gawekiif )
-* @param silabo ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( La3os )
-* @returns valoro
-*/
-function aldonuKomenconSilabo(valoro: string, silabo: string): string {
-    if ( !valoro || valoro.startsWith("ꞁȷ̀") ) return valoro;
-    return troviVokalonJe( silabo, 0o0 ) ? "ꞁȷ̀" + valoro : valoro;
+ * vaku3a ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param nejeqana ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( Gawekiif )
+ * @param xez ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( La3os )
+ * @returns nejeqana
+ */
+function vaku3aXaqadi(nejeqana: string, xez: string): string {
+    if ( !nejeqana || nejeqana.startsWith("ꞁȷ̀") ) return nejeqana;
+    return b6n2baAwa( xez, 0o0 ) ? "ꞁȷ̀" + nejeqana : nejeqana;
 }
 
 /**
-* ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os Gawekiif )
-* @param silabo ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
-* @returns ĉeno
-*/
-function konvertiSilabon(silabo: string): string {
-    if ( cxuMalplenaAUBlanko(silabo) ) return "";
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os Gawekiif )
+ * @param xez ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
+ */
+function tboXez(xez: string): string {
+    if ( eq2k(xez) ) return "";
 
-    const komencaSerxtabelo = SERXTABELO.la3os_gk_initial;
-    const internaSerxtabelo = SERXTABELO.la3os_gk_internal;
+    const xaqadiVeracel2f = VERACEL2F.la3os_gk_xaqadi;
+    const c2h2Veracel2f = VERACEL2F.la3os_gk_c2h2;
 
-    if ( !komencaSerxtabelo?.map || !internaSerxtabelo?.map ) return "ꞁȷ̀";
+    if ( !xaqadiVeracel2f?.stakefani || !c2h2Veracel2f?.stakefani ) return "ꞁȷ̀";
 
-    if ( !troviVokalonJe( silabo, 0o0 ) ) {
-        if ( komencaSerxtabelo.map[silabo] ) return aldonuKomenconSilabo( komencaSerxtabelo.map[silabo], silabo );
-    } else if ( internaSerxtabelo.map[silabo] ) {
-        return aldonuKomenconSilabo( internaSerxtabelo.map[silabo], silabo );
+    if ( !b6n2baAwa( xez, 0o0 ) ) {
+        if ( xaqadiVeracel2f.stakefani[xez] ) return vaku3aXaqadi( xaqadiVeracel2f.stakefani[xez], xez );
+    } else if ( c2h2Veracel2f.stakefani[xez] ) {
+        return vaku3aXaqadi( c2h2Veracel2f.stakefani[xez], xez );
     }
 
-    let rezulto = "";
+    let nejeqana = "";
     let i = 0o0;
-    let cxuUnuaKonsonanto = true;
+    let xaqadiKetu = true;
 
-    while ( i < silabo.length ) {
-        if ( troviVokalonJe(silabo, i) ) break;
+    while ( i < xez.length ) {
+        if ( b6n2baAwa(xez, i) ) break;
 
-        let kongruis = false;
-        const serxtabelo = cxuUnuaKonsonanto ? komencaSerxtabelo : internaSerxtabelo;
-
-        for ( const klavo of serxtabelo.keys ) {
-            if ( silabo.slice(i).startsWith(klavo) ) {
-                rezulto += serxtabelo.map[klavo];
-                i += klavo.length;
-                cxuUnuaKonsonanto = false;
-                kongruis = true;
-                break;
-            }
-        }
-        if ( !kongruis ) break;
+        const veracel2f = xaqadiKetu ? xaqadiVeracel2f : c2h2Veracel2f;
+        const ca3aq = veracel2f.ca3aqCa1ara.find(k => xez.slice(i).startsWith(k));
+        if ( ca3aq === undefined ) break;
+        nejeqana += veracel2f.stakefani[ca3aq];
+        i += ca3aq.length;
+        xaqadiKetu = false;
     }
 
-    const vokalaKongruo = troviVokalonJe(silabo, i);
-    if ( vokalaKongruo ) {
-        const vokalaGk = internaSerxtabelo.map[vokalaKongruo.vokalo];
-        if ( vokalaGk ) rezulto += vokalaGk;
-        i += vokalaKongruo.longo;
+    const awaB6n2ba = b6n2baAwa(xez, i);
+    if ( awaB6n2ba ) {
+        const awaGk = c2h2Veracel2f.stakefani[awaB6n2ba.awa];
+        if ( awaGk ) nejeqana += awaGk;
+        i += awaB6n2ba.puf2;
     }
 
-    if ( internaSerxtabelo.keys ) {
-        while ( i < silabo.length ) {
-            let kongruis = false;
-            for ( const klavo of internaSerxtabelo.keys ) {
-                if ( VOKALOJ_ORDIGITAJ.includes(klavo) ) continue;
-                if ( silabo.slice(i).startsWith(klavo) ) {
-                    rezulto += internaSerxtabelo.map[klavo];
-                    i += klavo.length;
-                    kongruis = true;
-                    break;
-                }
+    if ( c2h2Veracel2f.ca3aqCa1ara ) {
+        while ( i < xez.length ) {
+            const ca3aq = c2h2Veracel2f.ca3aqCa1ara.find(k => !AWA_CA1ARA.includes(k) && xez.slice(i).startsWith(k));
+            if ( ca3aq === undefined ) {
+                i++;
+                continue;
             }
-            if ( !kongruis ) i++;
+            nejeqana += c2h2Veracel2f.stakefani[ca3aq];
+            i += ca3aq.length;
         }
     }
 
-    if ( rezulto && troviVokalonJe(silabo, 0o0) && !rezulto.startsWith("ꞁȷ̀") ) {
-        rezulto = "ꞁȷ̀" + rezulto;
+    if ( nejeqana && b6n2baAwa(xez, 0o0) && !nejeqana.startsWith("ꞁȷ̀") ) {
+        nejeqana = "ꞁȷ̀" + nejeqana;
     }
 
-    return rezulto || "ꞁȷ̀";
+    return nejeqana || "ꞁȷ̀";
 }
 
 /**
  * ɭʃɀɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os Gawekiif )
- * @param vorto ( string , required ) - ſɭɔʞ
- * @returns ĉeno
+ * @param kef ( string , required ) - ſɭɔʞ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function konvertiVorton(vorto: string): string {
-    if ( cxuMalplenaAUBlanko(vorto) ) return "";
+function tboKef(kef: string): string {
+    if ( eq2k(kef) ) return "";
 
-    return disigiPerSpacoj(vorto).map(s => {
-        return disigiEnSilabojn(s).split(/\s+/).map(konvertiSilabon).join(" ");
+    return kaltokKp6catasai(kef).map(xez => {
+        return kaltokXez(xez).split(/\s+/).map(tboXez).join(" ");
     }).join(" ");
 }
 
 // ⟨ j͑ʃᴜƽ ( . , | ʌ ) ⟩
-const INTERPUNKCIAJ_LA3OS: Record<string, string> = { ".": "⟅", ",": "｡" };
-const INTERPUNKCIAJ_IPA: Record<string, string> = { "/": "⟅", ",": "｡" };
+const N2K_LA3OS: Record<string, string> = { ".": "⟅", ",": "｡" };
+const N2K_IPA: Record<string, string> = { "/": "⟅", ",": "｡" };
 
 /**
  * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param vorto ( string , required ) - ſɭɔʞ
- * @returns jesne
+ * @param kef ( string , required ) - ſɭɔʞ
+ * @returns ſɭc̗ᴜ ſɭɹ ֭ſɭɹ
  */
-function cxuNurLa3osInterpunkcio(vorto: string): boolean {
-    if ( !vorto ) return false;
-    return Array.from(vorto).every(c => INTERPUNKCIAJ_LA3OS[c] !== undefined);
+function n2kLa3os(kef: string): boolean {
+    if ( !kef ) return false;
+    return Array.from(kef).every(c => N2K_LA3OS[c] !== undefined);
 }
 
 /**
  * ɭʃɀɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os Gawekiif )
- * @param vorto ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞
- * @returns ĉeno
+ * @param kef ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function konvertiLa3osInterpunkcion(vorto: string): string {
-    return Array.from(vorto).map(c => INTERPUNKCIAJ_LA3OS[c] || c).join("");
+function tboN2kLa3os(kef: string): string {
+    return Array.from(kef).map(c => N2K_LA3OS[c] || c).join("");
 }
 
 /**
  * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA )
- * @param vorto ( string , required ) - ſɭɔʞ
- * @returns jesne
+ * @param kef ( string , required ) - ſɭɔʞ
+ * @returns ſɭc̗ᴜ ſɭɹ ֭ſɭɹ
  */
-function cxuNurIpaInterpunkcio(vorto: string): boolean {
-    if ( !vorto ) return false;
-    return Array.from(vorto).every(c => INTERPUNKCIAJ_IPA[c] !== undefined);
+function n2kIpa(kef: string): boolean {
+    if ( !kef ) return false;
+    return Array.from(kef).every(c => N2K_IPA[c] !== undefined);
 }
 
 /**
  * ɭʃɀɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA Gawekiif )
- * @param vorto ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞
- * @returns ĉeno
+ * @param kef ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function konvertiIpaInterpunkcion(vorto: string): string {
-    return Array.from(vorto).map(c => INTERPUNKCIAJ_IPA[c] || c).join("");
+function tboN2kIpa(kef: string): string {
+    return Array.from(kef).map(c => N2K_IPA[c] || c).join("");
 }
 
 
@@ -1068,167 +1052,517 @@ function konvertiIpaInterpunkcion(vorto: string): string {
 
 /**
  * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( . , / )
- * @param konvertita ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns jesne
+ * @param xezNejeqana ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns ſɭc̗ᴜ ſɭɹ ֭ſɭɹ
  */
-function cxuNurEligaInterpunkcio(konvertita: string): boolean {
-    if ( !konvertita ) return false;
-    return Array.from(konvertita).every(c => c === "." || c === "," || c === "/");
+function n2kNejeqana(xezNejeqana: string): boolean {
+    if ( !xezNejeqana ) return false;
+    return Array.from(xezNejeqana).every(c => c === "." || c === "," || c === "/");
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif La3os IPA )
- * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
- * @param serxtabelo ( Serxtabelo , required ) - ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? majuskligi? silabaDisigilo? uziNumerikan? }
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param veracel2f ( Veracel2f , required ) - ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? puf2? xezKp6catasai? k2K2fe? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function konvertiGawekiif(teksto: string, serxtabelo: Serxtabelo, opcioj: KonvertajOpcioj = {}): string {
-    const { laŭlitera = false, majuskligi = false, silabaDisigilo = " ", uziNumerikan = true } = opcioj;
+function tboGawekiifVeracel2f(kp6k2p2: string, veracel2f: Veracel2f, sukf2q: TboSukf2q = {}): string {
+    const { kaj2xa = false, puf2 = false, xezKp6catasai = " ", k2K2fe = true } = sukf2q;
 
-    const vortajPartoj = String(teksto).split("ʌ");
+    const kefCa1ara = String(kp6k2p2).split("ʌ");
 
-    const konvertitaj = vortajPartoj.map(vorto => {
-        const silaboj = disigiPerSpacoj(vorto);
-        const konvertitajSilaboj = silaboj.map(silabo => {
-            let konvertita = konvertiPerSerxtabelo(silabo, serxtabelo);
-            if ( majuskligi ) konvertita = konvertita.replace(/^./, c => c.toUpperCase());
-            return konvertita;
+    const tboKefCa1ara = kefCa1ara.map(kef => {
+        const xezCa1ara = kaltokKp6catasai(kef);
+        const xezNejeqanaCa1ara = xezCa1ara.map(xez => {
+            let xezNejeqana = tboVeracel2f(xez, veracel2f);
+            if ( puf2 ) xezNejeqana = xezNejeqana.replace(/^./, c => c.toUpperCase());
+            return xezNejeqana;
         }).filter(s => s !== "");
-        if ( laŭlitera ) {
-            let kunigita = "";
-            for ( const s of konvertitajSilaboj ) {
-                if ( cxuNurEligaInterpunkcio(s) ) {
-                    kunigita += (kunigita && !kunigita.endsWith(" ") ? " " : "") + s + " ";
+        if ( kaj2xa ) {
+            let kefNejeqana = "";
+            for ( const s of xezNejeqanaCa1ara ) {
+                if ( n2kNejeqana(s) ) {
+                    kefNejeqana += (kefNejeqana && !kefNejeqana.endsWith(" ") ? " " : "") + s + " ";
                 } else {
-                    kunigita += (kunigita && !kunigita.endsWith(" ") ? silabaDisigilo : "") + s;
+                    kefNejeqana += (kefNejeqana && !kefNejeqana.endsWith(" ") ? xezKp6catasai : "") + s;
                 }
             }
-            return kunigita.trim();
+            return kefNejeqana.trim();
         }
-        let kunigita = "";
-        for ( const s of konvertitajSilaboj ) {
-            kunigita += s;
-            if ( cxuNurEligaInterpunkcio(s) ) kunigita += " ";
+        let kefNejeqana = "";
+        for ( const s of xezNejeqanaCa1ara ) {
+            kefNejeqana += s;
+            if ( n2kNejeqana(s) ) kefNejeqana += " ";
         }
-        return kunigita.trim();
+        return kefNejeqana.trim();
     });
 
-    const rezulto = konvertitaj.join(" ");
-    return uziNumerikan ? rezulto : konvertiNumerikanAlLa3os(rezulto);
+    const kefNejeqana = tboKefCa1ara.join(" ");
+    return k2K2fe ? kefNejeqana : tboK2feLa3os(kefNejeqana);
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif La3os )
- * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { uziNumerikan? laŭlitera? }
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { k2K2fe? kaj2xa? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function gawekiifAlLa3os(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    return konvertiGawekiif(teksto, SERXTABELO.gk_la3os, opcioj);
+function tboGawekiifLa3os(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    return tboGawekiifVeracel2f(kp6k2p2, VERACEL2F.gk_la3os, sukf2q);
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os Gawekiif )
- * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( La3os )
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( La3os )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function la3osAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    const normaligitaTeksto = normigiLa3osEnigon(teksto);
-    const vortoj = disigiPerSpacoj(normaligitaTeksto);
+function tboLa3osGawekiif(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    const k2feKp6k2p2 = tboLa3osK2fe(kp6k2p2);
+    const kefCa1ara = kaltokKp6catasai(k2feKp6k2p2);
 
-    let rezulto = "";
-    let lastWasPunct = false;
-    for ( const v of vortoj ) {
-        if ( cxuNurLa3osInterpunkcio(v) ) {
-            rezulto += (rezulto ? " " : "") + konvertiLa3osInterpunkcion(v);
-            lastWasPunct = true;
+    let nejeqana = "";
+    let ksozkalN2k = false;
+    for ( const kef of kefCa1ara ) {
+        if ( n2kLa3os(kef) ) {
+            nejeqana += (nejeqana ? " " : "") + tboN2kLa3os(kef);
+            ksozkalN2k = true;
         } else {
-            rezulto += (rezulto ? (lastWasPunct ? " " : " ʌ ") : "") + konvertiVorton(v);
-            lastWasPunct = false;
+            nejeqana += (nejeqana ? (ksozkalN2k ? " " : " ʌ ") : "") + tboKef(kef);
+            ksozkalN2k = false;
         }
     }
 
-    return rezulto;
+    return nejeqana;
 }
 
 /**
- * ɭʃɀɜ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( serxtabelo )
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @param serxtabelo ( Serxtabelo , required ) - ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? enigaDisigilo? eligaDisigilo? antaŭprilabori? }
- * @returns ĉeno
+ * ɭʃɀɜ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( veracel2f )
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param veracel2f ( Veracel2f , required ) - ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? saxeKp6catasai? ara3akakKp6catasai? saxeVasaka? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function konvertiSilabojn(teksto: string, serxtabelo: Serxtabelo, opcioj: KonvertajOpcioj = {}): string {
-    const { laŭlitera = false, enigaDisigilo = ".", eligaDisigilo = ".", antaŭprilabori = null } = opcioj;
+function tboXezCa1ara(kp6k2p2: string, veracel2f: Veracel2f, sukf2q: TboSukf2q = {}): string {
+    const { kaj2xa = false, saxeKp6catasai = ".", ara3akakKp6catasai = ".", saxeVasaka = null } = sukf2q;
 
-    let prilaboritaTeksto = antaŭprilabori ? antaŭprilabori(teksto) : teksto;
-    const silaboj = prilaboritaTeksto.split(enigaDisigilo).map(s => s.trim()).filter(Boolean);
-    const konvertitaj = silaboj.map(silabo => konvertiPerSerxtabelo(silabo, serxtabelo));
+    let vasakaKp6k2p2 = saxeVasaka ? saxeVasaka(kp6k2p2) : kp6k2p2;
+    const xezCa1ara = vasakaKp6k2p2.split(saxeKp6catasai).map(s => s.trim()).filter(Boolean);
+    const tboKefCa1ara = xezCa1ara.map(xez => tboVeracel2f(xez, veracel2f));
 
-    return laŭlitera ? konvertitaj.join(eligaDisigilo) : konvertitaj.join("");
+    return kaj2xa ? tboKefCa1ara.join(ara3akakKp6catasai) : tboKefCa1ara.join("");
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os IPA )
- * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( La3os )
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( La3os )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function la3osAlIpa(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    const { laŭlitera = false } = opcioj;
-    const serxtabelo = SERXTABELO.la3os_ipa;
+function tboLa3osIpa(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    const { kaj2xa = false } = sukf2q;
+    const veracel2f = VERACEL2F.la3os_ipa;
 
-    const normaligitaTeksto = normigiLa3osEnigon(teksto);
-    const vortoj = disigiPerSpacoj(normaligitaTeksto);
-    const konvertitaj = vortoj.map(vorto => {
-        const silaboj = disigiPerSpacoj(disigiEnSilabojn(vorto));
-        const ipaSilaboj = silaboj.map(silabo => konvertiPerSerxtabelo(silabo, serxtabelo));
-        return laŭlitera ? ipaSilaboj.join(".") : ipaSilaboj.join("");
+    const k2feKp6k2p2 = tboLa3osK2fe(kp6k2p2);
+    const kefCa1ara = kaltokKp6catasai(k2feKp6k2p2);
+    const tboKefCa1ara = kefCa1ara.map(kef => {
+        const xezCa1ara = kaltokKp6catasai(kaltokXez(kef));
+        const ipaXezCa1ara = xezCa1ara.map(xez => tboVeracel2f(xez, veracel2f));
+        return kaj2xa ? ipaXezCa1ara.join(".") : ipaXezCa1ara.join("");
     });
 
-    return konvertitaj.join(" ");
+    return tboKefCa1ara.join(" ");
+}
+
+/* ɭʃɀɜ ʌ ı],ɔƴ ʌ ꞁȷ̀ɔ ʌ ſɭc̭ɔ ʌ ſɭᴜͷ̗ ⟅ */
+/* ſɟɹƽ ꞁȷ̀ᴜꞇ ſɭɔ ɭʃw ʌ ֭ſɭᴜ ɭʃɔ ⟅ */
+/* z → ្រ ｡ h → ខ ⟅ */
+
+const KME_ANGKOK = "្";
+const KME_VOWEL_CARRIER = "អ";
+const GK_BARE_INITIAL = "ꞁȷ̀";
+
+interface KmeKef {
+    la3os: string;
+    tem2: string;
+    xaqadi?: string;
+    kmehate?: string;
+}
+
+interface KmeRender {
+    tem2: string;
+    hate: string;
+}
+
+const KME_CA1ARA: KmeKef[] = [
+    { la3os: "w", tem2: "វ" },
+    { la3os: "p", tem2: "ព" },
+    { la3os: "f", tem2: "ផ" },
+    { la3os: "b", tem2: "ភ" },
+    { la3os: "m", tem2: "ម" },
+    { la3os: "r", tem2: "រ" },
+    { la3os: "v", tem2: "ថ" },
+    { la3os: "t", tem2: "ត" },
+    { la3os: "d", tem2: "ធ" },
+    { la3os: "1", tem2: "ស", xaqadi: "ត" },
+    { la3os: "s", tem2: "ស", xaqadi: "ត" },
+    { la3os: "n", tem2: "ន" },
+    { la3os: "3", tem2: "ល", xaqadi: "ត" },
+    { la3os: "l", tem2: "ល" },
+    { la3os: "5", tem2: "រ", xaqadi: "ក" },
+    { la3os: "z", tem2: "រ", xaqadi: "ហ" },
+    { la3os: "j", tem2: "យ" },
+    { la3os: "c", tem2: "ច" },
+    { la3os: "x", tem2: "ឆ" },
+    { la3os: "y", tem2: "ញ" },
+    { la3os: "g", tem2: "ឃ" },
+    { la3os: "k", tem2: "ក" },
+    { la3os: "h", tem2: "ហ", kmehate: "ខ" },
+    { la3os: "q", tem2: "ង" },
+    { la3os: "p'", tem2: "ព", xaqadi: "គ" },
+    { la3os: "v'", tem2: "ថ", xaqadi: "គ" },
+    { la3os: "l'", tem2: "ល", xaqadi: "គ" },
+    { la3os: "c'", tem2: "ច", xaqadi: "គ" },
+    { la3os: "t'", tem2: "ត", xaqadi: "គ" },
+    { la3os: "m'", tem2: "ម", xaqadi: "គ" },
+    { la3os: "nv'", tem2: "ថ", xaqadi: "ណ" },
+    { la3os: "nl'", tem2: "ល", xaqadi: "ណ" },
+    { la3os: "y'", tem2: "ញ", xaqadi: "ណ" },
+    { la3os: "n'", tem2: "ន", xaqadi: "ណ" },
+    { la3os: "i", tem2: "ី" },
+    { la3os: "e", tem2: "េ" },
+    { la3os: "a", tem2: "ា" },
+    { la3os: "u", tem2: "ឹ" },
+    { la3os: "2", tem2: "ិ" },
+    { la3os: "o", tem2: "ុ" },
+    { la3os: "6", tem2: "៏" },
+    { la3os: "0", tem2: "េំ" },
+    { la3os: "7", tem2: "ុំ" },
+    { la3os: "4", tem2: "ំ" },
+    { la3os: "ai", tem2: "ឹ" },
+    { la3os: ".", tem2: "។" },
+    { la3os: ",", tem2: "｡" },
+    { la3os: "piise", tem2: "ពិសេ" }
+];
+
+/* ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ı],ɔʞ ʌ kme ⟩ */
+const KME_TEM2: Record<string, string> = {};
+const KME_HATE: Record<string, string> = {};
+const KME_LA3OS: Record<string, string> = {};
+const KME_LA3OS_CA3ARA: string[] = [];
+const KME_LA3OS_RENDER: Record<string, KmeRender> = {};
+const KME_IPA_RENDER: Record<string, KmeRender> = {};
+const GK_CA1ARA = [ ...KEF_CA1ARA ].sort((a, b) => b.gk.length - a.gk.length);
+const GK_XAQADI: Set<string> = new Set(XAQADI_CA1ARA.map(kef => kef.gk));
+const KME_KHMER_IPA: Record<string, string> = {};
+const KME_KHMER_IPA_CA3ARA: string[] = [];
+const KME_PIISE_IPA = "pɪ̈sɛ";
+for ( const kef of KME_CA1ARA ) {
+    const tem2 = kef.xaqadi ? kef.xaqadi + KME_ANGKOK + kef.tem2 : kef.tem2;
+    const cxuKetu = kef.la3os !== "piise" && !AWA_CA1ARA.includes(kef.la3os) && kef.la3os !== "." && kef.la3os !== ",";
+    const hate = cxuKetu ? ( kef.kmehate ?? KME_ANGKOK + kef.tem2 ) : tem2;
+    const render = { tem2, hate };
+    if ( !KME_TEM2[kef.la3os] ) KME_TEM2[kef.la3os] = tem2;
+    if ( !KME_HATE[kef.la3os] ) KME_HATE[kef.la3os] = hate;
+    if ( !KME_LA3OS_RENDER[kef.la3os] ) KME_LA3OS_RENDER[kef.la3os] = render;
+    const ipa = kef.la3os === "piise"
+        ? KME_PIISE_IPA
+        : KEF_CA1ARA.find(m => m.la3os === kef.la3os)?.ipa;
+    if ( ipa && !KME_IPA_RENDER[ipa] ) KME_IPA_RENDER[ipa] = render;
+    for ( const kmeCa3aq of [ tem2, hate ] ) {
+        if ( !KME_LA3OS[kmeCa3aq] ) {
+            KME_LA3OS[kmeCa3aq] = kef.la3os;
+            KME_LA3OS_CA3ARA.push(kmeCa3aq);
+            if ( ipa ) {
+                KME_KHMER_IPA[kmeCa3aq] = ipa;
+                KME_KHMER_IPA_CA3ARA.push(kmeCa3aq);
+            }
+        }
+    }
+}
+KME_KHMER_IPA[KME_VOWEL_CARRIER] = "";
+KME_KHMER_IPA_CA3ARA.push(KME_VOWEL_CARRIER);
+KME_LA3OS_CA3ARA.sort((a, b) => b.length - a.length);
+KME_KHMER_IPA_CA3ARA.sort((a, b) => b.length - a.length);
+const KME_CA3AQ = Object.keys(KME_TEM2).sort((a, b) => b.length - a.length);
+const KME_IPA_CA3AQ = Object.keys(KME_IPA_RENDER).sort((a, b) => b.length - a.length);
+
+/**
+ * ɭʃɀɜ ʌ ı],ɔƴ ⟅
+ * @param xez ( string , required ) - ı],ɔƴ
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
+ */
+function tboXezKmeWithMap(xez: string, ca3aqCa1ara: string[], renderCa1ara: Record<string, KmeRender>, awaCa1ara: string[]): string {
+    if ( eq2k(xez) ) return "";
+    let nejeqana = "";
+    let i = 0o0;
+    let xaqadiKetu = true;
+    let awa = false;
+    while ( i < xez.length ) {
+        const ca3aq = ca3aqCa1ara.find(k => xez.slice(i).startsWith(k));
+        if ( ca3aq === undefined ) {
+            nejeqana += xez[i];
+            i++;
+            continue;
+        }
+        const render = renderCa1ara[ca3aq];
+        if ( awaCa1ara.includes(ca3aq) ) {
+            if ( xaqadiKetu ) nejeqana += KME_VOWEL_CARRIER;
+            awa = true;
+            nejeqana += render.tem2;
+            xaqadiKetu = false;
+        } else if ( awa || xaqadiKetu ) {
+            nejeqana += render.tem2;
+            xaqadiKetu = false;
+        } else {
+            nejeqana += render.hate;
+            xaqadiKetu = false;
+        }
+        i += ca3aq.length;
+    }
+    return nejeqana;
+}
+
+function tboXezKme(xez: string): string {
+    return tboXezKmeWithMap(xez, KME_CA3AQ, KME_LA3OS_RENDER, AWA_CA1ARA);
+}
+
+function tboXezIpaKme(xez: string): string {
+    return tboXezKmeWithMap(xez, KME_IPA_CA3AQ, KME_IPA_RENDER, AWA_IPA);
+}
+
+/**
+ * ɭʃɀɜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( La3os )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
+ */
+function tboLa3osKme(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    const kefCa1ara = kaltokKp6catasai(tboLa3osK2fe(kp6k2p2));
+    const tboKefCa1ara = kefCa1ara.map(kef => {
+        const xezCa1ara = kaltokKp6catasai(kaltokXez(kef));
+        const kmeXezCa1ara = xezCa1ara.map(xez => tboXezKme(xez));
+        return kmeXezCa1ara.join("");
+    });
+    return tboKefCa1ara.join("");
+}
+
+/**
+ * ɭʃɀɜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
+ */
+function tboGawekiifKme(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    const convertFragment = (fragment: string): string => {
+        let nejeqana = "";
+        let i = 0o0;
+        let consonantRun = false;
+        let consonantRunHasLarge = false;
+        let vowelCarrier = false;
+        while ( i < fragment.length ) {
+            const kef = GK_CA1ARA.find(m => fragment.startsWith(m.gk, i));
+            if ( kef === undefined ) {
+                nejeqana += fragment[i];
+                i++;
+                consonantRun = false;
+                consonantRunHasLarge = false;
+                vowelCarrier = false;
+                continue;
+            }
+            i += kef.gk.length;
+            if ( kef.gk === GK_BARE_INITIAL ) {
+                nejeqana += KME_VOWEL_CARRIER;
+                consonantRun = false;
+                consonantRunHasLarge = false;
+                vowelCarrier = true;
+                continue;
+            }
+            if ( kef.gk === "⺓" ) {
+                nejeqana += KME_LA3OS_RENDER.piise.tem2;
+                consonantRun = false;
+                consonantRunHasLarge = false;
+                vowelCarrier = false;
+                continue;
+            }
+            const render = KME_IPA_RENDER[kef.ipa];
+            if ( !render ) {
+                nejeqana += kef.gk;
+                consonantRun = false;
+                consonantRunHasLarge = false;
+                vowelCarrier = false;
+                continue;
+            }
+            if ( AWA_IPA.includes(kef.ipa) ) {
+                if ( !consonantRun && !vowelCarrier ) nejeqana += KME_VOWEL_CARRIER;
+                nejeqana += render.tem2;
+                consonantRun = false;
+                consonantRunHasLarge = false;
+                vowelCarrier = false;
+            } else {
+                const isLarge = GK_XAQADI.has(kef.gk);
+                nejeqana += consonantRunHasLarge && !isLarge ? render.hate : render.tem2;
+                consonantRun = true;
+                consonantRunHasLarge ||= isLarge;
+                vowelCarrier = false;
+            }
+        }
+        return nejeqana;
+    };
+    return String(kp6k2p2).split("ʌ").map((word, i) => {
+        const converted = word.split(/\s+/).filter(Boolean).map(convertFragment).join("");
+        return i ? ` ${converted}` : converted;
+    }).join("");
+}
+
+/**
+ * ɭʃɀɜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( IPA )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
+ */
+function tboIpaKme(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    const kefCa1ara = String(kp6k2p2).split(/\s+/).filter(Boolean);
+    return kefCa1ara.map(kef => {
+        const xezCa1ara = kef === KME_PIISE_IPA ? [ kef ] : kaltokIpaXez(kef);
+        const kmeXezCa1ara = xezCa1ara.map(xez => tboXezIpaKme(xez));
+        return kmeXezCa1ara.join("");
+    }).join("");
+}
+
+/**
+ * ɭʃɀɜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( ſɭɹ ſȷɔ )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
+ */
+function tboK2feKme(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    return tboIpaKme(tboK2feIpa(kp6k2p2, { ...sukf2q, kaj2xa: false }), sukf2q);
+}
+
+/**
+ * ɭʃɀɜ ʌ ı],ɔƴ ʌ ꞁȷ̀ɔ ʌ ſɭc̭ɔ ʌ ſɭᴜͷ̗ ⟅ ( la3os )
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( ꞁȷ̀ɔ ʌ ſɭc̭ɔ ʌ ſɭᴜͷ̗ )
+ * @returns nejeqana
+ */
+function kaltokKmeLa3os(kp6k2p2: string): string {
+    let nejeqana = "";
+    let i = 0o0;
+    while ( i < kp6k2p2.length ) {
+        if ( kp6k2p2.startsWith(KME_VOWEL_CARRIER, i) ) {
+            i += KME_VOWEL_CARRIER.length;
+            continue;
+        }
+        const ca3aq = KME_LA3OS_CA3ARA.find(caxef2 => kp6k2p2.slice(i, i + caxef2.length) === caxef2);
+        if ( ca3aq === undefined ) {
+            nejeqana += kp6k2p2[i];
+            i++;
+            continue;
+        }
+        nejeqana += KME_LA3OS[ca3aq];
+        i += ca3aq.length;
+    }
+    return nejeqana;
+}
+
+/**
+ * ɭʃɀɜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( ꞁȷ̀ɔ ʌ ſɭc̭ɔ ʌ ſɭᴜͷ̗ )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
+ * @returns nejeqana
+ */
+function tboKmeLa3os(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    const kefCa1ara = kaltokKp6catasai(kp6k2p2);
+    const tboKefCa1ara = kefCa1ara.map(kef => kaltokKmeLa3os(kef));
+    return tboKefCa1ara.join(" ");
+}
+
+/**
+ * ɭʃɀɜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( ꞁȷ̀ɔ ʌ ſɭc̭ɔ ʌ ſɭᴜͷ̗ )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
+ * @returns nejeqana
+ */
+function tboKmeGawekiif(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    return String(kp6k2p2).split(/\s+/).filter(Boolean).map(kef => {
+        const kmeCa1ara = kef.split(KME_VOWEL_CARRIER);
+        return kmeCa1ara.map((kme, i) => {
+            const gk = tboIpaGawekiif(tboKmeIpa(kme, { ...sukf2q, kaj2xa: false }), sukf2q);
+            return i && gk.startsWith(GK_BARE_INITIAL) ? gk.slice(GK_BARE_INITIAL.length) : gk;
+        }).join(GK_BARE_INITIAL);
+    }).join(" ");
+}
+
+/**
+ * ɭʃɀɜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( ꞁȷ̀ɔ ʌ ſɭc̭ɔ ʌ ſɭᴜͷ̗ )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
+ * @returns nejeqana
+ */
+function kaltokKmeIpa(kp6k2p2: string): string {
+    let nejeqana = "";
+    let i = 0o0;
+    while ( i < kp6k2p2.length ) {
+        const ca3aq = KME_KHMER_IPA_CA3ARA.find(k => kp6k2p2.slice(i).startsWith(k));
+        if ( ca3aq === undefined ) {
+            nejeqana += kp6k2p2[i];
+            i++;
+            continue;
+        }
+        nejeqana += KME_KHMER_IPA[ca3aq];
+        i += ca3aq.length;
+    }
+    return nejeqana;
+}
+
+function tboKmeIpa(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    const { kaj2xa = false } = sukf2q;
+    const kefCa1ara = String(kp6k2p2).split(/\s+/).filter(Boolean);
+    return kefCa1ara.map(kef => {
+        const ipaXezCa1ara = kaltokIpaXez(kaltokKmeIpa(kef));
+        return kaj2xa ? ipaXezCa1ara.join(".") : ipaXezCa1ara.join("");
+    }).join(" ");
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA La3os )
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? uziNumerikan? }
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? k2K2fe? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function ipaAlLa3os(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    const { uziNumerikan = true } = opcioj;
-    const serxtabelo = SERXTABELO.ipa_la3os;
+function tboIpaLa3os(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    const { k2K2fe = true } = sukf2q;
+    const veracel2f = VERACEL2F.ipa_la3os;
 
     /* ⟨ j͑ʃᴜƽ ʌ ſɭɔʞ ( IPA . ) ⟩ */
-    const vortoj = String(teksto).split(/\s+/).filter(Boolean);
+    const kefCa1ara = String(kp6k2p2).split(/\s+/).filter(Boolean);
 
-    const kunigita = vortoj.map(vorto => vorto.split(".").map(silabo => konvertiPerSerxtabelo(silabo, serxtabelo, true)).filter(Boolean).join("")).filter(Boolean).join(" ");
+    const kefNejeqana = kefCa1ara.map(kef => kef.split(".").map(xez => tboVeracel2f(xez, veracel2f, true)).filter(Boolean).join("")).filter(Boolean).join(" ");
 
-    return uziNumerikan ? kunigita : konvertiNumerikanAlLa3os(kunigita);
+    return k2K2fe ? kefNejeqana : tboK2feLa3os(kefNejeqana);
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif IPA )
- * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function gawekiifAlIpa(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-    return konvertiGawekiif(teksto, SERXTABELO.gk_ipa, { ...opcioj, silabaDisigilo: "." });
+function tboGawekiifIpa(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+    return tboGawekiifVeracel2f(kp6k2p2, VERACEL2F.gk_ipa, { ...sukf2q, xezKp6catasai: "." });
 }
 
 /**
-* ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA )
-* @param silabo ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
-* @param pozicio ( number = 0o0 , optional ) - ſɭɹ ſȷɔ ( 0 )
-* @returns kungruo
-*/
-function troviVokalonIpaJe( silabo: string, pozicio: number = 0o0 ): { pozicio: number, vokalo: string, longo: number } | null {
-    for ( let i = pozicio; i < silabo.length; i++ ) {
-        for ( const vokalo of VOKALOJ_IPA ) {
-            if ( silabo.slice(i, i + vokalo.length) === vokalo ) return { pozicio: i, vokalo, longo: vokalo.length };
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA )
+ * @param xez ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
+ * @param n2k ( number = 0o0 , optional ) - ſɭɹ ſȷɔ ( 0 )
+ * @returns awaB6n2ba
+ */
+function b6n2baAwaIpa( xez: string, n2k: number = 0o0 ): { n2k: number, awa: string, puf2: number } | null {
+    for ( let i = n2k; i < xez.length; i++ ) {
+        for ( const awa of AWA_IPA ) {
+            if ( xez.slice(i, i + awa.length) === awa ) return { n2k: i, awa, puf2: awa.length };
         }
     }
     return null;
@@ -1236,180 +1570,183 @@ function troviVokalonIpaJe( silabo: string, pozicio: number = 0o0 ): { pozicio: 
 
 /**
 * ſɟᴜ ɭʃᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA La3os )
-* @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
-* @returns silaboj
+* @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
+* @returns xezCa1ara
 */
-function disigiIpaEnSilabojn( teksto: string ): string[] {
+function kaltokIpaXez( kp6k2p2: string ): string[] {
     /* ⟨ j͑ʃᴜƽ ( IPA ) ⟩ */
-    const rezulto: string[] = [];
-    for ( const segmento of teksto.split(".") ) {
-        if ( !segmento ) continue;
+    const tboXezCa1ara: string[] = [];
+    for ( const xezHate of kp6k2p2.split(".") ) {
+        if ( !xezHate ) continue;
 
-        const vokalajPozicioj: { pozicio: number, vokalo: string, longo: number }[] = [];
+        const awaN2kCa1ara: { n2k: number, awa: string, puf2: number }[] = [];
         let i = 0o0;
-        while ( i < segmento.length ) {
-            let kongruis = false;
-            for ( const vokalo of VOKALOJ_IPA ) {
-                if ( segmento.slice( i, i + vokalo.length ) === vokalo ) {
-                    vokalajPozicioj.push( { pozicio: i, vokalo, longo: vokalo.length } );
-                    i += vokalo.length;
-                    kongruis = true;
-                    break;
-                }
+        while ( i < xezHate.length ) {
+            const awa = AWA_IPA.find(a => xezHate.slice( i, i + a.length ) === a);
+            if ( awa === undefined ) {
+                i++;
+                continue;
             }
-            if ( !kongruis ) i++;
+            awaN2kCa1ara.push( { n2k: i, awa, puf2: awa.length } );
+            i += awa.length;
         }
 
-        if ( vokalajPozicioj.length <= 0o1 ) {
-            rezulto.push( segmento );
+        if ( awaN2kCa1ara.length <= 0o1 ) {
+            tboXezCa1ara.push( xezHate );
             continue;
         }
 
-        for ( let j = 0o0; j < vokalajPozicioj.length; j++ ) {
-            const kongruo = vokalajPozicioj[j];
-            const start = j === 0o0 ? 0o0 : vokalajPozicioj[j - 0o1].pozicio + vokalajPozicioj[j - 0o1].longo;
-            const end = j < vokalajPozicioj.length - 0o1 ? kongruo.pozicio + kongruo.longo : segmento.length;
-            const silabo = segmento.slice( start, end );
-            if ( silabo ) rezulto.push( silabo );
+        for ( let j = 0o0; j < awaN2kCa1ara.length; j++ ) {
+            const awaN2k = awaN2kCa1ara[j];
+            const saxeN2k = j === 0o0 ? 0o0 : awaN2kCa1ara[j - 0o1].n2k + awaN2kCa1ara[j - 0o1].puf2;
+            const ara3akakN2k = j < awaN2kCa1ara.length - 0o1 ? awaN2k.n2k + awaN2k.puf2 : xezHate.length;
+            const xez = xezHate.slice( saxeN2k, ara3akakN2k );
+            if ( xez ) tboXezCa1ara.push( xez );
         }
     }
-    return rezulto;
+    return tboXezCa1ara;
 }
 
 /**
 * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA Gawekiif )
-* @param silabo ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
-* @param estasKomenca ( boolean = false , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( 1 )
-* @returns ĉeno
+* @param xez ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
+* @returns ꞁȷ̀ɜ ſɭɔʞ
 */
-function konvertiIpaSilabon( silabo: string ): string {
-    if ( cxuMalplenaAUBlanko(silabo) ) return "";
+function tboIpaXez( xez: string ): string {
+    if ( eq2k(xez) ) return "";
 
-    const komencaSerxtabelo = SERXTABELO.ipa_gk_initial;
-    const internaSerxtabelo = SERXTABELO.ipa_gk_internal;
+    const xaqadiVeracel2f = VERACEL2F.ipa_gk_xaqadi;
+    const c2h2Veracel2f = VERACEL2F.ipa_gk_c2h2;
 
-    if ( !komencaSerxtabelo?.map || !internaSerxtabelo?.map ) return "";
+    if ( !xaqadiVeracel2f?.stakefani || !c2h2Veracel2f?.stakefani ) return "";
 
-    const vokalo = troviVokalonIpaJe( silabo, 0o0 );
-    if ( !vokalo ) return "";
+    const awaB6n2ba = b6n2baAwaIpa( xez, 0o0 );
+    if ( !awaB6n2ba ) return "";
 
-    let rezulto = "";
+    let nejeqana = "";
 
     /* ⟨ j͑ʃᴜ ı],ɔ ʌ j͑ʃᴜƽ ⟩ */
-    let unuaKonsonanto = true;
-    for ( let i = 0o0; i < vokalo.pozicio; ) {
-        let kongruis = false;
-        const serxtabelo = unuaKonsonanto ? komencaSerxtabelo : internaSerxtabelo;
-        for ( const klavo of serxtabelo.keys ) {
-            if ( klavo.length <= vokalo.pozicio - i && silabo.slice(i).startsWith(klavo) ) {
-                rezulto += serxtabelo.map[klavo];
-                i += klavo.length;
-                unuaKonsonanto = false;
-                kongruis = true;
-                break;
-            }
+    let xaqadiKetu = true;
+    for ( let i = 0o0; i < awaB6n2ba.n2k; ) {
+        const veracel2f = xaqadiKetu ? xaqadiVeracel2f : c2h2Veracel2f;
+        const ca3aq = veracel2f.ca3aqCa1ara.find(k => k.length <= awaB6n2ba.n2k - i && xez.slice(i).startsWith(k));
+        if ( ca3aq === undefined ) {
+            i++;
+            continue;
         }
-        if ( !kongruis ) i++;
+        nejeqana += veracel2f.stakefani[ca3aq];
+        i += ca3aq.length;
+        xaqadiKetu = false;
     }
 
-    rezulto += internaSerxtabelo.map[vokalo.vokalo] || komencaSerxtabelo.map[vokalo.vokalo] || "";
+    nejeqana += c2h2Veracel2f.stakefani[awaB6n2ba.awa] || xaqadiVeracel2f.stakefani[awaB6n2ba.awa] || "";
 
     /* ⟨ j͑ʃᴜƽ ⟩ */
-    const resto = silabo.slice( vokalo.pozicio + vokalo.longo );
-    for ( const klavo of internaSerxtabelo.keys ) {
-        if ( VOKALOJ_IPA.includes( klavo ) ) continue;
-        if ( resto.includes( klavo ) ) rezulto += internaSerxtabelo.map[klavo];
+    const ksozkalAwa = xez.slice( awaB6n2ba.n2k + awaB6n2ba.puf2 );
+    for ( const ca3aq of c2h2Veracel2f.ca3aqCa1ara ) {
+        if ( AWA_IPA.includes( ca3aq ) ) continue;
+        if ( ksozkalAwa.includes( ca3aq ) ) nejeqana += c2h2Veracel2f.stakefani[ca3aq];
     }
 
-    if ( !vokalo.pozicio && !rezulto.startsWith("ꞁȷ̀") ) rezulto = "ꞁȷ̀" + rezulto;
+    if ( !awaB6n2ba.n2k && !nejeqana.startsWith("ꞁȷ̀") ) nejeqana = "ꞁȷ̀" + nejeqana;
 
-    return rezulto || "ꞁȷ̀";
+    return nejeqana || "ꞁȷ̀";
 }
 
 /**
 * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA Gawekiif )
-* @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
-* @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
-* @returns ĉeno
+* @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
+* @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
+* @returns ꞁȷ̀ɜ ſɭɔʞ
 */
-function ipaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
-const vortoj = String(teksto).split(/\s+/).filter(Boolean);
+function tboIpaGawekiif(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
+const kefCa1ara = String(kp6k2p2).split(/\s+/).filter(Boolean);
 
-    let rezulto = "";
-    let lastWasPunct = false;
-    for ( const vorto of vortoj ) {
-        if ( cxuNurIpaInterpunkcio(vorto) ) {
-            rezulto += (rezulto ? " " : "") + konvertiIpaInterpunkcion(vorto);
-            lastWasPunct = true;
+    let nejeqana = "";
+    let ksozkalN2k = false;
+    for ( const kef of kefCa1ara ) {
+        if ( n2kIpa(kef) ) {
+            nejeqana += (nejeqana ? " " : "") + tboN2kIpa(kef);
+            ksozkalN2k = true;
             continue;
         }
-        const segmentoj = vorto.split(".");
-        const gkSilaboj: string[] = [];
-        for ( let j = 0o0; j < segmentoj.length; j++ ) {
-            const segmento = segmentoj[j].trim();
-            if ( !segmento ) continue;
-            const eksteraj = disigiIpaEnSilabojn( segmento );
-            for ( let k = 0o0; k < eksteraj.length; k++ ) {
-                gkSilaboj.push( konvertiIpaSilabon( eksteraj[k] ) );
+        const xezHateCa1ara = kef.split(".");
+        const gkXezCa1ara: string[] = [];
+        for ( let j = 0o0; j < xezHateCa1ara.length; j++ ) {
+            const xezHate = xezHateCa1ara[j].trim();
+            if ( !xezHate ) continue;
+            const xezCa1ara = kaltokIpaXez( xezHate );
+            for ( let k = 0o0; k < xezCa1ara.length; k++ ) {
+                gkXezCa1ara.push( tboIpaXez( xezCa1ara[k] ) );
             }
         }
-        const gkVorto = gkSilaboj.filter( Boolean ).join(" ");
-        if ( gkVorto ) {
-            rezulto += (rezulto ? (lastWasPunct ? " " : " ʌ ") : "") + gkVorto;
-            lastWasPunct = false;
+        const gkKef = gkXezCa1ara.filter( Boolean ).join(" ");
+        if ( gkKef ) {
+            nejeqana += (nejeqana ? (ksozkalN2k ? " " : " ʌ ") : "") + gkKef;
+            ksozkalN2k = false;
         }
     }
 
-    return rezulto;
+    return nejeqana;
 }
 
 /**
  * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @param de ( string , required ) - ſɭɔ˞ᴜ ſɭᴜ
- * @param al ( string , required ) - ſɭɔ˞ᴜ ſɭᴜ
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { uziNumerikan? laŭlitera? }
- * @returns ĉeno
+ * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param saxe ( string , required ) - ſɭɔ˞ᴜ ſɭᴜ
+ * @param ara3akak ( string , required ) - ſɭɔ˞ᴜ ſɭᴜ
+ * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { k2K2fe? kaj2xa? }
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
-function konverti(teksto: string, de: string, al: string, opcioj: KonvertajOpcioj = {}): string {
-    if ( de === al ) return teksto;
+function tbo(kp6k2p2: string, saxe: string, ara3akak: string, sukf2q: TboSukf2q = {}): string {
+    if ( saxe === "km" ) saxe = "khmer";
+    if ( ara3akak === "km" ) ara3akak = "khmer";
+    if ( saxe === ara3akak ) return kp6k2p2;
 
-    const opciojLokala: KonvertajOpcioj = { uziNumerikan: opcioj.uziNumerikan ?? true, laŭlitera: opcioj.laŭlitera ?? false };
+    const sukf2qCa1ara: TboSukf2q = { k2K2fe: sukf2q.k2K2fe ?? true, kaj2xa: sukf2q.kaj2xa ?? false };
 
-    const KONVERTOJ: Record<string, () => string> = {
-        "gawekiif_la3os": () => gawekiifAlLa3os(teksto, opciojLokala),
-        "la3os_gawekiif": () => la3osAlGawekiif(teksto, opciojLokala),
-        "la3os_ipa": () => la3osAlIpa(teksto, opciojLokala),
-        "ipa_la3os": () => ipaAlLa3os(teksto, opciojLokala),
-        "gawekiif_ipa": () => gawekiifAlIpa(teksto, opciojLokala),
-        "ipa_gawekiif": () => ipaAlGawekiif(teksto, opciojLokala),
-        "numerical_la3os": () => konvertiNumerikanAlLa3os(teksto),
-        "la3os_numerical": () => konvertiLa3osAlNumerika(teksto),
-        "numerical_ipa": () => numerikaAlIpa(teksto, opciojLokala),
-        "ipa_numerical": () => ipaAlNumerika(teksto, opciojLokala),
-        "numerical_gawekiif": () => numerikaAlGawekiif(teksto, opciojLokala),
-        "gawekiif_numerical": () => gawekiifAlNumerika(teksto, opciojLokala),
+    const TBO_CA1ARA: Record<string, () => string> = {
+        "gawekiif_la3os": () => tboGawekiifLa3os(kp6k2p2, sukf2qCa1ara),
+        "la3os_gawekiif": () => tboLa3osGawekiif(kp6k2p2, sukf2qCa1ara),
+        "la3os_ipa": () => tboLa3osIpa(kp6k2p2, sukf2qCa1ara),
+        "ipa_la3os": () => tboIpaLa3os(kp6k2p2, sukf2qCa1ara),
+        "gawekiif_ipa": () => tboGawekiifIpa(kp6k2p2, sukf2qCa1ara),
+        "ipa_gawekiif": () => tboIpaGawekiif(kp6k2p2, sukf2qCa1ara),
+        "la3os_khmer": () => tboLa3osKme(kp6k2p2, sukf2qCa1ara),
+        "gawekiif_khmer": () => tboGawekiifKme(kp6k2p2, sukf2qCa1ara),
+        "ipa_khmer": () => tboIpaKme(kp6k2p2, sukf2qCa1ara),
+        "numerical_khmer": () => tboK2feKme(kp6k2p2, sukf2qCa1ara),
+        "khmer_la3os": () => tboKmeLa3os(kp6k2p2, sukf2qCa1ara),
+        "khmer_gawekiif": () => tboKmeGawekiif(kp6k2p2, sukf2qCa1ara),
+        "khmer_ipa": () => tboKmeIpa(kp6k2p2, sukf2qCa1ara),
+        "khmer_numerical": () => tboIpaK2fe(tboKmeIpa(kp6k2p2, sukf2qCa1ara), sukf2qCa1ara),
+        "numerical_la3os": () => tboK2feLa3os(kp6k2p2),
+        "la3os_numerical": () => tboLa3osK2fe(kp6k2p2),
+        "numerical_ipa": () => tboK2feIpa(kp6k2p2, sukf2qCa1ara),
+        "ipa_numerical": () => tboIpaK2fe(kp6k2p2, sukf2qCa1ara),
+        "numerical_gawekiif": () => tboK2feGawekiif(kp6k2p2, sukf2qCa1ara),
+        "gawekiif_numerical": () => tboGawekiifK2fe(kp6k2p2, sukf2qCa1ara),
         "gawekiif_numero": () => {
-            const numero = gawekiifAlNumero(teksto, opciojLokala);
-            if ( !numero ) return "";
-            return numero + " / " + oktalaAlDuuma(numero);
+            const k2fe = tboGawekiifCaja(kp6k2p2, sukf2qCa1ara);
+            if ( !k2fe ) return "";
+            return k2fe + " / " + cajaP2sa(k2fe);
         },
-        "numero_gawekiif": () => numeroAlGawekiif(teksto, opciojLokala),
-        "gawekiif_kodigo": () => gawekiifAlKodigo(teksto, opciojLokala),
-        "kodigo_gawekiif": () => kodigoAlGawekiif(teksto, opciojLokala),
-        "gawekiif_duuma": () => gawekiifAlDuuma(teksto, opciojLokala),
-        "duuma_gawekiif": () => duumaAlGawekiif(teksto, opciojLokala),
-        "gawekiif_encoding": () => gawekiifAlKodigo(teksto, opciojLokala) + " / " + gawekiifAlDuuma(teksto, opciojLokala),
-        "encoding_gawekiif": () => encodingAlGawekiif(teksto)
+        "numero_gawekiif": () => tboCajaP2saGawekiif(kp6k2p2, sukf2qCa1ara),
+        "gawekiif_kodigo": () => tboGawekiifS2kanta(kp6k2p2, sukf2qCa1ara),
+        "kodigo_gawekiif": () => tboS2kantaGawekiif(kp6k2p2, sukf2qCa1ara),
+        "gawekiif_duuma": () => tboGawekiifP2sa(kp6k2p2, sukf2qCa1ara),
+        "duuma_gawekiif": () => tboP2saGawekiif(kp6k2p2, sukf2qCa1ara),
+        "gawekiif_encoding": () => tboGawekiifS2kanta(kp6k2p2, sukf2qCa1ara) + " / " + tboGawekiifP2sa(kp6k2p2, sukf2qCa1ara),
+        "encoding_gawekiif": () => tboS2kantaP2saGawekiif(kp6k2p2)
     };
 
-    const rektaKlavo = `${de}_${al}`;
+    const tboCa3aq = `${saxe}_${ara3akak}`;
 
-    if ( KONVERTOJ[rektaKlavo] ) {
-        return KONVERTOJ[rektaKlavo]();
+    if ( TBO_CA1ARA[tboCa3aq] ) {
+        return TBO_CA1ARA[tboCa3aq]();
     }
 
-    return teksto;
+    return kp6k2p2;
 }
 
 
@@ -1417,41 +1754,51 @@ function konverti(teksto: string, de: string, al: string, opcioj: KonvertajOpcio
 
 if ( typeof module !== "undefined" && module.exports ) {
     module.exports = {
-        MAPOJ,
-        KOMENCAJ,
-        INTERNAJ,
-        NUMERIKA,
-        NUMERIKA_MALO,
-        SERXTABELO,
-        konvertiPerSerxtabelo,
-        konvertiNumerikanAlLa3os,
-        konvertiLa3osAlNumerika,
-        numerikaAlIpa,
-        ipaAlNumerika,
-        troviVokalonJe,
-        disigiEnSilabojn,
-        konvertiSilabon,
-        konvertiVorton,
-        gawekiifAlLa3os,
-        la3osAlGawekiif,
-        la3osAlIpa,
-        ipaAlLa3os,
-        gawekiifAlIpa,
-        ipaAlGawekiif,
-        numerikaAlGawekiif,
-        gawekiifAlNumerika,
-        gawekiifAlNumero,
-        numeroAlGawekiif,
-        gawekiifAlKodigo,
-        kodigoAlGawekiif,
-        gawekiifAlDuuma,
-        duumaAlGawekiif,
-        encodingAlGawekiif,
-        oktalaAlKodigo,
-        kodigoAlOktala,
-        oktalaAlDuuma,
-        duumaAlOktala,
-        konverti
+        KEF_CA1ARA,
+        XAQADI_CA1ARA,
+        C2H2_CA1ARA,
+        LA3OS_K2FE,
+        K2FE_LA3OS,
+        VERACEL2F,
+        tboVeracel2f,
+        tboK2feLa3os,
+        tboLa3osK2fe,
+        tboK2feIpa,
+        tboIpaK2fe,
+        b6n2baAwa,
+        kaltokXez,
+        tboXez,
+        tboKef,
+        tboGawekiifLa3os,
+        tboLa3osGawekiif,
+        tboLa3osIpa,
+        tboIpaLa3os,
+        tboLa3osKme,
+        tboGawekiifKme,
+        tboIpaKme,
+        tboK2feKme,
+        tboKmeLa3os,
+        tboKmeGawekiif,
+        tboKmeIpa,
+        kaltokKmeLa3os,
+        KME_CA1ARA,
+        tboGawekiifIpa,
+        tboIpaGawekiif,
+        tboK2feGawekiif,
+        tboGawekiifK2fe,
+        tboGawekiifCaja,
+        tboCajaGawekiif,
+        tboCajaP2saGawekiif,
+        tboGawekiifS2kanta,
+        tboS2kantaGawekiif,
+        tboGawekiifP2sa,
+        tboP2saGawekiif,
+        tboS2kantaP2saGawekiif,
+        cajaS2kanta,
+        s2kantaCaja,
+        cajaP2sa,
+        p2saCaja,
+        tbo
     };
 }
 
@@ -1461,109 +1808,121 @@ if ( typeof module !== "undefined" && module.exports ) {
 (function() {
     if ( typeof document === "undefined" ) return;
 
-    function iniciatiKonvertiloUI() {
+    function saxeTbo() {
         const saxesuOx2pewa = document.getElementById("saxesuOx2pewa") as HTMLTextAreaElement | null;
         const maxemaSa10Gwk = document.getElementById("maxemaSa10Gwk") as HTMLElement | null;
-        const outputs = {
+        const xcanaCa1ara = {
             gk: document.getElementById("tlakakuG2") as HTMLElement | null,
             la3os: document.getElementById("tlakakuLa3os") as HTMLElement | null,
             ipa: document.getElementById("tlakakuRat0") as HTMLElement | null,
+            khmer: document.getElementById("tlakakuKhmer") as HTMLElement | null,
             number: document.getElementById("tlakakuK2fe") as HTMLElement | null,
             encoding: document.getElementById("tlakakuKodigo") as HTMLElement | null,
             numberDuuma: document.getElementById("tlakakuK2feDuuma") as HTMLElement | null,
             encodingDuuma: document.getElementById("tlakakuKodigoDuuma") as HTMLElement | null
         };
-        const checkboxes ={ outGk: document.getElementById("a1a3kkG2") as HTMLInputElement | null,
+        const nejeqanaSukf2q ={ outGk: document.getElementById("a1a3kkG2") as HTMLInputElement | null,
             outLa3os: document.getElementById("a1a3kkLa3os") as HTMLInputElement | null,
             outIpa: document.getElementById("a1a3kkRat0") as HTMLInputElement | null,
+            outKhmer: document.getElementById("a1a3kkKhmer") as HTMLInputElement | null,
             outNumber: document.getElementById("a1a3kkK2fe") as HTMLInputElement | null,
             outEncoding: document.getElementById("a1a3kkKodigo") as HTMLInputElement | null,
             numbers: document.getElementById("a1aK2reK2fe") as HTMLInputElement | null,
-            laŭlitera: document.getElementById("a1aKaj2xa") as HTMLInputElement | null
+            kaj2xa: document.getElementById("a1aKaj2xa") as HTMLInputElement | null
         };
         const saxesuGawek2fRadios = Array.from(document.getElementsByName("saxesuGawek2f")) as HTMLInputElement[];
 
         if ( !saxesuOx2pewa ) return;
 
-        function akiriEniganFormon(): string {
+        function b6n2baSaxeSukf2q(): string {
             if ( !saxesuGawek2fRadios || saxesuGawek2fRadios.length === 0o0 ) return "gawekiif";
-            for ( const radio of saxesuGawek2fRadios ) {
-                if ( radio.checked ) return radio.value;
+            for ( const kal of saxesuGawek2fRadios ) {
+                if ( kal.checked ) return kal.value;
             }
             return "gawekiif";
         }
 
-        function konvertiTekston() {
+        function tboKp6k2p2() {
             if ( !saxesuOx2pewa ) return;
-            const eniraTeksto = saxesuOx2pewa.value.trim();
-            if ( !eniraTeksto ) {
+            const saxesuKp6k2p2 = saxesuOx2pewa.value.trim();
+            if ( !saxesuKp6k2p2 ) {
                 if ( maxemaSa10Gwk ) maxemaSa10Gwk.style.display = "none";
                 return;
             }
 
-            const fontaFormo = akiriEniganFormon();
-            const uziNumerikan = checkboxes.numbers?.checked ?? true;
-            const opcioj: KonvertajOpcioj = {
-                uziNumerikan: uziNumerikan,
-                laŭlitera: checkboxes.laŭlitera?.checked || false
+            const saxeSukf2q = b6n2baSaxeSukf2q();
+            const k2K2fe = nejeqanaSukf2q.numbers?.checked ?? true;
+            const sukf2q: TboSukf2q = {
+                k2K2fe: k2K2fe,
+                kaj2xa: nejeqanaSukf2q.kaj2xa?.checked || false
             };
 
-            const eligo: Record<string, string> = { gk: "", la3os: "", ipa: "", number: "", encoding: "", numberDuuma: "", encodingDuuma: "" };
+            const nejeqanaCa1ara: Record<string, string> = { gk: "", la3os: "", ipa: "", khmer: "", number: "", encoding: "", numberDuuma: "", encodingDuuma: "" };
 
-            if ( fontaFormo === "gawekiif" ) {
-                eligo.gk = eniraTeksto;
-                eligo.la3os = konverti(eligo.gk, "gawekiif", "la3os", opcioj);
-                eligo.ipa = konverti(eligo.gk, "gawekiif", "ipa", opcioj);
-            } else if ( fontaFormo === "la3os" ) {
-                eligo.la3os = eniraTeksto;
-                eligo.gk = konverti(eligo.la3os, "la3os", "gawekiif", opcioj);
-                eligo.ipa = konverti(eligo.la3os, "la3os", "ipa", opcioj);
-            } else if ( fontaFormo === "ipa" ) {
-                eligo.ipa = eniraTeksto;
-                eligo.gk = konverti(eligo.ipa, "ipa", "gawekiif", opcioj);
-                eligo.la3os = konverti(eligo.gk, "gawekiif", "la3os", opcioj);
-            } else if ( fontaFormo === "numero" ) {
-                eligo.number = eniraTeksto;
-                eligo.gk = konverti(eligo.number, "numero", "gawekiif", opcioj);
-                eligo.la3os = konverti(eligo.gk, "gawekiif", "la3os", opcioj);
-                eligo.ipa = konverti(eligo.gk, "gawekiif", "ipa", opcioj);
+            if ( saxeSukf2q === "gawekiif" ) {
+                nejeqanaCa1ara.gk = saxesuKp6k2p2;
+                nejeqanaCa1ara.la3os = tbo(nejeqanaCa1ara.gk, "gawekiif", "la3os", sukf2q);
+                nejeqanaCa1ara.ipa = tbo(nejeqanaCa1ara.gk, "gawekiif", "ipa", sukf2q);
+                nejeqanaCa1ara.khmer = tbo(nejeqanaCa1ara.gk, "gawekiif", "khmer", sukf2q);
+            } else if ( saxeSukf2q === "la3os" ) {
+                nejeqanaCa1ara.la3os = saxesuKp6k2p2;
+                nejeqanaCa1ara.gk = tbo(nejeqanaCa1ara.la3os, "la3os", "gawekiif", sukf2q);
+                nejeqanaCa1ara.ipa = tbo(nejeqanaCa1ara.la3os, "la3os", "ipa", sukf2q);
+                nejeqanaCa1ara.khmer = tbo(nejeqanaCa1ara.la3os, "la3os", "khmer", sukf2q);
+            } else if ( saxeSukf2q === "ipa" ) {
+                nejeqanaCa1ara.ipa = saxesuKp6k2p2;
+                nejeqanaCa1ara.gk = tbo(nejeqanaCa1ara.ipa, "ipa", "gawekiif", sukf2q);
+                nejeqanaCa1ara.la3os = tbo(nejeqanaCa1ara.ipa, "ipa", "la3os", sukf2q);
+                nejeqanaCa1ara.khmer = tbo(nejeqanaCa1ara.ipa, "ipa", "khmer", sukf2q);
+            } else if ( saxeSukf2q === "khmer" ) {
+                nejeqanaCa1ara.khmer = saxesuKp6k2p2;
+                nejeqanaCa1ara.la3os = tbo(nejeqanaCa1ara.khmer, "khmer", "la3os", sukf2q);
+                nejeqanaCa1ara.gk = tbo(nejeqanaCa1ara.khmer, "khmer", "gawekiif", sukf2q);
+                nejeqanaCa1ara.ipa = tbo(nejeqanaCa1ara.khmer, "khmer", "ipa", sukf2q);
+            } else if ( saxeSukf2q === "numero" ) {
+                nejeqanaCa1ara.number = saxesuKp6k2p2;
+                nejeqanaCa1ara.gk = tbo(nejeqanaCa1ara.number, "numero", "gawekiif", sukf2q);
+                nejeqanaCa1ara.la3os = tbo(nejeqanaCa1ara.gk, "gawekiif", "la3os", sukf2q);
+                nejeqanaCa1ara.ipa = tbo(nejeqanaCa1ara.gk, "gawekiif", "ipa", sukf2q);
+                nejeqanaCa1ara.khmer = tbo(nejeqanaCa1ara.gk, "gawekiif", "khmer", sukf2q);
             } else {
-                eligo.encoding = eniraTeksto;
-                eligo.gk = encodingAlGawekiif(eniraTeksto);
-                eligo.la3os = konverti(eligo.gk, "gawekiif", "la3os", opcioj);
-                eligo.ipa = konverti(eligo.gk, "gawekiif", "ipa", opcioj);
+                nejeqanaCa1ara.encoding = saxesuKp6k2p2;
+                nejeqanaCa1ara.gk = tboS2kantaP2saGawekiif(saxesuKp6k2p2);
+                nejeqanaCa1ara.la3os = tbo(nejeqanaCa1ara.gk, "gawekiif", "la3os", sukf2q);
+                nejeqanaCa1ara.ipa = tbo(nejeqanaCa1ara.gk, "gawekiif", "ipa", sukf2q);
+                nejeqanaCa1ara.khmer = tbo(nejeqanaCa1ara.gk, "gawekiif", "khmer", sukf2q);
             }
 
-            const numero = gawekiifAlNumero(eligo.gk, opcioj);
-            eligo.number = numero;
-            eligo.numberDuuma = numero ? oktalaAlDuuma(numero) : "";
-            eligo.encoding = gawekiifAlKodigo(eligo.gk, opcioj);
-            eligo.encodingDuuma = gawekiifAlDuuma(eligo.gk, opcioj);
+            const k2fe = tboGawekiifCaja(nejeqanaCa1ara.gk, sukf2q);
+            nejeqanaCa1ara.number = k2fe;
+            nejeqanaCa1ara.numberDuuma = k2fe ? cajaP2sa(k2fe) : "";
+            nejeqanaCa1ara.encoding = tboGawekiifS2kanta(nejeqanaCa1ara.gk, sukf2q);
+            nejeqanaCa1ara.encodingDuuma = tboGawekiifP2sa(nejeqanaCa1ara.gk, sukf2q);
 
-            const eligajKlavoj = [ "gk", "la3os", "ipa", "number", "encoding" ];
-            const eligajNomoj: Record<string, string> = { gk: "Gk", la3os: "La3os", ipa: "Ipa", number: "Number", encoding: "Encoding" };
-            for ( const klavo of eligajKlavoj ) {
-                const markobutono = checkboxes[`out${eligajNomoj[klavo]}` as keyof typeof checkboxes];
-                const eligaElemento = outputs[klavo as keyof typeof outputs];
-                const titolo = document.querySelector(`.ksakap2sa[data-output="${klavo}"]`) as HTMLElement | null;
-                const gepatro = eligaElemento?.parentElement;
-                if ( markobutono && eligaElemento && gepatro ) {
-                    eligaElemento.textContent = eligo[klavo] || "";
-                    if ( klavo === "gk" && typeof vacepu === "function" ) {
+            const nejeqanaCa3aq = [ "gk", "la3os", "ipa", "khmer", "number", "encoding" ];
+            const nejeqanaAra3akak: Record<string, string> = { gk: "Gk", la3os: "La3os", ipa: "Ipa", khmer: "Khmer", number: "Number", encoding: "Encoding" };
+            for ( const ca3aq of nejeqanaCa3aq ) {
+                const sukf2qKef = nejeqanaSukf2q[`out${nejeqanaAra3akak[ca3aq]}` as keyof typeof nejeqanaSukf2q];
+                const nejeqanaKal = xcanaCa1ara[ca3aq as keyof typeof xcanaCa1ara];
+                const hate = document.querySelector(`.ksakap2sa[data-output="${ca3aq}"]`) as HTMLElement | null;
+                const mana = nejeqanaKal?.parentElement;
+                if ( sukf2qKef && nejeqanaKal && mana ) {
+                    nejeqanaKal.textContent = nejeqanaCa1ara[ca3aq] || "";
+                    if ( ca3aq === "gk" && typeof vacepu === "function" ) {
                         vacepu("ox2pewa");
                     }
-                    const videbla = markobutono.checked;
-                    if ( titolo ) {
-                        titolo.style.display = videbla ? "block" : "none";
+                    const xcana = sukf2qKef.checked;
+                    if ( hate ) {
+                        hate.style.display = xcana ? "block" : "none";
                     }
-                    gepatro.style.display = videbla ? "flex" : "none";
-                    if ( klavo === "number" || klavo === "encoding" ) {
-                        const duumaKlavo = klavo === "number" ? "numberDuuma" : "encodingDuuma";
-                        const duumaElemento = outputs[duumaKlavo as keyof typeof outputs];
-                        if ( duumaElemento ) {
-                            duumaElemento.textContent = eligo[duumaKlavo] || "";
-                            const gepatroDuuma = duumaElemento.parentElement;
-                            if ( gepatroDuuma ) gepatroDuuma.style.display = videbla ? "flex" : "none";
+                    mana.style.display = xcana ? "flex" : "none";
+                    if ( ca3aq === "number" || ca3aq === "encoding" ) {
+                        const p2saKlavo = ca3aq === "number" ? "numberDuuma" : "encodingDuuma";
+                        const p2saElemento = xcanaCa1ara[p2saKlavo as keyof typeof xcanaCa1ara];
+                        if ( p2saElemento ) {
+                            p2saElemento.textContent = nejeqanaCa1ara[p2saKlavo] || "";
+                            const p2saMana = p2saElemento.parentElement;
+                            if ( p2saMana ) p2saMana.style.display = xcana ? "flex" : "none";
                         }
                     }
                 }
@@ -1572,23 +1931,23 @@ if ( typeof module !== "undefined" && module.exports ) {
             if ( maxemaSa10Gwk ) maxemaSa10Gwk.style.display = "flex";
         }
 
-        const ciujElementoj: Element[] = [
+        const c0zKalCa1ara: Element[] = [
             saxesuOx2pewa,
             ...saxesuGawek2fRadios,
-            checkboxes.outGk, checkboxes.outLa3os, checkboxes.outIpa,
-            checkboxes.outNumber, checkboxes.outEncoding,
-            checkboxes.numbers, checkboxes.laŭlitera
+            nejeqanaSukf2q.outGk, nejeqanaSukf2q.outLa3os, nejeqanaSukf2q.outIpa,
+            nejeqanaSukf2q.outKhmer, nejeqanaSukf2q.outNumber, nejeqanaSukf2q.outEncoding,
+            nejeqanaSukf2q.numbers, nejeqanaSukf2q.kaj2xa
         ].filter(Boolean) as Element[];
 
-        for ( const elemento of ciujElementoj ) {
-            const okazaTipo = elemento === saxesuOx2pewa ? "input" : "change";
-            elemento.addEventListener(okazaTipo, konvertiTekston);
+        for ( const kal of c0zKalCa1ara ) {
+            const lukfek = kal === saxesuOx2pewa ? "input" : "change";
+            kal.addEventListener(lukfek, tboKp6k2p2);
         }
     }
 
     if ( document.readyState === "loading" ) {
-        document.addEventListener("DOMContentLoaded", iniciatiKonvertiloUI);
+        document.addEventListener("DOMContentLoaded", saxeTbo);
     } else {
-        iniciatiKonvertiloUI();
+        saxeTbo();
     }
 })();
