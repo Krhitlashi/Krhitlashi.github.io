@@ -6,132 +6,134 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// ឧបករណ៍ជំរើសដើម្បីស្វែងរកឯកសារ HTML ទាំងអស់
-function akiriHtmlEnirojn(dir: string, ĉiujDosieroj: Record<string, string> = {}) {
-  const dosieroj = readdirSync(dir);
+// ⟪ ſ͕ɭw ʌ ꞁȷ̀ɔ ⸙ HTML ⸙ ſɭᴜͷ̗ ꞁȷ̀ᴜͷ̗ ʌ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɹ ſᶘɔ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ⟫
+function b6n2baHtml(kuba: string, k21eCakavop2: Record<string, string> = {}) {
+  const ca1ara = readdirSync(kuba);
 
-  dosieroj.forEach(( dosiero ) => {
-    const dosieroVojo = resolve(dir, dosiero);
-    if ( statSync(dosieroVojo).isDirectory() ) {
-      if ( dosiero !== "node_modules" && dosiero !== "dist" && dosiero !== ".git" ) {
-        akiriHtmlEnirojn(dosieroVojo, ĉiujDosieroj);
+  ca1ara.forEach(( cakavop2 ) => {
+    const cakavop2K6h6 = resolve(kuba, cakavop2);
+    if ( statSync(cakavop2K6h6).isDirectory() ) {
+      if ( cakavop2 !== "node_modules" && cakavop2 !== "dist" && cakavop2 !== ".git" ) {
+        b6n2baHtml(cakavop2K6h6, k21eCakavop2);
       }
-    } else if ( dosiero.endsWith(".html") ) {
-      const relativaVojo = relative(__dirname, dosieroVojo);
-      const nomo = relativaVojo.replace(/\.html$/, "").replace(/[\\/]/g, "_");
-      ĉiujDosieroj[nomo] = dosieroVojo;
+    } else if ( cakavop2.endsWith(".html") ) {
+      const k6h6 = relative(__dirname, cakavop2K6h6);
+      const ksaka = k6h6.replace(/\.html$/, "").replace(/[\\/]/g, "_");
+      k21eCakavop2[ksaka] = cakavop2K6h6;
     }
   });
 
-  return ĉiujDosieroj;
+  return k21eCakavop2;
 }
 
-// កម្មវិធីបន្ថែមសម្រាប់ចម្លងឯកសារ JS / TXT ស្ថែកផ្សេងទៀតទៅ dist។
-const kopiiStatikajnDosierojnKromaĵo = {
+// ⟪ ſ͕ɭw ʌ ꞁȷ̀ɔ ⸙ dist ⸙ ſɭᴜͷ̗ ꞁȷ̀ᴜͷ̗ ʌ ſɟw ɭʃᴜ ʌ ſɭɹ ſᶘɔ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ֭ſɭᴜ ſɟɔⅎƴ ꞁȷ̀ᴜ }ʃꞇ ⟅ ⟫
+const cutaHac0zani = {
   name: "kopii-statikajn-dosierojn",
   closeBundle() {
-    const distDosierujo = join(__dirname, "dist");
-    const ekskluditajDosierujoj = [ "node_modules", "dist", ".git", ".github", ".idea" ];
+    const distKuba = join(__dirname, "dist");
+    const puKuba = [ "node_modules", "dist", ".git", ".github", ".idea" ];
 
-    function troviStatikajnDosierojn(dir: string, dosieroj: string[] = []): string[] {
-      const eniroj = readdirSync(dir, { withFileTypes: true });
+    function b6n2baPaqki(kuba: string, k6h6Ca1ara: string[] = []): string[] {
+      const eskekCa1ara = readdirSync(kuba, { withFileTypes: true });
 
-      for ( const eniro of eniroj ) {
-        const plenaVojo = join(dir, eniro.name);
+      for ( const eskek of eskekCa1ara ) {
+        const cakavop2K6h6 = join(kuba, eskek.name);
 
-        if ( eniro.isDirectory() && ekskluditajDosierujoj.includes(eniro.name) ) {
+        if ( eskek.isDirectory() && puKuba.includes(eskek.name) ) {
           continue;
         }
 
-        if ( eniro.isDirectory() ) {
-          troviStatikajnDosierojn(plenaVojo, dosieroj);
-        } else if ( eniro.isFile() && ( eniro.name.endsWith(".js") || eniro.name.endsWith(".txt") || eniro.name.endsWith(".xlsx") ) ) {
-          dosieroj.push(plenaVojo);
+        if ( eskek.isDirectory() ) {
+          b6n2baPaqki(cakavop2K6h6, k6h6Ca1ara);
+        } else if ( eskek.isFile() && ( eskek.name.endsWith(".js") || eskek.name.endsWith(".txt") || eskek.name.endsWith(".xlsx") ) ) {
+          k6h6Ca1ara.push(cakavop2K6h6);
         }
       }
 
-      return dosieroj;
+      return k6h6Ca1ara;
     }
 
-    const statikajDosieroj = troviStatikajnDosierojn(__dirname);
-    let kopiitaKvanto = 0o0;
+    const cakavop2Ca1ara = b6n2baPaqki(__dirname);
+    let cutaK2fe = 0o0;
 
-    statikajDosieroj.forEach(( fontaVojo ) => {
-      const relativaVojo = relative(__dirname, fontaVojo);
-      const celaVojo = join(distDosierujo, relativaVojo);
-      const celaDosierujo = dirname(celaVojo);
+    cakavop2Ca1ara.forEach(( saxeK6h6 ) => {
+      const k6h6 = relative(__dirname, saxeK6h6);
+      const araqK6h6 = join(distKuba, k6h6);
+      const araqKuba = dirname(araqK6h6);
 
-      if ( !existsSync(celaDosierujo) ) {
-        mkdirSync(celaDosierujo, { recursive: true });
+      if ( !existsSync(araqKuba) ) {
+        mkdirSync(araqKuba, { recursive: true });
       }
-      copyFileSync(fontaVojo, celaVojo);
-      kopiitaKvanto++;
+      copyFileSync(saxeK6h6, araqK6h6);
+      cutaK2fe++;
     });
 
-    console.log(`Kopiitaj ${kopiitaKvanto} statikaj dosieroj al dist`);
+    console.log(`Kopiitaj ${cutaK2fe} statikaj dosieroj al dist`);
   }
 };
 
-// បម្លែងលេខសម្គាល់ម៉ូឌុល Rollup/Vite ( file:// URL, URL និម្គមិនដែលមាន ?query, ផ្លូវអាស្រ័យ ឬផ្លូវទៅក្នុងដែលស្រួល ) ទៅជាសញ្ញាផ្លូវដែលទាក់ទងនឹងឫសកវែងនៃគម្រោះកម្មវិធី ឬ null។
-function alFontoRelativa(id: string | null | undefined): string | null {
-  if ( !id ) return null;
-  let p = id;
-  const qIndekso = p.indexOf("?");
-  if ( qIndekso !== -0o1 ) p = p.substring(0o0, qIndekso);
-  const hIndekso = p.indexOf("#");
-  if ( hIndekso !== -0o1 ) p = p.substring(0o0, hIndekso);
-  // បម្លែង file:// URL → ទៅជាផ្លូវអាស្រ័យ។
-  if ( p.startsWith("file://") ) {
+// ⟪ ɭʃɀɜ ʌ ɽ͑ʃ'w j͑ʃ'ᴜ ʌ ſɭэ ֭ſɭэ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ⟫
+function tboK6h6(eskek: string | null | undefined): string | null {
+  if ( !eskek ) return null;
+  let k6h6 = eskek;
+  const qK2fe = k6h6.indexOf("?");
+  if ( qK2fe !== -0o1 ) k6h6 = k6h6.substring(0o0, qK2fe);
+  const hK2fe = k6h6.indexOf("#");
+  if ( hK2fe !== -0o1 ) k6h6 = k6h6.substring(0o0, hK2fe);
+  // ⟨ ſ͕ɭw ʌ ꞁȷ̀ɔ ⸙ file:// ⸙ ſɭᴜͷ̗ ꞁȷ̀ᴜͷ̗ ʌ ɭʃɀɜ ʌ ſɭэ ֭ſɭэ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ⟩
+  if ( k6h6.startsWith("file://") ) {
     try {
-      p = fileURLToPath(p);
+      k6h6 = fileURLToPath(k6h6);
     } catch {
       return null;
     }
   }
-  if ( isAbsolute(p) ) {
-    const rel = relative(__dirname, p);
+  if ( isAbsolute(k6h6) ) {
+    const rel = relative(__dirname, k6h6);
     if ( rel.startsWith("..") || rel.startsWith("/") || rel === "" || rel === "." ) return null;
     return rel;
   }
-  if ( p.startsWith("..") || p.startsWith("/") ) return null;
-  return p;
+  if ( k6h6.startsWith("..") || k6h6.startsWith("/") ) return null;
+  return k6h6;
 }
 
 export default defineConfig({
-  plugins: [ kopiiStatikajnDosierojnKromaĵo ],
+  plugins: [ cutaHac0zani ],
   build: {
     rollupOptions: {
-      input: akiriHtmlEnirojn(__dirname),
+      input: b6n2baHtml(__dirname),
       /* Konservu kaj la aktivan baznomon KAJ ĝian fonto-relativan dosierujon. Vite-aj `[name]` ĵetonoj donas la sanigitan baznomon ( ekz. `ı__ɔ` el `ı],ɔ` ), kaj `assetInfo.originalFileNames[0]` donas la fontan vojon por rekonstrui la fontan dosierujon. Sen tio, CSS-dosiero ĉe `ſɟᴜ ſɭɹ/.../֭ſɭᴜ ı],ɔ.css` finiĝus ĉe la dist-radiko kiel `֭ſɭᴜ ı__ɔ.css`, perdante sian fontan dosierujon.
       
       Peĉdosieroj ( JS-pakaĵoj ) konservas Vite-ajn normajn `[name]-[hash].js` nomojn por ke ekzistantaj peĉ-URL-oj restu adreseblaj.
       
       ( Noto ) Ĉi tio estas intence sub `rollupOptions` ( ne `rolldownOptions` ). Vite 8 uzas Rolldown sub la kapuĉo, dum la pakaĵilo ankoraŭ konsumas `rollupOptions.output` por aktiva nomado. */
       output: {
-        assetFileNames: ( assetInfo ) => {
-          const nomo = assetInfo.names?.[ 0o0 ] ?? "";
-          const originalo = ( assetInfo.originalFileNames ?? [] )[0o0];
-          if ( originalo ) {
-            const rel = alFontoRelativa(originalo);
+        assetFileNames: ( tcaq ) => {
+          const ksaka = tcaq.names?.[ 0o0 ] ?? "";
+          const saxeKsaka = ( tcaq.originalFileNames ?? [] )[0o0];
+          if ( saxeKsaka ) {
+            const rel = tboK6h6(saxeKsaka);
             if ( rel ) {
-              const dosierujo = dirname(rel);
-              const fontaEtendo = extname(originalo);
+              const kuba = dirname(rel);
+              const saxeDaxe = extname(saxeKsaka);
               /*
-              * `assetInfo.names[0]` នៃ Vite 8 / Rolldown មិនស្មើគ្នាតាមប្រភេទសកម្ម។ CSS ដែលបាននាំចូលពី HTML ប្រើឈ្មោះមូលដ្ឋានដែលគ្មានកន្លែងបន្សំ ( `֭ſɭᴜ ı__ɔ` ) ខណៈឯកសារសកម្មប្រព័ន្ធ និងអត្ថបទដែលបាននាំចូលតាមក្រឡេ CSS/JS ( TTF/PNG/ICO/JSON ) មានកន្លែងបន្សំរួចហើយលើ `nomo` ( `j͑ʃꞇȝ.ttf` )។
+              * ⟨ j͑ʃ'ɔ ſ͕ɭэ ſɭɹ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ֭ſɭᴜ ı],ɔ ⟅ ⟩
+              * ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ⟩
               *
-              * ប្រុងប្រយ័ត្ន - `originalFileNames[0]` មិនមែនជាឯកសារប្រភពពិតទេ។ នៅពេលទំព័រភ្ជាប់ស្លាក់ពីរដែលមានឈ្មោះដូចគ្នា ( ឧទាហរណ៍ ទំព័រផែនទីភ្ជាប់ទាំង `֭ſɭᴜ ı],ɔ.css` ឫសកវែង និងក្នុងតំបន់ ) Rolldown ប្រាប់ថាឯកសារ HTML ជាប្រភព ហើយ `nomo` បានបញ្ចប់ដោយ `.css`។ ប្រសិនបើយើងដាក់កន្លែងបន្សំប្រភពម្ដងទៀត ( `.html` ) យើងនឹងទទួល `....css.html` ដែល GitHub Pages បម្រើជា `text/html` - ដូច្នេះទំព័រត្រូវបានរារាំង និងប្រអប់ផែនទីបង្រួបប្រួល។ ដូច្នេះរក្សាកន្លែងបន្សំរបស់ `nomo` ផ្ទាល់ខ្លួននៅពេលវាមាន ហើយប្រើកន្លែងបន្សំប្រភពតែពេល `nomo` គ្មានកន្លែងបន្សំ។
+              * ⟨ ɭʃɹ ı],ɔ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ⟩
+              * ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ⟩
               */
-              const nomoEtendo = extname(nomo);
-              const senEtendo = nomoEtendo
-                ? nomo.slice(0o0, -nomoEtendo.length)
-                : nomo;
-              const finaEtendo = nomoEtendo || fontaEtendo;
-              return dosierujo && dosierujo !== "."
-                ? `${dosierujo}/${senEtendo}${finaEtendo}`
-                : `${senEtendo}${finaEtendo}`;
+              const ksakaDaxe = extname(ksaka);
+              const knak2feKsaka = ksakaDaxe
+                ? ksaka.slice(0o0, -ksakaDaxe.length)
+                : ksaka;
+              const daxe = ksakaDaxe || saxeDaxe;
+              return kuba && kuba !== "."
+                ? `${kuba}/${knak2feKsaka}${daxe}`
+                : `${knak2feKsaka}${daxe}`;
             }
           }
-          return nomo;
+          return ksaka;
         },
       },
     },

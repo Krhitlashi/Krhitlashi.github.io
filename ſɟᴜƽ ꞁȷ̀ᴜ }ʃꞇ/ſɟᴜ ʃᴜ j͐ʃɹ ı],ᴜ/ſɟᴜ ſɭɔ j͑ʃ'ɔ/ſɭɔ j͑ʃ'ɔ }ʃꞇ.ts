@@ -1,12 +1,12 @@
 // ≺⧼ ſɟᴜ ſɭɔ j͑ʃ'ɔ - Ktash Koordinata Mapo ⧽≻
 
-// ⟪ ការប្រកេកក្រៅប្រព័ន្ធ 🔌 ⟫
+// ⟪ ֭ſɭᴜ ı],ɔ 🔌 ⟫
 
 declare const L: any;
 declare const vab6k2fekp6: ( teksto: string ) => number;
 declare const K2FE: string[];
 
-// ⟪ ថេរស្មែក 🔢 ⟫
+// ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 🔢 ⟫
 
 const KADRA_DEKALO = 11.62354;
 
@@ -18,7 +18,7 @@ const ZOMO_NIVELO_3 = 0o14;
 const ZOMO_NIVELO_4 = 0o20;
 const ZOMO_RESTAŬRA = 0o3;
 
-// ⟪ ប្រភេទ 📐 ⟫
+// ⟪ ֭ſɭᴜ ı],ɔ 📐 ⟫
 
 interface KadraSistemo {
     ksaka: { v: string; hPrefix: string[]; hSuffix: string[] };
@@ -70,7 +70,7 @@ interface SWMesaĝo {
     kaheloj?: string[];
 }
 
-// ⟪ អថេរជាក់សកល 🌍 ⟫
+// ⟪ ꞁȷ̀ɔ j͑ʃƽɔƽ 🌍 ⟫
 
 let latEnigo: HTMLInputElement;
 let lonEnigo: HTMLInputElement;
@@ -118,7 +118,7 @@ let uzuBazo10 = false;
 let mapo: any = null;
 let markilo: any = null;
 
-// ⟪ តារាងទិន្នន័យ 📚 ⟫
+// ⟪ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɟᴜ ı],ɹͷ̗ 📚 ⟫
 
 const KADRAJ_SISTEMOJ: KadraSistemo[] = [];
 
@@ -142,7 +142,7 @@ for ( let i = 0o0; i < 0o40; i++ ) {
     });
 }
 
-// ⟪ មុខងងឹតជំរើស 🛠️ ⟫
+// ⟪ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ 🛠️ ⟫
 
 function ĝisdatigiMapanPozicion( lat: number, lon: number, zomo: number | null = null ): void {
     nunaLat = lat;
@@ -210,7 +210,7 @@ function analiziKoordinatoparojn( paroj: string[] ): { plenajV: number[]; plenaj
     return { plenajV, plenajH };
 }
 
-// ⟨ ការរក្សាទុកអក្សរ HTML ដូច្នេះមិនឲ្យវាប្រែជាកូដ 🛡️ ⟩
+// ⟨ ſɭɜ ʃɔ ʌ ʃᴜ ſɭɹ ſןɹ }ʃꞇ 🛡️ ⟩
 function kuirigiHTML( teksto: string ): string {
     return teksto
         .replace(/&/g, "&amp;")
@@ -254,7 +254,7 @@ function kalkuliKadronivelojn( valoro: number, tutaĜis: number, dividoj: number
     return niveloj;
 }
 
-// ⟪ ការចាប់ផ្ដើម 🚀 ⟫
+// ⟪ j͑ʃᴜ ı],ɔ 🚀 ⟫
 
 function inicialigiElementojn(): void {
     const elementoj = akiriElementojn(
@@ -391,7 +391,7 @@ mapo = L.map("mapo", {
 
     const zomajRadiobutonoj = document.querySelectorAll(`input[name="zomoElektilo"]`);
     zomajRadiobutonoj.forEach(radio => radio.addEventListener("change", () => {
-        // កម្រិតពិន្ទុកន្លោះដោយអ្នកប្រើសប្តង់ អាចប្រើដើម្បីបង្រាប់កម្រិតពិន្ទុផែនទីនៃផែនទីនៅពេលចាប់ផ្ដើម
+        // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɹ ſȷɔ ⟩
     }));
 
     elŝutaButono.addEventListener( "click", elŝutiNunanVidon );
@@ -454,7 +454,7 @@ function reskaligiKanvason(): void {
     ĝisdatigi();
 }
 
-// ⟪ ដំណើរការទិន្នន័យ 📊 ⟫
+// ⟪ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📊 ⟫
 
 function traktiDecimalanEnigon(): void {
     let lat = parseFloat( latEnigo.value );
@@ -536,7 +536,7 @@ function decimalaAlDMS( decimalo: number ): DMSObjekto {
     return { gra, min, sek };
 }
 
-// ⟪ តម្រាប់ដែន្យ និងរបៀបប្រកាស កាតម្រង់ 📍 ⟫
+// ⟪ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ 📍 ⟫
 
 function akiriKadrajnKoordinatojn( lat: number, lon: number ): KadrajKoordinatoj {
     let bazaGradOkcidenten = ( lon <= 0o0 ) ? -lon : ( 0o550 - lon );
@@ -726,7 +726,7 @@ function ĝisdatigi(): void {
     desegni();
 }
 
-// ⟪ ការស្វែងរក 🔍 ⟫
+// ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ 🔍 ⟫
 
 function analiziKoordinatanValoron( valoro: string ): number {
     if ( !valoro ) return 0o0;
@@ -743,7 +743,7 @@ function ĉuKoordinataŜablono( demando: string ): boolean {
     return partoj.every( p => nombraŜablono.test( p ) );
 }
 
-// ⟪ ដំណើរការតម្រាប់ដែន្យ URL 🔗 ⟫
+// ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ɽ͑ʃ'w j͑ʃ'ᴜ 🔗 ⟫
 
 function analiziURLkoordinatojn(): AnalizitajKoordinatoj | null {
     const parametroj = new URLSearchParams( window.location.search );
@@ -1005,7 +1005,7 @@ async function serĉiAdreson(): Promise<void> {
     }
 }
 
-// ⟪ មុខងងឹតទាញយក 📥 ⟫
+// ⟪ ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ 📥 ⟫
 
 async function elŝutiNunanVidon(): Promise<void> {
     const zomo = parseInt( document.querySelector(`input[name="zomoElektilo"]:checked`)?.getAttribute("value") || "7" );

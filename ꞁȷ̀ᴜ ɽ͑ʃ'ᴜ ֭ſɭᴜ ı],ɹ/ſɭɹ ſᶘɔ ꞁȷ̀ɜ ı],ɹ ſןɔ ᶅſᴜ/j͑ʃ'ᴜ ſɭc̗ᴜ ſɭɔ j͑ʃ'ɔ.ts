@@ -1,9 +1,9 @@
 /**( ɭʃɔ ŋᷠɹ j͑ʃ'ɔ ſȷᴜͷ̗ )
- * ផ្ទុក និងវិភាគមាតិសម្មា txt ដោយមានរចនាការជាក់ស្តែង។
+ * ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( txt )
  * @returns void
 */
 
-// ⟪ ការប្រកេកក្រៅប្រព័ន្ធ 🔌 ⟫
+// ⟪ ֭ſɭᴜ ı],ɔ 🔌 ⟫
 
 async function tem2Vefal(): Promise<void> {
     const cakavop2 = new URL("./ſɟᴜ j͑ʃ'ɜ ſןɹ.txt", import.meta.url).href;
@@ -37,8 +37,8 @@ async function tem2Vefal(): Promise<void> {
 
 
 /**( j͑ʃ'ɔ ſȷᴜͷ̗ )
- * វិភាគមាតិសម្មា txt និងបង្កើតធាតុ thala។
- * @param kp6 ( string ) - មាតិសម្មាអត្ថបទសម្រាប់ការវិភាគ។
+ * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( txt thala )
+ * @param kp6 ( string ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns elementoj
 */
 function vefal(kp6: string): HTMLElement[] {
@@ -76,10 +76,7 @@ function vefal(kp6: string): HTMLElement[] {
         const l6catasuN2k = n2k.trim();
 
         /*
-        * ដកស្លាក់ចំណុចកណ្តាលបុព្យបញ្ជាមិនសម្រាប់ការដែលអាចបង្ហាញនៅចុងបន្ទាត់
-        * នៅជាក់ស្ដែងជាក់ស្តែងជាក់ស្តែងដែលមានអត្ថន័យ ( ឧទាហរណ៍ "<j͑ʃı],> <ſɭɔ˞>> Title <<ſɭɔ˞>" )
-        * ធ្វើបន្តដល់ពេលដែលស្ថាប់ ព្រោះប្រភេទបុព្យបញ្ជាអាចបង្ហាញក្នុងលំដាប់ណាមួយ
-        * ( ឧទាហរណ៍ "<j͑ʃı],> <ʃ}ʃ> teksto" ) និង "<j͑ʃı],>>" ដែលមាន ">" បន្ថែមបង្ហាញនៅក្នុង txt។
+        * ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( <ʃ}ʃ> <ſᶘ> <j͑ʃı],> ) ⟩
         */
         let catasuN2k = l6catasuN2k;
         let antawacatasuN2k = "";

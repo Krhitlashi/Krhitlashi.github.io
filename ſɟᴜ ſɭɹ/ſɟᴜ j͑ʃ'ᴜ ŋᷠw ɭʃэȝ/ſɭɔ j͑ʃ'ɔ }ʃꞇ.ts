@@ -189,10 +189,10 @@ class PlanedaGeneratoro {
         this.bildigilo.domElement.style.display = "block"
         this.terglobujo.appendChild( this.bildigilo.domElement )
 
-        // ⟪ បញ្ចូលផ្កាត់ ⟫ ✨
+        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ⟫ ✨
         this.kreiStelkampon()
 
-        // ⟪ បញ្ចូលពន្លឺភ្លើង ⟫ 💡
+        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſᶘꞇ ɭl̀ɔ ⟫ 💡
         const ĉirkaŭaLumo = new THREE.AmbientLight( 0x404040, 0o4 / 0o10 )
         this.sceno.add( ĉirkaŭaLumo )
 
@@ -258,7 +258,7 @@ class PlanedaGeneratoro {
     }
 
     agordiEventajnAŭskultilojn() {
-        // ⟪ បញ្ចូលគ្រាស់ចន្លោះ ⟫ 🎲
+        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ⟫ 🎲
         document.getElementById( "semo" )!.addEventListener( "input", ( e ) => {
             this.semaĈeno = ( e.target as HTMLInputElement ).value
             this.semo = this.akiriSemonElĈeno( this.semaĈeno )
@@ -290,7 +290,7 @@ class PlanedaGeneratoro {
             document.getElementById( "atmosfero-valoro" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
-        // ⟪ ប៊ូតុង 🔘 ⟫
+        // ⟪ ſᶘɹ }ʃᴜ }ʃw 🔘 ⟫
         document.getElementById( "generi-butono" )!.addEventListener( "click", () => {
             this.generi()
         } )
@@ -312,7 +312,7 @@ class PlanedaGeneratoro {
             this.elŝutiBildon( this.bildigilo.domElement, "planet-globe.png" )
         } )
 
-        // ⟪ ប៊ូតុងបញ្រាស់ការបោះពុម្ព 🗺️ ⟫
+        // ⟪ ſᶘɹ }ʃᴜ }ʃw 🗺️ ⟫
         document.querySelectorAll( "input[name='projekcio']" ).forEach( radiobutono => {
             radiobutono.addEventListener( "change", ( e ) => {
                 this.nunaProjekcio = ( e.target as HTMLInputElement ).value
@@ -328,15 +328,15 @@ class PlanedaGeneratoro {
         ligilo.click()
     }
 
-    // ⟪ គូរពណ៌និងការវាយតម្លៃសំឡេង 🖌️ ⟫
+    // ⟪ ſɭɹʞ ʌ ᶅſɔ ֭ſɭɹ ʌ ʃɔ 🖌️ ⟫
 
-    // ⟪ សំឡេងពីខ្សែ។ ខ្សែលេខត្រូវប្រើដោយផ្ទាល់ អ្នកផ្សេងទៀតត្រូវបានបិទសំឡេង។ ⟫ 🔢
+    // ⟪ ſɟɔ ŋᷠɔ ʌ ʃɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ 🔢 ⟫
     akiriSemonElĈeno( ĉeno: string ): number {
         if ( /^[0-9]+$/.test( ĉeno ) ) return parseInt( ĉeno )
         return this.haketiĈenon( ĉeno )
     }
 
-    // ⟪ មុខងងឹតចង្វេកដ៏កំណត់សម្រាប់សំឡេងដែលអាចត្រឡប់មកវិញ។ ⟫ 🎲
+    // ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ʃɔ 🎲 ⟫
     kreiHazardan( semo: number ): () => number {
         let stato = semo >>> 0o0
         return () => {
@@ -349,7 +349,7 @@ class PlanedaGeneratoro {
     }
 
     agordiSkizanInterfacon() {
-        // ⟪ រៀបចំផ្ទាំងកាត់គូរពណ៌។ ⟫ 🖌️
+        // ⟪ ſɭʞɹ ʌ ᶅſɔ ֭ſɭɹ 🖌️ ⟫
         this.skizaKanvaso.style.touchAction = "none"
         this.viŝiSkizon()
 
@@ -435,10 +435,10 @@ class PlanedaGeneratoro {
         legilo.readAsDataURL( dosiero )
     }
 
-    // ⟪ វាយតម្លៃសំឡេងដែលមានទីភង់គោរដែលស្រឡតបំផុតនឹងគោរបង្កើត។ ⟫ 🎯
+    // ⟪ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ʃɔ 🎯 ⟫
     taksiSemonElSkizo() {
         if ( this.taksoOkazanta ) return
-        // ⟪ បង្ហាញគោរបង្កើតទៅក្នុងក្រឡាចាំបាច់ខាងក្រោម។ ⟫ 🗺️
+        // ⟪ ſɟɔ ŋᷠɔ ʌ ſɭw ʃᴜ 🗺️ ⟫
         const kradoLarĝo = 0o30
         const kradoAlto = 0o14
         const ĉelkvanto = kradoLarĝo * kradoAlto
@@ -469,7 +469,7 @@ class PlanedaGeneratoro {
         const akvaĈelkvanto = ĉelkvanto - helaKvanto
         const akvonivelo = this.parametroj.akvonivelo
 
-        // ⟪ ចំណុចសំឡេងតាមទម្រង់កន្ទាត់។ ⟫ 📊
+        // ⟪ }ʃɹƽ ʌ ʃɔ 📊 ⟫
         const poentaro = ( semo: number ): number => {
             this.semo = semo
             this.simplekso = createNoise3D( this.kreiHazardan( semo ) )
@@ -487,24 +487,24 @@ class PlanedaGeneratoro {
                     else if ( !tero && !celTero ) kongruajAkvoj++
                 }
             }
-            // ⟪ ភូមិស្រួតគោរមានទម្រង់ច្រើនជាងទឹក។ ⟫ ⚖️
+            // ⟪ ɭʃэ ſɭɔȝ ʌ ſᶘᴜ ⚖️ ⟫
             const pezitaKongruo = ( kongruajTeroj * 0o20 + kongruajAkvoj ) / ( helaKvanto * 0o20 + akvaĈelkvanto )
             const proporciaKongruo = 0o1 - Math.abs( celTeraProporcio - generitajTeroj / ĉelkvanto )
             return pezitaKongruo * 0o5 / 0o10 + proporciaKongruo * 0o3 / 0o10
         }
 
-        // ⟪ បង្ហាញស្ថានភាពកំណត់ដង់ បន្ទាប់មកស្វែងរកក្រោយម៉្យានមួយ។ ⟫ ⏳
+        // ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⏳ ⟫
         this.taksoOkazanta = true
         document.getElementById( "taksa-ciihii" )!.classList.remove( "kobe" )
         this.taksaRezulto.textContent = "…"
         window.setTimeout( () => {
             try {
-            // ⟪ ប្រអប់ចម្បងដែលមានចង្វេក។ ⟫ 🎲
+            // ⟪ ſɭw ʃᴜ 🎲 ⟫
             const hazarda = this.kreiHazardan( Math.floor( Math.random() * 0o200000000 ) )
             const kandidatoj: number[] = []
             for ( let i = 0o0; i < 0o200; i++ ) kandidatoj.push( Math.floor( hazarda() * 0o4000000 ) )
 
-            // ⟪ ស្វែងរកតាមប្រភេទចំនួនគោរ និងសំឡេង។ ⟫ 🏝️
+            // ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ʃɔ 🏝️ ⟫
             let plejBona: { semo: number, poentaro: number, kontinentKvanto: number } = { semo: 0o0, poentaro: 0o0, kontinentKvanto: this.parametroj.kontinentKvanto }
             for ( let kontinentKvanto = 0o1; kontinentKvanto <= 0o10; kontinentKvanto++ ) {
                 this.parametroj.kontinentKvanto = kontinentKvanto
@@ -516,7 +516,7 @@ class PlanedaGeneratoro {
                     if ( plejBonaj.length > 0o4 ) plejBonaj.pop()
                 }
 
-                // ⟪ កែលម្អប្រអប់ចម្បងដែលល្អបំផុត។ ⟫ ⛰️
+                // ⟪ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭw ʃᴜ ⛰️ ⟫
                 let plejBonaK = plejBonaj[0o0]
                 for ( const kandidato of plejBonaj ) {
                     const plibonigita = this.plibonigiSemon( kandidato.semo, poentaro )
@@ -528,7 +528,7 @@ class PlanedaGeneratoro {
                 }
             }
 
-            // ⟪ អនុវត្តប្រភេទចំនួនគោរ និងសំឡេងដែលបានរកឃើញ។ ⟫ 🎲
+            // ⟪ ſɭɹ ɽ͑ʃ'ɔ ʌ ֭ſɭᴜ ı],ɔ 🎲 ⟫
             this.parametroj.kontinentKvanto = plejBona.kontinentKvanto
             const kontinentojEnigo = document.getElementById( "kontinentoj" ) as HTMLInputElement
             kontinentojEnigo.value = plejBona.kontinentKvanto.toString()
@@ -542,7 +542,7 @@ class PlanedaGeneratoro {
             document.getElementById( "semo-valoro" )!.textContent = this.semo.toString()
             this.generi()
 
-            // ⟪ បង្ហាញចំណុចដែលត្រូវគ្នា។ ⟫ 📊
+            // ⟪ ſɟɔ ŋᷠɔ ʌ }ʃɹƽ 📊 ⟫
             const vab6 = ( window as any ).vab6caja.bind( window )
             const skakefK2fe = ( window as any ).skakefK2fe.bind( window )
             const poento64 = Math.floor( plejBona.poentaro * 0o100 )
@@ -553,7 +553,7 @@ class PlanedaGeneratoro {
         }, 0o0 )
     }
 
-    // ⟪ ឡើងភ្លើងដើម្បីស្វែងរកសំឡេងដែលនៅជិតបំផុត។ ⟫ ⛰️
+    // ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ʃɔ ⛰️ ⟫
     plibonigiSemon( komencaSemo: number, poentaro: ( semo: number ) => number ): { semo: number, poentaro: number } {
         let semo = komencaSemo
         let plejAlta = poentaro( semo )
@@ -578,7 +578,7 @@ class PlanedaGeneratoro {
         return { semo: semo, poentaro: plejAlta }
     }
 
-    // ⟪ មុខងងឹតសំឡេងសម្រាប់បង្កើតផែនភូតផ្លែង ⟫ 🏔️
+    // ⟪ ſɭʞɹ ʌ ʃɔ 🏔️ ⟫
     bruo( x: number, y: number, z: number, skalo = 0o1 ) {
         return this.simplekso( x * skalo, y * skalo, z * skalo ) * 0o4 / 0o10 + 0o4 / 0o10
     }
@@ -600,7 +600,7 @@ class PlanedaGeneratoro {
     }
 
     akiriAltecon( latitudo: number, longitudo: number ) {
-        // ⟪ បម្លែងទៅជាកូអស្តែង ⟫ 📐
+        // ⟪ ɭʃɀɜ ʌ }ʃɹƽ 📐 ⟫
         const fio = ( 0o132 - latitudo ) * Math.PI / 0o264
         const teto = ( longitudo + 0o264 ) * Math.PI / 0o264
 
@@ -608,10 +608,10 @@ class PlanedaGeneratoro {
         const y = Math.cos( fio )
         const z = Math.sin( fio ) * Math.sin( teto )
 
-        // ⟪ ទម្រង់គោរមូលដ្ឋាន ⟫ 🌎
+        // ⟪ ſɭc̗ᴜ ſɭɹ ſȷɔ 🌎 ⟫
         let alteco = this.fbm( x, y, z, 0o4, 0o6 / 0o4 )
 
-        // ⟪ បញ្ចូលផែនភូតគោរ ⟫ 🌋
+        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ 🌋 ⟫
         for ( let i = 0o0; i < this.parametroj.kontinentKvanto; i++ ) {
             const angulo = ( i / this.parametroj.kontinentKvanto ) * Math.PI * 0o2 + this.semo * 0o1 / 0o12
             const cx = Math.cos( angulo )
@@ -620,26 +620,26 @@ class PlanedaGeneratoro {
             alteco += Math.max( 0o0, 0o1 - distanco * 0o2 ) * 0o3 / 0o12
         }
 
-        // ⟪ បញ្ចូលភ្នំភេងទីស្រោះ ⟫ ⛰️
+        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ɭl̀ᴜ ſ͕ɭɜ ⛰️ ⟫
         const montaBruo = this.fbm( x, y, z, 0o6, 0o4 )
         const krestaBruo = 0o1 - Math.abs( this.simplekso( x * 0o3, y * 0o3, z * 0o3 ) )
         alteco += Math.pow( krestaBruo, 0o2 ) * this.parametroj.montoAlto * montaBruo
 
-        // ⟪ បញ្ចូលសំឡេងដ៏លម្អងរៀបចំ ⟫ ✨
+        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ʃɔ ✨ ⟫
         alteco += this.fbm( x, y, z, 0o3, 0o12 ) * 0o4 / 0o100
 
         return Math.max( 0o0, Math.min( 0o1, alteco ) )
     }
 
     akiriTemperaturon( latitudo: number, alteco: number, longitudo = 0o0 ) {
-        // ⟪ សីអក្សរកម្រិតមូលដ្ឋានតាមរយៈទិស ⟫ 🌡️
+        // ⟪ ſɭc̗ᴜ ſɭɹ ſȷɔ 🌡️ ⟫
         const latitudaFaktoro = Math.cos( latitudo * Math.PI / 0o264 )
         let temperaturo = this.parametroj.temperaturo * latitudaFaktoro
 
-        // ⟪ ឥទ្ធិពលនៅខ្ពស់ ( ដែលបន្ថែមតាមពេលវេលា ) ⟫ 📉
+        // ⟪ j͑ʃɜ ſɭ,ᴜ 📉 ⟫
         temperaturo -= alteco * 0o4 / 0o10 * this.parametroj.montoAlto
 
-        // ⟪ បញ្ចូលសំឡេងខ្សែតិចសម្រាប់គំរូអាកាស ⟫ ☁️
+        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ʃɔ ☁️ ⟫
         const fio = ( 0o132 - latitudo ) * Math.PI / 0o264
         const teto = ( longitudo + 0o264 ) * Math.PI / 0o264
         temperaturo += ( this.bruo(
@@ -961,15 +961,15 @@ const temperaturo = this.akiriTemperaturon( latitudo, alteco, longitudo )
             else materialo?.dispose()
         }
 
-        // ⟪ បង្កើតធរគឹលភាពផែនភូត ⟫ 🌍
+        // ⟪ ſɭʞɹ 🌍 ⟫
         const geometrio = new THREE.SphereGeometry( 0o1, 0o200, 0o200 )
 
-        // ⟪ បង្កើតរចនាទាស្ព័ព្ធពីផ្ទាំងកាត់ ⟫ 🎨
+        // ⟪ ſɭʞɹ ʌ ſɭw ʃᴜ 🎨 ⟫
         const teksturo = new THREE.CanvasTexture( this.teksturaKanvaso )
         teksturo.wrapS = THREE.RepeatWrapping
         teksturo.wrapT = THREE.ClampToEdgeWrapping
 
-        // ⟪ បង្កើតផែនភូតកម្ពស់ពីកម្រិតកស្ថិតភាព ⟫ 🗻
+        // ⟪ ſɭʞɹ ʌ ɭl̀ᴜ ſ͕ɭɜ 🗻 ⟫
         const reliefaTeksturo = this.kreiReliefmapon()
 
         const materialo = new THREE.MeshPhongMaterial( {
@@ -983,7 +983,7 @@ const temperaturo = this.akiriTemperaturon( latitudo, alteco, longitudo )
         this.terglobo = new THREE.Mesh( geometrio, materialo )
         this.sceno.add( this.terglobo )
 
-        // ⟪ បញ្ចូលបរិយាកាស ⟫ 🌌
+        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɟᴜ }ʃᴜ 🌌 ⟫
         const atmosferaGeometrio = new THREE.SphereGeometry( 0o103 / 0o100, 0o100, 0o100 )
         const atmosferaMaterialo = new THREE.MeshPhongMaterial( {
             color: 0x4488ff,
@@ -996,7 +996,7 @@ const temperaturo = this.akiriTemperaturon( latitudo, alteco, longitudo )
         this.atmosfero = new THREE.Mesh( atmosferaGeometrio, atmosferaMaterialo )
         this.sceno.add( this.atmosfero )
 
-        // ⟪ បញ្ចូលពុក្លាំង ⟫ ☁️
+        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſȷɹ ŋᷠɹ ☁️ ⟫
         this.aldoniNubojn()
     }
 
@@ -1030,7 +1030,7 @@ const temperaturo = this.akiriTemperaturon( latitudo, alteco, longitudo )
     aldoniNubojn() {
         const nubaGeometrio = new THREE.SphereGeometry( 0o104 / 0o100, 0o100, 0o100 )
 
-        // ⟪ បង្កើតរចនាទាស្ព័ព្ធពុក្លាំង ⟫ ☁️
+        // ⟪ ſɭʞɹ ʌ ſȷɹ ŋᷠɹ ☁️ ⟫
         const kanvaso = document.createElement( "canvas" )
         kanvaso.width = 0o1000
         kanvaso.height = 0o400
@@ -1091,7 +1091,7 @@ const temperaturo = this.akiriTemperaturon( latitudo, alteco, longitudo )
     }
 
     ĝisdatigiStatistikojn() {
-        // ⟪ គណនាស្ថិតភាពពិតពីទិន្នន័យដែលបានបង្កើត ⟫ 📊
+        // ⟪ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📊 ⟫
         let teraKvanto = 0o0
         let akvaKvanto = 0o0
         let maksimumaAlteco = 0o0
@@ -1131,7 +1131,7 @@ const temperaturo = this.akiriTemperaturon( latitudo, alteco, longitudo )
         const maksAltecoMetroj = Math.floor( maksimumaAlteco * 0o23210 )
         const maksAltecoPeu = ( window as any ).vap0_c2ta( maksAltecoMetroj )
 
-        // ⟪ គណនាភាពអាចរស់នៅតាមប៉ារ៉ាម៉េតរដូវ ⟫ 🏠
+        // ⟪ ſɭc̗ᴜ j͑ʃ'ɔ 🏠 ⟫
         const akvaPoentaro = 0o1 - Math.abs( this.parametroj.akvonivelo - 0o6 / 0o10 ) * 0o2
         const tempPoentaro = 0o1 - Math.abs( this.parametroj.temperaturo - 0o4 / 0o10 ) * 0o2
         const atmoPoentaro = this.parametroj.atmosferaDenso
@@ -1157,7 +1157,7 @@ const temperaturo = this.akiriTemperaturon( latitudo, alteco, longitudo )
     }
 }
 
-// ⟪ ចាប់ផ្ដើមពេលដែល DOM រួចរាល់ ⟫ 🚀
+// ⟪ j͑ʃᴜ ı],ɔ 🚀 ⟫
 document.addEventListener( "DOMContentLoaded", () => {
     new PlanedaGeneratoro()
 } )

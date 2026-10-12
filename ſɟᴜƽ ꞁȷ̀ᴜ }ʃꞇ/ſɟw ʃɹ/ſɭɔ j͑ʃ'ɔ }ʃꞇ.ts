@@ -1,19 +1,14 @@
 /// <reference types="vite/client" />
 
 /*
-* ≺⧼ ſɟw ʃɹ - ទំព័រក្រឡប់ចំណុចកណ្តាល ⌨️ ⧽≻
-* បង្កើតក្រឡប់ចំណុចកណ្តាលពីរចន្លោះដែលបានបញ្ចូល។ ឯកសាររចនាការ
-* ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md ) មិនត្រូវបានតាមដានក្នុង git ដូច្នេះមាតិការរបស់វា
-* ត្រូវបានបញ្ចូលទីនេះ ដើម្បីឱ្យក្រឡប់ចំណុចកណ្តាលដំណើរការដោយគ្មានវា។
-* ឯកសារកំណត់ការរៀបចំពីរ - តូច ( Cubii / ſɟw ʃɹ ) ដែលមានតារាងបី
-* ( Unua, Ŝanĝo, Simbolo ) និងធំ ( Cutlii / ſɟw ſ̀ȷɹ ) ដែលមាន
-* តារាងមូលដ្ឋានតែមួយ។ ការរៀបចំធំដូចជាដើមបង្កើតតារាង Ŝanĝa និង Simbolan របស់ខ្លួនវាតាមមូលដ្ឋាន
-* តាមមូលដ្ឋានរបស់ខ្លួនវា - សញ្ញានីមួយៗទទួលបានកំណែដែលបានបង្កើតនៃសញ្ញា
-* ដូចគ្នាពីការរៀបចំតូច។ ឈ្មោះដែលមាន " / " បង្ហាញតែផ្នែកជា Iikrhia
-* នៅក្នុង aih និងតែផ្នែកអង់គ្លេសនៅក្នុង en។
+* ≺⧼ ſɟw ʃɹ - ſ̀ȷᴜ ⌨️ ⧽≻
+* ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Cubii Cutlii Unua Ŝanĝo Simbolo )
+* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md git )
+* ſɟᴜ ı],ɹͷ̗ ( Unua Ŝanĝo Simbolo Cubii Cutlii )
+* ſɟɔ ŋᷠɔ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( aih en )
 */
 
-// ⟪ ប្រភេទ 📐 ⟫
+// ⟪ ֭ſɭᴜ ı],ɔ 📐 ⟫
 
 type KlavaFunkcio = "shift" | "back" | "space" | "enter" | "symbol" | "extra";
 
@@ -44,9 +39,9 @@ interface KlavarArangxo {
 	tavoloj: Tavolo[];
 }
 
-// ⟪ ថេរស្មែក 📦 ⟫
+// ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 📦 ⟫
 
-// ⟨ ក្រឡប់ចំណុចកណ្តាលមុខងងឹតនៃការរៀបចំតូច ⟩
+// ⟨ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ ⟩
 const FUNKCIOJ: Readonly<Record<string, KlavaFunkcio>> = {
 	"[Shift]": "shift",
 	"[Back]": "back",
@@ -55,7 +50,7 @@ const FUNKCIOJ: Readonly<Record<string, KlavaFunkcio>> = {
 	"[Symbol]": "symbol",
 };
 
-// ⟨ សកម្មភាពតាមពាក្យក្នុងកំណត់ចំនាំ "Also ... is ..." នៃការរៀបចំធំ ⟩
+// ⟨ j͑ʃᴜƽ ʌ ſɭɔʞ ( Also is ) ⟩
 const NOTAJAGOJ: Readonly<Record<string, KlavaFunkcio>> = {
 	"shift": "shift",
 	"back": "back",
@@ -65,8 +60,7 @@ const NOTAJAGOJ: Readonly<Record<string, KlavaFunkcio>> = {
 };
 
 /**
-* ⟨ ឈ្មោះបកប្ប័យសម្រាប់ក្រឡប់ចំណុចកណ្តាលមុខងងឹត។ ឈ្មោះជា Iikrhia មកពី
-*    កំណត់ចំនាំនៃការរៀបចំធំនៅក្នុង DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md។ ⟩
+* ⟨ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɭɔʞ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md ) ⟩
 */
 const FUNKCIO_NOMOJ: Readonly<Record<KlavaFunkcio, { en: string; aih: string }>> = {
 	shift: { en: "Shift", aih: "ſןw ſȷɹ" },
@@ -78,21 +72,18 @@ const FUNKCIO_NOMOJ: Readonly<Record<KlavaFunkcio, { en: string; aih: string }>>
 };
 
 /**
-* ⟨ សញ្ញាជំនួសសម្រាប់សញ្ញាចំណុចកណ្តាលនីមួយៗ ( ឧទាហរណ៍ទម្រង់អក្សរបំពោប )។
-*    មិនមានឥឡូវទេ - បំពេញវានៅពេលក្រោយ។ ⟩
+* ⟨ j͑ʃɹ ɭʃᴜɔ˞ ⟩
 */
 const VARIANTOJ: Readonly<Record<string, string[]>> = {};
 
-// ⟨ រយៈពេលនៃការចុចបន្តយោបល់មុនពេលបង្ហាញសញ្ញាជំនួស ( 1 ហេ ត្រ ) ⟩
+// ⟨ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( 1 ) ⟩
 const LONGA_PREMO_DAŬRO = HE_L6HEINAK;
 
-// ⟨ រយៈពេលនៃការបញ្ជាកែក្រោយពេលចម្លង ( 1 ហេ ត្រ ) ⟩
+// ⟨ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( 1 ) ⟩
 const KOPII_KONFIRMA_DAŬRO = HE_L6HEINAK;
 
 /**
-* ⟨ ឯកសាររចនាការ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md ) មិន
-*    ត្រូវបានតាមដានក្នុង git ដូច្នេះមាតិការរបស់វាត្រូវបានបញ្ចូលទីនេះ ដើម្បីឱ្យក្រឡប់
-*    ចំណុចកណ្តាលដំណើរការដោយគ្មានវា។ ⟩
+* ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md git ) ⟩
 */
 const KLAVARA_DEZAJNO = `# Small ( Cubii / ſɟw ʃɹ )
 
@@ -133,7 +124,7 @@ ȏ̮ - / ( ) ^ — ⋄
 
 Also [ ſןw ſȷɹ ] is Shift, [ ֭ſɭɹͷ̗ ] is Back, [ ꞁȷ̀ᴜ ɽ͑ʃ'ɔȝ ] is Space, [ ſɭw ſ̀ȷᴜ ] is Enter, [ ſɭɘэ ] is Symbol.`;
 
-// ⟪ ស្ថានភាព 💾 ⟫
+// ⟪ j͑ʃɹ ſɭэ ſᶘɜ 💾 ⟫
 
 let aktivaArangxoIndekso = 0o0;
 let aktivaTavolaIndekso = 0o0;
@@ -144,7 +135,7 @@ let ekstraReĝimo = false;
 let longaPremo = false;
 let ciklajIndeksoj = new Map<string, number>();
 
-// ⟪ ធាតុ DOM 🔧 ⟫
+// ⟪ ꞁȷ̀ɔ j͑ʃƽɔƽ 🔧 ⟫
 
 let enigaKampo: HTMLTextAreaElement | null = null;
 let klavaraUjo: HTMLElement | null = null;
@@ -152,17 +143,17 @@ let tavolaEtikedElemento: HTMLElement | null = null;
 let arangxoButonojUjo: HTMLElement | null = null;
 let ekstraPanelo: HTMLElement | null = null;
 
-// ⟪ ការវិភាគ 📂 ⟫
+// ⟪ j͑ʃ'ɔ ſȷᴜͷ̗ 📂 ⟫
 
 /**
-	វិភាគអត្ថបទមូលដ្ឋាននៃ KEYBOARDLAYOUT.md ជាការរៀបចំ។
-		មាតិការមូលដ្ឋាននៃឯកសាររចនាការ។
+	j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ
+		ꞁȷ̀ɔ j͑ʃƽɔƽ
 	@returns KlavarArangxo[]
 */
 function analiziArangxojn( krudaTeksto: string ): KlavarArangxo[] {
 	const linioj = krudaTeksto.replace(/\r/g, "").split( "\n" );
 
-	// ⟨ កំណត់ចំនាំកំណត់ក្រឡប់ចំណុចកណ្តាលមុខងងឹតនៃការរៀបចំធំ ⟩
+	// ⟨ j͑ʃɹ ɭʃᴜɔ˞ ⟩
 	funkciaMapo = { ...FUNKCIOJ, ...analiziNoton( linioj ) };
 
 	const limoj: number[] = [];
@@ -182,9 +173,7 @@ function analiziArangxojn( krudaTeksto: string ): KlavarArangxo[] {
 	}
 
 	/*
-	* ⟨ ការរៀបចំធំ ( Cutlii ) មានតែមូលដ្ឋានតែមួយ។ បង្កើតតារាង Ŝanĝa និង
-	*    Simbolan តាមការរៀបចំធំ - សញ្ញានីមួយៗទទួលបាន
-	*    កំណែដែលបានបង្កើតនៃសញ្ញាដូចគ្នាពីការរៀបចំតូច។ ⟩
+	* ⟨ ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ( Cutlii Ŝanĝa Simbolo ) ⟩
 	*/
 	const malgranda = arangxoj[0o0];
 	const granda = arangxoj[0o1];
@@ -196,11 +185,10 @@ function analiziArangxojn( krudaTeksto: string ): KlavarArangxo[] {
 }
 
 /**
-	វិភាគការរៀបចំមួយរវាងពីរចំណុច។ ការរៀបចំដែលមានចំណងជើងតារាងនឹងក្លាយជា
-	ច្រើនតារាង បើកិត្តនឹងក្លាយជាតារាងតែមួយ។
-		បន្ទាត់ទាំងអស់នៃឯកសាររចនាការ។
-		លេខសន្ទាញ់នៃបន្ទាត់ចំណងជើងនៃការរៀបចំ។
-		លេខសន្ទាញ់នៃបន្ទាត់ចំណងជើងបន្ទាប់ ( ឬចុងនៃឯកសារ )។
+	j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		j͑ʃᴜƽ
+		ſɭɹ ſȷɔ
+		ſɭɹ ſȷɔ
 	@returns KlavarArangxo
 */
 function analiziArangxon( linioj: string[], komenco: number, fino: number ): KlavarArangxo {
@@ -225,15 +213,15 @@ function analiziArangxon( linioj: string[], komenco: number, fino: number ): Kla
 		return { titoloEn: titolo.en, titoloAih: titolo.aih, tavoloj };
 	}
 
-	// ⟨ ការរៀបចំមួយតារាង ( ឧទាហរណ៍ធំ Cutlii ) ⟩
+	// ⟨ ſɟᴜ ı],ɹͷ̗ ( Cutlii ) ⟩
 	return { titoloEn: titolo.en, titoloAih: titolo.aih, tavoloj: [ analiziTavolon( linioj, komenco, fino ) ] };
 }
 
 /**
-	វិភាគតារាងមួយរវាងពីរចំណុច ( ជួរសញ្ញា និងបន្ទាត់ខាងក្រោម )។
-		បន្ទាត់ទាំងអស់នៃឯកសាររចនាការ។
-		លេខសន្ទាញ់នៃបន្ទាត់ចំណងជើងនៃតារាង។
-		លេខសន្ទាញ់នៃបន្ទាត់ចំណងជើងបន្ទាប់ ( ឬចុងនៃឯកសារ )។
+	j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		j͑ʃᴜƽ
+		ſɭɹ ſȷɔ
+		ſɭɹ ſȷɔ
 	@returns Tavolo
 */
 function analiziTavolon( linioj: string[], komenco: number, fino: number ): Tavolo {
@@ -257,9 +245,8 @@ function analiziTavolon( linioj: string[], komenco: number, fino: number ): Tavo
 }
 
 /**
-	បង្កើតស្លាក់មួយពីបន្ទាត់។ ក្រុមក្រឡប់ ( [ ... ] ) នៅតែជាស្លាក់តែមួយពេលពួកគេ
-	ជាក្រឡប់ចំណុចកណ្តាលតែមួយ បើកិត្តពួកគេបែងចែកជាសញ្ញាតាមតំនាំ។
-		បន្ទាត់តែមួយនៃឯកសាររចនាការ។
+	ſɭʞɹ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		j͑ʃᴜƽ
 	@returns string[]
 */
 function ĵetonigiLinion( linio: string ): string[] {
@@ -270,7 +257,7 @@ function ĵetonigiLinion( linio: string ): string[] {
 		if ( estasFunkciaGrupo( kruda ) || estasUnuvortaGrupo( kruda ) ) {
 			ĵetonoj.push( kruda );
 		} else if ( kruda.startsWith( "[" ) && kruda.endsWith( "]" ) ) {
-			// ⟨ ក្រុមមិនមែនជាក្រឡប់ចំណុចកណ្តាលតែមួយ ( ឧទាហរណ៍ [ x › ɘ ꭎ ] ) - បំបែកវា ⟩
+			// ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
 			ĵetonoj.push( "[", ...kruda.slice( 0o1, -0o1 ).trim().split( /\s+/ ), "]" );
 		} else {
 			ĵetonoj.push( kruda );
@@ -281,8 +268,8 @@ function ĵetonigiLinion( linio: string ): string[] {
 }
 
 /**
-	តើស្លាក់មួយជាក្រឡប់ចំណុចកណ្តាលមុខងងឹតដែលស្គាល់បានឬទេ។
-		ស្លាក់សម្រាប់ការពិនិត្យ។
+	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		j͑ʃɹ ɭʃᴜɔ˞
 	@returns boolean
 */
 function estasFunkciaGrupo( ĵetono: string ): boolean {
@@ -290,9 +277,8 @@ function estasFunkciaGrupo( ĵetono: string ): boolean {
 }
 
 /**
-	តើស្លាក់មួយជាក្រុមក្រឡប់ដែលមានពាក្យតែមួយ ( ឧទាហរណ៍ [ Shift ] ឬ
-	[ Empty ] )។
-		ស្លាក់សម្រាប់ការពិនិត្យ។
+	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( [ Shift ] [ Empty ] )
+		j͑ʃɹ ɭʃᴜɔ˞
 	@returns boolean
 */
 function estasUnuvortaGrupo( ĵetono: string ): boolean {
@@ -300,9 +286,8 @@ function estasUnuvortaGrupo( ĵetono: string ): boolean {
 }
 
 /**
-	បម្លែកស្លាក់មួយទៅជាក្រឡប់ចំណុចកណ្តាល។ ស្លាក់មុខងងឹតនឹងក្លាយជាក្រឡប់ចំណុចកណ្តាលមុខងងឹត,
-	[ Empty ] នឹងក្លាយជាក្រឡប់ទទេ អ្នកផ្សេងទាំងអស់នឹងក្លាយជាក្រឡប់ចំណុចកណ្តាលសញ្ញា។
-		ស្លាក់តែមួយពីឯកសាររចនាការ។
+	j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( [ Empty ] )
+		j͑ʃɹ ɭʃᴜɔ˞
 	@returns Klavo
 */
 function kreiKlavon( ĵetono: string ): Klavo {
@@ -317,8 +302,8 @@ function kreiKlavon( ĵetono: string ): Klavo {
 }
 
 /**
-	យកក្រឡប់ចំណុចកណ្តាលមុខងងឹតចេញពីកំណត់ចំនាំ "Also ... is ..."។
-		បន្ទាត់ទាំងអស់នៃឯកសាររចនាការ។
+	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Also is )
+		j͑ʃᴜƽ
 	@returns Record<string, KlavaFunkcio>
 */
 function analiziNoton( linioj: string[] ): Record<string, KlavaFunkcio> {
@@ -340,9 +325,8 @@ function analiziNoton( linioj: string[] ): Record<string, KlavaFunkcio> {
 }
 
 /**
-	បំបែកឈ្មោះ "Angla / Iikrhia" ជាផ្នែកពីររបស់វា។ ចំណងជើងដូចជាក្នុង
-	"Small ( Cubii / ſɟw ʃɹ )" នឹងក្លាយជា "Small ( Cubii )" និង "ſɟw ʃɹ"។
-		ឈ្មោះមូលដ្ឋានពីឯកសាររចនាការ។
+	j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Cubii ſɟw ʃɹ )
+		ſɭɔ˞ᴜ ſɭᴜ
 	@returns { en: string; aih: string }
 */
 function disigiNomon( kruda: string ): { en: string; aih: string } {
@@ -363,14 +347,9 @@ function disigiNomon( kruda: string ): { en: string; aih: string } {
 }
 
 /**
-	បង្កើតតារាង Ŝanĝa និង Simbolan នៃការរៀបចំធំតាមមូលដ្ឋានរបស់ខ្លួនវា។
-	ក្រឡប់ចំណុចកណ្តាលសញ្ញានីមួយៗទទួលបានកំណែដែលបានបញ្ជាទាំងអស់ / សញ្ញានូសនៃសញ្ញា
-	ដូចគ្នាពីការរៀបចំតូច ( តាមសញ្ញាខ្លួនឯង មិនមែនតាមទីតាំង )។
-	ក្រឡប់ចំណុចកណ្តាលមុខងងឹតនៅតែដូចទេ។ សញ្ញាដែលគ្មានកំណែដែលបានបង្កើត
-	រក្សាតម្លៃផ្ទាល់ខ្លួនរបស់ខ្លួន។ បន្ទាត់ខាងក្រោមនៅតែជារបស់
-	ការរៀបចំធំ។
-		bazo ( Tavolo ) - តារាងមូលដ្ឋាននៃការរៀបចំធំ។
-		ការរៀបចំតូចដែលមានតារាងបីរបស់ខ្លួនវា។
+	ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Ŝanĝa Simbolo )
+		ſɟᴜ ı],ɹͷ̗
+		ſɟᴜ ı],ɹͷ̗
 	@returns Tavolo[]
 */
 function kreiGrandajnTavolojn( bazo: Tavolo, malgranda: KlavarArangxo ): Tavolo[] {
@@ -388,7 +367,7 @@ function kreiGrandajnTavolojn( bazo: Tavolo, malgranda: KlavarArangxo ): Tavolo[
 		malsupraStrio: bazo.malsupraStrio,
 	} );
 
-	// ⟨ ឈ្មោះនៃតារាងដែលបានបង្កើតមកពីការរៀបចំតូច ⟩
+	// ⟨ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɟᴜ ı],ɹͷ̗ ⟩
 	const ŝanĝa = derivi( ŝanĝaMapo );
 	const simbola = derivi( simbolaMapo );
 	ŝanĝa.nomoEn = malgranda.tavoloj[0o1].nomoEn;
@@ -400,12 +379,9 @@ function kreiGrandajnTavolojn( bazo: Tavolo, malgranda: KlavarArangxo ): Tavolo[
 }
 
 /**
-	បង្កើតភ្លាក់សញ្ញាពីតារាងមួយទៅតារាងមួយទៀត៖ ក្រឡប់ចំណុចកណ្តាលសញ្ញានីមួយៗនៃតារាងប្រភព
-	នឹងទទួលបានសញ្ញានៅទីតាំងដូចគ្នានៃតារាងគោល
-	( កំណែដែលបានបញ្ជាទាំងអស់ / សញ្ញានូសន៍ )។ ការបង្ហាញលើកទី១ នឹងឈយកយក។ បន្ទាត់ខាងក្រោមក៏
-	ក៏ចូលរួមផ្ដល់ដែរ ( ឧទាហរណ៍ ｡ → v, ⟅ → ʌ )។
-		តារាងមូលដ្ឋាន។
-		តារាងនៃកំណែដែលបានបង្កើត។
+	ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		ſɟᴜ ı],ɹͷ̗
+		ſɟᴜ ı],ɹͷ̗
 	@returns Record<string, string>
 */
 function kreiSignanMapon( fontaTavolo: Tavolo, celaTavolo: Tavolo ): Record<string, string> {
@@ -431,10 +407,10 @@ function kreiSignanMapon( fontaTavolo: Tavolo, celaTavolo: Tavolo ): Record<stri
 	return mapo;
 }
 
-// ⟪ ភាសា 🈯 ⟫
+// ⟪ ſɭɔʞ 🈯 ⟫
 
 /**
-	យកភាសាទំព័របច្ចុប្បន្នពីធាតុ html។
+	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( html )
 	@returns string
 */
 function nunaLingvo(): string {
@@ -442,22 +418,20 @@ function nunaLingvo(): string {
 }
 
 /**
-	ជ្រើសរើសឈ្មោះតាមភាសាបច្ចុប្បន្ន។ កំណែជា Iikrhia បង្ហាញក្នុង aih
-	ហើយកំណែជាអង់គ្លេសនៅផ្ដាក់ផ្សេងៗ។
-		ឈ្មោះជាអង់គ្លេស។
-		ឈ្មោះជា Iikrhia។
+	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( aih en )
+		ſɭɔ˞ᴜ ſɭᴜ ( en )
+		ſɭɔ˞ᴜ ſɭᴜ ( aih )
 	@returns string
 */
 function nomoPerLingvo( en: string, aih: string ): string {
 	return nunaLingvo() === "aih" ? aih : en;
 }
 
-// ⟪ ការបង្ហាញ 🖥️ ⟫
+// ⟪ ſɟᴜ ſȷᴜɔ˞ 🖥️ ⟫
 
 /**
-	បង្ហាញការរៀបចំមួយ។ ស្ថាបថកឡើងវិញការបិទភ្ជាប់ការរៀបចំ ហើយបង្ហាញ
-	តារាងទី១ នៃការរៀបចំ។
-		លេខសន្ទាញ់នៃការរៀបចំសម្រាប់បង្ហាញ។
+	ſɟɔ ŋᷠɔ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		ſɭɹ ſȷɔ
 	@returns void
 */
 function montriArangxon( indekso: number ): void {
@@ -481,9 +455,8 @@ function montriArangxon( indekso: number ): void {
 }
 
 /**
-	បង្ហាញតារាងមួយនៃការរៀបចំបច្ចុប្បន្ន។ ស្ថាបថកឡើងវិញក្រឡប់ចំណុចកណ្តាល និង
-	ធ្វើបច្ចុប្បន្នភាពស្លាក់តារាង។
-		លេខសន្ទាញ់នៃតារាងសម្រាប់បង្ហាញ។
+	ſɟɔ ŋᷠɔ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		ſɭɹ ſȷɔ
 	@returns void
 */
 function montriTavolon( indekso: number ): void {
@@ -503,13 +476,13 @@ function montriTavolon( indekso: number ): void {
 	}
 	klavaraUjo.appendChild( kreiVicon( tavolo.malsupraStrio ) );
 
-	// ⟨ អនុវត្ត vacepu ទៅអត្ថបទថ្មី ដើម្បីឱ្យវាបង្ហាញត្រឹមត្រូវក្នុង aih ⟩
+	// ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭɔʞ ( vacepu aih ) ⟩
 	vacepu( "cepufal" );
 }
 
 /**
-	បង្កើតជួរក្រឡប់ចំណុចកណ្តាលតែមួយដោយប្រើ thala.cakaxa។
-		ក្រឡប់ចំណុចកណ្តាលនៃជួរ។
+	ſɭʞɹ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( thala cakaxa )
+		j͑ʃɹ ɭʃᴜɔ˞
 	@returns HTMLElement
 */
 function kreiVicon( klavoj: Klavo[] ): HTMLElement {
@@ -523,15 +496,15 @@ function kreiVicon( klavoj: Klavo[] ): HTMLElement {
 }
 
 /**
-	បង្កើតប៊ូតុងសម្រាប់ក្រឡប់ចំណុចកណ្តាលតែមួយ។
-		ក្រឡប់ចំណុចកណ្តាលសម្រាប់បង្ហាញ។
+	ſɭʞɹ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		j͑ʃɹ ɭʃᴜɔ˞
 	@returns HTMLButtonElement
 */
 function kreiButonon( klavo: Klavo ): HTMLButtonElement {
 	const butono = document.createElement( "button" );
 	butono.type = "button";
 
-	// ⟨ ក្រឡប់ចំណុចកណ្តាលមុខងងឹតបង្ហាញឈ្មោះបកប្ប័យតាមភាសា ⟩
+	// ⟨ ſɟɔ ŋᷠɔ ʌ ſɭɔ˞ᴜ ſɭᴜ ⟩
 	if ( klavo.speco === "funkcio" ) {
 		const nomo = FUNKCIO_NOMOJ[klavo.valoro];
 		butono.textContent = nomoPerLingvo( nomo.en, nomo.aih );
@@ -554,12 +527,9 @@ function kreiButonon( klavo: Klavo ): HTMLButtonElement {
 }
 
 /**
-	បញ្ចូលសកម្មភាពចុចបន្តយោបល់ទៅក្រឡប់ចំណុចកណ្តាលសញ្ញា។ ការសង្កប់ក្រឡប់នឹងបើក
-	ផ្ទាំងសញ្ញាជំនួស៖ ជួរនៅក្នុងការរៀបចំធំ ( ពេល
-	ប្រុង Extra ចាក់ផ្ដើម ) ឬផ្ទាំងសញ្ញាបន្ថែមនៅក្នុង
-	ការរៀបចំតូច។ ការចុចបន្ទាប់ត្រូវបានដកចេញបន្ទាប់ពីការចុចបន្តយោបល់។
-		ប៊ូតុងនៃក្រឡប់ចំណុចកណ្តាល។
-		ក្រឡប់ចំណុចកណ្តាលសញ្ញា។
+	ſɭʞɹ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		ſᶘɹ }ʃᴜ }ʃw
+		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
 function aldoniLonganPremon( butono: HTMLButtonElement, klavo: SignaKlavo ): void {
@@ -591,7 +561,7 @@ function aldoniLonganPremon( butono: HTMLButtonElement, klavo: SignaKlavo ): voi
 		}, LONGA_PREMO_DAŬRO * 0o1750 );
 	} );
 
-	// ⟨ កុំធ្វើឱ្យវាទទេនៅទីនេះ៖ ការចុចបន្ទាប់ត្រូវតែបង្ហាញវា ⟩
+	// ⟨ ſɟɔ ŋᷠɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
 	butono.addEventListener( "pointerup", () => {
 		nuligi();
 		fermiPanelon();
@@ -601,10 +571,8 @@ function aldoniLonganPremon( butono: HTMLButtonElement, klavo: SignaKlavo ): voi
 }
 
 /**
-	បើកផ្ទាំងសញ្ញាជំនួសសម្រាប់ក្រឡប់ចំណុចកណ្តាលតែមួយ។ នៅក្នុង
-	ការរៀបចំធំ វាបង្ហាញជម្រើសក្នុងជួរ។ នៅក្នុងការរៀបចំតូច វា
-	បើកផ្ទាំងសញ្ញាបន្ថែម។ ជម្រើសមិនមានឥឡូវទេ។
-		ក្រឡប់ចំណុចកណ្តាលដែលត្រូវបង្ហាញជម្រើស។
+	ſɟɔ ŋᷠɔ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
 function malfermiPanelon( klavo: SignaKlavo ): void {
@@ -627,7 +595,7 @@ function malfermiPanelon( klavo: SignaKlavo ): void {
 }
 
 /**
-	បិទ និងលាក់ផ្ទាំងសញ្ញាជំនួស។
+	ſɭɜ ʃɔ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
 	@returns void
 */
 function fermiPanelon(): void {
@@ -636,15 +604,15 @@ function fermiPanelon(): void {
 	ekstraPanelo.classList.add( "kobe" );
 }
 
-// ⟪ ការចុច និងអូស 🖱️ ⟫
+// ⟪ ſןɔ ʌ ſᶘɹ }ʃᴜ }ʃw 🖱️ ⟫
 
 /**
-	ដំណើរការនៃការចុចលើក្រឡប់ចំណុចកណ្តាល។
-		ក្រឡប់ចំណុចកណ្តាលដែលត្រូវបានចុច។
+	ſןɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
 function pritraktiKlavon( klavo: Klavo ): void {
-	// ⟨ បន្ទាប់ពីការចុចបន្តយោបល់ ការចុចបន្ទាប់គ្រាន់តែបើកផ្ទាំង - ដកវាចេញ ⟩
+	// ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
 	if ( longaPremo ) {
 		longaPremo = false;
 		return;
@@ -658,10 +626,8 @@ function pritraktiKlavon( klavo: Klavo ): void {
 }
 
 /**
-	បញ្ចូលតម្លៃនៃក្រឡប់ចំណុចកណ្តាលសញ្ញា។ នៅក្នុងការរៀបចំធំដែលមាន
-	ប្រុង Extra ចាក់ផ្ដើម ការចុចម្ដងហើយម្ដងទៀតឆ្លងកាត់តាមជម្រើស
-	ជម្រើសនៃសញ្ញា ( មិនមានឥឡូវទេ - សញ្ញាមូលដ្ឋាននឹងត្រូវបញ្ចូល )។
-		ក្រឡប់ចំណុចកណ្តាលសញ្ញា។
+	j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
 function enmetiKlavon( klavo: SignaKlavo ): void {
@@ -679,8 +645,8 @@ function enmetiKlavon( klavo: SignaKlavo ): void {
 }
 
 /**
-	ដំណើរការនៃមុខងងឹតនៃបន្ទាត់ខាងក្រោម។
-		សកម្មភាពនៃក្រឡប់ចំណុចកណ្តាលមុខងងឹត។
+	ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭᴜc̗ ɭʃᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
 function pritraktiFunkcion( funkcio: KlavaFunkcio ): void {
@@ -709,8 +675,8 @@ function pritraktiFunkcion( funkcio: KlavaFunkcio ): void {
 }
 
 /**
-	បញ្ចូលអត្ថបទនៅទីតាំងកូនុស្លែងបច្ចុប្បន្ននៃវាលបញ្ចូល។
-		អត្ថបទសម្រាប់បញ្ចូល។
+	j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		ꞁȷ̀ɔ j͑ʃƽɔƽ
 	@returns void
 */
 function enmetiTekston( teksto: string ): void {
@@ -723,13 +689,12 @@ function enmetiTekston( teksto: string ): void {
 	enigaKampo.setSelectionRange( novaPozicio, novaPozicio );
 	enigaKampo.focus();
 
-	// ⟨ រក្សាស្លាក់ចំណុចកណ្តាលក្រឡប់ដែលបានបញ្ចូល ដើម្បីឱ្យការលុបដកចំណុចកណ្តាលទាំងអស់ ⟩
+	// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
 	enmetitaHistorio.push( teksto );
 }
 
 /**
-	ដកកូនុងអក្សរចុងក្រោយ ( សញ្ញាជាមួយអក្សរបំពោបតគ្រប់យ៉ាងរបស់វា )
-	មុនកូនុស្លែង ឬអត្ថបទបានជ្រើសរើសទាំងអស់ ប្រសិនបើមានការជ្រើសរើស។
+	ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
 	@returns void
 */
 function forigiLastanGrafemon(): void {
@@ -737,7 +702,7 @@ function forigiLastanGrafemon(): void {
 	const komenco = enigaKampo.selectionStart ?? enigaKampo.value.length;
 	const fino = enigaKampo.selectionEnd ?? enigaKampo.value.length;
 
-	// ⟨ ប្រសិនបើមានការជ្រើសរើស ដកវាចេញ និងបោះចោលប្រវត្តិសាស្ត្រចេញ ⟩
+	// ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
 	if ( komenco !== fino ) {
 		enigaKampo.value = enigaKampo.value.slice( 0o0, komenco ) + enigaKampo.value.slice( fino );
 		enigaKampo.setSelectionRange( komenco, komenco );
@@ -750,14 +715,14 @@ function forigiLastanGrafemon(): void {
 		const antaŭa = enigaKampo.value.slice( 0o0, komenco );
 		const lastaĴetono = enmetitaHistorio[enmetitaHistorio.length - 0o1];
 
-		// ⟨ ចូលចិត្តលុបស្លាក់ក្រឡប់ចំណុចកណ្តាលចុងក្រោយទាំងអស់ ( ឧទាហរណ៍ ꞁȷ̀ ) ⟩
+		// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
 		if ( lastaĴetono && antaŭa.endsWith( lastaĴetono ) ) {
 			const novaPozicio = komenco - lastaĴetono.length;
 			enigaKampo.value = enigaKampo.value.slice( 0o0, novaPozicio ) + enigaKampo.value.slice( komenco );
 			enigaKampo.setSelectionRange( novaPozicio, novaPozicio );
 			enmetitaHistorio.pop();
 		} else {
-			// ⟨ បើកិត្តដកកូនុងអក្សរមួយ និងបោះចោលលំដាប់ប្រវត្តិសាស្ត្រចេញ ⟩
+			// ⟨ ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
 			const novaPozicio = komenco - longecoDeLastaGrafemo( antaŭa );
 			enigaKampo.value = enigaKampo.value.slice( 0o0, novaPozicio ) + enigaKampo.value.slice( komenco );
 			enigaKampo.setSelectionRange( novaPozicio, novaPozicio );
@@ -768,9 +733,8 @@ function forigiLastanGrafemon(): void {
 }
 
 /**
-	គណនាប្រវែងនៃកូនុងអក្សរចុងក្រោយក្នុងខ្សែ ដោយប្រើ Intl.Segmenter
-	ពេលវាអាចប្រើបាន និងត្រឡប់ទៅកំណត់លេខកូដវិញប្រសិនបើមិន។
-		ខ្សែសម្រាប់ការពិនិត្យ។
+	ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Intl Segmenter )
+		ꞁȷ̀ɔ j͑ʃƽɔƽ
 	@returns number
 */
 function longecoDeLastaGrafemo( teksto: string ): number {
@@ -791,7 +755,7 @@ function longecoDeLastaGrafemo( teksto: string ): number {
 }
 
 /**
-	ចម្លងអត្ថបទពីវាលបញ្ចូលទៅកន្លោៀប័ណ្តប់ ហើយបង្ហាញការបញ្ជាកែ។
+	ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
 	@returns Promise
 */
 async function kopiiTekston(): Promise<void> {
@@ -813,7 +777,7 @@ async function kopiiTekston(): Promise<void> {
 }
 
 /**
-	សម្អាតអត្ថបទទាំងអស់នៃវាលបញ្ចូល។
+	ſɭɜ ʃɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
 	@returns void
 */
 function viŝiEnigon(): void {
@@ -823,7 +787,7 @@ function viŝiEnigon(): void {
 	enmetitaHistorio = [];
 }
 
-// ⟪ ការចាប់ផ្ដើម 🚀 ⟫
+// ⟪ j͑ʃᴜ ı],ɔ 🚀 ⟫
 
 document.addEventListener( "DOMContentLoaded", () => {
 	enigaKampo = document.getElementById( "enigo" ) as HTMLTextAreaElement | null;
@@ -843,7 +807,7 @@ document.addEventListener( "DOMContentLoaded", () => {
 	arangxoj = analiziArangxojn( krudaTeksto );
 	montriArangxon( 0o0 );
 
-	// ⟨ ការកែសម្រួលដោយដៃរបស់អ្នកប្រើបានបំផ្លាញប្រវត្តិសាស្ត្រ - បោះចោលវាចេញ ⟩
+	// ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
 	enigaKampo.addEventListener( "input", () => {
 		enmetitaHistorio = [];
 	} );

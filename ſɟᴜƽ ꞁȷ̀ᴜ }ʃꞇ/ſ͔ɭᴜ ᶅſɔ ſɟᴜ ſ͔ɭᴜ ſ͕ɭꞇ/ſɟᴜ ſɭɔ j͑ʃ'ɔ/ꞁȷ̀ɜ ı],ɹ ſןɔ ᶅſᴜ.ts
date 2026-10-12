@@ -2,15 +2,14 @@ import * as XLSX from "xlsx";
 
 // ≺⧼ Iikrhia Hazarda Frazgenerilo 🌐 ⧽≻
 /**
- * បង្កើតឃ្លាមានចង្វេកតាមវេទ្យាប័យីរហា Iikrhia។
- * - ពាក្យរាប់ VOS ( ការ-វត្ថ-ប្រព័ន្ធ ) ចោលដោយត្រាំង។
- * - ការប្រើប្រាក់ បុព្យបញ្ជា និងស្លាក់បៃឲ្យបានត្រឹមត្រូវ
- * - ប្រើពាក្យមាត្រកម្មការងារស្វែងរកពាក្យ
+ * ſɭʞɹ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Iikrhia VOS )
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
  *
- * ទម្រង់ឃ្លា គឺជា ( Tempo ) V ( Evi ) O ( ⺓ ( Evi ) ( Adj ) S )
+ * ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ( Tempo V Evi O ⺓ Evi Adj S )
  */
 
-// ⟪ ថេរស្មែក 📦 ⟫
+// ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 📦 ⟫
 
 const SUBJEKTA_MARKILO = "⺓";
 const DEMANDA_JEJNE = "ſɟɔƴ";
@@ -30,7 +29,7 @@ const KODOJ = [
     "ɴ", "ƽ", "ᴜ̩", "ȝ"
 ];
 
-// ⟪ ប្រភេទប្រកប្រកប 🔧 ⟫
+// ⟪ ſɟɹƽ ꞁȷ̀ᴜ }ʃꞇ 🔧 ⟫
 
 const ADJEKTIVIGAJ_PREFIKSOJ: Record<string, [ string, string ]> = {
     "2R": [ "ꞁȷ̀ɹƣ̋", "ꞁȷ̀ɹ" ],
@@ -85,7 +84,7 @@ const SUFIKSAJ_AFIKSOJ: Record<string, [ string, string ]> = {
     "STIF": [ "j͑ʃƨꞇʞ", "ɭʃꞇʞ" ],
 };
 
-// ⟨ ភាសាប្រកប្រកប 🔤 ⟩
+// ⟨ ſɟɹƽ ꞁȷ̀ᴜ }ʃꞇ ʌ ſɭɔʞ 🔤 ⟩
 
 const AFIKSAJ_TRADUKOJ: Record<string, string> = {
     "VER": "VERBALIZER",
@@ -115,7 +114,7 @@ const AFIKSAJ_TRADUKOJ: Record<string, string> = {
 const POS_AL_ETIKEDO: Record<string, string> = { Verb: "V", Noun: "N", Adjective: "ADJ", Evidential: "EVI" };
 
 
-// ⟪ កំណត់ត្រាផ្សូរ និង ការ្រោះគណនា 📚 ⟫
+// ⟪ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ 📚 ⟫
 
 type GeneratoraFunkcio = () => unknown;
 
@@ -145,11 +144,11 @@ class StrukturaRegistro {
 const registraro = new StrukturaRegistro();
 
 
-// ⟪ ឧបករណ៍ជំរើសសំឡេង 🔤 ⟫
+// ⟪ ʃɔ 🔤 ⟫
 
 /**
- * ត្រួតពិនិត្យថា ពាក្យចាប់ផ្ដើមដោយស៊ី ឬអត់។
- *     @param vorto ( string , required ) - ពាក្យសម្រាប់ការត្រួតពិនិត្យ។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ *     @param vorto ( string , required ) - ſɭɔʞ
   *  @returns jesne
  * */
 function cxuVokalaKomenco(vorto: string): boolean {
@@ -164,8 +163,8 @@ function cxuVokalaKomenco(vorto: string): boolean {
 }
 
 /**
- * ត្រួតពិនិត្យថា ពាក្យបញ្ចប់ដោយសំឡេងស៊ី ឬអត់។
- *     @param vorto ( string , required ) - ពាក្យសម្រាប់ការត្រួតពិនិត្យ។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ʃɔ )
+ *     @param vorto ( string , required ) - ſɭɔʞ
   *  @returns jesne
  * */
 function cxuVokalaFino(vorto: string): boolean {
@@ -185,7 +184,7 @@ function cxuVokalaFino(vorto: string): boolean {
 }
 
 
-// ⟪ កែចំទាក់ត្រា 🔧 ⟫
+// ⟪ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ 🔧 ⟫
 
 interface VortEniro {
     gawekiif: string;
@@ -215,11 +214,11 @@ interface VerbModifiloOpcioj {
 }
 
 /**
- * អនុវត្តម៉ូដ្ឋីទៅទាក់ត្រា ( ប្រភេទប្រកប្រកប , គ្រាប់មនុស្ស , ពង្រឹក្រឹមក )។
- * មុខងងឹតត្រូវបានបង្កើតសម្រាប់ទាក់ត្រាចម្បង និងទាក់ត្រា VN ទាំងពីរ។
- * ប្រភេទបុព្យបញ្ជាមិនអាច ( YOR, KOTAK ) មិនអាចធ្វើក្នុងពេលឯកជាមួយប្រភេទបុព្យបញ្ជាវិជីមិនជាទូទៅរបស់ខ្លួន ( OR, TAK )។
-    * @param verbo ( VortEniro , required ) - ទាក់ត្រាបញ្ចូលដែលមាន gawekiif និងការបកប្ប័យ។
-    * @param opcioj ( VerbModifiloOpcioj = {} , optional ) - ជម្រើសកែចំ។
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( OR TAK YOR KOTAK )
+ * ſɭʞɹ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( OR TAK YOR KOTAK )
+    * @param verbo ( VortEniro , required ) - ſɭɔʞ ( gawekiif )
+    * @param opcioj ( VerbModifiloOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns vorto
  */
 function aplikiVerbModifilojn(verbo: VortEniro, opcioj: VerbModifiloOpcioj = {}): ModifitaVortEniro {
@@ -301,14 +300,14 @@ function aplikiVerbModifilojn(verbo: VortEniro, opcioj: VerbModifiloOpcioj = {})
 }
 
 
-// ⟪ ការអនុវត្តប្រភេទប្រកប្រកប 🔧 ⟫
+// ⟪ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ 🔧 ⟫
 
 /**
- * អនុវត្តប្រភេទប្រកប្រកបតាមច្បាប់សំឡេង។
- * កំណត់ដោយស្វ័យទស្សន៍ថា ប្រភេទបុព្យបញ្ជា ឬប្រភេទបទប្រភេទតាមប្រភេទប្រកប្រកប។
- * ជ្រើសរើសទម្រង់ស៊ី ឬទម្រង់ពាក្យមុខតាមចំនាក់ពាក្យ។
-    * @param vorto ( string , required ) - ពាក្យដែលត្រូវអនុវត្តប្រភេទប្រកប្រកប។
-    * @param afiksoTipo ( string , required ) - ប្រភេទនៃប្រភេទប្រកប្រកប ( ឧទាហរណ៍ "OR", "KON", "SU", "AL" )។
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+    * @param vorto ( string , required ) - ſɭɔʞ
+    * @param afiksoTipo ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞ ( OR KON SU AL )
  * @returns ĉeno
  */
 function aplikiAfikson(vorto: string, afiksoTipo: string): string {
@@ -330,8 +329,8 @@ function aplikiAfikson(vorto: string, afiksoTipo: string): string {
 }
 
 /**
- * ត្រួតពិនិត្យថា ប្រភេទប្រកប្រកបគឺជាប្រភេទធ្វើឱ្យពាក្យជាបន្ទាន្ន ( បម្លែងពាក្យទៅជាបន្ទាន្ន )។
-    * @param afiksoTipo ( string , required ) - ប្រភេទនៃប្រភេទប្រកប្រកប។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+    * @param afiksoTipo ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns jesne
  */
 function cxuAdjektivaAfikso(afiksoTipo: string): boolean {
@@ -339,12 +338,11 @@ function cxuAdjektivaAfikso(afiksoTipo: string): boolean {
 }
 
 /**
- * ត្រួតពិនិត្យថា ពាក្យមានប្រភេទបុព្យបញ្ជាធ្វើឱ្យពាក្យជាបន្ទាន្នឬទេ។
- * ប្រភេទបុព្យបញ្ជាធ្វើឱ្យពាក្យជាបន្ទាន្នប្តូរពាក្យឈ្មោះ និងទាក់ត្រាទៅជាបន្ទាន្ន។
- * L6R ធ្វើឱ្យពាក្យជាបន្ទាន្នតែនៅទាក់ត្រាដែលមិនមែនជាទាក់ត្រា ( សម្រាប់ទាក់ត្រា វាជាការសកម្ម )។
- * ប្រើ akiriL6RUzon() ដើម្បីកំណត់មុខងងឹតរបស់ L6R។
-    * @param vorto ( string , required ) - ពាក្យសម្រាប់ការត្រួតពិនិត្យ។
-    * @param vortoEniro ( VortEniro | null = null , optional ) - ទាក់ត្រាបញ្ចូលដើម្បីត្រួតពិនិត្យថា L6R មានតួរការសកម្មឬអត់។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( L6R )
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( L6R )
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ akiriL6RUzon ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( L6R )
+    * @param vorto ( string , required ) - ſɭɔʞ
+    * @param vortoEniro ( VortEniro | null = null , optional ) - ſɭɔʞ ( L6R )
  * @returns jesne
  */
 function cxuAdjektivaPrefikso(vorto: string, vortoEniro: VortEniro | null = null): boolean {
@@ -362,9 +360,9 @@ function cxuAdjektivaPrefikso(vorto: string, vortoEniro: VortEniro | null = null
 }
 
 /**
- * ត្រួតពិនិត្យថា ប្រភេទបុព្យបញ្ជា L6R ត្រូវបានប្រើជាការសកម្ម ( លើទាក់ត្រា ) ឬធ្វើឱ្យពាក្យជាបន្ទាន្ន ( លើអ្វីដែលមិនមែនជាទាក់ត្រា )។
-    * @param vorto ( string | null , required ) - ពាក្យសម្រាប់ការត្រួតពិនិត្យ។
-    * @param vortoEniro ( VortEniro | null , required ) - ទាក់ត្រាបញ្ចូលពីពាក្យមាត្រ។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( L6R )
+    * @param vorto ( string | null , required ) - ſɭɔʞ
+    * @param vortoEniro ( VortEniro | null , required ) - ſɭɔʞ
  * @returns ĉeno
  */
 function akiriL6RUzon(vorto: string | null, vortoEniro: VortEniro | null): string {
@@ -377,8 +375,8 @@ function akiriL6RUzon(vorto: string | null, vortoEniro: VortEniro | null): strin
 }
 
 /**
- * យកប្រភេទបុព្យបញ្ជាធ្វើឱ្យពាក្យជាបន្ទាន្នមួយដែលមានចង្វេក។
- * ជួយប្រគល់ក្រឡប់ចំណុចប្រភេទបុព្យបញ្ជាធ្វើឱ្យពាក្យជាបន្ទាន្នមួយ ( 2R, K2R, J6R, H2R, SAR, SWER, SER )។
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( 2R K2R J6R H2R SAR SWER SER )
+ * ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ j͑ʃɹ ɭʃᴜɔ˞
  * @returns ĉeno
  */
 function akiriHazardanAdjektivanPrefikson(): string {
@@ -387,17 +385,10 @@ function akiriHazardanAdjektivanPrefikson(): string {
 }
 
 /**
- * អនុវត្តប្រភេទបុព្យបញ្ជាធ្វើឱ្យពាក្យជាបន្ទាន្ន ដោយបម្លែងវាទៅជាបន្ទាន្ន។
- * ប្រភេទបុព្យបញ្ជាធ្វើឱ្យពាក្យជាបន្ទាន្នប្តូរពាក្យឈ្មោះ និងទាក់ត្រាទៅជាបន្ទាន្នដោយមានអត្ថន័យពាក់ព័ន្ធ
- * - 2R. KUN ( មានគុណលក្ខន្ធនៃ )
- * - K2R. UZANTE ( ដោយផ្លូវនៃ )
- * - J6R. EN ( ដែលនៅក្នុង )
- * - H2R. SEN ( ដែលនៅមិនឃើញ )
- * - SAR. POR ( គោល / ប្រយោជន៍ )
- * - SWER. PRI ( ដែលជាកម្មសិទ្ធិនៃ )
- * - SER. DE ( ការកាន់ស្នាល / ទំនាក់ទំនង )
-    * @param vortoEniro ( VortEniro , required ) - ទាក់ត្រាបញ្ចូលដែលមាន gawekiif, ការបកប្ប័យ និងក្រុមកម្មភាព។
-    * @param prefiksoTipo ( string | null = null , optional ) - ប្រភេទបុព្យបញ្ជាជាក់ស្តែង ឬ null សម្រាប់ការចង្វេក។
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( 2R K2R J6R H2R SAR SWER SER )
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+    * @param vortoEniro ( VortEniro , required ) - ſɭɔʞ ( gawekiif )
+    * @param prefiksoTipo ( string | null = null , optional ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns vorto
  */
 function aplikiAdjektivanPrefikson(vortoEniro: VortEniro, prefiksoTipo: string | null = null): VortEniro {
@@ -423,10 +414,10 @@ function aplikiAdjektivanPrefikson(vortoEniro: VortEniro, prefiksoTipo: string |
 }
 
 /**
- * បង្កើតបន្ទាន្នពីពាក្យឈ្មោះ ឬទាក់ត្រាដោយប្រើប្រភេទបុព្យបញ្ជាធ្វើឱ្យពាក្យជាបន្ទាន្ន។
- * ប្រសិនបើគ្មានពាក្យឈ្មោះ ឬទាក់ត្រាទំនេរ ត្រឡប់ null។
-    * @param fontoPoŝo ( "Noun" | "Verb" = "Noun" , optional ) - ប្រភពនៃក្រុមកម្មភាព។
-    * @param prefiksoTipo ( string | null = null , optional ) - ប្រភេទបុព្យបញ្ជាជាក់ស្តែង ឬ null សម្រាប់ការចង្វេក។
+ * ſɭʞɹ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( null )
+    * @param fontoPoŝo ( "Noun" | "Verb" = "Noun" , optional ) - ֭ſɭᴜ ı],ɔ
+    * @param prefiksoTipo ( string | null = null , optional ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns vorto
  */
 function kreiAdjektivon(fontoPoŝo: "Noun" | "Verb" = "Noun", prefiksoTipo: string | null = null): VortEniro | null {
@@ -438,8 +429,8 @@ function kreiAdjektivon(fontoPoŝo: "Noun" | "Verb" = "Noun", prefiksoTipo: stri
 }
 
 /**
- * ត្រួតពិនិត្យថា ពាក្យគឺជាទាក់ត្រា ( សម្រាប់ការកំណត់ចំណនៃ L6R )។
-    * @param vortoEniro ( VortEniro | null , required ) - ទាក់ត្រាបញ្ចូលពីពាក្យមាត្រ។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( L6R )
+    * @param vortoEniro ( VortEniro | null , required ) - ſɭɔʞ
  * @returns jesne
  */
 function cxuVerbo(vortoEniro: VortEniro | null): boolean {
@@ -447,9 +438,9 @@ function cxuVerbo(vortoEniro: VortEniro | null): boolean {
 }
 
 /**
- * យកប្រភេទបុព្យបញ្ជាគ្រាប់មនុស្សដែលជាទំនាប់សម្រាប់ប្រភេទបុព្យបញ្ជាដែលបានកំណត់។
- * ប្រភេទបុព្យបញ្ជាគ្រាប់មនុស្សមិនអាច ( YOR, KOTAK ) មិនអាចធ្វើក្នុងពេលឯកជាមួយប្រភេទបុព្យបញ្ជាវិជីមិនជាទូទៅរបស់ខ្លួន ( OR, TAK )។
-    * @param prefiksoTipo ( string , required ) - ប្រភេទបុព្យបញ្ជាសម្រាប់ការត្រួតពិនិត្យ។
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( YOR KOTAK OR TAK )
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( YOR KOTAK OR TAK )
+    * @param prefiksoTipo ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns rezulto
  */
 function akiriKonfliktantanPrefikson(prefiksoTipo: string): string | null {
@@ -457,7 +448,7 @@ function akiriKonfliktantanPrefikson(prefiksoTipo: string): string | null {
 }
 
 
-// ⟪ ការផ្ទុកពាក្យមាត្រ 📖 ⟫
+// ⟪ ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ 📖 ⟫
 
 const XLSX_CVPKSAKA = "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬɔ.xlsx";
 
@@ -485,7 +476,7 @@ const IIKRHIAJ_INTERPUNKCIOJ = [ "⟅", "｡", "⸙", "ʌ" ];
 const _vortaroKaso = new Map<string, VortEniro[]>();
 
 /**
- * យកខ្សែសរសេរ Iikrhia ទាំងអស់សម្រាប់ការរកឃើញសញ្ញា។
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
  * @returns listo
  */
 function akiriCxiujnIikrhiajnSekvencojn(): string[] {
@@ -493,8 +484,8 @@ function akiriCxiujnIikrhiajnSekvencojn(): string[] {
 }
 
 /**
- * ត្រួតពិនិត្យថា អត្ថបទមានសញ្ញាសរសេរ Iikrhia ឬអត់។
-    * @param teksto ( string , required ) - អត្ថបទសម្រាប់ការត្រួតពិនិត្យ។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+    * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
  * @returns jesne
  */
 function cxuEnhavasIikrhianSkribon(teksto: string): boolean {
@@ -505,8 +496,8 @@ function cxuEnhavasIikrhianSkribon(teksto: string): boolean {
 }
 
 /**
- * ជ្រើសរើសផ្នែកបកប្ប័យដែលមិនមានការសរសេរ Iikrhia។
-    * @param tradukoPartoj ( string[] , required ) - បញ្ជីជម្រើសបកប្ប័យ។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+    * @param tradukoPartoj ( string[] , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function elektiNeIikrhianTradukon(tradukoPartoj: string[]): string {
@@ -518,7 +509,7 @@ function elektiNeIikrhianTradukon(tradukoPartoj: string[]): string {
     return tradukoPartoj[0o0] || "";
 }
 
-// ⟨ ស្លាក់ POZ - ដូចគ្នានឹងកម្មវិធីដំណើរការទំព័រពាក្យមាត្រ ⟩
+// ⟨ ֭ſɭᴜ ı],ɔ ( KEFHAXE ) ⟩
 const KEFHAXE: Readonly<Record<string, string>> = {
     "ſɟɹƽ ꞁȷ̀ᴜ }ʃꞇ": "Affix",
     "ſɭɔ ı],ɔ }ʃꞇ": "Evidential",
@@ -534,8 +525,8 @@ const KEFHAXE: Readonly<Record<string, string>> = {
 };
 
 /**
- * បម្លែកក្រឡប់សន្ទាស៊ីទៅជាខ្សែមួយក្រឡា ដែលបានកាត់។
- *    @param v ( unknown ) - តម្លៃក្រឡប់មូលដ្ឋាន។
+ * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ *    @param v ( unknown ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function ĉeloAlTeksto(v: unknown): string {
@@ -544,9 +535,9 @@ function ĉeloAlTeksto(v: unknown): string {
 }
 
 /**
- * កំណត់ប្រភេទដ៏នដោយពិនិត្យប្រភេទកម្មវិធីជាមុន បន្ទាប់មកត្រូវបានរង្កងជាក្រោមប្រភេទកម្មវិធី។
- *    @param temo ( string ) - ក្រឡប់ប្រភេទកម្មវិធី ( ជួនឈរ 0 )។
- *    @param estasSub ( string ) - ក្រឡប់ប្រភេទកម្មវិធីក្រោម ( ជួនឈរ 1 )។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ֭ſɭᴜ ı],ɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( temo estasSub )
+ *    @param temo ( string ) - ֭ſɭᴜ ı],ɔ ( 0 )
+ *    @param estasSub ( string ) - ֭ſɭᴜ ı],ɔ ( 1 )
  * @returns ĉeno
  */
 function determiniPoŝon(temo: string, estasSub: string): string {
@@ -560,10 +551,9 @@ function determiniPoŝon(temo: string, estasSub: string): string {
 }
 
 /**
- * ធ្វើធម្មតាស្លាក់ POZ នៃ KEFHAXE ទៅជាប្រភេទមូលដ្ឋានរបស់ខ្លួន។
- * "Number ( Noun )" → "Noun", "Chemical ( Noun )" → "Noun", "Affix" → "Affix", និងអ្នកផ្សេងៗ។
- * ទាំងនេះស្រួតតាមការដំណើរការបញ្ជាក់ឃ្លា `determinePos()` ដើមរបស់កូដដើម។
- *    @param poŝo ( string ) - ស្លាក់ POZ មូលដ្ឋាន។
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ֭ſɭᴜ ı],ɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( KEFHAXE Number Chemical Affix Noun )
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ֭ſɭᴜ ı],ɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( determinePos KEFHAXE )
+ *    @param poŝo ( string ) - ֭ſɭᴜ ı],ɔ
  * @returns ĉeno
  */
 function normigiPoŝon(poŝo: string): string {
@@ -573,8 +563,8 @@ function normigiPoŝon(poŝo: string): string {
 }
 
 /**
- * ផ្ទុក និងវិភាគពាក្យមាត្រ xlsx ដោយជួយប្រគល់ VortEniro[] ដោយផ្ទាល់។
-    * @param xlsxVojo ( string | null = null , optional ) - ផ្លូវទៅឯកសារ xlsx។
+ * ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( xlsx VortEniro )
+    * @param xlsxVojo ( string | null = null , optional ) - ſɭэ ֭ſɭэ ( xlsx )
  * @returns vortaro
  */
 async function sxargiVortaron(xlsxVojo: string | null = null): Promise<VortEniro[]> {
@@ -607,7 +597,7 @@ async function sxargiVortaron(xlsxVojo: string | null = null): Promise<VortEniro
             const tradukoKruda = ĉeloAlTeksto(vico[0o3]);
             if ( !vortoKruda ) continue;
             const poŝo = determiniPoŝon(temo, estasSub);
-            // ⟨ បំបែកក្រឡប់ពហុពាក្យដោយ "｡" - ដូចគ្នានឹងកម្មវិធីវិភាគ HTML ដើម ⟩
+            // ⟨ ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( ｡ ) ⟩
             const vortoj = vortoKruda.split("｡").map(p => p.trim()).filter(p => p);
             const tradukoj = tradukoKruda ? tradukoKruda.split("｡").map(p => p.trim()).filter(p => p) : [];
 for ( let i = 0o0; i < vortoj.length; i++ ) {
@@ -635,7 +625,7 @@ for ( let i = 0o0; i < vortoj.length; i++ ) {
 }
 
 /**
- * ផ្ទុកពាក្យមាត្រដោយព្យាយាមផ្លូវជាច្រើនតាមលំដាប់។
+ * ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
  * @returns vortaro
  */
 async function sxargiVortaronKunFalreto(): Promise<VortEniro[]> {
@@ -650,7 +640,7 @@ async function sxargiVortaronKunFalreto(): Promise<VortEniro[]> {
 }
 
 /**
- * ផ្ទុកពាក្យមាត្រដោយស្ងាត់ ( ប្រសិនបើបានផ្ទុកទើបហើយ )។
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
  * @returns vortaro
  */
 function sxargiVortaronSinkrone(): VortEniro[] {
@@ -662,8 +652,8 @@ function sxargiVortaronSinkrone(): VortEniro[] {
 }
 
 /**
- * យកពាក្យមួយដែលមានចង្វេកតាម POZ។
-    * @param pos ( string , required ) - ស្លាក់ក្រុមកម្មភាព។
+ * ſ͕ɭɹȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( POZ )
+    * @param pos ( string , required ) - ֭ſɭᴜ ı],ɔ
  * @returns vorto
  */
 function akiriVortonPerPoŝo(pos: string): VortEniro | null {
@@ -673,10 +663,10 @@ function akiriVortonPerPoŝo(pos: string): VortEniro | null {
 }
 
 
-// ⟪ សមាជិកឃ្លា 🧱 ⟫
+// ⟪ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ 🧱 ⟫
 
 /**
- * ប្រភេទទីតាំងពាក្យក្នុងក្រសរស្រាយឃ្លា VOS។
+ * ֭ſɭᴜ ı],ɔ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ( VOS )
  */
 const VortPozicio = {
     TEMPORALA: "TEMPORALA",
@@ -716,9 +706,8 @@ interface VerbModifiloj {
 }
 
 /**
- * សមាជិកសម្រាប់សាងសង់ឃ្លា។
- * ប្រើបញ្ជីពាក្យដែលត្រូវបានបង្កើត - ពាក្យទាំងអស់ ( រួមមានបន្ទាន្ន ខ្សែ VN និងធាតុផ្សូរជាក់ស្តែង )
- * ត្រូវបានរក្សាទុកជាទាក់ត្រាបញ្ចូលដែលមានព័ត្រនឹងទីតាំង និងព័ត្រនឹងកែចំ។
+ * ſɭʞɹ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
  */
 class FrazKomponantoj {
     tempo: VortEniro | null = null;
@@ -735,8 +724,8 @@ class FrazKomponantoj {
 }
 
 /**
- * ឧបករណ៍ជំរើសដើម្បីយកការបកប្ប័យនៃប្រភេទប្រកប្រកប ដោយត្រឡប់ទៅក្រឡប់ចំណុចកណ្តាលប្រសិនបើមាន។
-    * @param klavo ( string , required ) - ក្រឡប់ចំណុចកណ្តាលនៃប្រភេទប្រកប្រកប។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+    * @param klavo ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns rezulto
  */
 function _akiriAfiksoTradukon(klavo: string): string | null {
@@ -744,7 +733,7 @@ function _akiriAfiksoTradukon(klavo: string): string | null {
 }
 
 
-// ⟪ កន្សល់ឃ្លា 🔨 ⟫
+// ⟪ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ 🔨 ⟫
 
 const ERARO_SEN_VERBO = "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Neenkonata sen verbo";
 
@@ -1131,8 +1120,7 @@ class FrazKonstruilo {
         const lastIdx = strukturo.length - 0o1;
         const label = strukturo[lastIdx];
         /*
-        * ⟨ ស្លាក់ផ្សូរផ្សូរនៃ CEZ និង TACE មិននៅក្នុង SPECALAJ_MARKILOJ ( ដែលរក្សាទុក
-        *    ពាក្យ Iikrhia ) ប៉ុន្តែពួកគេត្រូវបោះចោល -AL ដូចជាស្លាក់ប្រព័ន្ធ ⺓ ដូចខាងលើ។ ⟩
+        * ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( CEZ TACE AL ⺓ ) ⟩
         */
         if ( label === "CEZ" || label === "TACE" || this._cxuSpecialaMarkilo(label) ) {
             return;
@@ -1142,15 +1130,15 @@ class FrazKonstruilo {
 }
 
 
-// ⟪ ម៉ូឌុលបង្កើតឃ្លា 🏗️ ⟫
+// ⟪ ſɭʞɹ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ 🏗️ ⟫
 
-// ⟪ មុខងងឹតជំរើសសម្រាប់ទម្រង់ទូទៅ 🔧 ⟫
+// ⟪ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ 🔧 ⟫
 
 /**
- * ឧបករណ៍ជំរើសទូទៅសម្រាប់ទម្រង់ "eble" - អនុវត្តម៉ូដ្ឋីដោយមានប្រូបរាយ ៥០%។
-    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
-    * @param modifierFn ( Function , required ) - មុខងងឹតដែលអនុវត្តម៉ូដ្ឋី។
-    * @param saltuSeVerbaAfikso ( boolean = false , optional ) - បោះចោលប្រសិនបើទាក់ត្រាមានគ្រាប់មនុស្ស ឬប្រភេទប្រកប្រកបរួចហើយ។
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( eble )
+    * @param builder ( FrazKonstruilo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param modifierFn ( Function , required ) - ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ
+    * @param saltuSeVerbaAfikso ( boolean = false , optional ) - ſןw ʌ ſɭɔʞ
  * @returns konstruilo
  */
 function ebleAplikiModifilon(
@@ -1174,12 +1162,11 @@ interface VNModifiloOpcioj {
 }
 
 /**
- * មុខងងឹតកែចំ VN - បញ្ចូលខ្សែ V+N ជាម៉ូដ្ឋីមុនពាក្យឈ្មោះចម្បង។
- * V N ដំណើរការដោយជាបន្ទាន្ន - វាកែចំពាក្យឈ្មោះដែលបន្ទាប់របស់វា។
- * VN គឺជា V និង N - ទាំងពីរអាចមានម៉ូដ្ឋីផ្ទាល់ខ្លួន ( បន្ទាន្ន, ប្រភេទប្រកប្រកប, គ្រាប់មនុស្ស, ពង្រឹក្រឹមក )។
- * ក្រសរស្រាយ៖ ( Adj V ) ( Adj N ) N សម្រាប់ប្រព័ន្ធ/វត្ថប្រង់ដែលមានម៉ូដ្ឋី VN។
-    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
-    * @param opcioj ( VNModifiloOpcioj = {} , optional ) - ការកំណត់ជម្រើស។
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( V N )
+ * ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( V N Adj )
+ * ſɭɔʞ ( V N Adj )
+    * @param builder ( FrazKonstruilo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param opcioj ( VNModifiloOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns konstruilo
  */
 function aplikiVNModifilonUnue(builder: FrazKonstruilo, opcioj: VNModifiloOpcioj = {}): FrazKonstruilo {
@@ -1207,13 +1194,11 @@ function aplikiVNModifilonUnue(builder: FrazKonstruilo, opcioj: VNModifiloOpcioj
 }
 
 /**
- * បញ្ចូលខ្សែកែចំ VN ទៅទីតាំង។
- * VN គឺជា V និង N - ទាំងពីរអាចមានម៉ូដ្ឋីផ្ទាល់ខ្លួន ( បន្ទាន្ន, ប្រភេទប្រកប្រកប, គ្រាប់មនុស្ស )។
- * VN ដំណើរការដោយជាម៉ូដ្ឋី និងមកមុនពាក្យឈ្មោះចម្បងដែលវាកែចំ។
- * ក្រសរស្រាយ៖ ( Adj ) V ( Adj ) N - ដែលខ្សែ VN ទាំងអស់កែចំពាក្យឈ្មោះចម្បងដែលបន្ទាប់របស់វា។
-    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
-    * @param pozicio ( VortPozicioTipo , required ) - ទីតាំងពាក្យដែលត្រូវបញ្ចូលទៅវា។
-    * @param opcioj ( VNModifiloOpcioj , required ) - ជម្រើសកែចំ។
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( V N )
+ * ſɭɔʞ ( V N Adj )
+    * @param builder ( FrazKonstruilo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param pozicio ( VortPozicioTipo , required ) - ֭ſɭᴜ ı],ɔ
+    * @param opcioj ( VNModifiloOpcioj , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
   * @returns void
  */
 function _aldoniVNModifilon(builder: FrazKonstruilo, pozicio: VortPozicioTipo, opcioj: VNModifiloOpcioj): void {
@@ -1276,7 +1261,7 @@ interface BazajFrazKomponantoj {
 }
 
 /**
- * យកសមាជិកឃ្លាមូលដ្ឋាន ( V, O, S )។
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( V O S )
  * @returns bazaKomponanto
  */
 function akiriBazajnFrazKomponantojn(): BazajFrazKomponantoj | null {
@@ -1290,8 +1275,8 @@ function akiriBazajnFrazKomponantojn(): BazajFrazKomponantoj | null {
 }
 
 /**
- * បញ្ចូលក្រ្លោ់ពេលវេលាបានជាជម្រើស។
-    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+    * @param builder ( FrazKonstruilo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns konstruilo
  */
 function ebleAldoniTemporalon(builder: FrazKonstruilo): FrazKonstruilo {
@@ -1311,11 +1296,11 @@ interface AdjektivoOpcioj {
 }
 
 /**
- * បញ្ចូលបន្ទាន្នមានចង្វេកទៅទីតាំងណាមួយជាមួយចំនួនចង្វេក។
- * ទីតាំងនីមួយៗ ( ទាក់ត្រា, វត្ថប្រង់, ប្រព័ន្ធ ) អាចទទួលបន្ទាន្ន ០-២ ដោយចង្វេក។
-    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
-    * @param base ( BazajFrazKomponantoj , required ) - សមាជិកមូលដ្ឋាន ( ទាក់ត្រា, វត្ថប្រង់, ប្រព័ន្ធ )។
-    * @param opcioj ( AdjektivoOpcioj = {} , optional ) - ការកំណត់ជម្រើស។
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ſɭɔʞ ( 0 1 2 )
+    * @param builder ( FrazKonstruilo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param base ( BazajFrazKomponantoj , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( V O S )
+    * @param opcioj ( AdjektivoOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns konstruilo
  */
 function aplikiAdjektivojn(builder: FrazKonstruilo, base: BazajFrazKomponantoj, opcioj: AdjektivoOpcioj = {}): FrazKonstruilo {
@@ -1358,9 +1343,9 @@ interface EvidencialoOpcioj {
 }
 
 /**
- * មុខងងឹតភស្តីនិយមត្រនៃតាមប្រភព - អនុវត្តភស្តីនិយមត្រនៃតាមប្រភពទៅលើ VP ឬវិសល្បនៃឃ្លា។
-    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
-    * @param opcioj ( EvidencialoOpcioj = {} , optional ) - ការកំណត់ជម្រើស។
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ʃɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+    * @param builder ( FrazKonstruilo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param opcioj ( EvidencialoOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns konstruilo
  */
 function aplikiEvidencialonUnue(builder: FrazKonstruilo, opcioj: EvidencialoOpcioj = {}): FrazKonstruilo {
@@ -1385,8 +1370,8 @@ function aplikiEvidencialonUnue(builder: FrazKonstruilo, opcioj: EvidencialoOpci
 }
 
 /**
- * បញ្ចូលភស្តីនិយមត្រនៃតាមប្រភពដែលត្រូវបានបង្កើតទៅលើ VP ឬវិសល្បនៃឃ្លាបានជាជម្រើស។
-    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ʃɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+    * @param builder ( FrazKonstruilo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns konstruilo
  */
 function ebleAldoniEvidencialonUnue(builder: FrazKonstruilo): FrazKonstruilo {
@@ -1400,8 +1385,8 @@ function ebleAldoniEvidencialonUnue(builder: FrazKonstruilo): FrazKonstruilo {
 }
 
 /**
- * បញ្ចូលគ្រាប់មនុស្ស ( can/should ជាមួយការបដិសេធជម្រើស )បានជាជម្រើស។
-    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( OR TAK )
+    * @param builder ( FrazKonstruilo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns konstruilo
  */
 function ebleAldoniModalecojn(builder: FrazKonstruilo): FrazKonstruilo {
@@ -1419,8 +1404,8 @@ function ebleAldoniModalecojn(builder: FrazKonstruilo): FrazKonstruilo {
 }
 
 /**
- * បញ្ចូលការបដិសេធ ( KON- )បានជាជម្រើស។
-    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( KON )
+    * @param builder ( FrazKonstruilo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns konstruilo
  */
 function ebleAldoniNegacion(builder: FrazKonstruilo): FrazKonstruilo {
@@ -1436,9 +1421,9 @@ interface IntensigiloOpcioj {
 }
 
 /**
- * បញ្ចូលពង្រឹក្រឹមកទៅបន្ទាន្នវត្ថប្រង់ ឬទាក់ត្រាបានជាជម្រើស។
-    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
-    * @param opcioj ( IntensigiloOpcioj = {} , optional ) - ការកំណត់ជម្រើស។
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( KOZ )
+    * @param builder ( FrazKonstruilo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param opcioj ( IntensigiloOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns konstruilo
  */
 function ebleAldoniIntensigilon(builder: FrazKonstruilo, opcioj: IntensigiloOpcioj = {}): FrazKonstruilo {
@@ -1468,9 +1453,9 @@ interface VerbaAfiksoOpcioj {
 }
 
 /**
- * មុខងងឹតប្រភេទប្រកប្រកបនៃទាក់ត្រាដែលត្រូវបានបង្កើត - អនុវត្តប្រភេទប្រកប្រកបទាក់ត្រា ( ការសកម្ម, ការមិនសកម្ម និងអ្នកផ្សេងៗ )។
-    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
-    * @param opcioj ( VerbaAfiksoOpcioj = {} , optional ) - ការកំណត់ជម្រើស។
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+    * @param builder ( FrazKonstruilo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param opcioj ( VerbaAfiksoOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns konstruilo
  */
 function aplikiVerbanAfiksonUnue(builder: FrazKonstruilo, opcioj: VerbaAfiksoOpcioj = {}): FrazKonstruilo {
@@ -1488,9 +1473,9 @@ function aplikiVerbanAfiksonUnue(builder: FrazKonstruilo, opcioj: VerbaAfiksoOpc
 }
 
 /**
- * បញ្ចូលប្រភេទប្រកប្រកបនៃទាក់ត្រាដែលត្រូវបានបង្កើត ( ការសកម្ម, ការមិនសកម្ម និងអ្នកផ្សេងៗ )បានជាជម្រើស។
-    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
-    * @param afiksoTipo ( string | null = null , optional ) - ប្រភេទប្រភេទប្រកប្រកប។
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+    * @param builder ( FrazKonstruilo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param afiksoTipo ( string | null = null , optional ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns konstruilo
  */
 function ebleAldoniVerbanAfiksonUnue(builder: FrazKonstruilo, afiksoTipo: string | null = null): FrazKonstruilo {
@@ -1511,12 +1496,12 @@ interface KoordinatajElementojOpcioj {
 }
 
 /**
- * មុខងងឹតធាតុផ្សូរជាក់ស្តែង - បញ្ចូលវត្ថប្រង់ និងប្រព័ន្ធដែលជាក់ស្តែង។
- * សម្រាប់វត្ថប្រង់៖ N KAL N ( អនុញ្ញាតការផ្សូរជាក់ស្តែងងាយ )
- * សម្រាប់ប្រព័ន្ធ៖ N KAL ( ម៉ូដ្ឋី ) N - បន្ទាប់ KAL ត្រូវមានបន្ទាន្ន ឬម៉ូដ្ឋី V N
- * ក្រសរស្រាយ៖ V O₁ KAL O₂ ⺓ S₁ KAL ( Adj / V N ) S₂
-    * @param builder ( FrazKonstruilo , required ) - កន្សល់សម្រាប់កែចំ។
-    * @param opcioj ( KoordinatajElementojOpcioj = {} , optional ) - ការកំណត់ជម្រើស។
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( KAL )
+ * N KAL N ( KAL )
+ * N KAL N ( KAL )
+ * V O KAL O ⺓ S KAL S ( Adj V N KAL )
+    * @param builder ( FrazKonstruilo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param opcioj ( KoordinatajElementojOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns konstruilo
  */
 function aplikiKoordinatajnElementojnUnue(builder: FrazKonstruilo, opcioj: KoordinatajElementojOpcioj = {}): FrazKonstruilo {
@@ -1549,8 +1534,8 @@ function aplikiKoordinatajnElementojnUnue(builder: FrazKonstruilo, opcioj: Koord
 }
 
 /**
- * បញ្ចូលធាតុផ្សូរជាក់ស្តែងដែលត្រូវបានបង្កើតទៅលើវត្ថប្រង់ និងប្រព័ន្ធទាំងពីរបានជាជម្រើស។
-    * @param builder - កន្សល់សម្រាប់កែចំ។
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+    * @param builder - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns konstruilo
  */
 function ebleAldoniKoordinatajnElementojnUnue(builder: FrazKonstruilo): FrazKonstruilo {
@@ -1563,9 +1548,9 @@ function ebleAldoniKoordinatajnElementojnUnue(builder: FrazKonstruilo): FrazKons
 }
 
 /**
- * បញ្ចូលម៉ូដ្ឋី VN ដែលត្រូវបានបង្កើតទៅលើវត្ថប្រង់ និងប្រព័ន្ធទាំងពីរបានជាជម្រើស។
- * សមាជិក VN ( V និង N ) អាចមានម៉ូដ្ឋីផ្ទាល់ខ្លួននីមួយៗ។
-    * @param builder - កន្សល់សម្រាប់កែចំ។
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( V N )
+ * ſɭɔʞ ( V N )
+    * @param builder - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns konstruilo
  */
 function ebleAldoniUnuecanVNModifilon(builder: FrazKonstruilo): FrazKonstruilo {
@@ -1589,11 +1574,11 @@ function ebleAldoniUnuecanVNModifilon(builder: FrazKonstruilo): FrazKonstruilo {
 }
 
 /**
- * បញ្ចូលស្លាក់ផ្សូរផ្សូរ ( QU / MU ) ទៅវត្ថប្រង់ និង ឬប្រព័ន្ធបានជាជម្រើស។
- * ស្លាក់ផ្សូរផ្សូរបង្ហាញមុនពាក្យឈ្មោះដែលពួកគេកែចំ។
- * QU = ĈI TIO / TOMO ( សម្គាល់ប្រធានបទនៃការជជែក )
- * MU = TIO / FOKUSO ( សម្គាល់ព័ត្រនឹងតំណាប់ការ ឬការប្រៀបធៀប )
-    * @param builder - កន្សល់សម្រាប់កែចំ។
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( QU MU )
+ * j͑ʃɹ ɭʃᴜɔ˞ ʌ ſɭɔʞ
+ * QU ( ĈI TIO TOMO )
+ * MU ( TIO FOKUSO )
+    * @param builder - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns konstruilo
  */
 function ebleAldoniTemajnMarkilojn(builder: FrazKonstruilo): FrazKonstruilo {
@@ -1628,9 +1613,9 @@ interface EbligitajModifiloj {
 }
 
 /**
- * បម្លែងទៅជាសំណួរបានជាជម្រើស។
-    * @param builder - កន្សល់សម្រាប់កែចំ។
-    * @param ebligitajModifiloj - ម៉ូដ្ឋីណាដែលត្រូវបានអនុញ្ញាត។
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+    * @param builder - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param ebligitajModifiloj - j͑ʃɹ ɭʃᴜɔ˞
  * @returns konstruilo
  */
 function ebleAldoniDemandon(builder: FrazKonstruilo, ebligitajModifiloj: EbligitajModifiloj): FrazKonstruilo {
@@ -1650,10 +1635,10 @@ interface FrazaRezulto {
 }
 
 /**
- * ម៉ូឌុលបង្កើតឃ្លាចម្បង - សាងសង់ឃ្លាដោយមានម៉ូដ្ឋីជម្រើសមានចង្វេក។
- * ប្រើប្រព័ន្ធពាក្យដែលត្រូវបានបង្កើត - ពាក្យទាំងអស់ត្រូវបានបញ្ចូលដោយ builder.aldoniVorton()។
-    * @param strukturo - ក្រសរស្រាយជាក់ស្តែង ( មិនបានប្រើក្នុងប្រព័ន្ធម៉ូឌុល )។
-    * @param ebligitajModifiloj - ម៉ូដ្ឋីណាដែលត្រូវបានអនុញ្ញាត។
+ * ſɭʞɹ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( builder aldoniVorton )
+    * @param strukturo - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param ebligitajModifiloj - j͑ʃɹ ɭʃᴜɔ˞
  * @returns frazo
  */
 function generiFrazon(strukturo: string | null = null, ebligitajModifiloj: EbligitajModifiloj = {}): FrazaRezulto | null {
@@ -1701,11 +1686,11 @@ function generiFrazon(strukturo: string | null = null, ebligitajModifiloj: Eblig
 }
 
 
-// ⟪ ការចាប់ផ្ដើម UI 🖥️ ⟫
+// ⟪ j͑ʃᴜ ı],ɔ 🖥️ ⟫
 
 /**
- * ចាប់ផ្ដើមចំណុចជាទំនាក់ចំណុចបង្កើតឃ្លា។
- * កំណត់កម្មវិធីដំណើរការចុចលើប៊ូតុង និងបំពេញម៉ឺនុយរចនាសម្រាយ។
+ * j͑ʃᴜ ı],ɔ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
   * @returns void
  */
 function iniciiFrazGeneratoranUI(): void {
@@ -1896,7 +1881,7 @@ if (typeof document !== "undefined") {
 }
 
 
-// ⟪ អត្ថបទលទ្ធផ្លែងករណី 📤 ⟫
+// ⟪ ꞁȷ̀ɔ j͑ʃƽɔƽ 📤 ⟫
 
 export {
     registraro,

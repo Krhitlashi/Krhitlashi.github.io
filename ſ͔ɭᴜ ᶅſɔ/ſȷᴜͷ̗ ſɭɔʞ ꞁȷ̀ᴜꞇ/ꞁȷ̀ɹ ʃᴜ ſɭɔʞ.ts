@@ -1,26 +1,25 @@
 /*
 * ≺⧼ Iikrhia Vortara Paĝa Pritraktilo 🖱️ ⧽≻
-* ផ្ទុក Ὶ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬɔ.xlsx ក្នុងពេលការដំណើរ ហើយវិភាគវាក្នុងកម្មវិធីរុករកដោយប្រើ
-* SheetJS ( ការបង្កប់ `xlsx` )។ មិនត្រូវការឯកសារ data.txt ដែលបានសាងជើងជាមុនៗទេ។
-* ទំព័របញ្ជី៖ បញ្ចូល <tr> មួយសម្រាប់គ្រាប់នីមួយៗទៅ #kef tbody ហើយភ្ជាប់ការចុច និងការស្វែងរក។
-* ទំព័រលម្អិត៖ ស្វែងរកគ្រាប់ដោយប្រើ ?i=N ហើយបំពេញផ្នែកដែលបានសម្គាល់។
+* ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( xlsx SheetJS )
+* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( #kef tbody tr )
+* ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ?i=N )
 *
-* ការកំណត់ប្រភេទដ៏ន និងការដំណើរការលើស្លាក់ ទាំងពីរបៀបស្រួតតាម xlsx_html_etym.py។
+* j͑ʃƽᴜ ſɭɔʞ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( xlsx_html_etym.py )
 */
 
 import * as XLSX from "xlsx";
 
-export interface Falkefu_N2k {
-    i: number;
-    vorto: string;
-    traduko: string;
-    poŝo: string;
-    etikedoj: string;
-    prao: string;
-    fontVorto: string;
-    fontPriskribo: string;
-    pruntVorto: string;
-    kalko: string;
+export interface KefSak {
+    k2fe: number;
+    kef: string;
+    kp6k2p2: string;
+    haxe: string;
+    s2tas: string;
+    kumu: string;
+    saxeKef: string;
+    saxeKp6k2p2: string;
+    inakKef: string;
+    inakKp6k2p2: string;
 }
 
 const XLSX_CVPKSAKA = "ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɹ ſɭˬɔ.xlsx";
@@ -39,81 +38,81 @@ const KEFHAXE: Readonly<Record<string, string>> = {
     "ɭ(ᴜͷ̗": "Living Thing ( Noun )",
 };
 
-const VASAKA_KSAKA: Record<string, string> = {
+const S2tasKsaka: Record<string, string> = {
     "j͐ʃэƣ̋ ꞁȷ̀ꞇ }ʃᴜƽ::3": "Loanword",
     "j͑ʃƽᴜ ſɭɔʞ::3": "Calque",
     "j͐ʃэ ɭʃᴜƴ ſɭɜ ɭʃᴜƴ::5": "Loanword ( LtKt )",
 };
 
 /**
- * ធ្វើធម្មតាឲ្យជួរស្លាក់ទៅជា NFC ដើម្បីឲ្យវាអាចប្រៀបធៀបជាមួយ
- * កូនុងវាស្មែកកំណត់ដោយឯករាជ្យ មិនថែមទេថា xlsx បានរក្សាទុកសញ្ញាដើម។
- * @param s ( string ) - ជួរស្លាក់មូលដ្ឋាន។
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( NFC )
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( xlsx NFC )
+ * @param s ( string ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
-function normaliziEtikedon(s: string): string {
+function k2fNfc(s: string): string {
     return s.normalize("NFC");
 }
 
-const ETIKEDRENOMO_NFC: Record<string, string> = Object.fromEntries(
-    Object.entries(VASAKA_KSAKA).map(( [ k, v ] ) => [ normaliziEtikedon(k), v ]),
+const NfcS2tasKsaka: Record<string, string> = Object.fromEntries(
+    Object.entries(S2tasKsaka).map(( [ ksaka, eskek ] ) => [ k2fNfc(ksaka), eskek ]),
 );
 
-const ETIKEDFORIGO_NFC: Set<string> = new Set(
-    [ "ō֭̍ſɭᴜⅎ ı],ɹ::1" ].map(normaliziEtikedon),
+const PuS2tasNfc: Set<string> = new Set(
+    [ "ō֭̍ſɭᴜⅎ ı],ɹ::1" ].map(k2fNfc),
 );
 
 /**
- * កំណត់ប្រភេទដ៏នដោយពិនិត្យប្រភេទកម្មវិធីជាមុន បន្ទាប់មកត្រូវបានរង្កងជាក្រោមប្រភេទកម្មវិធី។
- * ស្លាក់ដែលស្គាល់បាន។
- * @param temo ( string ) - ក្រឡប់ប្រភេទកម្មវិធី ( ជួនឈរ 0 )។
- * @param estasSub ( string ) - ក្រឡប់ប្រភេទកម្មវិធីក្រោម ( ជួនឈរ 1 )។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ֭ſɭᴜ ı],ɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( temo estasSub )
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ֭ſɭᴜ ı],ɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param temo ( string ) - ֭ſɭᴜ ı],ɔ ( 0 )
+ * @param estasSub ( string ) - ֭ſɭᴜ ı],ɔ ( 1 )
  * @returns ĉeno
  */
-function determiniPoŝon(temo: string, estasSub: string): string {
-    for ( const markilo in KEFHAXE ) {
-        if ( temo.includes(markilo) ) return KEFHAXE[markilo]!;
+function b6n2baHaxe(haxe: string, psazHaxe: string): string {
+    for ( const s2tas in KEFHAXE ) {
+        if ( haxe.includes(s2tas) ) return KEFHAXE[s2tas]!;
     }
-    for ( const markilo in KEFHAXE ) {
-        if ( estasSub.includes(markilo) ) return KEFHAXE[markilo]!;
+    for ( const s2tas in KEFHAXE ) {
+        if ( psazHaxe.includes(s2tas) ) return KEFHAXE[s2tas]!;
     }
     return "Noun";
 }
 
 /**
- * បម្លែកក្រឡប់សន្ទាស៊ីទៅជាខ្សែមួយក្រឡា ដែលបានកាត់។
- * @param v ( unknown ) - តម្លៃក្រឡប់មូលដ្ឋាន ( string, number, bool, null )។
+ * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param v ( unknown ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
-function ĉeloAlTeksto(v: unknown): string {
-    if ( v === null || v === undefined ) return "";
-    return String(v).replace(/\r?\n/g, " ").trim();
+function kubaKp6k2p2(eskek: unknown): string {
+    if ( eskek === null || eskek === undefined ) return "";
+    return String(eskek).replace(/\r?\n/g, " ").trim();
 }
 
 /**
- * ធ្វើទម្រង់ក្រឡប់ Etikedoj មូលដ្ឋានទៅជាខ្សែបង្ហាញ។
- * @param kruda ( string ) - តម្លៃក្រឡប់ជួនស្លាក់មូលដ្ឋាន។
+ * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param kruda ( string ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
-function formatiEtikedojn(kruda: string): string {
-    if ( !kruda ) return "";
-    const partoj = kruda.split("||");
-    const eligo: string[] = [];
-    for ( const parto of partoj ) {
-        // ⟨ ធ្វើធម្មតាឲ្យជា NFC ដើម្បីឱ្យទិន្នន័យ xlsx ដែលមានទម្រង់បំព័នធៀបនឹងគ្រូសិទ្ធិកូនុងវាស្មែក ធ្វើឱ្យត្រូវគ្នា ⟩
-        const tondita = normaliziEtikedon(parto.trim());
-        if ( !tondita || ETIKEDFORIGO_NFC.has(tondita) ) continue;
-        eligo.push(ETIKEDRENOMO_NFC[tondita] ?? tondita);
+function s2tasKp6k2p2(eskek: string): string {
+    if ( !eskek ) return "";
+    const kekCa1ara = eskek.split("||");
+    const s2tasCa1ara: string[] = [];
+    for ( const kek of kekCa1ara ) {
+        // ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( NFC xlsx ) ⟩
+        const cataEskek = k2fNfc(kek.trim());
+        if ( !cataEskek || PuS2tasNfc.has(cataEskek) ) continue;
+        s2tasCa1ara.push(NfcS2tasKsaka[cataEskek] ?? cataEskek);
     }
-    return eligo.join(" ｡ ");
+    return s2tasCa1ara.join(" ｡ ");
 }
 
 /**
- * រក្សារការសញ្ញា & និងសញ្ញា < និង > ដើម្បីបញ្ចូល HTML ដោយសុវត្ថិភាព។
- * @param s ( string = "" ) - អត្ថបទធម្មតាសម្រាប់ការរក្សាការសញ្ញា។
+ * ſɭɜ ʃɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( HTML )
+ * @param s ( string = "" ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
-function eskapiHtml(s: string): string {
+function kobeHtml(s: string): string {
     return s
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
@@ -121,230 +120,225 @@ function eskapiHtml(s: string): string {
 }
 
 /**
- * រក្សារការសញ្ញា `s` ប្រសិនបើវាមានមាតិសម្មា បើកិត្តផ្តល់ចំនួនដំបូងមួយដែលគេចខាងស្អែក។
- * @param s ( string = "" ) - អត្ថបទធម្មតាសម្រាប់ការរក្សាការសញ្ញា។
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( s )
+ * @param s ( string = "" ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
-function ĉeloAŭSpaco(s: string): string {
-    return s ? eskapiHtml(s) : " ";
+function kubaEskek(s: string): string {
+    return s ? kobeHtml(s) : " ";
 }
 
-let _datumPromeso: Promise<Falkefu_N2k[]> | null = null;
+let _ve3aqEskek: Promise<KefSak[]> | null = null;
 
 /**
- * ផ្ទុក xlsx ម្តងតែ, វិភាគវាដោយប្រើ SheetJS, ទាញយកប្រភេទដ៏ន POZ និងស្លាក់មូលដ្ឋានទទេ
- * ហើយរក្សាទិន្នន័យលទ្ធផ្លែងករណីទៅរវាងការហៅទៀតទៀត។
+ * ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( xlsx SheetJS )
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
  * @returns promessa
  */
-function ŝargiDatumojn(): Promise<Falkefu_N2k[]> {
-    if ( !_datumPromeso ) {
-        _datumPromeso = fetch("./" + XLSX_CVPKSAKA)
-            .then(( respondo ) => {
-                if ( !respondo.ok ) {
-                    throw new Error("HTTP " + respondo.status + " loading " + XLSX_CVPKSAKA);
+function q2qEskek(): Promise<KefSak[]> {
+    if ( !_ve3aqEskek ) {
+        _ve3aqEskek = fetch("./" + XLSX_CVPKSAKA)
+            .then(( eskek ) => {
+                if ( !eskek.ok ) {
+                    throw new Error("HTTP " + eskek.status + " loading " + XLSX_CVPKSAKA);
                 }
-                return respondo.arrayBuffer();
+                return eskek.arrayBuffer();
             } )
-            .then(( bufro ) => {
-                const wb = XLSX.read(bufro, { type: "array" });
-                const folio = wb.Sheets[wb.SheetNames[0o0]!]!;
-                const vicoj = XLSX.utils.sheet_to_json<unknown[]>(folio, {
+            .then(( eskek ) => {
+                const xlsxEskek = XLSX.read(eskek, { type: "array" });
+                const cax2l = xlsxEskek.Sheets[xlsxEskek.SheetNames[0o0]!]!;
+                const sakCa1ara = XLSX.utils.sheet_to_json<unknown[]>(cax2l, {
                     header: 0o1,
                     defval: "",
                     raw: false,
                 });
-                const eligo: Falkefu_N2k[] = [];
-                for ( let r = 0o1; r < vicoj.length; r++ ) {
-                    const vico = vicoj[r];
-                    if ( !vico ) continue;
-                    const temo = ĉeloAlTeksto(vico[0o0]);
-                    const estasSub = ĉeloAlTeksto(vico[0o1]);
-                    const poŝo = determiniPoŝon(temo, estasSub);
-                    eligo.push({
-                        i: eligo.length,
-                        vorto: ĉeloAlTeksto(vico[0o2]),
-                        traduko: ĉeloAlTeksto(vico[0o3]),
-                        poŝo,
-                        etikedoj: ĉeloAlTeksto(vico[0o4]),
-                        prao: ĉeloAlTeksto(vico[0o5]),
-                        fontVorto: ĉeloAlTeksto(vico[0o6]),
-                        fontPriskribo: ĉeloAlTeksto(vico[0o7]),
-                        pruntVorto: ĉeloAlTeksto(vico[0o10]),
-                        kalko: ĉeloAlTeksto(vico[0o11]),
+                const kefSakCa1ara: KefSak[] = [];
+                for ( let k2fe = 0o1; k2fe < sakCa1ara.length; k2fe++ ) {
+                    const sak = sakCa1ara[k2fe];
+                    if ( !sak ) continue;
+                    const haxe = kubaKp6k2p2(sak[0o0]);
+                    const psazHaxe = kubaKp6k2p2(sak[0o1]);
+                    kefSakCa1ara.push({
+                        k2fe: kefSakCa1ara.length,
+                        kef: kubaKp6k2p2(sak[0o2]),
+                        kp6k2p2: kubaKp6k2p2(sak[0o3]),
+                        haxe: b6n2baHaxe(haxe, psazHaxe),
+                        s2tas: kubaKp6k2p2(sak[0o4]),
+                        kumu: kubaKp6k2p2(sak[0o5]),
+                        saxeKef: kubaKp6k2p2(sak[0o6]),
+                        saxeKp6k2p2: kubaKp6k2p2(sak[0o7]),
+                        inakKef: kubaKp6k2p2(sak[0o10]),
+                        inakKp6k2p2: kubaKp6k2p2(sak[0o11]),
                     });
                 }
-                return eligo;
+                return kefSakCa1ara;
             });
     }
-    return _datumPromeso;
+    return _ve3aqEskek;
 }
 
-// ⟪ ទំព័របញ្ជី 📋 ⟫
-async function agordiListPaĝon() {
-    const tabelKorpo = document.querySelector("#falkefu tbody") as HTMLTableSectionElement | null;
-    const enigo = document.getElementById("2bakano") as HTMLInputElement | null;
-    if ( !tabelKorpo ) return;
+// ⟪ ſ̀ȷᴜ ʌ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ 📋 ⟫
+async function k2fCa1ara() {
+    const cax2lKuba = document.querySelector("#falkefu tbody") as HTMLTableSectionElement | null;
+    const kevEskek = document.getElementById("2bakano") as HTMLInputElement | null;
+    if ( !cax2lKuba ) return;
 
-    let datumoj: Falkefu_N2k[];
+    let kefSakCa1ara: KefSak[];
     try {
-        datumoj = await ŝargiDatumojn();
-    } catch ( eraro ) {
-        const ŝargado = document.getElementById("b6tem2kef");
-        if ( ŝargado ) ŝargado.textContent = "ʃэ ɭʃɔ ŋᷠɹ ⟅";
-        console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Failed to load dictionary data ⟅", eraro);
+        kefSakCa1ara = await q2qEskek();
+    } catch ( tlohk2ni ) {
+        const eskek = document.getElementById("b6tem2kef");
+        if ( eskek ) eskek.textContent = "ʃэ ɭʃɔ ŋᷠɹ ⟅";
+        console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Failed to load dictionary data ⟅", tlohk2ni);
         return;
     }
 
-    // ⟨ បង្ហាញជួរក្នុង DocumentFragment ដើម្បីឱ្យធាតុ tbody រស់នៅមិនត្រូវបានបំពាន ⟩
-    const fragmento = document.createDocumentFragment();
-    for ( const vico of datumoj ) {
-        const tr = document.createElement("tr");
-        tr.dataset.i = String(vico.i);
-        tr.tabIndex = 0o0;
+    // ⟨ ſɟɔ ŋᷠɔ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( DocumentFragment tbody ) ⟩
+    const kekEskek = document.createDocumentFragment();
+    for ( const sak of kefSakCa1ara ) {
+        const sakEskek = document.createElement("tr");
+        sakEskek.dataset.i = String(sak.k2fe);
+        sakEskek.tabIndex = 0o0;
 
-        const iru = () => {
-            // ⟨ រក្សាប៉ារ៉ាម៉េតរភាសាបច្ចុប្បន្ន ដើម្បីឱ្យ lang=en បន្តតាមទំព័រ ⟩
-            const langParam = new URLSearchParams(window.location.search).get("lang");
-            let url = "./ſɭɔʞ.html?i=" + vico.i;
-            if ( langParam ) {
-                url += "&lang=" + encodeURIComponent(langParam);
+        const ceme3a = () => {
+            // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( lang ) ⟩
+            const langEskek = new URLSearchParams(window.location.search).get("lang");
+            let araqEskek = "./ſɭɔʞ.html?i=" + sak.k2fe;
+            if ( langEskek ) {
+                araqEskek += "&lang=" + encodeURIComponent(langEskek);
             }
-            window.location.href = url;
+            window.location.href = araqEskek;
         };
-        tr.addEventListener("click", iru);
-        tr.addEventListener("keydown", ( ev ) => {
-            if ( ev.key === "Enter" || ev.key === " " ) {
-                ev.preventDefault();
-                iru();
+        sakEskek.addEventListener("click", ceme3a);
+        sakEskek.addEventListener("keydown", ( cal ) => {
+            if ( cal.key === "Enter" || cal.key === " " ) {
+                cal.preventDefault();
+                ceme3a();
             }
         });
 
-        // ⟨ ជួនអនុភាពពីគុណកម្ម ដែលស្រួតតាម xlsx_html_etym.py។ ក្រឡប់ 3 ដែលគ្មានស្លាក់, ក្រឡប់ 4 ដែលមានស្លាក់ ⟩
-        const etiked = formatiEtikedojn(vico.etikedoj);
-        const etikedĉelo = etiked
-            ? "<td>" + eskapiHtml(etiked) + "</td>"
+        // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( xlsx_html_etym.py 3 4 ) ⟩
+        const s2tas = s2tasKp6k2p2(sak.s2tas);
+        const s2tasKuba = s2tas
+            ? "<td>" + kobeHtml(s2tas) + "</td>"
             : "";
-        const poŝĉelo = etiked
-            ? "<td>" + ĉeloAŭSpaco(vico.poŝo) + "</td>"
-            : "<td colspan=\"2\">" + ĉeloAŭSpaco(vico.poŝo) + "</td>";
-        tr.innerHTML =
-            "<td colspan=\"2\">" + ĉeloAŭSpaco(vico.vorto) + "</td>" +
-            "<td colspan=\"2\">" + ĉeloAŭSpaco(vico.traduko) + "</td>" +
-            poŝĉelo + etikedĉelo;
-        fragmento.appendChild(tr);
+        const haxeKuba = s2tas
+            ? "<td>" + kubaEskek(sak.haxe) + "</td>"
+            : "<td colspan=\"2\">" + kubaEskek(sak.haxe) + "</td>";
+        sakEskek.innerHTML =
+            "<td colspan=\"2\">" + kubaEskek(sak.kef) + "</td>" +
+            "<td colspan=\"2\">" + kubaEskek(sak.kp6k2p2) + "</td>" +
+            haxeKuba + s2tasKuba;
+        kekEskek.appendChild(sakEskek);
     }
-    tabelKorpo.replaceChildren(fragmento);
+    cax2lKuba.replaceChildren(kekEskek);
 
-    // ⟨ តម្រង់ស្វែងរក ⟩
-    enigo?.addEventListener("input", () => {
-        const q = ( enigo.value || "" ).trim().toLowerCase();
-        tabelKorpo.querySelectorAll("tr[data-i]").forEach(( vico ) => {
-            const teksto = ( vico.textContent || "" ).toLowerCase();
-            ( vico as HTMLElement ).style.display = ( !q || teksto.includes(q) ) ? "" : "none";
+    // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ɭʃw ſɭˬɔƽ ꞁȷ̀ɜ ŋᷠᴜ ⟩
+    kevEskek?.addEventListener("input", () => {
+        const eskek = ( kevEskek.value || "" ).trim().toLowerCase();
+        cax2lKuba.querySelectorAll("tr[data-i]").forEach(( sak ) => {
+            const kp6k2p2 = ( sak.textContent || "" ).toLowerCase();
+            ( sak as HTMLElement ).style.display = ( !eskek || kp6k2p2.includes(eskek) ) ? "" : "none";
         });
     });
 }
 
-// ⟪ ទំព័រលម្អិត 🔍 ⟫
-function akiriVicanIndeksonDeUrl(): number {
-    const kruda = new URLSearchParams(window.location.search).get("i");
-    if ( kruda === null ) return -0o1;
-    const indekso = parseInt(kruda, 0o12);
-    return Number.isSafeInteger(indekso) ? indekso : -0o1;
+// ⟪ ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 🔍 ⟫
+function q2qK2fe(): number {
+    const eskek = new URLSearchParams(window.location.search).get("i");
+    if ( eskek === null ) return -0o1;
+    const k2fe = parseInt(eskek, 0o12);
+    return Number.isSafeInteger(k2fe) ? k2fe : -0o1;
 }
 
 /**
- * បង្ហាញ ឬលាក់ផ្នែកដែលបានសម្គាល់ តាមការដែល `valoro` ទទេឬអត់។
- * @param elementoId ( string = "" ) - ធាតុប្រគល់ដែលទទួលអត្ថបទ។
- * @param sekcioId ( string = "" ) - ផ្នែកជុំដែលទទួល `hidden`។
- * @param valoro ( string = "" ) - អត្ថបទសម្រាប់បង្ហាញ។
+ * ſɟɔ ŋᷠɔ ʌ ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɜ ı],ɔ ŋᷠᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( valoro )
+ * @param elementoId ( string = "" ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param sekcioId ( string = "" ) - ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɜ ı],ɔ ŋᷠᴜ
+ * @param valoro ( string = "" ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns void
  */
-function agordiKampon(elementoId: string, sekcioId: string, valoro: string): void {
-    const elemento = document.getElementById(elementoId);
-    const sekcio = document.getElementById(sekcioId);
-    if ( !elemento || !sekcio ) return;
-    if ( !valoro ) {
-        sekcio.classList.add("kobe");
+function k2fKek(eskekKsaka: string, kekKsaka: string, j6fini: string): void {
+    const eskek = document.getElementById(eskekKsaka);
+    const kek = document.getElementById(kekKsaka);
+    if ( !eskek || !kek ) return;
+    if ( !j6fini ) {
+        kek.classList.add("kobe");
         return;
     }
-    sekcio.classList.remove("kobe");
-    elemento.textContent = valoro;
+    kek.classList.remove("kobe");
+    eskek.textContent = j6fini;
 }
 
-async function agordiDetalPaĝon() {
-    const indekso = akiriVicanIndeksonDeUrl();
-    const vortoElemento = document.getElementById("kef");
-    const poŝoElemento = document.getElementById("haxesekef");
-    if ( !vortoElemento || !poŝoElemento ) return;
+async function cemeEskek() {
+    const k2fe = q2qK2fe();
+    const kefEskek = document.getElementById("kef");
+    const haxeEskek = document.getElementById("haxesekef");
+    if ( !kefEskek || !haxeEskek ) return;
 
-    if ( indekso < 0o0 ) {
-        vortoElemento.textContent = "";
-        poŝoElemento.textContent = "";
+    if ( k2fe < 0o0 ) {
+        kefEskek.textContent = "";
+        haxeEskek.textContent = "";
         return;
     }
 
-    let datumoj: Falkefu_N2k[];
+    let kefSakCa1ara: KefSak[];
     try {
-        datumoj = await ŝargiDatumojn();
-    } catch ( eraro ) {
-        vortoElemento.textContent = "ʃэ ɭʃɔ ŋᷠɹ ⟅";
-        poŝoElemento.textContent = "";
-        console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Failed to load dictionary data.", eraro);
+        kefSakCa1ara = await q2qEskek();
+    } catch ( tlohk2ni ) {
+        kefEskek.textContent = "ʃэ ɭʃɔ ŋᷠɹ ⟅";
+        haxeEskek.textContent = "";
+        console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Failed to load dictionary data.", tlohk2ni);
         return;
     }
 
-    const vico = datumoj[indekso];
-    if ( !vico ) {
-        vortoElemento.textContent = "";
-        poŝoElemento.textContent = "";
+    const sak = kefSakCa1ara[k2fe];
+    if ( !sak ) {
+        kefEskek.textContent = "";
+        haxeEskek.textContent = "";
         return;
     }
 
-    // ⟨ ពិសោធន៍៖ ប្រភេទកម្មវិធី + ក្រោមប្រភេទកម្មវិធី → ការដាក់ស្លាក់ប្រភេទដ៏ន POZ ⟩
-    vortoElemento.textContent = vico.vorto;
+    // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ֭ſɭᴜ ı],ɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( POZ ) ⟩
+    kefEskek.textContent = sak.kef;
     /*
-    * ⟨ អនុវត្តការបង្កើតអក្សរជាមួយ Iikrhia ដោយប្រើ vacepu លើធាតុពាក្យ។
-    *    ថ្នាក់ `.aih` ផ្តល់ការរៀបជាជួរបញ្ឈរ។ vacepu បង្វិលពាក្យនីមួយៗជាដើម
-    *    ជាប្លង់ `<span class="cepufalxez">` ក្រឡា ដើម្បីឲ្យពាក្យបង្ហាញបាន
-    *    ត្រឹមត្រូវជាក់ស្តែង ក្នុងរបៀបប្រអប់អក្សរបញ្ឈរ ( aih ) និងប្រអប់អក្សរកាត់ទៅក្រឡា ( en )។ ⟩
+    * ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( vacepu .aih ) ⟩
     */
     if ( typeof ( window as any ).vacepu === "function" ) {
         ( window as any ).vacepu( "aih" );
     }
-    poŝoElemento.textContent = vico.poŝo;
+    haxeEskek.textContent = sak.haxe;
 
     /*
-    * ⟨ បំពេញផ្នែក។ ធាតុបកប្ប័យអត្ថបទ ( #skakefani ) ជា <p>
-    *    ដែលគ្មាន <thala> ស្វែងនៅជុែកវិញ ដូច្នេះកំណត់ textContent ដោយផ្ទាល់។ ⟩
+    * ⟨ j͑ʃ'ɔ ɭʃɔ ŋᷠɹ ʌ ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɜ ı],ɔ ŋᷠᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( #skakefani p thala textContent ) ⟩
     */
-    const tradukoEl = document.getElementById("skakefani");
-    if ( tradukoEl ) tradukoEl.textContent = vico.traduko;
-    agordiKampon("xaqadisuswegawekef", "xaqadisuswegawekef-araq", vico.prao);
-    agordiKampon("l6kefani", "l6kefani-araq", vico.fontVorto);
-    agordiKampon("kefkox2qu", "kefkox2qu-araq", vico.fontPriskribo);
-    agordiKampon("kefcutasu", "kefcutasu-araq", vico.pruntVorto);
-    agordiKampon("kefskakefu", "kefskakefu-araq", vico.kalko);
-    agordiKampon("xehate", "xehate-araq", formatiEtikedojn(vico.etikedoj));
+    const kp6Eskek = document.getElementById("skakefani");
+    if ( kp6Eskek ) kp6Eskek.textContent = sak.kp6k2p2;
+    k2fKek("xaqadisuswegawekef", "xaqadisuswegawekef-araq", sak.kumu);
+    k2fKek("l6kefani", "l6kefani-araq", sak.saxeKef);
+    k2fKek("kefkox2qu", "kefkox2qu-araq", sak.saxeKp6k2p2);
+    k2fKek("kefcutasu", "kefcutasu-araq", sak.inakKef);
+    k2fKek("kefskakefu", "kefskakefu-araq", sak.inakKp6k2p2);
+    k2fKek("xehate", "xehate-araq", s2tasKp6k2p2(sak.s2tas));
 }
 
-// ⟪ ចំណុចចូល 🔌 ⟫
-async function inici() {
+// ⟪ j͑ʃᴜ ı],ɔ ʌ }ʃɹƽ 🔌 ⟫
+async function saxe() {
     /*
-    * ⟨ ទំព័របញ្ជីត្រូវបានកំណត់តាមក្រឡុកស្វែងរក ( #2bakano )។ ⟩
-    * ⟨ ទំព័រលម្អិតត្រូវបានកំណត់តាម #kef ( តែនៅលើទំព័រលម្អិត )។ ⟩
+    * ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſ̀ȷᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( #2bakano ) ⟩
+    * ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſ̀ȷᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( #kef ) ⟩
     */
     if ( document.getElementById("2bakano") ) {
-        await agordiListPaĝon();
+        await k2fCa1ara();
     } else if ( document.getElementById("kef") ) {
-        await agordiDetalPaĝon();
+        await cemeEskek();
     }
 }
 
 if ( typeof window !== "undefined" ) {
     if ( document.readyState === "loading" ) {
-        document.addEventListener("DOMContentLoaded", () => { void inici(); });
+        document.addEventListener("DOMContentLoaded", () => { void saxe(); });
     } else {
-        void inici();
+        void saxe();
     }
 }

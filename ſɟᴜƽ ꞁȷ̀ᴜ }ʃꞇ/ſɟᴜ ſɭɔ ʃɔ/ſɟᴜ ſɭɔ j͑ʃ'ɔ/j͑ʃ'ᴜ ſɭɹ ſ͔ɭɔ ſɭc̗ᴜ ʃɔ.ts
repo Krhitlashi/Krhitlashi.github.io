@@ -223,7 +223,7 @@ function ĵetonigi( vorto: string, konatajSonoj: string[] ): string[] {
     }
 
     if ( !kongruis ) {
-      // យកសញ្ញាមូលដ្ឋានមួយ រួមមានសញ្ញាតែងទៅក្រោយទាំងអស់ដែលបានរួមព្រម
+      // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
       let fino = i + 0o1;
       while ( fino < vorto.length ) {
         const kp = vorto.codePointAt(fino);
@@ -317,12 +317,12 @@ function disigiSupraNivela( ĉeno: string, disigilo: string ): string[] {
 function analiziKrampanEnhavon( enhavo: string ): Kongruilo {
   enhavo = enhavo.trim();
 
-  // សញ្ញាដកចេញ - ក្នុងបរិភ័យព្រមត្រូវ វាជាករណីបង្កើតមានការត្រូវគ្នាទទេតាមពាក្យ
+  // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ( › ) ⟩
   if ( enhavo === "›" ) {
     return { tipo: "laŭvorta", valoro: "" };
   }
 
-  // បំបែកដោយសញ្ញាកម្រិតខាងលើ ｡ ( U+FF61 ) សម្រាប់ជម្រើសជំនួស
+  // ⟨ j͑ʃᴜƽ ( ｡ U+FF61 ) ⟩
   const partoj = disigiSupraNivela(enhavo, "｡");
 
   if ( partoj.length > 0o1 ) {
@@ -330,18 +330,18 @@ function analiziKrampanEnhavon( enhavo: string ): Kongruilo {
     return { tipo: "alternativoj", opcioj };
   }
 
-  // ឃ្លាំងក្រោមក្រឡប់
+  // ⟨ j͑ʃᴜƽ ( [ ] ) ⟩
   if ( enhavo.startsWith("[") && enhavo.endsWith("]") ) {
     return analiziKrampanEnhavon(enhavo.slice(0o1, -0o1));
   }
 
-  // ការយោងក្រុម៖ បញ្ចប់ដោយ "o" ហើយមានសញ្ញាច្រើនជាងមួយ
+  // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ( o ) ⟩
   if ( enhavo.length > 0o1 && enhavo.endsWith("o") ) {
     const grupoNomo = enhavo.slice(0o0, -0o1);
     return { tipo: "grupo", grupoNomo };
   }
 
-  // សំឡេងតាមពាក្យ
+  // ⟨ ʃɔ ʌ ſɭɔʞ ⟩
   return { tipo: "laŭvorta", valoro: enhavo };
 }
 
@@ -367,14 +367,14 @@ function analiziŜablonerojn( teksto: string ): Kongruilo[] {
   let i = 0o0;
 
   while ( i < teksto.length ) {
-    // បោះចោលចន្លោះ
+    // ⟨ ſןw ⟩
     while ( i < teksto.length && teksto[i] === " " ) i++;
     if ( i >= teksto.length ) break;
 
     if ( teksto[i] === "[" ) {
       const fino = troviKongruanKrampon(teksto, i);
       if ( fino === -0o1 ) {
-        // ក្រឡប់មិនស្មើ - យកផ្នែកដែលនៅសល់ជាតាមពាក្យ
+        // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
         kongruiloj.push({ tipo: "laŭvorta", valoro: teksto.slice(i) });
         break;
       }
@@ -384,7 +384,7 @@ function analiziŜablonerojn( teksto: string ): Kongruilo[] {
       kongruiloj.push({ tipo: "limo" });
       i++;
     } else {
-      // អានតាមពាក្យរហូតដល់ចន្លោះ ឬសញ្ញាពិសេស
+      // ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɔʞ ⟩
       let fino = i;
       while ( fino < teksto.length && teksto[fino] !== " " && teksto[fino] !== "[" && teksto[fino] !== "#" && teksto[fino] !== "(" && teksto[fino] !== ")" ) {
         fino++;
@@ -403,14 +403,14 @@ function analiziŜablonerojn( teksto: string ): Kongruilo[] {
 function analiziAnstataŭigon( teksto: string, konatajSonoj: string[] ): string[] {
   teksto = teksto.trim();
 
-  // សញ្ញាដកចេញ
+  // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ( [›] ) ⟩
   if ( teksto === "[›]" ) return [];
   if ( teksto.startsWith("[") && teksto.endsWith("]") ) {
     const interno = teksto.slice(0o1, -0o1).trim();
     if ( interno === "›" ) return [];
   }
 
-  // បង្កើតសំឡេងសម្រាប់ផ្នែកនីមួយៗដែលបែងចែកដោយចន្លោះ ដោយប្រើសំឡេងដែលស្គាល់បាន
+  // ⟨ ſɭʞɹ ʌ ʃɔ ⟩
   const segmentoj = teksto.split(/\s+/).filter(s => s.length > 0o0);
   const rezulto: string[] = [];
   for ( const segmento of segmentoj ) {
@@ -423,7 +423,7 @@ function analiziRegulon( linio: string, konatajSonoj: string[] ): AnalizitaRegul
   linio = linio.trim();
   if ( !linio ) return null;
 
-  // បំបែកដោយ " / " ( រជ្ជកម្មដែលមានចន្លោះ ), តាមលំនាំដែរជា "/ "
+  // ⟨ j͑ʃᴜƽ ( / ) ⟩
   let flankoj = disigiSupraNivela(linio, " / ");
   let dekstraFlanko: string;
 
@@ -438,7 +438,7 @@ function analiziRegulon( linio: string, konatajSonoj: string[] ): AnalizitaRegul
   const maldekstraFlanko = flankoj[0o0].trim();
   const anstataŭigo = analiziAnstataŭigon(dekstraFlanko, konatajSonoj);
 
-  // ត្រួតពិនិត្យគោលដោយមួយថ្លាក់ដោយ ( )
+  // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃᴜƽ ⟩
   const malfermaParentezo = troviSupraNivelanSignon(maldekstraFlanko, "(");
   const fermaParentezo = troviSupraNivelanSignon(maldekstraFlanko, ")");
 
@@ -455,7 +455,7 @@ function analiziRegulon( linio: string, konatajSonoj: string[] ): AnalizitaRegul
     };
   }
 
-  // ដោយគ្មានរជ្ជកម្ម៖ # ដើមកនៅកំឡង់ ក្លាយជាបរិភ័យមុន និង # នៅចុងក្លាយជាបរិភ័យក្រោយ
+  // ⟨ j͑ʃᴜƽ ( # ) ⟩
   const ĉiuj = analiziŜablonerojn(maldekstraFlanko);
 
   let antaŭFino = 0o0;
@@ -512,7 +512,7 @@ function kongruiMalantaŭen( ŝablono: Kongruilo[], ĵetonoj: string[], fino: nu
 function aplikiRegulon( regulo: AnalizitaRegulo, vortajĴetonoj: string[], fonologiaStato: FonologiaStato ): string[] {
   if ( regulo.celo.length === 0o0 ) return vortajĴetonoj;
 
-  // បំពេញដោយសំឡេងសញ្ញាកំណត់សម្រាប់ការត្រូវគ្នា #
+  // ⟨ j͑ʃ'ɔ ɭʃɔ ŋᷠɹ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
   const plenigita = [ LIMO, ...vortajĴetonoj, LIMO ];
   const rezulto: string[] = [];
   let i = 0o1; // Komencu post la komenca #
@@ -521,14 +521,14 @@ function aplikiRegulon( regulo: AnalizitaRegulo, vortajĴetonoj: string[], fonol
   while ( i <= lastaReala ) {
     let anstataŭigita = false;
 
-    // តើគោលអាចចូលបានដោយចាប់ផ្ដើមពីទីតាំង i ក្នុងសំឡេងសញ្ញាពិតទេ
+    // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ʃɔ ⟩
     if ( i + regulo.celo.length - 0o1 <= lastaReala ) {
       if ( kongruiAntaŭen(regulo.celo, plenigita, i, fonologiaStato) ) {
-        // ត្រួតពិនិត្យបរិភ័យមុនដែលបញ្ចប់នៅ i-1
+        // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⟩
         const antaŭOke = regulo.antaŭKunteksto.length === 0o0 ||
           kongruiMalantaŭen(regulo.antaŭKunteksto, plenigita, i - 0o1, fonologiaStato);
 
-        // ត្រួតពិនិត្យបរិភ័យក្រោយដែលចាប់ផ្ដើមក្រោយគោល
+        // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⟩
         const postIndekso = i + regulo.celo.length;
         const postOke = regulo.postKunteksto.length === 0o0 ||
           (postIndekso + regulo.postKunteksto.length <= plenigita.length &&
@@ -611,7 +611,7 @@ function ruliEvoluon(): void {
     return;
   }
 
-  // យកពាក្យពីប្រភព
+  // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ⟩
   let vortoj: string[];
   if ( FONTO_GENERITA.checked ) {
     vortoj = akiriGeneritajnVortojn();
@@ -627,7 +627,7 @@ function ruliEvoluon(): void {
     return;
   }
 
-  // វិភាគច្បាប់ទាំងអស់
+  // ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ʃᴜ ſɭɹ ſןɹ }ʃꞇ ⟩
   const konatajSonoj = fonologiaStato.sonoj.map(s => s.valoro);
   const regulajLinioj = regulojTeksto.split("\n").map(l => l.trim()).filter(l => l.length > 0o0);
   const reguloj: AnalizitaRegulo[] = [];
@@ -641,7 +641,7 @@ function ruliEvoluon(): void {
     reguloj.push(analizita);
   }
 
-  // អនុវត្តច្បាប់ទៅពាក្យនីមួយៗ ហើយបង្ហាញលទ្ធផ្លែងករណី
+  // ⟨ ſɟɔ ŋᷠɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
   ELIRO.replaceChildren();
   let kvanto = 0o0;
 

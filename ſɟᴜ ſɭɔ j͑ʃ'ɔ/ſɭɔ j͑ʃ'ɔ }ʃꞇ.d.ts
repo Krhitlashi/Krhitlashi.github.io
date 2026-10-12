@@ -1,18 +1,18 @@
 /**
-* ≺⧼ ſɭɔ j͑ʃ'ɔ }ʃꞇ ⧽≻ - ការប្រកេកប្រភេទការបស្រាយជាក់ស្តែង
-* ប្រភេទប្រកេកសម្រាប់មុខងងឹត JS និងថេរស្មែកទាំងអស់ការបស្រាយជាក់ស្តែង
+* ≺⧼ ſɭɔ j͑ʃ'ɔ }ʃꞇ ⧽≻ - ֭ſɭᴜ ı],ɔ ( JS )
+* ſɭɔ j͑ʃ'ɔ }ʃꞇ ʌ ֭ſɭᴜ ı],ɔ
 */
 
 declare global {
-  // ⟨ ſɭɔ j͑ʃ'ɔ }ʃꞇ.js ⟩ - ការដំណើរការអត្ថបទ
+  // ⟨ ſɭɔ j͑ʃ'ɔ }ʃꞇ.js ⟩ - ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ
   function vacepu(klasoNomo: string): void;
   function a3esoza(sozanu: HTMLElement): void;
   function valas(): void;
 
-  // ⟨ j͑ʃᴜ ſɭɔ j͑ʃ'ɔ }ʃꞇ.js ⟩ - ការចុះឈ្មោះម៉ែត្របម្រើសេដូ
+  // ⟨ j͑ʃᴜ ſɭɔ j͑ʃ'ɔ }ʃꞇ.js ⟩ - ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ
   function b6vegejexSakeveni(): Promise<void>;
 
-  // ⟨ ſɟᴜ ı],ɹͷ̗.js ⟩ - ប្រព័ន្ធលេខ និងថេរស្មែក
+  // ⟨ ſɟᴜ ı],ɹͷ̗.js ⟩ - ſɭɹ ſȷɔ
   const K2FE: string[];
   const KNAK2FE: number;
   function vab6caja(xap2suK2fe: number): string;
@@ -53,17 +53,17 @@ declare global {
   const SQE_L6VEM2: number;
   const SHAQE_L6VEM2: number;
 
-  // ⟨ j͑ʃƽᴜ ſɭɔʞ.js ⟩ - ការបច្ចុប្បន្នភាពតំបន់
+  // ⟨ j͑ʃƽᴜ ſɭɔʞ.js ⟩ - ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ
   function k2regawe(gawe: string): void;
   function kocepufal(gawe: string): void;
   function skakefK2fe(okef: string): string;
   const skakefani: Record<string, Record<string, string>>;
 
-  // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ.js ⟩ - Serĉo
+  // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ.js ⟩ - ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ
   function iibaCax2l(bana2bakano: string, cax2l: HTMLElement): void;
   function iibaThala(bana2bakano: string, ariiba: HTMLElement): void;
 
-  // ⟨ j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js ⟩ - ម៉ែត្របម្រើសេដូ
+  // ⟨ j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js ⟩ - ɭʃᴜ̭ᴜȝ
   const STATIC_CACHE_NAME: string;
   const STATIC_ASSETS: string[];
 }

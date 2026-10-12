@@ -1,12 +1,11 @@
 // ≺⧼ ſɟᴜ ſɭɔ j͑ʃ'ɔ - Teksta Bilda Generatoro 🖼️ ⧽≻
 /**
- * បង្កើតរូបភាពពីអត្ថបទដោយប្រើពុទ្ធសញ្ញាផ្ទាល់ខ្លួន
- * - គាំទ្រការផ្ទុកពុទ្ធសញ្ញាផ្ទាល់ខ្លួន
- * - អត្ថបទច្រើនបន្ទាត់ជាមួយការរៀបចំច្រើន
- * - នាំចេញជា PNG ដោយមានមុខងងឹតបោះពុម្ព
+ * ſɭʞɹ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( PNG )
+ * ſ͕ɭɹȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ſɟɔ ŋᷠɔ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( PNG )
  */
 
-// ⟪ ថេរស្មែក 📦 ⟫
+// ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 📦 ⟫
 
 const ERARO_MALVALIDA_ENIGO = "j͐ʃэ ɭʃɔ ſ͕ɭᴜꞇ j͑ʃ'ɔ ſɭп́ɜ ⟅";
 
@@ -35,7 +34,7 @@ function disigiGraferojn(ĉeno: string): string[] {
 }
 
 
-// ⟪ ប្រភេទ 📐 ⟫
+// ⟪ ֭ſɭᴜ ı],ɔ 📐 ⟫
 
 interface Tz2saiTahaq {
     tlakakaiKucaq: TlakakaiKucaq[];
@@ -90,7 +89,7 @@ interface KrudaXez {
 }
 
 
-// ⟪ ថេរស្មែក 📦 ⟫
+// ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 📦 ⟫
 
 const lagaCvpKek = document.getElementById("lagaCvp") as HTMLInputElement;
 const lagaKsakaKek = document.getElementById("lagaKsaka") as HTMLInputElement;
@@ -114,7 +113,7 @@ const inakLagaKek = document.getElementById("inakLaga") as HTMLInputElement | nu
 let tz2saiTahaq: Tz2saiTahaq | null = null;
 
 
-// ⟪ មុខងងឹតមិនទាន់បង្កើត ❌ ⟫
+// ⟪ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ ❌ ⟫
 
 function kf23ohk2ni(tlohk2niKek: HTMLElement, ox2pewa: Error | string, tosaxKek: HTMLInputElement | null = null, tosaxRuva = "Arial"): void {
     console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", ox2pewa);
@@ -152,7 +151,7 @@ function s2rol2mi(fal: string, lagaPal6: number, xezSwekmavem2: number, sozasaiA
 }
 
 
-// ⟪ ពុទ្ធសញ្ញា 🔤 ⟫
+// ⟪ ſɭɘэ ſɭɹ ſןɹ 🔤 ⟫
 
 function kemaLagaKsaka(ksaka: string): string {
     const araN2k = ksaka.lastIndexOf(".");
@@ -258,7 +257,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
     ].sort((a, b) => b.length - a.length);
 
 
-    // ⟨ សញ្ញាសម្គាល់ទីតាំងផ្លាស់ប្ដូរដែលត្រូវគ្នា ⟩
+    // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
     function iibaKanoiKmasahak(kp6: string, kp6Ca1ara: string[]): string | null {
         for ( const unit of kp6Ca1ara ) {
             if ( kp6.startsWith(unit) ) {
@@ -269,7 +268,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
     }
 
 
-    // ⟨ ការវាស់វែងអត្ថបទ ⟩
+    // ⟨ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſןᴜ j͐ʃэ ⟩
     function mezuriTekstDimensiojn(teksto: string, ctx: CanvasRenderingContext2D): TekstaDimensioj {
         const mezuroj = ctx.measureText(teksto);
         const larĝo = mezuroj.width;
@@ -710,7 +709,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
 } );
 
 
-// ⟪ នាំចេញ / បោះពុម្ព 💾 ⟫
+// ⟪ ſ͕ɭɹȝ ʌ ɭʃᴜ ֭ſɭᴜȝ 💾 ⟫
 
 function kf2Aravab6m6q(tahaqWeK2p2: HTMLCanvasElement[], a1aKnu3a = false): void {
     const aravab6m6q = window.open("", "_blank");
@@ -777,11 +776,11 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
     const marĝenoTutaY = sozasaiAreqj2k + psazaiAreqj2k;
     const enhavoAlto = alto - marĝenoTutaY;
 
-    // ⟨ កម្រិតទំព័រគឺជាកម្រិតពេញលេញនៃផ្ទាំងកាត់ ( កម្រិតកង់ស្មារាងអតិបរមាណ ) ⟩
+    // ⟨ ſɟᴜ ſȷᴜɔ˞ ʌ ſɭw ʃᴜ ⟩
     const paĝaAlto = alto;
     const maksPaĝaAlto = alto;
 
-    // ⟨ ចម្រើនទំព័រគឺជាសមាមាត្រដូចទៅនឹងកម្រិតនោះ ⟩
+    // ⟨ j͑ʃɔ ſȷꞇ }ʃꞇ ʌ ſɭw ʃᴜ ⟩
     const PEJZAĜA_PROPROCIO = 0o13 / 8.5; // Usona letero pejzaĝe
     const paĝaLarĝo = paĝaAlto * PEJZAĜA_PROPROCIO;
 
@@ -793,8 +792,7 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
     const paĝajBildoj: HTMLCanvasElement[] = [];
 
     /*
-    * ⟨ ចំនាប់ x កំណត់ ( ក្នុងកូអូដីនាតផ្ទាំងកាត់ ) ដើម្បីឱ្យកាត់តាមជើង
-    *   ពាក់ព័ន្ធចន្លោះ និងមិនក្រោយកាត់តួអក្សរពាក់ព័ន្ធទេ។ ⟩
+    * ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃᴜƽ ⟩
     */
     const blokajLimejoj: number[] = [];
     let limoX = saqaiAreqj2k; // blokoj komenciĝas je la maldekstra marĝeno
@@ -804,8 +802,8 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
     }
     blokajLimejoj.push(limoX); // posta rando
 
-    // ⟨ ចំនាប់ y ក្នុងមួយៗគ្រាប់ដើម្បីឱ្យកាត់តាមជើងពាក់ព័ន្ធចន្លោះបន្ទាត់។ ⟩
-    // ⟨ liniajY មកពីការបង្រៀបអ៊ីតេ ដូច្នេះត្រឹមតែបានជាមួយការតម្រៀបជួរចំពោះ ឬអត់ 📏 ⟩
+    // ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃᴜƽ ⟩
+    // ⟨ j͑ʃᴜƽ 📏 ⟩
     const liniajLimejoj: number[] = liniajY.length > 0o1
         ? [ sozasaiAreqj2k, ...liniajY, alto ]
         : [ sozasaiAreqj2k, alto ];
@@ -821,10 +819,7 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
     };
 
     /*
-    * ⟨ បង្កើតទំព័រ។ ចម្រើនត្រូវបានកាត់នៅចំនាប់ប្លង់ដែលនិតស្ដាប់ទៅ `paĝaLarĝo`។
-    *   បន្ទាត់ដែលលើសពីចម្រើនទំព័រដូចដែលគួរនឹងបែងចែកទៅទំព័រផ្សេងទៀត។
-    *   ផ្ទាំងកាត់គ្រប់ទំព័រមានវិមាត្យដូចគ្នា ( paĝaLarĝo x paĝaAlto )
-    *   ដើម្បីឱ្យវាបង្ហាញជាមាត្រដែលស្មើភាព ក្នុងការមើលជាមុនក្នុងការបោះពុម្ព។ ⟩
+    * ⟨ ſɭʞɹ ʌ ſ̀ȷᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( paĝaLarĝo paĝaAlto ) ⟩
     */
     const ĈIRKAŬO = tapuAreqj2k + 0o1;
 

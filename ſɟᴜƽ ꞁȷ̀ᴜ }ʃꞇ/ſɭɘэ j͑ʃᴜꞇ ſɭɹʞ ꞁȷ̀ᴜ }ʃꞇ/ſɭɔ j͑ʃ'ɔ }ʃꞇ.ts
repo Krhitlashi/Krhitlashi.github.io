@@ -1,9 +1,9 @@
 /// <reference types="vite/client" />
 
-// ≺⧼ ſɭɘэ j͑ʃᴜꞇ ſɭɹʞ ꞁȷ̀ᴜ }ʃꞇ - ម៉ាស្គន្យអក្សរអត្ថបទ 🎨 ⧽≻
+// ≺⧼ ſɭɘэ j͑ʃᴜꞇ ſɭɹʞ ꞁȷ̀ᴜ }ʃꞇ - ꞁȷ̀эȝ ɭʃɔ 🎨 ⧽≻
 
 
-// ⟪ ប្រភេទ 📐 ⟫
+// ⟪ ֭ſɭᴜ ı],ɔ 📐 ⟫
 
 interface SignoDatumoj {
 	nomo: string;
@@ -31,9 +31,9 @@ interface KolumnajDatumoj {
 }
 
 
-// ⟪ ថេរស្មែក 📦 ⟫
+// ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 📦 ⟫
 
-// ផែនទីស្លាក់ពីឈ្មោះសញ្ញាទៅទិន្នន័យតួអក្សរដែលបានផ្ទុក
+// ⟨ j͑ʃɹ ɭʃᴜɔ˞ ʌ ſɭɔ˞ᴜ ſɭᴜ ⟩
 const signaMapo = new Map<string, SignoDatumoj>();
 
 const glifajDosieroj = import.meta.glob("./**/*.txt", {
@@ -42,14 +42,14 @@ const glifajDosieroj = import.meta.glob("./**/*.txt", {
 	eager: true
 }) as Record<string, string>;
 
-// ឈ្មោះតាមលំដាប់តាមប្រវែងដាច់ជាចន្លោះ ដើម្បីឱ្យការត្រូវគ្នាចូលបានលឿន
+// ⟨ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɭɹ ſȷɔ ⟩
 let ordigitajNomoj: string[] = [];
 
 
-// ⟪ ការផ្ទុកតួអក្សរ 📂 ⟫
+// ⟪ ſ͕ɭɹȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📂 ⟫
 
 /**
-	រក្សាទិន្នន័យតួអក្សរសម្រាប់ឯកសារ txt នីមួយៗដែលបានរកឃើញនៅក្នុងថតរង្វេងនេះ។
+	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( txt )
 	@returns promessa
 */
 async function ŝargiSignojn(): Promise<void> {
@@ -62,7 +62,7 @@ async function ŝargiSignojn(): Promise<void> {
 
 			const krudajLinioj = teksto.replace(/\r/g, "").split("\n");
 
-			// ដកបន្ទាត់ទទេចុងក្រោយនៃថតឯកសារដែលបញ្ចប់ដោយបន្ទាត់ថ្មី
+			// ⟨ ſןw ʌ j͑ʃᴜƽ ⟩
 			if ( krudajLinioj.length > 0o1 && krudajLinioj[krudajLinioj.length - 0o1] === "" ) {
 				krudajLinioj.pop();
 			}
@@ -82,12 +82,12 @@ async function ŝargiSignojn(): Promise<void> {
 }
 
 
-// ⟪ ការបំបែកស្លាក់ ✂️ ⟫
+// ⟪ ſɟᴜ ɭʃᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ✂️ ⟫
 
 /**
-	បំបែកខ្សែស៊ីឡាំងមួយជាបញ្ជីនៃឈ្មោះតួអក្សរដែលស្គាល់បាន ដោយប្រើការត្រូវគ្នាដែលវែងបំផុតមុន។
-		ខ្សែស៊ីឡាំងបញ្ចូល។
-	ជួយប្រគល់តារាងនៃឈ្មោះស្លាក់ដែលត្រូវគ្នា។
+	* ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ⟩
+		ꞁȷ̀ɔ j͑ʃƽɔƽ
+	ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ
 	@returns listo
 */
 function ĵetonigiSilabon(silabo: string): string[] {
@@ -106,7 +106,7 @@ function ĵetonigiSilabon(silabo: string): string[] {
 		}
 
 		if ( !kongruis ) {
-			// សញ្ញាមិនត្រូវគ្នា។ បន្តដោយមិនប៉ះពាល់
+			// ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
 			ĵetonoj.push(silabo[i]);
 			i++;
 		}
@@ -116,12 +116,12 @@ function ĵetonigiSilabon(silabo: string): string[] {
 }
 
 
-// ⟪ ការបង្ហាញជាប្លង់ 🔲 ⟫
+// ⟪ ſɟɔ ŋᷠɔ ʌ ſɟᴜ ſȷᴜɔ˞ 🔲 ⟫
 
 /**
-	បង្ហាញស៊ីឡាំងនីមួយៗជាប្លង់នៃបន្ទាត់ការសរសេរ ASCII។
-		ស៊ីឡាំងសម្រាប់បង្ហាញ។
-	ជួយប្រគល់តារាងនៃខ្សែប្រវែងស្មើគ្នាដែលបង្កើតវ្លង់។
+	* ⟨ ſɟɔ ŋᷠɔ ʌ j͑ʃᴜƽ ⟩
+		j͑ʃᴜƽ
+	ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ
 	@returns listo
 */
 function bildigiSilabanBlokon(silabo: string): string[] {
@@ -181,29 +181,29 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 }
 
 
-// ⟪ ការបង្ហាញចុងក្រោយ 🖥️ ⟫
+// ⟪ ſɟɔ ŋᷠɔ ʌ ſɟᴜ ſȷᴜɔ˞ 🖥️ ⟫
 
 /**
-	ធ្វើបច្ចុប្បន្នភាពធាតុ pre ដោយការសរសេរដែលបានបង្ហាញពីខ្សែបញ្ចូល។
-		អត្ថបទបញ្ចូលមូលដ្ឋានពីប្រអប់អក្សរ។
-		ធាតុ pre គោល។
-		ចំនួនប្លង់ស៊ីឡាំងអតិបរមាណក្នុងមួយជួរកាត់ក្រឡា មុនពេលរង្វាស់។ 0 = គ្មានដែនកំណត់។
+	ſɟɔ ŋᷠɔ ʌ ſɟᴜ ſȷᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+		ꞁȷ̀ɔ j͑ʃƽɔƽ
+		ꞁȷ̀ɔ j͑ʃƽɔƽ
+		ſɭɹ ſȷɔ ( 0 )
 	@returns void
 */
-// ធ្វើបច្ចុប្បន្នភាពធាតុ pre ដោយការសរសេរដែលបានបង្ហាញពីខ្សែបញ្ចូល។
+// ⟨ ſɟɔ ŋᷠɔ ʌ ſɟᴜ ſȷᴜɔ˞ ⟩
 	function ĝisdatigiEliron(teksto: string, preElement: HTMLPreElement, maksLinio: number): void {
 	if ( !teksto ) {
 		preElement.textContent = "";
 		return;
 	}
 
-	// ⟨ បង្កើតប្លង់ស៊ីឡាំង ដោយព្រមសារបន្ទាត់ថ្មីជាការបញ្ឈប់កាត់ក្រឡាចាំបាច់ ⟩
+	// ⟨ ſɭʞɹ ʌ j͑ʃᴜƽ ⟩
 	const enigajLinioj = teksto.replace(/\r/g, "").split("\n");
 	const kolumnajBlokoj: SilabaBloko[][] = [];
 	let nunaKolumno: SilabaBloko[] = [];
 
 	for ( const enigaLinio of enigajLinioj ) {
-		// បន្ទាត់ថ្មី → បង្ខំឱ្យការបញ្ឈប់កាត់ក្រឡាចាំបាច់ ( បោះចោលអ្វីដែលបានប្រមូល )
+		// ⟨ ſןw ʌ j͑ʃᴜƽ ⟩
 		if ( nunaKolumno.length > 0o0 ) {
 			kolumnajBlokoj.push(nunaKolumno);
 			nunaKolumno = [];
@@ -213,7 +213,7 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 		for ( const silabo of silaboj ) {
 			let bloko: SilabaBloko;
 			if ( silabo === "" ) {
-				// ស៊ីឡាំងទទេ ( ចន្លោះជាបន្ស្សប្រប់ប្រព័ន្ធ )។ បញ្ចូលប្លង់ទទេ
+				// ⟨ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃᴜƽ ⟩
 				bloko = { linioj: Array(0o7).fill(" "), alto: 0o7, larĝo: 0o1 };
 			} else {
 				const linioj = bildigiSilabanBlokon(silabo);
@@ -222,7 +222,7 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 				bloko = { linioj, alto, larĝo };
 			}
 
-			// អនុវត្តការកំណត់កំណត់ maksLinio នៅក្នុងបន្ទាត់បញ្ចូលបច្ចុប្បន្ន
+			// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɹ ſȷɔ ⟩
 			if ( maksLinio > 0o0 && nunaKolumno.length >= maksLinio ) {
 				kolumnajBlokoj.push(nunaKolumno);
 				nunaKolumno = [ bloko ];
@@ -238,7 +238,7 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 		return;
 	}
 
-	// ⟨ បិទប្លង់នៅក្នុងជួរកាត់ក្រឡាដើម្បីឲ្យវាស្មើនឹងប្លង់ខ្ពស់បំផុតនៅជួរក្រឡានោះ ⟩
+	// ⟨ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſןᴜ j͐ʃэ ⟩
 	const maksimumajBlokojEnKol = Math.max(...kolumnajBlokoj.map(kol => kol.length), 0o0);
 	const vicoMaksimumajAltoj: number[] = Array(maksimumajBlokojEnKol).fill(0o0);
 	for ( let r = 0o0; r < maksimumajBlokojEnKol; r++ ) {
@@ -265,7 +265,7 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 		}
 	}
 
-	// ⟨ បង្ហាញគ្រប់ជួរកាត់ក្រឡាពីខាងក្រោមទៅខាងលើ ⟩
+	// ⟨ ſɟɔ ŋᷠɔ ʌ j͑ʃᴜƽ ⟩
 	const kolumnajDatumoj: KolumnajDatumoj[] = kolumnajBlokoj.map((kol) => {
 		const kolLinioj: string[] = [];
 		for ( let i = kol.length - 0o1; i >= 0o0; i-- ) {
@@ -278,7 +278,7 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 		return { linioj: plenigitajKolLinioj, larĝo: kolLarĝo, alto: plenigitajKolLinioj.length };
 	});
 
-	// ⟨ បញ្ជាក់ជួរកាត់ក្រឡាជាដᾔឡរាងត្រង់ ដោយតម្រង់តាមខាងក្រោម ⟩
+	// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃᴜƽ ⟩
 	const eligaAlto = Math.max(...kolumnajDatumoj.map(c => c.alto), 0o0);
 
 	const plenigitajKolumnoj: string[][] = kolumnajDatumoj.map((c) => {
@@ -302,7 +302,7 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 }
 
 
-// ⟪ ការចាប់ផ្ដើម 🚀 ⟫
+// ⟪ j͑ʃᴜ ı],ɔ 🚀 ⟫
 
 document.addEventListener("DOMContentLoaded", async () => {
 	const tekstareo = document.getElementById("saxesuOx2pewa") as HTMLTextAreaElement | null;

@@ -1,13 +1,13 @@
 // ≺⧼ Iikze Skribsistema Konvertilo 📜 ⧽≻
 /**
- * បម្លែងជុំជាក្នុងប្រព័ន្ធការសរសេរ Gawekiif, La3os និង IPA។
- * - Gawekiif - ការសរសេរដើមដែលមានទម្រង់ចាប់ផ្ដើម និងទម្រង់ក្នុង
- * - La3os - ការចម្លងជាអក្សរឡាត្រា ( ប្រើការសរសេរលេខជំនួស។ 1=ts, 2=ii, 3=tl, 4=au, 5=kz, 6=aa, 7=ou, 0=eu )
- * - IPA - អក្សរក្រូវ្យាស្ត្រីអន្តរជាតិ
+ * ɭʃɀɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif La3os IPA )
+ * ֭ſɭᴜ ı],ɔ ( Gawekiif )
+ * ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ ( La3os 1=ts 2=ii 3=tl 4=au 5=kz 6=aa 7=ou 0=eu )
+ * ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
  */
 
 
-// ⟪ ថេរស្មែក 📦 ⟫
+// ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 📦 ⟫
 
 const NUMERIKA: Record<string, string> = { "ts": "1", "ii": "2", "tl": "3", "au": "4", "kz": "5", "aa": "6", "ou": "7", "eu": "0" };
 const NUMERIKA_MALO: Record<string, string> = { "1": "ts", "2": "ii", "3": "tl", "4": "au", "5": "kz", "6": "aa", "7": "ou", "0": "eu" };
@@ -15,7 +15,7 @@ const NUMERIKA_MALO: Record<string, string> = { "1": "ts", "2": "ii", "3": "tl",
 const VOKALOJ_ORDIGITAJ: string[] = [ "ii", "aa", "eu", "ou", "au", "ai", "i", "e", "a", "u", "o", "2", "6", "0", "7", "4" ].sort( ( a, b ) => b.length - a.length );
 
 
-// ⟪ ផែនទីស្លាក់ត្រូវបានបង្កើត 🗺️ ⟫
+// ⟪ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ 🗺️ ⟫
 
 interface Mapo {
     gk: string;
@@ -114,13 +114,13 @@ const INTERNAJ: Mapo[] = [
 
 const MAPOJ: Mapo[] = [ ...KOMENCAJ, ...INTERNAJ ];
 
-/* សំណុំ IPA ដែលជាពាក្យស៊ីឡាំង ដកសេចក្តីពីតារាង ដូច្នេះមិនមានកំហុសប៉ុណ្ណោះ។ */
+/* ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃᴜƽ ( IPA ) ⟩ */
 const VOKALOJ_IPA: string[] = Array.from(
     new Set( MAPOJ.filter( m => VOKALOJ_ORDIGITAJ.includes( m.la3os ) ).map( m => m.ipa ) )
 ).sort( ( a, b ) => b.length - a.length );
 
 
-// ⟪ មុខងងឹតជំរើស 🔧 ⟫
+// ⟪ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ 🔧 ⟫
 
 interface Serxtabelo {
     map: Record<string, string>;
@@ -138,8 +138,8 @@ interface KonvertajOpcioj {
 }
 
 /**
- * ត្រួតពិនិត្យថា អត្ថបទទទេ ឬមានតែចន្លោះ និងសញ្ញាពិសេស។
- * @param teksto ( string , required ) - អត្ថបទសម្រាប់ការត្រួតពិនិត្យ។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
  * @returns jesne
  */
 function cxuMalplenaAUBlanko(teksto: string): boolean {
@@ -147,8 +147,8 @@ function cxuMalplenaAUBlanko(teksto: string): boolean {
 }
 
 /**
- * បំបែកអត្ថបទដោយចន្លោះជាផ្នែកដែលមិនទទេ។
- * @param teksto ( string , required ) - អត្ថបទសម្រាប់ការបំបែក។
+ * ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
  * @returns listo
  */
 function disigiPerSpacoj(teksto: string): string[] {
@@ -156,11 +156,11 @@ function disigiPerSpacoj(teksto: string): string[] {
 }
 
 /**
- * បង្កើតតារាង serxtabelo ពីជួរវត្តនៃវត្ថបថប្រូបចម្លង។
- * @param eroj ( T[] , required ) - ជួរវត្តនៃវត្ថបថប្រូបចម្លង។
- * @param fontoKlavo ( keyof T , required ) - គន្លឹះសម្រាប់លក្ខន្ធប្រភព។
- * @param celoKlavo ( keyof T , required ) - គន្លឹះសម្រាប់លក្ខន្ធគោល។
- * @param saltiEkzistantan ( boolean , optional ) - បោះចោលប្រសិនបើគោលមានរួចហើយ។
+ * ſɭʞɹ ʌ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( serxtabelo )
+ * @param eroj ( T[] , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param fontoKlavo ( keyof T , required ) - ſɭɔ˞ᴜ ſɭᴜ
+ * @param celoKlavo ( keyof T , required ) - ſɭɔ˞ᴜ ſɭᴜ
+ * @param saltiEkzistantan ( boolean , optional ) - ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns serxtabelo
  */
 function konstruiSerxtabelon<T extends Mapo>(eroj: T[], fontoKlavo: keyof T, celoKlavo: keyof T, saltiEkzistantan = false): Serxtabelo {
@@ -179,7 +179,7 @@ function konstruiSerxtabelon<T extends Mapo>(eroj: T[], fontoKlavo: keyof T, cel
 }
 
 
-// ⟪ តារាងស្វែងរក 🔍 ⟫
+// ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ 🔍 ⟫
 
 const SERXTABELO = {
     gk_la3os: konstruiSerxtabelon(MAPOJ, "gk", "la3os"),
@@ -200,9 +200,9 @@ for ( const m of INTERNAJ ) {
 SERXTABELO.la3os_ipa.keys = Object.keys(SERXTABELO.la3os_ipa.map).sort((a, b) => b.length - a.length);
 
 
-// ⟪ ប្រព័ន្ធមូលដ្ឋាន ៨ 🔢 ⟫
+// ⟪ ſɭc̗ᴜ ſɭɹ ſȷɔ 🔢 ⟫
 
-// ⟨ លេខនៃប្រព័ន្ធបៃ ( ɔ-ƨ = 0-7 ) និងនៃកូដស្លាក់ ( ɔ-⌅̊ = 0-F ) ⟩
+// ⟨ ſɭɹ ſȷɔ ( ɔ-ƨ 0-7 ɔ-⌅̊ 0-F ) ⟩
 const B8_CIFEROJ = [ "ɔ", "ı", "ɿ", "ц", "э", "ꞟ", "ɩ", "ƨ" ];
 const B8_CIFEROJ_MALO: Record<string, number> = { "ɔ": 0o0, "ı": 0o1, "ɿ": 0o2, "ц": 0o3, "э": 0o4, "ꞟ": 0o5, "ɩ": 0o6, "ƨ": 0o7 };
 
@@ -217,7 +217,7 @@ const KODIGAJ_CIFEROJ_LAŬVALORO: Record<number, string> = {
 };
 const KODIGAJ_CIFEROJ_LAŬLONGO = [ ...KODIGAJ_CIFEROJ ].sort((a, b) => b.length - a.length);
 
-// ⟨ ប្រព័ន្ធទី១ - តម្លៃបៃនៃ Gawekiif នីមួយៗ ( បញ្ឈរ , កាត់ទៅក្រឡា ) ⟩
+// ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ ʌ ſɭɹ ſȷɔ ( Gawekiif ) ⟩
 const OKTALA_GRIDO: Record<string, string> = {
     "ᶅſ": "ɔɔ", "ſן": "ɔı", "ſȷ": "ɔɿ", "ŋᷠ": "ɔц",
     "ʃ": "ıɔ", "ɽ͑ʃ'": "ıı", "j͑ʃ'": "ıɿ", "ſᶘ": "ıц", "ɭʃ'": "ıэ",
@@ -231,13 +231,13 @@ const OKTALA_GRIDO: Record<string, string> = {
     "ꞁȷ̀": "ƨꞟ"
 };
 
-// ⟨ IPA នៃជួរឈរពិសេស ( э ) ក្នុងតារាងបៃ ⟩
+// ⟨ ʃɔ ( э ) ⟩
 const OKTALAJ_SPECIALAJ_IPA: Record<string, string> = { "ɭʃ'": "ǃ", "}ʃ'": "ǃ̃", "oͩſ̀ȷ": "ǁ̃" };
 
 /**
- * ស្វែងរកទម្រង់ធំនៃទម្រង់ក្នុង ( តូច ) តាម La3os ឬ IPA។
- * @param malgranda ( Mapo , required ) - ទម្រង់ក្នុង។
- * @param ĉuAkceptebla ( ( gk ) => boolean , required ) - អ្នកត្រួតពិនិត្យទម្រង់ធំ។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os IPA )
+ * @param malgranda ( Mapo , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param ĉuAkceptebla ( ( gk ) => boolean , required ) - ꞁȷ̀ꞇ j͑ʃ'ɹƴ
  * @returns rezulto
  */
 function troviGrandanFormon(malgranda: Mapo, ĉuAkceptebla: (gk: string) => boolean): string | null {
@@ -253,7 +253,7 @@ function troviGrandanFormon(malgranda: Mapo, ĉuAkceptebla: (gk: string) => bool
     return null;
 }
 
-// ⟨ តារាងបៃពេញលេញ - ទម្រង់ធំ បូកទាំងទម្រង់តូចដែលបម្លែងតាមត្រាបានដោយផ្ទាល់ ⟩
+// ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ ⟩
 const OKTALAJ_VALOROJ: Record<string, string> = { ...OKTALA_GRIDO };
 for ( const m of INTERNAJ ) {
     const granda = troviGrandanFormon(m, gk => Boolean(OKTALA_GRIDO[gk]));
@@ -262,7 +262,7 @@ for ( const m of INTERNAJ ) {
     }
 }
 
-// ⟨ តារាងបៃឆ្រោជ្រោ - ពីតម្លៃបៃទៅទម្រង់ធំ ( ទី១ មកមុន ) ⟩
+// ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ ⟩
 const OKTALAJ_LAŬVALORO: Record<string, string> = {};
 for ( const [ gk, valoro ] of Object.entries(OKTALA_GRIDO) ) {
     if ( !OKTALAJ_LAŬVALORO[valoro] ) {
@@ -270,7 +270,7 @@ for ( const [ gk, valoro ] of Object.entries(OKTALA_GRIDO) ) {
     }
 }
 
-// ⟨ ទម្រង់បៃក្នុងប្រព័ន្ធបៃ - លេខបៃនីមួយៗ ( ɔ-ƨ ) នឹងក្លាយជាប៊ីតបី ( ɔɔɔ-ııı ) ⟩
+// ⟨ ſɭɹ ſȷɔ ( ɔ-ƨ ɔɔɔ-ııı ) ⟩
 const OKTALA_DUUMA: Record<string, string> = {
     "ɔ": "ɔɔɔ", "ı": "ɔɔı", "ɿ": "ɔıɔ", "ц": "ɔıı",
     "э": "ıɔɔ", "ꞟ": "ıɔı", "ɩ": "ııɔ", "ƨ": "ııı"
@@ -280,9 +280,9 @@ for ( const [ cifero, duuma ] of Object.entries(OKTALA_DUUMA) ) {
     OKTALA_DUUMA_MALO[duuma] = cifero;
 }
 
-// ⟨ ប្រព័ន្ធទី២ - កូដស្លាក់ ( ſɭɘэ ſɭɘɹ ) ⟩
+// ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ ( ſɭɘэ ſɭɘɹ ) ⟩
 
-// ⟨ ប្រភេទនៃកូដស្លាក់ ( លេខ , បៃ ) ⟩
+// ⟨ ֭ſɭᴜ ı],ɔ ʌ ſɭɹ ſȷɔ ⟩
 const KODIGAJ_KATEGORIOJ: Record<string, { cifero: string; duuma: string }> = {
     "ɔ": { cifero: "ɔ", duuma: "ɔɔɔɔ" },
     "ı": { cifero: "ı", duuma: "ɔɔɔı" },
@@ -291,7 +291,7 @@ const KODIGAJ_KATEGORIOJ: Record<string, { cifero: string; duuma: string }> = {
     "э": { cifero: "э", duuma: "ɔıɔɔ" }
 };
 
-// ⟨ តម្លៃនៃទម្រង់ធំ ( លេខកូដស្លាក់ពីរ ) ⟩
+// ⟨ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ ⟩
 const KODIGAJ_GRANDAJ_VALOROJ: Record<string, string> = {
     "ᶅſ": "00", "ſן": "01", "ſȷ": "02", "ŋᷠ": "07",
     "ʃ": "08", "ɽ͑ʃ'": "33", "j͑ʃ'": "32", "ſᶘ": "E3", "ɭʃ'": "31",
@@ -302,7 +302,7 @@ const KODIGAJ_GRANDAJ_VALOROJ: Record<string, string> = {
     "ꞁȷ̀": "B0"
 };
 
-// ⟨ តម្លៃនៃពាក្យរបស់ស៊ី ( ទម្រង់ ц ) និងពាក្យពិសេស ( ទម្រង់ э ) ⟩
+// ⟨ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ ⟩
 const KODIGAJ_VOKALAJ_VALOROJ: Record<string, string> = {
     "ꞇ": "07", "ɔ": "36", "ɹ": "13", "ᴜ": "45", "w": "23", "ɜ": "22", "э": "41"
 };
@@ -317,15 +317,15 @@ interface KodigaEniro {
 }
 
 /**
- * បម្លែងតម្លៃហិគក ASCII ទៅជាលេខកូដស្លាក់។
- * @param valoro ( string , required ) - តម្លៃហិគក ASCII ( ឧទាហរណ៍ "E3" )។
+ * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param valoro ( string , required ) - ɭl̀э ſȷꞇ }ʃꞇ ( ASCII E3 )
  * @returns ĉeno
  */
 function asciiValoroAlCiferoj(valoro: string): string {
     return valoroAlCiferoj(parseInt(valoro, 0o20), 0o2);
 }
 
-// ⟨ តារាងកូដស្លាក់ពេញលេញ - Gawekiif នីមួយៗជាមួយប្រភេទ និងតម្លៃរបស់ខ្លួន ⟩
+// ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ ⟩
 const KODIGAJ_ENIROJ: Record<string, KodigaEniro> = {};
 for ( const [ gk, valoro ] of Object.entries(KODIGAJ_GRANDAJ_VALOROJ) ) {
     KODIGAJ_ENIROJ[gk] = { kategorio: "ı", valoro: asciiValoroAlCiferoj(valoro) };
@@ -343,7 +343,7 @@ for ( const m of INTERNAJ ) {
     }
 }
 
-// ⟨ តារាងកូដស្លាក់ឆ្រោជ្រោ - ពីប្រភេទ បូកតម្លៃ ទៅទម្រង់ ⟩
+// ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ ⟩
 const KODIGAJ_LAŬENIRO: Record<string, string> = {};
 for ( const [ gk, eniro ] of Object.entries(KODIGAJ_ENIROJ) ) {
     const klavo = `${eniro.kategorio}_${eniro.valoro}`;
@@ -352,14 +352,14 @@ for ( const [ gk, eniro ] of Object.entries(KODIGAJ_ENIROJ) ) {
     }
 }
 
-// ⟨ ក្រឡប់ចំណុចកណ្តាលស្លាក់សម្រាប់ការរកឃើញតួអក្សរ ⟩
+// ⟨ j͑ʃɹ ɭʃᴜɔ˞ ʌ ſɭɔʞ ⟩
 const OKTALAJ_KLAVOJ = Object.keys(OKTALAJ_VALOROJ).sort((a, b) => b.length - a.length);
 const KODIGAJ_KLAVOJ = Object.keys(KODIGAJ_ENIROJ).sort((a, b) => b.length - a.length);
 
 /**
- * បំបែកអត្ថបទជាតួអក្សរតាមការត្រូវគ្នាដែលវែងបំផុតមុន។
- * @param teksto ( string , required ) - អត្ថបទសម្រាប់ការបំបែក។
- * @param klavoj ( string[] , required ) - ក្រឡប់ចំណុចកណ្តាលស្លាក់។
+ * ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
+ * @param klavoj ( string[] , required ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns listo
  */
 function disigiEnGlifojn(teksto: string, klavoj: string[]): string[] {
@@ -384,8 +384,8 @@ function disigiEnGlifojn(teksto: string, klavoj: string[]): string[] {
 }
 
 /**
- * បម្លែងលេខបៃ ( ɔ-ƨ ) ទៅជាចំនួន។
- * @param teksto ( string , required ) - លេខបៃ។
+ * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ɔ-ƨ )
+ * @param teksto ( string , required ) - ſɭɹ ſȷɔ ( ɔ-ƨ )
  * @returns nombro
  */
 function oktalaAlValoro(teksto: string): number {
@@ -399,8 +399,8 @@ function oktalaAlValoro(teksto: string): number {
 }
 
 /**
- * បម្លែងចំនួនទៅជាលេខបៃ ( ɔ-ƨ )។
- * @param valoro ( number , required ) - ចំនួន។
+ * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param valoro ( number , required ) - ſɭɹ ſȷɔ
  * @returns ĉeno
  */
 function valoroAlOktala(valoro: number): string {
@@ -415,8 +415,8 @@ function valoroAlOktala(valoro: number): string {
 }
 
 /**
- * បម្លែងលេខកូដស្លាក់ទៅជាចំនួន។
- * @param ciferoj ( string , required ) - ខ្សែលេខដោយលេខកូដស្លាក់។
+ * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param ciferoj ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns nombro
  */
 function ciferojAlValoro(ciferoj: string): number {
@@ -440,9 +440,9 @@ function ciferojAlValoro(ciferoj: string): number {
 }
 
 /**
- * បម្លែងចំនួនទៅជាលេខកូដស្លាក់។
- * @param valoro ( number , required ) - តម្លៃចំនួន។
- * @param longo ( number = 2 , optional ) - ប្រវែងអប្បបរមាននៃខ្សែលេខ។
+ * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param valoro ( number , required ) - ɭl̀э ſȷꞇ }ʃꞇ
+ * @param longo ( number = 2 , optional ) - ſןᴜ j͐ʃэ
  * @returns ĉeno
  */
 function valoroAlCiferoj(valoro: number, longo = 0o2): string {
@@ -456,9 +456,9 @@ function valoroAlCiferoj(valoro: number, longo = 0o2): string {
 }
 
 /**
- * បម្លែងចំនួនទៅជាខ្សែបៃដោយប្រើ ɔ និង ı។
- * @param valoro ( number , required ) - តម្លៃចំនួន។
- * @param longo ( number = 8 , optional ) - ប្រវែងនៃខ្សែបៃ។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ɔ ı )
+ * @param valoro ( number , required ) - ɭl̀э ſȷꞇ }ʃꞇ
+ * @param longo ( number = 8 , optional ) - ſןᴜ j͐ʃэ
  * @returns ĉeno
  */
 function valoroAlDuuma(valoro: number, longo = 0o10): string {
@@ -466,8 +466,8 @@ function valoroAlDuuma(valoro: number, longo = 0o10): string {
 }
 
 /**
- * បម្លែងខ្សែបៃ ( ɔ/ı ) ទៅជាចំនួន។
- * @param duuma ( string , required ) - ខ្សែបៃដោយប្រើ ɔ និង ı។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ɔ ı )
+ * @param duuma ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( ɔ ı )
  * @returns nombro
  */
 function duumaAlValoro(duuma: string): number {
@@ -480,9 +480,9 @@ function duumaAlValoro(duuma: string): number {
 }
 
 /**
- * បម្លែងអត្ថបទ Gawekiif ទៅជាតម្លៃបៃ ( ប្រព័ន្ធ 1 - ſɭɹ ſȷɔ )។
- * @param teksto ( string , required ) - អត្ថបទ Gawekiif។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif 1 ſɭɹ ſȷɔ )
+ * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function gawekiifAlNumero(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -497,15 +497,15 @@ function gawekiifAlNumero(teksto: string, opcioj: KonvertajOpcioj = {}): string 
 }
 
 /**
- * បម្លែងតម្លៃបៃ ឬបៃ ទៅជាអត្ថបទ Gawekiif ( ប្រព័ន្ធ 1 )។
- * ទទួលបានទម្រង់បៃ ទម្រង់បៃ ឬទាំងពីរដែលមាន / ជីវ្ដាន។
- * @param teksto ( string , required ) - ទម្រង់បញ្ចូល។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif 1 )
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 /**
- * បម្លែងតម្លៃបៃទៅជាអត្ថបទ Gawekiif។
- * @param teksto ( string , required ) - តម្លៃបៃ ( ɔ-ƨ )។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif )
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( ɔ-ƨ )
  * @returns ĉeno
  */
 function oktalaAlGawekiif(teksto: string): string {
@@ -513,7 +513,7 @@ function oktalaAlGawekiif(teksto: string): string {
         let rezulto = "";
         let i = 0o0;
 while ( i < vorto.length ) {
-        /* លេខបៃមានបីតួ ឬពីតួ ដូច្នេះត្រូវស្វែងរកច្រើនជាចម្បង។ */
+        /* ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɹ ſȷɔ ⟩ */
         let kongruis = false;
         for ( const longo of [ 0o3, 0o2 ] ) {
             const kodo = vorto.slice( i, i + longo );
@@ -534,10 +534,10 @@ while ( i < vorto.length ) {
 }
 
 /**
- * បម្លែងតម្លៃបៃ ឬបៃ ទៅជាអត្ថបទ Gawekiif ( ប្រព័ន្ធ 1 )។
- * ទទួលបានទម្រង់បៃ ទម្រង់បៃ ឬទាំងពីរដែលមាន / ជីវ្ដាន។
- * @param teksto ( string , required ) - ទម្រង់បញ្ចូល។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif 1 )
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function numeroAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -548,9 +548,9 @@ function numeroAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string 
 }
 
 /**
- * បម្លែងអត្ថបទ Gawekiif ទៅជាទម្រង់កូដស្លាក់ ( ប្រព័ន្ធ 2 - ſɭɘэ ſɭɘɹ )។
- * @param teksto ( string , required ) - អត្ថបទ Gawekiif។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស។
+ * ɭʃɀɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ſɭɘэ ſɭɘɹ 2 )
+ * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function gawekiifAlKodigo(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -567,9 +567,9 @@ function gawekiifAlKodigo(teksto: string, opcioj: KonvertajOpcioj = {}): string 
 }
 
 /**
- * បំបែកពាក្យកូដស្លាក់ដែលបានត្រួតជាខ្សែមកទៅជាតួអក្សរ។
- * តួអក្សរនីមួយៗគឺជាប្រភេទមួយ បូកលេខកូដស្លាក់ពីរ។
- * @param vorto ( string , required ) - ពាក្យកូដស្លាក់ដែលបានត្រួតជាខ្សែមកទ។
+ * ſɟᴜ ɭʃᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ſɭɔʞ ʌ ſɭɹ ſȷɔ
+ * @param vorto ( string , required ) - ſɭɔʞ
  * @returns listo
  */
 function disigiKodigitajnGlifojn(vorto: string): string[] {
@@ -614,9 +614,9 @@ function disigiKodigitajnGlifojn(vorto: string): string[] {
 }
 
 /**
- * បម្លែងទម្រង់កូដស្លាក់ទៅជាអត្ថបទ Gawekiif ( ប្រព័ន្ធ 2 )។
- * @param teksto ( string , required ) - ទម្រង់កូដស្លាក់។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( 2 Gawekiif )
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function kodigoAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -626,9 +626,9 @@ function kodigoAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string 
 }
 
 /**
- * បម្លែងអត្ថបទ Gawekiif ទៅជាទម្រង់បៃ ( ប្រព័ន្ធ 2 )។
- * @param teksto ( string , required ) - អត្ថបទ Gawekiif។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif 2 )
+ * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function gawekiifAlDuuma(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -646,9 +646,9 @@ function gawekiifAlDuuma(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 }
 
 /**
- * បំបែកពាក្យបៃដែលបានត្រួតជាខ្សែមកទៅជាតួអក្សរ។
- * តួអក្សរនីមួយៗគឺជាសញ្ញាបៃដែបែក ( ប្រភេទ បូកតម្លៃ )។
- * @param vorto ( string , required ) - ពាក្យបៃដែលបានត្រួតជាខ្សែមកទ។
+ * ſɟᴜ ɭʃᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ſɭɔʞ ʌ ֭ſɭᴜ ı],ɔ
+ * @param vorto ( string , required ) - ſɭɔʞ
  * @returns listo
  */
 function disigiDuumajnGlifojn(vorto: string): string[] {
@@ -680,9 +680,9 @@ function disigiDuumajnGlifojn(vorto: string): string[] {
 }
 
 /**
- * បម្លែងទម្រង់បៃទៅជាអត្ថបទ Gawekiif ( ប្រព័ន្ធ 2 )។
- * @param teksto ( string , required ) - ទម្រង់បៃ។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif 2 )
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function duumaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -692,9 +692,9 @@ function duumaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 }
 
 /**
- * បម្លែងទម្រង់កូដស្លាក់ ឬបៃ ទៅជាអត្ថបទ Gawekiif។
- * ទទួលបានទម្រង់កូដស្លាក់ ទម្រង់បៃ ឬទាំងពីរដែលមាន / ជីវ្ដាន។
- * @param teksto ( string , required ) - ទម្រង់បញ្ចូល។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function encodingAlGawekiif(teksto: string): string {
@@ -705,9 +705,9 @@ function encodingAlGawekiif(teksto: string): string {
 }
 
 /**
- * បម្លែងលេខបៃទៅជាទម្រង់ចំនួនកូដស្លាក់។
- * @param teksto ( string , required ) - លេខបៃ ( ɔ-ƨ )។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស។
+ * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param teksto ( string , required ) - ſɭɹ ſȷɔ ( ɔ-ƨ )
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function oktalaAlKodigo(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -715,9 +715,9 @@ function oktalaAlKodigo(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 }
 
 /**
- * បម្លែងទម្រង់ចំនួនកូដស្លាក់ទៅជាលេខបៃ។
- * @param teksto ( string , required ) - ទម្រង់ចំនួនកូដស្លាក់។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស។
+ * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function kodigoAlOktala(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -725,9 +725,9 @@ function kodigoAlOktala(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 }
 
 /**
- * បម្លែងលេខបៃទៅជាទម្រង់ចំនួនបៃ។
- * @param teksto ( string , required ) - លេខបៃ ( ɔ-ƨ )។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស។
+ * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param teksto ( string , required ) - ſɭɹ ſȷɔ ( ɔ-ƨ )
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function oktalaAlDuuma(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -743,9 +743,9 @@ function oktalaAlDuuma(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 }
 
 /**
- * បម្លែងទម្រង់ចំនួនបៃទៅជាលេខបៃ។
- * @param teksto ( string , required ) - ទម្រង់ចំនួនបៃ។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស។
+ * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function duumaAlOktala(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -762,11 +762,11 @@ function duumaAlOktala(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 }
 
 
-// ⟪ មុខងងឹតជំរើស ( បន្តទៀត ) 🔧 ⟫
+// ⟪ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ 🔧 ⟫
 
 /**
- * ធ្វើធម្មតានៃទម្រង់បញ្ចូល La3os ទៅជាការសរសេរលេខជំនួស។
- * @param teksto ( string , required ) - អត្ថបទបញ្ចូល។
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os )
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function normigiLa3osEnigon(teksto: string): string {
@@ -774,9 +774,9 @@ function normigiLa3osEnigon(teksto: string): string {
 }
 
 /**
- * បម្លែងអត្ថបទដោយប្រើភ្លាក់ស្លាក់ serxtabelo ( ការត្រូវគ្នាដែលវែងបំផុតមុន )។
- * @param teksto ( string , required ) - អត្ថបទបញ្ចូល។
- * @param serxtabelo ( Serxtabelo , required ) - តារាងស្វែងរក។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( serxtabelo )
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param serxtabelo ( Serxtabelo , required ) - ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗
  * @returns ĉeno
  */
 function konvertiPerSerxtabelo(teksto: string, serxtabelo: Serxtabelo, strikta = false): string {
@@ -794,7 +794,7 @@ function konvertiPerSerxtabelo(teksto: string, serxtabelo: Serxtabelo, strikta =
                 break;
             }
         }
-        /* ក្នុងរបៀបមិនត្រឹមត្រូវ អក្សរដែលមិនជា IPA ត្រូវបានលុបចោល។ */
+        /* ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩ */
         if ( !kongruis ) {
             if ( !strikta ) rezulto += teksto[i];
             i++;
@@ -804,8 +804,8 @@ function konvertiPerSerxtabelo(teksto: string, serxtabelo: Serxtabelo, strikta =
 }
 
 /**
- * បម្លែងការសរសេរលេខជំនួសទៅជា La3os ច្រើនតួអក្សរ។
- * @param teksto ( string , required ) - អត្ថបទដែលមានលេខ។
+ * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os )
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ
  * @returns ĉeno
  */
 function konvertiNumerikanAlLa3os(teksto: string): string {
@@ -817,8 +817,8 @@ function konvertiNumerikanAlLa3os(teksto: string): string {
 }
 
 /**
- * បម្លែង La3os ច្រើនតួអក្សរទៅជាការសរសេរលេខជំនួស។
- * @param teksto ( string , required ) - អត្ថបទដែលមានក្រុមតួអក្សរច្រើន ឬលេខ។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os )
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( La3os )
  * @returns ĉeno
  */
 function konvertiLa3osAlNumerika(teksto: string): string {
@@ -831,9 +831,9 @@ function konvertiLa3osAlNumerika(teksto: string): string {
 }
 
 /**
- * បម្លែងលេខទៅជា IPA ( តាម La3os )។
- * @param teksto ( string , required ) - អត្ថបទលេខ។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { laŭlitera? }។
+ * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os IPA )
+ * @param teksto ( string , required ) - ſɭɹ ſȷɔ
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
  * @returns ĉeno
  */
 function numerikaAlIpa(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -841,9 +841,9 @@ function numerikaAlIpa(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 }
 
 /**
- * បម្លែង IPA ទៅជាលេខ ( តាម La3os )។
- * @param teksto ( string , required ) - អត្ថបទ IPA។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { laŭlitera? }។
+ * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os IPA )
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
  * @returns ĉeno
  */
 function ipaAlNumerika(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -851,9 +851,9 @@ function ipaAlNumerika(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 }
 
 /**
- * បម្លែងលេខទៅជា Gawekiif ដោយផ្ទាល់។
- * @param teksto ( string , required ) - អត្ថបទលេខ។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { laŭlitera? }។
+ * ɭʃɀɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif )
+ * @param teksto ( string , required ) - ſɭɹ ſȷɔ
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
  * @returns ĉeno
  */
 function numerikaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -861,9 +861,9 @@ function numerikaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): strin
 }
 
 /**
- * បម្លែង Gawekiif ទៅជាលេខដោយផ្ទាល់។
- * @param teksto ( string , required ) - អត្ថបទ Gawekiif។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { laŭlitera? }។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif )
+ * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
  * @returns ĉeno
  */
 function gawekiifAlNumerika(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -877,9 +877,9 @@ interface VokalaKongruo {
 }
 
 /**
- * ស្វែងរកការត្រូវគ្នានៃពាក្យរបស់ស៊ីនៅទីតាំង។
- * @param teksto ( string , required ) - អត្ថបទសម្រាប់ស្វែងរក។
- * @param pozicio ( number , required ) - ទីតាំងដើម្បីចាប់ផ្ដើម។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
+ * @param pozicio ( number , required ) - ſɭɹ ſȷɔ
  * @returns kongruo
  */
 function troviVokalonJe(teksto: string, pozicio: number): VokalaKongruo | null {
@@ -892,8 +892,8 @@ function troviVokalonJe(teksto: string, pozicio: number): VokalaKongruo | null {
 }
 
 /**
- * បំបែកខ្សែ La3os ជាស៊ីឡាំងតាមទីតាំងរបស់ពាក្យរបស់ស៊ី។
- * @param teksto ( string , required ) - អត្ថបទបញ្ចូល។
+ * ſɟᴜ ɭʃᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os )
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ĉeno
  */
 function disigiEnSilabojn(teksto: string): string {
@@ -927,9 +927,9 @@ function disigiEnSilabojn(teksto: string): string {
 }
 
 /**
-* បញ្ចួលសញ្ញាមើល លើស៊ីឡាំងដែលចាប់ផ្ដើមដោយស៊ីឡាំងដែលមិនមានផ្ដើមក្នុងពាក្យ។
-* @param valoro ( string , required ) - ស៊ីឡាំង Gawekiif ដែលបានបម្លែងរួច។
-* @param silabo ( string , required ) - ស៊ីឡាំង La3os ដើម។
+* j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+* @param valoro ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( Gawekiif )
+* @param silabo ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( La3os )
 * @returns valoro
 */
 function aldonuKomenconSilabo(valoro: string, silabo: string): string {
@@ -938,8 +938,8 @@ function aldonuKomenconSilabo(valoro: string, silabo: string): string {
 }
 
 /**
-* បម្លែងស៊ីឡាំង La3os តែមួយទៅជា Gawekiif។
-* @param silabo ( string , required ) - ស៊ីឡាំងសម្រាប់បម្លែង។
+* ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os Gawekiif )
+* @param silabo ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
 * @returns ĉeno
 */
 function konvertiSilabon(silabo: string): string {
@@ -1009,8 +1009,8 @@ function konvertiSilabon(silabo: string): string {
 }
 
 /**
- * បម្លែងពាក្យ La3os ទៅជា Gawekiif។
- * @param vorto ( string , required ) - ពាក្យសម្រាប់បម្លែង។
+ * ɭʃɀɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os Gawekiif )
+ * @param vorto ( string , required ) - ſɭɔʞ
  * @returns ĉeno
  */
 function konvertiVorton(vorto: string): string {
@@ -1021,13 +1021,13 @@ function konvertiVorton(vorto: string): string {
     }).join(" ");
 }
 
-// ⟨ សញ្ញាវណ្ណយុត្តដែលឈរតែម្នាក់ឯង ( ".", ",", "|" ) ភ្ជាប់ដោយចន្លោះ មិនមែន "ʌ" ⟩
+// ⟨ j͑ʃᴜƽ ( . , | ʌ ) ⟩
 const INTERPUNKCIAJ_LA3OS: Record<string, string> = { ".": "⟅", ",": "｡" };
 const INTERPUNKCIAJ_IPA: Record<string, string> = { "/": "⟅", ",": "｡" };
 
 /**
- * ត្រួតពិនិត្យថា ពាក្យមានតែសញ្ញាវណ្ណយុត្ត La3os។
- * @param vorto ( string , required ) - ពាក្យសម្រាប់ត្រួតពិនិត្យ។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param vorto ( string , required ) - ſɭɔʞ
  * @returns jesne
  */
 function cxuNurLa3osInterpunkcio(vorto: string): boolean {
@@ -1036,8 +1036,8 @@ function cxuNurLa3osInterpunkcio(vorto: string): boolean {
 }
 
 /**
- * បម្លែងសញ្ញាវណ្ណយុត្ត La3os ទៅជា Gawekiif ដោយផ្ទាល់។
- * @param vorto ( string , required ) - ពាក្យសញ្ញាវណ្ណយុត្ត។
+ * ɭʃɀɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os Gawekiif )
+ * @param vorto ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns ĉeno
  */
 function konvertiLa3osInterpunkcion(vorto: string): string {
@@ -1045,8 +1045,8 @@ function konvertiLa3osInterpunkcion(vorto: string): string {
 }
 
 /**
- * ត្រួតពិនិត្យថា ពាក្យមានតែសញ្ញាវណ្ណយុត្ត IPA។
- * @param vorto ( string , required ) - ពាក្យសម្រាប់ត្រួតពិនិត្យ។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA )
+ * @param vorto ( string , required ) - ſɭɔʞ
  * @returns jesne
  */
 function cxuNurIpaInterpunkcio(vorto: string): boolean {
@@ -1055,8 +1055,8 @@ function cxuNurIpaInterpunkcio(vorto: string): boolean {
 }
 
 /**
- * បម្លែងសញ្ញាវណ្ណយុត្ត IPA ទៅជា Gawekiif ដោយផ្ទាល់។
- * @param vorto ( string , required ) - ពាក្យសញ្ញាវណ្ណយុត្ត។
+ * ɭʃɀɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA Gawekiif )
+ * @param vorto ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns ĉeno
  */
 function konvertiIpaInterpunkcion(vorto: string): string {
@@ -1064,11 +1064,11 @@ function konvertiIpaInterpunkcion(vorto: string): string {
 }
 
 
-// ⟪ មុខងងឹតបម្លែង 🔄 ⟫
+// ⟪ ɭʃɀɜ 🔄 ⟫
 
 /**
- * ត្រួតពិនិត្យថា លទ្ធផលបម្លែងមានតែសញ្ញាវណ្ណយុត្ត ( ".", ",", "/" )។
- * @param konvertita ( string , required ) - លទ្ធផលបម្លែងសម្រាប់ត្រួតពិនិត្យ។
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( . , / )
+ * @param konvertita ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns jesne
  */
 function cxuNurEligaInterpunkcio(konvertita: string): boolean {
@@ -1077,10 +1077,10 @@ function cxuNurEligaInterpunkcio(konvertita: string): boolean {
 }
 
 /**
- * បម្លែង Gawekiif ទៅជាទម្រង់ផ្សេងទៀត ( La3os ឬ IPA )។
- * @param teksto ( string , required ) - អត្ថបទ Gawekiif។
- * @param serxtabelo ( Serxtabelo , required ) - តារាងស្វែងរកគោល serxtabelo។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { laŭlitera?, majuskligi?, silabaDisigilo?, uziNumerikan? }។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif La3os IPA )
+ * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param serxtabelo ( Serxtabelo , required ) - ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? majuskligi? silabaDisigilo? uziNumerikan? }
  * @returns ĉeno
  */
 function konvertiGawekiif(teksto: string, serxtabelo: Serxtabelo, opcioj: KonvertajOpcioj = {}): string {
@@ -1119,9 +1119,9 @@ function konvertiGawekiif(teksto: string, serxtabelo: Serxtabelo, opcioj: Konver
 }
 
 /**
- * បម្លែង Gawekiif ទៅជា La3os។
- * @param teksto ( string , required ) - អត្ថបទ Gawekiif។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { uziNumerikan?, laŭlitera? }។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif La3os )
+ * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { uziNumerikan? laŭlitera? }
  * @returns ĉeno
  */
 function gawekiifAlLa3os(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -1129,9 +1129,9 @@ function gawekiifAlLa3os(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 }
 
 /**
- * បម្លែង La3os ទៅជា Gawekiif។
- * @param teksto ( string , required ) - អត្ថបទ La3os។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { laŭlitera? }។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os Gawekiif )
+ * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( La3os )
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
  * @returns ĉeno
  */
 function la3osAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -1154,10 +1154,10 @@ function la3osAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 }
 
 /**
- * បម្លែងស៊ីឡាំងដោយប្រើតារាង serxtabelo ជាមួយការដំណើរការជីវ្ដាន។
- * @param teksto ( string , required ) - អត្ថបទបញ្ចូល។
- * @param serxtabelo ( Serxtabelo , required ) - តារាងស្វែងរក។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { laŭlitera?, enigaDisigilo?, eligaDisigilo?, antaŭprilabori? }។
+ * ɭʃɀɜ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( serxtabelo )
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param serxtabelo ( Serxtabelo , required ) - ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? enigaDisigilo? eligaDisigilo? antaŭprilabori? }
  * @returns ĉeno
  */
 function konvertiSilabojn(teksto: string, serxtabelo: Serxtabelo, opcioj: KonvertajOpcioj = {}): string {
@@ -1171,9 +1171,9 @@ function konvertiSilabojn(teksto: string, serxtabelo: Serxtabelo, opcioj: Konver
 }
 
 /**
- * បម្លែង La3os ទៅជា IPA។
- * @param teksto ( string , required ) - អត្ថបទ La3os។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { laŭlitera? }។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os IPA )
+ * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( La3os )
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
  * @returns ĉeno
  */
 function la3osAlIpa(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -1192,18 +1192,16 @@ function la3osAlIpa(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 }
 
 /**
- * បម្លែង IPA ទៅជា La3os។
- * @param teksto ( string , required ) - អត្ថបទ IPA។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { laŭlitera?, uziNumerikan? }។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA La3os )
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? uziNumerikan? }
  * @returns ĉeno
  */
 function ipaAlLa3os(teksto: string, opcioj: KonvertajOpcioj = {}): string {
     const { uziNumerikan = true } = opcioj;
     const serxtabelo = SERXTABELO.ipa_la3os;
 
-    /* ចំនាប់នៅ IPA គឺជាពាក្យ ហើយ "េ" គឺជាសញ្ញាស៊ីឡាំងក្នុងពាក្យ។ ចំនាប់ធម្មតាគឺសម្លោះ
-       ហើយក្នុងរបៀបអក្សរធម្មតាវាជាពាក្យភ្លោះណាស់។ ដូច្នេះយើងរក្សាប្រព័ន្ធនឹងអក្សររបស់បំណែក។
-       ចំនាប់ "េ" ត្រូវបានដកចេញ ដូច្នេះ La3os មិនមានស៊ីឡាំងក្នុងពាក្យទេ តែមានសម្លោះជាដង់។ */
+    /* ⟨ j͑ʃᴜƽ ʌ ſɭɔʞ ( IPA . ) ⟩ */
     const vortoj = String(teksto).split(/\s+/).filter(Boolean);
 
     const kunigita = vortoj.map(vorto => vorto.split(".").map(silabo => konvertiPerSerxtabelo(silabo, serxtabelo, true)).filter(Boolean).join("")).filter(Boolean).join(" ");
@@ -1212,9 +1210,9 @@ function ipaAlLa3os(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 }
 
 /**
- * បម្លែង Gawekiif ទៅជា IPA ដោយផ្ទាល់។
- * @param teksto ( string , required ) - អត្ថបទ Gawekiif។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { laŭlitera? }។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif IPA )
+ * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( Gawekiif )
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
  * @returns ĉeno
  */
 function gawekiifAlIpa(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -1222,9 +1220,9 @@ function gawekiifAlIpa(teksto: string, opcioj: KonvertajOpcioj = {}): string {
 }
 
 /**
-* រក IPA ស៊ីឡាំងមួយដែលចាប់ផ្ដើមដោយស៊ីឡាំងទៅចុង។
-* @param silabo ( string , required ) - ស៊ីឡាំង IPA។
-* @param pozicio ( number = 0o0 , optional ) - ទីតាំងចាប់ផ្ដើមស្វែងសម្រាប់បន្ថែម។
+* ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA )
+* @param silabo ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
+* @param pozicio ( number = 0o0 , optional ) - ſɭɹ ſȷɔ ( 0 )
 * @returns kungruo
 */
 function troviVokalonIpaJe( silabo: string, pozicio: number = 0o0 ): { pozicio: number, vokalo: string, longo: number } | null {
@@ -1237,12 +1235,12 @@ function troviVokalonIpaJe( silabo: string, pozicio: number = 0o0 ): { pozicio: 
 }
 
 /**
-* បំបែកស៊ីឡាំង IPA ដោយផ្ទាល់ ដោយមិនឆ្លងកាត់ La3os ទេ។
-* @param teksto ( string , required ) - អត្ថបទ IPA។
+* ſɟᴜ ɭʃᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA La3os )
+* @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
 * @returns silaboj
 */
 function disigiIpaEnSilabojn( teksto: string ): string[] {
-    /* ចំនាប់ "េ" ក្នុង IPA បំបែកស៊ីឡាំង ដូច្នេះមិនត្រូវចូលក្នុងស៊ីឡាំងទេ។ */
+    /* ⟨ j͑ʃᴜƽ ( IPA ) ⟩ */
     const rezulto: string[] = [];
     for ( const segmento of teksto.split(".") ) {
         if ( !segmento ) continue;
@@ -1279,9 +1277,9 @@ function disigiIpaEnSilabojn( teksto: string ): string[] {
 }
 
 /**
-* បម្លែងស៊ីឡាំង IPA តែមួយទៅជា Gawekiif ដោយផ្ទាល់ ដោយមិនឆ្លងកាត់ La3os ទេ។
-* @param silabo ( string , required ) - ស៊ីឡាំង IPA។
-* @param estasKomenca ( boolean = false , optional ) - ស៊ីឡាំងនេះជាស៊ីឡាំងដំបូងនៃពាក្យ។
+* ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA Gawekiif )
+* @param silabo ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
+* @param estasKomenca ( boolean = false , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( 1 )
 * @returns ĉeno
 */
 function konvertiIpaSilabon( silabo: string ): string {
@@ -1297,7 +1295,7 @@ function konvertiIpaSilabon( silabo: string ): string {
 
     let rezulto = "";
 
-    /* ផ្ដើមស៊ីឡាំង - របៀបផ្ដើម ព្រោះស៊ីឡាំងនីមួយៗ ត្រូវចាន់ស្នាក់ដោយឯករាជ្យ។ */
+    /* ⟨ j͑ʃᴜ ı],ɔ ʌ j͑ʃᴜƽ ⟩ */
     let unuaKonsonanto = true;
     for ( let i = 0o0; i < vokalo.pozicio; ) {
         let kongruis = false;
@@ -1316,7 +1314,7 @@ function konvertiIpaSilabon( silabo: string ): string {
 
     rezulto += internaSerxtabelo.map[vokalo.vokalo] || komencaSerxtabelo.map[vokalo.vokalo] || "";
 
-    /* ក្រោយស៊ីឡាំង - របៀបក្នុងពាក្យ។ */
+    /* ⟨ j͑ʃᴜƽ ⟩ */
     const resto = silabo.slice( vokalo.pozicio + vokalo.longo );
     for ( const klavo of internaSerxtabelo.keys ) {
         if ( VOKALOJ_IPA.includes( klavo ) ) continue;
@@ -1329,9 +1327,9 @@ function konvertiIpaSilabon( silabo: string ): string {
 }
 
 /**
-* បម្លែង IPA ទៅជា Gawekiif ដោយផ្ទាល់។
-* @param teksto ( string , required ) - អត្ថបទ IPA។
-* @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { laŭlitera? }។
+* ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA Gawekiif )
+* @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
+* @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { laŭlitera? }
 * @returns ĉeno
 */
 function ipaAlGawekiif(teksto: string, opcioj: KonvertajOpcioj = {}): string {
@@ -1366,11 +1364,11 @@ const vortoj = String(teksto).split(/\s+/).filter(Boolean);
 }
 
 /**
- * បម្លែងជុំជារវាងទម្រង់។
- * @param teksto ( string , required ) - អត្ថបទបញ្ចូល។
- * @param de ( string , required ) - ទម្រង់ប្រភព។
- * @param al ( string , required ) - ទម្រង់គោល។
- * @param opcioj ( KonvertajOpcioj = {} , optional ) - ជម្រើស - { uziNumerikan?, laŭlitera? }។
+ * ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * @param teksto ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param de ( string , required ) - ſɭɔ˞ᴜ ſɭᴜ
+ * @param al ( string , required ) - ſɭɔ˞ᴜ ſɭᴜ
+ * @param opcioj ( KonvertajOpcioj = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { uziNumerikan? laŭlitera? }
  * @returns ĉeno
  */
 function konverti(teksto: string, de: string, al: string, opcioj: KonvertajOpcioj = {}): string {
@@ -1415,7 +1413,7 @@ function konverti(teksto: string, de: string, al: string, opcioj: KonvertajOpcio
 }
 
 
-// ⟪ អត្ថបទលទ្ធផ្លែងករណី 📤 ⟫
+// ⟪ ꞁȷ̀ɔ j͑ʃƽɔƽ 📤 ⟫
 
 if ( typeof module !== "undefined" && module.exports ) {
     module.exports = {
@@ -1458,7 +1456,7 @@ if ( typeof module !== "undefined" && module.exports ) {
 }
 
 
-// ⟪ ការចាប់ផ្ដើម UI ( កម្មវិធីរុករក ) 🖥️ ⟫
+// ⟪ j͑ʃᴜ ı],ɔ 🖥️ ⟫
 
 (function() {
     if ( typeof document === "undefined" ) return;

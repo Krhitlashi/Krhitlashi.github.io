@@ -73,8 +73,8 @@ const MIME_TIPOJ: Record<string, string> = {
   woff2: "font/woff2",
 };
 
-// ⟨ មូលដ្ឋាន CAX2L - គេចណ៍នាំ He ជាគ្រាប់ក្នុង ⏱️ ⟩
-// អ៉ានុកិច្ចនៃ FFmpeg ប្រើវិនាទីស៊ីវិល ដូច្នេះវិនាទីស៊ីវិលមិនប្រែទូទៅ He បាន
+// ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ - ֭ſɭɔ ⏱️ ⟩
+// j͑ʃ'ɔ ſȷᴜͷ̗ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( FFmpeg )
 const SEKUNDOJ_POR_MINUTO = 0o74;
 const SEKUNDOJ_POR_HORO = 0o7020;
 
