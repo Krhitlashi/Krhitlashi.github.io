@@ -56,11 +56,11 @@ const GAWEK2F_SAK2FE = {
     "ɩ": { en: "6", ar: "٦", fa: "۶", hi: "६", bn: "৬", th: "๖", my: "၆", km: "៦", lo: "໖" },
     "ƨ": { en: "7", ar: "٧", fa: "۷", hi: "७", bn: "৭", th: "๗", my: "၇", km: "៧", lo: "໗" }
 };
-function skakefK2fe(okef) {
-    if ( kxesuGawe === "aih" ) return okef;
-    if ( !okef ) return "";
+function skakefK2fe(k61e) {
+    if ( kxesuGawe === "aih" ) return k61e;
+    if ( !k61e ) return "";
     let ts0ni = "";
-    for ( let kp6 of okef ) {
+    for ( let kp6 of k61e ) {
         const sak2fe = GAWEK2F_SAK2FE[kp6]?.[kxesuGawe];
         ts0ni += sak2fe !== undefined ? sak2fe : kp6;
     }

@@ -39,22 +39,22 @@ function vab6cajaDomani(xap2suK2fe, aahukani = 6) {
     return tlakakulCajasuK2fe + " " + quqalDomanisuOk2fe(bakaweDomani, aahukani);
 }
 
-function nenllakKp6EKfo(okef) {
-    if ( !okef || okef === "" ) return { kfosu: false, eq2kOkef: "" };
-    if ( okef.startsWith("›") ) {
-        return { kfosu: true, eq2kOkef: okef.slice(1) };
+function nenllakKp6EKfo(k61e) {
+    if ( !k61e || k61e === "" ) return { kfosu: false, eq2kK61e: "" };
+    if ( k61e.startsWith("›") ) {
+        return { kfosu: true, eq2kK61e: k61e.slice(1) };
     }
-    return { kfosu: false, eq2kOkef: okef };
+    return { kfosu: false, eq2kK61e: k61e };
 }
 
-function neq2qKp6EKfo(okef, a1akfo) {
-    return a1akfo ? "›" + okef : okef;
+function neq2qKp6EKfo(k61e, a1akfo) {
+    return a1akfo ? "›" + k61e : k61e;
 }
 
-function quqEskekK2fe(okef) {
-    if ( !okef || okef === "" ) return 0;
+function quqEskekK2fe(k61e) {
+    if ( !k61e || k61e === "" ) return 0;
     let ok2fe = 0;
-    for ( let kp6 of okef ) {
+    for ( let kp6 of k61e ) {
         const ruva = K2FETBONI.get(kp6);
         if ( ruva !== undefined ) {
             ok2fe = ok2fe * KNAK2FE + ruva;
@@ -63,11 +63,11 @@ function quqEskekK2fe(okef) {
     return ok2fe;
 }
 
-function vab6k2fekp6(okef) {
-    if ( !okef || okef === "" ) return 0;
-    const pukfo = okef.startsWith("›") ? -1 : 1;
-    const eq2kOkef = pukfo < 0 ? okef.slice(1) : okef;
-    return quqEskekK2fe(eq2kOkef) * pukfo;
+function vab6k2fekp6(k61e) {
+    if ( !k61e || k61e === "" ) return 0;
+    const pukfo = k61e.startsWith("›") ? -1 : 1;
+    const eq2kK61e = pukfo < 0 ? k61e.slice(1) : k61e;
+    return quqEskekK2fe(eq2kK61e) * pukfo;
 }
 
 function quqDomani(hatok2fe, knak2fesuK2fe = KNAK2FE) {

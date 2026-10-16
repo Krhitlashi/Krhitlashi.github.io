@@ -1,28 +1,28 @@
 import { FFmpeg, FFFSType } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 
-const TEKSTO = {
-  CHOOSE_FILE: "ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ ʌ j͑ʃw ſɭʞɹȝ ʌ ſɟᴜ j͑ʃ'ɜ ſןɹ ⟅",
-  CHOOSE_FORMAT: "ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ ʌ j͑ʃw ſɭʞɹȝ ʌ ſɭɔ ֭ſɭɔ }ʃꞇ ⟅",
-  READY: "ꞁȷ̀ᴜ ŋᷠᴜͷ̗ ꞁȷ̀ᴜꞇ ʌ ꞁȷ̀ɜ ɭʃɀɜ ⟅",
-  CONVERTING: (nomo: string) => `ſɭᶗ‹ɔ ʌ ɭʃɀɜ ⸙ ${nomo} ⸙ ⟅`,
-  LOADING_ENGINE: "ſɭᶗ‹ɔ ʌ ʃэ ɭʃɔ ŋᷠɹ ʌ ſɟᴜ ɭʃɀɜ ⟅",
-  LOADING_FONT_ENGINE: "ſɭᶗ‹ɔ ʌ ʃэ ɭʃɔ ŋᷠɹ ʌ ſɟᴜ ɭʃɀɜ ʌ ɭʃᴜ j͐ʃᴜ ſ͔ɭᴜ ⟅",
-  CONVERTING_FONT: "ſɭᶗ‹ɔ ʌ ɭʃɀɜ ʌ j͐ʃᴜ ſ͔ɭᴜ ⟅",
-  ENCODING: (mesaĝo: string) => `j͑ʃ'ᴜ ɽ͑ʃ'w ɭʃᴜ ${mesaĝo} ⟅`,
-  DONE: (formato: string) => `ſ̀ȷᴜ ſɭᴜƽ ⟅ ${formato} ⟅`,
-  FAILED: "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )",
-  ERROR: (eraro: string) => `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ⸙ ${eraro} ⸙ ⟅`,
-  DOWNLOAD_DEFAULT: "ſ͕ɭwc̭ ſɭɹ ⟅",
-  DOWNLOAD: (nomo: string) => `ſ͕ɭwc̭ ſɭɹ ⸙ ${nomo} ⸙ ⟅`,
-  COMPRESSING: (paŝo: number, tuta: number) => `ſɭᶗ‹ɔ ʌ j͑ʃ'ᴜ ŋᷠɹ ⸙ ${paŝo}/${tuta} ⸙ ⟅`,
-  DETECTING_DURATION: "ſɭᶗ‹ɔ ʌ ſ͕ɭwȝ ʌ j͑ʃᴜ ſןɔ˞ɔ ſᶘꞇ ⟅",
+const K61e = {
+  SUKF2Q_CAKAVOP2: "ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ ʌ j͑ʃw ſɭʞɹȝ ʌ ſɟᴜ j͑ʃ'ɜ ſןɹ ⟅",
+  SUKF2Q_HAT: "ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ ʌ j͑ʃw ſɭʞɹȝ ʌ ſɭɔ ֭ſɭɔ }ʃꞇ ⟅",
+  B6TEM2: "ꞁȷ̀ᴜ ŋᷠᴜͷ̗ ꞁȷ̀ᴜꞇ ʌ ꞁȷ̀ɜ ɭʃɀɜ ⟅",
+  KF2_CAKAVOP2: (ksaka: string) => `ſɭᶗ‹ɔ ʌ ɭʃɀɜ ⸙ ${ksaka} ⸙ ⟅`,
+  B6TEM2_KF2: "ſɭᶗ‹ɔ ʌ ʃэ ɭʃɔ ŋᷠɹ ʌ ſɟᴜ ɭʃɀɜ ⟅",
+  B6TEM2_LAGA: "ſɭᶗ‹ɔ ʌ ʃэ ɭʃɔ ŋᷠɹ ʌ ſɟᴜ ɭʃɀɜ ʌ ɭʃᴜ j͐ʃᴜ ſ͔ɭᴜ ⟅",
+  KF2_LAGA: "ſɭᶗ‹ɔ ʌ ɭʃɀɜ ʌ j͐ʃᴜ ſ͔ɭᴜ ⟅",
+  KF2: (k61e: string) => `j͑ʃ'ᴜ ɽ͑ʃ'w ɭʃᴜ ${k61e} ⟅`,
+  ARAQ: (hat: string) => `ſ̀ȷᴜ ſɭᴜƽ ⟅ ${hat} ⟅`,
+  TLOHK2NI: "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )",
+  TLOHK2NI_XEMA: (tlohk2ni: string) => `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ⸙ ${tlohk2ni} ⸙ ⟅`,
+  QUMK2_SAXE: "ſ͕ɭwc̭ ſɭɹ ⟅",
+  QUMK2_K61E: (ksaka: string) => `ſ͕ɭwc̭ ſɭɹ ⸙ ${ksaka} ⸙ ⟅`,
+  PU: (k2fe: number, saxeAraq: number) => `ſɭᶗ‹ɔ ʌ j͑ʃ'ᴜ ŋᷠɹ ⸙ ${k2fe}/${saxeAraq} ⸙ ⟅`,
+  QUQ_HEANI: "ſɭᶗ‹ɔ ʌ ſ͕ɭwȝ ʌ j͑ʃᴜ ſןɔ˞ɔ ſᶘꞇ ⟅",
 } as const;
 
-const FONTA_CDN = "https://esm.sh/fontverter";
+const SAXE_CDN = "https://esm.sh/fontverter";
 const FFMPEG_CDN = "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm";
 
-const FORMATAJ_ETIKEDOJ: Record<string, string> = {
+const HAT_KSAKA: Record<string, string> = {
   mp3: "MP3 ( audio )",
   wav: "WAV ( audio )",
   m4a: "M4A ( audio )",
@@ -38,20 +38,20 @@ const FORMATAJ_ETIKEDOJ: Record<string, string> = {
   bmp: "BMP ( image )",
   ico: "ICO ( image )",
   tiff: "TIFF ( image )",
-  ttf: "TTF ( tiparo )",
-  otf: "OTF ( tiparo )",
-  woff: "WOFF ( tiparo )",
-  woff2: "WOFF2 ( tiparo )",
+  ttf: "TTF ( laga )",
+  otf: "OTF ( laga )",
+  woff: "WOFF ( laga )",
+  woff2: "WOFF2 ( laga )",
 };
 
-const FORMATAJ_OPCIOJ: Record<"audio" | "video" | "image" | "font", string[]> = {
+const HAT_CA1ARA: Record<"audio" | "video" | "image" | "font", string[]> = {
   audio: [ "mp3", "wav", "m4a", "ogg", "aac", "flac" ],
   video: [ "mp4", "webm", "gif" ],
   image: [ "png", "jpeg", "webp", "gif", "bmp", "ico", "tiff" ],
   font: [ "ttf", "otf", "woff", "woff2" ],
 };
 
-const MIME_TIPOJ: Record<string, string> = {
+const MIME_HAT: Record<string, string> = {
   mp3: "audio/mpeg",
   wav: "audio/wav",
   m4a: "audio/mp4",
@@ -75,518 +75,518 @@ const MIME_TIPOJ: Record<string, string> = {
 
 // ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ - ֭ſɭɔ ⏱️ ⟩
 // j͑ʃ'ɔ ſȷᴜͷ̗ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( FFmpeg )
-const SEKUNDOJ_POR_MINUTO = 0o74;
-const SEKUNDOJ_POR_HORO = 0o7020;
+const HEANI_QEANI = 0o74;
+const HEANI_HAQEANI = 0o7020;
 
-const PROPORCIO_MAKSIMA = 0o72 / 0o100;
+const SEFINI_L6DA_KEMAFI = 0o72 / 0o100;
 
-const DOSIERA_ENIGO = document.getElementById("konvertilo-dosiera-enigo") as HTMLInputElement;
-const CELUJO = document.getElementById("konvertilo-celaj-formatoj") as HTMLElement;
-const RULI_BUTONO = document.getElementById("konvertilo-ruli") as HTMLButtonElement;
-const STATO_TEKSTO = document.getElementById("konvertilo-stato") as HTMLParagraphElement;
-const REZULTA_PANELO = document.getElementById("konvertilo-rezulto") as HTMLElement;
-const AUDIA_ANTASENO = document.getElementById("konvertilo-antaseno-audio") as HTMLAudioElement;
-const VIDA_ANTASENO = document.getElementById("konvertilo-antaseno-video") as HTMLVideoElement;
-const BILDA_ANTASENO = document.getElementById("konvertilo-antaseno-bildo") as HTMLImageElement;
-const TIPARA_ANTASENO = document.getElementById("konvertilo-antaseno-tiparo") as HTMLParagraphElement;
-const ELŜUTA_LIGILO = document.getElementById("konvertilo-elŝuto") as HTMLAnchorElement;
-const PROGRESA_BARECO = document.getElementById("konvertilo-progreso") as HTMLElement;
+const CAKAVOP2_XEMA = document.getElementById("cakavop2-xema") as HTMLInputElement;
+const ARAQ_XEMA = document.getElementById("araq-xema") as HTMLElement;
+const KEVE_KEK = document.getElementById("keve-kek") as HTMLButtonElement;
+const K61E_KEK = document.getElementById("k61e-kek") as HTMLParagraphElement;
+const hatSuntaKuba = document.getElementById("hat-sunta-kuba") as HTMLElement;
+const AUDIA_SUNTA_KUBA = document.getElementById("audia-sunta-kuba") as HTMLAudioElement;
+const VIDA_SUNTA_KUBA = document.getElementById("vida-sunta-kuba") as HTMLVideoElement;
+const BILDA_SUNTA_KUBA = document.getElementById("bilda-sunta-kuba") as HTMLImageElement;
+const LAGA_SUNTA_KUBA = document.getElementById("laga-sunta-kuba") as HTMLParagraphElement;
+const QUMK2 = document.getElementById("qumk2") as HTMLAnchorElement;
+const K2FE_KUBA = document.getElementById("k2fe-kuba") as HTMLElement;
 
 const ffmpeg = new FFmpeg();
-let ffmpegPret = false;
-let ffmpegŜarganta = false;
-let lastaDaŭroSekundoj = 0o0;
+let ffmpegPu = false;
+let ffmpegB6tem2 = false;
+let kxesuK2fe = 0o0;
 
-const KOMPRESA_BASKULO = document.getElementById("konvertilo-kompreso-baskulo") as HTMLInputElement;
-const KOMPRESA_BASKULA_ETIKEDO = document.getElementById("konvertilo-kompreso-baskula-etikedo") as HTMLLabelElement;
-const KOMPRESAJ_OPCIOJ = document.getElementById("konvertilo-kompresaj-opcioj") as HTMLElement;
-const CELA_GRANDA_ENIGO = document.getElementById("konvertilo-cela-grando") as HTMLInputElement;
-const GRANDA_UNUO_UJO = document.getElementById("konvertilo-granda-unuo") as HTMLElement;
+const PU_KEK = document.getElementById("pu-kek") as HTMLInputElement;
+const PU_KEK_KSAKA = document.getElementById("pu-kek-ksaka") as HTMLLabelElement;
+const PU_XEMA = document.getElementById("pu-xema") as HTMLElement;
+const ARAQ_PU_XEMA = document.getElementById("araq-pu-xema") as HTMLInputElement;
+const PU_K2FE_XEMA = document.getElementById("pu-k2fe-xema") as HTMLElement;
 
-function agordiStaton( mesaĝo: string ): void {
-  STATO_TEKSTO.textContent = mesaĝo;
+function suntaK61e( k61e: string ): void {
+  K61E_KEK.textContent = k61e;
 }
 
-function agordiProgreson( procento: number ): void {
-  PROGRESA_BARECO.classList.remove( "kobe" );
-  PROGRESA_BARECO.style.setProperty( "--តេមិនី", String( Math.max( 0o0, Math.min( 0o100, procento ) ) / 0o100 ) );
+function suntaK2fe( k2fe: number ): void {
+  K2FE_KUBA.classList.remove( "kobe" );
+  K2FE_KUBA.style.setProperty( "--តេមិនី", String( Math.max( 0o0, Math.min( 0o100, k2fe ) ) / 0o100 ) );
 }
 
-function finigiProgreson(): void {
-  PROGRESA_BARECO.style.setProperty( "--តេមិនី", "0" );
-  PROGRESA_BARECO.classList.add( "kobe" );
+function ne1aK2fe(): void {
+  K2FE_KUBA.style.setProperty( "--តេមិនី", "0" );
+  K2FE_KUBA.classList.add( "kobe" );
 }
 
-function ŝoviTlaku( elemento: HTMLElement, montri: boolean ): void {
-  if ( montri ) {
-    elemento.classList.remove( "kobe" );
+function vop2Kuba( kek: HTMLElement, sunta: boolean ): void {
+  if ( sunta ) {
+    kek.classList.remove( "kobe" );
   } else {
-    elemento.classList.add( "kobe" );
+    kek.classList.add( "kobe" );
   }
 }
 
-function montriAntasenon( elemento: HTMLMediaElement | HTMLImageElement, blobURL: string ): void {
-  elemento.src = blobURL;
-  elemento.style.display = "";
-  if ("load" in elemento && typeof elemento.load === "function") {
-    elemento.load();
+function suntaKuba( kek: HTMLMediaElement | HTMLImageElement, k61e: string ): void {
+  kek.src = k61e;
+  kek.style.display = "";
+  if ("load" in kek && typeof kek.load === "function") {
+    kek.load();
   }
 }
 
-function prezentiRezulton( blobURL: string, eliraNomo: string, celaFormato: string ): void {
-  ELŜUTA_LIGILO.href = blobURL;
-  ELŜUTA_LIGILO.download = eliraNomo;
-  ELŜUTA_LIGILO.textContent = TEKSTO.DOWNLOAD(eliraNomo);
-  ŝoviTlaku( REZULTA_PANELO, true );
-  agordiProgreson( 0o100 );
-  setTimeout( finigiProgreson, 0o620 );
-  agordiStaton(TEKSTO.DONE(celaFormato.toUpperCase()));
+function sunta( k61e: string, suntaKsaka: string, araqHat: string ): void {
+  QUMK2.href = k61e;
+  QUMK2.download = suntaKsaka;
+  QUMK2.textContent = K61e.QUMK2_K61E(suntaKsaka);
+  vop2Kuba( hatSuntaKuba, true );
+  suntaK2fe( 0o100 );
+  setTimeout( ne1aK2fe, 0o620 );
+  suntaK61e(K61e.ARAQ(araqHat.toUpperCase()));
 }
 
-function detektiDosierKategorion( dosiero: File ): "audio" | "video" | "image" | "font" {
-  const tipo = dosiero.type.toLowerCase();
-  if ( tipo.startsWith("video/") ) return "video";
-  if ( tipo.startsWith("audio/") ) return "audio";
-  if ( tipo.startsWith("image/") ) return "image";
-  if ( tipo.startsWith("font/") || tipo.includes("font") ) return "font";
+function quqCakavop2Hat( cakavop2: File ): "audio" | "video" | "image" | "font" {
+  const hat = cakavop2.type.toLowerCase();
+  if ( hat.startsWith("video/") ) return "video";
+  if ( hat.startsWith("audio/") ) return "audio";
+  if ( hat.startsWith("image/") ) return "image";
+  if ( hat.startsWith("font/") || hat.includes("font") ) return "font";
 
-  const pliMalgrandaNomo = dosiero.name.toLowerCase();
-  if ( /\.(mov|mp4|m4v|webm|avi|mkv|ogv)$/i.test(pliMalgrandaNomo) ) return "video";
-  if ( /\.(mp3|wav|m4a|ogg|aac|flac|wma)$/i.test(pliMalgrandaNomo) ) return "audio";
-  if ( /\.(png|jpg|jpeg|webp|gif|bmp|ico|tiff)$/i.test(pliMalgrandaNomo) ) return "image";
-  if ( /\.(ttf|otf|woff|woff2)$/i.test(pliMalgrandaNomo) ) return "font";
+  const m2Ksaka = cakavop2.name.toLowerCase();
+  if ( /\.(mov|mp4|m4v|webm|avi|mkv|ogv)$/i.test(m2Ksaka) ) return "video";
+  if ( /\.(mp3|wav|m4a|ogg|aac|flac|wma)$/i.test(m2Ksaka) ) return "audio";
+  if ( /\.(png|jpg|jpeg|webp|gif|bmp|ico|tiff)$/i.test(m2Ksaka) ) return "image";
+  if ( /\.(ttf|otf|woff|woff2)$/i.test(m2Ksaka) ) return "font";
 
   return "audio";
 }
 
-function ĝisdatigiCelajnFormatojn( kategorio: "audio" | "video" | "image" | "font" ): void {
-  CELUJO.innerHTML = "";
-  const opcioj = FORMATAJ_OPCIOJ[kategorio];
-  opcioj.forEach((formato, indekso) => {
-    const etikedaElemento = document.createElement("label");
+function v3ak2AraqHat( hat: "audio" | "video" | "image" | "font" ): void {
+  ARAQ_XEMA.innerHTML = "";
+  const k61eCa1ara = HAT_CA1ARA[hat];
+  k61eCa1ara.forEach((hat, k2fe) => {
+    const ksakaKek = document.createElement("label");
     
-    const enigaElemento = document.createElement("input");
-    enigaElemento.type = "radio";
-    enigaElemento.name = "cela-formato";
-    enigaElemento.value = formato;
-    if ( indekso === 0o0 ) {
-      enigaElemento.checked = true;
+    const xemaKek = document.createElement("input");
+    xemaKek.type = "radio";
+    xemaKek.name = "araq-hat";
+    xemaKek.value = hat;
+    if ( k2fe === 0o0 ) {
+      xemaKek.checked = true;
     }
 
-    const pElemento = document.createElement("p");
-    pElemento.className = "cepufalxez";
-    pElemento.textContent = FORMATAJ_ETIKEDOJ[formato];
+    const k61eKek = document.createElement("p");
+    k61eKek.className = "cepufalxez";
+    k61eKek.textContent = HAT_KSAKA[hat];
 
-    etikedaElemento.appendChild(pElemento);
-    etikedaElemento.appendChild(enigaElemento);
-    CELUJO.appendChild(etikedaElemento);
+    ksakaKek.appendChild(k61eKek);
+    ksakaKek.appendChild(xemaKek);
+    ARAQ_XEMA.appendChild(ksakaKek);
   });
 }
 
-function akiriElektitanCelFormaton(): string {
-  const elektitaRadio = CELUJO.querySelector("input[name='cela-formato']:checked") as HTMLInputElement | null;
-  return elektitaRadio ? elektitaRadio.value : "";
+function quqAraqHat(): string {
+  const kxesuKek = ARAQ_XEMA.querySelector("input[name='araq-hat']:checked") as HTMLInputElement | null;
+  return kxesuKek ? kxesuKek.value : "";
 }
 
-function akiriEliraMIME( celaFormato: string ): string {
-  return MIME_TIPOJ[celaFormato] ?? "application/octet-stream";
+function quqHat( araqHat: string ): string {
+  return MIME_HAT[araqHat] ?? "application/octet-stream";
 }
 
-function akiriElektitanGrandanUnuon(): string {
-  const elektitaRadio = GRANDA_UNUO_UJO.querySelector("input[name='granda-unuo']:checked") as HTMLInputElement | null;
-  return elektitaRadio ? elektitaRadio.value : "mb";
+function quqPuK61e(): string {
+  const kxesuKek = PU_K2FE_XEMA.querySelector("input[name='pu-k2fe']:checked") as HTMLInputElement | null;
+  return kxesuKek ? kxesuKek.value : "m2Sab2";
 }
 
-function akiriCelajnBajtojn(): number {
-  const valoro = parseFloat(CELA_GRANDA_ENIGO.value) || 0o10;
-  const unuo = akiriElektitanGrandanUnuon();
-  if ( unuo === "gb" ) {
-    return valoro * 0o2000 * 0o2000 * 0o2000;
+function quqAraqK2fe(): number {
+  const k2fe = parseFloat(ARAQ_PU_XEMA.value) || 0o10;
+  const k61e = quqPuK61e();
+  if ( k61e === "puSab2" ) {
+    return k2fe * 0o2000 * 0o2000 * 0o2000;
   }
-  return valoro * 0o2000 * 0o2000;
+  return k2fe * 0o2000 * 0o2000;
 }
 
-function ĉuKompresoŜaltita(): boolean {
-  return KOMPRESA_BASKULO.checked;
+function puHat(): boolean {
+  return PU_KEK.checked;
 }
 
-function akiriKonvertajnArgumentojn( enigaNomo: string, eliraNomo: string, kategorio: "audio" | "video" | "image" | "font", celaFormato: string ): string[] {
-  if ( kategorio === "image" ) {
-    if ( celaFormato === "ico" ) {
-      return [ "-y", "-i", enigaNomo, "-s", "256x256", eliraNomo ];
+function kf2K61eCa1ara( xemaKsaka: string, suntaKsaka: string, hat: "audio" | "video" | "image" | "font", araqHat: string ): string[] {
+  if ( hat === "image" ) {
+    if ( araqHat === "ico" ) {
+      return [ "-y", "-i", xemaKsaka, "-s", "256x256", suntaKsaka ];
     }
-    return [ "-y", "-i", enigaNomo, eliraNomo ];
+    return [ "-y", "-i", xemaKsaka, suntaKsaka ];
   }
 
-  if ( kategorio === "audio" ) {
-    if ( celaFormato === "wav" ) {
-      return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "pcm_s16le", "-ar", "44100", eliraNomo ];
+  if ( hat === "audio" ) {
+    if ( araqHat === "wav" ) {
+      return [ "-y", "-i", xemaKsaka, "-vn", "-c:a", "pcm_s16le", "-ar", "44100", suntaKsaka ];
     }
-    if ( celaFormato === "m4a" || celaFormato === "aac" ) {
-      return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "aac", "-b:a", "192k", eliraNomo ];
+    if ( araqHat === "m4a" || araqHat === "aac" ) {
+      return [ "-y", "-i", xemaKsaka, "-vn", "-c:a", "aac", "-b:a", "192k", suntaKsaka ];
     }
-    if ( celaFormato === "ogg" ) {
-      return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "libvorbis", "-q:a", "4", eliraNomo ];
+    if ( araqHat === "ogg" ) {
+      return [ "-y", "-i", xemaKsaka, "-vn", "-c:a", "libvorbis", "-q:a", "4", suntaKsaka ];
     }
-    if ( celaFormato === "flac" ) {
-      return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "flac", eliraNomo ];
+    if ( araqHat === "flac" ) {
+      return [ "-y", "-i", xemaKsaka, "-vn", "-c:a", "flac", suntaKsaka ];
     }
-    return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "libmp3lame", "-q:a", "2", eliraNomo ];
+    return [ "-y", "-i", xemaKsaka, "-vn", "-c:a", "libmp3lame", "-q:a", "2", suntaKsaka ];
   }
 
   // Video
-  if ( celaFormato === "webm" ) {
-    return [ "-y", "-i", enigaNomo, "-c:v", "libvpx-vp9", "-c:a", "libopus", eliraNomo ];
+  if ( araqHat === "webm" ) {
+    return [ "-y", "-i", xemaKsaka, "-c:v", "libvpx-vp9", "-c:a", "libopus", suntaKsaka ];
   }
-  if ( celaFormato === "gif" ) {
-    return [ "-y", "-i", enigaNomo, "-vf", "fps=15,scale=320:-1:flags=lanczos", "-c:v", "gif", eliraNomo ];
+  if ( araqHat === "gif" ) {
+    return [ "-y", "-i", xemaKsaka, "-vf", "fps=15,scale=320:-1:flags=lanczos", "-c:v", "gif", suntaKsaka ];
   }
-  return [ "-y", "-i", enigaNomo, "-c:v", "libx264", "-preset", "ultrafast", "-vf", "scale=if(gt(iw\\,1280)\\,1280\\,iw):-2", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", eliraNomo ];
+  return [ "-y", "-i", xemaKsaka, "-c:v", "libx264", "-preset", "ultrafast", "-vf", "scale=if(gt(iw\\,1280)\\,1280\\,iw):-2", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", suntaKsaka ];
 }
 
-async function certigiFFmpegŜarĝo(): Promise<void> {
-  if ( ffmpegPret || ffmpegŜarganta ) return;
-  ffmpegŜarganta = true;
-  RULI_BUTONO.disabled = true;
-  agordiStaton(TEKSTO.LOADING_ENGINE);
+async function kf2FFmpeg(): Promise<void> {
+  if ( ffmpegPu || ffmpegB6tem2 ) return;
+  ffmpegB6tem2 = true;
+  KEVE_KEK.disabled = true;
+  suntaK61e(K61e.B6TEM2_KF2);
   try {
     await ffmpeg.load({
       coreURL: await toBlobURL(`${FFMPEG_CDN}/ffmpeg-core.js`, "text/javascript"),
       wasmURL: await toBlobURL(`${FFMPEG_CDN}/ffmpeg-core.wasm`, "application/wasm"),
     });
-  } catch ( eraro ) {
-    ffmpegŜarganta = false;
-    RULI_BUTONO.disabled = false;
-    throw eraro;
+  } catch ( tlohk2ni ) {
+    ffmpegB6tem2 = false;
+    KEVE_KEK.disabled = false;
+    throw tlohk2ni;
   }
 
   ffmpeg.on("log", ({ message }: { message: string }) => {
     console.log(message);
-    const daŭraKongruo = message.match(/Duration:\s*(\d+):(\d+):(\d+\.?\d*)/);
-    if ( daŭraKongruo ) {
-      const horoj = parseInt(daŭraKongruo[0o1]);
-      const minutoj = parseInt(daŭraKongruo[0o2]);
-      const sekundoj = parseFloat(daŭraKongruo[0o3]);
-      lastaDaŭroSekundoj = horoj * SEKUNDOJ_POR_HORO + minutoj * SEKUNDOJ_POR_MINUTO + sekundoj;
+    const xekox2q = message.match(/Duration:\s*(\d+):(\d+):(\d+\.?\d*)/);
+    if ( xekox2q ) {
+      const haqeani = parseInt(xekox2q[0o1]);
+      const qeani = parseInt(xekox2q[0o2]);
+      const heani = parseFloat(xekox2q[0o3]);
+      kxesuK2fe = haqeani * HEANI_HAQEANI + qeani * HEANI_QEANI + heani;
     }
     if ( message.includes("time=") ) {
-      agordiStaton(TEKSTO.ENCODING(message.trim()));
-      const tempoKongruo = message.match(/time=(\d+):(\d+):(\d+\.?\d*)/);
-      if ( tempoKongruo && lastaDaŭroSekundoj > 0o0 ) {
-        const horoj = parseInt(tempoKongruo[0o1]);
-        const minutoj = parseInt(tempoKongruo[0o2]);
-        const sekundoj = parseFloat(tempoKongruo[0o3]);
-        agordiProgreson( 0o2 + ( ( horoj * SEKUNDOJ_POR_HORO + minutoj * SEKUNDOJ_POR_MINUTO + sekundoj ) / lastaDaŭroSekundoj ) * ( 0o130 - 0o2 ) );
+      suntaK61e(K61e.KF2(message.trim()));
+      const kxesuXekox2q = message.match(/time=(\d+):(\d+):(\d+\.?\d*)/);
+      if ( kxesuXekox2q && kxesuK2fe > 0o0 ) {
+        const haqeani = parseInt(kxesuXekox2q[0o1]);
+        const qeani = parseInt(kxesuXekox2q[0o2]);
+        const heani = parseFloat(kxesuXekox2q[0o3]);
+        suntaK2fe( 0o2 + ( ( haqeani * HEANI_HAQEANI + qeani * HEANI_QEANI + heani ) / kxesuK2fe ) * ( 0o130 - 0o2 ) );
       }
     }
   });
 
   ffmpeg.on("progress", ({ progress }: { progress: number }) => {
     if ( progress > 0o0 && progress < 0o1 ) {
-      agordiStaton(TEKSTO.ENCODING(`${Math.round(progress * 0o100)}`));
-      agordiProgreson( 0o2 + progress * ( 0o130 - 0o2 ) );
+      suntaK61e(K61e.KF2(`${Math.round(progress * 0o100)}`));
+      suntaK2fe( 0o2 + progress * ( 0o130 - 0o2 ) );
     }
   });
 
-  ffmpegPret = true;
-  ffmpegŜarganta = false;
-  RULI_BUTONO.disabled = false;
+  ffmpegPu = true;
+  ffmpegB6tem2 = false;
+  KEVE_KEK.disabled = false;
 }
 
-function restarigiAntasenon(): void {
-  AUDIA_ANTASENO.pause();
-  VIDA_ANTASENO.pause();
-  AUDIA_ANTASENO.removeAttribute("src");
-  VIDA_ANTASENO.removeAttribute("src");
-  BILDA_ANTASENO.removeAttribute("src");
-  AUDIA_ANTASENO.style.display = "none";
-  VIDA_ANTASENO.style.display = "none";
-  BILDA_ANTASENO.style.display = "none";
-  TIPARA_ANTASENO.style.display = "none";
-  ŝoviTlaku( REZULTA_PANELO, false );
-  ELŜUTA_LIGILO.removeAttribute("href");
-  ELŜUTA_LIGILO.textContent = TEKSTO.DOWNLOAD_DEFAULT;
+function ne1aSuntaKuba(): void {
+  AUDIA_SUNTA_KUBA.pause();
+  VIDA_SUNTA_KUBA.pause();
+  AUDIA_SUNTA_KUBA.removeAttribute("src");
+  VIDA_SUNTA_KUBA.removeAttribute("src");
+  BILDA_SUNTA_KUBA.removeAttribute("src");
+  AUDIA_SUNTA_KUBA.style.display = "none";
+  VIDA_SUNTA_KUBA.style.display = "none";
+  BILDA_SUNTA_KUBA.style.display = "none";
+  LAGA_SUNTA_KUBA.style.display = "none";
+  vop2Kuba( hatSuntaKuba, false );
+  QUMK2.removeAttribute("href");
+  QUMK2.textContent = K61e.QUMK2_SAXE;
 }
 
-async function detektiDaŭron( enigaNomo: string ): Promise<number> {
-  agordiStaton(TEKSTO.DETECTING_DURATION);
-  lastaDaŭroSekundoj = 0o0;
-  await ffmpeg.exec([ "-i", enigaNomo, "-f", "null", "-t", "0", "-" ]);
-  return lastaDaŭroSekundoj;
+async function quqK2fe( xemaKsaka: string ): Promise<number> {
+  suntaK61e(K61e.QUQ_HEANI);
+  kxesuK2fe = 0o0;
+  await ffmpeg.exec([ "-i", xemaKsaka, "-f", "null", "-t", "0", "-" ]);
+  return kxesuK2fe;
 }
 
-function akiriKompresajVideoArgumentojn( enigaNomo: string, eliraNomo: string, celaFormato: string, celajBajtoj: number, daŭroSekundoj: number ): string[] {
-  const aŭdiaBitrato = 0o372000;
-  const sekundoj = daŭroSekundoj > 0o0 ? daŭroSekundoj : 0o1;
-  const tutaCelaBitrato = ( celajBajtoj * 0o10 ) / sekundoj;
-  let vidaBitrato = Math.floor(tutaCelaBitrato - aŭdiaBitrato);
-  if ( !isFinite( vidaBitrato ) || vidaBitrato < 0o175000 ) vidaBitrato = 0o175000;
+function puTahaqKf2K61eCa1ara( xemaKsaka: string, suntaKsaka: string, araqHat: string, araqK2fe: number, heaniPu: number ): string[] {
+  const beK2fe = 0o372000;
+  const heani = heaniPu > 0o0 ? heaniPu : 0o1;
+  const puK2fe = ( araqK2fe * 0o10 ) / heani;
+  let tahaqK2fe = Math.floor(puK2fe - beK2fe);
+  if ( !isFinite( tahaqK2fe ) || tahaqK2fe < 0o175000 ) tahaqK2fe = 0o175000;
 
-  const vidaBitratoĈeno = `${vidaBitrato}`;
-  const aŭdiaBitratoĈeno = `${aŭdiaBitrato}`;
-  const bufGrandaĈeno = `${vidaBitrato * 0o2}`;
+  const tahaqK2feK61e = `${tahaqK2fe}`;
+  const beK2feK61e = `${beK2fe}`;
+  const puK2feK61e = `${tahaqK2fe * 0o2}`;
 
-  if ( celaFormato === "webm" ) {
-    return [ "-y", "-i", enigaNomo, "-c:v", "libvpx-vp9", "-b:v", vidaBitratoĈeno, "-maxrate", vidaBitratoĈeno, "-bufsize", bufGrandaĈeno, "-c:a", "libopus", "-b:a", aŭdiaBitratoĈeno, eliraNomo ];
+  if ( araqHat === "webm" ) {
+    return [ "-y", "-i", xemaKsaka, "-c:v", "libvpx-vp9", "-b:v", tahaqK2feK61e, "-maxrate", tahaqK2feK61e, "-bufsize", puK2feK61e, "-c:a", "libopus", "-b:a", beK2feK61e, suntaKsaka ];
   }
-  if ( celaFormato === "gif" ) {
-    return [ "-y", "-i", enigaNomo, "-vf", "fps=15,scale=320:-1:flags=lanczos", "-c:v", "gif", eliraNomo ];
+  if ( araqHat === "gif" ) {
+    return [ "-y", "-i", xemaKsaka, "-vf", "fps=15,scale=320:-1:flags=lanczos", "-c:v", "gif", suntaKsaka ];
   }
-  return [ "-y", "-i", enigaNomo, "-c:v", "libx264", "-preset", "ultrafast", "-b:v", vidaBitratoĈeno, "-maxrate", vidaBitratoĈeno, "-bufsize", bufGrandaĈeno, "-c:a", "aac", "-b:a", aŭdiaBitratoĈeno, "-movflags", "+faststart", eliraNomo ];
+  return [ "-y", "-i", xemaKsaka, "-c:v", "libx264", "-preset", "ultrafast", "-b:v", tahaqK2feK61e, "-maxrate", tahaqK2feK61e, "-bufsize", puK2feK61e, "-c:a", "aac", "-b:a", beK2feK61e, "-movflags", "+faststart", suntaKsaka ];
 }
 
-function akiriKompresajAŭdioArgumentojn( enigaNomo: string, eliraNomo: string, celaFormato: string, celajBajtoj: number, daŭroSekundoj: number ): string[] {
-  const sekundoj = daŭroSekundoj > 0o0 ? daŭroSekundoj : 0o1;
-  let celaBitrato = Math.floor(( celajBajtoj * 0o10 ) / sekundoj);
-  if ( !isFinite( celaBitrato ) ) celaBitrato = 0o76400;
-  if ( celaBitrato < 0o76400 ) celaBitrato = 0o76400;
-  if ( celaBitrato > 0o1161000 ) celaBitrato = 0o1161000;
-  const bitratoĈeno = `${celaBitrato}`;
+function puBeKf2K61eCa1ara( xemaKsaka: string, suntaKsaka: string, araqHat: string, araqK2fe: number, heaniPu: number ): string[] {
+  const heani = heaniPu > 0o0 ? heaniPu : 0o1;
+  let beK2fe = Math.floor(( araqK2fe * 0o10 ) / heani);
+  if ( !isFinite( beK2fe ) ) beK2fe = 0o76400;
+  if ( beK2fe < 0o76400 ) beK2fe = 0o76400;
+  if ( beK2fe > 0o1161000 ) beK2fe = 0o1161000;
+  const beK2feK61e = `${beK2fe}`;
 
-  if ( celaFormato === "wav" ) {
-    return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "pcm_s16le", "-ar", "44100", eliraNomo ];
+  if ( araqHat === "wav" ) {
+    return [ "-y", "-i", xemaKsaka, "-vn", "-c:a", "pcm_s16le", "-ar", "44100", suntaKsaka ];
   }
-  if ( celaFormato === "m4a" || celaFormato === "aac" ) {
-    return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "aac", "-b:a", bitratoĈeno, eliraNomo ];
+  if ( araqHat === "m4a" || araqHat === "aac" ) {
+    return [ "-y", "-i", xemaKsaka, "-vn", "-c:a", "aac", "-b:a", beK2feK61e, suntaKsaka ];
   }
-  if ( celaFormato === "ogg" ) {
-    return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "libvorbis", "-b:a", bitratoĈeno, eliraNomo ];
+  if ( araqHat === "ogg" ) {
+    return [ "-y", "-i", xemaKsaka, "-vn", "-c:a", "libvorbis", "-b:a", beK2feK61e, suntaKsaka ];
   }
-  if ( celaFormato === "flac" ) {
-    return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "flac", eliraNomo ];
+  if ( araqHat === "flac" ) {
+    return [ "-y", "-i", xemaKsaka, "-vn", "-c:a", "flac", suntaKsaka ];
   }
-  return [ "-y", "-i", enigaNomo, "-vn", "-c:a", "libmp3lame", "-b:a", bitratoĈeno, eliraNomo ];
+  return [ "-y", "-i", xemaKsaka, "-vn", "-c:a", "libmp3lame", "-b:a", beK2feK61e, suntaKsaka ];
 }
 
-async function kompresiBildon( enigaNomo: string, eliraNomo: string, celaFormato: string, celajBajtoj: number ): Promise<Uint8Array> {
-  let malalta = 0o1;
-  let alta = 0o100;
-  let plejbonaDatumo: Uint8Array | null = null;
-  const maksimumajPasoj = 0o10;
+async function puKf2Tahaq( xemaKsaka: string, suntaKsaka: string, araqHat: string, araqK2fe: number ): Promise<Uint8Array> {
+  let m2 = 0o1;
+  let pu = 0o100;
+  let kemafiSab2: Uint8Array | null = null;
+  const kemafiK2fe = 0o10;
 
-  for ( let i = 0o0; i < maksimumajPasoj; i++ ) {
-    const kvalito = Math.floor(( malalta + alta ) / 0o2);
-    agordiStaton(TEKSTO.COMPRESSING(i + 0o1, maksimumajPasoj));
+  for ( let i = 0o0; i < kemafiK2fe; i++ ) {
+    const k2fe = Math.floor(( m2 + pu ) / 0o2);
+    suntaK61e(K61e.PU(i + 0o1, kemafiK2fe));
 
-    const qv = Math.max( 0o1, Math.min( 0o37, Math.floor( 0o40 - ( kvalito / 0o2 ) ) ) );
+    const qv = Math.max( 0o1, Math.min( 0o37, Math.floor( 0o40 - ( k2fe / 0o2 ) ) ) );
 
-    const argumentoj = celaFormato === "webp"
-      ? [ "-y", "-i", enigaNomo, "-quality", `${kvalito}`, eliraNomo ]
-      : [ "-y", "-i", enigaNomo, "-q:v", `${qv}`, eliraNomo ];
+    const k61eCa1ara = araqHat === "webp"
+      ? [ "-y", "-i", xemaKsaka, "-quality", `${k2fe}`, suntaKsaka ]
+      : [ "-y", "-i", xemaKsaka, "-q:v", `${qv}`, suntaKsaka ];
 
-    await ffmpeg.exec(argumentoj);
-    const datumoj = await ffmpeg.readFile(eliraNomo);
-    const bajtoj = datumoj instanceof Uint8Array ? datumoj : new Uint8Array(datumoj as unknown as ArrayBuffer);
+    await ffmpeg.exec(k61eCa1ara);
+    const quqSab2 = await ffmpeg.readFile(suntaKsaka);
+    const sab2 = quqSab2 instanceof Uint8Array ? quqSab2 : new Uint8Array(quqSab2 as unknown as ArrayBuffer);
 
-    if ( bajtoj.byteLength <= celajBajtoj ) {
-      plejbonaDatumo = bajtoj;
-      malalta = kvalito + 0o1;
+    if ( sab2.byteLength <= araqK2fe ) {
+      kemafiSab2 = sab2;
+      m2 = k2fe + 0o1;
     } else {
-      alta = kvalito - 0o1;
+      pu = k2fe - 0o1;
     }
 
-    const proporcio = bajtoj.byteLength / celajBajtoj;
-    if ( proporcio >= PROPORCIO_MAKSIMA && proporcio <= 0o1 ) {
-      plejbonaDatumo = bajtoj;
+    const sefiniL6da = sab2.byteLength / araqK2fe;
+    if ( sefiniL6da >= SEFINI_L6DA_KEMAFI && sefiniL6da <= 0o1 ) {
+      kemafiSab2 = sab2;
       break;
     }
   }
 
-  if ( !plejbonaDatumo ) {
-    const datumoj = await ffmpeg.readFile(eliraNomo);
-    plejbonaDatumo = datumoj instanceof Uint8Array ? datumoj : new Uint8Array(datumoj as unknown as ArrayBuffer);
+  if ( !kemafiSab2 ) {
+    const quqSab2 = await ffmpeg.readFile(suntaKsaka);
+    kemafiSab2 = quqSab2 instanceof Uint8Array ? quqSab2 : new Uint8Array(quqSab2 as unknown as ArrayBuffer);
   }
 
-  return plejbonaDatumo;
+  return kemafiSab2;
 }
 
-async function konvertiElektitanDosieron(): Promise<void> {
-  const dosiero = DOSIERA_ENIGO.files?.[ 0o0 ];
-  if ( !dosiero ) {
-    agordiStaton(TEKSTO.CHOOSE_FILE);
+async function kf2Cakavop2(): Promise<void> {
+  const cakavop2 = CAKAVOP2_XEMA.files?.[ 0o0 ];
+  if ( !cakavop2 ) {
+    suntaK61e(K61e.SUKF2Q_CAKAVOP2);
     return;
   }
 
-  const kategorio = detektiDosierKategorion(dosiero);
-  const celaFormato = akiriElektitanCelFormaton();
-  if ( !celaFormato ) {
-    agordiStaton(TEKSTO.CHOOSE_FORMAT);
+  const hat = quqCakavop2Hat(cakavop2);
+  const araqHat = quqAraqHat();
+  if ( !araqHat ) {
+    suntaK61e(K61e.SUKF2Q_HAT);
     return;
   }
 
-  restarigiAntasenon();
-  agordiProgreson( 0o2 );
-  agordiStaton(TEKSTO.CONVERTING(dosiero.name));
+  ne1aSuntaKuba();
+  suntaK2fe( 0o2 );
+  suntaK61e(K61e.KF2_CAKAVOP2(cakavop2.name));
 
-  const enigaNomo = `input-${Date.now()}-${dosiero.name.replace(/\s+/g, "_")}`;
-  const dato = cax2lStafl2();
-  const bazaNomo = dosiero.name.replace(/\.[^.]+$/, "").replace(/\s+/g, "_");
-  const eliraNomo = `${dato.stibix}-${dato.pal2stif}-${dato.stafl2}_${bazaNomo}.${celaFormato}`;
-  let blobURL: string;
+  const xemaKsaka = `input-${Date.now()}-${cakavop2.name.replace(/\s+/g, "_")}`;
+  const kxesu = cax2lStafl2();
+  const saxeKsaka = cakavop2.name.replace(/\.[^.]+$/, "").replace(/\s+/g, "_");
+  const suntaKsaka = `${kxesu.stibix}-${kxesu.pal2stif}-${kxesu.stafl2}_${saxeKsaka}.${araqHat}`;
+  let k61e: string;
 
-  const kompresaReĝimo = ĉuKompresoŜaltita() && kategorio !== "font";
-  const celajBajtoj = kompresaReĝimo ? akiriCelajnBajtojn() : 0o0;
+  const puVop2 = puHat() && hat !== "font";
+  const araqK2fe = puVop2 ? quqAraqK2fe() : 0o0;
 
   try {
-    if ( kategorio === "font" ) {
-      agordiStaton(TEKSTO.LOADING_FONT_ENGINE);
-      agordiProgreson( 0o20 );
-      const fontverterModulo = await import(/* @vite-ignore */ FONTA_CDN) as any;
+    if ( hat === "font" ) {
+      suntaK61e(K61e.B6TEM2_LAGA);
+      suntaK2fe( 0o20 );
+      const fontverterModulo = await import(/* @vite-ignore */ SAXE_CDN) as any;
       const fontverter = fontverterModulo.convert ? fontverterModulo : (fontverterModulo.default || fontverterModulo);
-      agordiStaton(TEKSTO.CONVERTING_FONT);
+      suntaK61e(K61e.KF2_LAGA);
 
-      const arrayBuffer = await dosiero.arrayBuffer();
+      const arrayBuffer = await cakavop2.arrayBuffer();
       const uint8Array = new Uint8Array(arrayBuffer);
 
-      let alFormato = celaFormato;
-      if ( celaFormato === "ttf" || celaFormato === "otf" ) {
-        alFormato = "sfnt";
+      let hat = araqHat;
+      if ( araqHat === "ttf" || araqHat === "otf" ) {
+        hat = "sfnt";
       }
 
-      const konvertitajBajtoj = await fontverter.convert(uint8Array, alFormato);
-      agordiProgreson( 0o66 );
+      const kf2Sab2 = await fontverter.convert(uint8Array, hat);
+      suntaK2fe( 0o66 );
       
-      const puraTiparaBufro = new ArrayBuffer(konvertitajBajtoj.byteLength);
-      new Uint8Array(puraTiparaBufro).set(konvertitajBajtoj);
+      const giLagaSab2 = new ArrayBuffer(kf2Sab2.byteLength);
+      new Uint8Array(giLagaSab2).set(kf2Sab2);
       
-      const blobo = new Blob([ puraTiparaBufro ], {
-        type: akiriEliraMIME(celaFormato),
+      const puSab2 = new Blob([ giLagaSab2 ], {
+        type: quqHat(araqHat),
       });
 
-      blobURL = URL.createObjectURL(blobo);
+      k61e = URL.createObjectURL(puSab2);
 
-      const tiparaNomo = `PreviewFont-${Date.now()}`;
-      const tiparaVizaĝo = new (window as any).FontFace(tiparaNomo, `url(${blobURL})`);
-      await tiparaVizaĝo.load();
-      (document as any).fonts.add(tiparaVizaĝo);
+      const lagaKsaka = `PreviewFont-${Date.now()}`;
+      const lagaTez = new (window as any).FontFace(lagaKsaka, `url(${k61e})`);
+      await lagaTez.load();
+      (document as any).fonts.add(lagaTez);
 
-      TIPARA_ANTASENO.style.fontFamily = tiparaNomo;
-      TIPARA_ANTASENO.style.display = "";
+      LAGA_SUNTA_KUBA.style.fontFamily = lagaKsaka;
+      LAGA_SUNTA_KUBA.style.display = "";
     } else {
-      agordiProgreson( 0o20 );
-      await certigiFFmpegŜarĝo();
-      agordiProgreson( 0o24 );
+      suntaK2fe( 0o20 );
+      await kf2FFmpeg();
+      suntaK2fe( 0o24 );
 
-      if ( kategorio === "video" && dosiero.size > 0o12 * 0o2000 * 0o2000 ) {
-        const muntpunkto = "/mnt";
-        const enigaVojo = `${muntpunkto}/${enigaNomo}`;
+      if ( hat === "video" && cakavop2.size > 0o12 * 0o2000 * 0o2000 ) {
+        const saxeK6h6 = "/mnt";
+        const xemaK6h6 = `${saxeK6h6}/${xemaKsaka}`;
         try {
-          await ffmpeg.createDir(muntpunkto);
-          await ffmpeg.mount(FFFSType.WORKERFS, { files: [ dosiero ] }, muntpunkto);
+          await ffmpeg.createDir(saxeK6h6);
+          await ffmpeg.mount(FFFSType.WORKERFS, { files: [ cakavop2 ] }, saxeK6h6);
 
-          if ( kompresaReĝimo && ( kategorio === "video" ) ) {
-            const daŭro = await detektiDaŭron(enigaVojo);
-            const argumentoj = akiriKompresajVideoArgumentojn(enigaVojo, eliraNomo, celaFormato, celajBajtoj, daŭro);
-            await ffmpeg.exec(argumentoj);
+          if ( puVop2 && ( hat === "video" ) ) {
+            const heaniPu = await quqK2fe(xemaK6h6);
+            const k61eCa1ara = puTahaqKf2K61eCa1ara(xemaK6h6, suntaKsaka, araqHat, araqK2fe, heaniPu);
+            await ffmpeg.exec(k61eCa1ara);
           } else {
-            const argumentoj = akiriKonvertajnArgumentojn(enigaVojo, eliraNomo, kategorio, celaFormato);
-            await ffmpeg.exec(argumentoj);
+            const k61eCa1ara = kf2K61eCa1ara(xemaK6h6, suntaKsaka, hat, araqHat);
+            await ffmpeg.exec(k61eCa1ara);
           }
 
-          await ffmpeg.unmount(muntpunkto);
+          await ffmpeg.unmount(saxeK6h6);
         } catch {
-          await ffmpeg.unmount(muntpunkto).catch(() => {});
-          await ffmpeg.writeFile(enigaNomo, await fetchFile(dosiero));
+          await ffmpeg.unmount(saxeK6h6).catch(() => {});
+          await ffmpeg.writeFile(xemaKsaka, await fetchFile(cakavop2));
 
-          if ( kompresaReĝimo && ( kategorio === "video" ) ) {
-            const daŭro = await detektiDaŭron(enigaNomo);
-            const argumentoj = akiriKompresajVideoArgumentojn(enigaNomo, eliraNomo, celaFormato, celajBajtoj, daŭro);
-            await ffmpeg.exec(argumentoj);
+          if ( puVop2 && ( hat === "video" ) ) {
+            const heaniPu = await quqK2fe(xemaKsaka);
+            const k61eCa1ara = puTahaqKf2K61eCa1ara(xemaKsaka, suntaKsaka, araqHat, araqK2fe, heaniPu);
+            await ffmpeg.exec(k61eCa1ara);
           } else {
-            const argumentoj = akiriKonvertajnArgumentojn(enigaNomo, eliraNomo, kategorio, celaFormato);
-            await ffmpeg.exec(argumentoj);
+            const k61eCa1ara = kf2K61eCa1ara(xemaKsaka, suntaKsaka, hat, araqHat);
+            await ffmpeg.exec(k61eCa1ara);
           }
         }
       } else {
-        await ffmpeg.writeFile(enigaNomo, await fetchFile(dosiero));
+        await ffmpeg.writeFile(xemaKsaka, await fetchFile(cakavop2));
 
-        if ( kompresaReĝimo && kategorio === "image" ) {
-          const kompresitajBajtoj = await kompresiBildon(enigaNomo, eliraNomo, celaFormato, celajBajtoj);
-          const puraBufro = new ArrayBuffer(kompresitajBajtoj.byteLength);
-          new Uint8Array(puraBufro).set(kompresitajBajtoj);
+        if ( puVop2 && hat === "image" ) {
+          const kubaSab2 = await puKf2Tahaq(xemaKsaka, suntaKsaka, araqHat, araqK2fe);
+          const giSab2 = new ArrayBuffer(kubaSab2.byteLength);
+          new Uint8Array(giSab2).set(kubaSab2);
 
-          const blobo = new Blob([ puraBufro ], {
-            type: akiriEliraMIME(celaFormato),
+          const puSab2 = new Blob([ giSab2 ], {
+            type: quqHat(araqHat),
           });
 
-          blobURL = URL.createObjectURL(blobo);
-          montriAntasenon(BILDA_ANTASENO, blobURL);
-          prezentiRezulton(blobURL, eliraNomo, celaFormato);
+          k61e = URL.createObjectURL(puSab2);
+          suntaKuba(BILDA_SUNTA_KUBA, k61e);
+          sunta(k61e, suntaKsaka, araqHat);
           return;
-        } else if ( kompresaReĝimo && kategorio === "audio" ) {
-          const daŭro = await detektiDaŭron(enigaNomo);
-          const argumentoj = akiriKompresajAŭdioArgumentojn(enigaNomo, eliraNomo, celaFormato, celajBajtoj, daŭro);
-          await ffmpeg.exec(argumentoj);
-        } else if ( kompresaReĝimo && kategorio === "video" ) {
-          const daŭro = await detektiDaŭron(enigaNomo);
-          const argumentoj = akiriKompresajVideoArgumentojn(enigaNomo, eliraNomo, celaFormato, celajBajtoj, daŭro);
-          await ffmpeg.exec(argumentoj);
+        } else if ( puVop2 && hat === "audio" ) {
+          const heaniPu = await quqK2fe(xemaKsaka);
+          const k61eCa1ara = puBeKf2K61eCa1ara(xemaKsaka, suntaKsaka, araqHat, araqK2fe, heaniPu);
+          await ffmpeg.exec(k61eCa1ara);
+        } else if ( puVop2 && hat === "video" ) {
+          const heaniPu = await quqK2fe(xemaKsaka);
+          const k61eCa1ara = puTahaqKf2K61eCa1ara(xemaKsaka, suntaKsaka, araqHat, araqK2fe, heaniPu);
+          await ffmpeg.exec(k61eCa1ara);
         } else {
-          const argumentoj = akiriKonvertajnArgumentojn(enigaNomo, eliraNomo, kategorio, celaFormato);
-          await ffmpeg.exec(argumentoj);
+          const k61eCa1ara = kf2K61eCa1ara(xemaKsaka, suntaKsaka, hat, araqHat);
+          await ffmpeg.exec(k61eCa1ara);
         }
       }
 
-      const datumoj = await ffmpeg.readFile(eliraNomo);
-      agordiProgreson( 0o75 );
-      const bajtoj = datumoj instanceof Uint8Array
-        ? datumoj
-        : new Uint8Array(datumoj as unknown as ArrayBuffer);
+      const quqSab2 = await ffmpeg.readFile(suntaKsaka);
+      suntaK2fe( 0o75 );
+      const sab2 = quqSab2 instanceof Uint8Array
+        ? quqSab2
+        : new Uint8Array(quqSab2 as unknown as ArrayBuffer);
 
-      const puraBufro = new ArrayBuffer(bajtoj.byteLength);
-      new Uint8Array(puraBufro).set(bajtoj);
+      const giSab2 = new ArrayBuffer(sab2.byteLength);
+      new Uint8Array(giSab2).set(sab2);
 
-      const blobo = new Blob([ puraBufro ], {
-        type: akiriEliraMIME(celaFormato),
+      const puSab2 = new Blob([ giSab2 ], {
+        type: quqHat(araqHat),
       });
 
-      blobURL = URL.createObjectURL(blobo);
+      k61e = URL.createObjectURL(puSab2);
 
-      if ( kategorio === "image" || celaFormato === "gif" ) {
-        montriAntasenon(BILDA_ANTASENO, blobURL);
-      } else if ( kategorio === "audio" ) {
-        montriAntasenon(AUDIA_ANTASENO, blobURL);
-      } else if ( kategorio === "video" ) {
-        montriAntasenon(VIDA_ANTASENO, blobURL);
+      if ( hat === "image" || araqHat === "gif" ) {
+        suntaKuba(BILDA_SUNTA_KUBA, k61e);
+      } else if ( hat === "audio" ) {
+        suntaKuba(AUDIA_SUNTA_KUBA, k61e);
+      } else if ( hat === "video" ) {
+        suntaKuba(VIDA_SUNTA_KUBA, k61e);
       }
     }
 
-    prezentiRezulton(blobURL, eliraNomo, celaFormato);
-  } catch ( eraro ) {
-    console.error(eraro);
-    finigiProgreson();
-    agordiStaton(TEKSTO.ERROR(String(eraro)));
+    sunta(k61e, suntaKsaka, araqHat);
+  } catch ( tlohk2ni ) {
+    console.error(tlohk2ni);
+    ne1aK2fe();
+    suntaK61e(K61e.TLOHK2NI_XEMA(String(tlohk2ni)));
   }
 }
 
-RULI_BUTONO.addEventListener("click", () => {
-  void konvertiElektitanDosieron();
+KEVE_KEK.addEventListener("click", () => {
+  void kf2Cakavop2();
 });
 
-KOMPRESA_BASKULO.addEventListener("change", () => {
-  if ( KOMPRESA_BASKULO.checked ) {
-    KOMPRESAJ_OPCIOJ.classList.remove("kobe");
+PU_KEK.addEventListener("change", () => {
+  if ( PU_KEK.checked ) {
+    PU_XEMA.classList.remove("kobe");
   } else {
-    KOMPRESAJ_OPCIOJ.classList.add("kobe");
+    PU_XEMA.classList.add("kobe");
   }
 });
 
-DOSIERA_ENIGO.addEventListener("change", () => {
-  restarigiAntasenon();
-  const dosiero = DOSIERA_ENIGO.files?.[ 0o0 ];
-  if ( dosiero ) {
-    const kategorio = detektiDosierKategorion(dosiero);
-    ĝisdatigiCelajnFormatojn(kategorio);
-    if ( kategorio === "font" ) {
-      KOMPRESA_BASKULA_ETIKEDO.classList.add("kobe");
-      KOMPRESAJ_OPCIOJ.classList.add("kobe");
-      KOMPRESA_BASKULO.checked = false;
+CAKAVOP2_XEMA.addEventListener("change", () => {
+  ne1aSuntaKuba();
+  const cakavop2 = CAKAVOP2_XEMA.files?.[ 0o0 ];
+  if ( cakavop2 ) {
+    const hat = quqCakavop2Hat(cakavop2);
+    v3ak2AraqHat(hat);
+    if ( hat === "font" ) {
+      PU_KEK_KSAKA.classList.add("kobe");
+      PU_XEMA.classList.add("kobe");
+      PU_KEK.checked = false;
     } else {
-      KOMPRESA_BASKULA_ETIKEDO.classList.remove("kobe");
+      PU_KEK_KSAKA.classList.remove("kobe");
     }
-    agordiStaton(TEKSTO.READY);
+    suntaK61e(K61e.B6TEM2);
   } else {
-    CELUJO.innerHTML = "";
-    agordiStaton(TEKSTO.CHOOSE_FILE);
+    ARAQ_XEMA.innerHTML = "";
+    suntaK61e(K61e.SUKF2Q_CAKAVOP2);
   }
 });

@@ -34,11 +34,11 @@ function kakHaxez(xez, haxez) {
 
 function sakaHaxez(araXez) {
   const maxema = araXez.parentNode;
-  const okef = araXez.textContent;
-  if ( !okef.trim() ) return;
+  const k61e = araXez.textContent;
+  if ( !k61e.trim() ) return;
 
   const kekKaltok = document.createDocumentFragment();
-  const han2k = okef.split(/\r?\n|[\r\n]/);
+  const han2k = k61e.split(/\r?\n|[\r\n]/);
 
   const n2kSwaraq = quqalEq2kN2kSwaraq(han2k);
   if ( n2kSwaraq.saxeni === -1 ) return;

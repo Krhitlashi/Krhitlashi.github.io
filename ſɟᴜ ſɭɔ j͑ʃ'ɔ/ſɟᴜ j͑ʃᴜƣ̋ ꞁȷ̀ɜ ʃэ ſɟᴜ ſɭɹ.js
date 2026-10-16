@@ -1,4 +1,4 @@
-// ≺⧼ ſɟᴜ j͑ʃᴜƣ̋ ꞁȷ̀ɜ ʃэ ſɟᴜ ſɭɹ ⧽≻ - Registrado de la Servilo-Laboranto
+// ≺⧼ ſɟᴜ j͑ʃᴜƣ̋ ꞁȷ̀ɜ ʃэ ſɟᴜ ſɭɹ ⧽≻ - j͑ʃɔ Service Worker ʌ ʃэ j͑ʃ'ɔ ſ͔ɭɔ ɭl̀ɔᶗ‹ ꞁȷ̀ᴜ }ʃꞇ
 
 async function b6vegejexSakeveni() {
 	if ( "serviceWorker" in navigator ) {

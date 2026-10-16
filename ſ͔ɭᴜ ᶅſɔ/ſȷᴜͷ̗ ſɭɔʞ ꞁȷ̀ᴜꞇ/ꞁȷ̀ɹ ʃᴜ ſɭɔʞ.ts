@@ -1,5 +1,5 @@
 /*
-* ≺⧼ Iikrhia Vortara Paĝa Pritraktilo 🖱️ ⧽≻
+* ≺⧼ Iikrhia ʌ ſȷᴜͷ̗ ſɭɔʞ ꞁȷ̀ᴜꞇ ʌ ſ̀ȷᴜ ʌ ſɭᴜ ŋᷠᴜ }ʃꞇ 🖱️ ⧽≻
 * ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( xlsx SheetJS )
 * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( #kef tbody tr )
 * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ?i=N )
@@ -48,7 +48,7 @@ const S2tasKsaka: Record<string, string> = {
  * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( NFC )
  * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( xlsx NFC )
  * @param s ( string ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @returns k61e
  */
 function k2fNfc(s: string): string {
     return s.normalize("NFC");
@@ -67,7 +67,7 @@ const PuS2tasNfc: Set<string> = new Set(
  * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ֭ſɭᴜ ı],ɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
  * @param temo ( string ) - ֭ſɭᴜ ı],ɔ ( 0 )
  * @param estasSub ( string ) - ֭ſɭᴜ ı],ɔ ( 1 )
- * @returns ĉeno
+ * @returns k61e
  */
 function b6n2baHaxe(haxe: string, psazHaxe: string): string {
     for ( const s2tas in KEFHAXE ) {
@@ -82,7 +82,7 @@ function b6n2baHaxe(haxe: string, psazHaxe: string): string {
 /**
  * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
  * @param v ( unknown ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @returns k61e
  */
 function kubaKp6k2p2(eskek: unknown): string {
     if ( eskek === null || eskek === undefined ) return "";
@@ -91,8 +91,8 @@ function kubaKp6k2p2(eskek: unknown): string {
 
 /**
  * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @param kruda ( string ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @param eskek ( string ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @returns k61e
  */
 function s2tasKp6k2p2(eskek: string): string {
     if ( !eskek ) return "";
@@ -110,7 +110,7 @@ function s2tasKp6k2p2(eskek: string): string {
 /**
  * ſɭɜ ʃɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( HTML )
  * @param s ( string = "" ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @returns k61e
  */
 function kobeHtml(s: string): string {
     return s
@@ -122,7 +122,7 @@ function kobeHtml(s: string): string {
 /**
  * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( s )
  * @param s ( string = "" ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns ĉeno
+ * @returns k61e
  */
 function kubaEskek(s: string): string {
     return s ? kobeHtml(s) : " ";
@@ -133,7 +133,7 @@ let _ve3aqEskek: Promise<KefSak[]> | null = null;
 /**
  * ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( xlsx SheetJS )
  * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * @returns promessa
+ * @returns KefSak[]
  */
 function q2qEskek(): Promise<KefSak[]> {
     if ( !_ve3aqEskek ) {
@@ -252,10 +252,10 @@ function q2qK2fe(): number {
 }
 
 /**
- * ſɟɔ ŋᷠɔ ʌ ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɜ ı],ɔ ŋᷠᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( valoro )
- * @param elementoId ( string = "" ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @param sekcioId ( string = "" ) - ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɜ ı],ɔ ŋᷠᴜ
- * @param valoro ( string = "" ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * ſɟɔ ŋᷠɔ ʌ ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɜ ı],ɔ ŋᷠᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( j6fini )
+ * @param eskekKsaka ( string = "" ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param kekKsaka ( string = "" ) - ꞁȷ̀ᴜƣ̋ ꞁȷ̀ɜ ı],ɔ ŋᷠᴜ
+ * @param j6fini ( string = "" ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns void
  */
 function k2fKek(eskekKsaka: string, kekKsaka: string, j6fini: string): void {

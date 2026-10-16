@@ -1,4 +1,4 @@
-// ≺⧼ Iikze Skribsistema Konvertilo 📜 ⧽≻
+// ≺⧼ ɭʃɀɜ ʌ ſ͔ɭᴜ ᶅſɔ ſɭɹʞ 📜 ⧽≻
 /**
  * ɭʃɀɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Gawekiif La3os IPA )
  * ֭ſɭᴜ ı],ɔ ( Gawekiif )
@@ -161,7 +161,7 @@ function kaltokKp6catasai(kp6k2p2: string): string[] {
  * @param saxeCa3aq ( keyof T , required ) - ſɭɔ˞ᴜ ſɭᴜ
  * @param ara3akakCa3aq ( keyof T , required ) - ſɭɔ˞ᴜ ſɭᴜ
  * @param xaqadi ( boolean , optional ) - ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns veracel2f
+ * @returns ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗
  */
 function vasakaVeracel2f<T extends Ca1araKef>(kefCa1ara: T[], saxeCa3aq: keyof T, ara3akakCa3aq: keyof T, xaqadi = false): Veracel2f {
     const veracel2f: Veracel2f = { stakefani: {}, ca3aqCa1ara: [] };
@@ -238,15 +238,15 @@ const CAJA_IPA: Record<string, string> = { "ɭʃ'": "ǃ", "}ʃ'": "ǃ̃", "oͩſ
  * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( La3os IPA )
  * @param c2h2Kef ( Ca1araKef , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @param sem2 ( ( gk ) => boolean , required ) - ꞁȷ̀ꞇ j͑ʃ'ɹƴ
- * @returns caxef2
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
 function b6n2baPuf2(c2h2Kef: Ca1araKef, sem2: (gk: string) => boolean): string | null {
     const la3osKef = XAQADI_CA1ARA.find(m => m.la3os === c2h2Kef.la3os);
     if ( la3osKef && sem2(la3osKef.gk) ) return la3osKef.gk;
     const ipa = c2h2Kef.ipa;
     if ( ipa ) {
-        const gel = Object.entries(CAJA_IPA).find(([ , p ]) => p === ipa);
-        if ( gel && sem2(gel[0o0]) ) return gel[0o0];
+        const kxesu = Object.entries(CAJA_IPA).find(([ , p ]) => p === ipa);
+        if ( kxesu && sem2(kxesu[0o0]) ) return kxesu[0o0];
         const ipaKef = XAQADI_CA1ARA.find(m => m.ipa === ipa);
         if ( ipaKef && sem2(ipaKef.gk) ) return ipaKef.gk;
     }
@@ -646,21 +646,21 @@ function kaltokP2saCaxef2(kef: string): string[] {
             caxef2Ca1ara.push(kef.slice(i));
             break;
         }
-        const ĵetono = kef.slice(i, i + 0o14);
-        const haxe = Object.entries(S2KANTA_HAXE).find(([ , v ]) => v.p2sa === ĵetono.slice(0o0, 0o4))?.[ 0o0 ];
+        const s2 = kef.slice(i, i + 0o14);
+        const haxe = Object.entries(S2KANTA_HAXE).find(([ , v ]) => v.p2sa === s2.slice(0o0, 0o4))?.[ 0o0 ];
         if ( !haxe ) {
-            caxef2Ca1ara.push(ĵetono[0o0]);
+            caxef2Ca1ara.push(s2[0o0]);
             i++;
             continue;
         }
-        const vem2 = p2saVem2(ĵetono.slice(0o4));
+        const vem2 = p2saVem2(s2.slice(0o4));
         if ( isNaN(vem2) ) {
-            caxef2Ca1ara.push(ĵetono[0o0]);
+            caxef2Ca1ara.push(s2[0o0]);
             i++;
             continue;
         }
         const caxef2 = HAXE_VEM2_KEF[`${haxe}_${vem2K2fe(vem2, 0o2)}`];
-        caxef2Ca1ara.push(caxef2 || ĵetono);
+        caxef2Ca1ara.push(caxef2 || s2);
         i += 0o14;
     }
     return caxef2Ca1ara;
@@ -875,7 +875,7 @@ interface AwaB6n2ba {
  * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
  * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
  * @param n2k ( number , required ) - ſɭɹ ſȷɔ
- * @returns awaB6n2ba
+ * @returns ꞁȷ̀ᴜ ᶅſᴜ
  */
 function b6n2baAwa(kp6k2p2: string, n2k: number): AwaB6n2ba | null {
     for ( const awa of AWA_CA1ARA ) {
@@ -925,7 +925,7 @@ function kaltokXez(kp6k2p2: string): string {
  * vaku3a ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
  * @param nejeqana ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( Gawekiif )
  * @param xez ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( La3os )
- * @returns nejeqana
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
 function vaku3aXaqadi(nejeqana: string, xez: string): string {
     if ( !nejeqana || nejeqana.startsWith("ꞁȷ̀") ) return nejeqana;
@@ -1444,7 +1444,7 @@ function tboK2feKme(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
 /**
  * ɭʃɀɜ ʌ ı],ɔƴ ʌ ꞁȷ̀ɔ ʌ ſɭc̭ɔ ʌ ſɭᴜͷ̗ ⟅ ( la3os )
  * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( ꞁȷ̀ɔ ʌ ſɭc̭ɔ ʌ ſɭᴜͷ̗ )
- * @returns nejeqana
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
 function kaltokKmeLa3os(kp6k2p2: string): string {
     let nejeqana = "";
@@ -1470,7 +1470,7 @@ function kaltokKmeLa3os(kp6k2p2: string): string {
  * ɭʃɀɜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅
  * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( ꞁȷ̀ɔ ʌ ſɭc̭ɔ ʌ ſɭᴜͷ̗ )
  * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
- * @returns nejeqana
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
 function tboKmeLa3os(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
     const kefCa1ara = kaltokKp6catasai(kp6k2p2);
@@ -1482,7 +1482,7 @@ function tboKmeLa3os(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
  * ɭʃɀɜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅
  * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( ꞁȷ̀ɔ ʌ ſɭc̭ɔ ʌ ſɭᴜͷ̗ )
  * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
- * @returns nejeqana
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
 function tboKmeGawekiif(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
     return String(kp6k2p2).split(/\s+/).filter(Boolean).map(kef => {
@@ -1498,7 +1498,7 @@ function tboKmeGawekiif(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
  * ɭʃɀɜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅
  * @param kp6k2p2 ( string , required ) - ſɭɘэ ſɭɹ ſןɹ ( ꞁȷ̀ɔ ʌ ſɭc̭ɔ ʌ ſɭᴜͷ̗ )
  * @param sukf2q ( TboSukf2q = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ - { kaj2xa? }
- * @returns nejeqana
+ * @returns ꞁȷ̀ɜ ſɭɔʞ
  */
 function kaltokKmeIpa(kp6k2p2: string): string {
     let nejeqana = "";
@@ -1557,7 +1557,7 @@ function tboGawekiifIpa(kp6k2p2: string, sukf2q: TboSukf2q = {}): string {
  * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA )
  * @param xez ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
  * @param n2k ( number = 0o0 , optional ) - ſɭɹ ſȷɔ ( 0 )
- * @returns awaB6n2ba
+ * @returns ꞁȷ̀ᴜ ᶅſᴜ
  */
 function b6n2baAwaIpa( xez: string, n2k: number = 0o0 ): { n2k: number, awa: string, puf2: number } | null {
     for ( let i = n2k; i < xez.length; i++ ) {
@@ -1571,7 +1571,7 @@ function b6n2baAwaIpa( xez: string, n2k: number = 0o0 ): { n2k: number, awa: str
 /**
 * ſɟᴜ ɭʃᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IPA La3os )
 * @param kp6k2p2 ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( IPA )
-* @returns xezCa1ara
+* @returns ᶅſɔ ſɭɹ ſןɹ
 */
 function kaltokIpaXez( kp6k2p2: string ): string[] {
     /* ⟨ j͑ʃᴜƽ ( IPA ) ⟩ */
@@ -1917,12 +1917,12 @@ if ( typeof module !== "undefined" && module.exports ) {
                     }
                     mana.style.display = xcana ? "flex" : "none";
                     if ( ca3aq === "number" || ca3aq === "encoding" ) {
-                        const p2saKlavo = ca3aq === "number" ? "numberDuuma" : "encodingDuuma";
-                        const p2saElemento = xcanaCa1ara[p2saKlavo as keyof typeof xcanaCa1ara];
-                        if ( p2saElemento ) {
-                            p2saElemento.textContent = nejeqanaCa1ara[p2saKlavo] || "";
-                            const p2saMana = p2saElemento.parentElement;
-                            if ( p2saMana ) p2saMana.style.display = xcana ? "flex" : "none";
+                        const p2saS2 = ca3aq === "number" ? "numberDuuma" : "encodingDuuma";
+                        const p2saKek = xcanaCa1ara[p2saS2 as keyof typeof xcanaCa1ara];
+                        if ( p2saKek ) {
+                            p2saKek.textContent = nejeqanaCa1ara[p2saS2] || "";
+                            const p2saKuba = p2saKek.parentElement;
+                            if ( p2saKuba ) p2saKuba.style.display = xcana ? "flex" : "none";
                         }
                     }
                 }

@@ -5,80 +5,80 @@
 
 // ⟪ ֭ſɭᴜ ı],ɔ 📐 ⟫
 
-interface SignoDatumoj {
-	nomo: string;
-	linioj: string[];
-	larĝo: number;
-	alto: number;
+interface Kp6Sab2 {
+	ksaka: string;
+	han2k: string[];
+	sefini: number;
+	l6da: number;
 }
 
-interface Kolumno {
-	signoj: SignoDatumoj[];
-	larĝo: number;
-	alto: number;
+interface Kp6Kuba {
+	kp6Ca1ara: Kp6Sab2[];
+	sefini: number;
+	l6da: number;
 }
 
-interface SilabaBloko {
-	linioj: string[];
-	alto: number;
-	larĝo: number;
+interface XezKuba {
+	han2k: string[];
+	l6da: number;
+	sefini: number;
 }
 
-interface KolumnajDatumoj {
-	linioj: string[];
-	larĝo: number;
-	alto: number;
+interface KubaSab2 {
+	han2k: string[];
+	sefini: number;
+	l6da: number;
 }
 
 
 // ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 📦 ⟫
 
 // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ʌ ſɭɔ˞ᴜ ſɭᴜ ⟩
-const signaMapo = new Map<string, SignoDatumoj>();
+const kp6Bal2xa = new Map<string, Kp6Sab2>();
 
-const glifajDosieroj = import.meta.glob("./**/*.txt", {
+const kp6Ca1ara = import.meta.glob("./**/*.txt", {
 	query: "?raw",
 	import: "default",
 	eager: true
 }) as Record<string, string>;
 
 // ⟨ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɭɹ ſȷɔ ⟩
-let ordigitajNomoj: string[] = [];
+let htakaKsakaCa1ara: string[] = [];
 
 
 // ⟪ ſ͕ɭɹȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📂 ⟫
 
 /**
 	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( txt )
-	@returns promessa
+	@returns void
 */
-async function ŝargiSignojn(): Promise<void> {
-	const eroj = Object.entries(glifajDosieroj);
+async function b6tem2Kp6(): Promise<void> {
+	const eskekCa1ara = Object.entries(kp6Ca1ara);
 
-	for ( const [ vojo, teksto ] of eroj ) {
+	for ( const [ k6h6, k61e ] of eskekCa1ara ) {
 		try {
-			const nomo = vojo.split("/").pop()?.replace(/\.txt$/, "");
-			if ( !nomo ) continue;
+			const ksaka = k6h6.split("/").pop()?.replace(/\.txt$/, "");
+			if ( !ksaka ) continue;
 
-			const krudajLinioj = teksto.replace(/\r/g, "").split("\n");
+			const ne1anesaiHan2k = k61e.replace(/\r/g, "").split("\n");
 
 			// ⟨ ſןw ʌ j͑ʃᴜƽ ⟩
-			if ( krudajLinioj.length > 0o1 && krudajLinioj[krudajLinioj.length - 0o1] === "" ) {
-				krudajLinioj.pop();
+			if ( ne1anesaiHan2k.length > 0o1 && ne1anesaiHan2k[ne1anesaiHan2k.length - 0o1] === "" ) {
+				ne1anesaiHan2k.pop();
 			}
 
-			const larĝo = Math.max(...krudajLinioj.map(l => l.length), 0o0);
-			const linioj = krudajLinioj.map(l => l.padEnd(larĝo, " "));
-			const alto = linioj.length;
+			const sefini = Math.max(...ne1anesaiHan2k.map(n2k => n2k.length), 0o0);
+			const han2k = ne1anesaiHan2k.map(n2k => n2k.padEnd(sefini, " "));
+			const l6da = han2k.length;
 
-			signaMapo.set(nomo, { nomo, linioj, larĝo, alto });
+			kp6Bal2xa.set(ksaka, { ksaka, han2k, sefini, l6da });
 
 		} catch ( e ) {
-			console.error(`( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Malsukcesis ŝargi glifon. ${vojo}`, e);
+			console.error(`( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ne1a b6tem2 kp6. ${k6h6}`, e);
 		}
 	}
 
-	ordigitajNomoj = [ ...signaMapo.keys() ].sort(( a, b ) => b.length - a.length);
+	htakaKsakaCa1ara = [ ...kp6Bal2xa.keys() ].sort(( a, b ) => b.length - a.length);
 }
 
 
@@ -88,31 +88,31 @@ async function ŝargiSignojn(): Promise<void> {
 	* ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ⟩
 		ꞁȷ̀ɔ j͑ʃƽɔƽ
 	ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ
-	@returns listo
+	@returns han2k
 */
-function ĵetonigiSilabon(silabo: string): string[] {
-	const ĵetonoj: string[] = [];
+function s2Xez(xez: string): string[] {
+	const s2Ca1ara: string[] = [];
 	let i = 0o0;
 
-	while ( i < silabo.length ) {
-		let kongruis = false;
-		for ( const nomo of ordigitajNomoj ) {
-			if ( silabo.startsWith(nomo, i) ) {
-				ĵetonoj.push(nomo);
-				i += nomo.length;
-				kongruis = true;
+	while ( i < xez.length ) {
+		let xekox2q = false;
+		for ( const ksaka of htakaKsakaCa1ara ) {
+			if ( xez.startsWith(ksaka, i) ) {
+				s2Ca1ara.push(ksaka);
+				i += ksaka.length;
+				xekox2q = true;
 				break;
 			}
 		}
 
-		if ( !kongruis ) {
+		if ( !xekox2q ) {
 			// ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
-			ĵetonoj.push(silabo[i]);
+			s2Ca1ara.push(xez[i]);
 			i++;
 		}
 	}
 
-	return ĵetonoj;
+	return s2Ca1ara;
 }
 
 
@@ -122,62 +122,62 @@ function ĵetonigiSilabon(silabo: string): string[] {
 	* ⟨ ſɟɔ ŋᷠɔ ʌ j͑ʃᴜƽ ⟩
 		j͑ʃᴜƽ
 	ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ
-	@returns listo
+	@returns han2k
 */
-function bildigiSilabanBlokon(silabo: string): string[] {
-	const ĵetonoj = ĵetonigiSilabon(silabo);
-	if ( ĵetonoj.length === 0o0 ) return [];
+function kubaXez(xez: string): string[] {
+	const s2Ca1ara = s2Xez(xez);
+	if ( s2Ca1ara.length === 0o0 ) return [];
 
-	const renversitajĴetonoj = [ ...ĵetonoj ].reverse();
-	const kolumnoj: Kolumno[] = [];
-	let nunaKolono: Kolumno | null = null;
+	const nekalaS2Ca1ara = [ ...s2Ca1ara ].reverse();
+	const kp6KubaCa1ara: Kp6Kuba[] = [];
+	let kxesuKp6Kuba: Kp6Kuba | null = null;
 
-	for ( const ĵetono of renversitajĴetonoj ) {
-		const signoDatumo = signaMapo.get(ĵetono) || { nomo: ĵetono, linioj: [ "" ], larĝo: 0o4, alto: 0o4 };
+	for ( const s2 of nekalaS2Ca1ara ) {
+		const kp6Sab2 = kp6Bal2xa.get(s2) || { ksaka: s2, han2k: [ "" ], sefini: 0o4, l6da: 0o4 };
 
-		const estasMalgranda = signoDatumo.alto === 0o4;
-		const povasAmasigi = estasMalgranda && nunaKolono && nunaKolono.signoj.every(c => c.alto === 0o4);
+		const m2 = kp6Sab2.l6da === 0o4;
+		const kubaM2 = m2 && kxesuKp6Kuba && kxesuKp6Kuba.kp6Ca1ara.every(c => c.l6da === 0o4);
 
-		if ( povasAmasigi && nunaKolono ) {
-			nunaKolono.signoj.unshift(signoDatumo);
-			nunaKolono.larĝo = Math.max(nunaKolono.larĝo, signoDatumo.larĝo);
-			nunaKolono.alto += signoDatumo.alto;
+		if ( kubaM2 && kxesuKp6Kuba ) {
+			kxesuKp6Kuba.kp6Ca1ara.unshift(kp6Sab2);
+			kxesuKp6Kuba.sefini = Math.max(kxesuKp6Kuba.sefini, kp6Sab2.sefini);
+			kxesuKp6Kuba.l6da += kp6Sab2.l6da;
 		} else {
-			nunaKolono = { signoj: [ signoDatumo ], larĝo: signoDatumo.larĝo, alto: signoDatumo.alto };
-			kolumnoj.push(nunaKolono);
+			kxesuKp6Kuba = { kp6Ca1ara: [ kp6Sab2 ], sefini: kp6Sab2.sefini, l6da: kp6Sab2.l6da };
+			kp6KubaCa1ara.push(kxesuKp6Kuba);
 		}
 	}
 
-	const finajKolumnoj = [ ...kolumnoj ].reverse();
-	if ( finajKolumnoj.length === 0o0 ) return [];
+	const p2saKp6KubaCa1ara = [ ...kp6KubaCa1ara ].reverse();
+	if ( p2saKp6KubaCa1ara.length === 0o0 ) return [];
 
-	const blokaAlto = Math.max(0o7, ...finajKolumnoj.map(kol => kol.alto));
+	const kubaL6da = Math.max(0o7, ...p2saKp6KubaCa1ara.map(kuba => kuba.l6da));
 
-	const kolumnajLinioj: string[][] = finajKolumnoj.map((kol) => {
-		const kolLinioj: string[] = [];
-		for ( const signo of kol.signoj ) {
-			for ( const linio of signo.linioj ) {
-				kolLinioj.push(linio.padEnd(kol.larĝo, " "));
+	const kubaHan2kCa1ara: string[][] = p2saKp6KubaCa1ara.map((kuba) => {
+		const kubaHan2k: string[] = [];
+		for ( const kp6 of kuba.kp6Ca1ara ) {
+			for ( const n2k of kp6.han2k ) {
+				kubaHan2k.push(n2k.padEnd(kuba.sefini, " "));
 			}
 		}
 
-		const kusenKvanto = blokaAlto - kolLinioj.length;
-		const kuseno = Array(kusenKvanto).fill(" ".repeat(kol.larĝo));
+		const p2foK2fe = kubaL6da - kubaHan2k.length;
+		const p2fo = Array(p2foK2fe).fill(" ".repeat(kuba.sefini));
 
-		return [ ...kolLinioj, ...kuseno ];
+		return [ ...kubaHan2k, ...p2fo ];
 	});
 
-	const blokajLinioj: string[] = [];
-	for ( let r = 0o0; r < blokaAlto; r++ ) {
-		let linio = "";
-		for ( let c = 0o0; c < kolumnajLinioj.length; c++ ) {
-			if ( c > 0o0 ) linio += " ";
-			linio += kolumnajLinioj[c][r];
+	const p2saHan2k: string[] = [];
+	for ( let r = 0o0; r < kubaL6da; r++ ) {
+		let n2k = "";
+		for ( let c = 0o0; c < kubaHan2kCa1ara.length; c++ ) {
+			if ( c > 0o0 ) n2k += " ";
+			n2k += kubaHan2kCa1ara[c][r];
 		}
-		blokajLinioj.push(linio);
+		p2saHan2k.push(n2k);
 	}
 
-	return blokajLinioj;
+	return p2saHan2k;
 }
 
 
@@ -191,148 +191,148 @@ function bildigiSilabanBlokon(silabo: string): string[] {
 	@returns void
 */
 // ⟨ ſɟɔ ŋᷠɔ ʌ ſɟᴜ ſȷᴜɔ˞ ⟩
-	function ĝisdatigiEliron(teksto: string, preElement: HTMLPreElement, maksLinio: number): void {
-	if ( !teksto ) {
-		preElement.textContent = "";
+	function v3ak2Sunta(k61e: string, sunta: HTMLPreElement, maxN2k: number): void {
+	if ( !k61e ) {
+		sunta.textContent = "";
 		return;
 	}
 
 	// ⟨ ſɭʞɹ ʌ j͑ʃᴜƽ ⟩
-	const enigajLinioj = teksto.replace(/\r/g, "").split("\n");
-	const kolumnajBlokoj: SilabaBloko[][] = [];
-	let nunaKolumno: SilabaBloko[] = [];
+	const k61eHan2k = k61e.replace(/\r/g, "").split("\n");
+	const kubaCa1ara: XezKuba[][] = [];
+	let kxesuKuba: XezKuba[] = [];
 
-	for ( const enigaLinio of enigajLinioj ) {
+	for ( const k61eN2k of k61eHan2k ) {
 		// ⟨ ſןw ʌ j͑ʃᴜƽ ⟩
-		if ( nunaKolumno.length > 0o0 ) {
-			kolumnajBlokoj.push(nunaKolumno);
-			nunaKolumno = [];
+		if ( kxesuKuba.length > 0o0 ) {
+			kubaCa1ara.push(kxesuKuba);
+			kxesuKuba = [];
 		}
 
-		const silaboj = enigaLinio.split(" ");
-		for ( const silabo of silaboj ) {
-			let bloko: SilabaBloko;
-			if ( silabo === "" ) {
+		const xezCa1ara = k61eN2k.split(" ");
+		for ( const xez of xezCa1ara ) {
+			let kuba: XezKuba;
+			if ( xez === "" ) {
 				// ⟨ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃᴜƽ ⟩
-				bloko = { linioj: Array(0o7).fill(" "), alto: 0o7, larĝo: 0o1 };
+				kuba = { han2k: Array(0o7).fill(" "), l6da: 0o7, sefini: 0o1 };
 			} else {
-				const linioj = bildigiSilabanBlokon(silabo);
-				const alto = linioj.length;
-				const larĝo = linioj.length > 0o0 ? linioj[0o0].length : 0o0;
-				bloko = { linioj, alto, larĝo };
+				const han2k = kubaXez(xez);
+				const l6da = han2k.length;
+				const sefini = han2k.length > 0o0 ? han2k[0o0].length : 0o0;
+				kuba = { han2k, l6da, sefini };
 			}
 
 			// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɹ ſȷɔ ⟩
-			if ( maksLinio > 0o0 && nunaKolumno.length >= maksLinio ) {
-				kolumnajBlokoj.push(nunaKolumno);
-				nunaKolumno = [ bloko ];
+			if ( maxN2k > 0o0 && kxesuKuba.length >= maxN2k ) {
+				kubaCa1ara.push(kxesuKuba);
+				kxesuKuba = [ kuba ];
 			} else {
-				nunaKolumno.push(bloko);
+				kxesuKuba.push(kuba);
 			}
 		}
 	}
-	if ( nunaKolumno.length > 0o0 ) kolumnajBlokoj.push(nunaKolumno);
+	if ( kxesuKuba.length > 0o0 ) kubaCa1ara.push(kxesuKuba);
 
-	if ( kolumnajBlokoj.length === 0o0 ) {
-		preElement.textContent = "";
+	if ( kubaCa1ara.length === 0o0 ) {
+		sunta.textContent = "";
 		return;
 	}
 
 	// ⟨ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſןᴜ j͐ʃэ ⟩
-	const maksimumajBlokojEnKol = Math.max(...kolumnajBlokoj.map(kol => kol.length), 0o0);
-	const vicoMaksimumajAltoj: number[] = Array(maksimumajBlokojEnKol).fill(0o0);
-	for ( let r = 0o0; r < maksimumajBlokojEnKol; r++ ) {
-		let maksimumaAlto = 0o0;
-		for ( const kol of kolumnajBlokoj ) {
-			if ( kol[r] ) {
-				maksimumaAlto = Math.max(maksimumaAlto, kol[r].alto);
+	const maxKubaK2fe = Math.max(...kubaCa1ara.map(kuba => kuba.length), 0o0);
+	const maxL6daCa1ara: number[] = Array(maxKubaK2fe).fill(0o0);
+	for ( let r = 0o0; r < maxKubaK2fe; r++ ) {
+		let maxL6da = 0o0;
+		for ( const kuba of kubaCa1ara ) {
+			if ( kuba[r] ) {
+				maxL6da = Math.max(maxL6da, kuba[r].l6da);
 			}
 		}
-		vicoMaksimumajAltoj[r] = maksimumaAlto;
+		maxL6daCa1ara[r] = maxL6da;
 	}
 
-	for ( const kol of kolumnajBlokoj ) {
-		for ( let r = 0o0; r < kol.length; r++ ) {
-			const celaAlto = vicoMaksimumajAltoj[r];
-			const bloko = kol[r];
-			if ( bloko.alto < celaAlto ) {
-				const kusenKvanto = celaAlto - bloko.alto;
-				const malplenaLinio = " ".repeat(bloko.larĝo);
-				const kuseno = Array(kusenKvanto).fill(malplenaLinio);
-				bloko.linioj = [ ...bloko.linioj, ...kuseno ];
-				bloko.alto = celaAlto;
+	for ( const kuba of kubaCa1ara ) {
+		for ( let r = 0o0; r < kuba.length; r++ ) {
+			const araqL6da = maxL6daCa1ara[r];
+			const kxesu = kuba[r];
+			if ( kxesu.l6da < araqL6da ) {
+				const p2foK2fe = araqL6da - kxesu.l6da;
+				const p2foN2k = " ".repeat(kxesu.sefini);
+				const p2fo = Array(p2foK2fe).fill(p2foN2k);
+				kxesu.han2k = [ ...kxesu.han2k, ...p2fo ];
+				kxesu.l6da = araqL6da;
 			}
 		}
 	}
 
 	// ⟨ ſɟɔ ŋᷠɔ ʌ j͑ʃᴜƽ ⟩
-	const kolumnajDatumoj: KolumnajDatumoj[] = kolumnajBlokoj.map((kol) => {
-		const kolLinioj: string[] = [];
-		for ( let i = kol.length - 0o1; i >= 0o0; i-- ) {
-			kolLinioj.push(...kol[i].linioj);
+	const kubaSab2Ca1ara: KubaSab2[] = kubaCa1ara.map((kuba) => {
+		const kubaHan2k: string[] = [];
+		for ( let i = kuba.length - 0o1; i >= 0o0; i-- ) {
+			kubaHan2k.push(...kuba[i].han2k);
 		}
 
-		const kolLarĝo = Math.max(...kol.map(b => b.larĝo), 0o0);
-		const plenigitajKolLinioj = kolLinioj.map(linio => linio.padEnd(kolLarĝo, " "));
+		const kubaSefini = Math.max(...kuba.map(c => c.sefini), 0o0);
+		const sefiniHan2k = kubaHan2k.map(n2k => n2k.padEnd(kubaSefini, " "));
 
-		return { linioj: plenigitajKolLinioj, larĝo: kolLarĝo, alto: plenigitajKolLinioj.length };
+		return { han2k: sefiniHan2k, sefini: kubaSefini, l6da: sefiniHan2k.length };
 	});
 
 	// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃᴜƽ ⟩
-	const eligaAlto = Math.max(...kolumnajDatumoj.map(c => c.alto), 0o0);
+	const suntaL6da = Math.max(...kubaSab2Ca1ara.map(c => c.l6da), 0o0);
 
-	const plenigitajKolumnoj: string[][] = kolumnajDatumoj.map((c) => {
-		const kusenKvanto = eligaAlto - c.alto;
-		const malplenaLinio = " ".repeat(c.larĝo);
-		const kuseno = Array(kusenKvanto).fill(malplenaLinio);
-		return [ ...kuseno, ...c.linioj ];
+	const suntaKubaCa1ara: string[][] = kubaSab2Ca1ara.map((c) => {
+		const p2foK2fe = suntaL6da - c.l6da;
+		const p2foN2k = " ".repeat(c.sefini);
+		const p2fo = Array(p2foK2fe).fill(p2foN2k);
+		return [ ...p2fo, ...c.han2k ];
 	});
 
-	const finajLinioj: string[] = [];
-	for ( let r = 0o0; r < eligaAlto; r++ ) {
-		let linio = "";
-		for ( let c = 0o0; c < plenigitajKolumnoj.length; c++ ) {
-			if ( c > 0o0 ) linio += " ";
-			linio += plenigitajKolumnoj[c][r];
+	const p2saHan2k: string[] = [];
+	for ( let r = 0o0; r < suntaL6da; r++ ) {
+		let n2k = "";
+		for ( let c = 0o0; c < suntaKubaCa1ara.length; c++ ) {
+			if ( c > 0o0 ) n2k += " ";
+			n2k += suntaKubaCa1ara[c][r];
 		}
-		finajLinioj.push(linio);
+		p2saHan2k.push(n2k);
 	}
 
-	preElement.textContent = finajLinioj.join("\n");
+	sunta.textContent = p2saHan2k.join("\n");
 }
 
 
 // ⟪ j͑ʃᴜ ı],ɔ 🚀 ⟫
 
 document.addEventListener("DOMContentLoaded", async () => {
-	const tekstareo = document.getElementById("saxesuOx2pewa") as HTMLTextAreaElement | null;
-	const pre = document.getElementById("tlakakuOx2pewa") as HTMLPreElement | null;
-	const maksLinioEnigo = document.getElementById("maxlineInput") as HTMLInputElement | null;
+	const k61eXema = document.getElementById("saxesuOx2pewa") as HTMLTextAreaElement | null;
+	const sunta = document.getElementById("tlakakuOx2pewa") as HTMLPreElement | null;
+	const maxN2kXema = document.getElementById("maxlineInput") as HTMLInputElement | null;
 
-	if ( !tekstareo || !pre ) {
-		console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Teksta Arta generatoro. tekstareo aŭ pre-elemento ne trovita.");
+	if ( !k61eXema || !sunta ) {
+		console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ne1a k61eXema.");
 		return;
 	}
 
-	pre.textContent = "";
+	sunta.textContent = "";
 
-	await ŝargiSignojn();
+	await b6tem2Kp6();
 
-	const akiriMaksLinion = (): number => {
-		if ( !maksLinioEnigo ) return 0o0;
-		const valoro = parseInt(maksLinioEnigo.value, 0o10);
-		return isNaN(valoro) ? 0o0 : valoro;
+	const quqMaxN2k = (): number => {
+		if ( !maxN2kXema ) return 0o0;
+		const k2fe = parseInt(maxN2kXema.value, 0o10);
+		return isNaN(k2fe) ? 0o0 : k2fe;
 	};
 
-	ĝisdatigiEliron(tekstareo.value, pre, akiriMaksLinion());
+	v3ak2Sunta(k61eXema.value, sunta, quqMaxN2k());
 
-	tekstareo.addEventListener("input", () => {
-		ĝisdatigiEliron(tekstareo.value, pre, akiriMaksLinion());
+	k61eXema.addEventListener("input", () => {
+		v3ak2Sunta(k61eXema.value, sunta, quqMaxN2k());
 	});
 
-	if ( maksLinioEnigo ) {
-		maksLinioEnigo.addEventListener("input", () => {
-			ĝisdatigiEliron(tekstareo.value, pre, akiriMaksLinion());
+	if ( maxN2kXema ) {
+		maxN2kXema.addEventListener("input", () => {
+			v3ak2Sunta(k61eXema.value, sunta, quqMaxN2k());
 		});
 	}
 });

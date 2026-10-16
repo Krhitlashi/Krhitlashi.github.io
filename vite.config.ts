@@ -28,7 +28,7 @@ function b6n2baHtml(kuba: string, k21eCakavop2: Record<string, string> = {}) {
 
 // ⟪ ſ͕ɭw ʌ ꞁȷ̀ɔ ⸙ dist ⸙ ſɭᴜͷ̗ ꞁȷ̀ᴜͷ̗ ʌ ſɟw ɭʃᴜ ʌ ſɭɹ ſᶘɔ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ֭ſɭᴜ ſɟɔⅎƴ ꞁȷ̀ᴜ }ʃꞇ ⟅ ⟫
 const cutaHac0zani = {
-  name: "kopii-statikajn-dosierojn",
+  name: "xema-cakavop2",
   closeBundle() {
     const distKuba = join(__dirname, "dist");
     const puKuba = [ "node_modules", "dist", ".git", ".github", ".idea" ];
@@ -68,7 +68,7 @@ const cutaHac0zani = {
       cutaK2fe++;
     });
 
-    console.log(`Kopiitaj ${cutaK2fe} statikaj dosieroj al dist`);
+    console.log(`Xema ${cutaK2fe} cakavop2 al dist`);
   }
 };
 
@@ -102,11 +102,21 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: b6n2baHtml(__dirname),
-      /* Konservu kaj la aktivan baznomon KAJ ĝian fonto-relativan dosierujon. Vite-aj `[name]` ĵetonoj donas la sanigitan baznomon ( ekz. `ı__ɔ` el `ı],ɔ` ), kaj `assetInfo.originalFileNames[0]` donas la fontan vojon por rekonstrui la fontan dosierujon. Sen tio, CSS-dosiero ĉe `ſɟᴜ ſɭɹ/.../֭ſɭᴜ ı],ɔ.css` finiĝus ĉe la dist-radiko kiel `֭ſɭᴜ ı__ɔ.css`, perdante sian fontan dosierujon.
-      
-      Peĉdosieroj ( JS-pakaĵoj ) konservas Vite-ajn normajn `[name]-[hash].js` nomojn por ke ekzistantaj peĉ-URL-oj restu adreseblaj.
-      
-      ( Noto ) Ĉi tio estas intence sub `rollupOptions` ( ne `rolldownOptions` ). Vite 8 uzas Rolldown sub la kapuĉo, dum la pakaĵilo ankoraŭ konsumas `rollupOptions.output` por aktiva nomado. */
+      /* j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſ͔ɭɔ j͐ʃɔɔ˞ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɭᴜͷ̗ ʌ j͑ʃɔ ſᶘꞇȝ ʌ ſȷᴜͷ̗ ſ̀ȷᴜȝ ꞁȷ̀ᴜꞇ ʌ ⺓ ʌ ſɭꞇ ⟅
+      ꞁȷ̀эⅎ ſᶘɔ ʌ ı],ꞇ j͑ʃᴜ j͐ʃ ʌ ſ͔ɭɔ j͐ʃɔɔ˞ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ Vite `[name]` ⟅
+      ꞁȷ̀эⅎ ſᶘɔ ʌ ſᶘꞇȝ ʌ ſɭэ ֭ſɭэ ʌ ⺓ ʌ `assetInfo.originalFileNames[0]` ⟅
+      j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɔ ſᶘꞇȝ ʌ ſȷᴜͷ̗ ſ̀ȷᴜȝ ꞁȷ̀ᴜꞇ ʌ ⺓ ʌ ſɭꞇ ⟅
+      ſ͕ɭᴜ }ʃᴜ ʌ j͑ʃɔ ſᶘꞇȝ ʌ ſȷᴜͷ̗ ſ̀ȷᴜȝ ꞁȷ̀ᴜꞇ ʌ ⺓ ʌ CSS `ſɟᴜ ſɭɹ/.../֭ſɭᴜ ı],ɔ.css` ⟅
+      ɭʃᴜ ʃꞇ ʌ ɭl̀э dist ʌ ⺓ ʌ `֭ſɭᴜ ı__ɔ.css` ⟅
+
+      j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭc̗ᴜ ʃэ ſɭᴜ ŋᷠᴜ ʌ JS ʌ Vite `[name]-[hash].js` ʌ ⺓ ʌ ſɭꞇ ⟅
+      ꞁȷ̀ᴜ ſ̀ȷɔ ʌ ⺓ ʌ URL ⟅
+
+      ɭʃᴜ ʃꞇ ʌ ɭl̀э `rollupOptions` ʌ ⺓ ʌ ſᶘᴜ j͐ʃɹ ⟅
+      ſɭɜ ɭʃᴜ ʃꞇ ʌ ɭl̀э `rolldownOptions` ʌ ⺓ ʌ ſᶘᴜ j͐ʃɹ ⟅
+      ſɭɹ ɽ͑ʃ'ɔ ʌ Rolldown ʌ ⺓ ʌ Vite 8 ⟅
+      ſɭɹ ɽ͑ʃ'ɔ ʌ `rollupOptions.output` ʌ ⺓ ʌ ŋᷠᴜ ʌ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ⟅
+      ꞁȷ̀эⅎ ſᶘɔ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ŋᷠᴜ ʌ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ⟅ */
       output: {
         assetFileNames: ( tcaq ) => {
           const ksaka = tcaq.names?.[ 0o0 ] ?? "";

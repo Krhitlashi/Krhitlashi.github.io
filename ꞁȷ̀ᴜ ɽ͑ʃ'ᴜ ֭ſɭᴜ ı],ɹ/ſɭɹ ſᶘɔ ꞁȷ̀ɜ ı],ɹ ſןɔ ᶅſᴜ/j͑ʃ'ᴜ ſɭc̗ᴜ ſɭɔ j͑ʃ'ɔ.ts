@@ -39,7 +39,7 @@ async function tem2Vefal(): Promise<void> {
 /**( j͑ʃ'ɔ ſȷᴜͷ̗ )
  * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( txt thala )
  * @param kp6 ( string ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
- * @returns elementoj
+ * @returns ſןw ſɭɔƽ
 */
 function vefal(kp6: string): HTMLElement[] {
     const han2k = kp6.split("\n");

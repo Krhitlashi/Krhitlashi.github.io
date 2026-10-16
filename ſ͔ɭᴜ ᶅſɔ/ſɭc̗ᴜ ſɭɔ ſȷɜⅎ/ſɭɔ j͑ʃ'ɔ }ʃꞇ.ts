@@ -46,24 +46,24 @@ const KFENI_CA1ARA = "H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V
 
 // ⟨ ſɭʞɔ }ʃꞇ ʌ ʃᴜ ſɭɹ ſןɹ }ʃꞇ ⚛️ ⟩
 
-function cataOkef( okef: string ): { s2tas: string; vek2fe: number }[] | null {
+function cataOkef( k61e: string ): { s2tas: string; vek2fe: number }[] | null {
     const okefKekCa1ara: { s2tas: string; vek2fe: number }[] = [];
     let i = 0o0;
 
-    while ( i < okef.length ) {
-        const c = okef[i];
+    while ( i < k61e.length ) {
+        const c = k61e[i];
         if ( c >= "A" && c <= "Z" ) {
             let s2tas = c;
             i++;
-            if ( i < okef.length && okef[i] >= "a" && okef[i] <= "z" ) {
-                s2tas += okef[i];
+            if ( i < k61e.length && k61e[i] >= "a" && k61e[i] <= "z" ) {
+                s2tas += k61e[i];
                 i++;
             }
             let vek2fe = 0o1;
-            if ( i < okef.length && okef[i] >= "0" && okef[i] <= "9" ) {
+            if ( i < k61e.length && k61e[i] >= "0" && k61e[i] <= "9" ) {
                 const saxeK2fe = i;
-                while ( i < okef.length && okef[i] >= "0" && okef[i] <= "9" ) i++;
-                vek2fe = parseInt( okef.slice( saxeK2fe, i ), 0o12 );
+                while ( i < k61e.length && k61e[i] >= "0" && k61e[i] <= "9" ) i++;
+                vek2fe = parseInt( k61e.slice( saxeK2fe, i ), 0o12 );
             }
             okefKekCa1ara.push( { s2tas, vek2fe } );
         } else {
@@ -122,8 +122,8 @@ function k2fKef( k2fe: number, vek2fe: number ): string | null {
     return kekCa1ara.join( " " );
 }
 
-function tboKef( okef: string ): string {
-    const okefKekCa1ara = cataOkef( okef );
+function tboKef( k61e: string ): string {
+    const okefKekCa1ara = cataOkef( k61e );
     if ( !okefKekCa1ara || okefKekCa1ara.length === 0o0 ) return TLOHK2NI;
 
     const kefCa1ara: string[] = [];
@@ -142,7 +142,7 @@ function tboKef( okef: string ): string {
 
 /**
 * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( l xhal6 )
- * @returns rezulto
+ * @returns 10ni
 */
 function cataK2fe( kp6k2p2: string, xaqadiHaxe: "K" | "V" | null ): { k2feCa1ara: number[]; haxe: "K" | "V" | null; fuKp6k2p2: string } | null {
     const k2feCa1ara: number[] = [];
@@ -209,7 +209,7 @@ function saxeBe( kp6k2p2: string ): boolean {
 
 /**
 * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( 0 )
- * @returns jesne
+ * @returns CEZ
 */
 function saxeEskek( kef: string ): boolean {
     if ( !kef.startsWith( SAXE_CA1ARA[0o0] ) ) {
@@ -225,8 +225,8 @@ function k2fOkef( kekCa1ara: { s2tas: string; vek2fe: number }[] ): string {
     return kekCa1ara.map( kek => kek.vek2fe === 0o1 ? kek.s2tas : kek.s2tas + kek.vek2fe ).join( "" );
 }
 
-function kefAlOkef( okef: string ): string {
-    const kefCa1ara = okef.trim().split( /\s+/ ).filter( kef => kef.length > 0o0 );
+function kefAlOkef( k61e: string ): string {
+    const kefCa1ara = k61e.trim().split( /\s+/ ).filter( kef => kef.length > 0o0 );
     if ( kefCa1ara.length === 0o0 ) return "";
 
     const kekCa1ara: { s2tas: string; vek2fe: number }[] = [];
@@ -327,8 +327,8 @@ function weh2Sak( j6fini: number ): string {
     return WEH2_S2TAS[j6fini >> 0o4] + WEH2_BE[j6fini & 0o17];
 }
 
-function tboWeh2( okef: string ): string {
-    const cataEskek = okef.trim().replace( /^#/, "" );
+function tboWeh2( k61e: string ): string {
+    const cataEskek = k61e.trim().replace( /^#/, "" );
     let xaqadiK2fe = -0o1;
     let r, g, b;
 
@@ -363,8 +363,8 @@ function tboWeh2( okef: string ): string {
 
 // ⟨ ᶅſɔ ֭ſɭɹ ʌ ʃᴜ ſɭɹ ſןɹ }ʃꞇ 🌈 ⟩
 
-function cataWeh2Sak( silabo: string ): number | null {
-    let fuKp6k2p2 = silabo;
+function cataWeh2Sak( xez: string ): number | null {
+    let fuKp6k2p2 = xez;
     let konsonanto = -0o1;
 
     for ( const s2tas of WEH2_S2TAS_CA1ARA ) {
@@ -393,8 +393,8 @@ function p2saK2fe( j6fini: number ): string {
     return j6fini.toString( 0o20 ).padStart( 0o2, "0" ).toUpperCase();
 }
 
-function weh2AlOkef( okef: string ): string {
-    const kefCa1ara = okef.trim().replace( /\//g, " " ).split( /\s+/ ).filter( kef => kef.length > 0o0 );
+function weh2AlOkef( k61e: string ): string {
+    const kefCa1ara = k61e.trim().replace( /\//g, " " ).split( /\s+/ ).filter( kef => kef.length > 0o0 );
     if ( kefCa1ara.length === 0o0 ) return "";
     if ( kefCa1ara.length !== 0o1 && kefCa1ara.length !== 0o3 && kefCa1ara.length !== 0o4 ) return TLOHK2NI;
 
@@ -422,10 +422,10 @@ function weh2AlOkef( okef: string ): string {
 
 // ⟪ j͐ʃw ſɭʞɔƽ ʌ ſɟᴜͷ̗ 📡 ⟫
 
-const kfeniKev = document.getElementById( "kemia-enigo" ) as HTMLInputElement;
-const kfeniCeme = document.getElementById( "kemia-eligo" ) as HTMLElement;
-const weh2Kev = document.getElementById( "koloro-enigo" ) as HTMLInputElement;
-const weh2Ceme = document.getElementById( "koloro-eligo" ) as HTMLElement;
+const kfeniKev = document.getElementById( "kfeni-kev" ) as HTMLInputElement;
+const kfeniCeme = document.getElementById( "kfeni-ceme" ) as HTMLElement;
+const weh2Kev = document.getElementById( "weh2-kev" ) as HTMLInputElement;
+const weh2Ceme = document.getElementById( "weh2-ceme" ) as HTMLElement;
 
 const CATA_S2TAS = [ "(", ")", "/", "-" ];
 

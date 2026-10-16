@@ -5,7 +5,7 @@
 
 declare global {
   // ⟨ ſɭɔ j͑ʃ'ɔ }ʃꞇ.js ⟩ - ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ
-  function vacepu(klasoNomo: string): void;
+  function vacepu(s2haxe: string): void;
   function a3esoza(sozanu: HTMLElement): void;
   function valas(): void;
 
@@ -17,10 +17,10 @@ declare global {
   const KNAK2FE: number;
   function vab6caja(xap2suK2fe: number): string;
   function vab6cajaDomani(xap2suK2fe: number, aahukani?: number): string;
-  function nenllakKp6EKfo(okef: string): { kfosu: boolean; eq2kOkef: string };
-  function neq2qKp6EKfo(okef: string, a1akfo: boolean): string;
-  function quqEskekK2fe(okef: string): number;
-  function vab6k2fekp6(okef: string): number;
+  function nenllakKp6EKfo(k61e: string): { kfosu: boolean; eq2kK61e: string };
+  function neq2qKp6EKfo(k61e: string, a1akfo: boolean): string;
+  function quqEskekK2fe(k61e: string): number;
+  function vab6k2fekp6(k61e: string): number;
   function quqDomani(hatok2fe: string[], knak2fesuK2fe?: number): number;
   function quqalDomanisuOk2fe(domani: number, aahukani?: number, knak2fesuK2fe?: number): string;
   function nlakStafl2(stibix: number): number;
@@ -56,7 +56,7 @@ declare global {
   // ⟨ j͑ʃƽᴜ ſɭɔʞ.js ⟩ - ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ
   function k2regawe(gawe: string): void;
   function kocepufal(gawe: string): void;
-  function skakefK2fe(okef: string): string;
+  function skakefK2fe(k61e: string): string;
   const skakefani: Record<string, Record<string, string>>;
 
   // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ.js ⟩ - ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ

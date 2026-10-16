@@ -1,871 +1,869 @@
-// ≺⧼ j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭc̗ᴜ ʃɔ - SonŜanĝa Aplikilo ⧽≻
+// ≺⧼ j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭc̗ᴜ ʃɔ - j͑ʃᴜ j͑ʃᴜc̗ ɭʃᴜ }ʃꞇ ʃɔ j͑ʃᴜꞇ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ ⧽≻
 
 type Gawe = "aih" | "en";
 
 // ⟪ ꞁȷ̀ɜ j͑ʃᴜ ⟫
 
-interface SonoEniro {
-  id: string;
-  valoro: string;
+interface BeEskek {
+  ksaka: string;
+  j6fini: string;
 }
 
-interface Sonogrupo {
-  id: string;
-  nomo: string;
-  sonajIdoj: string[];
+interface BeHate {
+  ksaka: string;
+  k61eKsaka: string;
+  beKsakaCa1ara: string[];
 }
 
-interface FonologiaStato {
-  sonoj: SonoEniro[];
-  grupoj: Sonogrupo[];
+interface BeHatPuXema {
+  beCa1ara: BeEskek[];
+  hateCa1ara: BeHate[];
 }
 
-interface StrukturaParto {
-  grupoId: string;
-  numeratoro: number;
+interface HtakaS2 {
+  hateKsaka: string;
+  k2fe: number;
 }
 
-interface Silabostrukturo {
-  id: string;
-  partoj: StrukturaParto[];
+interface XezHtaka {
+  ksaka: string;
+  s2Ca1ara: HtakaS2[];
 }
 
-interface EvoluaKonservo {
-  id: string;
-  nomo: string;
-  reguloj: string;
-  proprajVortoj: string;
-  uziGeneritaj: boolean;
+interface S2Xema {
+  ksaka: string;
+  k61eKsaka: string;
+  k61e: string;
+  saxeKefCa1ara: string;
+  quqK61e: boolean;
 }
 
-interface GeneratoraKonservo {
-  id: string;
-  nomo: string;
-  sonoj: SonoEniro[];
-  grupoj: Sonogrupo[];
-  aktivaGrupoId: string | null;
-  malnetajPartoj: StrukturaParto[];
-  strukturoj: Silabostrukturo[];
-  evoluaKonservoj: EvoluaKonservo[];
-  aktivaEvoluaKonservoId: string | null;
+interface PuXema {
+  ksaka: string;
+  k61eKsaka: string;
+  beCa1ara: BeEskek[];
+  hateCa1ara: BeHate[];
+  kxesuHateKsaka: string | null;
+  vop2S2Ca1ara: HtakaS2[];
+  xezHtakaCa1ara: XezHtaka[];
+  s2XemaCa1ara: S2Xema[];
+  kxesuS2XemaKsaka: string | null;
 }
 
-interface KonservojStato {
-  konservoj: GeneratoraKonservo[];
-  aktivaKonservoId: string | null;
+interface HatPuXema {
+  puXemaCa1ara: PuXema[];
+  kxesuPuXemaKsaka: string | null;
 }
 
-interface EvoluaStato {
-  reguloj: string;
-  proprajVortoj: string;
-  uziGeneritaj: boolean;
+interface S2PuXema {
+  k61e: string;
+  saxeKefCa1ara: string;
+  quqK61e: boolean;
 }
 
-type Kongruilo =
-  | { tipo: "laŭvorta"; valoro: string }
-  | { tipo: "limo" }
-  | { tipo: "grupo"; grupoNomo: string }
-  | { tipo: "alternativoj"; opcioj: Kongruilo[] };
+type Xekox2qKek =
+  | { hat: "saxe"; j6fini: string }
+  | { hat: "kemafi" }
+  | { hat: "hate"; hateKsaka: string }
+  | { hat: "vop2"; k61eCa1ara: Xekox2qKek[] };
 
-interface AnalizitaRegulo {
-  antaŭKunteksto: Kongruilo[];
-  celo: Kongruilo[];
-  postKunteksto: Kongruilo[];
-  anstataŭigo: string[];
+interface Ne1anesaiK61e {
+  saxeK61e: Xekox2qKek[];
+  araq: Xekox2qKek[];
+  araqK61e: Xekox2qKek[];
+  k61eAraq: string[];
 }
 
 // ⟪ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟫
 
-const GENERATORA_STOKAJO_ŜLOSILO = "phonology-generator-state-v1";
-const EVOLUA_STOKAJO_ŜLOSILO = "phonology-evolve-state-v1";
 const LIMO = "#";
 
-const TEKSTO = {
+const K61e = {
   aih: {
-    READY: "ꞁȷ̀ᴜ ŋᷠᴜͷ̗",
-    NO_RULES: "ꞁȷ̀ɔ ſ͕ɭɹƽ ʌ ſɭᴜc̗ ɭʃᴜ ⟅",
-    NO_WORDS: "ꞁȷ̀ɔ ſ͕ɭɹƽ ʌ ſɭɔʞ ⟅",
-    EVOLVED: "ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜꞇ ʌ ſɭɹ ſ͔ɭɔ ⟅",
-    PARSE_ERROR: "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )",
-    RULES_PLACEHOLDER: "ſɭᴜc̗ ɭʃᴜ ⟅",
-    CUSTOM_PLACEHOLDER: "ꞁȷ̀ꞇ j͐ʃᴜƽ ʌ ſɭɔʞ ⟅",
+    B6TEM2: "ꞁȷ̀ᴜ ŋᷠᴜͷ̗",
+    NE1A_K61E: "ꞁȷ̀ɔ ſ͕ɭɹƽ ʌ ſɭᴜc̗ ɭʃᴜ ⟅",
+    NE1A_K61E_CA1ARA: "ꞁȷ̀ɔ ſ͕ɭɹƽ ʌ ſɭɔʞ ⟅",
+    KF2: "ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜꞇ ʌ ſɭɹ ſ͔ɭɔ ⟅",
+    TLOHK2NI: "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )",
+    S2XEMA_K61E: "ſɭᴜc̗ ɭʃᴜ ⟅",
+    SAXE_KEF_K61E: "ꞁȷ̀ꞇ j͐ʃᴜƽ ʌ ſɭɔʞ ⟅",
   },
   en: {
-    READY: "Ready",
-    NO_RULES: "No rules entered",
-    NO_WORDS: "No words to evolve",
-    EVOLVED: "Evolved",
-    PARSE_ERROR: "Rule parse error at line",
-    RULES_PLACEHOLDER: "Rules ( One per line )",
-    CUSTOM_PLACEHOLDER: "Custom words ( One per line )",
+    B6TEM2: "Ready",
+    NE1A_K61E: "No rules entered",
+    NE1A_K61E_CA1ARA: "No words to evolve",
+    KF2: "Evolved",
+    TLOHK2NI: "Rule parse error at line",
+    S2XEMA_K61E: "Rules ( One per line )",
+    SAXE_KEF_K61E: "Custom words ( One per line )",
   },
 } as const;
 
 // ⟪ ꞁȷ̀ɜ ʃэ ſɭɹ ⟫
 
-function akiriLingvon(): Gawe {
-  const parametroj = new URLSearchParams(window.location.search);
-  return parametroj.get("lang") === "en" ? "en" : "aih";
+function quqLang(): Gawe {
+  const xema = new URLSearchParams(window.location.search);
+  return xema.get("lang") === "en" ? "en" : "aih";
 }
 
-function akiriElementon<TElement extends HTMLElement>(id: string): TElement {
-  const elemento = document.getElementById(id);
-  if ( !elemento ) {
-    throw new Error(`Mankas elemento ${id}`);
+function quqKek<TElement extends HTMLElement>(ksaka: string): TElement {
+  const kek = document.getElementById(ksaka);
+  if ( !kek ) {
+    throw new Error(`ꞁȷ̀ᴜ ſɭɹ }ʃᴜ ʌ kek ${ksaka}`);
   }
-  return elemento as TElement;
+  return kek as TElement;
 }
 
-const lingvo = akiriLingvon();
-const T = TEKSTO[lingvo];
+const lang = quqLang();
+const T = K61e[lang];
 
 // ⟪ ꞁȷ̀ɜ ɽ͑ʃ'ᴜ ⟫
 
-const REGULOJ_TEKSTAREJO = akiriElementon<HTMLTextAreaElement>("evoluigi-reguloj");
-const FONTO_GENERITA = akiriElementon<HTMLInputElement>("evoluigi-fonto-generita");
-const FONTO_PROPRA = akiriElementon<HTMLInputElement>("evoluigi-fonto-propra");
-const PROPRAJVORTOJ_TEKSTAREJO = akiriElementon<HTMLTextAreaElement>("evoluigi-propraj-vortoj");
-const RULI_BUTONO = akiriElementon<HTMLButtonElement>("evoluigi-ruli");
-const STATO = akiriElementon<HTMLParagraphElement>("evoluigi-stato");
-const ELIRO = akiriElementon<HTMLElement>("evoluigi-eliro");
+const K61E_XEMA = quqKek<HTMLTextAreaElement>("s2xema-k61e-xema");
+const SAXE_KF2_KEK = quqKek<HTMLInputElement>("s2xema-saxe-kf2-kek");
+const SAXE_KEF_KEK = quqKek<HTMLInputElement>("s2xema-saxe-kef-kek");
+const SAXE_KEF_XEMA = quqKek<HTMLTextAreaElement>("s2xema-saxe-kef-xema");
+const KEVE_KEK = quqKek<HTMLButtonElement>("s2xema-keve-kek");
+const K61E_KEK = quqKek<HTMLParagraphElement>("s2xema-k61e-kek");
+const SUNTA_KEK = quqKek<HTMLElement>("s2xema-sunta-kek");
 
-const EVOLUAJ_KONSERVOJ_LISTO = akiriElementon<HTMLElement>("evoluigi-konservoj-listo");
-const EVOLUA_KONSERVA_NOMO_ENIGO = akiriElementon<HTMLInputElement>("evoluigi-konserva-nomo-enigo");
-const ALDONI_EVOLUAN_KONSERVON_BUTONO = akiriElementon<HTMLButtonElement>("evoluigi-aldoni-konservon");
-const FORIGI_EVOLUAN_KONSERVON_BUTONO = akiriElementon<HTMLButtonElement>("evoluigi-forigi-konservon");
+const S2XEMA_CA1ARA = quqKek<HTMLElement>("s2xema-ca1ara");
+const S2XEMA_KSAKA_KEK = quqKek<HTMLInputElement>("s2xema-ksaka-kek");
+const KF2_S2XEMA_KEK = quqKek<HTMLButtonElement>("kf2-s2xema-kek");
+const NE1A_S2XEMA_KEK = quqKek<HTMLButtonElement>("ne1a-s2xema-kek");
 
 // ⟪ ꞁȷ̀ɜ ŋᷠᴜ ⟫
 
-let konservojStato: KonservojStato = { konservoj: [], aktivaKonservoId: null };
+let hatPuXema: HatPuXema = { puXemaCa1ara: [], kxesuPuXemaKsaka: null };
 
-function ŝargiKonservojnStaton(): void {
+function b6tem2HatPuXema(): void {
   try {
-    const kruda = localStorage.getItem("phonology-generator-saves-v2");
-    if ( kruda ) {
-      const analizita = JSON.parse(kruda);
-      if ( analizita && Array.isArray(analizita.konservoj) && analizita.konservoj.length > 0o0 ) {
-        konservojStato = analizita;
+    const ne1anesaiK61e = localStorage.getItem("phonology-generator-saves-v2");
+    if ( ne1anesaiK61e ) {
+      const ne1anesai = JSON.parse(ne1anesaiK61e);
+      if ( ne1anesai && Array.isArray(ne1anesai.puXemaCa1ara) && ne1anesai.puXemaCa1ara.length > 0o0 ) {
+        hatPuXema = ne1anesai;
         return;
       }
     }
   } catch {}
-  konservojStato = { konservoj: [], aktivaKonservoId: null };
+  hatPuXema = { puXemaCa1ara: [], kxesuPuXemaKsaka: null };
 }
 
-function akiriAktivanGeneratoranKonservon(): GeneratoraKonservo | undefined {
-  return konservojStato.konservoj.find(k => k.id === konservojStato.aktivaKonservoId);
+function quqKxesuPuXema(): PuXema | undefined {
+  return hatPuXema.puXemaCa1ara.find(k => k.ksaka === hatPuXema.kxesuPuXemaKsaka);
 }
 
-function akiriAktivanEvoluanKonservon(): EvoluaKonservo | undefined {
-  const aktivaGen = akiriAktivanGeneratoranKonservon();
-  if ( !aktivaGen ) return undefined;
-  return aktivaGen.evoluaKonservoj.find(e => e.id === aktivaGen.aktivaEvoluaKonservoId);
+function quqKxesuS2Xema(): S2Xema | undefined {
+  const kxesuPuXema = quqKxesuPuXema();
+  if ( !kxesuPuXema ) return undefined;
+  return kxesuPuXema.s2XemaCa1ara.find(e => e.ksaka === kxesuPuXema.kxesuS2XemaKsaka);
 }
 
-function ŝargiFonologianStaton(): FonologiaStato {
-  ŝargiKonservojnStaton();
-  const aktivaGen = akiriAktivanGeneratoranKonservon();
-  if ( aktivaGen ) {
+function b6tem2BeHatPuXema(): BeHatPuXema {
+  b6tem2HatPuXema();
+  const kxesuPuXema = quqKxesuPuXema();
+  if ( kxesuPuXema ) {
     return {
-      sonoj: aktivaGen.sonoj || [],
-      grupoj: aktivaGen.grupoj || [],
+      beCa1ara: kxesuPuXema.beCa1ara || [],
+      hateCa1ara: kxesuPuXema.hateCa1ara || [],
     };
   }
-  return { sonoj: [], grupoj: [] };
+  return { beCa1ara: [], hateCa1ara: [] };
 }
 
-function ŝargiEvoluanStaton(): EvoluaStato {
-  ŝargiKonservojnStaton();
-  const aktivaEvoluo = akiriAktivanEvoluanKonservon();
-  if ( aktivaEvoluo ) {
+function b6tem2S2PuXema(): S2PuXema {
+  b6tem2HatPuXema();
+  const kxesuS2Xema = quqKxesuS2Xema();
+  if ( kxesuS2Xema ) {
     return {
-      reguloj: aktivaEvoluo.reguloj || "",
-      proprajVortoj: aktivaEvoluo.proprajVortoj || "",
-      uziGeneritaj: typeof aktivaEvoluo.uziGeneritaj === "boolean" ? aktivaEvoluo.uziGeneritaj : true,
+      k61e: kxesuS2Xema.k61e || "",
+      saxeKefCa1ara: kxesuS2Xema.saxeKefCa1ara || "",
+      quqK61e: typeof kxesuS2Xema.quqK61e === "boolean" ? kxesuS2Xema.quqK61e : true,
     };
   }
-  return { reguloj: "", proprajVortoj: "", uziGeneritaj: true };
+  return { k61e: "", saxeKefCa1ara: "", quqK61e: true };
 }
 
-function konserviEvoluanStaton(statDatumoj: EvoluaStato): void {
-  ŝargiKonservojnStaton();
-  const aktivaGen = akiriAktivanGeneratoranKonservon();
-  if ( aktivaGen ) {
-    const aktivaEvoluo = aktivaGen.evoluaKonservoj.find(e => e.id === aktivaGen.aktivaEvoluaKonservoId);
-    if ( aktivaEvoluo ) {
-      aktivaEvoluo.reguloj = statDatumoj.reguloj;
-      aktivaEvoluo.proprajVortoj = statDatumoj.proprajVortoj;
-      aktivaEvoluo.uziGeneritaj = statDatumoj.uziGeneritaj;
-      localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(konservojStato));
+function xemaS2PuXema( s2PuXema: S2PuXema ): void {
+  b6tem2HatPuXema();
+  const kxesuPuXema = quqKxesuPuXema();
+  if ( kxesuPuXema ) {
+    const kxesuS2Xema = kxesuPuXema.s2XemaCa1ara.find(e => e.ksaka === kxesuPuXema.kxesuS2XemaKsaka);
+    if ( kxesuS2Xema ) {
+      kxesuS2Xema.k61e = s2PuXema.k61e;
+      kxesuS2Xema.saxeKefCa1ara = s2PuXema.saxeKefCa1ara;
+      kxesuS2Xema.quqK61e = s2PuXema.quqK61e;
+      localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(hatPuXema));
       window.dispatchEvent(new CustomEvent("phonology-state-updated"));
     }
   }
 }
 
-// ⟪ ʃɔ ſɭɹ j͑ʃ'ɔ ⟫ - Ĵetonigilo
+// ⟪ ʃɔ ſɭɹ j͑ʃ'ɔ ⟫ - ſɭᴜͷ̗ ɭʃɜƽ ʌ ſɭɔʞ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ
 
-function ĵetonigi( vorto: string, konatajSonoj: string[] ): string[] {
-  if ( !vorto ) return [];
-  const ordigitaj = [ ...konatajSonoj ].filter(s => s.length > 0o0).sort((a, b) => b.length - a.length);
-  const ĵetonoj: string[] = [];
+function s2N2kBe( k61e: string, beK61eCa1ara: string[] ): string[] {
+  if ( !k61e ) return [];
+  const htakaBeK61eCa1ara = [ ...beK61eCa1ara ].filter(kxesuK61e => kxesuK61e.length > 0o0).sort((a, b) => b.length - a.length);
+  const s2Ca1ara: string[] = [];
   let i = 0o0;
 
-  while ( i < vorto.length ) {
-    let kongruis = false;
+  while ( i < k61e.length ) {
+    let xekox2q = false;
 
-    for ( const sono of ordigitaj ) {
-      if ( vorto.startsWith(sono, i) ) {
-        ĵetonoj.push(sono);
-        i += sono.length;
-        kongruis = true;
+    for ( const be of htakaBeK61eCa1ara ) {
+      if ( k61e.startsWith(be, i) ) {
+        s2Ca1ara.push(be);
+        i += be.length;
+        xekox2q = true;
         break;
       }
     }
 
-    if ( !kongruis ) {
+    if ( !xekox2q ) {
       // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
-      let fino = i + 0o1;
-      while ( fino < vorto.length ) {
-        const kp = vorto.codePointAt(fino);
-        if ( kp === undefined || !estasKunigmarko(kp) ) break;
-        fino += kp > 0xFFFF ? 0o2 : 0o1;
+      let araqK2fe = i + 0o1;
+      while ( araqK2fe < k61e.length ) {
+        const k2fe = k61e.codePointAt(araqK2fe);
+        if ( k2fe === undefined || !xekox2qKp6(k2fe) ) break;
+        araqK2fe += k2fe > 0xFFFF ? 0o2 : 0o1;
       }
-      ĵetonoj.push(vorto.slice(i, fino));
-      i = fino;
+      s2Ca1ara.push(k61e.slice(i, araqK2fe));
+      i = araqK2fe;
     }
   }
 
-  return ĵetonoj;
+  return s2Ca1ara;
 }
 
-function estasKunigmarko( kp: number ): boolean {
+function xekox2qKp6( k2fe: number ): boolean {
   return (
-    (kp >= 0x0300 && kp <= 0x036F) ||
-    (kp >= 0x1AB0 && kp <= 0x1AFF) ||
-    (kp >= 0x1DC0 && kp <= 0x1DFF) ||
-    (kp >= 0x20D0 && kp <= 0x20FF) ||
-    (kp >= 0xFE20 && kp <= 0xFE2F)
+    (k2fe >= 0x0300 && k2fe <= 0x036F) ||
+    (k2fe >= 0x1AB0 && k2fe <= 0x1AFF) ||
+    (k2fe >= 0x1DC0 && k2fe <= 0x1DFF) ||
+    (k2fe >= 0x20D0 && k2fe <= 0x20FF) ||
+    (k2fe >= 0xFE20 && k2fe <= 0xFE2F)
   );
 }
 
-// ⟪ ſɭɹ ⟫ - Regulaj Analizaj Utilaĵoj
+// ⟪ ſɭɹ ⟫ - j͑ʃп́ɔ ſɭᴜc̗ ɭʃᴜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ
 
-function troviKongruanKrampon( ĉeno: string, komenco: number ): number {
-  let profundo = 0o0;
-  for ( let i = komenco; i < ĉeno.length; i++ ) {
-    if ( ĉeno[i] === "[" ) profundo++;
-    else if ( ĉeno[i] === "]" ) {
-      profundo--;
-      if ( profundo === 0o0 ) return i;
+function quqKubaAraq( k61e: string, saxeK2fe: number ): number {
+  let kubaK2fe = 0o0;
+  for ( let i = saxeK2fe; i < k61e.length; i++ ) {
+    if ( k61e[i] === "[" ) kubaK2fe++;
+    else if ( k61e[i] === "]" ) {
+      kubaK2fe--;
+      if ( kubaK2fe === 0o0 ) return i;
     }
   }
   return -0o1;
 }
 
-function troviSupraNivelanSignon( ĉeno: string, signo: string ): number {
-  let krampaProfundo = 0o0;
-  for ( let i = 0o0; i < ĉeno.length; i++ ) {
-    if ( ĉeno[i] === "[" ) krampaProfundo++;
-    else if ( ĉeno[i] === "]" ) krampaProfundo--;
-    else if ( krampaProfundo === 0o0 && ĉeno[i] === signo ) return i;
+function quqSaxeKp6( k61e: string, kp6: string ): number {
+  let kubaK2fe = 0o0;
+  for ( let i = 0o0; i < k61e.length; i++ ) {
+    if ( k61e[i] === "[" ) kubaK2fe++;
+    else if ( k61e[i] === "]" ) kubaK2fe--;
+    else if ( kubaK2fe === 0o0 && k61e[i] === kp6 ) return i;
   }
   return -0o1;
 }
 
-function disigiSupraNivela( ĉeno: string, disigilo: string ): string[] {
-  const partoj: string[] = [];
-  let nuna = "";
-  let krampaProfundo = 0o0;
-  let parentezaProfundo = 0o0;
+function quqS2Ca1ara( k61e: string, s2Quq: string ): string[] {
+  const s2Ca1ara: string[] = [];
+  let kxesuK61e = "";
+  let kubaK2fe = 0o0;
+  let kp6KubaK2fe = 0o0;
   let i = 0o0;
 
-  while ( i < ĉeno.length ) {
-    const signo = ĉeno[i];
+  while ( i < k61e.length ) {
+    const kp6 = k61e[i];
 
-    if ( signo === "[" ) {
-      krampaProfundo++;
-      nuna += signo;
+    if ( kp6 === "[" ) {
+      kubaK2fe++;
+      kxesuK61e += kp6;
       i++;
-    } else if ( signo === "]" ) {
-      krampaProfundo--;
-      nuna += signo;
+    } else if ( kp6 === "]" ) {
+      kubaK2fe--;
+      kxesuK61e += kp6;
       i++;
-    } else if ( signo === "(" ) {
-      parentezaProfundo++;
-      nuna += signo;
+    } else if ( kp6 === "(" ) {
+      kp6KubaK2fe++;
+      kxesuK61e += kp6;
       i++;
-    } else if ( signo === ")" ) {
-      parentezaProfundo--;
-      nuna += signo;
+    } else if ( kp6 === ")" ) {
+      kp6KubaK2fe--;
+      kxesuK61e += kp6;
       i++;
-    } else if ( krampaProfundo === 0o0 && parentezaProfundo === 0o0 && ĉeno.startsWith(disigilo, i) ) {
-      partoj.push(nuna);
-      nuna = "";
-      i += disigilo.length;
+    } else if ( kubaK2fe === 0o0 && kp6KubaK2fe === 0o0 && k61e.startsWith(s2Quq, i) ) {
+      s2Ca1ara.push(kxesuK61e);
+      kxesuK61e = "";
+      i += s2Quq.length;
     } else {
-      nuna += signo;
+      kxesuK61e += kp6;
       i++;
     }
   }
 
-  if ( nuna !== "" ) partoj.push(nuna);
-  return partoj;
+  if ( kxesuK61e !== "" ) s2Ca1ara.push(kxesuK61e);
+  return s2Ca1ara;
 }
 
-// ⟪ ſɭɹ ⟫ - Krampa & Ŝablona Analizo
+// ⟪ ſɭɹ ⟫ - ſɭɔƣ̋ ꞁȷ̀ɔ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ( [ ] ) ʌ ֭ſɭᴜ ʃᴜ
 
-function analiziKrampanEnhavon( enhavo: string ): Kongruilo {
-  enhavo = enhavo.trim();
+function ne1anesaiKubaK61e( k61e: string ): Xekox2qKek {
+  k61e = k61e.trim();
 
   // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ( › ) ⟩
-  if ( enhavo === "›" ) {
-    return { tipo: "laŭvorta", valoro: "" };
+  if ( k61e === "›" ) {
+    return { hat: "saxe", j6fini: "" };
   }
 
   // ⟨ j͑ʃᴜƽ ( ｡ U+FF61 ) ⟩
-  const partoj = disigiSupraNivela(enhavo, "｡");
+  const s2Ca1ara = quqS2Ca1ara(k61e, "｡");
 
-  if ( partoj.length > 0o1 ) {
-    const opcioj = partoj.map(parto => analiziUnuopKongruilon(parto.trim()));
-    return { tipo: "alternativoj", opcioj };
+  if ( s2Ca1ara.length > 0o1 ) {
+    const k61eCa1ara = s2Ca1ara.map(s2 => ne1anesaiKxesuHat(s2.trim()));
+    return { hat: "vop2", k61eCa1ara };
   }
 
   // ⟨ j͑ʃᴜƽ ( [ ] ) ⟩
-  if ( enhavo.startsWith("[") && enhavo.endsWith("]") ) {
-    return analiziKrampanEnhavon(enhavo.slice(0o1, -0o1));
+  if ( k61e.startsWith("[") && k61e.endsWith("]") ) {
+    return ne1anesaiKubaK61e(k61e.slice(0o1, -0o1));
   }
 
   // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ( o ) ⟩
-  if ( enhavo.length > 0o1 && enhavo.endsWith("o") ) {
-    const grupoNomo = enhavo.slice(0o0, -0o1);
-    return { tipo: "grupo", grupoNomo };
+  if ( k61e.length > 0o1 && k61e.endsWith("o") ) {
+    const hateKsaka = k61e.slice(0o0, -0o1);
+    return { hat: "hate", hateKsaka };
   }
 
   // ⟨ ʃɔ ʌ ſɭɔʞ ⟩
-  return { tipo: "laŭvorta", valoro: enhavo };
+  return { hat: "saxe", j6fini: k61e };
 }
 
-function analiziUnuopKongruilon( teksto: string ): Kongruilo {
-  teksto = teksto.trim();
+function ne1anesaiKxesuHat( k61e: string ): Xekox2qKek {
+  k61e = k61e.trim();
 
-  if ( teksto === "#" ) {
-    return { tipo: "limo" };
+  if ( k61e === "#" ) {
+    return { hat: "kemafi" };
   }
 
-  if ( teksto.startsWith("[") && teksto.endsWith("]") ) {
-    return analiziKrampanEnhavon(teksto.slice(0o1, -0o1));
+  if ( k61e.startsWith("[") && k61e.endsWith("]") ) {
+    return ne1anesaiKubaK61e(k61e.slice(0o1, -0o1));
   }
 
-  return { tipo: "laŭvorta", valoro: teksto };
+  return { hat: "saxe", j6fini: k61e };
 }
 
-function analiziŜablonerojn( teksto: string ): Kongruilo[] {
-  teksto = teksto.trim();
-  if ( !teksto ) return [];
+function ne1anesaiHatCa1ara( k61e: string ): Xekox2qKek[] {
+  k61e = k61e.trim();
+  if ( !k61e ) return [];
 
-  const kongruiloj: Kongruilo[] = [];
+  const xekox2qCa1ara: Xekox2qKek[] = [];
   let i = 0o0;
 
-  while ( i < teksto.length ) {
+  while ( i < k61e.length ) {
     // ⟨ ſןw ⟩
-    while ( i < teksto.length && teksto[i] === " " ) i++;
-    if ( i >= teksto.length ) break;
+    while ( i < k61e.length && k61e[i] === " " ) i++;
+    if ( i >= k61e.length ) break;
 
-    if ( teksto[i] === "[" ) {
-      const fino = troviKongruanKrampon(teksto, i);
-      if ( fino === -0o1 ) {
+    if ( k61e[i] === "[" ) {
+      const araqK2fe = quqKubaAraq(k61e, i);
+      if ( araqK2fe === -0o1 ) {
         // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
-        kongruiloj.push({ tipo: "laŭvorta", valoro: teksto.slice(i) });
+        xekox2qCa1ara.push({ hat: "saxe", j6fini: k61e.slice(i) });
         break;
       }
-      kongruiloj.push(analiziKrampanEnhavon(teksto.slice(i + 0o1, fino)));
-      i = fino + 0o1;
-    } else if ( teksto[i] === "#" ) {
-      kongruiloj.push({ tipo: "limo" });
+      xekox2qCa1ara.push(ne1anesaiKubaK61e(k61e.slice(i + 0o1, araqK2fe)));
+      i = araqK2fe + 0o1;
+    } else if ( k61e[i] === "#" ) {
+      xekox2qCa1ara.push({ hat: "kemafi" });
       i++;
     } else {
       // ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɔʞ ⟩
-      let fino = i;
-      while ( fino < teksto.length && teksto[fino] !== " " && teksto[fino] !== "[" && teksto[fino] !== "#" && teksto[fino] !== "(" && teksto[fino] !== ")" ) {
-        fino++;
+      let araqK2fe = i;
+      while ( araqK2fe < k61e.length && k61e[araqK2fe] !== " " && k61e[araqK2fe] !== "[" && k61e[araqK2fe] !== "#" && k61e[araqK2fe] !== "(" && k61e[araqK2fe] !== ")" ) {
+        araqK2fe++;
       }
-      const laŭvorto = teksto.slice(i, fino);
-      if ( laŭvorto ) kongruiloj.push({ tipo: "laŭvorta", valoro: laŭvorto });
-      i = fino;
+      const kxesuK61e = k61e.slice(i, araqK2fe);
+      if ( kxesuK61e ) xekox2qCa1ara.push({ hat: "saxe", j6fini: kxesuK61e });
+      i = araqK2fe;
     }
   }
 
-  return kongruiloj;
+  return xekox2qCa1ara;
 }
 
-// ⟪ ſɭɹ ⟫ - Anstataŭigo & Regula Analizo
+// ⟪ ſɭɹ ⟫ - ſɭɔƣ̋ ꞁȷ̀ɔ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ j͑ʃɹ ſɭᴜ̭ɹ ʌ ſɭᴜc̗ ɭʃᴜ
 
-function analiziAnstataŭigon( teksto: string, konatajSonoj: string[] ): string[] {
-  teksto = teksto.trim();
+function ne1anesaiAraqK61e( k61e: string, beK61eCa1ara: string[] ): string[] {
+  k61e = k61e.trim();
 
   // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ( [›] ) ⟩
-  if ( teksto === "[›]" ) return [];
-  if ( teksto.startsWith("[") && teksto.endsWith("]") ) {
-    const interno = teksto.slice(0o1, -0o1).trim();
-    if ( interno === "›" ) return [];
+  if ( k61e === "[›]" ) return [];
+  if ( k61e.startsWith("[") && k61e.endsWith("]") ) {
+    const kubaK61e = k61e.slice(0o1, -0o1).trim();
+    if ( kubaK61e === "›" ) return [];
   }
 
   // ⟨ ſɭʞɹ ʌ ʃɔ ⟩
-  const segmentoj = teksto.split(/\s+/).filter(s => s.length > 0o0);
-  const rezulto: string[] = [];
-  for ( const segmento of segmentoj ) {
-    rezulto.push(...ĵetonigi(segmento, konatajSonoj));
+  const k61eCa1ara = k61e.split(/\s+/).filter(kxesuK61e => kxesuK61e.length > 0o0);
+  const s2Ca1ara: string[] = [];
+  for ( const kxesuK61e of k61eCa1ara ) {
+    s2Ca1ara.push(...s2N2kBe(kxesuK61e, beK61eCa1ara));
   }
-  return rezulto;
+  return s2Ca1ara;
 }
 
-function analiziRegulon( linio: string, konatajSonoj: string[] ): AnalizitaRegulo | null {
-  linio = linio.trim();
-  if ( !linio ) return null;
+function ne1anesaiK61e( n2k: string, beK61eCa1ara: string[] ): Ne1anesaiK61e | null {
+  n2k = n2k.trim();
+  if ( !n2k ) return null;
 
   // ⟨ j͑ʃᴜƽ ( / ) ⟩
-  let flankoj = disigiSupraNivela(linio, " / ");
-  let dekstraFlanko: string;
+  let saxeAraqCa1ara = quqS2Ca1ara(n2k, " / ");
+  let araqSaxeK61e: string;
 
-  if ( flankoj.length >= 0o2 ) {
-    dekstraFlanko = flankoj.slice(0o1).join(" / ").trim();
+  if ( saxeAraqCa1ara.length >= 0o2 ) {
+    araqSaxeK61e = saxeAraqCa1ara.slice(0o1).join(" / ").trim();
   } else {
-    flankoj = disigiSupraNivela(linio, "/");
-    if ( flankoj.length < 0o2 ) return null;
-    dekstraFlanko = flankoj.slice(0o1).join("/").trim();
+    saxeAraqCa1ara = quqS2Ca1ara(n2k, "/");
+    if ( saxeAraqCa1ara.length < 0o2 ) return null;
+    araqSaxeK61e = saxeAraqCa1ara.slice(0o1).join("/").trim();
   }
 
-  const maldekstraFlanko = flankoj[0o0].trim();
-  const anstataŭigo = analiziAnstataŭigon(dekstraFlanko, konatajSonoj);
+  const xekox2qK61e = saxeAraqCa1ara[0o0].trim();
+  const k61eAraq = ne1anesaiAraqK61e(araqSaxeK61e, beK61eCa1ara);
 
   // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃᴜƽ ⟩
-  const malfermaParentezo = troviSupraNivelanSignon(maldekstraFlanko, "(");
-  const fermaParentezo = troviSupraNivelanSignon(maldekstraFlanko, ")");
+  const saxeKp6K2fe = quqSaxeKp6(xekox2qK61e, "(");
+  const araqKp6K2fe = quqSaxeKp6(xekox2qK61e, ")");
 
-  if ( malfermaParentezo !== -0o1 && fermaParentezo !== -0o1 && fermaParentezo > malfermaParentezo ) {
-    const antaŭTeksto = maldekstraFlanko.slice(0o0, malfermaParentezo).trim();
-    const celoTeksto = maldekstraFlanko.slice(malfermaParentezo + 0o1, fermaParentezo).trim();
-    const postTeksto = maldekstraFlanko.slice(fermaParentezo + 0o1).trim();
+  if ( saxeKp6K2fe !== -0o1 && araqKp6K2fe !== -0o1 && araqKp6K2fe > saxeKp6K2fe ) {
+    const saxeK61e = xekox2qK61e.slice(0o0, saxeKp6K2fe).trim();
+    const kxesuK61e = xekox2qK61e.slice(saxeKp6K2fe + 0o1, araqKp6K2fe).trim();
+    const araqK61e = xekox2qK61e.slice(araqKp6K2fe + 0o1).trim();
 
     return {
-      antaŭKunteksto: analiziŜablonerojn(antaŭTeksto),
-      celo: analiziŜablonerojn(celoTeksto),
-      postKunteksto: analiziŜablonerojn(postTeksto),
-      anstataŭigo,
+      saxeK61e: ne1anesaiHatCa1ara(saxeK61e),
+      araq: ne1anesaiHatCa1ara(kxesuK61e),
+      araqK61e: ne1anesaiHatCa1ara(araqK61e),
+      k61eAraq,
     };
   }
 
   // ⟨ j͑ʃᴜƽ ( # ) ⟩
-  const ĉiuj = analiziŜablonerojn(maldekstraFlanko);
+  const xekox2qCa1ara = ne1anesaiHatCa1ara(xekox2qK61e);
 
-  let antaŭFino = 0o0;
-  while ( antaŭFino < ĉiuj.length && ĉiuj[antaŭFino].tipo === "limo" ) antaŭFino++;
+  let saxeK2fe = 0o0;
+  while ( saxeK2fe < xekox2qCa1ara.length && xekox2qCa1ara[saxeK2fe].hat === "kemafi" ) saxeK2fe++;
 
-  let postKomenco = ĉiuj.length;
-  while ( postKomenco > antaŭFino && ĉiuj[postKomenco - 0o1].tipo === "limo" ) postKomenco--;
+  let araqK2fe = xekox2qCa1ara.length;
+  while ( araqK2fe > saxeK2fe && xekox2qCa1ara[araqK2fe - 0o1].hat === "kemafi" ) araqK2fe--;
 
   return {
-    antaŭKunteksto: ĉiuj.slice(0o0, antaŭFino),
-    celo: ĉiuj.slice(antaŭFino, postKomenco),
-    postKunteksto: ĉiuj.slice(postKomenco),
-    anstataŭigo,
+    saxeK61e: xekox2qCa1ara.slice(0o0, saxeK2fe),
+    araq: xekox2qCa1ara.slice(saxeK2fe, araqK2fe),
+    araqK61e: xekox2qCa1ara.slice(araqK2fe),
+    k61eAraq,
   };
 }
 
-// ⟪ ʃɔ ɭʃw ⟫ - Kongrua Motorilo
+// ⟪ ʃɔ ɭʃw ⟫ - j͑ʃ'ɔ ſɭᴜc̗ ɭʃɹ ʌ ֭ſɭᴜ ʃᴜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ
 
-function kongruasKongruilo( kongruilo: Kongruilo, ĵetono: string, fonologiaStato: FonologiaStato ): boolean {
-  switch ( kongruilo.tipo ) {
-    case "laŭvorta":
-      return ĵetono === kongruilo.valoro;
-    case "limo":
-      return ĵetono === LIMO;
-    case "grupo": {
-      const grupo = fonologiaStato.grupoj.find(g => g.nomo === kongruilo.grupoNomo);
-      if ( !grupo ) return false;
-      return grupo.sonajIdoj.some(sid => {
-        const sono = fonologiaStato.sonoj.find(s => s.id === sid);
-        return sono !== undefined && sono.valoro === ĵetono;
+function xekox2qHat( hat: Xekox2qKek, s2: string, beHatPuXema: BeHatPuXema ): boolean {
+  switch ( hat.hat ) {
+    case "saxe":
+      return s2 === hat.j6fini;
+    case "kemafi":
+      return s2 === LIMO;
+    case "hate": {
+      const hate = beHatPuXema.hateCa1ara.find(g => g.k61eKsaka === hat.hateKsaka);
+      if ( !hate ) return false;
+      return hate.beKsakaCa1ara.some(beKsaka => {
+        const be = beHatPuXema.beCa1ara.find(s => s.ksaka === beKsaka);
+        return be !== undefined && be.j6fini === s2;
       });
     }
-    case "alternativoj":
-      return kongruilo.opcioj.some(opcio => kongruasKongruilo(opcio, ĵetono, fonologiaStato));
+    case "vop2":
+      return hat.k61eCa1ara.some(kxesuHat => xekox2qHat(kxesuHat, s2, beHatPuXema));
   }
 }
 
-function kongruiAntaŭen( ŝablono: Kongruilo[], ĵetonoj: string[], komenco: number, fonologiaStato: FonologiaStato ): boolean {
-  if ( komenco + ŝablono.length > ĵetonoj.length ) return false;
-  for ( let i = 0o0; i < ŝablono.length; i++ ) {
-    if ( !kongruasKongruilo(ŝablono[i], ĵetonoj[komenco + i], fonologiaStato) ) return false;
+function xekox2qSaxe( xekox2qCa1ara: Xekox2qKek[], s2Ca1ara: string[], saxeK2fe: number, beHatPuXema: BeHatPuXema ): boolean {
+  if ( saxeK2fe + xekox2qCa1ara.length > s2Ca1ara.length ) return false;
+  for ( let i = 0o0; i < xekox2qCa1ara.length; i++ ) {
+    if ( !xekox2qHat(xekox2qCa1ara[i], s2Ca1ara[saxeK2fe + i], beHatPuXema) ) return false;
   }
   return true;
 }
 
-function kongruiMalantaŭen( ŝablono: Kongruilo[], ĵetonoj: string[], fino: number, fonologiaStato: FonologiaStato ): boolean {
-  const komenco = fino - ŝablono.length + 0o1;
-  if ( komenco < 0o0 ) return false;
-  return kongruiAntaŭen(ŝablono, ĵetonoj, komenco, fonologiaStato);
+function xekox2qAraq( xekox2qCa1ara: Xekox2qKek[], s2Ca1ara: string[], araqK2fe: number, beHatPuXema: BeHatPuXema ): boolean {
+  const saxeK2fe = araqK2fe - xekox2qCa1ara.length + 0o1;
+  if ( saxeK2fe < 0o0 ) return false;
+  return xekox2qSaxe(xekox2qCa1ara, s2Ca1ara, saxeK2fe, beHatPuXema);
 }
 
-// ⟪ j͑ʃ'ᴜ ʃɔ ⟫ - Regula Apliko
+// ⟪ j͑ʃ'ᴜ ʃɔ ⟫ - ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭᴜc̗ ɭʃᴜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ
 
-function aplikiRegulon( regulo: AnalizitaRegulo, vortajĴetonoj: string[], fonologiaStato: FonologiaStato ): string[] {
-  if ( regulo.celo.length === 0o0 ) return vortajĴetonoj;
+function kf2AraqS2Ca1ara( ne1anesai: Ne1anesaiK61e, saxeS2Ca1ara: string[], beHatPuXema: BeHatPuXema ): string[] {
+  if ( ne1anesai.araq.length === 0o0 ) return saxeS2Ca1ara;
 
   // ⟨ j͑ʃ'ɔ ɭʃɔ ŋᷠɹ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
-  const plenigita = [ LIMO, ...vortajĴetonoj, LIMO ];
-  const rezulto: string[] = [];
-  let i = 0o1; // Komencu post la komenca #
-  const lastaReala = plenigita.length - 0o2; // Indekso de lasta reala ĵetono
+  const saxeAraqS2Ca1ara = [ LIMO, ...saxeS2Ca1ara, LIMO ];
+  const s2Ca1ara: string[] = [];
+  let i = 0o1; // ſɭɔ˞ɜƴ ʌ ( # ) ʌ ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ
+  const kxesuK2fe = saxeAraqS2Ca1ara.length - 0o2; // j͑ʃɔ ſɭэ ſᶘɔ j͐ʃ ʌ ſɭ,ɹ ֭ſɭᴜƽ ʌ ſɭɹ ſȷɔ
 
-  while ( i <= lastaReala ) {
-    let anstataŭigita = false;
+  while ( i <= kxesuK2fe ) {
+    let xekox2q = false;
 
     // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ʃɔ ⟩
-    if ( i + regulo.celo.length - 0o1 <= lastaReala ) {
-      if ( kongruiAntaŭen(regulo.celo, plenigita, i, fonologiaStato) ) {
+    if ( i + ne1anesai.araq.length - 0o1 <= kxesuK2fe ) {
+      if ( xekox2qSaxe(ne1anesai.araq, saxeAraqS2Ca1ara, i, beHatPuXema) ) {
         // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⟩
-        const antaŭOke = regulo.antaŭKunteksto.length === 0o0 ||
-          kongruiMalantaŭen(regulo.antaŭKunteksto, plenigita, i - 0o1, fonologiaStato);
+        const saxeXekox2q = ne1anesai.saxeK61e.length === 0o0 ||
+          xekox2qAraq(ne1anesai.saxeK61e, saxeAraqS2Ca1ara, i - 0o1, beHatPuXema);
 
         // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⟩
-        const postIndekso = i + regulo.celo.length;
-        const postOke = regulo.postKunteksto.length === 0o0 ||
-          (postIndekso + regulo.postKunteksto.length <= plenigita.length &&
-           kongruiAntaŭen(regulo.postKunteksto, plenigita, postIndekso, fonologiaStato));
+        const araqK2fe = i + ne1anesai.araq.length;
+        const araqXekox2q = ne1anesai.araqK61e.length === 0o0 ||
+          (araqK2fe + ne1anesai.araqK61e.length <= saxeAraqS2Ca1ara.length &&
+           xekox2qSaxe(ne1anesai.araqK61e, saxeAraqS2Ca1ara, araqK2fe, beHatPuXema));
 
-        if ( antaŭOke && postOke ) {
-          rezulto.push(...regulo.anstataŭigo);
-          i += regulo.celo.length;
-          anstataŭigita = true;
+        if ( saxeXekox2q && araqXekox2q ) {
+          s2Ca1ara.push(...ne1anesai.k61eAraq);
+          i += ne1anesai.araq.length;
+          xekox2q = true;
         }
       }
     }
 
-    if ( !anstataŭigita ) {
-      rezulto.push(plenigita[i]);
+    if ( !xekox2q ) {
+      s2Ca1ara.push(saxeAraqS2Ca1ara[i]);
       i++;
     }
   }
 
-  return rezulto;
+  return s2Ca1ara;
 }
 
-function evoluiVorton( vortajĴetonoj: string[], reguloj: AnalizitaRegulo[], fonologiaStato: FonologiaStato ): string[] {
-  let nuna = vortajĴetonoj;
-  for ( const regulo of reguloj ) {
-    nuna = aplikiRegulon(regulo, nuna, fonologiaStato);
+function v3ak2S2Ca1ara( saxeS2Ca1ara: string[], ne1anesaiCa1ara: Ne1anesaiK61e[], beHatPuXema: BeHatPuXema ): string[] {
+  let kxesuS2Ca1ara = saxeS2Ca1ara;
+  for ( const ne1anesai of ne1anesaiCa1ara ) {
+    kxesuS2Ca1ara = kf2AraqS2Ca1ara(ne1anesai, kxesuS2Ca1ara, beHatPuXema);
   }
-  return nuna;
+  return kxesuS2Ca1ara;
 }
 
 // ⟪ j͑ʃᴜꞇ ⟫ - UI
 
-function agordiStaton( mesaĝo: string ): void {
-  STATO.textContent = mesaĝo;
+function suntaK61e( k61e: string ): void {
+  K61E_KEK.textContent = k61e;
   if ( typeof vacepu === "function" ) {
     vacepu("cepufal");
   }
 }
 
-function kreiTekstanElementon( etikednomo: "p" | "span", teksto: string, klasnomo = typeof vacepu === "function" ? "" : "cepufalxez"): HTMLElement {
-  const elemento = document.createElement(etikednomo);
-  if ( klasnomo ) elemento.className = klasnomo;
-  elemento.textContent = teksto;
-  return elemento;
+function kf2K61eKek( ksaka: "p" | "span", k61e: string, kubaKsaka = typeof vacepu === "function" ? "" : "cepufalxez"): HTMLElement {
+  const kek = document.createElement(ksaka);
+  if ( kubaKsaka ) kek.className = kubaKsaka;
+  kek.textContent = k61e;
+  return kek;
 }
 
-function akiriGeneritajnVortojn(): string[] {
-  const ujo = document.getElementById("fonologio-eliro");
-  if ( !ujo ) return [];
-  const vortoj: string[] = [];
-  ujo.querySelectorAll("ciihii").forEach(ero => {
-    const teksto = ero.textContent?.trim();
-    if ( teksto ) vortoj.push(teksto);
+function quqSuntaK61eCa1ara(): string[] {
+  const kuba = document.getElementById("sunta-kek");
+  if ( !kuba ) return [];
+  const k61eCa1ara: string[] = [];
+  kuba.querySelectorAll("ciihii").forEach(kek => {
+    const k61e = kek.textContent?.trim();
+    if ( k61e ) k61eCa1ara.push(k61e);
   });
-  return vortoj;
+  return k61eCa1ara;
 }
 
-function baskuliProprajnVortojn(): void {
-  if ( FONTO_PROPRA.checked ) {
-    PROPRAJVORTOJ_TEKSTAREJO.classList.remove("kobe");
+function suntaSaxeKefXema(): void {
+  if ( SAXE_KEF_KEK.checked ) {
+    SAXE_KEF_XEMA.classList.remove("kobe");
   } else {
-    PROPRAJVORTOJ_TEKSTAREJO.classList.add("kobe");
+    SAXE_KEF_XEMA.classList.add("kobe");
   }
 }
 
-function konserviNunanStaton(): void {
-  konserviEvoluanStaton({
-    reguloj: REGULOJ_TEKSTAREJO.value,
-    proprajVortoj: PROPRAJVORTOJ_TEKSTAREJO.value,
-    uziGeneritaj: FONTO_GENERITA.checked,
+function xemaKxesu(): void {
+  xemaS2PuXema({
+    k61e: K61E_XEMA.value,
+    saxeKefCa1ara: SAXE_KEF_XEMA.value,
+    quqK61e: SAXE_KF2_KEK.checked,
   });
 }
 
-function ruliEvoluon(): void {
-  const fonologiaStato = ŝargiFonologianStaton();
-  const regulojTeksto = REGULOJ_TEKSTAREJO.value.trim();
+function keveS2(): void {
+  const beHatPuXema = b6tem2BeHatPuXema();
+  const saxeK61e = K61E_XEMA.value.trim();
 
-  if ( !regulojTeksto ) {
-    agordiStaton(T.NO_RULES);
+  if ( !saxeK61e ) {
+    suntaK61e(T.NE1A_K61E);
     return;
   }
 
   // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ⟩
-  let vortoj: string[];
-  if ( FONTO_GENERITA.checked ) {
-    vortoj = akiriGeneritajnVortojn();
+  let k61eCa1ara: string[];
+  if ( SAXE_KF2_KEK.checked ) {
+    k61eCa1ara = quqSuntaK61eCa1ara();
   } else {
-    vortoj = PROPRAJVORTOJ_TEKSTAREJO.value
+    k61eCa1ara = SAXE_KEF_XEMA.value
       .split("\n")
       .map(v => v.trim())
       .filter(v => v.length > 0o0);
   }
 
-  if ( vortoj.length === 0o0 ) {
-    agordiStaton(T.NO_WORDS);
+  if ( k61eCa1ara.length === 0o0 ) {
+    suntaK61e(T.NE1A_K61E_CA1ARA);
     return;
   }
 
   // ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ʃᴜ ſɭɹ ſןɹ }ʃꞇ ⟩
-  const konatajSonoj = fonologiaStato.sonoj.map(s => s.valoro);
-  const regulajLinioj = regulojTeksto.split("\n").map(l => l.trim()).filter(l => l.length > 0o0);
-  const reguloj: AnalizitaRegulo[] = [];
+  const beK61eCa1ara = beHatPuXema.beCa1ara.map(s => s.j6fini);
+  const k61eHan2k = saxeK61e.split("\n").map(l => l.trim()).filter(l => l.length > 0o0);
+  const ne1anesaiCa1ara: Ne1anesaiK61e[] = [];
 
-  for ( let indekso = 0o0; indekso < regulajLinioj.length; indekso++ ) {
-    const analizita = analiziRegulon(regulajLinioj[indekso], konatajSonoj);
-    if ( !analizita ) {
-      agordiStaton(`${T.PARSE_ERROR} ${indekso + 0o1}`);
+  for ( let k2fe = 0o0; k2fe < k61eHan2k.length; k2fe++ ) {
+    const ne1anesai = ne1anesaiK61e(k61eHan2k[k2fe], beK61eCa1ara);
+    if ( !ne1anesai ) {
+      suntaK61e(`${T.TLOHK2NI} ${k2fe + 0o1}`);
       return;
     }
-    reguloj.push(analizita);
+    ne1anesaiCa1ara.push(ne1anesai);
   }
 
   // ⟨ ſɟɔ ŋᷠɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
-  ELIRO.replaceChildren();
-  let kvanto = 0o0;
+  SUNTA_KEK.replaceChildren();
+  let k2fe = 0o0;
 
-  for ( const vorto of vortoj ) {
-    const ĵetonoj = ĵetonigi(vorto, konatajSonoj);
-    const evoluinta = evoluiVorton(ĵetonoj, reguloj, fonologiaStato);
-    const evoluintaĈeno = evoluinta.join("");
+  for ( const k61e of k61eCa1ara ) {
+    const s2Ca1ara = s2N2kBe(k61e, beK61eCa1ara);
+    const araqS2Ca1ara = v3ak2S2Ca1ara(s2Ca1ara, ne1anesaiCa1ara, beHatPuXema);
+    const araqK61e = araqS2Ca1ara.join("");
 
-    const envolvilo = document.createElement("ciihii");
-    envolvilo.appendChild(kreiTekstanElementon("span", `${vorto} \n🔼\n ${evoluintaĈeno}`));
-    ELIRO.appendChild(envolvilo);
-    kvanto++;
+    const kuba = document.createElement("ciihii");
+    kuba.appendChild(kf2K61eKek("span", `${k61e} \n🔼\n ${araqK61e}`));
+    SUNTA_KEK.appendChild(kuba);
+    k2fe++;
   }
 
-  agordiStaton(`${T.EVOLVED} ${kvanto}`);
+  suntaK61e(`${T.KF2} ${k2fe}`);
 
   if ( typeof vacepu === "function" ) {
     vacepu("cepufal");
   }
 }
 
-// ⟪ ꞁȷ̀ᴜ j͑ʃᴜ ⟫ - Inicialigo
+// ⟪ ꞁȷ̀ᴜ j͑ʃᴜ ⟫ - j͑ʃᴜ ı],ɔ }ʃꞇ
 
-function bildigiEvoluanStaton(): void {
-  const stato = ŝargiEvoluanStaton();
-  REGULOJ_TEKSTAREJO.value = stato.reguloj;
-  PROPRAJVORTOJ_TEKSTAREJO.value = stato.proprajVortoj;
+function suntaS2PuXema(): void {
+  const s2PuXema = b6tem2S2PuXema();
+  K61E_XEMA.value = s2PuXema.k61e;
+  SAXE_KEF_XEMA.value = s2PuXema.saxeKefCa1ara;
 
-  if ( stato.uziGeneritaj ) {
-    FONTO_GENERITA.checked = true;
+  if ( s2PuXema.quqK61e ) {
+    SAXE_KF2_KEK.checked = true;
   } else {
-    FONTO_PROPRA.checked = true;
+    SAXE_KEF_KEK.checked = true;
   }
 
-  baskuliProprajnVortojn();
+  suntaSaxeKefXema();
 }
 
-function bildigiEvoluajnKonservojn(): void {
-  restarigiInfanojn(EVOLUAJ_KONSERVOJ_LISTO);
+function suntaS2XemaCa1ara(): void {
+  ne1aS2Ca1ara(S2XEMA_CA1ARA);
   
-  const aktivaGen = akiriAktivanGeneratoranKonservon();
-  if ( !aktivaGen ) return;
+  const kxesuPuXema = quqKxesuPuXema();
+  if ( !kxesuPuXema ) return;
 
-    aktivaGen.evoluaKonservoj.forEach((konservo) => {
-      const langetaButono = document.createElement("button");
-      langetaButono.type = "button";
-      const langetaEtikedo = kreiTekstanElementon("span", konservo.nomo);
-      langetaButono.appendChild(langetaEtikedo);
+    kxesuPuXema.s2XemaCa1ara.forEach((s2Xema) => {
+      const k61eKek = document.createElement("button");
+      k61eKek.type = "button";
+      const k61eKsaka = kf2K61eKek("span", s2Xema.k61eKsaka);
+      k61eKek.appendChild(k61eKsaka);
       
-      if ( konservo.id === aktivaGen.aktivaEvoluaKonservoId ) {
-        langetaButono.setAttribute("aria-pressed", "true");
+      if ( s2Xema.ksaka === kxesuPuXema.kxesuS2XemaKsaka ) {
+        k61eKek.setAttribute("aria-pressed", "true");
       }
       
-      langetaButono.addEventListener("click", () => {
-        const gen = konservojStato.konservoj.find(k => k.id === konservojStato.aktivaKonservoId);
-        if ( gen ) {
-          gen.aktivaEvoluaKonservoId = konservo.id;
+      k61eKek.addEventListener("click", () => {
+        const kxesu = hatPuXema.puXemaCa1ara.find(k => k.ksaka === hatPuXema.kxesuPuXemaKsaka);
+        if ( kxesu ) {
+          kxesu.kxesuS2XemaKsaka = s2Xema.ksaka;
         }
-        localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(konservojStato));
-        ŝargiKonservojnStaton();
-        ĝisdatigiEvoluanUI();
+        localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(hatPuXema));
+        b6tem2HatPuXema();
+        suntaS2Sunta();
       });
 
-      langetaButono.addEventListener("contextmenu", (e) => {
+      k61eKek.addEventListener("contextmenu", (e) => {
         e.preventDefault();
-        const enigo = document.createElement("input");
-        enigo.type = "text";
-        enigo.value = konservo.nomo;
-        langetaEtikedo.replaceWith(enigo);
-        enigo.focus();
-        enigo.select();
-        const fini = () => {
-          const novaNomo = enigo.value.trim();
-          if ( novaNomo && novaNomo !== konservo.nomo ) {
-            konservo.nomo = novaNomo;
-            localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(konservojStato));
-            ŝargiKonservojnStaton();
-            ĝisdatigiEvoluanUI();
+        const kek = document.createElement("input");
+        kek.type = "text";
+        kek.value = s2Xema.k61eKsaka;
+        k61eKsaka.replaceWith(kek);
+        kek.focus();
+        kek.select();
+        const araq = () => {
+          const kxesuKsaka = kek.value.trim();
+          if ( kxesuKsaka && kxesuKsaka !== s2Xema.k61eKsaka ) {
+            s2Xema.k61eKsaka = kxesuKsaka;
+            localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(hatPuXema));
+            b6tem2HatPuXema();
+          suntaS2Sunta();
           } else {
-            enigo.replaceWith(langetaEtikedo);
+            kek.replaceWith(k61eKsaka);
           }
         };
-        enigo.addEventListener("blur", fini);
-        enigo.addEventListener("keydown", (ke) => {
+        kek.addEventListener("blur", araq);
+        kek.addEventListener("keydown", (ke) => {
           if ( ke.key === "Enter" ) {
-            enigo.blur();
+            kek.blur();
           } else if ( ke.key === "Escape" ) {
-            enigo.value = konservo.nomo;
-            enigo.blur();
+            kek.value = s2Xema.k61eKsaka;
+            kek.blur();
           }
         });
       });
 
-      EVOLUAJ_KONSERVOJ_LISTO.appendChild(langetaButono);
+      S2XEMA_CA1ARA.appendChild(k61eKek);
     });
 
-  const aktivaEvoluo = akiriAktivanEvoluanKonservon();
-  if ( aktivaEvoluo ) {
-    EVOLUA_KONSERVA_NOMO_ENIGO.value = aktivaEvoluo.nomo;
+  const kxesuS2Xema = quqKxesuS2Xema();
+  if ( kxesuS2Xema ) {
+    S2XEMA_KSAKA_KEK.value = kxesuS2Xema.k61eKsaka;
   }
 
-  if ( aktivaGen.evoluaKonservoj.length <= 0o1 ) {
-    FORIGI_EVOLUAN_KONSERVON_BUTONO.style.display = "none";
+  if ( kxesuPuXema.s2XemaCa1ara.length <= 0o1 ) {
+    NE1A_S2XEMA_KEK.style.display = "none";
   } else {
-    FORIGI_EVOLUAN_KONSERVON_BUTONO.style.display = "";
+    NE1A_S2XEMA_KEK.style.display = "";
   }
 }
 
-function aldoniEvoluanKonservon(): void {
-  const aktivaGen = akiriAktivanGeneratoranKonservon();
-  if ( !aktivaGen ) return;
+function kf2S2Xema(): void {
+  const kxesuPuXema = quqKxesuPuXema();
+  if ( !kxesuPuXema ) return;
 
-  let maksNum = 0o0;
-  for ( const k of aktivaGen.evoluaKonservoj ) {
-    const valoro = parseInt(k.nomo, 0o10);
-    if ( !isNaN(valoro) && valoro > maksNum ) {
-      maksNum = valoro;
+  let kemafiK2fe = 0o0;
+  for ( const k of kxesuPuXema.s2XemaCa1ara ) {
+    const j6fini = parseInt(k.k61eKsaka, 0o10);
+    if ( !isNaN(j6fini) && j6fini > kemafiK2fe ) {
+      kemafiK2fe = j6fini;
     }
   }
-  const sekvaNomo = ( maksNum + 0o1 ).toString();
+  const araqKsaka = ( kemafiK2fe + 0o1 ).toString();
 
-  const novaKonservo: EvoluaKonservo = {
-    id: kreiId(),
-    nomo: sekvaNomo,
-    reguloj: "",
-    proprajVortoj: "",
-    uziGeneritaj: true,
+  const kxesuS2Xema: S2Xema = {
+    ksaka: kf2Ksaka(),
+    k61eKsaka: araqKsaka,
+    k61e: "",
+    saxeKefCa1ara: "",
+    quqK61e: true,
   };
 
-  aktivaGen.evoluaKonservoj.push(novaKonservo);
-  aktivaGen.aktivaEvoluaKonservoId = novaKonservo.id;
+  kxesuPuXema.s2XemaCa1ara.push(kxesuS2Xema);
+  kxesuPuXema.kxesuS2XemaKsaka = kxesuS2Xema.ksaka;
   
-  localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(konservojStato));
+  localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(hatPuXema));
   window.dispatchEvent(new CustomEvent("phonology-state-updated"));
 
-  EVOLUA_KONSERVA_NOMO_ENIGO.focus();
-  EVOLUA_KONSERVA_NOMO_ENIGO.select();
+  S2XEMA_KSAKA_KEK.focus();
+  S2XEMA_KSAKA_KEK.select();
 }
 
-function forigiEvoluanKonservon(): void {
-  const aktivaGen = akiriAktivanGeneratoranKonservon();
-  if ( !aktivaGen || aktivaGen.evoluaKonservoj.length <= 0o1 ) return;
+function ne1aS2Xema(): void {
+  const kxesuPuXema = quqKxesuPuXema();
+  if ( !kxesuPuXema || kxesuPuXema.s2XemaCa1ara.length <= 0o1 ) return;
 
-  const indekso = aktivaGen.evoluaKonservoj.findIndex(e => e.id === aktivaGen.aktivaEvoluaKonservoId);
-  aktivaGen.evoluaKonservoj = aktivaGen.evoluaKonservoj.filter(e => e.id !== aktivaGen.aktivaEvoluaKonservoId);
+  const k2fe = kxesuPuXema.s2XemaCa1ara.findIndex(e => e.ksaka === kxesuPuXema.kxesuS2XemaKsaka);
+  kxesuPuXema.s2XemaCa1ara = kxesuPuXema.s2XemaCa1ara.filter(e => e.ksaka !== kxesuPuXema.kxesuS2XemaKsaka);
 
-  const sekvaAktivaIndekso = Math.min(indekso, aktivaGen.evoluaKonservoj.length - 0o1);
-  const sekvaAktiva = aktivaGen.evoluaKonservoj[sekvaAktivaIndekso];
-  aktivaGen.aktivaEvoluaKonservoId = sekvaAktiva.id;
+  const araqKxesuK2fe = Math.min(k2fe, kxesuPuXema.s2XemaCa1ara.length - 0o1);
+  const araqKxesu = kxesuPuXema.s2XemaCa1ara[araqKxesuK2fe];
+  kxesuPuXema.kxesuS2XemaKsaka = araqKxesu.ksaka;
 
-  localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(konservojStato));
+  localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(hatPuXema));
   window.dispatchEvent(new CustomEvent("phonology-state-updated"));
 }
 
-function alinomiEvoluanKonservon(): void {
-  const novaNomo = EVOLUA_KONSERVA_NOMO_ENIGO.value.trim();
-  if ( !novaNomo ) return;
+function v3ak2S2Xema(): void {
+  const kxesuKsaka = S2XEMA_KSAKA_KEK.value.trim();
+  if ( !kxesuKsaka ) return;
 
-  const aktivaEvoluo = akiriAktivanEvoluanKonservon();
-  if ( aktivaEvoluo ) {
-    aktivaEvoluo.nomo = novaNomo;
-    localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(konservojStato));
+  const kxesuS2Xema = quqKxesuS2Xema();
+  if ( kxesuS2Xema ) {
+    kxesuS2Xema.k61eKsaka = kxesuKsaka;
+    localStorage.setItem("phonology-generator-saves-v2", JSON.stringify(hatPuXema));
     window.dispatchEvent(new CustomEvent("phonology-state-updated"));
   }
 }
 
-function restarigiInfanojn( elemento: HTMLElement ): void {
-  elemento.replaceChildren();
+function ne1aS2Ca1ara( kek: HTMLElement ): void {
+  kek.replaceChildren();
 }
 
-function kreiId(): string {
+function kf2Ksaka(): string {
   if ( typeof crypto !== "undefined" && "randomUUID" in crypto ) {
     return crypto.randomUUID();
   }
   return `${Date.now().toString(0o10)}-${Math.random().toString(0o10).slice(0o2)}`;
 }
 
-function ĝisdatigiEvoluanUI(): void {
-  bildigiEvoluajnKonservojn();
-  bildigiEvoluanStaton();
+function suntaS2Sunta(): void {
+  suntaS2XemaCa1ara();
+  suntaS2PuXema();
 }
 
-function inicialigiEvoluon(): void {
-  ŝargiKonservojnStaton();
-  ĝisdatigiEvoluanUI();
+function saxeS2Sunta(): void {
+  b6tem2HatPuXema();
+  suntaS2Sunta();
 
-  REGULOJ_TEKSTAREJO.placeholder = T.RULES_PLACEHOLDER;
-  PROPRAJVORTOJ_TEKSTAREJO.placeholder = T.CUSTOM_PLACEHOLDER;
+  K61E_XEMA.placeholder = T.S2XEMA_K61E;
+  SAXE_KEF_XEMA.placeholder = T.SAXE_KEF_K61E;
 
-  RULI_BUTONO.addEventListener("click", () => {
-    konserviNunanStaton();
-    ruliEvoluon();
+  KEVE_KEK.addEventListener("click", () => {
+    xemaKxesu();
+    keveS2();
   });
 
-  FONTO_GENERITA.addEventListener("change", () => {
-    baskuliProprajnVortojn();
-    konserviNunanStaton();
+  SAXE_KF2_KEK.addEventListener("change", () => {
+    suntaSaxeKefXema();
+    xemaKxesu();
   });
 
-  FONTO_PROPRA.addEventListener("change", () => {
-    baskuliProprajnVortojn();
-    konserviNunanStaton();
+  SAXE_KEF_KEK.addEventListener("change", () => {
+    suntaSaxeKefXema();
+    xemaKxesu();
   });
 
-  REGULOJ_TEKSTAREJO.addEventListener("input", konserviNunanStaton);
-  PROPRAJVORTOJ_TEKSTAREJO.addEventListener("input", konserviNunanStaton);
+  K61E_XEMA.addEventListener("input", xemaKxesu);
+  SAXE_KEF_XEMA.addEventListener("input", xemaKxesu);
 
-  ALDONI_EVOLUAN_KONSERVON_BUTONO.addEventListener("click", aldoniEvoluanKonservon);
-  FORIGI_EVOLUAN_KONSERVON_BUTONO.addEventListener("click", forigiEvoluanKonservon);
-  EVOLUA_KONSERVA_NOMO_ENIGO.addEventListener("input", alinomiEvoluanKonservon);
-  EVOLUA_KONSERVA_NOMO_ENIGO.addEventListener("keydown", (e) => {
+  KF2_S2XEMA_KEK.addEventListener("click", kf2S2Xema);
+  NE1A_S2XEMA_KEK.addEventListener("click", ne1aS2Xema);
+  S2XEMA_KSAKA_KEK.addEventListener("input", v3ak2S2Xema);
+  S2XEMA_KSAKA_KEK.addEventListener("keydown", (e) => {
     if ( e.key === "Enter" ) {
-      EVOLUA_KONSERVA_NOMO_ENIGO.blur();
+      S2XEMA_KSAKA_KEK.blur();
     }
   });
 
-  agordiStaton(T.READY);
+  suntaK61e(T.B6TEM2);
 }
 
 window.addEventListener("phonology-state-updated", () => {
-  ŝargiKonservojnStaton();
-  ĝisdatigiEvoluanUI();
+  b6tem2HatPuXema();
+  suntaS2Sunta();
 });
 
-inicialigiEvoluon();
+saxeS2Sunta();
 
 export {};

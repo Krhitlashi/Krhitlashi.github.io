@@ -1,679 +1,679 @@
-// ≺⧼ j͑ʃ'ᴜ ɭʃᴜ ֭ſɭᴜȝ ſ͔ɭᴜ ᶅſɔ ſɭɹʞ 🌍 ⧽≻ 
+// ≺⧼ j͑ʃ'ᴜ ɭʃᴜ ֭ſɭᴜȝ ſ͔ɭᴜ ᶅſɔ ſɭɹʞ 🌍 ⧽≻
 
 import * as THREE from "three"
 import { OrbitControls } from "three/addons/controls/OrbitControls.js"
 import { createNoise3D, NoiseFunction3D } from "simplex-noise"
 
-class PlanedaGeneratoro {
-    private simplekso: NoiseFunction3D
-    private kanvaso: HTMLCanvasElement
-    private kunteksto: CanvasRenderingContext2D
-    private terglobujo: HTMLElement
-    private nunaProjekcio: string
-    private semaĈeno: string
-    private semo: number
-    private larĝo: number
-    private alto: number
-    private aŭtorotacio: boolean
-    private sceno: any
-    private fotilo: any
-    private bildigilo: any
-    private terglobo: any
-    private atmosfero: any
-    private nuboj: any
-    private regiloj: any
-    private animaciaId: number | null
-    private parametroj: {
-        akvonivelo: number
-        temperaturo: number
-        kontinentKvanto: number
-        montoAlto: number
-        atmosferaDenso: number
+class Mut6qKf2 {
+    private beSaxe: NoiseFunction3D
+    private bal2xaP2t6zo: HTMLCanvasElement
+    private bal2xaKek: CanvasRenderingContext2D
+    private mut6qKuba: HTMLElement
+    private kxesuBal2xa: string
+    private cukK61e: string
+    private cuk: number
+    private sefini: number
+    private l6da: number
+    private saxeS2sabo: boolean
+    private saxeKuba: any
+    private catahaq: any
+    private suntaSaxe: any
+    private mut6q: any
+    private pucana: any
+    private f2m2: any
+    private kama: any
+    private k2feXema: number | null
+    private xema: {
+        tsaK2fe: number
+        hia: number
+        tutalK2fe: number
+        jaqoL6da: number
+        pucanaK2fe: number
     }
-    private teksturaKanvaso: HTMLCanvasElement = document.createElement( "canvas" )
-    private skizaKanvaso: HTMLCanvasElement
-    private skizaKunteksto: CanvasRenderingContext2D
-    private desegnanta: boolean
-    private lastaX: number
-    private lastaY: number
-    private taksaRezulto: HTMLElement
-    private taksoOkazanta: boolean
+    private lkoP2t6zo: HTMLCanvasElement = document.createElement( "canvas" )
+    private k2fP2t6zo: HTMLCanvasElement
+    private k2fKek: CanvasRenderingContext2D
+    private k2fKxesu: boolean
+    private kxesuX: number
+    private kxesuY: number
+    private b6K61e: HTMLElement
+    private b6Kxesu: boolean
 
-    haketiĈenon( ĉeno: string ): number {
-        let haketo = 0o0
-        for ( let i = 0o0; i < ĉeno.length; i++ ) {
-            const signo = ĉeno.charCodeAt( i )
-            haketo = ( haketo << 0o5 ) - haketo + signo
-            haketo = haketo & haketo
+    k61eK2fe( k61e: string ): number {
+        let k2fe = 0o0
+        for ( let i = 0o0; i < k61e.length; i++ ) {
+            const kp6 = k61e.charCodeAt( i )
+            k2fe = ( k2fe << 0o5 ) - k2fe + kp6
+            k2fe = k2fe & k2fe
         }
-        return Math.abs( haketo )
+        return Math.abs( k2fe )
     }
 
     constructor() {
-        const bruo3D = createNoise3D()
-        this.simplekso = bruo3D
-        this.kanvaso = document.getElementById( "mapa-kanvaso" ) as HTMLCanvasElement
-        this.kunteksto = this.kanvaso.getContext( "2d" )!
-        this.terglobujo = document.getElementById( "globujo" )!
-        this.nunaProjekcio = "ekvidrektangula"
-        this.semaĈeno = "42"
-        this.semo = this.akiriSemonElĈeno( this.semaĈeno )
-        this.larĝo = 0o2000
-        this.alto = 0o400
-        this.aŭtorotacio = true
-        this.sceno = null
-        this.fotilo = null
-        this.bildigilo = null
-        this.terglobo = null
-        this.atmosfero = null
-        this.regiloj = null
-        this.animaciaId = null
+        const saxeBe = createNoise3D()
+        this.beSaxe = saxeBe
+        this.bal2xaP2t6zo = document.getElementById( "bal2xap2t6zo" ) as HTMLCanvasElement
+        this.bal2xaKek = this.bal2xaP2t6zo.getContext( "2d" )!
+        this.mut6qKuba = document.getElementById( "mut6qkuba" )!
+        this.kxesuBal2xa = "saxebal2xa"
+        this.cukK61e = "42"
+        this.cuk = this.quqCuk( this.cukK61e )
+        this.sefini = 0o2000
+        this.l6da = 0o400
+        this.saxeS2sabo = true
+        this.saxeKuba = null
+        this.catahaq = null
+        this.suntaSaxe = null
+        this.mut6q = null
+        this.pucana = null
+        this.kama = null
+        this.k2feXema = null
 
-        this.parametroj = {
-            akvonivelo: 0o2 / 0o10,
-            temperaturo: 0o4 / 0o10,
-            kontinentKvanto: 0o4,
-            montoAlto: 0o3 / 0o10,
-            atmosferaDenso: 0o6 / 0o10,
+        this.xema = {
+            tsaK2fe: 0o2 / 0o10,
+            hia: 0o4 / 0o10,
+            tutalK2fe: 0o4,
+            jaqoL6da: 0o3 / 0o10,
+            pucanaK2fe: 0o6 / 0o10,
         }
 
-        this.skizaKanvaso = document.getElementById( "skiza-kanvaso" ) as HTMLCanvasElement
-        this.skizaKunteksto = this.skizaKanvaso.getContext( "2d" )!
-        this.desegnanta = false
-        this.lastaX = 0o0
-        this.lastaY = 0o0
-        this.taksaRezulto = document.getElementById( "taksa-rezulto" )!
-        this.taksoOkazanta = false
+        this.k2fP2t6zo = document.getElementById( "k2fp2t6zo" ) as HTMLCanvasElement
+        this.k2fKek = this.k2fP2t6zo.getContext( "2d" )!
+        this.k2fKxesu = false
+        this.kxesuX = 0o0
+        this.kxesuY = 0o0
+        this.b6K61e = document.getElementById( "b6k61e" )!
+        this.b6Kxesu = false
 
-        this.inicialigi()
+        this.saxe()
     }
 
-    inicialigi() {
-        this.reskaligiKanvason()
-        this.agordiThreeJS()
-        this.agordiEventajnAŭskultilojn()
-        this.agordiSkizanInterfacon()
-        this.ĝisdatigiGlitilojn()
-        this.generi()
+    saxe() {
+        this.p6zukP2t6zo()
+        this.xemaSaxeKuba()
+        this.xemaKeve()
+        this.xemaK2f()
+        this.v3ak2K6tani()
+        this.kf2()
 
         window.addEventListener( "resize", () => {
-            this.reskaligiKanvason()
-            this.reskaligiThreeJS()
-            this.bildigi2D()
+            this.p6zukP2t6zo()
+            this.p6zukSaxeKuba()
+            this.suntaBal2xa()
         } )
     }
 
-    ĝisdatigiGlitilojn() {
-        const semaValoro = document.getElementById( "semo-valoro" )
-        const akvaValoro = document.getElementById( "akvo-valoro" )
-        const temperaturoValoro = document.getElementById( "temperaturo-valoro" )
-        const kontinentojValoro = document.getElementById( "kontinentoj-valoro" )
-        const montojValoro = document.getElementById( "montoj-valoro" )
-        const atmosferoValoro = document.getElementById( "atmosfero-valoro" )
+    v3ak2K6tani() {
+        const cukK2fe = document.getElementById( "cukk2fe" )
+        const tsaK2fe = document.getElementById( "tsak2fe" )
+        const hiaK2fe = document.getElementById( "hiak2fe" )
+        const tutalK2fe = document.getElementById( "tutalk2fe" )
+        const jaqoK2fe = document.getElementById( "jaqok2fe" )
+        const pucanaK2fe = document.getElementById( "pucanak2fe" )
 
-        const semaEnigo = document.getElementById( "semo" ) as HTMLInputElement
-        const akvaEnigo = document.getElementById( "akvo" ) as HTMLInputElement
-        const temperaturoEnigo = document.getElementById( "temperaturo" ) as HTMLInputElement
-        const kontinentojEnigo = document.getElementById( "kontinentoj" ) as HTMLInputElement
-        const montojEnigo = document.getElementById( "montoj" ) as HTMLInputElement
-        const atmosferoEnigo = document.getElementById( "atmosfero" ) as HTMLInputElement
+        const cukXema = document.getElementById( "cuk" ) as HTMLInputElement
+        const tsaXema = document.getElementById( "tsa" ) as HTMLInputElement
+        const hiaXema = document.getElementById( "hia" ) as HTMLInputElement
+        const tutalXema = document.getElementById( "tutal" ) as HTMLInputElement
+        const jaqoXema = document.getElementById( "jaqo" ) as HTMLInputElement
+        const pucanaXema = document.getElementById( "pucana" ) as HTMLInputElement
 
-        if ( semaValoro && semaEnigo ) semaValoro.textContent = semaEnigo.value
-        if ( akvaValoro && akvaEnigo ) akvaValoro.textContent = akvaEnigo.value
-        if ( temperaturoValoro && temperaturoEnigo ) temperaturoValoro.textContent = temperaturoEnigo.value
-        if ( kontinentojValoro && kontinentojEnigo ) kontinentojValoro.textContent = kontinentojEnigo.value
-        if ( montojValoro && montojEnigo ) montojValoro.textContent = montojEnigo.value
-        if ( atmosferoValoro && atmosferoEnigo ) atmosferoValoro.textContent = atmosferoEnigo.value
+        if ( cukK2fe && cukXema ) cukK2fe.textContent = cukXema.value
+        if ( tsaK2fe && tsaXema ) tsaK2fe.textContent = tsaXema.value
+        if ( hiaK2fe && hiaXema ) hiaK2fe.textContent = hiaXema.value
+        if ( tutalK2fe && tutalXema ) tutalK2fe.textContent = tutalXema.value
+        if ( jaqoK2fe && jaqoXema ) jaqoK2fe.textContent = jaqoXema.value
+        if ( pucanaK2fe && pucanaXema ) pucanaK2fe.textContent = pucanaXema.value
     }
 
-    hazardigiAgordojn() {
-        const semaEnigo = document.getElementById( "semo" ) as HTMLInputElement
-        const akvaEnigo = document.getElementById( "akvo" ) as HTMLInputElement
-        const temperaturoEnigo = document.getElementById( "temperaturo" ) as HTMLInputElement
-        const kontinentojEnigo = document.getElementById( "kontinentoj" ) as HTMLInputElement
-        const montojEnigo = document.getElementById( "montoj" ) as HTMLInputElement
-        const atmosferoEnigo = document.getElementById( "atmosfero" ) as HTMLInputElement
+    osakajoXema() {
+        const cukXema = document.getElementById( "cuk" ) as HTMLInputElement
+        const tsaXema = document.getElementById( "tsa" ) as HTMLInputElement
+        const hiaXema = document.getElementById( "hia" ) as HTMLInputElement
+        const tutalXema = document.getElementById( "tutal" ) as HTMLInputElement
+        const jaqoXema = document.getElementById( "jaqo" ) as HTMLInputElement
+        const pucanaXema = document.getElementById( "pucana" ) as HTMLInputElement
 
-        const hazardaĈeno = Math.random().toString( 0o44 ).substring( 0o2, 0o15 )
-        const semo = hazardaĈeno
-        const akvo = Math.floor( Math.random() * 0o100 )
-        const temp = Math.floor( Math.random() * 0o100 )
-        const kontinentoj = Math.floor( Math.random() * 0o10 ) + 0o1
-        const montoj = Math.floor( Math.random() * 0o100 )
-        const atmosfero = Math.floor( Math.random() * 0o100 )
+        const osakajoK61e = Math.random().toString( 0o44 ).substring( 0o2, 0o15 )
+        const kxesuCuk = osakajoK61e
+        const kxesuTsa = Math.floor( Math.random() * 0o100 )
+        const kxesuHia = Math.floor( Math.random() * 0o100 )
+        const kxesuTutal = Math.floor( Math.random() * 0o10 ) + 0o1
+        const kxesuJaqo = Math.floor( Math.random() * 0o100 )
+        const kxesuPucana = Math.floor( Math.random() * 0o100 )
 
-        semaEnigo.value = semo
-        akvaEnigo.value = akvo.toString()
-        temperaturoEnigo.value = temp.toString()
-        kontinentojEnigo.value = kontinentoj.toString()
-        montojEnigo.value = montoj.toString()
-        atmosferoEnigo.value = atmosfero.toString()
+        cukXema.value = kxesuCuk
+        tsaXema.value = kxesuTsa.toString()
+        hiaXema.value = kxesuHia.toString()
+        tutalXema.value = kxesuTutal.toString()
+        jaqoXema.value = kxesuJaqo.toString()
+        pucanaXema.value = kxesuPucana.toString()
 
-        this.semaĈeno = semo
-        this.semo = this.akiriSemonElĈeno( this.semaĈeno )
-        this.parametroj.akvonivelo = akvo / 0o100
-        this.parametroj.temperaturo = temp / 0o100
-        this.parametroj.kontinentKvanto = kontinentoj
-        this.parametroj.montoAlto = montoj / 0o100
-        this.parametroj.atmosferaDenso = atmosfero / 0o100
+        this.cukK61e = kxesuCuk
+        this.cuk = this.quqCuk( this.cukK61e )
+        this.xema.tsaK2fe = kxesuTsa / 0o100
+        this.xema.hia = kxesuHia / 0o100
+        this.xema.tutalK2fe = kxesuTutal
+        this.xema.jaqoL6da = kxesuJaqo / 0o100
+        this.xema.pucanaK2fe = kxesuPucana / 0o100
 
-        this.ĝisdatigiGlitilojn()
-        this.generi()
+        this.v3ak2K6tani()
+        this.kf2()
     }
 
-    reskaligiKanvason() {
-        const rektangulo = this.kanvaso.getBoundingClientRect()
-        this.larĝo = Math.floor( rektangulo.width )
-        this.alto = Math.floor( rektangulo.height )
-        this.kanvaso.width = this.larĝo
-        this.kanvaso.height = this.alto
-        this.kanvaso.style.transform = "none"
+    p6zukP2t6zo() {
+        const saxeAraq = this.bal2xaP2t6zo.getBoundingClientRect()
+        this.sefini = Math.floor( saxeAraq.width )
+        this.l6da = Math.floor( saxeAraq.height )
+        this.bal2xaP2t6zo.width = this.sefini
+        this.bal2xaP2t6zo.height = this.l6da
+        this.bal2xaP2t6zo.style.transform = "none"
     }
 
-    agordiThreeJS() {
-        this.sceno = new THREE.Scene()
-        this.sceno.background = new THREE.Color( 0x0c0e1b )
+    xemaSaxeKuba() {
+        this.saxeKuba = new THREE.Scene()
+        this.saxeKuba.background = new THREE.Color( 0x0c0e1b )
 
-        const rektangulo = this.terglobujo.getBoundingClientRect()
-        const larĝo = Math.floor( rektangulo.width )
-        const alto = Math.floor( rektangulo.height )
-        const aspekto = larĝo / alto
-        this.fotilo = new THREE.PerspectiveCamera( 0o40, aspekto, 0o1 / 0o10, 0o400 )
-        this.fotilo.position.z = 0o5
+        const saxeAraq = this.mut6qKuba.getBoundingClientRect()
+        const sefini = Math.floor( saxeAraq.width )
+        const l6da = Math.floor( saxeAraq.height )
+        const sefiniL6da = sefini / l6da
+        this.catahaq = new THREE.PerspectiveCamera( 0o40, sefiniL6da, 0o1 / 0o10, 0o400 )
+        this.catahaq.position.z = 0o5
 
-        this.bildigilo = new THREE.WebGLRenderer( { antialias: true, alpha: true } )
-        this.bildigilo.setSize( larĝo, alto )
-        this.bildigilo.setPixelRatio( window.devicePixelRatio )
-        this.bildigilo.domElement.style.inlineSize = "100%"
-        this.bildigilo.domElement.style.blockSize = "100%"
-        this.bildigilo.domElement.style.display = "block"
-        this.terglobujo.appendChild( this.bildigilo.domElement )
+        this.suntaSaxe = new THREE.WebGLRenderer( { antialias: true, alpha: true } )
+        this.suntaSaxe.setSize( sefini, l6da )
+        this.suntaSaxe.setPixelRatio( window.devicePixelRatio )
+        this.suntaSaxe.domElement.style.inlineSize = "100%"
+        this.suntaSaxe.domElement.style.blockSize = "100%"
+        this.suntaSaxe.domElement.style.display = "block"
+        this.mut6qKuba.appendChild( this.suntaSaxe.domElement )
 
         // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ⟫ ✨
-        this.kreiStelkampon()
+        this.kf2Sexi()
 
         // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſᶘꞇ ɭl̀ɔ ⟫ 💡
-        const ĉirkaŭaLumo = new THREE.AmbientLight( 0x404040, 0o4 / 0o10 )
-        this.sceno.add( ĉirkaŭaLumo )
+        const saxeTsije = new THREE.AmbientLight( 0x404040, 0o4 / 0o10 )
+        this.saxeKuba.add( saxeTsije )
 
-        const sunaLumo = new THREE.DirectionalLight( 0xffffff, 0o6 / 0o5 )
-        sunaLumo.position.set( 0o5, 0o3, 0o5 )
-        this.sceno.add( sunaLumo )
+        const so12Tsije = new THREE.DirectionalLight( 0xffffff, 0o6 / 0o5 )
+        so12Tsije.position.set( 0o5, 0o3, 0o5 )
+        this.saxeKuba.add( so12Tsije )
 
-        const malantaŭaLumo = new THREE.DirectionalLight( 0x445588, 0o3 / 0o10 )
-        malantaŭaLumo.position.set( -0o5, -0o3, -0o5 )
-        this.sceno.add( malantaŭaLumo )
+        const araqTsije = new THREE.DirectionalLight( 0x445588, 0o3 / 0o10 )
+        araqTsije.position.set( -0o5, -0o3, -0o5 )
+        this.saxeKuba.add( araqTsije )
 
-        this.regiloj = new OrbitControls( this.fotilo, this.bildigilo.domElement )
-        this.regiloj.enableDamping = true
-        this.regiloj.dampingFactor = 0o4 / 0o100
-        this.regiloj.rotateSpeed = 0o4 / 0o10
-        this.regiloj.minDistance = 0o3
-        this.regiloj.maxDistance = 0o20
+        this.kama = new OrbitControls( this.catahaq, this.suntaSaxe.domElement )
+        this.kama.enableDamping = true
+        this.kama.dampingFactor = 0o4 / 0o100
+        this.kama.rotateSpeed = 0o4 / 0o10
+        this.kama.minDistance = 0o3
+        this.kama.maxDistance = 0o20
 
-        this.animacii()
+        this.kxesuS2sabo()
     }
 
-    kreiStelkampon() {
-        const geometrio = new THREE.BufferGeometry()
-        const verticoj = []
-        const koloroj = []
+    kf2Sexi() {
+        const xezHtaka = new THREE.BufferGeometry()
+        const n2kCa1ara = []
+        const weh2Ca1ara = []
 
         for ( let i = 0o0; i < 0o5710; i++ ) {
-            verticoj.push(
+            n2kCa1ara.push(
                 ( Math.random() - 0o4 / 0o10 ) * 0o100,
                 ( Math.random() - 0o4 / 0o10 ) * 0o100,
                 ( Math.random() - 0o4 / 0o10 ) * 0o100
             )
 
-            const koloro = new THREE.Color()
-            koloro.setHSL( Math.random() * 0o2 / 0o12 + 0o4 / 0o10, 0o3 / 0o12, Math.random() * 0o4 / 0o10 + 0o4 / 0o10 )
-            koloroj.push( koloro.r, koloro.g, koloro.b )
+            const weh2 = new THREE.Color()
+            weh2.setHSL( Math.random() * 0o2 / 0o12 + 0o4 / 0o10, 0o3 / 0o12, Math.random() * 0o4 / 0o10 + 0o4 / 0o10 )
+            weh2Ca1ara.push( weh2.r, weh2.g, weh2.b )
         }
 
-        geometrio.setAttribute( "position", new THREE.Float32BufferAttribute( verticoj, 0o3 ) )
-        geometrio.setAttribute( "color", new THREE.Float32BufferAttribute( koloroj, 0o3 ) )
+        xezHtaka.setAttribute( "position", new THREE.Float32BufferAttribute( n2kCa1ara, 0o3 ) )
+        xezHtaka.setAttribute( "color", new THREE.Float32BufferAttribute( weh2Ca1ara, 0o3 ) )
 
-        const materialo = new THREE.PointsMaterial( {
+        const eskek = new THREE.PointsMaterial( {
             size: 0o4 / 0o100,
             vertexColors: true,
             transparent: true,
             opacity: 0o6 / 0o10
         } )
 
-        const steloj = new THREE.Points( geometrio, materialo )
-        this.sceno.add( steloj )
+        const sexi = new THREE.Points( xezHtaka, eskek )
+        this.saxeKuba.add( sexi )
     }
 
-    reskaligiThreeJS() {
-        if ( !this.fotilo || !this.bildigilo ) return
+    p6zukSaxeKuba() {
+        if ( !this.catahaq || !this.suntaSaxe ) return
 
-        const rektangulo = this.terglobujo.getBoundingClientRect()
-        const larĝo = Math.floor( rektangulo.width )
-        const alto = Math.floor( rektangulo.height )
+        const saxeAraq = this.mut6qKuba.getBoundingClientRect()
+        const sefini = Math.floor( saxeAraq.width )
+        const l6da = Math.floor( saxeAraq.height )
 
-        this.fotilo.aspect = larĝo / alto
-        this.fotilo.updateProjectionMatrix()
-        this.bildigilo.setSize( larĝo, alto )
+        this.catahaq.aspect = sefini / l6da
+        this.catahaq.updateProjectionMatrix()
+        this.suntaSaxe.setSize( sefini, l6da )
     }
 
-    agordiEventajnAŭskultilojn() {
+    xemaKeve() {
         // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ⟫ 🎲
-        document.getElementById( "semo" )!.addEventListener( "input", ( e ) => {
-            this.semaĈeno = ( e.target as HTMLInputElement ).value
-            this.semo = this.akiriSemonElĈeno( this.semaĈeno )
-            document.getElementById( "semo-valoro" )!.textContent = this.semo.toString()
+        document.getElementById( "cuk" )!.addEventListener( "input", ( e ) => {
+            this.cukK61e = ( e.target as HTMLInputElement ).value
+            this.cuk = this.quqCuk( this.cukK61e )
+            document.getElementById( "cukk2fe" )!.textContent = this.cuk.toString()
         } )
 
-        document.getElementById( "akvo" )!.addEventListener( "input", ( e ) => {
-            this.parametroj.akvonivelo = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
-            document.getElementById( "akvo-valoro" )!.textContent = ( e.target as HTMLInputElement ).value
+        document.getElementById( "tsa" )!.addEventListener( "input", ( e ) => {
+            this.xema.tsaK2fe = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
+            document.getElementById( "tsak2fe" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
-        document.getElementById( "temperaturo" )!.addEventListener( "input", ( e ) => {
-            this.parametroj.temperaturo = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
-            document.getElementById( "temperaturo-valoro" )!.textContent = ( e.target as HTMLInputElement ).value
+        document.getElementById( "hia" )!.addEventListener( "input", ( e ) => {
+            this.xema.hia = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
+            document.getElementById( "hiak2fe" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
-        document.getElementById( "kontinentoj" )!.addEventListener( "input", ( e ) => {
-            this.parametroj.kontinentKvanto = parseInt( ( e.target as HTMLInputElement ).value )
-            document.getElementById( "kontinentoj-valoro" )!.textContent = ( e.target as HTMLInputElement ).value
+        document.getElementById( "tutal" )!.addEventListener( "input", ( e ) => {
+            this.xema.tutalK2fe = parseInt( ( e.target as HTMLInputElement ).value )
+            document.getElementById( "tutalk2fe" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
-        document.getElementById( "montoj" )!.addEventListener( "input", ( e ) => {
-            this.parametroj.montoAlto = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
-            document.getElementById( "montoj-valoro" )!.textContent = ( e.target as HTMLInputElement ).value
+        document.getElementById( "jaqo" )!.addEventListener( "input", ( e ) => {
+            this.xema.jaqoL6da = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
+            document.getElementById( "jaqok2fe" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
-        document.getElementById( "atmosfero" )!.addEventListener( "input", ( e ) => {
-            this.parametroj.atmosferaDenso = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
-            document.getElementById( "atmosfero-valoro" )!.textContent = ( e.target as HTMLInputElement ).value
+        document.getElementById( "pucana" )!.addEventListener( "input", ( e ) => {
+            this.xema.pucanaK2fe = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
+            document.getElementById( "pucanak2fe" )!.textContent = ( e.target as HTMLInputElement ).value
         } )
 
         // ⟪ ſᶘɹ }ʃᴜ }ʃw 🔘 ⟫
-        document.getElementById( "generi-butono" )!.addEventListener( "click", () => {
-            this.generi()
+        document.getElementById( "kf2kek" )!.addEventListener( "click", () => {
+            this.kf2()
         } )
 
-        document.getElementById( "hazardigi-butono" )!.addEventListener( "click", () => {
-            this.hazardigiAgordojn()
+        document.getElementById( "osakajokek" )!.addEventListener( "click", () => {
+            this.osakajoXema()
         } )
 
-        document.getElementById( "rotacia-baskulo" )!.addEventListener( "change", ( e ) => {
-            this.aŭtorotacio = ( e.target as HTMLInputElement ).checked
+        document.getElementById( "s2sabokek" )!.addEventListener( "change", ( e ) => {
+            this.saxeS2sabo = ( e.target as HTMLInputElement ).checked
         } )
 
-        document.getElementById( "elŝuti-2d" )!.addEventListener( "click", () => {
-            this.elŝutiBildon( this.kanvaso, "planet-map.png" )
+        document.getElementById( "qumk2bal2xa" )!.addEventListener( "click", () => {
+            this.qumk2Tahaq( this.bal2xaP2t6zo, "planet-map.png" )
         } )
 
-        document.getElementById( "elŝuti-3d" )!.addEventListener( "click", () => {
-            this.bildigilo.render( this.sceno, this.fotilo )
-            this.elŝutiBildon( this.bildigilo.domElement, "planet-globe.png" )
+        document.getElementById( "qumk2l6ksabosai" )!.addEventListener( "click", () => {
+            this.suntaSaxe.render( this.saxeKuba, this.catahaq )
+            this.qumk2Tahaq( this.suntaSaxe.domElement, "planet-globe.png" )
         } )
 
         // ⟪ ſᶘɹ }ʃᴜ }ʃw 🗺️ ⟫
-        document.querySelectorAll( "input[name='projekcio']" ).forEach( radiobutono => {
-            radiobutono.addEventListener( "change", ( e ) => {
-                this.nunaProjekcio = ( e.target as HTMLInputElement ).value
-                this.bildigi2D()
+        document.querySelectorAll( "input[name='bal2xa']" ).forEach( kp6Kek => {
+            kp6Kek.addEventListener( "change", ( e ) => {
+                this.kxesuBal2xa = ( e.target as HTMLInputElement ).value
+                this.suntaBal2xa()
             } )
         } )
     }
 
-    elŝutiBildon( kanvaso: HTMLCanvasElement, dosiernomo: string ) {
-        const ligilo = document.createElement( "a" )
-        ligilo.download = dosiernomo
-        ligilo.href = kanvaso.toDataURL()
-        ligilo.click()
+    qumk2Tahaq( p2t6zo: HTMLCanvasElement, ksaka: string ) {
+        const qumk2 = document.createElement( "a" )
+        qumk2.download = ksaka
+        qumk2.href = p2t6zo.toDataURL()
+        qumk2.click()
     }
 
     // ⟪ ſɭɹʞ ʌ ᶅſɔ ֭ſɭɹ ʌ ʃɔ 🖌️ ⟫
 
     // ⟪ ſɟɔ ŋᷠɔ ʌ ʃɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ 🔢 ⟫
-    akiriSemonElĈeno( ĉeno: string ): number {
-        if ( /^[0-9]+$/.test( ĉeno ) ) return parseInt( ĉeno )
-        return this.haketiĈenon( ĉeno )
+    quqCuk( k61e: string ): number {
+        if ( /^[0-9]+$/.test( k61e ) ) return parseInt( k61e )
+        return this.k61eK2fe( k61e )
     }
 
     // ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ʃɔ 🎲 ⟫
-    kreiHazardan( semo: number ): () => number {
-        let stato = semo >>> 0o0
+    kf2Osakajo( cuk: number ): () => number {
+        let kxesuK2fe = cuk >>> 0o0
         return () => {
-            stato = ( stato + 0o15512674765 ) >>> 0o0
-            let t = stato
+            kxesuK2fe = ( kxesuK2fe + 0o15512674765 ) >>> 0o0
+            let t = kxesuK2fe
             t = Math.imul( t ^ ( t >>> 0o17 ), t | 0o1 )
             t ^= t + Math.imul( t ^ ( t >>> 0o7 ), t | 0o75 )
             return ( ( t ^ ( t >>> 0o16 ) ) >>> 0o0 ) / 0o40000000000
         }
     }
 
-    agordiSkizanInterfacon() {
+    xemaK2f() {
         // ⟪ ſɭʞɹ ʌ ᶅſɔ ֭ſɭɹ 🖌️ ⟫
-        this.skizaKanvaso.style.touchAction = "none"
-        this.viŝiSkizon()
+        this.k2fP2t6zo.style.touchAction = "none"
+        this.ne1aK2f()
 
-        this.skizaKanvaso.addEventListener( "pointerdown", ( e ) => {
-            this.desegnanta = true
-            const koordinatoj = this.akiriSkizanKoordinaton( e )
-            this.lastaX = koordinatoj[0o0]
-            this.lastaY = koordinatoj[0o1]
-            this.skizaKanvaso.setPointerCapture( e.pointerId )
+        this.k2fP2t6zo.addEventListener( "pointerdown", ( e ) => {
+            this.k2fKxesu = true
+            const kxesuAraq = this.quqK2fN2k( e )
+            this.kxesuX = kxesuAraq[0o0]
+            this.kxesuY = kxesuAraq[0o1]
+            this.k2fP2t6zo.setPointerCapture( e.pointerId )
         } )
 
-        this.skizaKanvaso.addEventListener( "pointermove", ( e ) => {
-            if ( !this.desegnanta ) return
-            const koordinatoj = this.akiriSkizanKoordinaton( e )
-            this.skizaKunteksto.lineWidth = 0o4
-            this.skizaKunteksto.lineCap = "round"
-            this.skizaKunteksto.lineJoin = "round"
-            this.skizaKunteksto.strokeStyle = "#FFFFFF"
-            this.skizaKunteksto.beginPath()
-            this.skizaKunteksto.moveTo( this.lastaX, this.lastaY )
-            this.skizaKunteksto.lineTo( koordinatoj[0o0], koordinatoj[0o1] )
-            this.skizaKunteksto.stroke()
-            this.lastaX = koordinatoj[0o0]
-            this.lastaY = koordinatoj[0o1]
+        this.k2fP2t6zo.addEventListener( "pointermove", ( e ) => {
+            if ( !this.k2fKxesu ) return
+            const kxesuAraq = this.quqK2fN2k( e )
+            this.k2fKek.lineWidth = 0o4
+            this.k2fKek.lineCap = "round"
+            this.k2fKek.lineJoin = "round"
+            this.k2fKek.strokeStyle = "#FFFFFF"
+            this.k2fKek.beginPath()
+            this.k2fKek.moveTo( this.kxesuX, this.kxesuY )
+            this.k2fKek.lineTo( kxesuAraq[0o0], kxesuAraq[0o1] )
+            this.k2fKek.stroke()
+            this.kxesuX = kxesuAraq[0o0]
+            this.kxesuY = kxesuAraq[0o1]
         } )
 
-        const ĉesiDesegnadon = () => {
-            this.desegnanta = false
+        const kxesuNe1a = () => {
+            this.k2fKxesu = false
         }
 
-        this.skizaKanvaso.addEventListener( "pointerup", ĉesiDesegnadon )
-        this.skizaKanvaso.addEventListener( "pointerleave", ĉesiDesegnadon )
+        this.k2fP2t6zo.addEventListener( "pointerup", kxesuNe1a )
+        this.k2fP2t6zo.addEventListener( "pointerleave", kxesuNe1a )
 
-        document.getElementById( "viŝi-butono" )!.addEventListener( "click", () => {
-            this.viŝiSkizon()
+        document.getElementById( "ne1akek" )!.addEventListener( "click", () => {
+            this.ne1aK2f()
         } )
 
-        document.getElementById( "alŝuti-butono" )!.addEventListener( "click", () => {
-            document.getElementById( "alŝuta-enigo" )!.click()
+        document.getElementById( "q2qkek" )!.addEventListener( "click", () => {
+            document.getElementById( "q2qxema" )!.click()
         } )
 
-        document.getElementById( "alŝuta-enigo" )!.addEventListener( "change", ( e ) => {
-            const enigo = e.target as HTMLInputElement
-            const dosiero = enigo.files?.[ 0o0 ]
-            if ( !dosiero ) return
-            this.legiAlŝutitanBildon( dosiero )
-            enigo.value = ""
+        document.getElementById( "q2qxema" )!.addEventListener( "change", ( e ) => {
+            const q2qXema = e.target as HTMLInputElement
+            const cakavop2 = q2qXema.files?.[ 0o0 ]
+            if ( !cakavop2 ) return
+            this.quqQ2q( cakavop2 )
+            q2qXema.value = ""
         } )
 
-        document.getElementById( "taksi-butono" )!.addEventListener( "click", () => {
-            this.taksiSemonElSkizo()
+        document.getElementById( "b6kek" )!.addEventListener( "click", () => {
+            this.b6Cuk()
         } )
     }
 
-    akiriSkizanKoordinaton( evento: PointerEvent ): [ number, number ] {
-        const rektangulo = this.skizaKanvaso.getBoundingClientRect()
-        const x = ( evento.clientX - rektangulo.left ) * ( this.skizaKanvaso.width / rektangulo.width )
-        const y = ( evento.clientY - rektangulo.top ) * ( this.skizaKanvaso.height / rektangulo.height )
+    quqK2fN2k( e: PointerEvent ): [ number, number ] {
+        const saxeAraq = this.k2fP2t6zo.getBoundingClientRect()
+        const x = ( e.clientX - saxeAraq.left ) * ( this.k2fP2t6zo.width / saxeAraq.width )
+        const y = ( e.clientY - saxeAraq.top ) * ( this.k2fP2t6zo.height / saxeAraq.height )
         return [ x, y ]
     }
 
-    viŝiSkizon() {
-        this.skizaKunteksto.fillStyle = "#001828"
-        this.skizaKunteksto.fillRect( 0o0, 0o0, this.skizaKanvaso.width, this.skizaKanvaso.height )
-        this.taksaRezulto.textContent = ""
+    ne1aK2f() {
+        this.k2fKek.fillStyle = "#001828"
+        this.k2fKek.fillRect( 0o0, 0o0, this.k2fP2t6zo.width, this.k2fP2t6zo.height )
+        this.b6K61e.textContent = ""
     }
 
-    legiAlŝutitanBildon( dosiero: File ) {
-        const legilo = new FileReader()
-        legilo.onload = () => {
-            const bildo = new Image()
-            bildo.onload = () => {
-                this.viŝiSkizon()
-                const proporcio = Math.min( this.skizaKanvaso.width / bildo.width, this.skizaKanvaso.height / bildo.height )
-                const w = bildo.width * proporcio
-                const h = bildo.height * proporcio
-                const x = ( this.skizaKanvaso.width - w ) / 0o2
-                const y = ( this.skizaKanvaso.height - h ) / 0o2
-                this.skizaKunteksto.drawImage( bildo, x, y, w, h )
+    quqQ2q( cakavop2: File ) {
+        const cakavop2Xema = new FileReader()
+        cakavop2Xema.onload = () => {
+            const tahaq = new Image()
+            tahaq.onload = () => {
+                this.ne1aK2f()
+                const sefiniL6da = Math.min( this.k2fP2t6zo.width / tahaq.width, this.k2fP2t6zo.height / tahaq.height )
+                const w = tahaq.width * sefiniL6da
+                const h = tahaq.height * sefiniL6da
+                const x = ( this.k2fP2t6zo.width - w ) / 0o2
+                const y = ( this.k2fP2t6zo.height - h ) / 0o2
+                this.k2fKek.drawImage( tahaq, x, y, w, h )
             }
-            bildo.src = legilo.result as string
+            tahaq.src = cakavop2Xema.result as string
         }
-        legilo.readAsDataURL( dosiero )
+        cakavop2Xema.readAsDataURL( cakavop2 )
     }
 
     // ⟪ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ʃɔ 🎯 ⟫
-    taksiSemonElSkizo() {
-        if ( this.taksoOkazanta ) return
+    b6Cuk() {
+        if ( this.b6Kxesu ) return
         // ⟪ ſɟɔ ŋᷠɔ ʌ ſɭw ʃᴜ 🗺️ ⟫
-        const kradoLarĝo = 0o30
-        const kradoAlto = 0o14
-        const ĉelkvanto = kradoLarĝo * kradoAlto
+        const b6KubaSefini = 0o30
+        const b6KubaL6da = 0o14
+        const b6KubaK2fe = b6KubaSefini * b6KubaL6da
 
-        const krado = document.createElement( "canvas" )
-        krado.width = kradoLarĝo
-        krado.height = kradoAlto
-        const kradoKunteksto = krado.getContext( "2d" )!
-        kradoKunteksto.drawImage( this.skizaKanvaso, 0o0, 0o0, kradoLarĝo, kradoAlto )
-        const datumoj = kradoKunteksto.getImageData( 0o0, 0o0, kradoLarĝo, kradoAlto ).data
+        const b6KubaP2t6zo = document.createElement( "canvas" )
+        b6KubaP2t6zo.width = b6KubaSefini
+        b6KubaP2t6zo.height = b6KubaL6da
+        const b6KubaKek = b6KubaP2t6zo.getContext( "2d" )!
+        b6KubaKek.drawImage( this.k2fP2t6zo, 0o0, 0o0, b6KubaSefini, b6KubaL6da )
+        const sab2 = b6KubaKek.getImageData( 0o0, 0o0, b6KubaSefini, b6KubaL6da ).data
 
-        const celajTeroj: boolean[] = []
-        let helaKvanto = 0o0
-        for ( let i = 0o0; i < ĉelkvanto; i++ ) {
-            const lumo = ( datumoj[i * 0o4] + datumoj[i * 0o4 + 0o1] + datumoj[i * 0o4 + 0o2] ) / 0o3
-            const tero = lumo >= 0o200
-            celajTeroj.push( tero )
-            if ( tero ) helaKvanto++
+        const kxesuOzCa1ara: boolean[] = []
+        let tsijeK2fe = 0o0
+        for ( let i = 0o0; i < b6KubaK2fe; i++ ) {
+            const tsije = ( sab2[i * 0o4] + sab2[i * 0o4 + 0o1] + sab2[i * 0o4 + 0o2] ) / 0o3
+            const oz = tsije >= 0o200
+            kxesuOzCa1ara.push( oz )
+            if ( oz ) tsijeK2fe++
         }
 
-        if ( helaKvanto === 0o0 ) {
-            document.getElementById( "taksa-ciihii" )!.classList.remove( "kobe" )
-            this.taksaRezulto.textContent = "ꞁȷ̀ɔ ſ͕ɭɹƽ"
+        if ( tsijeK2fe === 0o0 ) {
+            document.getElementById( "b6ciihii" )!.classList.remove( "kobe" )
+            this.b6K61e.textContent = "ꞁȷ̀ɔ ſ͕ɭɹƽ"
             return
         }
 
-        const celTeraProporcio = helaKvanto / ĉelkvanto
-        const akvaĈelkvanto = ĉelkvanto - helaKvanto
-        const akvonivelo = this.parametroj.akvonivelo
+        const ozSefiniL6da = tsijeK2fe / b6KubaK2fe
+        const tsaKubaK2fe = b6KubaK2fe - tsijeK2fe
+        const saxeTsaK2fe = this.xema.tsaK2fe
 
         // ⟪ }ʃɹƽ ʌ ʃɔ 📊 ⟫
-        const poentaro = ( semo: number ): number => {
-            this.semo = semo
-            this.simplekso = createNoise3D( this.kreiHazardan( semo ) )
-            let kongruajTeroj = 0o0
-            let kongruajAkvoj = 0o0
-            let generitajTeroj = 0o0
-            for ( let y = 0o0; y < kradoAlto; y++ ) {
-                for ( let x = 0o0; x < kradoLarĝo; x++ ) {
-                    const latitudo = 0o132 - ( y / kradoAlto ) * 0o264
-                    const longitudo = ( x / kradoLarĝo ) * 0o550 - 0o264
-                    const tero = this.akiriAltecon( latitudo, longitudo ) > akvonivelo
-                    if ( tero ) generitajTeroj++
-                    const celTero = celajTeroj[y * kradoLarĝo + x]
-                    if ( tero && celTero ) kongruajTeroj++
-                    else if ( !tero && !celTero ) kongruajAkvoj++
+        const qu1al = ( cuk: number ): number => {
+            this.cuk = cuk
+            this.beSaxe = createNoise3D( this.kf2Osakajo( cuk ) )
+            let ozXekox2q = 0o0
+            let tsaXekox2q = 0o0
+            let kf2OzK2fe = 0o0
+            for ( let y = 0o0; y < b6KubaL6da; y++ ) {
+                for ( let x = 0o0; x < b6KubaSefini; x++ ) {
+                    const l6daK2fe = 0o132 - ( y / b6KubaL6da ) * 0o264
+                    const sefiniK2fe = ( x / b6KubaSefini ) * 0o550 - 0o264
+                    const oz = this.quqL6da( l6daK2fe, sefiniK2fe ) > saxeTsaK2fe
+                    if ( oz ) kf2OzK2fe++
+                    const kxesuOz = kxesuOzCa1ara[y * b6KubaSefini + x]
+                    if ( oz && kxesuOz ) ozXekox2q++
+                    else if ( !oz && !kxesuOz ) tsaXekox2q++
                 }
             }
             // ⟪ ɭʃэ ſɭɔȝ ʌ ſᶘᴜ ⚖️ ⟫
-            const pezitaKongruo = ( kongruajTeroj * 0o20 + kongruajAkvoj ) / ( helaKvanto * 0o20 + akvaĈelkvanto )
-            const proporciaKongruo = 0o1 - Math.abs( celTeraProporcio - generitajTeroj / ĉelkvanto )
-            return pezitaKongruo * 0o5 / 0o10 + proporciaKongruo * 0o3 / 0o10
+            const kxesuXekox2q = ( ozXekox2q * 0o20 + tsaXekox2q ) / ( tsijeK2fe * 0o20 + tsaKubaK2fe )
+            const sefiniL6daXekox2q = 0o1 - Math.abs( ozSefiniL6da - kf2OzK2fe / b6KubaK2fe )
+            return kxesuXekox2q * 0o5 / 0o10 + sefiniL6daXekox2q * 0o3 / 0o10
         }
 
         // ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⏳ ⟫
-        this.taksoOkazanta = true
-        document.getElementById( "taksa-ciihii" )!.classList.remove( "kobe" )
-        this.taksaRezulto.textContent = "…"
+        this.b6Kxesu = true
+        document.getElementById( "b6ciihii" )!.classList.remove( "kobe" )
+        this.b6K61e.textContent = "…"
         window.setTimeout( () => {
             try {
             // ⟪ ſɭw ʃᴜ 🎲 ⟫
-            const hazarda = this.kreiHazardan( Math.floor( Math.random() * 0o200000000 ) )
-            const kandidatoj: number[] = []
-            for ( let i = 0o0; i < 0o200; i++ ) kandidatoj.push( Math.floor( hazarda() * 0o4000000 ) )
+            const osakajo = this.kf2Osakajo( Math.floor( Math.random() * 0o200000000 ) )
+            const osakajoCa1ara: number[] = []
+            for ( let i = 0o0; i < 0o200; i++ ) osakajoCa1ara.push( Math.floor( osakajo() * 0o4000000 ) )
 
             // ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ʃɔ 🏝️ ⟫
-            let plejBona: { semo: number, poentaro: number, kontinentKvanto: number } = { semo: 0o0, poentaro: 0o0, kontinentKvanto: this.parametroj.kontinentKvanto }
-            for ( let kontinentKvanto = 0o1; kontinentKvanto <= 0o10; kontinentKvanto++ ) {
-                this.parametroj.kontinentKvanto = kontinentKvanto
-                let plejBonaj: { semo: number, poentaro: number }[] = []
-                for ( const kandidato of kandidatoj ) {
-                    const poento = poentaro( kandidato )
-                    plejBonaj.push( { semo: kandidato, poentaro: poento } )
-                    plejBonaj.sort( ( a, b ) => b.poentaro - a.poentaro )
-                    if ( plejBonaj.length > 0o4 ) plejBonaj.pop()
+            let kemafi: { cuk: number, qu1al: number, tutalK2fe: number } = { cuk: 0o0, qu1al: 0o0, tutalK2fe: this.xema.tutalK2fe }
+            for ( let tutalK2fe = 0o1; tutalK2fe <= 0o10; tutalK2fe++ ) {
+                this.xema.tutalK2fe = tutalK2fe
+                let kemafiCa1ara: { cuk: number, qu1al: number }[] = []
+                for ( const osakajoKxesu of osakajoCa1ara ) {
+                    const kxesuQu1al = qu1al( osakajoKxesu )
+                    kemafiCa1ara.push( { cuk: osakajoKxesu, qu1al: kxesuQu1al } )
+                    kemafiCa1ara.sort( ( a, b ) => b.qu1al - a.qu1al )
+                    if ( kemafiCa1ara.length > 0o4 ) kemafiCa1ara.pop()
                 }
 
                 // ⟪ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭw ʃᴜ ⛰️ ⟫
-                let plejBonaK = plejBonaj[0o0]
-                for ( const kandidato of plejBonaj ) {
-                    const plibonigita = this.plibonigiSemon( kandidato.semo, poentaro )
-                    if ( plibonigita.poentaro > plejBonaK.poentaro ) plejBonaK = plibonigita
+                let kemafiKxesu = kemafiCa1ara[0o0]
+                for ( const kxesuKemafi of kemafiCa1ara ) {
+                    const tlak2Kemafi = this.tlak2Cuk( kxesuKemafi.cuk, qu1al )
+                    if ( tlak2Kemafi.qu1al > kemafiKxesu.qu1al ) kemafiKxesu = tlak2Kemafi
                 }
 
-                if ( plejBonaK.poentaro > plejBona.poentaro ) {
-                    plejBona = { semo: plejBonaK.semo, poentaro: plejBonaK.poentaro, kontinentKvanto: kontinentKvanto }
+                if ( kemafiKxesu.qu1al > kemafi.qu1al ) {
+                    kemafi = { cuk: kemafiKxesu.cuk, qu1al: kemafiKxesu.qu1al, tutalK2fe: tutalK2fe }
                 }
             }
 
             // ⟪ ſɭɹ ɽ͑ʃ'ɔ ʌ ֭ſɭᴜ ı],ɔ 🎲 ⟫
-            this.parametroj.kontinentKvanto = plejBona.kontinentKvanto
-            const kontinentojEnigo = document.getElementById( "kontinentoj" ) as HTMLInputElement
-            kontinentojEnigo.value = plejBona.kontinentKvanto.toString()
-            document.getElementById( "kontinentoj-valoro" )!.textContent = plejBona.kontinentKvanto.toString()
+            this.xema.tutalK2fe = kemafi.tutalK2fe
+            const tutalXema = document.getElementById( "tutal" ) as HTMLInputElement
+            tutalXema.value = kemafi.tutalK2fe.toString()
+            document.getElementById( "tutalk2fe" )!.textContent = kemafi.tutalK2fe.toString()
 
-            const semo = Math.floor( plejBona.semo )
-            this.semaĈeno = semo.toString()
-            this.semo = semo
-            const semaEnigo = document.getElementById( "semo" ) as HTMLInputElement
-            semaEnigo.value = this.semaĈeno
-            document.getElementById( "semo-valoro" )!.textContent = this.semo.toString()
-            this.generi()
+            const kxesuCuk = Math.floor( kemafi.cuk )
+            this.cukK61e = kxesuCuk.toString()
+            this.cuk = kxesuCuk
+            const cukXema = document.getElementById( "cuk" ) as HTMLInputElement
+            cukXema.value = this.cukK61e
+            document.getElementById( "cukk2fe" )!.textContent = this.cuk.toString()
+            this.kf2()
 
             // ⟪ ſɟɔ ŋᷠɔ ʌ }ʃɹƽ 📊 ⟫
             const vab6 = ( window as any ).vab6caja.bind( window )
             const skakefK2fe = ( window as any ).skakefK2fe.bind( window )
-            const poento64 = Math.floor( plejBona.poentaro * 0o100 )
-            this.taksaRezulto.textContent = skakefK2fe( vab6( poento64 ) + " / " + vab6( 0o100 ) )
+            const qu1alK2fe = Math.floor( kemafi.qu1al * 0o100 )
+            this.b6K61e.textContent = skakefK2fe( vab6( qu1alK2fe ) + " / " + vab6( 0o100 ) )
             } finally {
-                this.taksoOkazanta = false
+                this.b6Kxesu = false
             }
         }, 0o0 )
     }
 
     // ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ʃɔ ⛰️ ⟫
-    plibonigiSemon( komencaSemo: number, poentaro: ( semo: number ) => number ): { semo: number, poentaro: number } {
-        let semo = komencaSemo
-        let plejAlta = poentaro( semo )
-        let ŝanĝiĝis = true
-        while ( ŝanĝiĝis ) {
-            ŝanĝiĝis = false
-            for ( const ŝtupo of [ 0o1, 0o10, 0o100, 0o1000, 0o10000, 0o100000 ] ) {
-                for ( const direkto of [ -0o1, 0o1 ] ) {
-                    const novaSemo = semo + direkto * ŝtupo
-                    if ( novaSemo < 0o0 ) continue
-                    const novaPoentaro = poentaro( novaSemo )
-                    if ( novaPoentaro > plejAlta ) {
-                        semo = novaSemo
-                        plejAlta = novaPoentaro
-                        ŝanĝiĝis = true
+    tlak2Cuk( saxeCuk: number, saxeQu1al: ( cuk: number ) => number ): { cuk: number, qu1al: number } {
+        let cuk = saxeCuk
+        let kemafiQu1al = saxeQu1al( cuk )
+        let v3ak2 = true
+        while ( v3ak2 ) {
+            v3ak2 = false
+            for ( const saxeK2fe of [ 0o1, 0o10, 0o100, 0o1000, 0o10000, 0o100000 ] ) {
+                for ( const saxeAraq of [ -0o1, 0o1 ] ) {
+                    const kxesuCuk = cuk + saxeAraq * saxeK2fe
+                    if ( kxesuCuk < 0o0 ) continue
+                    const kxesuQu1al = saxeQu1al( kxesuCuk )
+                    if ( kxesuQu1al > kemafiQu1al ) {
+                        cuk = kxesuCuk
+                        kemafiQu1al = kxesuQu1al
+                        v3ak2 = true
                         break
                     }
                 }
-                if ( ŝanĝiĝis ) break
+                if ( v3ak2 ) break
             }
         }
-        return { semo: semo, poentaro: plejAlta }
+        return { cuk: cuk, qu1al: kemafiQu1al }
     }
 
     // ⟪ ſɭʞɹ ʌ ʃɔ 🏔️ ⟫
-    bruo( x: number, y: number, z: number, skalo = 0o1 ) {
-        return this.simplekso( x * skalo, y * skalo, z * skalo ) * 0o4 / 0o10 + 0o4 / 0o10
+    be( x: number, y: number, z: number, p6zuk = 0o1 ) {
+        return this.beSaxe( x * p6zuk, y * p6zuk, z * p6zuk ) * 0o4 / 0o10 + 0o4 / 0o10
     }
 
-    fbm( x: number, y: number, z: number, oktavoj = 0o4, skalo = 0o1 ) {
-        let valoro = 0o0
-        let amplitudo = 0o1
-        let frekvenco = skalo
-        let maksimumaValoro = 0o0
+    fbm( x: number, y: number, z: number, n2k = 0o4, p6zuk = 0o1 ) {
+        let eskek = 0o0
+        let k2fe = 0o1
+        let kxesuP6zuk = p6zuk
+        let kemafiK2fe = 0o0
 
-        for ( let i = 0o0; i < oktavoj; i++ ) {
-            valoro += this.simplekso( x * frekvenco, y * frekvenco, z * frekvenco ) * amplitudo
-            maksimumaValoro += amplitudo
-            amplitudo *= 0o4 / 0o10
-            frekvenco *= 0o2
+        for ( let i = 0o0; i < n2k; i++ ) {
+            eskek += this.beSaxe( x * kxesuP6zuk, y * kxesuP6zuk, z * kxesuP6zuk ) * k2fe
+            kemafiK2fe += k2fe
+            k2fe *= 0o4 / 0o10
+            kxesuP6zuk *= 0o2
         }
 
-        return valoro / maksimumaValoro
+        return eskek / kemafiK2fe
     }
 
-    akiriAltecon( latitudo: number, longitudo: number ) {
+    quqL6da( l6daK2fe: number, sefiniK2fe: number ) {
         // ⟪ ɭʃɀɜ ʌ }ʃɹƽ 📐 ⟫
-        const fio = ( 0o132 - latitudo ) * Math.PI / 0o264
-        const teto = ( longitudo + 0o264 ) * Math.PI / 0o264
+        const l6daQuqK2fe = ( 0o132 - l6daK2fe ) * Math.PI / 0o264
+        const sefiniQuqK2fe = ( sefiniK2fe + 0o264 ) * Math.PI / 0o264
 
-        const x = Math.sin( fio ) * Math.cos( teto )
-        const y = Math.cos( fio )
-        const z = Math.sin( fio ) * Math.sin( teto )
+        const x = Math.sin( l6daQuqK2fe ) * Math.cos( sefiniQuqK2fe )
+        const y = Math.cos( l6daQuqK2fe )
+        const z = Math.sin( l6daQuqK2fe ) * Math.sin( sefiniQuqK2fe )
 
         // ⟪ ſɭc̗ᴜ ſɭɹ ſȷɔ 🌎 ⟫
-        let alteco = this.fbm( x, y, z, 0o4, 0o6 / 0o4 )
+        let ozL6da = this.fbm( x, y, z, 0o4, 0o6 / 0o4 )
 
         // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ 🌋 ⟫
-        for ( let i = 0o0; i < this.parametroj.kontinentKvanto; i++ ) {
-            const angulo = ( i / this.parametroj.kontinentKvanto ) * Math.PI * 0o2 + this.semo * 0o1 / 0o12
-            const cx = Math.cos( angulo )
-            const cz = Math.sin( angulo )
-            const distanco = Math.sqrt( ( x - cx ) ** 0o2 + ( z - cz ) ** 0o2 + y * y )
-            alteco += Math.max( 0o0, 0o1 - distanco * 0o2 ) * 0o3 / 0o12
+        for ( let i = 0o0; i < this.xema.tutalK2fe; i++ ) {
+            const quqK2fe = ( i / this.xema.tutalK2fe ) * Math.PI * 0o2 + this.cuk * 0o1 / 0o12
+            const cx = Math.cos( quqK2fe )
+            const cz = Math.sin( quqK2fe )
+            const pal6 = Math.sqrt( ( x - cx ) ** 0o2 + ( z - cz ) ** 0o2 + y * y )
+            ozL6da += Math.max( 0o0, 0o1 - pal6 * 0o2 ) * 0o3 / 0o12
         }
 
         // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ɭl̀ᴜ ſ͕ɭɜ ⛰️ ⟫
-        const montaBruo = this.fbm( x, y, z, 0o6, 0o4 )
-        const krestaBruo = 0o1 - Math.abs( this.simplekso( x * 0o3, y * 0o3, z * 0o3 ) )
-        alteco += Math.pow( krestaBruo, 0o2 ) * this.parametroj.montoAlto * montaBruo
+        const jaqoBe = this.fbm( x, y, z, 0o6, 0o4 )
+        const saxeBe = 0o1 - Math.abs( this.beSaxe( x * 0o3, y * 0o3, z * 0o3 ) )
+        ozL6da += Math.pow( saxeBe, 0o2 ) * this.xema.jaqoL6da * jaqoBe
 
         // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ʃɔ ✨ ⟫
-        alteco += this.fbm( x, y, z, 0o3, 0o12 ) * 0o4 / 0o100
+        ozL6da += this.fbm( x, y, z, 0o3, 0o12 ) * 0o4 / 0o100
 
-        return Math.max( 0o0, Math.min( 0o1, alteco ) )
+        return Math.max( 0o0, Math.min( 0o1, ozL6da ) )
     }
 
-    akiriTemperaturon( latitudo: number, alteco: number, longitudo = 0o0 ) {
+    quqHia( l6daK2fe: number, ozL6da: number, sefiniK2fe = 0o0 ) {
         // ⟪ ſɭc̗ᴜ ſɭɹ ſȷɔ 🌡️ ⟫
-        const latitudaFaktoro = Math.cos( latitudo * Math.PI / 0o264 )
-        let temperaturo = this.parametroj.temperaturo * latitudaFaktoro
+        const kxesuK2fe = Math.cos( l6daK2fe * Math.PI / 0o264 )
+        let hia = this.xema.hia * kxesuK2fe
 
         // ⟪ j͑ʃɜ ſɭ,ᴜ 📉 ⟫
-        temperaturo -= alteco * 0o4 / 0o10 * this.parametroj.montoAlto
+        hia -= ozL6da * 0o4 / 0o10 * this.xema.jaqoL6da
 
         // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ʃɔ ☁️ ⟫
-        const fio = ( 0o132 - latitudo ) * Math.PI / 0o264
-        const teto = ( longitudo + 0o264 ) * Math.PI / 0o264
-        temperaturo += ( this.bruo(
-            Math.sin( fio ) * Math.cos( teto ),
-            Math.cos( fio ),
-            Math.sin( fio ) * Math.sin( teto ),
+        const l6daQuqK2fe = ( 0o132 - l6daK2fe ) * Math.PI / 0o264
+        const sefiniQuqK2fe = ( sefiniK2fe + 0o264 ) * Math.PI / 0o264
+        hia += ( this.be(
+            Math.sin( l6daQuqK2fe ) * Math.cos( sefiniQuqK2fe ),
+            Math.cos( l6daQuqK2fe ),
+            Math.sin( l6daQuqK2fe ) * Math.sin( sefiniQuqK2fe ),
             0o4
         ) - 0o4 / 0o10 ) * 0o1 / 0o12
 
-        return Math.max( 0o0, Math.min( 0o1, temperaturo ) )
+        return Math.max( 0o0, Math.min( 0o1, hia ) )
     }
 
-    akiriBiomon( alteco: number, temperaturo: number, humideco: number ) {
-        const akvonivelo = this.parametroj.akvonivelo
+    quqOz( ozL6da: number, hia: number, pucacuni: number ) {
+        const saxeTsaK2fe = this.xema.tsaK2fe
 
-        if ( alteco < akvonivelo - 0o4 / 0o100 ) return "deep_ocean"
-        if ( alteco < akvonivelo ) return "shallow_ocean"
-        if ( alteco < akvonivelo + 0o2 / 0o100 ) return "beach"
+        if ( ozL6da < saxeTsaK2fe - 0o4 / 0o100 ) return "deep_ocean"
+        if ( ozL6da < saxeTsaK2fe ) return "shallow_ocean"
+        if ( ozL6da < saxeTsaK2fe + 0o2 / 0o100 ) return "beach"
 
-        if ( temperaturo < 0o1 / 0o12 ) return alteco > 0o7 / 0o12 ? "snow_mountain" : "ice"
-        if ( temperaturo < 0o3 / 0o12 ) return alteco > 0o6 / 0o12 ? "snow_mountain" : "tundra"
+        if ( hia < 0o1 / 0o12 ) return ozL6da > 0o7 / 0o12 ? "snow_mountain" : "ice"
+        if ( hia < 0o3 / 0o12 ) return ozL6da > 0o6 / 0o12 ? "snow_mountain" : "tundra"
 
-        if ( alteco > 0o7 / 0o12 + ( 0o1 - this.parametroj.montoAlto ) * 0o2 / 0o12 ) return "mountain"
-        if ( alteco > 0o4 / 0o10 ) return "hill"
+        if ( ozL6da > 0o7 / 0o12 + ( 0o1 - this.xema.jaqoL6da ) * 0o2 / 0o12 ) return "mountain"
+        if ( ozL6da > 0o4 / 0o10 ) return "hill"
 
-        if ( humideco > 0o6 / 0o12 && temperaturo > 0o4 / 0o12 ) return "forest"
-        if ( humideco > 0o3 / 0o12 && temperaturo > 0o3 / 0o12 ) return "grassland"
-        if ( temperaturo > 0o7 / 0o12 ) return "desert"
+        if ( pucacuni > 0o6 / 0o12 && hia > 0o4 / 0o12 ) return "forest"
+        if ( pucacuni > 0o3 / 0o12 && hia > 0o3 / 0o12 ) return "grassland"
+        if ( hia > 0o7 / 0o12 ) return "desert"
 
         return "plains"
     }
 
-    akiriBiomKoloron( biomo: string, variado = 0o0 ) {
-        const koloroj: Record<string, number[]> = {
+    quqWeh2( kxesuOz: string, kxesuK2fe = 0o0 ) {
+        const weh2Bal2xa: Record<string, number[]> = {
             "deep_ocean": [ 0o36, 0o74, 0o137 ],
             "shallow_ocean": [ 0o56, 0o134, 0o212 ],
             "beach": [ 0o324, 0o245, 0o164 ],
@@ -688,167 +688,166 @@ class PlanedaGeneratoro {
             "desert": [ 0o322, 0o270, 0o214 ]
         }
 
-        const bazo = koloroj[biomo] || [ 0o200, 0o200, 0o200 ]
-        const variaForto = 0o24
-        const ŝanĝo = (kanalo: number) =>
-            Math.max( 0o0, Math.min( 0o377, bazo[kanalo] + ( variado - 0o4 / 0o10 ) * variaForto ) )
+        const saxeWeh2 = weh2Bal2xa[kxesuOz] || [ 0o200, 0o200, 0o200 ]
+        const k2fe = 0o24
+        const v3ak2Weh2 = ( n2k: number ) =>
+            Math.max( 0o0, Math.min( 0o377, saxeWeh2[n2k] + ( kxesuK2fe - 0o4 / 0o10 ) * k2fe ) )
 
-        return [ ŝanĝo( 0o0 ), ŝanĝo( 0o1 ), ŝanĝo( 0o2 ) ]
+        return [ v3ak2Weh2( 0o0 ), v3ak2Weh2( 0o1 ), v3ak2Weh2( 0o2 ) ]
     }
 
-    generi() {
-        this.simplekso = createNoise3D( this.kreiHazardan( this.semo ) )
-        this.generiTeksturon()
-        this.bildigi2D()
-        this.ĝisdatigi3DTerglobon()
-        this.ĝisdatigiStatistikojn()
+    kf2() {
+        this.beSaxe = createNoise3D( this.kf2Osakajo( this.cuk ) )
+        this.kf2Lko()
+        this.suntaBal2xa()
+        this.v3ak2Mut6q()
+        this.v3ak2K61e()
     }
 
-    generiTeksturon() {
-        const grandeco = 0o2000
+    kf2Lko() {
+        const pal6 = 0o2000
 
-        this.teksturaKanvaso = document.createElement( "canvas" )
-        this.teksturaKanvaso.width = grandeco
-        this.teksturaKanvaso.height = grandeco / 0o2
-        const kunteksto = this.teksturaKanvaso.getContext( "2d" )!
-        const bildaDatumo = kunteksto.createImageData( grandeco, grandeco / 0o2 )
-        const datumoj = bildaDatumo.data
+        this.lkoP2t6zo = document.createElement( "canvas" )
+        this.lkoP2t6zo.width = pal6
+        this.lkoP2t6zo.height = pal6 / 0o2
+        const lkoKekKxesu = this.lkoP2t6zo.getContext( "2d" )!
+        const tahaqSab2 = lkoKekKxesu.createImageData( pal6, pal6 / 0o2 )
+        const sab2 = tahaqSab2.data
 
-        for ( let y = 0o0; y < grandeco / 0o2; y++ ) {
-            for ( let x = 0o0; x < grandeco; x++ ) {
-                const latitudo = 0o132 - ( y / ( grandeco / 0o2 ) ) * 0o264
-                const longitudo = ( x / grandeco ) * 0o550 - 0o264
+        for ( let y = 0o0; y < pal6 / 0o2; y++ ) {
+            for ( let x = 0o0; x < pal6; x++ ) {
+                const l6daK2fe = 0o132 - ( y / ( pal6 / 0o2 ) ) * 0o264
+                const sefiniK2fe = ( x / pal6 ) * 0o550 - 0o264
 
-                const alteco = this.akiriAltecon( latitudo, longitudo )
-                const humideco = this.fbm(
-                    Math.cos( latitudo * Math.PI / 0o264 ) * Math.cos( longitudo * Math.PI / 0o264 ),
-                    Math.sin( latitudo * Math.PI / 0o264 ),
-                    Math.cos( latitudo * Math.PI / 0o264 ) * Math.sin( longitudo * Math.PI / 0o264 ),
+                const ozL6da = this.quqL6da( l6daK2fe, sefiniK2fe )
+                const pucacuni = this.fbm(
+                    Math.cos( l6daK2fe * Math.PI / 0o264 ) * Math.cos( sefiniK2fe * Math.PI / 0o264 ),
+                    Math.sin( l6daK2fe * Math.PI / 0o264 ),
+                    Math.cos( l6daK2fe * Math.PI / 0o264 ) * Math.sin( sefiniK2fe * Math.PI / 0o264 ),
                     0o3, 0o2
                 )
-const temperaturo = this.akiriTemperaturon( latitudo, alteco, longitudo )
-            const biomo = this.akiriBiomon( alteco, temperaturo, humideco )
+                const hia = this.quqHia( l6daK2fe, ozL6da, sefiniK2fe )
+                const kxesuOz = this.quqOz( ozL6da, hia, pucacuni )
 
+                const weh2 = this.quqWeh2( kxesuOz, this.be( x, y, 0o0, 0o20 ) )
+                const k2fe = ( y * pal6 + x ) * 0o4
 
-                const koloro = this.akiriBiomKoloron( biomo, this.bruo( x, y, 0o0, 0o20 ) )
-                const indekso = ( y * grandeco + x ) * 0o4
-
-                datumoj[indekso] = koloro[0o0]
-                datumoj[indekso + 0o1] = koloro[0o1]
-                datumoj[indekso + 0o2] = koloro[0o2]
-                datumoj[indekso + 0o3] = 0o377
+                sab2[k2fe] = weh2[0o0]
+                sab2[k2fe + 0o1] = weh2[0o1]
+                sab2[k2fe + 0o2] = weh2[0o2]
+                sab2[k2fe + 0o3] = 0o377
             }
         }
 
-        kunteksto.putImageData( bildaDatumo, 0o0, 0o0 )
+        lkoKekKxesu.putImageData( tahaqSab2, 0o0, 0o0 )
     }
 
-    bildigi2D() {
-        const kunteksto = this.kunteksto
-        const w = this.larĝo
-        const h = this.alto
+    suntaBal2xa() {
+        const bal2xaKekKxesu = this.bal2xaKek
+        const w = this.sefini
+        const h = this.l6da
 
-        kunteksto.save()
-        kunteksto.setTransform( 0o1, 0o0, 0o0, 0o1, 0o0, 0o0 )
+        bal2xaKekKxesu.save()
+        bal2xaKekKxesu.setTransform( 0o1, 0o0, 0o0, 0o1, 0o0, 0o0 )
 
-        kunteksto.fillRect( 0o0, 0o0, w, h )
+        bal2xaKekKxesu.fillRect( 0o0, 0o0, w, h )
 
-        switch ( this.nunaProjekcio ) {
-            case "ekvidrektangula":
-                this.bildigiEkvirektangulan( w, h )
+        switch ( this.kxesuBal2xa ) {
+            case "saxebal2xa":
+                this.suntaSaxeBal2xa( w, h )
                 break
-            case "mercator":
-                this.bildigiMerkatoran( w, h )
+            case "kuc2na":
+                this.suntaKuc2na( w, h )
                 break
-            case "mollweide":
-                this.bildigiMolvejdan( w, h )
+            case "c2qsahak":
+                this.suntaC2qsahak( w, h )
                 break
-            case "ortografia":
-                this.bildigiOrtografian( w, h )
+            case "l6ksabosai":
+                this.suntaL6ksabosai( w, h )
                 break
         }
 
-        kunteksto.restore()
+        bal2xaKekKxesu.restore()
     }
 
-    bildigiEkvirektangulan( w: number, h: number ) {
-        const kunteksto = this.kunteksto
-        const teksturaLarĝo = this.teksturaKanvaso.width
-        const teksturaAlto = this.teksturaKanvaso.height
+    suntaSaxeBal2xa( w: number, h: number ) {
+        const bal2xaKekSaxe = this.bal2xaKek
+        const lkoSefini = this.lkoP2t6zo.width
+        const lkoL6da = this.lkoP2t6zo.height
 
-        kunteksto.drawImage( this.teksturaKanvaso, 0o0, 0o0, teksturaLarĝo, teksturaAlto, 0o0, 0o0, w, h )
+        bal2xaKekSaxe.drawImage( this.lkoP2t6zo, 0o0, 0o0, lkoSefini, lkoL6da, 0o0, 0o0, w, h )
     }
 
-    bildigiMerkatoran( w: number, h: number ) {
-        const kunteksto = this.kunteksto
-        const teksturaLarĝo = this.teksturaKanvaso.width
-        const teksturaAlto = this.teksturaKanvaso.height
-        const teksturaKunteksto = this.teksturaKanvaso.getContext( "2d" )!
+    suntaKuc2na( w: number, h: number ) {
+        const bal2xaKekKuc2na = this.bal2xaKek
+        const lkoSefini = this.lkoP2t6zo.width
+        const lkoL6da = this.lkoP2t6zo.height
+        const lkoKekKuc2na = this.lkoP2t6zo.getContext( "2d" )!
 
-        const portempaKanvaso = document.createElement( "canvas" )
-        portempaKanvaso.width = w
-        portempaKanvaso.height = h
-        const portempaKunteksto = portempaKanvaso.getContext( "2d" )!
+        const kxesuP2t6zo = document.createElement( "canvas" )
+        kxesuP2t6zo.width = w
+        kxesuP2t6zo.height = h
+        const kxesuP2t6zoKekKuc2na = kxesuP2t6zo.getContext( "2d" )!
 
-        const bildaDatumo = portempaKunteksto.createImageData( w, h )
-        const datumoj = bildaDatumo.data
-        const teksturaDatumo = teksturaKunteksto.getImageData( 0o0, 0o0, teksturaLarĝo, teksturaAlto ).data
+        const tahaqSab2 = kxesuP2t6zoKekKuc2na.createImageData( w, h )
+        const suntaSab2 = tahaqSab2.data
+        const lkoSab2 = lkoKekKuc2na.getImageData( 0o0, 0o0, lkoSefini, lkoL6da ).data
 
         for ( let y = 0o0; y < h; y++ ) {
-            const merkatoraY = ( y / h ) * 0o2 - 0o1
-            const latitudo = ( 0o2 * Math.atan( Math.exp( merkatoraY * Math.PI ) ) - Math.PI / 0o2 ) * 0o264 / Math.PI
+            const kxesuK2fe = ( y / h ) * 0o2 - 0o1
+            const l6daK2fe = ( 0o2 * Math.atan( Math.exp( kxesuK2fe * Math.PI ) ) - Math.PI / 0o2 ) * 0o264 / Math.PI
 
-            if ( Math.abs( latitudo ) > 0o125 ) {
+            if ( Math.abs( l6daK2fe ) > 0o125 ) {
                 for ( let x = 0o0; x < w; x++ ) {
-                    const indekso = ( y * w + x ) * 0o4
-                    datumoj[indekso] = 0o14
-                    datumoj[indekso + 0o1] = 0o16
-                    datumoj[indekso + 0o2] = 0o33
-                    datumoj[indekso + 0o3] = 0o377
+                    const suntaK2fe = ( y * w + x ) * 0o4
+                    suntaSab2[suntaK2fe] = 0o14
+                    suntaSab2[suntaK2fe + 0o1] = 0o16
+                    suntaSab2[suntaK2fe + 0o2] = 0o33
+                    suntaSab2[suntaK2fe + 0o3] = 0o377
                 }
                 continue
             }
 
-            const fontaY = Math.floor( ( 0o132 - latitudo ) / 0o264 * teksturaAlto )
-            const alfiksitaY = Math.max( 0o0, Math.min( teksturaAlto - 0o1, fontaY ) )
+            const saxeY = Math.floor( ( 0o132 - l6daK2fe ) / 0o264 * lkoL6da )
+            const kxesuY = Math.max( 0o0, Math.min( lkoL6da - 0o1, saxeY ) )
 
             for ( let x = 0o0; x < w; x++ ) {
-                const fontaX = Math.floor( ( x / w ) * teksturaLarĝo )
-                const alfiksitaX = Math.max( 0o0, Math.min( teksturaLarĝo - 0o1, fontaX ) )
+                const saxeX = Math.floor( ( x / w ) * lkoSefini )
+                const kxesuX = Math.max( 0o0, Math.min( lkoSefini - 0o1, saxeX ) )
 
-                const fontaIndekso = ( alfiksitaY * teksturaLarĝo + alfiksitaX ) * 0o4
-                const indekso = ( ( h - 0o1 - y ) * w + x ) * 0o4
+                const saxeK2fe = ( kxesuY * lkoSefini + kxesuX ) * 0o4
+                const suntaK2fe = ( ( h - 0o1 - y ) * w + x ) * 0o4
 
-                datumoj[indekso] = teksturaDatumo[fontaIndekso]
-                datumoj[indekso + 0o1] = teksturaDatumo[fontaIndekso + 0o1]
-                datumoj[indekso + 0o2] = teksturaDatumo[fontaIndekso + 0o2]
-                datumoj[indekso + 0o3] = 0o377
+                suntaSab2[suntaK2fe] = lkoSab2[saxeK2fe]
+                suntaSab2[suntaK2fe + 0o1] = lkoSab2[saxeK2fe + 0o1]
+                suntaSab2[suntaK2fe + 0o2] = lkoSab2[saxeK2fe + 0o2]
+                suntaSab2[suntaK2fe + 0o3] = 0o377
             }
         }
 
-        portempaKunteksto.putImageData( bildaDatumo, 0o0, 0o0 )
-        kunteksto.drawImage( portempaKanvaso, 0o0, 0o0 )
+        kxesuP2t6zoKekKuc2na.putImageData( tahaqSab2, 0o0, 0o0 )
+        bal2xaKekKuc2na.drawImage( kxesuP2t6zo, 0o0, 0o0 )
     }
 
-    bildigiMolvejdan( w: number, h: number ) {
-        const kunteksto = this.kunteksto
-        const teksturaLarĝo = this.teksturaKanvaso.width
-        const teksturaAlto = this.teksturaKanvaso.height
-        const teksturaKunteksto = this.teksturaKanvaso.getContext( "2d" )!
+    suntaC2qsahak( w: number, h: number ) {
+        const bal2xaKekC2qsahak = this.bal2xaKek
+        const lkoSefini = this.lkoP2t6zo.width
+        const lkoL6da = this.lkoP2t6zo.height
+        const lkoKekC2qsahak = this.lkoP2t6zo.getContext( "2d" )!
 
-        const portempaKanvaso = document.createElement( "canvas" )
-        portempaKanvaso.width = w
-        portempaKanvaso.height = h
-        const portempaKunteksto = portempaKanvaso.getContext( "2d" )!
+        const kxesuP2t6zo = document.createElement( "canvas" )
+        kxesuP2t6zo.width = w
+        kxesuP2t6zo.height = h
+        const kxesuP2t6zoKekC2qsahak = kxesuP2t6zo.getContext( "2d" )!
 
         const cx = w / 0o2
         const cy = h / 0o2
         const rx = w * 0o4 / 0o10
         const ry = h * 0o4 / 0o10
 
-        const bildaDatumo = portempaKunteksto.createImageData( w, h )
-        const datumoj = bildaDatumo.data
-        const teksturaDatumo = teksturaKunteksto.getImageData( 0o0, 0o0, teksturaLarĝo, teksturaAlto ).data
+        const tahaqSab2 = kxesuP2t6zoKekC2qsahak.createImageData( w, h )
+        const suntaSab2 = tahaqSab2.data
+        const lkoSab2 = lkoKekC2qsahak.getImageData( 0o0, 0o0, lkoSefini, lkoL6da ).data
 
         for ( let y = 0o0; y < h; y++ ) {
             for ( let x = 0o0; x < w; x++ ) {
@@ -856,56 +855,56 @@ const temperaturo = this.akiriTemperaturon( latitudo, alteco, longitudo )
                 const dy = ( y - cy ) / ry
 
                 if ( dx * dx + dy * dy > 0o1 ) {
-                    const indekso = ( y * w + x ) * 0o4
-                    datumoj[indekso] = 0o14
-                    datumoj[indekso + 0o1] = 0o16
-                    datumoj[indekso + 0o2] = 0o33
-                    datumoj[indekso + 0o3] = 0o377
+                    const suntaK2fe = ( y * w + x ) * 0o4
+                    suntaSab2[suntaK2fe] = 0o14
+                    suntaSab2[suntaK2fe + 0o1] = 0o16
+                    suntaSab2[suntaK2fe + 0o2] = 0o33
+                    suntaSab2[suntaK2fe + 0o3] = 0o377
                     continue
                 }
 
-                const teto = Math.asin( dy )
-                const longitudo = ( dx / Math.cos( teto ) ) * 0o264
-                const latitudo = Math.asin( ( 0o2 * teto + Math.sin( 0o2 * teto ) ) / Math.PI ) * 0o264 / Math.PI
+                const quqK2fe = Math.asin( dy )
+                const sefiniK2fe = ( dx / Math.cos( quqK2fe ) ) * 0o264
+                const l6daK2fe = Math.asin( ( 0o2 * quqK2fe + Math.sin( 0o2 * quqK2fe ) ) / Math.PI ) * 0o264 / Math.PI
 
-                const fontaX = Math.floor( ( ( longitudo + 0o264 ) / 0o550 ) * teksturaLarĝo )
-                const fontaY = Math.floor( ( ( 0o132 - latitudo ) / 0o264 ) * teksturaAlto )
+                const saxeX = Math.floor( ( ( sefiniK2fe + 0o264 ) / 0o550 ) * lkoSefini )
+                const saxeY = Math.floor( ( ( 0o132 - l6daK2fe ) / 0o264 ) * lkoL6da )
 
-                const alfiksitaX = Math.max( 0o0, Math.min( teksturaLarĝo - 0o1, fontaX ) )
-                const alfiksitaY = Math.max( 0o0, Math.min( teksturaAlto - 0o1, fontaY ) )
+                const kxesuX = Math.max( 0o0, Math.min( lkoSefini - 0o1, saxeX ) )
+                const kxesuY = Math.max( 0o0, Math.min( lkoL6da - 0o1, saxeY ) )
 
-                const fontaIndekso = ( alfiksitaY * teksturaLarĝo + alfiksitaX ) * 0o4
-                const indekso = ( ( h - 0o1 - y ) * w + x ) * 0o4
+                const saxeK2fe = ( kxesuY * lkoSefini + kxesuX ) * 0o4
+                const suntaK2fe = ( ( h - 0o1 - y ) * w + x ) * 0o4
 
-                datumoj[indekso] = teksturaDatumo[fontaIndekso]
-                datumoj[indekso + 0o1] = teksturaDatumo[fontaIndekso + 0o1]
-                datumoj[indekso + 0o2] = teksturaDatumo[fontaIndekso + 0o2]
-                datumoj[indekso + 0o3] = 0o377
+                suntaSab2[suntaK2fe] = lkoSab2[saxeK2fe]
+                suntaSab2[suntaK2fe + 0o1] = lkoSab2[saxeK2fe + 0o1]
+                suntaSab2[suntaK2fe + 0o2] = lkoSab2[saxeK2fe + 0o2]
+                suntaSab2[suntaK2fe + 0o3] = 0o377
             }
         }
 
-        portempaKunteksto.putImageData( bildaDatumo, 0o0, 0o0 )
-        kunteksto.drawImage( portempaKanvaso, 0o0, 0o0 )
+        kxesuP2t6zoKekC2qsahak.putImageData( tahaqSab2, 0o0, 0o0 )
+        bal2xaKekC2qsahak.drawImage( kxesuP2t6zo, 0o0, 0o0 )
     }
 
-    bildigiOrtografian( w: number, h: number ) {
-        const kunteksto = this.kunteksto
-        const teksturaLarĝo = this.teksturaKanvaso.width
-        const teksturaAlto = this.teksturaKanvaso.height
-        const teksturaKunteksto = this.teksturaKanvaso.getContext( "2d" )!
+    suntaL6ksabosai( w: number, h: number ) {
+        const bal2xaKekL6ksabosai = this.bal2xaKek
+        const lkoSefini = this.lkoP2t6zo.width
+        const lkoL6da = this.lkoP2t6zo.height
+        const lkoKekL6ksabosai = this.lkoP2t6zo.getContext( "2d" )!
 
-        const portempaKanvaso = document.createElement( "canvas" )
-        portempaKanvaso.width = w
-        portempaKanvaso.height = h
-        const portempaKunteksto = portempaKanvaso.getContext( "2d" )!
+        const kxesuP2t6zo = document.createElement( "canvas" )
+        kxesuP2t6zo.width = w
+        kxesuP2t6zo.height = h
+        const kxesuP2t6zoKekL6ksabosai = kxesuP2t6zo.getContext( "2d" )!
 
         const cx = w / 0o2
         const cy = h / 0o2
         const r = Math.min( w, h ) * 0o4 / 0o10
 
-        const bildaDatumo = portempaKunteksto.createImageData( w, h )
-        const datumoj = bildaDatumo.data
-        const teksturaDatumo = teksturaKunteksto.getImageData( 0o0, 0o0, teksturaLarĝo, teksturaAlto ).data
+        const tahaqSab2 = kxesuP2t6zoKekL6ksabosai.createImageData( w, h )
+        const suntaSab2 = tahaqSab2.data
+        const lkoSab2 = lkoKekL6ksabosai.getImageData( 0o0, 0o0, lkoSefini, lkoL6da ).data
 
         for ( let y = 0o0; y < h; y++ ) {
             for ( let x = 0o0; x < w; x++ ) {
@@ -914,251 +913,249 @@ const temperaturo = this.akiriTemperaturon( latitudo, alteco, longitudo )
                 const dz2 = 0o1 - dx * dx - dy * dy
 
                 if ( dz2 < 0o0 ) {
-                    const indekso = ( y * w + x ) * 0o4
-                    datumoj[indekso] = 0o14
-                    datumoj[indekso + 0o1] = 0o16
-                    datumoj[indekso + 0o2] = 0o33
-                    datumoj[indekso + 0o3] = 0o377
+                    const suntaK2fe = ( y * w + x ) * 0o4
+                    suntaSab2[suntaK2fe] = 0o14
+                    suntaSab2[suntaK2fe + 0o1] = 0o16
+                    suntaSab2[suntaK2fe + 0o2] = 0o33
+                    suntaSab2[suntaK2fe + 0o3] = 0o377
                     continue
                 }
 
                 const dz = Math.sqrt( dz2 )
 
-                const latitudo = Math.asin( dy ) * 0o264 / Math.PI
-                const longitudo = Math.atan2( dx, dz ) * 0o264 / Math.PI
+                const l6daK2fe = Math.asin( dy ) * 0o264 / Math.PI
+                const sefiniK2fe = Math.atan2( dx, dz ) * 0o264 / Math.PI
 
-                const fontaX = Math.floor( ( ( longitudo + 0o264 ) / 0o550 ) * teksturaLarĝo )
-                const fontaY = Math.floor( ( ( 0o132 - latitudo ) / 0o264 ) * teksturaAlto )
+                const saxeX = Math.floor( ( ( sefiniK2fe + 0o264 ) / 0o550 ) * lkoSefini )
+                const saxeY = Math.floor( ( ( 0o132 - l6daK2fe ) / 0o264 ) * lkoL6da )
 
-                const alfiksitaX = Math.max( 0o0, Math.min( teksturaLarĝo - 0o1, fontaX ) )
-                const alfiksitaY = Math.max( 0o0, Math.min( teksturaAlto - 0o1, fontaY ) )
+                const kxesuX = Math.max( 0o0, Math.min( lkoSefini - 0o1, saxeX ) )
+                const kxesuY = Math.max( 0o0, Math.min( lkoL6da - 0o1, saxeY ) )
 
-                const fontaIndekso = ( alfiksitaY * teksturaLarĝo + alfiksitaX ) * 0o4
-                const indekso = ( ( h - 0o1 - y ) * w + x ) * 0o4
+                const saxeK2fe = ( kxesuY * lkoSefini + kxesuX ) * 0o4
+                const suntaK2fe = ( ( h - 0o1 - y ) * w + x ) * 0o4
 
-                const ombrado = 0o6 / 0o10 + 0o2 / 0o10 * dz
-                datumoj[indekso] = Math.min( 0o377, teksturaDatumo[fontaIndekso] * ombrado )
-                datumoj[indekso + 0o1] = Math.min( 0o377, teksturaDatumo[fontaIndekso + 0o1] * ombrado )
-                datumoj[indekso + 0o2] = Math.min( 0o377, teksturaDatumo[fontaIndekso + 0o2] * ombrado )
-                datumoj[indekso + 0o3] = 0o377
+                const tsijeK2fe = 0o6 / 0o10 + 0o2 / 0o10 * dz
+                suntaSab2[suntaK2fe] = Math.min( 0o377, lkoSab2[saxeK2fe] * tsijeK2fe )
+                suntaSab2[suntaK2fe + 0o1] = Math.min( 0o377, lkoSab2[saxeK2fe + 0o1] * tsijeK2fe )
+                suntaSab2[suntaK2fe + 0o2] = Math.min( 0o377, lkoSab2[saxeK2fe + 0o2] * tsijeK2fe )
+                suntaSab2[suntaK2fe + 0o3] = 0o377
             }
         }
 
-        portempaKunteksto.putImageData( bildaDatumo, 0o0, 0o0 )
-        kunteksto.drawImage( portempaKanvaso, 0o0, 0o0 )
+        kxesuP2t6zoKekL6ksabosai.putImageData( tahaqSab2, 0o0, 0o0 )
+        bal2xaKekL6ksabosai.drawImage( kxesuP2t6zo, 0o0, 0o0 )
     }
 
-    ĝisdatigi3DTerglobon() {
-        for ( const meso of [ this.terglobo, this.atmosfero, this.nuboj ] ) {
-            if ( !meso ) continue
+    v3ak2Mut6q() {
+        for ( const kuba of [ this.mut6q, this.pucana, this.f2m2 ] ) {
+            if ( !kuba ) continue
 
-            this.sceno.remove( meso )
-            meso.geometry?.dispose()
+            this.saxeKuba.remove( kuba )
+            kuba.geometry?.dispose()
 
-            const materialo = meso.material
+            const eskek = kuba.material
 
-            if ( Array.isArray( materialo ) ) materialo.forEach( unua => unua?.dispose() )
-            else materialo?.dispose()
+            if ( Array.isArray( eskek ) ) eskek.forEach( saxe => saxe?.dispose() )
+            else eskek?.dispose()
         }
 
         // ⟪ ſɭʞɹ 🌍 ⟫
-        const geometrio = new THREE.SphereGeometry( 0o1, 0o200, 0o200 )
+        const xezHtaka = new THREE.SphereGeometry( 0o1, 0o200, 0o200 )
 
         // ⟪ ſɭʞɹ ʌ ſɭw ʃᴜ 🎨 ⟫
-        const teksturo = new THREE.CanvasTexture( this.teksturaKanvaso )
-        teksturo.wrapS = THREE.RepeatWrapping
-        teksturo.wrapT = THREE.ClampToEdgeWrapping
+        const lko = new THREE.CanvasTexture( this.lkoP2t6zo )
+        lko.wrapS = THREE.RepeatWrapping
+        lko.wrapT = THREE.ClampToEdgeWrapping
 
         // ⟪ ſɭʞɹ ʌ ɭl̀ᴜ ſ͕ɭɜ 🗻 ⟫
-        const reliefaTeksturo = this.kreiReliefmapon()
+        const ozLko = this.kf2OzLko()
 
-        const materialo = new THREE.MeshPhongMaterial( {
-            map: teksturo,
-            bumpMap: reliefaTeksturo,
-            bumpScale: 0o4 / 0o100 * this.parametroj.montoAlto,
+        const eskek = new THREE.MeshPhongMaterial( {
+            map: lko,
+            bumpMap: ozLko,
+            bumpScale: 0o4 / 0o100 * this.xema.jaqoL6da,
             specular: new THREE.Color( 0x222222 ),
             shininess: 0o31
         } )
 
-        this.terglobo = new THREE.Mesh( geometrio, materialo )
-        this.sceno.add( this.terglobo )
+        this.mut6q = new THREE.Mesh( xezHtaka, eskek )
+        this.saxeKuba.add( this.mut6q )
 
         // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɟᴜ }ʃᴜ 🌌 ⟫
-        const atmosferaGeometrio = new THREE.SphereGeometry( 0o103 / 0o100, 0o100, 0o100 )
-        const atmosferaMaterialo = new THREE.MeshPhongMaterial( {
+        const pucanaXezHtaka = new THREE.SphereGeometry( 0o103 / 0o100, 0o100, 0o100 )
+        const pucanaEskek = new THREE.MeshPhongMaterial( {
             color: 0x4488ff,
             transparent: true,
-            opacity: this.parametroj.atmosferaDenso * 0o3 / 0o12,
+            opacity: this.xema.pucanaK2fe * 0o3 / 0o12,
             side: THREE.BackSide,
             blending: THREE.AdditiveBlending
         } )
 
-        this.atmosfero = new THREE.Mesh( atmosferaGeometrio, atmosferaMaterialo )
-        this.sceno.add( this.atmosfero )
+        this.pucana = new THREE.Mesh( pucanaXezHtaka, pucanaEskek )
+        this.saxeKuba.add( this.pucana )
 
         // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſȷɹ ŋᷠɹ ☁️ ⟫
-        this.aldoniNubojn()
+        this.kf2F2m2()
     }
 
-    kreiReliefmapon() {
-        const kanvaso = document.createElement( "canvas" )
-        kanvaso.width = 0o1000
-        kanvaso.height = 0o400
-        const kunteksto = kanvaso.getContext( "2d" )!
-        const bildaDatumo = kunteksto.createImageData( 0o1000, 0o400 )
-        const datumoj = bildaDatumo.data
+    kf2OzLko() {
+        const kxesuP2t6zo = document.createElement( "canvas" )
+        kxesuP2t6zo.width = 0o1000
+        kxesuP2t6zo.height = 0o400
+        const ozKek = kxesuP2t6zo.getContext( "2d" )!
+        const tahaqSab2 = ozKek.createImageData( 0o1000, 0o400 )
+        const sab2 = tahaqSab2.data
 
         for ( let y = 0o0; y < 0o400; y++ ) {
             for ( let x = 0o0; x < 0o1000; x++ ) {
-                const latitudo = 0o132 - ( y / 0o400 ) * 0o264
-                const longitudo = ( x / 0o1000 ) * 0o550 - 0o264
-                const alteco = this.akiriAltecon( latitudo, longitudo )
+                const l6daK2fe = 0o132 - ( y / 0o400 ) * 0o264
+                const sefiniK2fe = ( x / 0o1000 ) * 0o550 - 0o264
+                const ozL6da = this.quqL6da( l6daK2fe, sefiniK2fe )
 
-                const valoro = Math.floor( alteco * 0o377 )
-                const indekso = ( y * 0o1000 + x ) * 0o4
-                datumoj[indekso] = valoro
-                datumoj[indekso + 0o1] = valoro
-                datumoj[indekso + 0o2] = valoro
-                datumoj[indekso + 0o3] = 0o377
+                const weh2 = Math.floor( ozL6da * 0o377 )
+                const k2fe = ( y * 0o1000 + x ) * 0o4
+                sab2[k2fe] = weh2
+                sab2[k2fe + 0o1] = weh2
+                sab2[k2fe + 0o2] = weh2
+                sab2[k2fe + 0o3] = 0o377
             }
         }
 
-        kunteksto.putImageData( bildaDatumo, 0o0, 0o0 )
-        return new THREE.CanvasTexture( kanvaso )
+        ozKek.putImageData( tahaqSab2, 0o0, 0o0 )
+        return new THREE.CanvasTexture( kxesuP2t6zo )
     }
 
-    aldoniNubojn() {
-        const nubaGeometrio = new THREE.SphereGeometry( 0o104 / 0o100, 0o100, 0o100 )
+    kf2F2m2() {
+        const f2m2XezHtaka = new THREE.SphereGeometry( 0o104 / 0o100, 0o100, 0o100 )
 
         // ⟪ ſɭʞɹ ʌ ſȷɹ ŋᷠɹ ☁️ ⟫
-        const kanvaso = document.createElement( "canvas" )
-        kanvaso.width = 0o1000
-        kanvaso.height = 0o400
-        const kunteksto = kanvaso.getContext( "2d" )!
-        const bildaDatumo = kunteksto.createImageData( 0o1000, 0o400 )
-        const datumoj = bildaDatumo.data
+        const kxesuP2t6zo = document.createElement( "canvas" )
+        kxesuP2t6zo.width = 0o1000
+        kxesuP2t6zo.height = 0o400
+        const f2m2Kek = kxesuP2t6zo.getContext( "2d" )!
+        const tahaqSab2 = f2m2Kek.createImageData( 0o1000, 0o400 )
+        const sab2 = tahaqSab2.data
 
         for ( let y = 0o0; y < 0o400; y++ ) {
             for ( let x = 0o0; x < 0o1000; x++ ) {
-                const latitudo = 0o132 - ( y / 0o400 ) * 0o264
-                const longitudo = ( x / 0o1000 ) * 0o550 - 0o264
+                const l6daK2fe = 0o132 - ( y / 0o400 ) * 0o264
+                const sefiniK2fe = ( x / 0o1000 ) * 0o550 - 0o264
 
-                const fio = ( 0o132 - latitudo ) * Math.PI / 0o264
-                const teto = ( longitudo + 0o264 ) * Math.PI / 0o264
-                const cx = Math.sin( fio ) * Math.cos( teto )
-                const cy = Math.cos( fio )
-                const cz = Math.sin( fio ) * Math.sin( teto )
+                const l6daQuqK2fe = ( 0o132 - l6daK2fe ) * Math.PI / 0o264
+                const sefiniQuqK2fe = ( sefiniK2fe + 0o264 ) * Math.PI / 0o264
+                const cx = Math.sin( l6daQuqK2fe ) * Math.cos( sefiniQuqK2fe )
+                const cy = Math.cos( l6daQuqK2fe )
+                const cz = Math.sin( l6daQuqK2fe ) * Math.sin( sefiniQuqK2fe )
 
-                const nubaBruo = this.fbm( cx, cy, cz, 0o4, 0o3 )
-                const kovro = Math.max( 0o0, nubaBruo - 0o4 / 0o12 ) * 0o2
+                const f2m2Be = this.fbm( cx, cy, cz, 0o4, 0o3 )
+                const eskek = Math.max( 0o0, f2m2Be - 0o4 / 0o12 ) * 0o2
 
-                const indekso = ( y * 0o1000 + x ) * 0o4
-                const alfa = Math.floor( kovro * 0o310 * this.parametroj.atmosferaDenso )
+                const n2k = ( y * 0o1000 + x ) * 0o4
+                const k2fe = Math.floor( eskek * 0o310 * this.xema.pucanaK2fe )
 
-                datumoj[indekso] = 0o377
-                datumoj[indekso + 0o1] = 0o377
-                datumoj[indekso + 0o2] = 0o377
-                datumoj[indekso + 0o3] = alfa
+                sab2[n2k] = 0o377
+                sab2[n2k + 0o1] = 0o377
+                sab2[n2k + 0o2] = 0o377
+                sab2[n2k + 0o3] = k2fe
             }
         }
 
-        kunteksto.putImageData( bildaDatumo, 0o0, 0o0 )
+        f2m2Kek.putImageData( tahaqSab2, 0o0, 0o0 )
 
-        const nubaTeksturo = new THREE.CanvasTexture( kanvaso )
-        const nubaMaterialo = new THREE.MeshPhongMaterial( {
-            map: nubaTeksturo,
+        const f2m2Lko = new THREE.CanvasTexture( kxesuP2t6zo )
+        const f2m2Eskek = new THREE.MeshPhongMaterial( {
+            map: f2m2Lko,
             transparent: true,
             opacity: 0o10 / 0o12,
             depthWrite: false,
             side: THREE.DoubleSide
         } )
 
-        this.nuboj = new THREE.Mesh( nubaGeometrio, nubaMaterialo )
-        this.sceno.add( this.nuboj )
+        this.f2m2 = new THREE.Mesh( f2m2XezHtaka, f2m2Eskek )
+        this.saxeKuba.add( this.f2m2 )
     }
 
-    animacii() {
-        this.animaciaId = requestAnimationFrame( () => this.animacii() )
+    kxesuS2sabo() {
+        this.k2feXema = requestAnimationFrame( () => this.kxesuS2sabo() )
 
-        if ( this.aŭtorotacio && this.terglobo ) {
-            this.terglobo.rotation.y += 0o2 / 0o1000
-            if ( this.atmosfero ) this.atmosfero.rotation.y += 0o2 / 0o1000
-            if ( this.nuboj ) this.nuboj.rotation.y += 0o3 / 0o1000
+        if ( this.saxeS2sabo && this.mut6q ) {
+            this.mut6q.rotation.y += 0o2 / 0o1000
+            if ( this.pucana ) this.pucana.rotation.y += 0o2 / 0o1000
+            if ( this.f2m2 ) this.f2m2.rotation.y += 0o3 / 0o1000
         }
 
-        this.regiloj.update()
-        this.bildigilo.render( this.sceno, this.fotilo )
+        this.kama.update()
+        this.suntaSaxe.render( this.saxeKuba, this.catahaq )
     }
 
-    ĝisdatigiStatistikojn() {
+    v3ak2K61e() {
         // ⟪ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📊 ⟫
-        let teraKvanto = 0o0
-        let akvaKvanto = 0o0
-        let maksimumaAlteco = 0o0
-        let tutaTemperaturo = 0o0
-        let kvanto = 0o0
+        let ozK2fe = 0o0
+        let tsaK2fe = 0o0
+        let maxL6da = 0o0
+        let saxeHia = 0o0
+        let k2fe = 0o0
 
-        const akvonivelo = this.parametroj.akvonivelo
+        const saxeTsaK2fe = this.xema.tsaK2fe
 
-        if ( !this.teksturaKanvaso || this.teksturaKanvaso.width === 0o0 ) return
+        if ( !this.lkoP2t6zo || this.lkoP2t6zo.width === 0o0 ) return
 
-        for ( let x = 0o0; x < this.teksturaKanvaso.width; x += 0o10 ) {
-            for ( let y = 0o0; y < this.teksturaKanvaso.height; y += 0o10 ) {
-                const latitudo = 0o132 - ( y / this.teksturaKanvaso.height ) * 0o264
-                const longitudo = ( x / this.teksturaKanvaso.width ) * 0o550 - 0o264
-                const alteco = this.akiriAltecon( latitudo, longitudo )
-const temperaturo = this.akiriTemperaturon( latitudo, alteco, longitudo )
+        for ( let x = 0o0; x < this.lkoP2t6zo.width; x += 0o10 ) {
+            for ( let y = 0o0; y < this.lkoP2t6zo.height; y += 0o10 ) {
+                const l6daK2fe = 0o132 - ( y / this.lkoP2t6zo.height ) * 0o264
+                const sefiniK2fe = ( x / this.lkoP2t6zo.width ) * 0o550 - 0o264
+                const ozL6da = this.quqL6da( l6daK2fe, sefiniK2fe )
+                const hia = this.quqHia( l6daK2fe, ozL6da, sefiniK2fe )
 
-            if ( alteco > akvonivelo ) {
-                    teraKvanto++
+                if ( ozL6da > saxeTsaK2fe ) {
+                    ozK2fe++
                 } else {
-                    akvaKvanto++
+                    tsaK2fe++
                 }
 
-                maksimumaAlteco = Math.max( maksimumaAlteco, alteco )
-                tutaTemperaturo += temperaturo
-                kvanto++
+                maxL6da = Math.max( maxL6da, ozL6da )
+                saxeHia += hia
+                k2fe++
             }
         }
 
-        if ( kvanto === 0o0 ) return
+        if ( k2fe === 0o0 ) return
 
-        const teraKvanto64 = Math.floor( teraKvanto / kvanto * 0o100 )
-        const akvaKvanto64 = 0o100 - teraKvanto64
-        const averaĝaTempCelsius = ( tutaTemperaturo / kvanto - 0o4 / 0o10 ) * 0o74
-        const averaĝaTempKelvino = averaĝaTempCelsius + 273.15
-        const averaĝaTempHia = ( window as any ).vahi_ak2k2h2( averaĝaTempKelvino )
-        const maksAltecoMetroj = Math.floor( maksimumaAlteco * 0o23210 )
-        const maksAltecoPeu = ( window as any ).vap0_c2ta( maksAltecoMetroj )
+        const ozQu1al = Math.floor( ozK2fe / k2fe * 0o100 )
+        const tsaQu1al = 0o100 - ozQu1al
+        const kxesuHia = ( saxeHia / k2fe - 0o4 / 0o10 ) * 0o74
+        const kxesuHi = ( kxesuHia + 273.15 ) / HI_L6RAK2K2H2
+        const maxL6daK2fe = Math.floor( maxL6da * 0o23210 )
+        const maxL6daPeu = ( window as any ).vap0_c2ta( maxL6daK2fe )
 
         // ⟪ ſɭc̗ᴜ j͑ʃ'ɔ 🏠 ⟫
-        const akvaPoentaro = 0o1 - Math.abs( this.parametroj.akvonivelo - 0o6 / 0o10 ) * 0o2
-        const tempPoentaro = 0o1 - Math.abs( this.parametroj.temperaturo - 0o4 / 0o10 ) * 0o2
-        const atmoPoentaro = this.parametroj.atmosferaDenso
-        const loĝebleco = Math.max( 0o0, Math.min( 0o1, ( akvaPoentaro + tempPoentaro + atmoPoentaro ) / 0o3 ) )
-        const loĝebleco64 = Math.floor( loĝebleco * 0o100 )
+        const tsaXekox2q = 0o1 - Math.abs( this.xema.tsaK2fe - 0o6 / 0o10 ) * 0o2
+        const hiaXekox2q = 0o1 - Math.abs( this.xema.hia - 0o4 / 0o10 ) * 0o2
+        const pucanaXekox2q = this.xema.pucanaK2fe
+        const kxesu = Math.max( 0o0, Math.min( 0o1, ( tsaXekox2q + hiaXekox2q + pucanaXekox2q ) / 0o3 ) )
+        const kxesuQu1al = Math.floor( kxesu * 0o100 )
 
-        const statTero = document.getElementById( "stat-tero" )
-        const statAkvo = document.getElementById( "stat-akvo" )
-        const statAlteco = document.getElementById( "stat-alteco" )
-        const statTemperaturo = document.getElementById( "stat-temperaturo" )
-        const statLoĝebleco = document.getElementById( "stat-loĝebleco" )
+        const ozK61e = document.getElementById( "ozk61e" )
+        const tsaK61e = document.getElementById( "tsak61e" )
+        const maxL6daK61e = document.getElementById( "maxl6dak61e" )
+        const hiaK61e = document.getElementById( "hiak61e" )
+        const kxesuK61e = document.getElementById( "kxesuk61e" )
 
         const gawe = document.documentElement.lang || "aih"
         const vab6 = ( window as any ).vab6caja.bind( window )
         const vab6Domani = ( window as any ).vab6cajaDomani.bind( window )
         const skakefK2fe = ( window as any ).skakefK2fe.bind( window )
 
-        if ( statTero ) statTero.textContent = skakefK2fe( vab6( teraKvanto64 ) + " / " + vab6( 0o100 ) )
-        if ( statAkvo ) statAkvo.textContent = skakefK2fe( vab6( akvaKvanto64 ) + " / " + vab6( 0o100 ) )
-        if ( statAlteco ) statAlteco.textContent = skakefK2fe( vab6Domani( maksAltecoPeu, 0o6 ) ) + " ſןɔⅎ"
-        if ( statTemperaturo ) statTemperaturo.textContent = skakefK2fe( vab6Domani( averaĝaTempHia, 0o6 ) ) + " ֭ſɭꞇ"
-        if ( statLoĝebleco ) statLoĝebleco.textContent = skakefK2fe( vab6( loĝebleco64 ) + " / " + vab6( 0o100 ) )
+        if ( ozK61e ) ozK61e.textContent = skakefK2fe( vab6( ozQu1al ) + " / " + vab6( 0o100 ) )
+        if ( tsaK61e ) tsaK61e.textContent = skakefK2fe( vab6( tsaQu1al ) + " / " + vab6( 0o100 ) )
+        if ( maxL6daK61e ) maxL6daK61e.textContent = skakefK2fe( vab6Domani( maxL6daPeu, 0o6 ) ) + " ſןɔⅎ"
+        if ( hiaK61e ) hiaK61e.textContent = skakefK2fe( vab6Domani( kxesuHi, 0o6 ) ) + " ֭ſɭꞇ"
+        if ( kxesuK61e ) kxesuK61e.textContent = skakefK2fe( vab6( kxesuQu1al ) + " / " + vab6( 0o100 ) )
     }
 }
 
 // ⟪ j͑ʃᴜ ı],ɔ 🚀 ⟫
 document.addEventListener( "DOMContentLoaded", () => {
-    new PlanedaGeneratoro()
+    new Mut6qKf2()
 } )
-

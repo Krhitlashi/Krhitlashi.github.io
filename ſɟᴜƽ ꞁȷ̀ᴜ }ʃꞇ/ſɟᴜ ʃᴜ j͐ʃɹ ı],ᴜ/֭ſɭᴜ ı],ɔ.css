@@ -1,4 +1,4 @@
-.map-section {
+.bal2xaKuba {
     inline-size: 100%;
     block-size: 512px;
     position: relative;
@@ -6,8 +6,8 @@
     overflow: hidden;
     border: var(--សាកព៏);
 }
-#mapo,
-#kradaKanvaso {
+#bal2xa,
+#qox2Tahaq {
     inline-size: 100%;
     block-size: 100%;
     position: absolute;
@@ -15,10 +15,10 @@
     left: 0;
     border-radius: inherit;
 }
-#mapo .leaflet-tile {
+#bal2xa .leaflet-tile {
     border-radius: 0;
 }
-#kradaKanvaso {
+#qox2Tahaq {
     z-index: 512;
     pointer-events: none;
 }
@@ -70,7 +70,7 @@
     color: var(--កេភ២);
 }
 
-.map-section > div:last-child {
+.bal2xaKuba > div:last-child {
     position: absolute;
     top: 8px;
     left: 8px;
@@ -79,10 +79,10 @@
     flex-direction: column;
     gap: var(--អារេងមិ);
 }
-.map-section button {
+.bal2xaKuba button {
     overflow: hidden;
 }
-.map-section button::after {
+.bal2xaKuba button::after {
     content: '';
     position: absolute;
     inset: 0;

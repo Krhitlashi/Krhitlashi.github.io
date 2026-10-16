@@ -2,47 +2,47 @@
 
 /*
 * ≺⧼ ſɟw ʃɹ - ſ̀ȷᴜ ⌨️ ⧽≻
-* ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Cubii Cutlii Unua Ŝanĝo Simbolo )
+* ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Cubii Cutlii first change symbol )
 * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md git )
-* ſɟᴜ ı],ɹͷ̗ ( Unua Ŝanĝo Simbolo Cubii Cutlii )
+* ſɟᴜ ı],ɹͷ̗ ( first change symbol Cubii Cutlii )
 * ſɟɔ ŋᷠɔ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( aih en )
 */
 
 // ⟪ ֭ſɭᴜ ı],ɔ 📐 ⟫
 
-type KlavaFunkcio = "shift" | "back" | "space" | "enter" | "symbol" | "extra";
+type Kp6Keve = "shift" | "back" | "space" | "enter" | "symbol" | "extra";
 
-interface SignaKlavo {
-	etiked: string;
-	speco: "signo";
-	valoro: string;
+interface Kp6S2 {
+	ksaka: string;
+	hat: "kp6";
+	kp6: string;
 }
 
-interface FunkciaKlavo {
-	etiked: string;
-	speco: "funkcio";
-	valoro: KlavaFunkcio;
+interface KeveS2 {
+	ksaka: string;
+	hat: "keve";
+	kp6: Kp6Keve;
 }
 
-type Klavo = SignaKlavo | FunkciaKlavo;
+type S2 = Kp6S2 | KeveS2;
 
-interface Tavolo {
-	nomoEn: string;
-	nomoAih: string;
-	vicaroj: Klavo[][];
-	malsupraStrio: Klavo[];
+interface Kuba {
+	ksakaEn: string;
+	ksakaAih: string;
+	n2kCa1ara: S2[][];
+	araqS2Ca1ara: S2[];
 }
 
-interface KlavarArangxo {
-	titoloEn: string;
-	titoloAih: string;
-	tavoloj: Tavolo[];
+interface Kp6Htaka {
+	ksakaEn: string;
+	ksakaAih: string;
+	kubaCa1ara: Kuba[];
 }
 
 // ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 📦 ⟫
 
 // ⟨ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ ⟩
-const FUNKCIOJ: Readonly<Record<string, KlavaFunkcio>> = {
+const KEVE_SAXE: Readonly<Record<string, Kp6Keve>> = {
 	"[Shift]": "shift",
 	"[Back]": "back",
 	"[Space]": "space",
@@ -51,7 +51,7 @@ const FUNKCIOJ: Readonly<Record<string, KlavaFunkcio>> = {
 };
 
 // ⟨ j͑ʃᴜƽ ʌ ſɭɔʞ ( Also is ) ⟩
-const NOTAJAGOJ: Readonly<Record<string, KlavaFunkcio>> = {
+const KEVE_K61e: Readonly<Record<string, Kp6Keve>> = {
 	"shift": "shift",
 	"back": "back",
 	"space": "space",
@@ -62,7 +62,7 @@ const NOTAJAGOJ: Readonly<Record<string, KlavaFunkcio>> = {
 /**
 * ⟨ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɭɔʞ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md ) ⟩
 */
-const FUNKCIO_NOMOJ: Readonly<Record<KlavaFunkcio, { en: string; aih: string }>> = {
+const KEVE_KSAKA: Readonly<Record<Kp6Keve, { en: string; aih: string }>> = {
 	shift: { en: "Shift", aih: "ſןw ſȷɹ" },
 	back: { en: "Back", aih: "֭ſɭɹͷ̗" },
 	space: { en: "Space", aih: "ꞁȷ̀ᴜ ɽ͑ʃ'ɔȝ" },
@@ -74,18 +74,18 @@ const FUNKCIO_NOMOJ: Readonly<Record<KlavaFunkcio, { en: string; aih: string }>>
 /**
 * ⟨ j͑ʃɹ ɭʃᴜɔ˞ ⟩
 */
-const VARIANTOJ: Readonly<Record<string, string[]>> = {};
+const VOP2: Readonly<Record<string, string[]>> = {};
 
 // ⟨ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( 1 ) ⟩
-const LONGA_PREMO_DAŬRO = HE_L6HEINAK;
+const PU_XEMA_K2FE = HE_L6HEINAK;
 
 // ⟨ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( 1 ) ⟩
-const KOPII_KONFIRMA_DAŬRO = HE_L6HEINAK;
+const XEMA_XEKOX2Q_K2FE = HE_L6HEINAK;
 
 /**
 * ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md git ) ⟩
 */
-const KLAVARA_DEZAJNO = `# Small ( Cubii / ſɟw ʃɹ )
+const SAXE_KP6HTAKA = `# Small ( Cubii / ſɟw ʃɹ )
 
 ## First / ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ
 
@@ -126,62 +126,62 @@ Also [ ſןw ſȷɹ ] is Shift, [ ֭ſɭɹͷ̗ ] is Back, [ ꞁȷ̀ᴜ ɽ͑ʃ'ɔ
 
 // ⟪ j͑ʃɹ ſɭэ ſᶘɜ 💾 ⟫
 
-let aktivaArangxoIndekso = 0o0;
-let aktivaTavolaIndekso = 0o0;
-let arangxoj: KlavarArangxo[] = [];
-let funkciaMapo: Readonly<Record<string, KlavaFunkcio>> = FUNKCIOJ;
-let enmetitaHistorio: string[] = [];
-let ekstraReĝimo = false;
-let longaPremo = false;
-let ciklajIndeksoj = new Map<string, number>();
+let kxesuKp6HtakaK2fe = 0o0;
+let kxesuKubaK2fe = 0o0;
+let kp6HtakaCa1ara: Kp6Htaka[] = [];
+let keveBal2xa: Readonly<Record<string, Kp6Keve>> = KEVE_SAXE;
+let xemaK61eCa1ara: string[] = [];
+let puKeve = false;
+let puXema = false;
+let vop2K2feBal2xa = new Map<string, number>();
 
 // ⟪ ꞁȷ̀ɔ j͑ʃƽɔƽ 🔧 ⟫
 
-let enigaKampo: HTMLTextAreaElement | null = null;
-let klavaraUjo: HTMLElement | null = null;
-let tavolaEtikedElemento: HTMLElement | null = null;
-let arangxoButonojUjo: HTMLElement | null = null;
-let ekstraPanelo: HTMLElement | null = null;
+let xemaKuba: HTMLTextAreaElement | null = null;
+let s2Xema: HTMLElement | null = null;
+let kubaKsakaKek: HTMLElement | null = null;
+let htakaKekXema: HTMLElement | null = null;
+let puKuba: HTMLElement | null = null;
 
 // ⟪ j͑ʃ'ɔ ſȷᴜͷ̗ 📂 ⟫
 
 /**
 	j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ
 		ꞁȷ̀ɔ j͑ʃƽɔƽ
-	@returns KlavarArangxo[]
+	@returns Kp6Htaka[]
 */
-function analiziArangxojn( krudaTeksto: string ): KlavarArangxo[] {
-	const linioj = krudaTeksto.replace(/\r/g, "").split( "\n" );
+function kf2Kp6HtakaCa1ara( ne1anesaiK61e: string ): Kp6Htaka[] {
+	const han2k = ne1anesaiK61e.replace(/\r/g, "").split( "\n" );
 
 	// ⟨ j͑ʃɹ ɭʃᴜɔ˞ ⟩
-	funkciaMapo = { ...FUNKCIOJ, ...analiziNoton( linioj ) };
+	keveBal2xa = { ...KEVE_SAXE, ...kf2Keve( han2k ) };
 
-	const limoj: number[] = [];
-	for ( let i = 0o0; i < linioj.length; i++ ) {
-		const linio = linioj[i].trim();
-		const senMark = linio.replace( /^#+\s*/, "" );
-		if ( senMark.startsWith( "Small" ) || senMark.startsWith( "Large" ) ) {
-			limoj.push( i );
+	const saxeAraqCa1ara: number[] = [];
+	for ( let i = 0o0; i < han2k.length; i++ ) {
+		const n2k = han2k[i].trim();
+		const saxeK61e = n2k.replace( /^#+\s*/, "" );
+		if ( saxeK61e.startsWith( "Small" ) || saxeK61e.startsWith( "Large" ) ) {
+			saxeAraqCa1ara.push( i );
 		}
 	}
 
-	const arangxoj: KlavarArangxo[] = [];
-	for ( let a = 0o0; a < limoj.length; a++ ) {
-		const komenco = limoj[a];
-		const fino = a + 0o1 < limoj.length ? limoj[a + 0o1] : linioj.length;
-		arangxoj.push( analiziArangxon( linioj, komenco, fino ) );
+	const kp6HtakaCa1ara: Kp6Htaka[] = [];
+	for ( let a = 0o0; a < saxeAraqCa1ara.length; a++ ) {
+		const saxeK2fe = saxeAraqCa1ara[a];
+		const araqK2fe = a + 0o1 < saxeAraqCa1ara.length ? saxeAraqCa1ara[a + 0o1] : han2k.length;
+		kp6HtakaCa1ara.push( kf2Kp6Htaka( han2k, saxeK2fe, araqK2fe ) );
 	}
 
 	/*
-	* ⟨ ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ( Cutlii Ŝanĝa Simbolo ) ⟩
+	* ⟨ ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ( Cutlii change symbol ) ⟩
 	*/
-	const malgranda = arangxoj[0o0];
-	const granda = arangxoj[0o1];
-	if ( malgranda && granda && granda.tavoloj.length === 0o1 && malgranda.tavoloj.length >= 0o3 ) {
-		granda.tavoloj = kreiGrandajnTavolojn( granda.tavoloj[0o0], malgranda );
+	const m2Kp6Htaka = kp6HtakaCa1ara[0o0];
+	const puKp6Htaka = kp6HtakaCa1ara[0o1];
+	if ( m2Kp6Htaka && puKp6Htaka && puKp6Htaka.kubaCa1ara.length === 0o1 && m2Kp6Htaka.kubaCa1ara.length >= 0o3 ) {
+		puKp6Htaka.kubaCa1ara = kf2PuKuba( puKp6Htaka.kubaCa1ara[0o0], m2Kp6Htaka );
 	}
 
-	return arangxoj;
+	return kp6HtakaCa1ara;
 }
 
 /**
@@ -189,32 +189,32 @@ function analiziArangxojn( krudaTeksto: string ): KlavarArangxo[] {
 		j͑ʃᴜƽ
 		ſɭɹ ſȷɔ
 		ſɭɹ ſȷɔ
-	@returns KlavarArangxo
+	@returns Kp6Htaka
 */
-function analiziArangxon( linioj: string[], komenco: number, fino: number ): KlavarArangxo {
-	const titolo = disigiNomon( linioj[komenco].replace( /^#+\s*/, "" ) );
+function kf2Kp6Htaka( han2k: string[], saxeK2fe: number, araqK2fe: number ): Kp6Htaka {
+	const ksaka = quqKsaka( han2k[saxeK2fe].replace( /^#+\s*/, "" ) );
 
-	const tavolajLimoj: number[] = [];
-	for ( let i = komenco + 0o1; i < fino; i++ ) {
-		const linio = linioj[i].trim();
-		const senMark = linio.replace( /^#+\s*/, "" );
-		if ( senMark.startsWith( "First" ) || senMark.startsWith( "Second" ) || senMark.startsWith( "Third" ) ) {
-			tavolajLimoj.push( i );
+	const kubaSaxeAraqCa1ara: number[] = [];
+	for ( let i = saxeK2fe + 0o1; i < araqK2fe; i++ ) {
+		const n2k = han2k[i].trim();
+		const saxeK61e = n2k.replace( /^#+\s*/, "" );
+		if ( saxeK61e.startsWith( "First" ) || saxeK61e.startsWith( "Second" ) || saxeK61e.startsWith( "Third" ) ) {
+			kubaSaxeAraqCa1ara.push( i );
 		}
 	}
 
-	if ( tavolajLimoj.length > 0o0 ) {
-		const tavoloj: Tavolo[] = [];
-		for ( let t = 0o0; t < tavolajLimoj.length; t++ ) {
-			const tavolaKomenco = tavolajLimoj[t];
-			const tavolaFino = t + 0o1 < tavolajLimoj.length ? tavolajLimoj[t + 0o1] : fino;
-			tavoloj.push( analiziTavolon( linioj, tavolaKomenco, tavolaFino ) );
+	if ( kubaSaxeAraqCa1ara.length > 0o0 ) {
+		const kubaCa1ara: Kuba[] = [];
+		for ( let t = 0o0; t < kubaSaxeAraqCa1ara.length; t++ ) {
+			const kubaSaxeK2fe = kubaSaxeAraqCa1ara[t];
+			const kubaAraqK2fe = t + 0o1 < kubaSaxeAraqCa1ara.length ? kubaSaxeAraqCa1ara[t + 0o1] : araqK2fe;
+			kubaCa1ara.push( kf2Kuba( han2k, kubaSaxeK2fe, kubaAraqK2fe ) );
 		}
-		return { titoloEn: titolo.en, titoloAih: titolo.aih, tavoloj };
+		return { ksakaEn: ksaka.en, ksakaAih: ksaka.aih, kubaCa1ara };
 	}
 
 	// ⟨ ſɟᴜ ı],ɹͷ̗ ( Cutlii ) ⟩
-	return { titoloEn: titolo.en, titoloAih: titolo.aih, tavoloj: [ analiziTavolon( linioj, komenco, fino ) ] };
+	return { ksakaEn: ksaka.en, ksakaAih: ksaka.aih, kubaCa1ara: [ kf2Kuba( han2k, saxeK2fe, araqK2fe ) ] };
 }
 
 /**
@@ -222,26 +222,26 @@ function analiziArangxon( linioj: string[], komenco: number, fino: number ): Kla
 		j͑ʃᴜƽ
 		ſɭɹ ſȷɔ
 		ſɭɹ ſȷɔ
-	@returns Tavolo
+	@returns Kuba
 */
-function analiziTavolon( linioj: string[], komenco: number, fino: number ): Tavolo {
-	const nomo = disigiNomon( linioj[komenco].replace( /^#+\s*/, "" ) );
-	const vicaroj: Klavo[][] = [];
-	let malsupraStrio: Klavo[] = [];
+function kf2Kuba( han2k: string[], saxeK2fe: number, araqK2fe: number ): Kuba {
+	const ksaka = quqKsaka( han2k[saxeK2fe].replace( /^#+\s*/, "" ) );
+	const n2kCa1ara: S2[][] = [];
+	let araqS2Ca1ara: S2[] = [];
 
-	for ( let i = komenco + 0o1; i < fino; i++ ) {
-		const linio = linioj[i].trim();
-		if ( !linio || linio.startsWith( "Also" ) ) continue;
+	for ( let i = saxeK2fe + 0o1; i < araqK2fe; i++ ) {
+		const n2k = han2k[i].trim();
+		if ( !n2k || n2k.startsWith( "Also" ) ) continue;
 
-		const ĵetonoj = ĵetonigiLinion( linio );
-		if ( ĵetonoj.some( estasFunkciaGrupo ) ) {
-			malsupraStrio = ĵetonoj.map( kreiKlavon );
+		const s2Ca1ara = s2N2k( n2k );
+		if ( s2Ca1ara.some( keveHate ) ) {
+			araqS2Ca1ara = s2Ca1ara.map( kf2S2 );
 		} else {
-			vicaroj.push( ĵetonoj.map( kreiKlavon ) );
+			n2kCa1ara.push( s2Ca1ara.map( kf2S2 ) );
 		}
 	}
 
-	return { nomoEn: nomo.en, nomoAih: nomo.aih, vicaroj, malsupraStrio };
+	return { ksakaEn: ksaka.en, ksakaAih: ksaka.aih, n2kCa1ara, araqS2Ca1ara };
 }
 
 /**
@@ -249,22 +249,22 @@ function analiziTavolon( linioj: string[], komenco: number, fino: number ): Tavo
 		j͑ʃᴜƽ
 	@returns string[]
 */
-function ĵetonigiLinion( linio: string ): string[] {
-	const krudaj = linio.match( /\[[^\]]*\]|\S+/g ) ?? [];
-	const ĵetonoj: string[] = [];
+function s2N2k( n2k: string ): string[] {
+	const ne1anesaiCa1ara = n2k.match( /\[[^\]]*\]|\S+/g ) ?? [];
+	const s2Ca1ara: string[] = [];
 
-	for ( const kruda of krudaj ) {
-		if ( estasFunkciaGrupo( kruda ) || estasUnuvortaGrupo( kruda ) ) {
-			ĵetonoj.push( kruda );
-		} else if ( kruda.startsWith( "[" ) && kruda.endsWith( "]" ) ) {
+	for ( const ne1anesai of ne1anesaiCa1ara ) {
+		if ( keveHate( ne1anesai ) || s2Kp6( ne1anesai ) ) {
+			s2Ca1ara.push( ne1anesai );
+		} else if ( ne1anesai.startsWith( "[" ) && ne1anesai.endsWith( "]" ) ) {
 			// ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
-			ĵetonoj.push( "[", ...kruda.slice( 0o1, -0o1 ).trim().split( /\s+/ ), "]" );
+			s2Ca1ara.push( "[", ...ne1anesai.slice( 0o1, -0o1 ).trim().split( /\s+/ ), "]" );
 		} else {
-			ĵetonoj.push( kruda );
+			s2Ca1ara.push( ne1anesai );
 		}
 	}
 
-	return ĵetonoj;
+	return s2Ca1ara;
 }
 
 /**
@@ -272,8 +272,8 @@ function ĵetonigiLinion( linio: string ): string[] {
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns boolean
 */
-function estasFunkciaGrupo( ĵetono: string ): boolean {
-	return !!funkciaMapo[ĵetono];
+function keveHate( s2: string ): boolean {
+	return !!keveBal2xa[s2];
 }
 
 /**
@@ -281,47 +281,47 @@ function estasFunkciaGrupo( ĵetono: string ): boolean {
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns boolean
 */
-function estasUnuvortaGrupo( ĵetono: string ): boolean {
-	return ĵetono.startsWith( "[" ) && ĵetono.endsWith( "]" ) && ĵetono.slice( 0o1, -0o1 ).trim().split( /\s+/ ).length === 0o1;
+function s2Kp6( s2: string ): boolean {
+	return s2.startsWith( "[" ) && s2.endsWith( "]" ) && s2.slice( 0o1, -0o1 ).trim().split( /\s+/ ).length === 0o1;
 }
 
 /**
 	j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( [ Empty ] )
 		j͑ʃɹ ɭʃᴜɔ˞
-	@returns Klavo
+	@returns S2
 */
-function kreiKlavon( ĵetono: string ): Klavo {
-	const funkcio = funkciaMapo[ĵetono];
-	if ( funkcio ) {
-		return { etiked: ĵetono.slice( 0o1, -0o1 ).trim(), speco: "funkcio", valoro: funkcio };
+function kf2S2( s2: string ): S2 {
+	const keve = keveBal2xa[s2];
+	if ( keve ) {
+		return { ksaka: s2.slice( 0o1, -0o1 ).trim(), hat: "keve", kp6: keve };
 	}
-	if ( ĵetono === "[ Extra ]" || ĵetono === "[ Empty ]" ) {
-		return { etiked: "", speco: "funkcio", valoro: "extra" };
+	if ( s2 === "[ Extra ]" || s2 === "[ Empty ]" ) {
+		return { ksaka: "", hat: "keve", kp6: "extra" };
 	}
-	return { etiked: ĵetono, speco: "signo", valoro: ĵetono };
+	return { ksaka: s2, hat: "kp6", kp6: s2 };
 }
 
 /**
 	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Also is )
 		j͑ʃᴜƽ
-	@returns Record<string, KlavaFunkcio>
+	@returns Record<string, Kp6Keve>
 */
-function analiziNoton( linioj: string[] ): Record<string, KlavaFunkcio> {
-	const mapo: Record<string, KlavaFunkcio> = {};
+function kf2Keve( han2k: string[] ): Record<string, Kp6Keve> {
+	const bal2xa: Record<string, Kp6Keve> = {};
 
-	for ( const linio of linioj ) {
-		const t = linio.trim();
+	for ( const n2k of han2k ) {
+		const t = n2k.trim();
 		if ( !t.startsWith( "Also" ) ) continue;
 
-		for ( const kongruo of t.matchAll( /(\[[^\]]*\])\s+is\s+([^\s,.]+)/g ) ) {
-			const grupo = kongruo[0o1];
-			const ago = kongruo[0o2].toLowerCase();
-			const funkcio = NOTAJAGOJ[ago];
-			if ( grupo && funkcio ) mapo[grupo] = funkcio;
+		for ( const xekox2q of t.matchAll( /(\[[^\]]*\])\s+is\s+([^\s,.]+)/g ) ) {
+			const hate = xekox2q[0o1];
+			const k61e = xekox2q[0o2].toLowerCase();
+			const keve = KEVE_K61e[k61e];
+			if ( hate && keve ) bal2xa[hate] = keve;
 		}
 	}
 
-	return mapo;
+	return bal2xa;
 }
 
 /**
@@ -329,53 +329,53 @@ function analiziNoton( linioj: string[] ): Record<string, KlavaFunkcio> {
 		ſɭɔ˞ᴜ ſɭᴜ
 	@returns { en: string; aih: string }
 */
-function disigiNomon( kruda: string ): { en: string; aih: string } {
-	const kongruo = kruda.match( /^(.+?)\s*\(\s*(.+?)\s*\/\s*(.+?)\s*\)$/ );
-	if ( kongruo ) {
-		return { en: `${kongruo[0o1].trim()} ( ${kongruo[0o2].trim()} )`, aih: kongruo[0o3].trim() };
+function quqKsaka( ne1anesai: string ): { en: string; aih: string } {
+	const xekox2q = ne1anesai.match( /^(.+?)\s*\(\s*(.+?)\s*\/\s*(.+?)\s*\)$/ );
+	if ( xekox2q ) {
+		return { en: `${xekox2q[0o1].trim()} ( ${xekox2q[0o2].trim()} )`, aih: xekox2q[0o3].trim() };
 	}
 
-	const partoj = kruda.split( " / " );
-	if ( partoj.length >= 0o2 ) {
+	const s2Ca1ara = ne1anesai.split( " / " );
+	if ( s2Ca1ara.length >= 0o2 ) {
 		return {
-			en: partoj[0o0].trim().replace( /\(\s*/g, "( " ).replace( /\s*\)/g, " )" ),
-			aih: partoj[0o1].trim(),
+			en: s2Ca1ara[0o0].trim().replace( /\(\s*/g, "( " ).replace( /\s*\)/g, " )" ),
+			aih: s2Ca1ara[0o1].trim(),
 		};
 	}
 
-	return { en: kruda, aih: kruda };
+	return { en: ne1anesai, aih: ne1anesai };
 }
 
 /**
-	ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Ŝanĝa Simbolo )
+	ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( change symbol )
 		ſɟᴜ ı],ɹͷ̗
 		ſɟᴜ ı],ɹͷ̗
-	@returns Tavolo[]
+	@returns Kuba[]
 */
-function kreiGrandajnTavolojn( bazo: Tavolo, malgranda: KlavarArangxo ): Tavolo[] {
-	const ŝanĝaMapo = kreiSignanMapon( malgranda.tavoloj[0o0], malgranda.tavoloj[0o1] );
-	const simbolaMapo = kreiSignanMapon( malgranda.tavoloj[0o0], malgranda.tavoloj[0o2] );
+function kf2PuKuba( kubaSaxe: Kuba, m2Kp6Htaka: Kp6Htaka ): Kuba[] {
+	const vop2Bal2xa = kf2Kp6Bal2xa( m2Kp6Htaka.kubaCa1ara[0o0], m2Kp6Htaka.kubaCa1ara[0o1] );
+	const kp6Bal2xa = kf2Kp6Bal2xa( m2Kp6Htaka.kubaCa1ara[0o0], m2Kp6Htaka.kubaCa1ara[0o2] );
 
-	const derivi = ( mapo: Record<string, string> ): Tavolo => ( {
-		nomoEn: "",
-		nomoAih: "",
-		vicaroj: bazo.vicaroj.map( vico => vico.map( klavo =>
-			klavo.speco === "signo" && mapo[klavo.valoro]
-				? { etiked: mapo[klavo.valoro], speco: "signo", valoro: mapo[klavo.valoro] }
-				: klavo
+	const kf2Bal2xa = ( bal2xa: Record<string, string> ): Kuba => ( {
+		ksakaEn: "",
+		ksakaAih: "",
+		n2kCa1ara: kubaSaxe.n2kCa1ara.map( n2k => n2k.map( s2 =>
+			s2.hat === "kp6" && bal2xa[s2.kp6]
+				? { ksaka: bal2xa[s2.kp6], hat: "kp6", kp6: bal2xa[s2.kp6] }
+				: s2
 		) ),
-		malsupraStrio: bazo.malsupraStrio,
+		araqS2Ca1ara: kubaSaxe.araqS2Ca1ara,
 	} );
 
 	// ⟨ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɟᴜ ı],ɹͷ̗ ⟩
-	const ŝanĝa = derivi( ŝanĝaMapo );
-	const simbola = derivi( simbolaMapo );
-	ŝanĝa.nomoEn = malgranda.tavoloj[0o1].nomoEn;
-	ŝanĝa.nomoAih = malgranda.tavoloj[0o1].nomoAih;
-	simbola.nomoEn = malgranda.tavoloj[0o2].nomoEn;
-	simbola.nomoAih = malgranda.tavoloj[0o2].nomoAih;
+	const vop2 = kf2Bal2xa( vop2Bal2xa );
+	const kp6 = kf2Bal2xa( kp6Bal2xa );
+	vop2.ksakaEn = m2Kp6Htaka.kubaCa1ara[0o1].ksakaEn;
+	vop2.ksakaAih = m2Kp6Htaka.kubaCa1ara[0o1].ksakaAih;
+	kp6.ksakaEn = m2Kp6Htaka.kubaCa1ara[0o2].ksakaEn;
+	kp6.ksakaAih = m2Kp6Htaka.kubaCa1ara[0o2].ksakaAih;
 
-	return [ bazo, ŝanĝa, simbola ];
+	return [ kubaSaxe, vop2, kp6 ];
 }
 
 /**
@@ -384,27 +384,27 @@ function kreiGrandajnTavolojn( bazo: Tavolo, malgranda: KlavarArangxo ): Tavolo[
 		ſɟᴜ ı],ɹͷ̗
 	@returns Record<string, string>
 */
-function kreiSignanMapon( fontaTavolo: Tavolo, celaTavolo: Tavolo ): Record<string, string> {
-	const mapo: Record<string, string> = {};
+function kf2Kp6Bal2xa( saxeKuba: Kuba, araqKuba: Kuba ): Record<string, string> {
+	const bal2xa: Record<string, string> = {};
 
-	const registri = ( fontaKlavo: Klavo, celaKlavo: Klavo | undefined ): void => {
-		if ( fontaKlavo.speco !== "signo" || !celaKlavo || celaKlavo.speco !== "signo" ) return;
-		if ( !( fontaKlavo.valoro in mapo ) ) mapo[fontaKlavo.valoro] = celaKlavo.valoro;
+	const xemaBal2xa = ( saxeS2: S2, araqS2: S2 | undefined ): void => {
+		if ( saxeS2.hat !== "kp6" || !araqS2 || araqS2.hat !== "kp6" ) return;
+		if ( !( saxeS2.kp6 in bal2xa ) ) bal2xa[saxeS2.kp6] = araqS2.kp6;
 	};
 
-	for ( let v = 0o0; v < fontaTavolo.vicaroj.length; v++ ) {
-		const fontaVico = fontaTavolo.vicaroj[v];
-		const celaVico = celaTavolo.vicaroj[v];
-		for ( let k = 0o0; k < fontaVico.length; k++ ) {
-			registri( fontaVico[k], celaVico?.[ k ] );
+	for ( let v = 0o0; v < saxeKuba.n2kCa1ara.length; v++ ) {
+		const saxeN2k = saxeKuba.n2kCa1ara[v];
+		const araqN2k = araqKuba.n2kCa1ara[v];
+		for ( let k = 0o0; k < saxeN2k.length; k++ ) {
+			xemaBal2xa( saxeN2k[k], araqN2k?.[ k ] );
 		}
 	}
 
-	for ( let k = 0o0; k < fontaTavolo.malsupraStrio.length; k++ ) {
-		registri( fontaTavolo.malsupraStrio[k], celaTavolo.malsupraStrio[k] );
+	for ( let k = 0o0; k < saxeKuba.araqS2Ca1ara.length; k++ ) {
+		xemaBal2xa( saxeKuba.araqS2Ca1ara[k], araqKuba.araqS2Ca1ara[k] );
 	}
 
-	return mapo;
+	return bal2xa;
 }
 
 // ⟪ ſɭɔʞ 🈯 ⟫
@@ -413,7 +413,7 @@ function kreiSignanMapon( fontaTavolo: Tavolo, celaTavolo: Tavolo ): Record<stri
 	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( html )
 	@returns string
 */
-function nunaLingvo(): string {
+function kxesuLang(): string {
 	return document.documentElement.lang || "aih";
 }
 
@@ -423,8 +423,8 @@ function nunaLingvo(): string {
 		ſɭɔ˞ᴜ ſɭᴜ ( aih )
 	@returns string
 */
-function nomoPerLingvo( en: string, aih: string ): string {
-	return nunaLingvo() === "aih" ? aih : en;
+function kxesuKsaka( en: string, aih: string ): string {
+	return kxesuLang() === "aih" ? aih : en;
 }
 
 // ⟪ ſɟᴜ ſȷᴜɔ˞ 🖥️ ⟫
@@ -434,24 +434,24 @@ function nomoPerLingvo( en: string, aih: string ): string {
 		ſɭɹ ſȷɔ
 	@returns void
 */
-function montriArangxon( indekso: number ): void {
-	const arangxo = arangxoj[indekso];
-	if ( !arangxo || !arangxoButonojUjo ) return;
-	aktivaArangxoIndekso = indekso;
+function suntaKp6Htaka( k2fe: number ): void {
+	const htaka = kp6HtakaCa1ara[k2fe];
+	if ( !htaka || !htakaKekXema ) return;
+	kxesuKp6HtakaK2fe = k2fe;
 
-	arangxoButonojUjo.replaceChildren();
-	for ( let i = 0o0; i < arangxoj.length; i++ ) {
-		const butono = document.createElement( "button" );
-		butono.type = "button";
-		butono.textContent = nomoPerLingvo( arangxoj[i].titoloEn, arangxoj[i].titoloAih );
-		if ( i === aktivaArangxoIndekso ) {
-			butono.setAttribute( "aria-pressed", "true" );
+	htakaKekXema.replaceChildren();
+	for ( let i = 0o0; i < kp6HtakaCa1ara.length; i++ ) {
+		const kek = document.createElement( "button" );
+		kek.type = "button";
+		kek.textContent = kxesuKsaka( kp6HtakaCa1ara[i].ksakaEn, kp6HtakaCa1ara[i].ksakaAih );
+		if ( i === kxesuKp6HtakaK2fe ) {
+			kek.setAttribute( "aria-pressed", "true" );
 		}
-		butono.addEventListener( "click", () => montriArangxon( i ) );
-		arangxoButonojUjo.appendChild( butono );
+		kek.addEventListener( "click", () => suntaKp6Htaka( i ) );
+		htakaKekXema.appendChild( kek );
 	}
 
-	montriTavolon( 0o0 );
+	suntaKuba( 0o0 );
 }
 
 /**
@@ -459,22 +459,22 @@ function montriArangxon( indekso: number ): void {
 		ſɭɹ ſȷɔ
 	@returns void
 */
-function montriTavolon( indekso: number ): void {
-	const arangxo = arangxoj[aktivaArangxoIndekso];
-	const tavolo = arangxo?.tavoloj[indekso];
-	if ( !tavolo || !klavaraUjo || !tavolaEtikedElemento ) return;
+function suntaKuba( k2fe: number ): void {
+	const htaka = kp6HtakaCa1ara[kxesuKp6HtakaK2fe];
+	const kuba = htaka?.kubaCa1ara[k2fe];
+	if ( !kuba || !s2Xema || !kubaKsakaKek ) return;
 
-	aktivaTavolaIndekso = indekso;
-	tavolaEtikedElemento.textContent = nomoPerLingvo( tavolo.nomoEn, tavolo.nomoAih );
-	klavaraUjo.replaceChildren();
-	fermiPanelon();
-	longaPremo = false;
-	ciklajIndeksoj.clear();
+	kxesuKubaK2fe = k2fe;
+	kubaKsakaKek.textContent = kxesuKsaka( kuba.ksakaEn, kuba.ksakaAih );
+	s2Xema.replaceChildren();
+	araqKuba();
+	puXema = false;
+	vop2K2feBal2xa.clear();
 
-	for ( const vico of tavolo.vicaroj ) {
-		klavaraUjo.appendChild( kreiVicon( vico ) );
+	for ( const n2k of kuba.n2kCa1ara ) {
+		s2Xema.appendChild( kf2N2k( n2k ) );
 	}
-	klavaraUjo.appendChild( kreiVicon( tavolo.malsupraStrio ) );
+	s2Xema.appendChild( kf2N2k( kuba.araqS2Ca1ara ) );
 
 	// ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭɔʞ ( vacepu aih ) ⟩
 	vacepu( "cepufal" );
@@ -485,14 +485,14 @@ function montriTavolon( indekso: number ): void {
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns HTMLElement
 */
-function kreiVicon( klavoj: Klavo[] ): HTMLElement {
-	const vico = document.createElement( "thala" );
-	vico.className = "cakaxa";
+function kf2N2k( s2Ca1ara: S2[] ): HTMLElement {
+	const n2k = document.createElement( "thala" );
+	n2k.className = "cakaxa";
 
-	for ( const klavo of klavoj ) {
-		vico.appendChild( kreiButonon( klavo ) );
+	for ( const s2 of s2Ca1ara ) {
+		n2k.appendChild( kf2S2Kek( s2 ) );
 	}
-	return vico;
+	return n2k;
 }
 
 /**
@@ -500,30 +500,30 @@ function kreiVicon( klavoj: Klavo[] ): HTMLElement {
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns HTMLButtonElement
 */
-function kreiButonon( klavo: Klavo ): HTMLButtonElement {
-	const butono = document.createElement( "button" );
-	butono.type = "button";
+function kf2S2Kek( s2: S2 ): HTMLButtonElement {
+	const kek = document.createElement( "button" );
+	kek.type = "button";
 
 	// ⟨ ſɟɔ ŋᷠɔ ʌ ſɭɔ˞ᴜ ſɭᴜ ⟩
-	if ( klavo.speco === "funkcio" ) {
-		const nomo = FUNKCIO_NOMOJ[klavo.valoro];
-		butono.textContent = nomoPerLingvo( nomo.en, nomo.aih );
+	if ( s2.hat === "keve" ) {
+		const ksaka = KEVE_KSAKA[s2.kp6];
+		kek.textContent = kxesuKsaka( ksaka.en, ksaka.aih );
 	} else {
-		butono.textContent = klavo.etiked;
+		kek.textContent = s2.ksaka;
 	}
 
-	if ( klavo.speco === "funkcio" ) {
-		if ( ( klavo.valoro === "shift" && aktivaTavolaIndekso === 0o1 ) ||
-			( klavo.valoro === "symbol" && aktivaTavolaIndekso === 0o2 ) ||
-			( klavo.valoro === "extra" && ekstraReĝimo ) ) {
-			butono.setAttribute( "aria-pressed", "true" );
+	if ( s2.hat === "keve" ) {
+		if ( ( s2.kp6 === "shift" && kxesuKubaK2fe === 0o1 ) ||
+			( s2.kp6 === "symbol" && kxesuKubaK2fe === 0o2 ) ||
+			( s2.kp6 === "extra" && puKeve ) ) {
+			kek.setAttribute( "aria-pressed", "true" );
 		}
 	} else {
-		aldoniLonganPremon( butono, klavo );
+		kf2PuXema( kek, s2 );
 	}
 
-	butono.addEventListener( "click", () => pritraktiKlavon( klavo ) );
-	return butono;
+	kek.addEventListener( "click", () => keveS2( s2 ) );
+	return kek;
 }
 
 /**
@@ -532,42 +532,42 @@ function kreiButonon( klavo: Klavo ): HTMLButtonElement {
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
-function aldoniLonganPremon( butono: HTMLButtonElement, klavo: SignaKlavo ): void {
-	let temporizilo: number | null = null;
+function kf2PuXema( kek: HTMLButtonElement, s2: Kp6S2 ): void {
+	let k2feXema: number | null = null;
 
-	const nuligi = (): void => {
-		if ( temporizilo !== null ) {
-			window.clearTimeout( temporizilo );
-			temporizilo = null;
+	const ne1aK2feXema = (): void => {
+		if ( k2feXema !== null ) {
+			window.clearTimeout( k2feXema );
+			k2feXema = null;
 		}
 	};
 
-	const fermi = (): void => {
-		nuligi();
-		fermiPanelon();
-		longaPremo = false;
+	const ne1aPuXema = (): void => {
+		ne1aK2feXema();
+		araqKuba();
+		puXema = false;
 	};
 
-	butono.addEventListener( "pointerdown", ( evento ) => {
-		evento.preventDefault();
-		fermi();
+	kek.addEventListener( "pointerdown", ( e ) => {
+		e.preventDefault();
+		ne1aPuXema();
 
-		if ( ( VARIANTOJ[klavo.valoro]?.length ?? 0o0 ) === 0o0 ) return;
+		if ( ( VOP2[s2.kp6]?.length ?? 0o0 ) === 0o0 ) return;
 
-		temporizilo = window.setTimeout( () => {
-			temporizilo = null;
-			longaPremo = true;
-			malfermiPanelon( klavo );
-		}, LONGA_PREMO_DAŬRO * 0o1750 );
+		k2feXema = window.setTimeout( () => {
+			k2feXema = null;
+			puXema = true;
+			saxePuKuba( s2 );
+		}, PU_XEMA_K2FE * 0o1750 );
 	} );
 
 	// ⟨ ſɟɔ ŋᷠɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
-	butono.addEventListener( "pointerup", () => {
-		nuligi();
-		fermiPanelon();
+	kek.addEventListener( "pointerup", () => {
+		ne1aK2feXema();
+		araqKuba();
 	} );
-	butono.addEventListener( "pointerleave", fermi );
-	butono.addEventListener( "pointercancel", fermi );
+	kek.addEventListener( "pointerleave", ne1aPuXema );
+	kek.addEventListener( "pointercancel", ne1aPuXema );
 }
 
 /**
@@ -575,22 +575,22 @@ function aldoniLonganPremon( butono: HTMLButtonElement, klavo: SignaKlavo ): voi
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
-function malfermiPanelon( klavo: SignaKlavo ): void {
-	if ( !ekstraPanelo ) return;
+function saxePuKuba( s2: Kp6S2 ): void {
+	if ( !puKuba ) return;
 
-	ekstraPanelo.replaceChildren();
-	for ( const varianto of VARIANTOJ[klavo.valoro] ?? [] ) {
-		const butono = document.createElement( "button" );
-		butono.type = "button";
-		butono.textContent = varianto;
-		butono.addEventListener( "click", () => {
-			enmetiTekston( varianto );
-			fermiPanelon();
+	puKuba.replaceChildren();
+	for ( const vop2 of VOP2[s2.kp6] ?? [] ) {
+		const kek = document.createElement( "button" );
+		kek.type = "button";
+		kek.textContent = vop2;
+		kek.addEventListener( "click", () => {
+			xemaK61e( vop2 );
+			araqKuba();
 		} );
-		ekstraPanelo.appendChild( butono );
+		puKuba.appendChild( kek );
 	}
 
-	ekstraPanelo.classList.remove( "kobe" );
+	puKuba.classList.remove( "kobe" );
 	vacepu( "cepufal" );
 }
 
@@ -598,10 +598,10 @@ function malfermiPanelon( klavo: SignaKlavo ): void {
 	ſɭɜ ʃɔ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
 	@returns void
 */
-function fermiPanelon(): void {
-	if ( !ekstraPanelo ) return;
-	ekstraPanelo.replaceChildren();
-	ekstraPanelo.classList.add( "kobe" );
+function araqKuba(): void {
+	if ( !puKuba ) return;
+	puKuba.replaceChildren();
+	puKuba.classList.add( "kobe" );
 }
 
 // ⟪ ſןɔ ʌ ſᶘɹ }ʃᴜ }ʃw 🖱️ ⟫
@@ -611,17 +611,17 @@ function fermiPanelon(): void {
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
-function pritraktiKlavon( klavo: Klavo ): void {
+function keveS2( s2: S2 ): void {
 	// ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
-	if ( longaPremo ) {
-		longaPremo = false;
+	if ( puXema ) {
+		puXema = false;
 		return;
 	}
 
-	if ( klavo.speco === "signo" ) {
-		enmetiKlavon( klavo );
+	if ( s2.hat === "kp6" ) {
+		xemaS2( s2 );
 	} else {
-		pritraktiFunkcion( klavo.valoro );
+		keve( s2.kp6 );
 	}
 }
 
@@ -630,18 +630,18 @@ function pritraktiKlavon( klavo: Klavo ): void {
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
-function enmetiKlavon( klavo: SignaKlavo ): void {
-	if ( aktivaArangxoIndekso === 0o1 && ekstraReĝimo ) {
-		const variantoj = VARIANTOJ[klavo.valoro] ?? [];
-		if ( variantoj.length > 0o0 ) {
-			const indekso = ciklajIndeksoj.get( klavo.valoro ) ?? 0o0;
-			enmetiTekston( variantoj[indekso] );
-			ciklajIndeksoj.set( klavo.valoro, ( indekso + 0o1 ) % variantoj.length );
+function xemaS2( s2: Kp6S2 ): void {
+	if ( kxesuKp6HtakaK2fe === 0o1 && puKeve ) {
+		const vop2Ca1ara = VOP2[s2.kp6] ?? [];
+		if ( vop2Ca1ara.length > 0o0 ) {
+			const k2fe = vop2K2feBal2xa.get( s2.kp6 ) ?? 0o0;
+			xemaK61e( vop2Ca1ara[k2fe] );
+			vop2K2feBal2xa.set( s2.kp6, ( k2fe + 0o1 ) % vop2Ca1ara.length );
 			return;
 		}
 	}
 
-	enmetiTekston( klavo.valoro );
+	xemaK61e( s2.kp6 );
 }
 
 /**
@@ -649,27 +649,27 @@ function enmetiKlavon( klavo: SignaKlavo ): void {
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
-function pritraktiFunkcion( funkcio: KlavaFunkcio ): void {
-	switch ( funkcio ) {
+function keve( keve: Kp6Keve ): void {
+	switch ( keve ) {
 		case "shift":
-			montriTavolon( aktivaTavolaIndekso === 0o1 ? 0o0 : 0o1 );
+			suntaKuba( kxesuKubaK2fe === 0o1 ? 0o0 : 0o1 );
 			break;
 		case "symbol":
-			montriTavolon( aktivaTavolaIndekso === 0o2 ? 0o0 : 0o2 );
+			suntaKuba( kxesuKubaK2fe === 0o2 ? 0o0 : 0o2 );
 			break;
 		case "extra":
-			ekstraReĝimo = !ekstraReĝimo;
-			ciklajIndeksoj.clear();
-			montriTavolon( aktivaTavolaIndekso );
+			puKeve = !puKeve;
+			vop2K2feBal2xa.clear();
+			suntaKuba( kxesuKubaK2fe );
 			break;
 		case "back":
-			forigiLastanGrafemon();
+			ne1aGrafero();
 			break;
 		case "space":
-			enmetiTekston( " " );
+			xemaK61e( " " );
 			break;
 		case "enter":
-			enmetiTekston( "\n" );
+			xemaK61e( "\n" );
 			break;
 	}
 }
@@ -679,56 +679,56 @@ function pritraktiFunkcion( funkcio: KlavaFunkcio ): void {
 		ꞁȷ̀ɔ j͑ʃƽɔƽ
 	@returns void
 */
-function enmetiTekston( teksto: string ): void {
-	if ( !enigaKampo ) return;
-	const komenco = enigaKampo.selectionStart ?? enigaKampo.value.length;
-	const fino = enigaKampo.selectionEnd ?? enigaKampo.value.length;
+function xemaK61e( k61e: string ): void {
+	if ( !xemaKuba ) return;
+	const saxeK2fe = xemaKuba.selectionStart ?? xemaKuba.value.length;
+	const araqK2fe = xemaKuba.selectionEnd ?? xemaKuba.value.length;
 
-	enigaKampo.value = enigaKampo.value.slice( 0o0, komenco ) + teksto + enigaKampo.value.slice( fino );
-	const novaPozicio = komenco + teksto.length;
-	enigaKampo.setSelectionRange( novaPozicio, novaPozicio );
-	enigaKampo.focus();
+	xemaKuba.value = xemaKuba.value.slice( 0o0, saxeK2fe ) + k61e + xemaKuba.value.slice( araqK2fe );
+	const kxesuK2fe = saxeK2fe + k61e.length;
+	xemaKuba.setSelectionRange( kxesuK2fe, kxesuK2fe );
+	xemaKuba.focus();
 
 	// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
-	enmetitaHistorio.push( teksto );
+	xemaK61eCa1ara.push( k61e );
 }
 
 /**
 	ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
 	@returns void
 */
-function forigiLastanGrafemon(): void {
-	if ( !enigaKampo ) return;
-	const komenco = enigaKampo.selectionStart ?? enigaKampo.value.length;
-	const fino = enigaKampo.selectionEnd ?? enigaKampo.value.length;
+function ne1aGrafero(): void {
+	if ( !xemaKuba ) return;
+	const saxeK2fe = xemaKuba.selectionStart ?? xemaKuba.value.length;
+	const araqK2fe = xemaKuba.selectionEnd ?? xemaKuba.value.length;
 
 	// ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
-	if ( komenco !== fino ) {
-		enigaKampo.value = enigaKampo.value.slice( 0o0, komenco ) + enigaKampo.value.slice( fino );
-		enigaKampo.setSelectionRange( komenco, komenco );
-		enigaKampo.focus();
-		enmetitaHistorio = [];
+	if ( saxeK2fe !== araqK2fe ) {
+		xemaKuba.value = xemaKuba.value.slice( 0o0, saxeK2fe ) + xemaKuba.value.slice( araqK2fe );
+		xemaKuba.setSelectionRange( saxeK2fe, saxeK2fe );
+		xemaKuba.focus();
+		xemaK61eCa1ara = [];
 		return;
 	}
 
-	if ( komenco > 0o0 ) {
-		const antaŭa = enigaKampo.value.slice( 0o0, komenco );
-		const lastaĴetono = enmetitaHistorio[enmetitaHistorio.length - 0o1];
+	if ( saxeK2fe > 0o0 ) {
+		const saxeK61e = xemaKuba.value.slice( 0o0, saxeK2fe );
+		const kxesuS2 = xemaK61eCa1ara[xemaK61eCa1ara.length - 0o1];
 
 		// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
-		if ( lastaĴetono && antaŭa.endsWith( lastaĴetono ) ) {
-			const novaPozicio = komenco - lastaĴetono.length;
-			enigaKampo.value = enigaKampo.value.slice( 0o0, novaPozicio ) + enigaKampo.value.slice( komenco );
-			enigaKampo.setSelectionRange( novaPozicio, novaPozicio );
-			enmetitaHistorio.pop();
+		if ( kxesuS2 && saxeK61e.endsWith( kxesuS2 ) ) {
+			const kxesuK2fe = saxeK2fe - kxesuS2.length;
+			xemaKuba.value = xemaKuba.value.slice( 0o0, kxesuK2fe ) + xemaKuba.value.slice( saxeK2fe );
+			xemaKuba.setSelectionRange( kxesuK2fe, kxesuK2fe );
+			xemaK61eCa1ara.pop();
 		} else {
 			// ⟨ ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
-			const novaPozicio = komenco - longecoDeLastaGrafemo( antaŭa );
-			enigaKampo.value = enigaKampo.value.slice( 0o0, novaPozicio ) + enigaKampo.value.slice( komenco );
-			enigaKampo.setSelectionRange( novaPozicio, novaPozicio );
-			enmetitaHistorio = [];
+			const kxesuK2fe = saxeK2fe - k2feGrafero( saxeK61e );
+			xemaKuba.value = xemaKuba.value.slice( 0o0, kxesuK2fe ) + xemaKuba.value.slice( saxeK2fe );
+			xemaKuba.setSelectionRange( kxesuK2fe, kxesuK2fe );
+			xemaK61eCa1ara = [];
 		}
-		enigaKampo.focus();
+		xemaKuba.focus();
 	}
 }
 
@@ -737,42 +737,42 @@ function forigiLastanGrafemon(): void {
 		ꞁȷ̀ɔ j͑ʃƽɔƽ
 	@returns number
 */
-function longecoDeLastaGrafemo( teksto: string ): number {
-	if ( !teksto ) return 0o0;
+function k2feGrafero( k61e: string ): number {
+	if ( !k61e ) return 0o0;
 
-	const Segmentero = ( Intl as { Segmenter?: new ( lokaĵo?: string, opcioj?: { granularity?: string } ) => { segment( t: string ): Iterable<{ segment: string }> } } ).Segmenter;
+	const S2Xema = ( Intl as { Segmenter?: new ( lang?: string, xema?: { granularity?: string } ) => { segment( t: string ): Iterable<{ segment: string }> } } ).Segmenter;
 
-	if ( Segmentero ) {
-		const segmentilo = new Segmentero( undefined, { granularity: "grapheme" } );
-		const segmentoj = [ ...segmentilo.segment( teksto ) ];
-		const lasta = segmentoj[segmentoj.length - 0o1];
-		if ( lasta ) return lasta.segment.length;
+	if ( S2Xema ) {
+		const s2Quq = new S2Xema( undefined, { granularity: "grapheme" } );
+		const s2Ca1ara = [ ...s2Quq.segment( k61e ) ];
+		const kxesuS2 = s2Ca1ara[s2Ca1ara.length - 0o1];
+		if ( kxesuS2 ) return kxesuS2.segment.length;
 	}
 
-	const kodpunktoj = Array.from( teksto );
-	const lastaKodpunkto = kodpunktoj[kodpunktoj.length - 0o1];
-	return lastaKodpunkto ? lastaKodpunkto.length : 0o0;
+	const k2feCa1ara = Array.from( k61e );
+	const k2fe = k2feCa1ara[k2feCa1ara.length - 0o1];
+	return k2fe ? k2fe.length : 0o0;
 }
 
 /**
 	ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
 	@returns Promise
 */
-async function kopiiTekston(): Promise<void> {
-	if ( !enigaKampo ) return;
-	const butono = document.getElementById( "kopii-butono" ) as HTMLButtonElement | null;
+async function suntaK61e(): Promise<void> {
+	if ( !xemaKuba ) return;
+	const kek = document.getElementById( "xema-kek" ) as HTMLButtonElement | null;
 
 	try {
-		await navigator.clipboard.writeText( enigaKampo.value );
-		if ( butono ) {
-			const antaŭaEtiked = butono.textContent;
-			butono.textContent = "✓";
+		await navigator.clipboard.writeText( xemaKuba.value );
+		if ( kek ) {
+			const saxeKsaka = kek.textContent;
+			kek.textContent = "✓";
 			setTimeout( () => {
-				butono.textContent = antaŭaEtiked;
-			}, KOPII_KONFIRMA_DAŬRO * 0o1750 ); // Heoj → ms
+				kek.textContent = saxeKsaka;
+			}, XEMA_XEKOX2Q_K2FE * 0o1750 ); // ខ្មែរ - ហេទៅមិល្លីវិនាទី
 		}
-	} catch ( eraro ) {
-		console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Malsukcesis kopii la tekston.", eraro );
+	} catch ( tlohk2ni ) {
+		console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", tlohk2ni );
 	}
 }
 
@@ -780,38 +780,38 @@ async function kopiiTekston(): Promise<void> {
 	ſɭɜ ʃɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
 	@returns void
 */
-function viŝiEnigon(): void {
-	if ( !enigaKampo ) return;
-	enigaKampo.value = "";
-	enigaKampo.focus();
-	enmetitaHistorio = [];
+function ne1aXema(): void {
+	if ( !xemaKuba ) return;
+	xemaKuba.value = "";
+	xemaKuba.focus();
+	xemaK61eCa1ara = [];
 }
 
 // ⟪ j͑ʃᴜ ı],ɔ 🚀 ⟫
 
 document.addEventListener( "DOMContentLoaded", () => {
-	enigaKampo = document.getElementById( "enigo" ) as HTMLTextAreaElement | null;
-	klavaraUjo = document.getElementById( "klavaro" ) as HTMLElement | null;
-	tavolaEtikedElemento = document.getElementById( "tavolo-etiked" ) as HTMLElement | null;
-	arangxoButonojUjo = document.getElementById( "arangxo-butonoj" ) as HTMLElement | null;
-	ekstraPanelo = document.getElementById( "ekstra-panelo" ) as HTMLElement | null;
-	const kopiiButono = document.getElementById( "kopii-butono" ) as HTMLButtonElement | null;
-	const viŝiButono = document.getElementById( "viŝi-butono" ) as HTMLButtonElement | null;
+	xemaKuba = document.getElementById( "xema-kuba" ) as HTMLTextAreaElement | null;
+	s2Xema = document.getElementById( "s2-xema" ) as HTMLElement | null;
+	kubaKsakaKek = document.getElementById( "kuba-ksaka" ) as HTMLElement | null;
+	htakaKekXema = document.getElementById( "htaka-kek-xema" ) as HTMLElement | null;
+	puKuba = document.getElementById( "pu-kuba" ) as HTMLElement | null;
+	const xemaKek = document.getElementById( "xema-kek" ) as HTMLButtonElement | null;
+	const ne1aKek = document.getElementById( "ne1a-kek" ) as HTMLButtonElement | null;
 
-	if ( !enigaKampo || !klavaraUjo || !tavolaEtikedElemento || !arangxoButonojUjo ) {
-		console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) Klavara paĝo. Mankas eniga kampo aŭ klavara ujo." );
+	if ( !xemaKuba || !s2Xema || !kubaKsakaKek || !htakaKekXema ) {
+		console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ne1a xemaKuba s2Xema." );
 		return;
 	}
 
-	const krudaTeksto = KLAVARA_DEZAJNO;
-	arangxoj = analiziArangxojn( krudaTeksto );
-	montriArangxon( 0o0 );
+	const ne1anesaiK61e = SAXE_KP6HTAKA;
+	kp6HtakaCa1ara = kf2Kp6HtakaCa1ara( ne1anesaiK61e );
+	suntaKp6Htaka( 0o0 );
 
 	// ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
-	enigaKampo.addEventListener( "input", () => {
-		enmetitaHistorio = [];
+	xemaKuba.addEventListener( "input", () => {
+		xemaK61eCa1ara = [];
 	} );
 
-	kopiiButono?.addEventListener( "click", () => { void kopiiTekston(); } );
-	viŝiButono?.addEventListener( "click", viŝiEnigon );
+	xemaKek?.addEventListener( "click", () => { void suntaK61e(); } );
+	ne1aKek?.addEventListener( "click", ne1aXema );
 });

@@ -1,9 +1,9 @@
-// ≺⧼ Satellite Map Tile Service Worker - ſɟᴜ ʃᴜ j͐ʃɹ ı],ᴜ ⧽≻
+// ≺⧼ ſɟᴜ ֭ſɭɹ j͑ʃɔ ʌ ʃᴜ j͐ʃɹ ı],ᴜ ʌ ſɭɔƽ ꞁȷ̀ɜƴ ꞁȷ̀ᴜꞇ ʌ ŋᷠᴜ ֭ſɭᴜʞ - ſɟᴜ ʃᴜ j͐ʃɹ ı],ᴜ ⧽≻
 
 const TILE_CACHE_NAME = "satellite-tiles-v1";
 const MAX_TILES = 0o2000;
 
-// ⟨ Fetch handler for tile requests ( runs alongside main fetch handler ) ⟩
+// ⟨ ſ͕ɭw ŋᷠw ʌ ſɭɔƽ ꞁȷ̀ɜƴ ꞁȷ̀ᴜꞇ ( ſɭɔ j͑ʃ'ɔ ʌ ꞁȷ̀ɹ ſ͔ɭɔ j͐ʃɔɔ˞ ſ͕ɭw ŋᷠw ) ⟩
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
@@ -40,7 +40,7 @@ self.addEventListener("fetch", (event) => {
   }
 });
 
-// ⟨ Manage cache size - remove oldest tiles if exceeding MAX_TILES ⟩
+// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɔƣ̋ ꞁȷ̀ɜ ſןᴜ ʃɜƽ ꞁȷ̀ᴜꞇ j͑ʃ'ɜ ſןɹ ʌ ſןᴜ j͐ʃэ - ֭ſɭɹͷ̗ ʌ ſɭc̗ᴜ ֭ſɭɹ ſ͕ȷɹƽ ʌ ſɭɔƽ ꞁȷ̀ɜƴ ꞁȷ̀ᴜꞇ ( MAX_TILES ) ⟩
 async function manageCacheSize(cache) {
   const keys = await cache.keys();
   if (keys.length > MAX_TILES) {
@@ -51,7 +51,7 @@ async function manageCacheSize(cache) {
   }
 }
 
-// ⟨ Create a placeholder tile for offline mode ⟩
+// ⟨ ſɭʞɹ ʌ ſɭɔƽ ꞁȷ̀ɜƴ ꞁȷ̀ᴜꞇ ʌ j͑ʃᴜ ֭ſɭᴜ ſȷɔ ⟩
 function createPlaceholderTile() {
   const svg = `
     <svg width="256" height="256" xmlns="http://www.w3.org/2000/svg">
@@ -70,25 +70,25 @@ function createPlaceholderTile() {
   });
 }
 
-// ⟨ Handle messages from the client ⟩
+// ⟨ ſ͕ɭw ŋᷠw ʌ j͐ʃэ ŋᷠᴜ j͑ʃ'ɔ ɭʃᴜ ʌ ſɭэ ſᶘɔ ⟩
 self.addEventListener("message", (event) => {
-  if (event.data.tipo === "CACHE_TILES") {
-    const { kaheloj } = event.data;
-    cacheTiles(kaheloj).then((kvanto) => {
-      event.ports[0]?.postMessage({ kvanto });
+  if (event.data.hat === "XEMA_KUBA") {
+    const { kubaCa1ara } = event.data;
+    cacheTiles(kubaCa1ara).then((k2fe) => {
+      event.ports[0]?.postMessage({ k2fe });
     });
-  } else if (event.data.tipo === "CLEAR_TILE_CACHE") {
+  } else if (event.data.hat === "NE1A_KUBA") {
     caches.delete(TILE_CACHE_NAME).then(() => {
       event.ports[0]?.postMessage({ success: true });
     });
-  } else if (event.data.tipo === "GET_CACHE_SIZE") {
-    getCacheSize().then((grandeco) => {
-      event.ports[0]?.postMessage({ grandeco });
+  } else if (event.data.hat === "QUQ_KUBA_PAL6") {
+    getCacheSize().then((pal6) => {
+      event.ports[0]?.postMessage({ pal6 });
     });
   }
 });
 
-// Cache multiple tiles
+// ⟨ j͑ʃ'ɔ ſןᴜ ʃɜƽ ʌ ſɭc̗w ʌ ſɭɔƽ ꞁȷ̀ɜƴ ꞁȷ̀ᴜꞇ ⟩
 async function cacheTiles(tileUrls) {
   const cache = await caches.open(TILE_CACHE_NAME);
   let count = 0;
@@ -108,7 +108,7 @@ async function cacheTiles(tileUrls) {
   return count;
 }
 
-// Get total cache size
+// ⟨ ſ͕ɭw ŋᷠw ʌ ꞁȷ̀ɔ ɽ͑ʃ'ɹ ֭ſɭᴜ j͐ʃ ʌ j͑ʃɔƣ̋ ꞁȷ̀ɜ ſןᴜ ʃɜƽ ꞁȷ̀ᴜꞇ j͑ʃ'ɜ ſןɹ ʌ ſןᴜ j͐ʃэ ⟩
 async function getCacheSize() {
   const cache = await caches.open(TILE_CACHE_NAME);
   const keys = await cache.keys();

@@ -1,8 +1,8 @@
-// ≺⧼ j͑ʃᴜƣ̋ ꞁȷ̀ɜ ʃэ ſɟᴜ ſɭɹ - Ĉefa Servo-Laboranto ⧽≻
+// ≺⧼ j͑ʃᴜƣ̋ ꞁȷ̀ɜ ʃэ ſɟᴜ ſɭɹ - ſ͔ɭɔ j͐ʃɔɔ˞ Service Worker ⧽≻
 
-const STATIKA_KAŜO_NOMO = "pwa-v3";
+const VAH2_KSAKA = "pwa-v3";
 
-const STATIKAJ_AKTIVAĴOJ = [
+const VAH2_S2_CA1ARA = [
   "/",
   "/֭ſɭᴜ ı],ɔ.css",
   "/ſɟᴜ ſɭɔ j͑ʃ'ɔ/ſɭɔ j͑ʃ'ɔ }ʃꞇ.js",
@@ -15,37 +15,37 @@ const STATIKAJ_AKTIVAĴOJ = [
   "/ꞁȷ̀ꞇ }ʃᴜƽ.html"
 ];
 
-// ⟨ Instalo ⟩
-self.addEventListener("install", ( evento ) => {
-  console.log("[Servo-Laboranto] Instalante -");
+// ⟨ j͑ʃᴜ ı],ɔ }ʃꞇ ⟩
+self.addEventListener("install", ( e ) => {
+  console.log("[j͑ʃᴜ ſɭɔ j͑ʃ'ɔ] saxe -");
   self.skipWaiting();
-  evento.waitUntil(
-    caches.open(STATIKA_KAŜO_NOMO)
-      .then(( kaŝo ) => {
-        console.log("[Servo-Laboranto] Kaŝante statikajn aktivaĵojn");
-        return kaŝo.addAll(STATIKAJ_AKTIVAĴOJ);
+  e.waitUntil(
+    caches.open(VAH2_KSAKA)
+      .then(( vah2 ) => {
+        console.log("[j͑ʃᴜ ſɭɔ j͑ʃ'ɔ] xema vah2S2Ca1ara");
+        return vah2.addAll(VAH2_S2_CA1ARA);
       })
-      .catch(( eraro ) => console.error("[Servo-Laboranto] Instalado malsukcesis -", eraro))
+      .catch(( tlohk2ni ) => console.error("[j͑ʃᴜ ſɭɔ j͑ʃ'ɔ] ne1a xema -", tlohk2ni))
   );
 });
 
-// ⟨ Aktivigo - Purigi malnovajn kaŝojn ⟩
-self.addEventListener("activate", ( evento ) => {
-  console.log("[Servo-Laboranto] Aktivigante -");
-  evento.waitUntil(
+// ⟨ ꞁȷ̀ᴜ ſ̀ȷɔ }ʃꞇ - j͑ʃ'ɔ ı],ꞇ j͑ʃᴜ j͑ʃᴜꞇ j͐ʃ ʌ ֭ſɭɹ ſ͕ȷɹƽ ʌ j͑ʃ'ɔ ſןᴜ ʃɜƽ ꞁȷ̀ᴜ }ʃw ⟩
+self.addEventListener("activate", ( e ) => {
+  console.log("[j͑ʃᴜ ſɭɔ j͑ʃ'ɔ] kxesu -");
+  e.waitUntil(
     caches.keys()
-      .then(( kaŝajNomoj ) => {
+      .then(( vah2KsakaCa1ara ) => {
         return Promise.all(
-          kaŝajNomoj
-            .filter(( kaŝaNomo ) => {
-              return kaŝaNomo.startsWith("pwa-");
+          vah2KsakaCa1ara
+            .filter(( vah2Ksaka ) => {
+              return vah2Ksaka.startsWith("pwa-");
             })
-            .filter(( kaŝaNomo ) => {
-              return kaŝaNomo !== STATIKA_KAŜO_NOMO;
+            .filter(( vah2Ksaka ) => {
+              return vah2Ksaka !== VAH2_KSAKA;
             })
-            .map(( kaŝaNomo ) => {
-              console.log("[Servo-Laboranto] Forigante malnovan kaŝon -", kaŝaNomo);
-              return caches.delete(kaŝaNomo);
+            .map(( vah2Ksaka ) => {
+              console.log("[j͑ʃᴜ ſɭɔ j͑ʃ'ɔ] ne1a saxe vah2 -", vah2Ksaka);
+              return caches.delete(vah2Ksaka);
             })
         );
       })
@@ -53,26 +53,26 @@ self.addEventListener("activate", ( evento ) => {
   );
 });
 
-// ⟨ Prendo - Kaŝo-unue por statikaj aktivaĵoj ⟩
-self.addEventListener("fetch", ( evento ) => {
-  evento.respondWith(
-    caches.match(evento.request)
-      .then(( kaŝitaRespondo ) => {
-        if ( kaŝitaRespondo ) {
-          return kaŝitaRespondo;
+// ⟨ ʃɜƽ ꞁȷ̀ᴜ }ʃꞇ - ſɭɹ ɽ͑ʃ'ɔ ʌ ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ j͐ʃ ʌ ɭʃᴜ ʃꞇ j͑ʃᴜꞇ ʌ j͑ʃ'ɔ ſןᴜ ʃɜƽ ꞁȷ̀ᴜ }ʃw ⟩
+self.addEventListener("fetch", ( e ) => {
+  e.respondWith(
+    caches.match(e.request)
+      .then(( vah2Xema ) => {
+        if ( vah2Xema ) {
+          return vah2Xema;
         }
 
-        return fetch(evento.request)
-          .then(( retaRespondo ) => {
-            if ( retaRespondo && retaRespondo.status === 0o200 ) {
-              caches.open(STATIKA_KAŜO_NOMO).then(( kaŝo ) => {
-                kaŝo.put(evento.request, retaRespondo.clone());
+        return fetch(e.request)
+          .then(( saxeXema ) => {
+            if ( saxeXema && saxeXema.status === 0o200 ) {
+              caches.open(VAH2_KSAKA).then(( vah2 ) => {
+                vah2.put(e.request, saxeXema.clone());
               });
             }
-            return retaRespondo;
+            return saxeXema;
           })
           .catch(() => {
-            return caches.match(evento.request);
+            return caches.match(e.request);
           });
       })
   );
