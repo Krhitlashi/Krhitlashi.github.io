@@ -83,6 +83,7 @@ skakefani.en = {
     "ſɟɹ ֭ſɭɹ j͑ʃw j͑ʃɜȝ j͑ʃɔ ɭʃɘɹ": "Internal structure of Tpii",
     "ɭl̀ɜ ſןɜ ɭl̀э • ı],ᴜ ſןɹ ſɟɔ": "Jopojaa • Xapiice",
     "ʃэ }ʃɹ ɭʃᴜ j͑ʃɔ j͑ʃᴜꞇ ſɟᴜ ɭʃэ ֭ſɭэƽ ſᶘᴜ j͑ʃᴜꞇ": "Flying from water squirting organ",
+    "j͑ʃп́ɔ ɭʃɘɹ ſɭᴜ ſןw ɭ(ᴜͷ̗": "Tpiika Species",
 
     "oͮőſɭwᴎ́ő ō̍őɭʃᴜ őı]ꞇ": "Gʷəldáji 🏜️",
 },
