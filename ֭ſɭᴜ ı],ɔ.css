@@ -201,12 +201,12 @@ p:has(> .cepufalxez), h1:has(> .cepufalxez), h2:has(> .cepufalxez), h3:has(> .ce
 /* ⟪ ſɭɔ˞ᴜ ſɭᴜ 🎩 ⟫ */
 
 .saxesukef {
-	inline-size: max-content;
-	background-color: transparent;
-	align-self: center;
 	padding: var(--អារេង);
 	text-align: left;
 	font-size-adjust: 0.75;
+}
+h1.saxesukef, h1.saxesukef .cepufalxez {
+	line-height: 2 !important;
 }
 .ksakap2sa, .ksakat2xa {
 	background-color: transparent;
