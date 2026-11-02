@@ -1,6 +1,6 @@
 // ⟪ j͑ʃ'ᴜ ſɟɔ ſןw ⟫
 
-const KOTASAKASUKP6 = ["(", ")", "[", "]", "<", ">", "-", "≺⧼", "⧽≻", "⟪", "⟫", "≺", "≻", "⧼", "⧽"];
+const KOTASAKASUKP6 = ["(", ")", "[", "]", "<", ">", "-", "≺⧼", "⧽≻", "⟪", "⟫", "≺", "≻", "⧼", "⧽", "⟨", "⟩"];
 const KOTASAKASUXEHATE = ["SCRIPT", "STYLE", "OPTION", "TITLE", "TEXTAREA"];
 
 function vacepu(s2haxe) {
