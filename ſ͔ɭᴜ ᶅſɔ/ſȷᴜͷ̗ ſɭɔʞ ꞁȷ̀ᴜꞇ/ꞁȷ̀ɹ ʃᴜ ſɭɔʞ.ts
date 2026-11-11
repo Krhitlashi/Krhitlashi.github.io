@@ -180,7 +180,6 @@ function q2qEskek(): Promise<KefSak[]> {
 // ⟪ ſ̀ȷᴜ ʌ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ 📋 ⟫
 async function k2fCa1ara() {
     const cax2lKuba = document.querySelector("#falkefu tbody") as HTMLTableSectionElement | null;
-    const kevEskek = document.getElementById("2bakano") as HTMLInputElement | null;
     if ( !cax2lKuba ) return;
 
     let kefSakCa1ara: KefSak[];
@@ -232,15 +231,6 @@ async function k2fCa1ara() {
         kekEskek.appendChild(sakEskek);
     }
     cax2lKuba.replaceChildren(kekEskek);
-
-    // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ɭʃw ſɭˬɔƽ ꞁȷ̀ɜ ŋᷠᴜ ⟩
-    kevEskek?.addEventListener("input", () => {
-        const eskek = ( kevEskek.value || "" ).trim().toLowerCase();
-        cax2lKuba.querySelectorAll("tr[data-i]").forEach(( sak ) => {
-            const kp6k2p2 = ( sak.textContent || "" ).toLowerCase();
-            ( sak as HTMLElement ).style.display = ( !eskek || kp6k2p2.includes(eskek) ) ? "" : "none";
-        });
-    });
 }
 
 // ⟪ ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 🔍 ⟫

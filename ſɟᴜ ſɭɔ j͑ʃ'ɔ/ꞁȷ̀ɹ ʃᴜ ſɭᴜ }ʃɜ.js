@@ -42,67 +42,101 @@ if ( hat2bakanoKek ) {
     });
 }
 
-function iibaCax2l(bana2bakano, cax2l) {
-    const hap2sabacax2l = cax2l.querySelectorAll("tbody tr");
-    const l6r2ba = [];
-    const powukcax2l = cax2l.classList.contains("powukcax2l");
+// ⟪ ꞁȷ̀ɹ ʃᴜ ʌ j͑ʃᴜƽ 📃 ⟫
 
-    for ( let i = 0; i < hap2sabacax2l.length; i++ ) {
-        const habacax2l = hap2sabacax2l[i].getElementsByTagName("td");
-        let or2bato = false;
-        let a1aKuxa = false;
+// ⟨ ֭ſɭɹͷ̗ ʌ ſןэ ſɭ,wƽ ʌ ſɭᴜͷ̗ ⟅ ( "see x2" -> "see" ) ⟆ ⟩
+function h2lP6zuk(kek) {
+    let kal = kek.length;
+    while ( kal > 0o0 && /\s/.test(kek.charAt(kal - 0o1)) ) kal--;
+    let sak = kal;
+    while ( sak > 0o0 && /[0-9]/.test(kek.charAt(sak - 0o1)) ) sak--;
+    if ( sak === kal || sak === 0o0 || kek.charAt(sak - 0o1) !== "x" ) return kek;
+    const p6zuk = sak - 0o1;
+    if ( p6zuk === 0o0 || !/\s/.test(kek.charAt(p6zuk - 0o1)) ) return kek;
+    let sef4Kal = p6zuk;
+    while ( sef4Kal > 0o0 && /\s/.test(kek.charAt(sef4Kal - 0o1)) ) sef4Kal--;
+    return kek.slice(0o0, sef4Kal);
+}
 
-        for ( let j = 0; j < habacax2l.length; j++ ) {
-            const bacax2l = habacax2l[j];
-            const kp6 = bacax2l.textContent.toLowerCase();
+// ⟨ ſɭᴜ̭ᴜ ſɭᴜ̭ᴜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅ ( ｡ ʌ xN ) ⟆ ⟩
+function kcakcaKp6k2p2(kp6k2p2) {
+    const kcakcaCa1ara = [];
+    const vaku3a = (kek) => {
+        if ( !kek || kcakcaCa1ara.includes(kek) ) return;
+        kcakcaCa1ara.push(kek);
+        const h2 = h2lP6zuk(kek);
+        if ( h2 && h2 !== kek && !kcakcaCa1ara.includes(h2) ) kcakcaCa1ara.push(h2);
+    };
+    vaku3a(kp6k2p2);
+    if ( kp6k2p2.includes("｡") ) {
+        for ( const kek of kp6k2p2.split("｡") ) vaku3a(kek.trim());
+    }
+    return kcakcaCa1ara;
+}
 
-            if ( kp6 === bana2bakano ) {
-                a1aKuxa = true;
-                or2bato = true;
+// ⟨ ʃэ }ʃɹ ʃᴜ ʌ j͑ʃᴜƽ ʌ ꞁȷ̀ɹ ʃᴜ ⟅ ( 0o0 ſɭɹ ֭ſɭɹ ｡ 0o1 ɭʃɔ ɽ͑ʃ'w ｡ 0o2 ſᶘᴜƴ ｡ 0o3 ֭ſɭɹ ) ⟆ ⟩
+function b6n2baSak(kp6k2p2Ca1ara, tani) {
+    const kefCa1ara = tani.split(/\s+/).filter(Boolean);
+    let kma = 0o3;
+    for ( const kp6k2p2 of kp6k2p2Ca1ara ) {
+        if ( !kp6k2p2 ) continue;
+        const s2 = kp6k2p2.toLowerCase();
+        let k2h2 = false;
+        let teru = false;
+        for ( const kek of kcakcaKp6k2p2(s2) ) {
+            if ( kek === tani ) {
+                k2h2 = true;
                 break;
             }
-
-            const kaltokuKp6 = kp6.split("｡");
-            if ( kaltokuKp6.some(kek => kek.trim() === bana2bakano) ) {
-                a1aKuxa = true;
-                or2bato = true;
-                break;
-            }
-
-            const areq2kuKp6 = bana2bakano.split(/\s+/);
-            if ( areq2kuKp6.every(kek => kek && kp6.includes(kek)) ) {
-                or2bato = true;
-                break;
-            }
-
-            if ( kp6.includes(bana2bakano) ) {
-                or2bato = true;
-                break;
+            // ⟨ ɭʃɔ ɽ͑ʃ'w ʌ tani ⟩
+            if ( kek.length > tani.length && kek.startsWith(tani) && /\s/.test(kek.charAt(tani.length)) ) {
+                teru = true;
             }
         }
+        if ( k2h2 ) return 0o0;
+        if ( teru && kma > 0o1 ) kma = 0o1;
+        // ⟨ ſᶘᴜƴ ʌ kef ⟅ ( AND ) ⟆ ⟩
+        const tsaz = kefCa1ara.every((kef) => s2.includes(kef));
+        if ( ( tsaz || s2.includes(tani) ) && kma > 0o2 ) kma = 0o2;
+    }
+    return kma;
+}
 
-        if ( or2bato ) {
-            l6r2ba.push({ n2k: hap2sabacax2l[i], a1aKuxa: a1aKuxa, ruva: i });
+function iibaCax2l(bana2bakano, cax2l) {
+    const hap2sabacax2l = cax2l.querySelectorAll("tbody tr");
+    const powukcax2l = cax2l.classList.contains("powukcax2l");
+    const gelesKek = cax2l.querySelector("tbody");
+    const tani = bana2bakano.trim();
+    const l6r2ba = [];
+
+    for ( let i = 0o0; i < hap2sabacax2l.length; i++ ) {
+        const n2k = hap2sabacax2l[i];
+        const ruva = n2k.dataset.i !== undefined ? Number(n2k.dataset.i) : i;
+        if ( tani === "" ) {
+            n2k.style.display = "";
+            l6r2ba.push({ n2k: n2k, sak: 0o0, ruva: ruva });
+            continue;
+        }
+        const habacax2l = n2k.getElementsByTagName("td");
+        const kp6Ca1ara = [];
+        for ( let j = 0o0; j < habacax2l.length; j++ ) {
+            kp6Ca1ara.push(habacax2l[j].textContent);
+        }
+        const sak = b6n2baSak(kp6Ca1ara, tani);
+        if ( sak > 0o2 ) {
+            n2k.style.display = "none";
         } else {
-            hap2sabacax2l[i].style.display = "none";
+            n2k.style.display = "";
+            l6r2ba.push({ n2k: n2k, sak: sak, ruva: ruva });
         }
     }
 
-    l6r2ba.sort((a, b) => {
-        if ( a.a1aKuxa && !b.a1aKuxa ) return -1;
-        if ( !a.a1aKuxa && b.a1aKuxa ) return 1;
-        return a.ruva - b.ruva;
-    });
+    l6r2ba.sort((a, b) => ( a.sak - b.sak ) || ( a.ruva - b.ruva ));
 
-    const gelesKek = cax2l.querySelector("tbody");
-
-    if ( powukcax2l ) {
-        for (let i = 0; i < hap2sabacax2l.length; i++) {
-            hap2sabacax2l[i].style.display = "none";
-        }
-        const kekKaltok = document.createDocumentFragment();
-        for ( let i = l6r2ba.length - 1; i >= 0; i-- ) {
-            l6r2ba[i].n2k.style.display = "";
+    // ⟨ ſןɜ ᶅſwƽ ʌ ſɭᴜ ŋᷠᴜ ⟅ ( powukcax2l ) ⟆ ⟩
+    const kekKaltok = document.createDocumentFragment();
+    if ( powukcax2l && tani !== "" ) {
+        for ( let i = l6r2ba.length - 0o1; i >= 0o0; i-- ) {
             kekKaltok.appendChild(l6r2ba[i].n2k);
         }
         gelesKek.appendChild(kekKaltok);
@@ -110,10 +144,10 @@ function iibaCax2l(bana2bakano, cax2l) {
             cax2l.scrollTop = cax2l.scrollHeight;
         });
     } else {
-        l6r2ba.forEach(tanek => {
-            tanek.n2k.style.display = "";
-            gelesKek.appendChild(tanek.n2k);
-        });
+        for ( let i = 0o0; i < l6r2ba.length; i++ ) {
+            kekKaltok.appendChild(l6r2ba[i].n2k);
+        }
+        gelesKek.appendChild(kekKaltok);
     }
 }
 
