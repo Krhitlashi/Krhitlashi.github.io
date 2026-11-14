@@ -68,7 +68,7 @@ const KEVE_KSAKA: Readonly<Record<Kp6Keve, { en: string; aih: string }>> = {
 	space: { en: "Space", aih: "ꞁȷ̀ᴜ ɽ͑ʃ'ɔȝ" },
 	enter: { en: "Enter", aih: "ſɭw ſ̀ȷᴜ" },
 	symbol: { en: "Symbol", aih: "ſɭɘэ" },
-	extra: { en: "Extra", aih: "ꞁȷ̀ꞇ }ʃᴜƽ" },
+	extra: { en: "Extra", aih: "ſᶘɔ j͐ʃw" },
 };
 
 /**
