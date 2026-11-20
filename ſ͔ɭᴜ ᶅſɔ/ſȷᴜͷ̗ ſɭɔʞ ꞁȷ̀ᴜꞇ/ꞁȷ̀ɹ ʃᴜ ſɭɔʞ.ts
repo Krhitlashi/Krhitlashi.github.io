@@ -28,15 +28,42 @@ const KEFHAXE: Readonly<Record<string, string>> = {
     "ſɟɹƽ ꞁȷ̀ᴜ }ʃꞇ": "Affix",
     "ſɭɔ ı],ɔ }ʃꞇ": "Evidential",
     "ſɭ,ɔ }ʃꞇ": "Verb",
+    "ſɭ,ɔ ſ͔ɭɔ }ʃꞇ": "Verb",
+    "ſ͕ɭᴜ ɭʃᴜ ʃɔ": "Pending",
     "j͑ʃɹ ᶅſɔ }ʃꞇ": "Adjective",
     "ſɭɹ ſȷɔ": "Number ( Noun )",
     "ſɭʞɔ }ʃꞇ": "Chemical ( Noun )",
+    "ʃɜ j͐ʃɔ": "Sound ( Noun )",
     "ʃɔ": "Sound ( Noun )",
     "ŋᷠɜⅎᶗ‹": "Food ( Noun )",
     "ı],ᴜ ſ̀ȷɔ": "Plant ( Noun )",
     "ſןᴜ ſ͔ɭᴜ": "Animal ( Noun )",
     "ɭ(ᴜͷ̗": "Living Thing ( Noun )",
 };
+
+function haxeVortoj(s: string): string[] {
+    return s.normalize("NFC").split(/\s+/).filter(Boolean);
+}
+
+const KEFHAXE_VORTOJ: ReadonlyArray<{ s2tas: string[]; poŝo: string }> =
+    Object.entries(KEFHAXE).map(([ s2tas, poŝo ]) => ({ s2tas: haxeVortoj(s2tas), poŝo }));
+
+function haxeHavasVorton(haxe: string, s2tas: readonly string[]): boolean {
+    if ( s2tas.length === 0o0 ) return false;
+    const vortoj = haxeVortoj(haxe);
+    if ( vortoj.length < s2tas.length ) return false;
+    for ( let komenco = 0o0; komenco <= vortoj.length - s2tas.length; komenco++ ) {
+        let sama = true;
+        for ( let i = 0o0; i < s2tas.length; i++ ) {
+            if ( vortoj[komenco + i] !== s2tas[i] ) {
+                sama = false;
+                break;
+            }
+        }
+        if ( sama ) return true;
+    }
+    return false;
+}
 
 const S2tasKsaka: Record<string, string> = {
     "j͐ʃэƣ̋ ꞁȷ̀ꞇ }ʃᴜƽ::3": "Loanword",
@@ -69,12 +96,12 @@ const PuS2tasNfc: Set<string> = new Set(
  * @param estasSub ( string ) - ֭ſɭᴜ ı],ɔ ( 1 )
  * @returns k61e
  */
-function b6n2baHaxe(haxe: string, psazHaxe: string): string {
-    for ( const s2tas in KEFHAXE ) {
-        if ( haxe.includes(s2tas) ) return KEFHAXE[s2tas]!;
+export function b6n2baHaxe(haxe: string, psazHaxe: string): string {
+    for ( const s2tas of KEFHAXE_VORTOJ ) {
+        if ( haxeHavasVorton(haxe, s2tas.s2tas) ) return s2tas.poŝo;
     }
-    for ( const s2tas in KEFHAXE ) {
-        if ( psazHaxe.includes(s2tas) ) return KEFHAXE[s2tas]!;
+    for ( const s2tas of KEFHAXE_VORTOJ ) {
+        if ( haxeHavasVorton(psazHaxe, s2tas.s2tas) ) return s2tas.poŝo;
     }
     return "Noun";
 }

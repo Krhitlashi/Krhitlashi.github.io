@@ -797,15 +797,42 @@ const HAXE_BAL2XA: Readonly<Record<string, string>> = {
     "ſɟɹƽ ꞁȷ̀ᴜ }ʃꞇ": "Affix",
     "ſɭɔ ı],ɔ }ʃꞇ": "Evidential",
     "ſɭ,ɔ }ʃꞇ": "Verb",
+    "ſɭ,ɔ ſ͔ɭɔ }ʃꞇ": "Verb",
+    "ſ͕ɭᴜ ɭʃᴜ ʃɔ": "Pending",
     "j͑ʃɹ ᶅſɔ }ʃꞇ": "Adjective",
     "ſɭɹ ſȷɔ": "Number ( Noun )",
     "ſɭʞɔ }ʃꞇ": "Chemical ( Noun )",
+    "ʃɜ j͐ʃɔ": "Sound ( Noun )",
     "ʃɔ": "Sound ( Noun )",
     "ŋᷠɜⅎᶗ‹": "Food ( Noun )",
     "ı],ᴜ ſ̀ȷɔ": "Plant ( Noun )",
     "ſןᴜ ſ͔ɭᴜ": "Animal ( Noun )",
     "ɭ(ᴜͷ̗": "Living Thing ( Noun )",
 };
+
+function temoVortoj(temo: string): string[] {
+    return temo.normalize("NFC").split(/\s+/).filter(Boolean);
+}
+
+const HAXE_BAL2XA_VORTOJ: ReadonlyArray<{ vorto: string[]; poŝo: string }> =
+    Object.entries(HAXE_BAL2XA).map(([ vorto, poŝo ]) => ({ vorto: temoVortoj(vorto), poŝo }));
+
+function temoHavasVorton(temo: string, vorto: readonly string[]): boolean {
+    if ( vorto.length === 0o0 ) return false;
+    const vortoj = temoVortoj(temo);
+    if ( vortoj.length < vorto.length ) return false;
+    for ( let komenco = 0o0; komenco <= vortoj.length - vorto.length; komenco++ ) {
+        let sama = true;
+        for ( let i = 0o0; i < vorto.length; i++ ) {
+            if ( vortoj[komenco + i] !== vorto[i] ) {
+                sama = false;
+                break;
+            }
+        }
+        if ( sama ) return true;
+    }
+    return false;
+}
 
 /**
  * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
@@ -824,11 +851,11 @@ function kubaK61e(v: unknown): string {
  * @returns k61e
  */
 function quqHaxe(haxeSaxe: string, m2HaxeSaxe: string): string {
-    for ( const kp6 in HAXE_BAL2XA ) {
-        if ( haxeSaxe.includes(kp6) ) return giHaxe(HAXE_BAL2XA[kp6]!);
+    for ( const ero of HAXE_BAL2XA_VORTOJ ) {
+        if ( temoHavasVorton(haxeSaxe, ero.vorto) ) return giHaxe(ero.poŝo);
     }
-    for ( const kp6 in HAXE_BAL2XA ) {
-        if ( m2HaxeSaxe.includes(kp6) ) return giHaxe(HAXE_BAL2XA[kp6]!);
+    for ( const ero of HAXE_BAL2XA_VORTOJ ) {
+        if ( temoHavasVorton(m2HaxeSaxe, ero.vorto) ) return giHaxe(ero.poŝo);
     }
     return "Noun";
 }
