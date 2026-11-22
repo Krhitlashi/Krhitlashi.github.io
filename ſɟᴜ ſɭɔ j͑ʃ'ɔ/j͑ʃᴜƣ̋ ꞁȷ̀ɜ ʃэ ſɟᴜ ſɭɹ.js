@@ -12,7 +12,7 @@ const VAH2_S2_CA1ARA = [
   "/index.html",
   "/ſ͔ɭᴜ ᶅſɔ.html",
   "/ſ͕ɭᴜ ֭ſɭᴜ ı],ɹ.html",
-  "/ꞁȷ̀ꞇ }ʃᴜƽ.html"
+  "/ſᶘɔ j͐ʃw.html"
 ];
 
 // ⟨ j͑ʃᴜ ı],ɔ }ʃꞇ ⟩

@@ -59,7 +59,7 @@ declare global {
   function skakefK2fe(k61e: string): string;
   const skakefani: Record<string, Record<string, string>>;
 
-  // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ.js ⟩ - ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ
+  // ⟨ ɭʃɹ ʃᴜ ſɭᴜ }ʃɜ.js ⟩ - ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ
   function iibaCax2l(bana2bakano: string, cax2l: HTMLElement): void;
   function iibaThala(bana2bakano: string, ariiba: HTMLElement): void;
 
