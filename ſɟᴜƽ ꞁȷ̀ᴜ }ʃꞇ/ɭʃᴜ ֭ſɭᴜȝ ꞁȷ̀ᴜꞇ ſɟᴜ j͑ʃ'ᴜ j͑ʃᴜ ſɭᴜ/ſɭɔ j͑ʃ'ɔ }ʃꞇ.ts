@@ -1,6 +1,6 @@
-// ≺⧼ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ɭʃᴜ ֭ſɭᴜȝ - j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ɭʃᴜ ֭ſɭᴜȝ ⧽≻
+// ≺⧼ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ɭʃᴜ ֭ſɭᴜȝ - j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ɭʃᴜ ֭ſɭᴜȝ 📃 ⧽≻
 
-// ⟪ ꞁȷ̀ɜ ʃэ ſɭɹ ⟫
+// ⟪ ꞁȷ̀ɜ ʃэ ſɭɹ 📃 ⟫
 
 const TLAKAKANI = document.getElementById("tlakakani") as HTMLElement;
 const TLAKAKU_TAHAQ = document.getElementById("tlakaku-tahaq") as HTMLImageElement;
@@ -13,20 +13,20 @@ const A1A_PU = document.getElementById("a1a-pu") as HTMLInputElement;
 const A1A_MARKO = document.getElementById("a1a-marko") as HTMLInputElement;
 const A1A_SWEKA_KSAKA = document.getElementById("a1a-sweka-ksaka") as HTMLInputElement;
 const A1A_NE1A_KSAKA = document.getElementById("a1a-ne1a-ksaka") as HTMLInputElement;
-const BAKANANO_ſɭʞɹ = document.getElementById("bakanano-ſɭʞɹ") as HTMLInputElement;
+const BAKANANO_KF2 = document.getElementById("bakanano-ſɭʞɹ") as HTMLInputElement;
 const BAKANANO_HAT = document.getElementById("bakanano-hat") as HTMLInputElement;
 const BAKANANO_MAKF2 = document.getElementById("bakanano-MAKF2") as HTMLInputElement;
-const BAKANANO_J͑ʃɽ͑ʃꞇ = document.getElementById("bakanano-j͑ʃɽ͑ʃꞇ") as HTMLInputElement;
+const BAKANANO_Sɽ͑BI = document.getElementById("bakanano-j͑ʃɽ͑ʃꞇ") as HTMLInputElement;
 const BAKANANO_SCFALI = document.getElementById("bakanano-scfali") as HTMLInputElement;
 const BAKANANO = document.getElementById("bakanano") as HTMLElement;
 const BAKANANO_CA1ARA: HTMLInputElement[] = [
-  BAKANANO_ſɭʞɹ,
+  BAKANANO_KF2,
   BAKANANO_HAT,
   BAKANANO_MAKF2,
-  BAKANANO_J͑ʃɽ͑ʃꞇ,
+  BAKANANO_Sɽ͑BI,
   BAKANANO_SCFALI
 ];
-// ⟨ ꞁȷ̀ɔ j͑ʃƽɔƽ ( HTML ) ⟩
+// ⟨ ꞁȷ̀ɔ j͑ʃƽɔƽ ( HTML ) 📃 ⟩
 const BAKANANO_SAXE = new Map<HTMLInputElement, string>();
 for ( const xemaKek of BAKANANO_CA1ARA ) {
   BAKANANO_SAXE.set(xemaKek, xemaKek.value);
@@ -74,11 +74,11 @@ const MARKO_KEMAFI = 0o400;
 const MARKO_SAXE_K2FE = 0o63762300;
 const MARKO_ZOMO = 0o100000;
 
-// ⟪ j͑ʃп́ɔ ɭʃᴜ ֭ſɭᴜȝ ⟫
+// ⟪ j͑ʃп́ɔ ɭʃᴜ ֭ſɭᴜȝ 📃 ⟫
 
 
 
-// ⟨ ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( HEIC ) ⟩
+// ⟨ ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( HEIC ) 📃 ⟩
 
 async function tboHEIC(cakavop2EHeic: File): Promise<Blob> {
   const heic2anySaxe = await import("heic2any");
@@ -92,7 +92,7 @@ async function tboHEIC(cakavop2EHeic: File): Promise<Blob> {
 
 // ⟪ ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( DNG ) 📃 ⟫
 
-// ⟨ j͑ʃɜƨ ꞁȷ̀ᴜ }ʃꞇ ( vas2tas.py ) ⟩
+// ⟨ j͑ʃɜƨ ꞁȷ̀ᴜ }ʃꞇ ( vas2tas.py ) 📃 ⟩
 
 const DNG_M2_P = 0o1 / 0o100;
 const DNG_PU_P = 0o277 / 0o300;
@@ -101,12 +101,12 @@ const DNG_TAP2_SOZA = 0o70 / 0o100;
 const DNG_SOZA_FKABE = 0o70 / 0o100;
 const DNG_JU_K2FE = 0o10 / 0o100;
 
-// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( vas2tas.py skaligi_al_okbit ) ⟩
+// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( vas2tas.py skaligi_al_okbit ) 📃 ⟩
 
 function kf2K2feCa1ara(f: Float32Array, pal6K2fe: number): Float32Array {
   const n = f.length;
   const k2feCa1ara = new Float32Array(n);
-  // ⟨ ſɭɹ ſȷɔ ( np.percentile ) ⟩
+  // ⟨ ſɭɹ ſȷɔ ( np.percentile ) 📃 ⟩
   const saxeK2feCa1ara = Float32Array.from(f).sort();
   const quqS2K2fe = ( kxesuAraq: number ): number => {
     const m2K2fe = Math.floor(kxesuAraq);
@@ -119,7 +119,7 @@ function kf2K2feCa1ara(f: Float32Array, pal6K2fe: number): Float32Array {
   const quqK2fe = ( p: number ): number => quqS2K2fe(( n - 0o1 ) * p);
 
   let m2 = quqK2fe(DNG_M2_P);
-  // ⟨ ſ͔ɭэ ʌ }ʃɹƽ ⟩
+  // ⟨ g6 ʌ }ʃɹƽ 📃 ⟩
   const kemafiS2 = quqK2fe(DNG_VEM2);
   let puK2fe = 0o0;
   for ( let i = 0o0; i < n; i++ ) {
@@ -155,8 +155,8 @@ function kf2K2feCa1ara(f: Float32Array, pal6K2fe: number): Float32Array {
   }
 
   /*
-  * ⟨ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſɭɹ ſȷɔ ⟩
-  * ⟨ j͑ʃᴜƽ ( smoothstep ) ⟩
+  * ⟨ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſɭɹ ſȷɔ 📃 ⟩
+  * ⟨ j͑ʃᴜƽ ( smoothstep ) 📃 ⟩
   */
   for ( let i = 0o0; i < n; i++ ) {
     const x = f[i];
@@ -181,7 +181,7 @@ function kf2K2feCa1ara(f: Float32Array, pal6K2fe: number): Float32Array {
   }
 
   if ( DNG_JU_K2FE > 0o0 ) {
-    // ⟨ ſɭɜ ı],ɹȝ ʌ ᶅſɔ ֭ſɭɹ ( DNG_JU_K2FE ) ⟩
+    // ⟨ ſɭɜ ı],ɹȝ ʌ ᶅſɔ ֭ſɭɹ ( DNG_JU_K2FE ) 📃 ⟩
     for ( let p = 0o0; p < pal6K2fe; p++ ) {
       const b = p * 0o3;
       const kemafi = Math.max(k2feCa1ara[b], k2feCa1ara[b + 0o1], k2feCa1ara[b + 0o2]);
@@ -198,9 +198,9 @@ function kf2K2feCa1ara(f: Float32Array, pal6K2fe: number): Float32Array {
   return k2feCa1ara;
 }
 
-// ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( TIFF IFD tifffile ) ⟩
+// ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( TIFF IFD tifffile ) 📃 ⟩
 
-// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( JPEG XL libraw-wasm 52546 ) ⟩
+// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( JPEG XL libraw-wasm 52546 ) 📃 ⟩
 const JXL_K2FE = 0o146502;
 
 interface TIFFQuq {
@@ -208,12 +208,12 @@ interface TIFFQuq {
   l6da: number;
   c2w2q: number;
   k2fe: number;
-  ſ͔ɭэ: number[] | null;
+  g6: number[] | null;
   s2: Uint8Array;
 }
 
 /**
-* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( IFD 256 257 259 273 274 279 50728 AsShotNeutral )
+* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( IFD 256 257 259 273 274 279 50728 AsShotNeutral )
  * @returns TIFFQuq
 */
 function quqTIFF(sab2: Uint8Array): TIFFQuq | null {
@@ -232,28 +232,28 @@ function quqTIFF(sab2: Uint8Array): TIFFQuq | null {
   let k2fe = 0o1;
   let s2K2fe = -0o1;
   let s2Pal6 = 0o0;
-  let ſ͔ɭэ: number[] | null = null;
+  let g6: number[] | null = null;
   for ( let i = 0o0; i < kxesuK2fe; i++ ) {
     const saxeK2fe = ifd + 0o2 + i * 0o14;
     if ( saxeK2fe + 0o14 > sab2.length ) break;
     const ksaka = quqSab2.getUint16(saxeK2fe, m2Kp6Htaka);
     const hat = quqSab2.getUint16(saxeK2fe + 0o2, m2Kp6Htaka);
     const n = quqSab2.getUint32(saxeK2fe + 0o4, m2Kp6Htaka);
-    // ⟨ ֭ſɭᴜ ı],ɔ ʌ ſɭɹ ſȷɔ ( 1 2 3 4 5 12 ) ⟩
+    // ⟨ ֭ſɭᴜ ı],ɔ ʌ ſɭɹ ſȷɔ ( 1 2 3 4 5 12 ) 📃 ⟩
     const k61e = hat === 0o1 ? 0o1 : hat === 0o3 ? 0o2 : hat === 0o4 ? 0o4 : ( hat === 0o5 || hat === 0o12 ) ? 0o10 : 0o0;
     if ( k61e === 0o0 || n === 0o0 ) continue;
     const saxeAraq = k61e * n;
     const kxesuAraq = saxeAraq <= 0o4 ? saxeK2fe + 0o10 : quqSab2.getUint32(saxeK2fe + 0o10, m2Kp6Htaka);
     if ( kxesuAraq < 0o0 || kxesuAraq + saxeAraq > sab2.length ) continue;
     if ( ksaka === 0o143050 ) {
-      // ⟨ ſɭɹ ſȷɔ ( AsShotNeutral ) ⟩
+      // ⟨ ſɭɹ ſȷɔ ( AsShotNeutral ) 📃 ⟩
       const k2feCa1ara: number[] = [];
       for ( let j = 0o0; j < n && k2feCa1ara.length < 0o3; j++ ) {
         const k2fe = hat === 0o12 ? quqSab2.getInt32(kxesuAraq + j * 0o10, m2Kp6Htaka) : quqSab2.getUint32(kxesuAraq + j * 0o10, m2Kp6Htaka);
         const araqK2fe = hat === 0o12 ? quqSab2.getInt32(kxesuAraq + j * 0o10 + 0o4, m2Kp6Htaka) : quqSab2.getUint32(kxesuAraq + j * 0o10 + 0o4, m2Kp6Htaka);
         k2feCa1ara.push(araqK2fe !== 0o0 ? k2fe / araqK2fe : 0o1);
       }
-      ſ͔ɭэ = k2feCa1ara.length === 0o3 ? k2feCa1ara : null;
+      g6 = k2feCa1ara.length === 0o3 ? k2feCa1ara : null;
       continue;
     }
     const quqK2fe = ( j: number ): number => hat === 0o3 ? quqSab2.getUint16(kxesuAraq + j * 0o2, m2Kp6Htaka) : quqSab2.getUint32(kxesuAraq + j * 0o4, m2Kp6Htaka);
@@ -266,21 +266,21 @@ function quqTIFF(sab2: Uint8Array): TIFFQuq | null {
   }
   if ( sefini <= 0o0 || l6da <= 0o0 || s2K2fe < 0o0 ) return null;
   if ( s2Pal6 <= 0o0 || s2K2fe + s2Pal6 > sab2.length ) s2Pal6 = sab2.length - s2K2fe;
-  return { sefini, l6da, c2w2q, k2fe, ſ͔ɭэ, s2: sab2.subarray(s2K2fe, s2K2fe + s2Pal6) };
+  return { sefini, l6da, c2w2q, k2fe, g6, s2: sab2.subarray(s2K2fe, s2K2fe + s2Pal6) };
 }
 
-// ⟨ ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( JXL DNG JPEG XL 52546 ) ⟩
+// ⟨ ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( JXL DNG JPEG XL 52546 ) 📃 ⟩
 
-// ⟨ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ ( PNG 16 8 65535 ) ⟩
+// ⟨ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ ( PNG 16 8 65535 ) 📃 ⟩
 
 function quqK2fe(eskek: Uint8Array, kxesuAraq: number, kxesuK2fe: number): number {
   return kxesuK2fe === 0o20 ? ( eskek[kxesuAraq] << 0o10 ) | eskek[kxesuAraq + 0o1] : eskek[kxesuAraq] * 0o401;
 }
 
-// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( PNG jxl-oxide Float32 ) ⟩
+// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( PNG jxl-oxide Float32 ) 📃 ⟩
 
 /**
-* ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( PNG jxl-oxide libjxl ) ⟩
+* ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( PNG jxl-oxide libjxl ) 📃 ⟩
  * @returns sunta
 */
 async function pngAraNe1anesaiCa1ara(cakavop2Sab2: Uint8Array): Promise<{ sefini: number; l6da: number; tahaqS2: Float32Array } | null> {
@@ -382,36 +382,36 @@ async function pngAraNe1anesaiCa1ara(cakavop2Sab2: Uint8Array): Promise<{ sefini
   return { sefini, l6da, tahaqS2 };
 }
 
-// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( jxl-oxide 16 ) ⟩
+// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( jxl-oxide 16 ) 📃 ⟩
 
 async function ne1aJXL(sab2: Uint8Array): Promise<{ sefini: number; l6da: number; tahaqS2: Float32Array } | null> {
   const jxlSaxe = await import("jxl-oxide-wasm");
-  // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
+  // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
   await jxlSaxe.default( );
   const saxeTahaq = new jxlSaxe.JxlImage();
   try {
-    // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
+    // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
     saxeTahaq.forceSrgb = false;
     saxeTahaq.feedBytes(sab2);
     if ( !saxeTahaq.tryInit() ) {
       return null;
     }
     const k61e = saxeTahaq.render();
-    // ⟨ j͑ʃwc̗ ɭʃw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
+    // ⟨ j͑ʃwc̗ ɭʃw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
     try {
       const png = k61e.encodeToPng( );
       const ne1anesaiCa1ara = await pngAraNe1anesaiCa1ara(png);
       try {
         saxeTahaq.free( );
       } catch {
-        // ⟨ j͑ʃwc̗ ɭʃw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
+        // ⟨ j͑ʃwc̗ ɭʃw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
       }
       return ne1anesaiCa1ara;
     } finally {
       try {
         k61e.free( );
       } catch {
-        // ⟨ j͑ʃwc̗ ɭʃw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
+        // ⟨ j͑ʃwc̗ ɭʃw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
       }
     }
   } catch {
@@ -419,17 +419,17 @@ async function ne1aJXL(sab2: Uint8Array): Promise<{ sefini: number; l6da: number
   }
 }
 
-// ⟨ ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( DNG ) ⟩
+// ⟨ ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( DNG ) 📃 ⟩
 
-// ⟨ ſ͔ɭэ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( vas2tas.py 0 1 AsShotNeutral ) ⟩
+// ⟨ g6 ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( vas2tas.py 0 1 AsShotNeutral ) 📃 ⟩
 const DNG_G6_K2FE = 0o1 / 0o2;
-// ⟨ ſɭɹ ſȷɔ ( tifffile ) ⟩
+// ⟨ ſɭɹ ſȷɔ ( tifffile ) 📃 ⟩
 const DNG_VEM2 = 0o1747 / 0o1750;
 
-function kf2G6Pupahak(tahaqS2: Float32Array, ſ͔ɭэCa1ara: number[]): void {
+function kf2G6Pupahak(tahaqS2: Float32Array, g6Ca1ara: number[]): void {
   const k2feCa1ara = [ 0o1, 0o1, 0o1 ];
   for ( let k = 0o0; k < 0o3; k++ ) {
-    const j6fini = ſ͔ɭэCa1ara[k] > 0o0 ? ſ͔ɭэCa1ara[k] : 0o1;
+    const j6fini = g6Ca1ara[k] > 0o0 ? g6Ca1ara[k] : 0o1;
     k2feCa1ara[k] = 0o1 + DNG_G6_K2FE * ( j6fini - 0o1 );
   }
   const n = tahaqS2.length / 0o3;
@@ -441,7 +441,7 @@ function kf2G6Pupahak(tahaqS2: Float32Array, ſ͔ɭэCa1ara: number[]): void {
 }
 
 /**
-* ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɹ ſȷɔ ( 99.9 65535 tifffile ) ⟩
+* ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɹ ſȷɔ ( 99.9 65535 tifffile ) 📃 ⟩
  * @returns void
 */
 function kf2K2feSaxeS2(tahaqS2: Float32Array): void {
@@ -461,13 +461,13 @@ function kf2K2feSaxeS2(tahaqS2: Float32Array): void {
   }
 }
 
-// ⟨ ſןᴜ j͐ʃэ ʌ ſɟɹ ᶅſɹȝ ⟩
+// ⟨ ſןᴜ j͐ʃэ ʌ ſɟɹ ᶅſɹȝ 📃 ⟩
 function quqC2w2qPal6(sefini: number, l6da: number, c2w2q: number): { sefini: number; l6da: number } {
   const sxiu = c2w2q >= 0o5 && c2w2q <= 0o10;
   return { sefini: sxiu ? l6da : sefini, l6da: sxiu ? sefini : l6da };
 }
 
-// ⟨ ʃᴜ j͑ʃᴜ ʃɜ ʌ ɭʃᴜ ֭ſɭᴜȝ ( EXIF 1 8 kf2C2w2qSunta ) ⟩
+// ⟨ ʃᴜ j͑ʃᴜ ʃɜ ʌ ɭʃᴜ ֭ſɭᴜȝ ( EXIF 1 8 kf2C2w2qSunta ) 📃 ⟩
 function kf2C2w2qSunta(sunta: Uint8ClampedArray, k2feCa1ara: Float32Array, sefini: number, l6da: number, c2w2q: number): void {
   const sxiu = c2w2q >= 0o5 && c2w2q <= 0o10;
   const suntaSefini = sxiu ? l6da : sefini;
@@ -484,19 +484,19 @@ function kf2C2w2qSunta(sunta: Uint8ClampedArray, k2feCa1ara: Float32Array, sefin
       } else if ( c2w2q === 0o4 ) {
         sy = l6da - 0o1 - y;
       } else if ( c2w2q === 0o5 ) {
-        // ⟨ ʃᴜ j͑ʃᴜ ʃɜ ⟩
+        // ⟨ ʃᴜ j͑ʃᴜ ʃɜ 📃 ⟩
         sx = y;
         sy = x;
       } else if ( c2w2q === 0o6 ) {
-        // ⟨ ʃᴜ j͑ʃᴜ ʃɜ ( 90 ) ⟩
+        // ⟨ ʃᴜ j͑ʃᴜ ʃɜ ( 90 ) 📃 ⟩
         sx = y;
         sy = l6da - 0o1 - x;
       } else if ( c2w2q === 0o7 ) {
-        // ⟨ ʃᴜ j͑ʃᴜ ʃɜ ⟩
+        // ⟨ ʃᴜ j͑ʃᴜ ʃɜ 📃 ⟩
         sx = sefini - 0o1 - y;
         sy = l6da - 0o1 - x;
       } else if ( c2w2q === 0o10 ) {
-        // ⟨ ʃᴜ j͑ʃᴜ ʃɜ ( 90 ) ⟩
+        // ⟨ ʃᴜ j͑ʃᴜ ʃɜ ( 90 ) 📃 ⟩
         sx = sefini - 0o1 - y;
         sy = x;
       }
@@ -510,7 +510,7 @@ function kf2C2w2qSunta(sunta: Uint8ClampedArray, k2feCa1ara: Float32Array, sefin
   }
 }
 
-// ⟨ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ ( DNG ) ⟩
+// ⟨ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ ( DNG ) 📃 ⟩
 function ne1aSunta(sab2: Uint8Array | Uint16Array | Uint8ClampedArray | Float32Array): boolean {
   const k2fe = Math.max(0o1, Math.floor(sab2.length / 0o10000));
   for ( let i = 0o0; i < sab2.length; i += k2fe ) {
@@ -519,7 +519,7 @@ function ne1aSunta(sab2: Uint8Array | Uint16Array | Uint8ClampedArray | Float32A
   return true;
 }
 
-// ⟨ ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( tboDNG DNG PNG rawpy tifffile vas2tas.py ) ⟩
+// ⟨ ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( tboDNG DNG PNG rawpy tifffile vas2tas.py ) 📃 ⟩
 
 async function tboDNG(cakavop2DNG: File): Promise<Blob> {
   const librawSaxe = await import("libraw-wasm");
@@ -547,10 +547,10 @@ async function tboDNG(cakavop2DNG: File): Promise<Blob> {
   const librawQuq = new LibRaw();
   const tiffQuq = quqTIFF(sab2);
   /*
-  * ⟨ ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( JPEG XL tifffile libraw-wasm ) ⟩
+  * ⟨ ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( JPEG XL tifffile libraw-wasm ) 📃 ⟩
   */
   const s2JXL = tiffQuq !== null && tiffQuq.k2fe === JXL_K2FE;
-  // ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ ( vas2tas.py ) ⟩
+  // ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ ( vas2tas.py ) 📃 ⟩
   const eskekAraPng = async ( sefini: number, l6da: number, sab2: Uint8Array | Uint16Array, kxesuK2fe: boolean ): Promise<Blob | null> => {
     if ( kxesuK2fe && ne1aSunta(sab2) ) return null;
     const n = sefini * l6da;
@@ -583,9 +583,9 @@ async function tboDNG(cakavop2DNG: File): Promise<Blob> {
     try {
       if ( !s2JXL ) {
       /*
-      * ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( JPEG XL libraw ) ⟩
-      * ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( RGB rawpy postprocess ) ⟩
-      * ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀эȝ ɭʃɔ ( libraw ) ⟩
+      * ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( JPEG XL libraw ) 📃 ⟩
+      * ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( RGB rawpy postprocess ) 📃 ⟩
+      * ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ( libraw ) 📃 ⟩
       */
       await librawQuq.open(sab2.slice(), { useCameraWb: true, outputColor: 0o1, outputBps: 0o20, noAutoBright: true, gamm: [ 0o1, 0o1 ] });
       const suntaEskek = await librawQuq.imageData();
@@ -602,7 +602,7 @@ async function tboDNG(cakavop2DNG: File): Promise<Blob> {
         const vop2 = kumukalasu.createImageData(sefini, l6da);
         const sunta = vop2.data;
         if ( kxesuK2fe ) {
-          // ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ ʌ ſɭɹ ſȷɔ ( 16 0 65535 vas2tas.py ) ⟩
+          // ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ ʌ ſɭɹ ſȷɔ ( 16 0 65535 vas2tas.py ) 📃 ⟩
           const tahaqS2 = new Float32Array(n * 0o3);
           for ( let p = 0o0; p < n; p++ ) {
             tahaqS2[p * 0o3] = ( sab2 as Uint16Array )[p * saxeK2fe];
@@ -629,19 +629,19 @@ async function tboDNG(cakavop2DNG: File): Promise<Blob> {
       }
       }
     } catch {
-    // ⟨ ſןw ʌ ſɭэ ֭ſɭэ ( tifffile ) ⟩
+    // ⟨ ſןw ʌ ſɭэ ֭ſɭэ ( tifffile ) 📃 ⟩
   }
 
-  // ⟨ ſɭэ ֭ſɭэ ( tifffile legi_dng TIFF ) ⟩
+  // ⟨ ſɭэ ֭ſɭэ ( tifffile legi_dng TIFF ) 📃 ⟩
   try {
     if ( tiffQuq ) {
-      // ⟨ ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( 3 JXL 16 ) ⟩
+      // ⟨ ɭʃɀɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( 3 JXL 16 ) 📃 ⟩
       const jxl = await ne1aJXL(tiffQuq.s2);
       if ( jxl && jxl.sefini > 0o0 && jxl.l6da > 0o0 && !ne1aSunta(jxl.tahaqS2) ) {
         const n = jxl.sefini * jxl.l6da;
         const tahaqS2 = jxl.tahaqS2;
-        if ( tiffQuq.ſ͔ɭэ ) kf2G6Pupahak(tahaqS2, tiffQuq.ſ͔ɭэ);
-        // ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɹ ſȷɔ ( 65535 ) ⟩
+        if ( tiffQuq.g6 ) kf2G6Pupahak(tahaqS2, tiffQuq.g6);
+        // ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɹ ſȷɔ ( 65535 ) 📃 ⟩
         kf2K2feSaxeS2(tahaqS2);
         const k2feCa1ara = kf2K2feCa1ara(tahaqS2, n);
         const c2w2qPal6 = quqC2w2qPal6(jxl.sefini, jxl.l6da, tiffQuq.c2w2q);
@@ -654,8 +654,8 @@ async function tboDNG(cakavop2DNG: File): Promise<Blob> {
       }
     }
     /*
-    * ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ ( 3 DNG RGB ) ⟩
-    * ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ ⟩
+    * ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ ( 3 DNG RGB ) 📃 ⟩
+    * ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɟᴜ ı],ɹͷ̗ 📃 ⟩
     */
     const eskek = await librawQuq.rawImageData();
     if ( eskek && eskek.width > 0o0 && eskek.height > 0o0 && eskek.data.length >= eskek.width * eskek.height * 0o3 && !ne1aSunta(eskek.data) ) {
@@ -663,7 +663,7 @@ async function tboDNG(cakavop2DNG: File): Promise<Blob> {
       if ( png ) return png;
     }
 
-    // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ɭʃᴜ ֭ſɭᴜȝ ( 4 JPEG TIFF ) ⟩
+    // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ɭʃᴜ ֭ſɭᴜȝ ( 4 JPEG TIFF ) 📃 ⟩
     const saxeKuba = await librawQuq.thumbnailData().catch(() => undefined);
     if ( saxeKuba && saxeKuba.data.length > 0o0 ) {
       const maxemaSaxez = URL.createObjectURL(new Blob([ saxeKuba.data.slice() ], { type: saxeKuba.format === "jpeg" ? "image/jpeg" : "application/octet-stream" }));
@@ -683,7 +683,7 @@ async function tboDNG(cakavop2DNG: File): Promise<Blob> {
       }
     }
   } catch {
-    // ⟨ ſןw ʌ ſɭэ ֭ſɭэ ⟩
+    // ⟨ ſןw ʌ ſɭэ ֭ſɭэ 📃 ⟩
   }
 
   throw new Error("ne1aDNG");
@@ -692,7 +692,7 @@ async function tboDNG(cakavop2DNG: File): Promise<Blob> {
   }
 }
 
-// ⟪ j͑ʃ'ᴜ ɭʃᴜ }ʃɔƽ - ᶅſɔ ֭ſɭɹ ʌ ſɟᴜ ı],ɹͷ̗ ⟫
+// ⟪ j͑ʃ'ᴜ ɭʃᴜ }ʃɔƽ - ᶅſɔ ֭ſɭɹ ʌ ſɟᴜ ı],ɹͷ̗ 📃 ⟫
 
 const KMABAKANT2 = 0o20;
 const VATANEK_CAK2BAKANO = new Uint8Array(0o400);
@@ -709,7 +709,7 @@ function vatanekWeh2(vop2: Uint8ClampedArray): void {
   }
 }
 
-// ⟪ j͑ʃ'ᴜ saxeK2fe ֭ſɭᴜ - ſɭʞɹ ⟫
+// ⟪ j͑ʃ'ᴜ saxeK2fe ֭ſɭᴜ - ſɭʞɹ 📃 ⟫
 
 const VAXAHA_PAL6 = 0o2;
 const VAXAHA_PUKA5IK = VAXAHA_PAL6 * 0o2 + 0o1;
@@ -812,7 +812,7 @@ let MARKO_SAXE: Uint8Array | null = null;
 let MARKO_SEFINI = 0o0;
 let MARKO_L6DA = 0o0;
 
-// ⟨ ſɟᴜ ɭʃᴜ ʌ ſןᴜ j͐ʃэ ( PNG ) ⟩
+// ⟨ ſɟᴜ ɭʃᴜ ʌ ſןᴜ j͐ʃэ ( PNG ) 📃 ⟩
 
 async function pngAraRGB(cakavop2: Blob): Promise<{ sefini: number; l6da: number; rgb: Uint8Array }> {
   const cakavop2Sab2 = new Uint8Array(await cakavop2.arrayBuffer());
@@ -923,8 +923,8 @@ function kf2Marko(): Promise<void> {
       MARKO_SEFINI = marko.sefini;
       MARKO_L6DA = marko.l6da;
       /*
-      * ⟨ ɭʃɀɜ ʌ ᶅſɔ ֭ſɭɹ ( PIL RGB L ) ⟩
-      * ⟨ ꞁȷ̀эȝ ɭʃɔ ʌ ᶅſɔ ֭ſɭɹ ⟩
+      * ⟨ ɭʃɀɜ ʌ ᶅſɔ ֭ſɭɹ ( PIL RGB L ) 📃 ⟩
+      * ⟨ j͑ʃɹ ɭʃᴜɔ˞ ʌ ᶅſɔ ֭ſɭɹ 📃 ⟩
       */
       const saxeS2Ca1ara = new Uint8Array(MARKO_SEFINI * MARKO_L6DA);
       for ( let i = 0o0; i < saxeS2Ca1ara.length; i++ ) {
@@ -967,7 +967,7 @@ function kf2KubaCa1ara(W: number, H: number, mw: number, mh: number, sefini: num
   return { tw, th, kxesuAraqCa1ara };
 }
 
-// ⟨ Mersenne-Twister 19937 ⟩
+// ⟨ Mersenne-Twister 19937 📃 ⟩
 
 const MT_N = 0o1160;
 const MT_M = 0o615;
@@ -1009,7 +1009,7 @@ function saxeK2feBavek2feni(saxeK2fe: number, W: number, H: number): Uint8Array 
   return ksaka;
 }
 
-// ⟨ ſɟᴜ ɭʃᴜ ʌ ſןᴜ j͐ʃэ ( haba 3 ) ⟩
+// ⟨ ſɟᴜ ɭʃᴜ ʌ ſןᴜ j͐ʃэ ( haba 3 ) 📃 ⟩
 
 function quqHabaK2fe(x: number): number {
   const absX = Math.abs(x);
@@ -1023,7 +1023,7 @@ function quqHabaK2fe(x: number): number {
   return ( 0o3 * Math.sin(piX) * Math.sin(piX / 0o3) ) / ( piX * piX );
 }
 
-// ⟨ ſɭɹ ſȷɔ ʌ }ʃɹƽ ( Pillow Resample PRECISION_BITS 32-8-2 ) ⟩
+// ⟨ ſɭɹ ſȷɔ ʌ }ʃɹƽ ( Pillow Resample PRECISION_BITS 32-8-2 ) 📃 ⟩
 const K2FE_BITOJ = 0o26;
 
 function kf2HabaK2feCa1ara(saxePal6: number, araqPal6: number): Array<[ number, Int32Array, number ]> {
@@ -1055,7 +1055,7 @@ function kf2HabaK2feCa1ara(saxePal6: number, araqPal6: number): Array<[ number, 
         saxeK2feCa1ara[i] /= k2feSaxe;
       }
     }
-    // ⟨ ſɭɹ ſȷɔ ( ±0o1 0o2 0o1 0o26 ) ⟩
+    // ⟨ ſɭɹ ſȷɔ ( ±0o1 0o2 0o1 0o26 ) 📃 ⟩
     const k2feCa1ara = new Int32Array(kemafiPal6);
     for ( let i = 0o0; i < kemafiPal6; i++ ) {
       const k = saxeK2feCa1ara[i] * ( 0o1 << K2FE_BITOJ );
@@ -1071,7 +1071,7 @@ function habaKf2Sunta(saxe: Uint8Array, mw: number, mh: number, tw: number, th: 
   const kp6KubaCa1ara = kf2HabaK2feCa1ara(mw, tw);
 
   /*
-  * ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɹ ſȷɔ ( PIL 8 Resample 22 ) ⟩
+  * ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɹ ſȷɔ ( PIL 8 Resample 22 ) 📃 ⟩
   */
   const m2K2fe = 0o1 << ( K2FE_BITOJ - 0o1 );
   const han2k = new Uint8Array(tw * mh);
@@ -1105,7 +1105,7 @@ function habaKf2Sunta(saxe: Uint8Array, mw: number, mh: number, tw: number, th: 
   return k61e;
 }
 
-// ⟨ ſɟᴜ ɭʃᴜ ʌ ſןᴜ j͐ʃэ ( RFC ImageData haba PIL ) ⟩
+// ⟨ ſɟᴜ ɭʃᴜ ʌ ſןᴜ j͐ʃэ ( RFC ImageData haba PIL ) 📃 ⟩
 function habaKf2SuntaRGBA(saxe: Uint8ClampedArray, mw: number, mh: number, tw: number, th: number, araq: Uint8ClampedArray, suntaK2fe?: ( s2: number ) => void): void {
   const n = mw * mh;
   const rSaxe = new Uint8Array(n);
@@ -1124,7 +1124,7 @@ function habaKf2SuntaRGBA(saxe: Uint8ClampedArray, mw: number, mh: number, tw: n
   if ( suntaK2fe ) suntaK2fe( 0o2 / 0o3 );
   const bAraq = habaKf2Sunta(bSaxe, mw, mh, tw, th);
   if ( suntaK2fe ) suntaK2fe( 0o3 / 0o4 );
-  // ⟨ ſɟᴜ ɭʃᴜ ʌ ſןᴜ j͐ʃэ ⟩
+  // ⟨ ſɟᴜ ɭʃᴜ ʌ ſןᴜ j͐ʃэ 📃 ⟩
   const aAraq = habaKf2Sunta(aSaxe, mw, mh, tw, th);
   if ( suntaK2fe ) suntaK2fe( 0o1 );
   const m = tw * th;
@@ -1217,7 +1217,7 @@ function zez(a: Float32Array, sefini: number, l6da: number, s2Ca1ara: Uint8Array
   }
 }
 
-// ⟪ j͑ʃп́ɔ ꞁȷ̀ɜ ſꞇ ı],ɔ ꞁȷ̀ᴜꞇ - ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟫
+// ⟪ j͑ʃп́ɔ j͑ʃɹ ɭʃᴜɔ˞ - ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟫
 
 function kf2KsakaK61e(): string | null {
   if ( !A1A_SWEKA_KSAKA.checked ) {
@@ -1225,10 +1225,10 @@ function kf2KsakaK61e(): string | null {
   }
 
   const ksakaCa1ara: Array<[ string, string ]> = [
-    [ "Make", BAKANANO_ſɭʞɹ.value ],
+    [ "Make", BAKANANO_KF2.value ],
     [ "Model", BAKANANO_HAT.value ],
     [ "Artist", BAKANANO_MAKF2.value ],
-    [ "Copyright", BAKANANO_J͑ʃɽ͑ʃꞇ.value ],
+    [ "Copyright", BAKANANO_Sɽ͑BI.value ],
     [ "Software", BAKANANO_SCFALI.value ]
   ];
 
@@ -1246,10 +1246,10 @@ function kf2KsakaK61e(): string | null {
   return ha6zoj.join("\u0001");
 }
 
-// ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( TIFF JPEG APP1 PNG eXIf ) ⟩
+// ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( TIFF JPEG APP1 PNG eXIf ) 📃 ⟩
 
 function quqEksif(sab2: Uint8Array): number {
-  // ⟨ j͑ʃᴜƽ ( JPEG APP1 Exif ) ⟩
+  // ⟨ j͑ʃᴜƽ ( JPEG APP1 Exif ) 📃 ⟩
   if ( sab2.length > 0o10 && sab2[0o0] === 0xff && sab2[0o1] === 0xd8 ) {
     let i = 0o2;
     while ( i + 0o12 <= sab2.length ) {
@@ -1266,7 +1266,7 @@ function quqEksif(sab2: Uint8Array): number {
     }
     return -0o1;
   }
-  // ⟨ j͑ʃᴜƽ ( PNG eXIf ) ⟩
+  // ⟨ j͑ʃᴜƽ ( PNG eXIf ) 📃 ⟩
   if ( sab2.length > 0o10 && sab2[0o0] === 0x89 && sab2[0o1] === 0x50 ) {
     let i = 0o10;
     while ( i + 0o10 <= sab2.length ) {
@@ -1278,11 +1278,11 @@ function quqEksif(sab2: Uint8Array): number {
     }
     return -0o1;
   }
-  // ⟨ j͑ʃᴜƽ ( Exif TIFF ) ⟩
+  // ⟨ j͑ʃᴜƽ ( Exif TIFF ) 📃 ⟩
   if ( sab2.length > 0o10 && sab2[0o0] === 0x45 && sab2[0o1] === 0x78 && sab2[0o2] === 0x69 && sab2[0o3] === 0x66 ) {
     return 0o6;
   }
-  // ⟨ j͑ʃᴜƽ ( TIFF ) ⟩
+  // ⟨ j͑ʃᴜƽ ( TIFF ) 📃 ⟩
   if ( sab2.length > 0o10 && ( sab2[0o0] === 0x49 || sab2[0o0] === 0x4d ) && sab2[0o1] === sab2[0o0] ) {
     return 0o0;
   }
@@ -1292,13 +1292,13 @@ function quqEksif(sab2: Uint8Array): number {
 function quqBakanano(sab2: Uint8Array): void {
   const xemaBakanano = ( k61eKsaka: string, j6fini: string ): void => {
     if ( k61eKsaka === "Make" ) {
-      BAKANANO_ſɭʞɹ.value = j6fini;
+      BAKANANO_KF2.value = j6fini;
     } else if ( k61eKsaka === "Model" ) {
       BAKANANO_HAT.value = j6fini;
     } else if ( k61eKsaka === "Artist" ) {
       BAKANANO_MAKF2.value = j6fini;
     } else if ( k61eKsaka === "Copyright" ) {
-      BAKANANO_J͑ʃɽ͑ʃꞇ.value = j6fini;
+      BAKANANO_Sɽ͑BI.value = j6fini;
     } else if ( k61eKsaka === "Software" ) {
       BAKANANO_SCFALI.value = j6fini;
     }
@@ -1335,7 +1335,7 @@ function quqBakanano(sab2: Uint8Array): void {
     if ( kxesuAraq + k2fe > sab2.length ) {
       continue;
     }
-    // ⟨ ſןw ʌ ſɭɘэ ſɭɹ ſןɹ ⟩
+    // ⟨ ſןw ʌ ſɭɘэ ſɭɹ ſןɹ 📃 ⟩
     const j6fini = new TextDecoder().decode(sab2.slice(kxesuAraq, kxesuAraq + k2fe - 0o1));
 
     if ( ksaka === 0x010f ) {
@@ -1353,13 +1353,13 @@ function quqBakanano(sab2: Uint8Array): void {
 }
 
 async function quqCakavop2Bakanano(cakavop2: File): Promise<void> {
-  // ⟨ j͑ʃᴜƽ ( JPEG APP1 64 KiB ) ⟩
+  // ⟨ j͑ʃᴜƽ ( JPEG APP1 64 KiB ) 📃 ⟩
   const cakavop2Sab2 = await cakavop2.slice(0o0, 0o200000).arrayBuffer();
   const sab2 = new Uint8Array(cakavop2Sab2);
   quqBakanano(sab2);
 }
 
-// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
+// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
 
 function ne1aBakanano(): void {
   for ( const xemaKek of BAKANANO_CA1ARA ) {
@@ -1367,7 +1367,7 @@ function ne1aBakanano(): void {
   }
 }
 
-// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( HTML ) ⟩
+// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( HTML ) 📃 ⟩
 
 async function v3ak2Bakanano(): Promise<void> {
   for ( const xemaKek of BAKANANO_CA1ARA ) {
@@ -1378,7 +1378,7 @@ async function v3ak2Bakanano(): Promise<void> {
   }
 }
 
-// ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
+// ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
 
 async function v3ak2BakananoSaxeCakavop2(cakavop2: File | null): Promise<void> {
   if ( A1A_NE1A_KSAKA.checked ) {
@@ -1390,7 +1390,7 @@ async function v3ak2BakananoSaxeCakavop2(cakavop2: File | null): Promise<void> {
   }
 }
 
-function kf2Exif(kxesuKsakaCa1ara: Array<[ string, string ]>): Uint8Array {
+function kf2TahaqKef(kxesuKsakaCa1ara: Array<[ string, string ]>): Uint8Array {
   const kf2XezHtaka = ( ksaka: number, hat: number, k2fe: number, j6fini: number ): number[] => {
     return [ ( ksaka >> 0o10 ) & 0o377, ksaka & 0o377, ( hat >> 0o10 ) & 0o377, hat & 0o377,
       ( k2fe >>> 0o30 ) & 0o377, ( k2fe >>> 0o20 ) & 0o377, ( k2fe >>> 0o10 ) & 0o377, k2fe & 0o377,
@@ -1414,14 +1414,14 @@ function kf2Exif(kxesuKsakaCa1ara: Array<[ string, string ]>): Uint8Array {
     if ( !ksaka ) {
       continue;
     }
-    // ⟨ ſɭɹʞ ʌ ɭl̀э ſȷꞇ }ʃꞇ ( piexif UTF-8 ) ⟩
+    // ⟨ ſɭɹʞ ʌ ɭl̀э ſȷꞇ }ʃꞇ ( piexif UTF-8 ) 📃 ⟩
     ksakaCa1ara.push({ ksaka, sab2: kf2K61e.encode(j6fini) });
   }
 
-  // ⟨ ſɭɹ ſȷɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( piexif ) ⟩
+  // ⟨ ſɭɹ ſȷɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( piexif ) 📃 ⟩
   ksakaCa1ara.sort(( a, b ) => a.ksaka - b.ksaka);
 
-  // ⟨ ſɭɹ ſȷɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( IFD 4 ) ⟩
+  // ⟨ ſɭɹ ſȷɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( IFD 4 ) 📃 ⟩
   const kxesuK2fe = ksakaCa1ara.length;
   let pal6IFD = 0o2 + kxesuK2fe * 0o14 + 0o4;
   let pal6Sab2 = 0o0;
@@ -1432,7 +1432,7 @@ function kf2Exif(kxesuKsakaCa1ara: Array<[ string, string ]>): Uint8Array {
     }
   }
 
-  // ⟨ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ ( TIFF 8 ) ⟩
+  // ⟨ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɭɹ ſȷɔ ( TIFF 8 ) 📃 ⟩
   let kxesuS2K2fe = 0o10 + pal6IFD;
 
   const saxeSab2 = [ 0x4d, 0x4d, 0x00, 0x2a, 0x00, 0x00, 0x00, 0x08 ];
@@ -1494,7 +1494,7 @@ function xemaExif(png: Uint8Array, exif: Uint8Array): Uint8Array<ArrayBuffer> {
     return s2;
   };
 
-  // ⟨ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( IHDR IDAT eXIf ) ⟩
+  // ⟨ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( IHDR IDAT eXIf ) 📃 ⟩
   const s2Ca1ara: Array<Uint8Array> = [ png.slice(0o0, 0o10) ];
   let ruva = 0o10;
   let vaku3a = false;
@@ -1533,7 +1533,7 @@ function xemaExif(png: Uint8Array, exif: Uint8Array): Uint8Array<ArrayBuffer> {
   return saxeAraqSab2;
 }
 
-// ⟪ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ɭʃᴜ ֭ſɭᴜȝ ⟫
+// ⟪ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ɭʃᴜ ֭ſɭᴜȝ 📃 ⟫
 
 async function vasakaTahaq(tahaq: File): Promise<void> {
   const maxemaSaxez = URL.createObjectURL(tahaq);
@@ -1560,8 +1560,8 @@ async function kf2SuntaSaxeTahaq(kxesuTahaq: HTMLImageElement): Promise<void> {
     suntaK2fe( 0o20 );
 
         /*
-        * ⟨ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſɭɹ ſȷɔ ( PIL haba ) ⟩
-        * ⟨ j͑ʃᴜƽ ( drawImage ) ⟩
+        * ⟨ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſɭɹ ſȷɔ ( PIL haba ) 📃 ⟩
+        * ⟨ j͑ʃᴜƽ ( drawImage ) 📃 ⟩
         */
         const araq = kf2Pu(kxesuTahaq.naturalWidth, kxesuTahaq.naturalHeight);
         const sefiniL6da = araq.sefini / araq.l6da;
@@ -1574,7 +1574,7 @@ async function kf2SuntaSaxeTahaq(kxesuTahaq: HTMLImageElement): Promise<void> {
           suntaKuba.width = araq.sefini;
           suntaKuba.height = araq.l6da;
         } else {
-          // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſןᴜ j͐ʃэ ⟩
+          // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſןᴜ j͐ʃэ 📃 ⟩
           suntaKuba.width = s2.sefini;
           suntaKuba.height = s2.l6da;
         }
@@ -1596,7 +1596,7 @@ async function kf2SuntaSaxeTahaq(kxesuTahaq: HTMLImageElement): Promise<void> {
 
         let kxesuSuntaVop2: ImageData;
         if ( suntaKuba.width === s2.sefini && suntaKuba.height === s2.l6da ) {
-          // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ɭʃᴜ ֭ſɭᴜȝ ⟩
+          // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ɭʃᴜ ֭ſɭᴜȝ 📃 ⟩
           kxesuSuntaVop2 = new ImageData(new Uint8ClampedArray(saxeVop2.data), suntaKuba.width, suntaKuba.height);
           suntaK2fe( 0o60 );
         } else {
@@ -1659,7 +1659,7 @@ async function kf2SuntaSaxeTahaq(kxesuTahaq: HTMLImageElement): Promise<void> {
             const kxesuS2Ca1ara = ha6zo.split("\u0000");
             return [ kxesuS2Ca1ara[0o0], kxesuS2Ca1ara.slice(0o1).join("\u0000") ];
           });
-          pngSab2 = xemaExif(pngSab2, kf2Exif(kxesuKsakaCa1ara));
+          pngSab2 = xemaExif(pngSab2, kf2TahaqKef(kxesuKsakaCa1ara));
         }
 
         suntaK2fe( 0o77 );
@@ -1678,9 +1678,9 @@ async function kf2SuntaSaxeTahaq(kxesuTahaq: HTMLImageElement): Promise<void> {
   }
 }
 
-// ⟪ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ֭ſɭᴜ ʃᴜ ⟫
+// ⟪ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ֭ſɭᴜ ʃᴜ 📃 ⟫
 
-// ⟨ ſ͕ɭwc̭ ſɭɹ - qumk2 ⟩
+// ⟨ ſ͕ɭwc̭ ſɭɹ - qumk2 📃 ⟩
 
 function qumk2Sunta(): void {
   if ( !tlakakuTahaqSweruva ) {
@@ -1697,7 +1697,7 @@ function qumk2Sunta(): void {
 
 QUMK2.addEventListener( "click", qumk2Sunta );
 
-// ⟪ ſɩʞɹ - ſɭʞɹ 📃 ⟫
+// ⟪ ſɭʞɹ 📃 ⟫
 
 function kxesuTenni( kxesu: boolean ): void {
   TENNI.disabled = !kxesu;

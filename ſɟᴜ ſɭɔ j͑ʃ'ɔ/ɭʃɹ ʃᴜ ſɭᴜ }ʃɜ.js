@@ -44,7 +44,7 @@ if ( hat2bakanoKek ) {
 
 // ⟪ ꞁȷ̀ɹ ʃᴜ ʌ j͑ʃᴜƽ 📃 ⟫
 
-// ⟨ ֭ſɭɹͷ̗ ʌ ſןэ ſɭ,wƽ ʌ ſɭᴜͷ̗ ⟅ ( "see x2" -> "see" ) ⟆ ⟩
+// ⟨ ֭ſɭɹͷ̗ ʌ ſןэ ſɭ,wƽ ʌ ſɭᴜͷ̗ ⟅ ( "see x2" -> "see" ) ⟆ 📃 ⟩
 function h2lP6zuk(kek) {
     let kal = kek.length;
     while ( kal > 0o0 && /\s/.test(kek.charAt(kal - 0o1)) ) kal--;
@@ -58,7 +58,7 @@ function h2lP6zuk(kek) {
     return kek.slice(0o0, sef4Kal);
 }
 
-// ⟨ ſɭᴜ̭ᴜ ſɭᴜ̭ᴜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅ ( ｡ ʌ xN ) ⟆ ⟩
+// ⟨ ſɭᴜ̭ᴜ ſɭᴜ̭ᴜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅ ( ｡ ʌ xN ) ⟆ 📃 ⟩
 function kcakcaKp6k2p2(kp6k2p2) {
     const kcakcaCa1ara = [];
     const vaku3a = (kek) => {
@@ -74,7 +74,7 @@ function kcakcaKp6k2p2(kp6k2p2) {
     return kcakcaCa1ara;
 }
 
-// ⟨ ʃэ }ʃɹ ʃᴜ ʌ j͑ʃᴜƽ ʌ ꞁȷ̀ɹ ʃᴜ ⟅ ( 0o0 ſɭɹ ֭ſɭɹ ｡ 0o1 ɭʃɔ ɽ͑ʃ'w ｡ 0o2 ſᶘᴜƴ ｡ 0o3 ֭ſɭɹ ) ⟆ ⟩
+// ⟨ ʃэ }ʃɹ ʃᴜ ʌ j͑ʃᴜƽ ʌ ꞁȷ̀ɹ ʃᴜ ⟅ ( 0o0 ſɭɹ ֭ſɭɹ ｡ 0o1 ɭʃɔ ɽ͑ʃ'w ｡ 0o2 ſᶘᴜƴ ｡ 0o3 ֭ſɭɹ ) ⟆ 📃 ⟩
 function b6n2baSak(kp6k2p2Ca1ara, tani) {
     const kefCa1ara = tani.split(/\s+/).filter(Boolean);
     let kma = 0o3;
@@ -88,14 +88,14 @@ function b6n2baSak(kp6k2p2Ca1ara, tani) {
                 k2h2 = true;
                 break;
             }
-            // ⟨ ɭʃɔ ɽ͑ʃ'w ʌ tani ⟩
+            // ⟨ ɭʃɔ ɽ͑ʃ'w ʌ tani 📃 ⟩
             if ( kek.length > tani.length && kek.startsWith(tani) && /\s/.test(kek.charAt(tani.length)) ) {
                 teru = true;
             }
         }
         if ( k2h2 ) return 0o0;
         if ( teru && kma > 0o1 ) kma = 0o1;
-        // ⟨ ſᶘᴜƴ ʌ kef ⟅ ( AND ) ⟆ ⟩
+        // ⟨ ſᶘᴜƴ ʌ kef ⟅ ( AND ) ⟆ 📃 ⟩
         const tsaz = kefCa1ara.every((kef) => s2.includes(kef));
         if ( ( tsaz || s2.includes(tani) ) && kma > 0o2 ) kma = 0o2;
     }
@@ -133,7 +133,7 @@ function iibaCax2l(bana2bakano, cax2l) {
 
     l6r2ba.sort((a, b) => ( a.sak - b.sak ) || ( a.ruva - b.ruva ));
 
-    // ⟨ ſןɜ ᶅſwƽ ʌ ſɭᴜ ŋᷠᴜ ⟅ ( powukcax2l ) ⟆ ⟩
+    // ⟨ ſןɜ ᶅſwƽ ʌ ſɭᴜ ŋᷠᴜ ⟅ ( powukcax2l ) ⟆ 📃 ⟩
     const kekKaltok = document.createDocumentFragment();
     if ( powukcax2l && tani !== "" ) {
         for ( let i = l6r2ba.length - 0o1; i >= 0o0; i-- ) {

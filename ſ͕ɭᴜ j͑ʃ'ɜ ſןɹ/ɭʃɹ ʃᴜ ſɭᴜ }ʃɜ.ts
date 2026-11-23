@@ -1,6 +1,6 @@
 /**
-* ≺⧼ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⧽≻
-* ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( .html hacavop2 thala )
+* ≺⧼ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ 📃 ⧽≻
+* ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( .html hacavop2 thala )
 */
 
 const ARAQ_SAR2BA = "ſ͕ɭᴜ j͑ʃ'ɜ ſןɹ.html"
@@ -32,8 +32,8 @@ function quqHate (): Map<string, Aracavop2Cakani> {
 			hahate.set(maxema_swaraq, { ksaka: maxema_swaraq, hacavop2: [] })
 		}
 
-		const group = hahate.get(maxema_swaraq)!
-		group.hacavop2.push({
+		const hate = hahate.get(maxema_swaraq)!
+		hate.hacavop2.push({
 			ksaka: cvp_ksaka.replace(".html", ""),
 			ruva_cel2fu: cvp_swaraq,
 		})
@@ -42,20 +42,20 @@ function quqHate (): Map<string, Aracavop2Cakani> {
 	return hahate
 }
 
-function saHateKf2Thala ( group: Aracavop2Cakani ): HTMLElement {
+function saHateKf2Thala ( hate: Aracavop2Cakani ): HTMLElement {
 	const thala = document.createElement("thala")
 	const j6thalani = document.createElement("details")
 	j6thalani.className = "flak"
 
 	const ksakap2sa = document.createElement("summary")
 	ksakap2sa.className = "ksakap2sa"
-	ksakap2sa.dataset.oskakefani = group.ksaka
-	ksakap2sa.textContent = group.ksaka
+	ksakap2sa.dataset.oskakefani = hate.ksaka
+	ksakap2sa.textContent = hate.ksaka
 
 	const kltk = document.createElement("duv")
 	kltk.className = "c2h2flak"
 
-	for ( const cavop2 of group.hacavop2 ) {
+	for ( const cavop2 of hate.hacavop2 ) {
 		const a = document.createElement("a")
 		a.href = cavop2.ruva_cel2fu
 		a.dataset.oskakefani = cavop2.ksaka
@@ -90,8 +90,8 @@ function kf2Cak2baAracavop2 (): void {
 
 	const ariiba = document.createElement("ariiba")
 
-	for ( const [ , group ] of hahate ) {
-		const thala = saHateKf2Thala(group)
+	for ( const [ , hate ] of hahate ) {
+		const thala = saHateKf2Thala(hate)
 		ariiba.appendChild(thala)
 	}
 

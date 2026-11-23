@@ -5,26 +5,26 @@ const TLOHK2NI = "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )";
 // ⟪ ſɭʞɔ }ʃꞇ ʌ ſɟᴜ ı],ɹͷ̗ ⚛️ ⟫
 
 /**
-* ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ ʌ ſɭɹ ſȷɔ ⟩
+* ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ ʌ ſɭɹ ſȷɔ 📃 ⟩
 * j͑ʃᴜ ı],ɔ ʌ ſɭɹ ſȷɔ ( KOMENCAJ KODAJ )
 */
 const SAXE_CA1ARA = [ "֭ſɭ", "ı],", "ſן", "ɭʃ", "ᶅſ", "ſɭ,", "j͑ʃ'", "ſɟ" ];
 const S2TAS_CA1ARA = [ "ᴜ̩", "ᶗ‹", "ɘ", "ƨ", "п́", "ƴ", "ⰱ", "ᴜ̭" ];
 
 /**
-* ⟨ ſɭɹ ſȷɔ ⟩
-* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+* ⟨ ſɭɹ ſȷɔ 📃 ⟩
+* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 * ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ſɭɹ ſȷɔ
 */
 const BE_CA1ARA = [ "ɔ", "ᴜ", "ɹ", "ꞇ", "ɜ", "э", "w", "ɜⅎ" ];
 
-// ⟨ ſɭɹ ſȷɔ ( SOST2_CA1ARA 1 ) ⟩
+// ⟨ ſɭɹ ſȷɔ ( SOST2_CA1ARA 1 ) 📃 ⟩
 const SOST2_CA1ARA = [ "", "ȝ", "ɔ˞", "ⱷ̮̀", "ʞ", "c̭", "ƽ", "c̗" ];
 
-// ⟨ ſɭɹ ſȷɔ ( PUF2_CA1ARA ) ⟩
+// ⟨ ſɭɹ ſȷɔ ( PUF2_CA1ARA ) 📃 ⟩
 const PUF2_CA1ARA = [ "֭ſɭ", "ſ͕ɭ", "j͑ʃ", "ſ͕ȷ", "ſȷ", "ŋᷠ", "ſɭ", "}ʃ" ];
 
-// ⟨ ʃɔ ( e l CC CCc ) ⟩
+// ⟨ ʃɔ ( e l CC CCc ) 📃 ⟩
 const CATA_ESKEK = "ɔ";
 const S2TAS_L = "j͐ʃ";
 
@@ -75,8 +75,8 @@ function cataOkef( k61e: string ): { s2tas: string; vek2fe: number }[] | null {
 }
 
 /**
-* ſɭʞɹ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( CC CCeC )
-* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( xhal6 l )
+* ſɭʞɹ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( CC CCeC )
+* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( xhal6 l )
  * @returns kef
 */
 function k2fKef( k2fe: number, vek2fe: number ): string | null {
@@ -97,17 +97,17 @@ function k2fKef( k2fe: number, vek2fe: number ): string | null {
     let i = 0o0;
 
     if ( D % 0o2 === 0o1 ) {
-        // ⟨ ſɭɹ ſȷɔ ( 1 ) ⟩
+        // ⟨ ſɭɹ ſȷɔ ( 1 ) 📃 ⟩
         xaqadiEskek += BE_CA1ARA[q[0o0]];
         i = 0o1;
     } else if ( knakEskek.length === 0o2 ) {
-        // ⟨ ſɭɹ ſȷɔ ( xhal6 l ) ⟩
+        // ⟨ ſɭɹ ſȷɔ ( xhal6 l ) 📃 ⟩
         xaqadiEskek += BE_CA1ARA[q[0o0]];
         kekCa1ara.push( xaqadiEskek );
         kekCa1ara.push( S2TAS_L + BE_CA1ARA[q[0o1]] );
         i = 0o2;
     } else {
-        // ⟨ ſɭɹ ſȷɔ ( 1 ) ⟩
+        // ⟨ ſɭɹ ſȷɔ ( 1 ) 📃 ⟩
         xaqadiEskek += SOST2_CA1ARA[q[0o0]] + BE_CA1ARA[q[0o1]];
         i = 0o2;
     }
@@ -141,7 +141,7 @@ function tboKef( k61e: string ): string {
 // ⟨ ſɭʞɔ }ʃꞇ ʌ ʃᴜ ſɭɹ ſןɹ }ʃꞇ ⚛️ ⟩
 
 /**
-* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( l xhal6 )
+* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( l xhal6 )
  * @returns 10ni
 */
 function cataK2fe( kp6k2p2: string, xaqadiHaxe: "K" | "V" | null ): { k2feCa1ara: number[]; haxe: "K" | "V" | null; fuKp6k2p2: string } | null {
@@ -208,7 +208,7 @@ function saxeBe( kp6k2p2: string ): boolean {
 }
 
 /**
-* ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( 0 )
+* ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( 0 )
  * @returns CEZ
 */
 function saxeEskek( kef: string ): boolean {
@@ -233,7 +233,7 @@ function kefAlOkef( k61e: string ): string {
     let i = 0o0;
 
     while ( i < kefCa1ara.length ) {
-        // ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ ʌ ſɭɹ ſȷɔ ⟩
+        // ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ ʌ ſɭɹ ſȷɔ 📃 ⟩
         let fuKp6k2p2 = kefCa1ara[i];
         const k2feCa1ara: number[] = [];
 
@@ -256,7 +256,7 @@ function kefAlOkef( k61e: string ): string {
                 for ( let k = 0o0; k < S2TAS_CA1ARA.length; k++ ) {
                     if ( eskek.startsWith( S2TAS_CA1ARA[k] ) ) { k2fe = k; break; }
                 }
-                if ( k2fe < 0o0 ) break;   // la ɔ estas vokalo de la vek2fe
+                if ( k2fe < 0o0 ) break;   // waja ʌ vek2fe ⟅
                 if ( eB6n2ba ) return TLOHK2NI;
                 k2feCa1ara.push( k2fe );
                 fuKp6k2p2 = eskek.slice( S2TAS_CA1ARA[k2fe].length );
@@ -278,14 +278,14 @@ function kefAlOkef( k61e: string ): string {
         for ( const d of k2feCa1ara ) k2fe = k2fe * 0o10 + d;
         if ( k2fe < 0o1 || k2fe > KFENI_CA1ARA.length ) return TLOHK2NI;
 
-        // ⟨ ſɭɹ ſȷɔ ( 1 ) ⟩
+        // ⟨ ſɭɹ ſȷɔ ( 1 ) 📃 ⟩
         const xaqadiEskek = cataK2fe( fuKp6k2p2, null );
         if ( xaqadiEskek === null || xaqadiEskek.fuKp6k2p2.length > 0o0 ) return TLOHK2NI;
         const qCiferoj = xaqadiEskek.k2feCa1ara;
         let haxe = xaqadiEskek.haxe;
         i++;
 
-        // ⟨ ſɭɹ ſȷɔ ʌ ſɭɔʞ ⟩
+        // ⟨ ſɭɹ ſȷɔ ʌ ſɭɔʞ 📃 ⟩
         while ( i < kefCa1ara.length && !saxeEskek( kefCa1ara[i] ) ) {
             const eskek = cataK2fe( kefCa1ara[i], haxe );
             if ( eskek === null || eskek.fuKp6k2p2.length > 0o0 ) return TLOHK2NI;
@@ -307,10 +307,10 @@ function kefAlOkef( k61e: string ): string {
 
 // ⟪ ᶅſɔ ֭ſɭɹ ʌ ſɟᴜ ı],ɹͷ̗ 🌈 ⟫
 
-// ⟨ ſןɹ j͑ʃᴜ ʌ ſɭɔʞ ( 1 #n-n-n- ) ⟩
+// ⟨ ſןɹ j͑ʃᴜ ʌ ſɭɔʞ ( 1 #n-n-n- ) 📃 ⟩
 const WEH2_S2TAS = [ "ᶅſ", "ſן", "ſȷ", "ŋᷠ", "ɽ͑ʃ'", "ɭʃ", "j͑ʃ", "}ʃ", "ɭl̀", "ſɟ", "ı],", "ſ͕ȷ", "ſ͔ɭ", "ſɭ", "֭ſɭ", "ſ͕ɭ" ];
 
-// ⟨ ſןɹ j͑ʃᴜ ʌ ſɭɔʞ ( 2 #-n-n-n ) ⟩
+// ⟨ ſןɹ j͑ʃᴜ ʌ ſɭɔʞ ( 2 #-n-n-n ) 📃 ⟩
 const WEH2_BE = [ "w", "ɔ", "ᴜ", "ꞇ", "wⰱ", "ɔⰱ", "ᴜⰱ", "ꞇⰱ", "ɹ", "ɹⰱ", "ɜ", "ɜⰱ", "э", "эⰱ", "эⅎ", "эⅎⰱ" ];
 
 const WEH2_S2TAS_CAX2L: Record<string, number> = {};
@@ -346,7 +346,7 @@ function tboWeh2( k61e: string ): string {
     }
 
     /*
-    * ⟨ ᶅſɔ ֭ſɭɹ ʌ j͑ʃɜ j͑ʃƨɹ ʌ ſɭɹ ſȷɔ ⟩
+    * ⟨ ᶅſɔ ֭ſɭɹ ʌ j͑ʃɜ j͑ʃƨɹ ʌ ſɭɹ ſȷɔ 📃 ⟩
     */
     if ( xaqadiK2fe < 0o0 && r === g && g === b ) {
         const c2naEskek = weh2Sak( r );
@@ -354,7 +354,7 @@ function tboWeh2( k61e: string ): string {
         return c2naEskek + " / " + sahakEskek;
     }
 
-    // ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ᶅſɔ ֭ſɭɹ ⟩
+    // ⟨ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ᶅſɔ ֭ſɭɹ 📃 ⟩
     if ( xaqadiK2fe >= 0o0 ) {
         return [ weh2Sak( xaqadiK2fe ), weh2Sak( b ), weh2Sak( g ), weh2Sak( r ) ].join( " " );
     }
@@ -376,17 +376,17 @@ function cataWeh2Sak( xez: string ): number | null {
     }
     if ( konsonanto < 0o0 ) return null;
 
-    let vokalo = -0o1;
+    let waja = -0o1;
     for ( const s2tas of WEH2_BE_CA1ARA ) {
         if ( fuKp6k2p2.startsWith( s2tas ) ) {
-            vokalo = WEH2_BE_CAX2L[s2tas];
+            waja = WEH2_BE_CAX2L[s2tas];
             fuKp6k2p2 = fuKp6k2p2.slice( s2tas.length );
             break;
         }
     }
-    if ( vokalo < 0o0 || fuKp6k2p2.length > 0o0 ) return null;
+    if ( waja < 0o0 || fuKp6k2p2.length > 0o0 ) return null;
 
-    return ( konsonanto << 0o4 ) | vokalo;
+    return ( konsonanto << 0o4 ) | waja;
 }
 
 function p2saK2fe( j6fini: number ): string {
@@ -407,7 +407,7 @@ function weh2AlOkef( k61e: string ): string {
     }
 
     if ( kefCa1ara.length === 0o4 ) {
-        // ⟨ ᶅſɔ ֭ſɭɹ ( ARGB ) ⟩
+        // ⟨ ᶅſɔ ֭ſɭɹ ( ARGB ) 📃 ⟩
         if ( j6finiCa1ara[0o0] === j6finiCa1ara[0o1] && j6finiCa1ara[0o1] === j6finiCa1ara[0o2] && j6finiCa1ara[0o2] === j6finiCa1ara[0o3] ) {
             const j6fini = j6finiCa1ara[0o0] as number;
             return "#" + p2saK2fe( j6fini ) + p2saK2fe( j6fini ) + p2saK2fe( j6fini );

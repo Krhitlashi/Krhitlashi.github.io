@@ -1,4 +1,5 @@
-// ≺⧼ j͑ʃᴜƣ̋ ꞁȷ̀ɜ ʃэ ſɟᴜ ſɭɹ - ſ͔ɭɔ j͐ʃɔɔ˞ Service Worker ⧽≻
+// ≺⧼ ŋᷠᴜ ֭ſɭᴜʞ 📃 ⧽≻
+// j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃ'ɜ ſןɹ ſןᴜ ʃɜƽ ꞁȷ̀ᴜꞇ ⟅
 
 const VAH2_KSAKA = "pwa-v3";
 
@@ -15,7 +16,7 @@ const VAH2_S2_CA1ARA = [
   "/ſᶘɔ j͐ʃw.html"
 ];
 
-// ⟨ j͑ʃᴜ ı],ɔ }ʃꞇ ⟩
+// ⟨ j͑ʃᴜ ı],ɔ }ʃꞇ 📃 ⟩
 self.addEventListener("install", ( e ) => {
   console.log("[j͑ʃᴜ ſɭɔ j͑ʃ'ɔ] saxe -");
   self.skipWaiting();
@@ -29,7 +30,7 @@ self.addEventListener("install", ( e ) => {
   );
 });
 
-// ⟨ ꞁȷ̀ᴜ ſ̀ȷɔ }ʃꞇ - j͑ʃ'ɔ ı],ꞇ j͑ʃᴜ j͑ʃᴜꞇ j͐ʃ ʌ ֭ſɭɹ ſ͕ȷɹƽ ʌ j͑ʃ'ɔ ſןᴜ ʃɜƽ ꞁȷ̀ᴜ }ʃw ⟩
+// ⟨ ꞁȷ̀ᴜ ſ̀ȷɔ }ʃꞇ - j͑ʃ'ɔ ı],ꞇ j͑ʃᴜ j͑ʃᴜꞇ j͐ʃ ʌ ֭ſɭɹ ſ͕ȷɹƽ ʌ j͑ʃ'ɔ ſןᴜ ʃɜƽ ꞁȷ̀ᴜ }ʃw 📃 ⟩
 self.addEventListener("activate", ( e ) => {
   console.log("[j͑ʃᴜ ſɭɔ j͑ʃ'ɔ] kxesu -");
   e.waitUntil(
@@ -53,7 +54,7 @@ self.addEventListener("activate", ( e ) => {
   );
 });
 
-// ⟨ ʃɜƽ ꞁȷ̀ᴜ }ʃꞇ - ſɭɹ ɽ͑ʃ'ɔ ʌ ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ j͐ʃ ʌ ɭʃᴜ ʃꞇ j͑ʃᴜꞇ ʌ j͑ʃ'ɔ ſןᴜ ʃɜƽ ꞁȷ̀ᴜ }ʃw ⟩
+// ⟨ ʃɜƽ ꞁȷ̀ᴜ }ʃꞇ - ſɭɹ ɽ͑ʃ'ɔ ʌ ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ j͐ʃ ʌ ɭʃᴜ ʃꞇ j͑ʃᴜꞇ ʌ j͑ʃ'ɔ ſןᴜ ʃɜƽ ꞁȷ̀ᴜ }ʃw 📃 ⟩
 self.addEventListener("fetch", ( e ) => {
   e.respondWith(
     caches.match(e.request)

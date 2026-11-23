@@ -189,10 +189,10 @@ class Mut6qKf2 {
         this.suntaSaxe.domElement.style.display = "block"
         this.mut6qKuba.appendChild( this.suntaSaxe.domElement )
 
-        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ⟫ ✨
+        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ 📃 ⟫ ✨
         this.kf2Sexi()
 
-        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſᶘꞇ ɭl̀ɔ ⟫ 💡
+        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſᶘꞇ ɭl̀ɔ 📃 ⟫ 💡
         const saxeTsije = new THREE.AmbientLight( 0x404040, 0o4 / 0o10 )
         this.saxeKuba.add( saxeTsije )
 
@@ -258,7 +258,7 @@ class Mut6qKf2 {
     }
 
     xemaKeve() {
-        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ⟫ 🎲
+        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ 📃 ⟫ 🎲
         document.getElementById( "cuk" )!.addEventListener( "input", ( e ) => {
             this.cukK61e = ( e.target as HTMLInputElement ).value
             this.cuk = this.quqCuk( this.cukK61e )
@@ -330,7 +330,7 @@ class Mut6qKf2 {
 
     // ⟪ ſɭɹʞ ʌ ᶅſɔ ֭ſɭɹ ʌ ʃɔ 🖌️ ⟫
 
-    // ⟪ ſɟɔ ŋᷠɔ ʌ ʃɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ 🔢 ⟫
+    // ⟪ ſɟɔ ŋᷠɔ ʌ ʃɔ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ 🔢 ⟫
     quqCuk( k61e: string ): number {
         if ( /^[0-9]+$/.test( k61e ) ) return parseInt( k61e )
         return this.k61eK2fe( k61e )
@@ -493,7 +493,7 @@ class Mut6qKf2 {
             return kxesuXekox2q * 0o5 / 0o10 + sefiniL6daXekox2q * 0o3 / 0o10
         }
 
-        // ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⏳ ⟫
+        // ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⏳ 📃 ⟫
         this.b6Kxesu = true
         document.getElementById( "b6ciihii" )!.classList.remove( "kobe" )
         this.b6K61e.textContent = "…"

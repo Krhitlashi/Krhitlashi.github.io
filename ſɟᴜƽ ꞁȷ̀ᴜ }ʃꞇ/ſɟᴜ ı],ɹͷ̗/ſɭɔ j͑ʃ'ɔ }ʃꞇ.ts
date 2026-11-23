@@ -63,7 +63,7 @@ const hiaKelvinoXema = document.getElementById( "hia-kelvino-xema" ) as HTMLInpu
 const hiaCelsiusXema = document.getElementById( "hia-celsius-xema" ) as HTMLInputElement;
 let k2fe = 273.15 / HI_L6RAK2K2H2;
 
-// ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ( ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ ) ⟩
+// ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ( ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ ) 📃 ⟩
 const araqXema = document.getElementById( "araq-xema" ) as HTMLInputElement;
 const araqKek = document.getElementById( "araq-kek" ) as HTMLButtonElement;
 const araqSaxeKek = document.getElementById( "araq-saxe-kek" ) as HTMLButtonElement;
@@ -78,7 +78,7 @@ let araqL6daB6tem2 = false;
 
 // ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɹ ſȷɔ 🔢 ⟫
 
-// ⟨ ɭʃɀɜ ʌ ſɭɹ ſȷɔ ( ſɟᴜ ı],ɹͷ̗.js ASCII 0-7 ) ⟩
+// ⟨ ɭʃɀɜ ʌ ſɭɹ ſȷɔ ( ſɟᴜ ı],ɹͷ̗.js ASCII 0-7 ) 📃 ⟩
 function parseBazo8( k61e: string ): number {
     const negativa = k61e.startsWith( "›" ) || k61e.startsWith( "-" );
     const kerno = ( negativa ? k61e.slice( 0o1 ) : k61e ).trim();
@@ -108,28 +108,28 @@ function parseBazo8( k61e: string ): number {
     return negativa ? -k2fe : k2fe;
 }
 
-// ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɹ ſȷɔ ⟩
+// ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɹ ſȷɔ 📃 ⟩
 function k61eK2fe( k2fe: number ): string {
     if ( !isFinite( k2fe ) ) return "";
     if ( k2re10 ) return parseFloat( k2fe.toFixed( 0o12 ) ).toString();
     return skakefK2fe( vab6cajaDomani( k2fe ) );
 }
 
-// ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
+// ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
 function quqK2fe( kek: HTMLInputElement ): number {
     const k61e = kek.value.trim();
     if ( !k61e ) return NaN;
     return k2re10 ? parseFloat( k61e ) : parseBazo8( k61e );
 }
 
-// ⟨ ſɭɹʞ ʌ ſɭɹ ſȷɔ ⟩
+// ⟨ ſɭɹʞ ʌ ſɭɹ ſȷɔ 📃 ⟩
 function k2fK2fe( kek: HTMLInputElement, k2fe: number ): void {
     kek.value = k61eK2fe( k2fe );
 }
 
 // ⟪ ſɟᴜ ı],ɹͷ̗ j͑ʃƨᴜʞ j͐ʃɹ j͑ʃᴜꞇ 📅 ⟫
 
-// ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɹ ſȷɔ ( ꞙɭ ) ⟩
+// ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɹ ſȷɔ ( ꞙɭ ) 📃 ⟩
 function suntaK61e( k2fe: number, hat: boolean ): string {
     if ( k2re10 ) return String( k2fe );
     const gawe = document.documentElement.lang || "aih";
@@ -137,7 +137,7 @@ function suntaK61e( k2fe: number, hat: boolean ): string {
     return skakefK2fe( ( hat ? kp6Sak2fe : "" ) + vab6caja( k2fe ) );
 }
 
-// ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( datetime-local ) ⟩
+// ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( datetime-local ) 📃 ⟩
 function kxesuK61e(): string {
     const kxesu = new Date();
     return new Date( kxesu.getTime() - kxesu.getTimezoneOffset() * 0o165140 ).toISOString().slice( 0o0, 0o20 );
@@ -184,7 +184,7 @@ function v3ak2He(): void {
     suntaHeK2fe();
 }
 
-// ⟨ ſɭɹʞ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ⟩
+// ⟨ ſɭɹʞ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ 📃 ⟩
 function suntaHeXema(): void {
     let heaniKxesu = Math.floor( stifeh2K2fe * HE_L6VEM2 );
     const haqeani = Math.floor( heaniKxesu / HEANI_HAQEANI ); heaniKxesu %= HEANI_HAQEANI;
@@ -249,7 +249,7 @@ function suntaHia(): void {
     k2fK2fe( hiaCelsiusXema, k2fe * HI_L6RAK2K2H2 - 273.15 );
 }
 
-// ⟨ ſɟɔ ŋᷠɔ ʌ ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ ⟩
+// ⟨ ſɟɔ ŋᷠɔ ʌ ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ 📃 ⟩
 function suntaAraqHia(): void {
     if ( !araqL6daB6tem2 ) {
         araqL6da.textContent = "—";
@@ -262,7 +262,7 @@ function suntaAraqHia(): void {
     araqCelsius.textContent = k61eK2fe( k2fe * HI_L6RAK2K2H2 - 273.15 );
 }
 
-// ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ( Nominatim OpenStreetMap ) ⟩
+// ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ( Nominatim OpenStreetMap ) 📃 ⟩
 async function quqAraqK61e(): Promise<void> {
     const k61e = araqXema.value.trim();
     if ( !k61e ) return;
@@ -303,7 +303,7 @@ async function quqAraqK61e(): Promise<void> {
     }
 }
 
-// ⟨ ᶅſɔ ֭ſɭɹ ʌ ſ͕ɭɹ ſᶘɜ ( WMO ) ⟩
+// ⟨ ᶅſɔ ֭ſɭɹ ʌ ſ͕ɭɹ ſᶘɜ ( WMO ) 📃 ⟩
 const q21oKubaCa1ara: { xekox2q: ( ksaka: number ) => boolean; hela: string; malhela: string }[] = [
     { xekox2q: ksaka => ksaka === 0o0, hela: "#88c8f8", malhela: "#58a8f8" },
     { xekox2q: ksaka => ksaka === 0o1 || ksaka === 0o2, hela: "#a8c8e8", malhela: "#88b8e8" },
@@ -318,7 +318,7 @@ const q21oKubaCa1ara: { xekox2q: ( ksaka: number ) => boolean; hela: string; mal
 ];
 const q21oKubaSaxe: { hela: string; malhela: string } = { hela: "#a8c8f8", malhela: "#58a8f8" };
 
-// ⟨ ſɟᴜ ſȷᴜɔ˞ ʌ ᶅſɔ ֭ſɭɹ ( WMO ) ⟩
+// ⟨ ſɟᴜ ſȷᴜɔ˞ ʌ ᶅſɔ ֭ſɭɹ ( WMO ) 📃 ⟩
 function q21oKuba( ksaka: number ): string {
     const k61e = ( hela: string, malhela: string ) =>
         "linear-gradient( 45deg, " + kf2K61e( hela, 0o100 / 0xff ) + ", " + kf2K61e( malhela, 0o0 ) + " )";
@@ -326,7 +326,7 @@ function q21oKuba( ksaka: number ): string {
     return k61e( kuba.hela, kuba.malhela );
 }
 
-// ⟨ ſ͕ɭɹȝ ʌ ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ ( Open-Meteo ) ⟩
+// ⟨ ſ͕ɭɹȝ ʌ ı],ᴜ }ʃꞇ ſɭʞɔ }ʃꞇ j͑ʃᴜꞇ ( Open-Meteo ) 📃 ⟩
 async function quqHia( cepu: number, tapu: number ): Promise<void> {
     try {
         const xema = await fetch(
@@ -357,7 +357,7 @@ async function quqHia( cepu: number, tapu: number ): Promise<void> {
 
 // ⟪ j͑ʃɜ ſᶘɹ ʌ ɭʃэʞ ɭʃꞇʞ ☀️ ⟫
 
-// ⟨ j͑ʃƽᴜ ſɭɔʞ ʌ ſɭɔʞ ⟩
+// ⟨ j͑ʃƽᴜ ſɭɔʞ ʌ ſɭɔʞ 📃 ⟩
 function skakefaniK2fe( k61e: string ): string {
     const gawe = document.documentElement.lang || "aih";
     return skakefK2fe( skakefani[gawe]?.[ k61e ] ?? skakefani["aih"]?.[ k61e ] ?? k61e );
@@ -371,7 +371,7 @@ let pheXema = {
     puK2fe: 0o0,
 };
 
-// ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ ( 64 ſןᴜɔ˞ ɭʃꞇʞ ) ⟩
+// ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ ( 64 ſןᴜɔ˞ ɭʃꞇʞ ) 📃 ⟩
 function quqK2feCa1ara( he: number, puK2fe: number ): [ number, number, number ] {
     const saxeK2fe = puK2fe / 0o100;
     const kxesuK2fe = puK2fe / 0o10000;
@@ -384,7 +384,7 @@ function quqK2feCa1ara( he: number, puK2fe: number ): [ number, number, number ]
     return [ k2feSaxe, k2feKxesu, k2feAraq ];
 }
 
-// ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( aaaa-mm-tt ) ⟩
+// ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( aaaa-mm-tt ) 📃 ⟩
 function puK61e( kxesu: Date ): string {
     const saxeK2fe = kxesu.getFullYear();
     const kxesuK2fe = String( kxesu.getMonth() + 0o1 ).padStart( 0o2, "0" );
@@ -392,11 +392,11 @@ function puK61e( kxesu: Date ): string {
     return saxeK2fe + "-" + kxesuK2fe + "-" + araqK2fe;
 }
 
-// ⟨ ſ͕ɭɹȝ ʌ ſןᴜɔ˞ ɭʃꞇʞ ( sunrise-sunset API ) ⟩
+// ⟨ ſ͕ɭɹȝ ʌ ſןᴜɔ˞ ɭʃꞇʞ ( sunrise-sunset API ) 📃 ⟩
 async function quqPastifPheAraq( lat: number, lng: number, kxesu: Date ): Promise<{ pastif: Date; pheAraq: Date }> {
     const kxesuK61e = puK61e( kxesu );
-    const url = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&date=${kxesuK61e}&formatted=0&tzid=UTC`;
-    const xema = await fetch( url );
+    const k6h6 = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&date=${kxesuK61e}&formatted=0&tzid=UTC`;
+    const xema = await fetch( k6h6 );
     if ( !xema.ok ) throw new Error( TLOHK2NI_KP6 );
     const sab2 = await xema.json();
     if ( sab2.status !== "OK" ) throw new Error( TLOHK2NI_KP6 );
@@ -406,11 +406,11 @@ async function quqPastifPheAraq( lat: number, lng: number, kxesu: Date ): Promis
     };
 }
 
-// ⟨ ſ͕ɭɹȝ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Nominatim reverse ) ⟩
+// ⟨ ſ͕ɭɹȝ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( Nominatim reverse ) 📃 ⟩
 async function quqAraqKsaka( lat: number, lng: number ): Promise<string> {
     try {
-        const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&zoom=10&accept-language=en`;
-        const xema = await fetch( url, { headers: { "User-Agent": "Freebuff/1.0" } } );
+        const k6h6 = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&zoom=10&accept-language=en`;
+        const xema = await fetch( k6h6, { headers: { "User-Agent": "Freebuff/1.0" } } );
         if ( !xema.ok ) return "";
         const sab2 = await xema.json();
         const hatXema = sab2.address || {};
@@ -425,7 +425,7 @@ async function quqAraqKsaka( lat: number, lng: number ): Promise<string> {
     }
 }
 
-// ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɜ ſᶘɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ⟩
+// ⟨ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɜ ſᶘɹ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ 📃 ⟩
 async function v3ak2Phe( lat: number, lng: number ): Promise<void> {
     const kxesu = new Date();
     const saxeKxesu = new Date( kxesu.getFullYear(), kxesu.getMonth(), kxesu.getDate() );
@@ -453,7 +453,7 @@ async function v3ak2Phe( lat: number, lng: number ): Promise<void> {
     v3ak2Kuba();
 }
 
-// ⟨ ſɟɔ ŋᷠɔ ʌ j͑ʃɜ ſᶘɹ ⟩
+// ⟨ ſɟɔ ŋᷠɔ ʌ j͑ʃɜ ſᶘɹ 📃 ⟩
 function suntaPheXema(): void {
     if ( !pheXema.b6tem2 ) return;
     const kxesu = new Date();
@@ -462,7 +462,7 @@ function suntaPheXema(): void {
     const araqPastif = pheXema.araqPastif as Date;
     if ( isNaN( pastif.getTime() ) || isNaN( pheAraq.getTime() ) || isNaN( araqPastif.getTime() ) ) return;
 
-    // ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ ( 0 0 0 ſןᴜɔ˞ ɭʃꞇʞ ) ⟩
+    // ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ ( 0 0 0 ſןᴜɔ˞ ɭʃꞇʞ ) 📃 ⟩
     const pastifK2feCa1ara = quqK2feCa1ara( 0o0, pheXema.puK2fe );
     const pheAraqK2feCa1ara = quqK2feCa1ara( ( pheAraq.getTime() - pastif.getTime() ) / M2HEANI_HE, pheXema.puK2fe );
     document.getElementById( "phe-pastif" )!.textContent =
@@ -471,7 +471,7 @@ function suntaPheXema(): void {
         [ pheAraqK2feCa1ara[0o0], pheAraqK2feCa1ara[0o1], pheAraqK2feCa1ara[0o2] ].map( v => k61eK2fe( v ) ).join( " " );
     document.getElementById( "phe-pal6" )!.textContent = k61eK2fe( pheXema.puK2fe * HE_L6VEM2 / HEANI_HAQEANI );
 
-    // ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( ſןᴜɔ˞ ɭʃꞇʞ ) ⟩
+    // ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( ſןᴜɔ˞ ɭʃꞇʞ ) 📃 ⟩
     let kxesuK2fe = ( kxesu.getTime() - pastif.getTime() ) / M2HEANI_HE;
     if ( kxesuK2fe < 0o0 ) {
         kxesuK2fe = ( kxesu.getTime() - ( pastif.getTime() - pheXema.puK2fe * M2HEANI_HE ) ) / M2HEANI_HE;
@@ -479,14 +479,14 @@ function suntaPheXema(): void {
     kxesuK2fe = kxesuK2fe % pheXema.puK2fe;
     if ( kxesuK2fe < 0o0 ) kxesuK2fe += pheXema.puK2fe;
 
-    // ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ ʌ ſɭɹ ſȷɔ ( 64 ) ⟩
+    // ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ ʌ ſɭɹ ſȷɔ ( 64 ) 📃 ⟩
     const [ k2feSaxe, k2feKxesu, k2feAraq ] = quqK2feCa1ara( kxesuK2fe, pheXema.puK2fe );
 
     document.getElementById( "phe-0o100-ı" )!.textContent = k61eK2fe( k2feSaxe );
     document.getElementById( "phe-0o100-ɿ" )!.textContent = k61eK2fe( k2feKxesu );
     document.getElementById( "phe-0o100-ц" )!.textContent = k61eK2fe( k2feAraq );
 
-    // ⟨ ſɭɹ ſȷɔ ( Haqe Qe He ) ⟩
+    // ⟨ ſɭɹ ſȷɔ ( Haqe Qe He ) 📃 ⟩
     const haqe = Math.floor( kxesuK2fe / HE_HAQE_K2FE );
     const qe = Math.floor( ( kxesuK2fe % HE_HAQE_K2FE ) / HE_QE_K2FE );
     const he = kxesuK2fe % HE_QE_K2FE;
@@ -494,13 +494,13 @@ function suntaPheXema(): void {
     document.getElementById( "phe-kxesu-qe" )!.textContent = k61eK2fe( qe );
     document.getElementById( "phe-kxesu-he" )!.textContent = k61eK2fe( he );
 
-    // ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ ⟩
+    // ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɹ ſȷɔ 📃 ⟩
     const phePuK2fe = ( pheAraq.getTime() - pastif.getTime() ) / 0o1750;
     const k2fe = Math.min( 0o1, Math.max( 0o0, ( ( kxesu.getTime() - pastif.getTime() ) / 0o1750 ) / phePuK2fe ) );
     document.getElementById( "phe-k2fe" )!.textContent = k61eK2fe( k2fe * ( k2re10 ? 0o144 : 0o100 ) );
 }
 
-// ⟨ ſɭɹ ſȷɔ ʌ j͑ʃɜ ſᶘɹ ⟩
+// ⟨ ſɭɹ ſȷɔ ʌ j͑ʃɜ ſᶘɹ 📃 ⟩
 function suntaM2(): void {
     if ( !pheXema.b6tem2 ) return;
     const puK2fe = pheXema.puK2fe * HE_L6VEM2;
@@ -521,7 +521,7 @@ function suntaM2(): void {
     }
 }
 
-// ⟨ ſ͔ɭɔ j͐ʃɔɔ˞ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ⟩
+// ⟨ ſ͔ɭɔ j͐ʃɔɔ˞ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ 📃 ⟩
 const HAT_ARAQ_CA1ARA: { ksaka: string; lat: number; lon: number }[] = [
     { ksaka: "McMurdo Station, Antarctica", lat: -77.8419, lon: 166.6863 },
     { ksaka: "Scott Base, Antarctica", lat: -77.8491, lon: 166.7647 },
@@ -539,7 +539,7 @@ const HAT_ARAQ_CA1ARA: { ksaka: string; lat: number; lon: number }[] = [
     { ksaka: "Esperanza Base, Antarctica", lat: -63.3972, lon: -56.9975 },
 ];
 
-// ⟨ ſ͕ɭɹȝ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ⟩
+// ⟨ ſ͕ɭɹȝ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ 📃 ⟩
 function b6tem2Araq( lat: number, lon: number, k61e: string, kxesuKsaka?: string ): void {
     const ksakaXema = kxesuKsaka ? Promise.resolve( kxesuKsaka ) : quqAraqKsaka( lat, lon );
     ksakaXema.then( ksaka => {
@@ -553,14 +553,14 @@ function b6tem2Araq( lat: number, lon: number, k61e: string, kxesuKsaka?: string
     } );
 }
 
-// ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ⟩
+// ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ 📃 ⟩
 function quqAraqXema(): void {
     const kxesuAraq = HAT_ARAQ_CA1ARA[Math.floor( Math.random() * HAT_ARAQ_CA1ARA.length )];
     araqK61eKek.textContent = skakefaniK2fe( QUQ );
     b6tem2Araq( kxesuAraq.lat, kxesuAraq.lon, "ſɭᶗ‹ɔ j͐ʃ ʌ ꞁȷ̀ɜ j͑ʃᴜ ſɭᴜ ɭl̀ɜ ʌ j͑ʃ'ɔƣ̋ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ⟅", kxesuAraq.ksaka );
 }
 
-// ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ ſɟᴜ ſɭɹ ſןɹ ⟩
+// ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ ſɟᴜ ſɭɹ ſןɹ 📃 ⟩
 function quqAraqSaxe(): void {
     araqK61eKek.textContent = skakefaniK2fe( QUQ );
     navigator.geolocation.getCurrentPosition(
@@ -570,7 +570,7 @@ function quqAraqSaxe(): void {
     );
 }
 
-// ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ⟩
+// ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ 📃 ⟩
 function keveAraq(): void {
     if ( !navigator.geolocation ) {
         quqAraqXema();
@@ -579,7 +579,7 @@ function keveAraq(): void {
     quqAraqSaxe();
 }
 
-// ⟨ j͑ʃᴜ ı],ɔ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ ⟩
+// ⟨ j͑ʃᴜ ı],ɔ ʌ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜȝ 📃 ⟩
 function saxeAraq(): void {
     const quqXema = ( navigator as Navigator & { permissions?: { query: ( hat: { name: string } ) => Promise<{ state: string }> } } ).permissions;
     if ( quqXema && quqXema.query ) {
@@ -597,7 +597,7 @@ function saxeAraq(): void {
 
 // ⟪ ſɟᴜ }ʃᴜ ʌ ᶅſɔ ֭ſɭɹ 🎨 ⟫
 
-// ⟨ ᶅſɔ ֭ſɭɹ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ⟩
+// ⟨ ᶅſɔ ֭ſɭɹ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ 📃 ⟩
 const CANA_WEH2_CA1ARA: { k2fe: number; k2feCa1ara: [ number, number, number ] }[] = [
     { k2fe: 0o0, k2feCa1ara: [ 0x08, 0x08, 0xa8 ] },
     { k2fe: 0o6, k2feCa1ara: [ 0xf8, 0xa8, 0xe8 ] },
@@ -613,13 +613,13 @@ function quqK61e( k2feCa1ara: [ number, number, number ] ): string {
     return "#" + k2feCa1ara.map( v => v.toString( 0o20 ).padStart( 0o2, "0" ) ).join( "" );
 }
 
-// ⟨ ɭʃɀɜ ʌ ᶅſɔ ֭ſɭɹ ( rgba #80 ) ⟩
+// ⟨ ɭʃɀɜ ʌ ᶅſɔ ֭ſɭɹ ( rgba #80 ) 📃 ⟩
 function kf2K61e( k61e: string, k2fe: number ): string {
     const ruva = parseInt( k61e.slice( 0o1 ), 0o20 );
     return "rgba( " + ( ruva >> 0o20 ) + ", " + ( ( ruva >> 0o10 ) & 0xff ) + ", " + ( ruva & 0xff ) + ", " + k2fe + " )";
 }
 
-// ⟨ ſɭɜ ı],ɹȝ ʌ ᶅſɔ ֭ſɭɹ ⟩
+// ⟨ ſɭɜ ı],ɹȝ ʌ ᶅſɔ ֭ſɭɹ 📃 ⟩
 function kf2K2feCa1ara( a: [ number, number, number ], b: [ number, number, number ], k2fe: number ): [ number, number, number ] {
     return [
         Math.round( a[0o0] + ( b[0o0] - a[0o0] ) * k2fe ),
@@ -628,7 +628,7 @@ function kf2K2feCa1ara( a: [ number, number, number ], b: [ number, number, numb
     ];
 }
 
-// ⟨ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ᶅſɔ ֭ſɭɹ ⟩
+// ⟨ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ᶅſɔ ֭ſɭɹ 📃 ⟩
 function k61eKuba(): string {
     const kxesu = new Date();
     const k2fe = kxesu.getHours() + kxesu.getMinutes() / 0o74;
@@ -645,7 +645,7 @@ function k61eKuba(): string {
     const saxeK2feCa1ara = kf2K2feCa1ara( saxe.k2feCa1ara, araq.k2feCa1ara, kxesuK2fe );
     const hela = kf2K2feCa1ara( saxeK2feCa1ara, [ 0xff, 0xff, 0xff ], 0o26 / 0o100 );
 
-    // ⟨ j͑ʃᴜ ı],ɔ ʌ ſɟɹ ᶅſɹȝ ( 45° ) ⟩
+    // ⟨ j͑ʃᴜ ı],ɔ ʌ ſɟɹ ᶅſɹȝ ( 45° ) 📃 ⟩
     let puK2fe: number;
     if ( pheXema.b6tem2 && pheXema.araqPastif ) {
         const k2feAraq = ( pheXema.araqPastif.getTime() - kxesu.getTime() ) / M2HEANI_HE;

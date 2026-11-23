@@ -1,8 +1,8 @@
-// ≺⧼ j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭc̗ᴜ ʃɔ - j͑ʃᴜ j͑ʃᴜc̗ ɭʃᴜ }ʃꞇ ʃɔ j͑ʃᴜꞇ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ ⧽≻
+// ≺⧼ j͑ʃ'ᴜ ſɭɹ ſ͔ɭɔ ſɭc̗ᴜ ʃɔ - j͑ʃᴜ j͑ʃᴜc̗ ɭʃᴜ }ʃꞇ ʃɔ j͑ʃᴜꞇ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ 📃 ⧽≻
 
 type Gawe = "aih" | "en";
 
-// ⟪ ꞁȷ̀ɜ j͑ʃᴜ ⟫
+// ⟪ ꞁȷ̀ɜ j͑ʃᴜ 📃 ⟫
 
 interface BeEskek {
   ksaka: string;
@@ -74,7 +74,7 @@ interface Ne1anesaiK61e {
   k61eAraq: string[];
 }
 
-// ⟪ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟫
+// ⟪ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟫
 
 const LIMO = "#";
 
@@ -99,11 +99,11 @@ const K61e = {
   },
 } as const;
 
-// ⟪ ꞁȷ̀ɜ ʃэ ſɭɹ ⟫
+// ⟪ ꞁȷ̀ɜ ʃэ ſɭɹ 📃 ⟫
 
 function quqLang(): Gawe {
   const xema = new URLSearchParams(window.location.search);
-  return xema.get("lang") === "en" ? "en" : "aih";
+  return xema.get("gawe") === "en" ? "en" : "aih";
 }
 
 function quqKek<TElement extends HTMLElement>(ksaka: string): TElement {
@@ -114,10 +114,10 @@ function quqKek<TElement extends HTMLElement>(ksaka: string): TElement {
   return kek as TElement;
 }
 
-const lang = quqLang();
-const T = K61e[lang];
+const gawe = quqLang();
+const T = K61e[gawe];
 
-// ⟪ ꞁȷ̀ɜ ɽ͑ʃ'ᴜ ⟫
+// ⟪ ꞁȷ̀ɜ ɽ͑ʃ'ᴜ 📃 ⟫
 
 const K61E_XEMA = quqKek<HTMLTextAreaElement>("s2xema-k61e-xema");
 const SAXE_KF2_KEK = quqKek<HTMLInputElement>("s2xema-saxe-kf2-kek");
@@ -132,7 +132,7 @@ const S2XEMA_KSAKA_KEK = quqKek<HTMLInputElement>("s2xema-ksaka-kek");
 const KF2_S2XEMA_KEK = quqKek<HTMLButtonElement>("kf2-s2xema-kek");
 const NE1A_S2XEMA_KEK = quqKek<HTMLButtonElement>("ne1a-s2xema-kek");
 
-// ⟪ ꞁȷ̀ɜ ŋᷠᴜ ⟫
+// ⟪ ꞁȷ̀ɜ ŋᷠᴜ 📃 ⟫
 
 let hatPuXema: HatPuXema = { puXemaCa1ara: [], kxesuPuXemaKsaka: null };
 
@@ -200,7 +200,7 @@ function xemaS2PuXema( s2PuXema: S2PuXema ): void {
   }
 }
 
-// ⟪ ʃɔ ſɭɹ j͑ʃ'ɔ ⟫ - ſɭᴜͷ̗ ɭʃɜƽ ʌ ſɭɔʞ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ
+// ⟪ ʃɔ ſɭɹ j͑ʃ'ɔ 📃 ⟫ - ſɭᴜͷ̗ ɭʃɜƽ ʌ ſɭɔʞ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ
 
 function s2N2kBe( k61e: string, beK61eCa1ara: string[] ): string[] {
   if ( !k61e ) return [];
@@ -221,7 +221,7 @@ function s2N2kBe( k61e: string, beK61eCa1ara: string[] ): string[] {
     }
 
     if ( !xekox2q ) {
-      // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
+      // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
       let araqK2fe = i + 0o1;
       while ( araqK2fe < k61e.length ) {
         const k2fe = k61e.codePointAt(araqK2fe);
@@ -246,7 +246,7 @@ function xekox2qKp6( k2fe: number ): boolean {
   );
 }
 
-// ⟪ ſɭɹ ⟫ - j͑ʃп́ɔ ſɭᴜc̗ ɭʃᴜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ
+// ⟪ ſɭɹ 📃 ⟫ - j͑ʃп́ɔ ſɭᴜc̗ ɭʃᴜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ
 
 function quqKubaAraq( k61e: string, saxeK2fe: number ): number {
   let kubaK2fe = 0o0;
@@ -310,17 +310,17 @@ function quqS2Ca1ara( k61e: string, s2Quq: string ): string[] {
   return s2Ca1ara;
 }
 
-// ⟪ ſɭɹ ⟫ - ſɭɔƣ̋ ꞁȷ̀ɔ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ( [ ] ) ʌ ֭ſɭᴜ ʃᴜ
+// ⟪ ſɭɹ 📃 ⟫ - ſɭɔƣ̋ ꞁȷ̀ɔ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ ( [ ] ) ʌ ֭ſɭᴜ ʃᴜ
 
 function ne1anesaiKubaK61e( k61e: string ): Xekox2qKek {
   k61e = k61e.trim();
 
-  // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ( › ) ⟩
+  // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ( › ) 📃 ⟩
   if ( k61e === "›" ) {
     return { hat: "saxe", j6fini: "" };
   }
 
-  // ⟨ j͑ʃᴜƽ ( ｡ U+FF61 ) ⟩
+  // ⟨ j͑ʃᴜƽ ( ｡ U+FF61 ) 📃 ⟩
   const s2Ca1ara = quqS2Ca1ara(k61e, "｡");
 
   if ( s2Ca1ara.length > 0o1 ) {
@@ -328,18 +328,18 @@ function ne1anesaiKubaK61e( k61e: string ): Xekox2qKek {
     return { hat: "vop2", k61eCa1ara };
   }
 
-  // ⟨ j͑ʃᴜƽ ( [ ] ) ⟩
+  // ⟨ j͑ʃᴜƽ ( [ ] ) 📃 ⟩
   if ( k61e.startsWith("[") && k61e.endsWith("]") ) {
     return ne1anesaiKubaK61e(k61e.slice(0o1, -0o1));
   }
 
-  // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ( o ) ⟩
+  // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ( o ) 📃 ⟩
   if ( k61e.length > 0o1 && k61e.endsWith("o") ) {
     const hateKsaka = k61e.slice(0o0, -0o1);
     return { hat: "hate", hateKsaka };
   }
 
-  // ⟨ ʃɔ ʌ ſɭɔʞ ⟩
+  // ⟨ ʃɔ ʌ ſɭɔʞ 📃 ⟩
   return { hat: "saxe", j6fini: k61e };
 }
 
@@ -365,14 +365,14 @@ function ne1anesaiHatCa1ara( k61e: string ): Xekox2qKek[] {
   let i = 0o0;
 
   while ( i < k61e.length ) {
-    // ⟨ ſןw ⟩
+    // ⟨ ſןw 📃 ⟩
     while ( i < k61e.length && k61e[i] === " " ) i++;
     if ( i >= k61e.length ) break;
 
     if ( k61e[i] === "[" ) {
       const araqK2fe = quqKubaAraq(k61e, i);
       if ( araqK2fe === -0o1 ) {
-        // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
+        // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
         xekox2qCa1ara.push({ hat: "saxe", j6fini: k61e.slice(i) });
         break;
       }
@@ -382,7 +382,7 @@ function ne1anesaiHatCa1ara( k61e: string ): Xekox2qKek[] {
       xekox2qCa1ara.push({ hat: "kemafi" });
       i++;
     } else {
-      // ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɔʞ ⟩
+      // ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɔʞ 📃 ⟩
       let araqK2fe = i;
       while ( araqK2fe < k61e.length && k61e[araqK2fe] !== " " && k61e[araqK2fe] !== "[" && k61e[araqK2fe] !== "#" && k61e[araqK2fe] !== "(" && k61e[araqK2fe] !== ")" ) {
         araqK2fe++;
@@ -396,19 +396,19 @@ function ne1anesaiHatCa1ara( k61e: string ): Xekox2qKek[] {
   return xekox2qCa1ara;
 }
 
-// ⟪ ſɭɹ ⟫ - ſɭɔƣ̋ ꞁȷ̀ɔ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ j͑ʃɹ ſɭᴜ̭ɹ ʌ ſɭᴜc̗ ɭʃᴜ
+// ⟪ ſɭɹ 📃 ⟫ - ſɭɔƣ̋ ꞁȷ̀ɔ ſᶘᴜ ɽ͑ʃ'ᴜ ʌ j͑ʃɹ ſɭᴜ̭ɹ ʌ ſɭᴜc̗ ɭʃᴜ
 
 function ne1anesaiAraqK61e( k61e: string, beK61eCa1ara: string[] ): string[] {
   k61e = k61e.trim();
 
-  // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ( [›] ) ⟩
+  // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ( [›] ) 📃 ⟩
   if ( k61e === "[›]" ) return [];
   if ( k61e.startsWith("[") && k61e.endsWith("]") ) {
     const kubaK61e = k61e.slice(0o1, -0o1).trim();
     if ( kubaK61e === "›" ) return [];
   }
 
-  // ⟨ ſɭʞɹ ʌ ʃɔ ⟩
+  // ⟨ ſɭʞɹ ʌ ʃɔ 📃 ⟩
   const k61eCa1ara = k61e.split(/\s+/).filter(kxesuK61e => kxesuK61e.length > 0o0);
   const s2Ca1ara: string[] = [];
   for ( const kxesuK61e of k61eCa1ara ) {
@@ -421,7 +421,7 @@ function ne1anesaiK61e( n2k: string, beK61eCa1ara: string[] ): Ne1anesaiK61e | n
   n2k = n2k.trim();
   if ( !n2k ) return null;
 
-  // ⟨ j͑ʃᴜƽ ( / ) ⟩
+  // ⟨ j͑ʃᴜƽ ( / ) 📃 ⟩
   let saxeAraqCa1ara = quqS2Ca1ara(n2k, " / ");
   let araqSaxeK61e: string;
 
@@ -436,7 +436,7 @@ function ne1anesaiK61e( n2k: string, beK61eCa1ara: string[] ): Ne1anesaiK61e | n
   const xekox2qK61e = saxeAraqCa1ara[0o0].trim();
   const k61eAraq = ne1anesaiAraqK61e(araqSaxeK61e, beK61eCa1ara);
 
-  // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃᴜƽ ⟩
+  // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃᴜƽ 📃 ⟩
   const saxeKp6K2fe = quqSaxeKp6(xekox2qK61e, "(");
   const araqKp6K2fe = quqSaxeKp6(xekox2qK61e, ")");
 
@@ -453,7 +453,7 @@ function ne1anesaiK61e( n2k: string, beK61eCa1ara: string[] ): Ne1anesaiK61e | n
     };
   }
 
-  // ⟨ j͑ʃᴜƽ ( # ) ⟩
+  // ⟨ j͑ʃᴜƽ ( # ) 📃 ⟩
   const xekox2qCa1ara = ne1anesaiHatCa1ara(xekox2qK61e);
 
   let saxeK2fe = 0o0;
@@ -470,7 +470,7 @@ function ne1anesaiK61e( n2k: string, beK61eCa1ara: string[] ): Ne1anesaiK61e | n
   };
 }
 
-// ⟪ ʃɔ ɭʃw ⟫ - j͑ʃ'ɔ ſɭᴜc̗ ɭʃɹ ʌ ֭ſɭᴜ ʃᴜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ
+// ⟪ ʃɔ ɭʃw 📃 ⟫ - j͑ʃ'ɔ ſɭᴜc̗ ɭʃɹ ʌ ֭ſɭᴜ ʃᴜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ
 
 function xekox2qHat( hat: Xekox2qKek, s2: string, beHatPuXema: BeHatPuXema ): boolean {
   switch ( hat.hat ) {
@@ -505,12 +505,12 @@ function xekox2qAraq( xekox2qCa1ara: Xekox2qKek[], s2Ca1ara: string[], araqK2fe:
   return xekox2qSaxe(xekox2qCa1ara, s2Ca1ara, saxeK2fe, beHatPuXema);
 }
 
-// ⟪ j͑ʃ'ᴜ ʃɔ ⟫ - ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭᴜc̗ ɭʃᴜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ
+// ⟪ j͑ʃ'ᴜ ʃɔ 📃 ⟫ - ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭᴜc̗ ɭʃᴜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ }ʃꞇ
 
 function kf2AraqS2Ca1ara( ne1anesai: Ne1anesaiK61e, saxeS2Ca1ara: string[], beHatPuXema: BeHatPuXema ): string[] {
   if ( ne1anesai.araq.length === 0o0 ) return saxeS2Ca1ara;
 
-  // ⟨ j͑ʃ'ɔ ɭʃɔ ŋᷠɹ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
+  // ⟨ j͑ʃ'ɔ ɭʃɔ ŋᷠɹ ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
   const saxeAraqS2Ca1ara = [ LIMO, ...saxeS2Ca1ara, LIMO ];
   const s2Ca1ara: string[] = [];
   let i = 0o1; // ſɭɔ˞ɜƴ ʌ ( # ) ʌ ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ
@@ -519,14 +519,14 @@ function kf2AraqS2Ca1ara( ne1anesai: Ne1anesaiK61e, saxeS2Ca1ara: string[], beHa
   while ( i <= kxesuK2fe ) {
     let xekox2q = false;
 
-    // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ʃɔ ⟩
+    // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ʃɔ 📃 ⟩
     if ( i + ne1anesai.araq.length - 0o1 <= kxesuK2fe ) {
       if ( xekox2qSaxe(ne1anesai.araq, saxeAraqS2Ca1ara, i, beHatPuXema) ) {
-        // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⟩
+        // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ 📃 ⟩
         const saxeXekox2q = ne1anesai.saxeK61e.length === 0o0 ||
           xekox2qAraq(ne1anesai.saxeK61e, saxeAraqS2Ca1ara, i - 0o1, beHatPuXema);
 
-        // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⟩
+        // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ 📃 ⟩
         const araqK2fe = i + ne1anesai.araq.length;
         const araqXekox2q = ne1anesai.araqK61e.length === 0o0 ||
           (araqK2fe + ne1anesai.araqK61e.length <= saxeAraqS2Ca1ara.length &&
@@ -557,7 +557,7 @@ function v3ak2S2Ca1ara( saxeS2Ca1ara: string[], ne1anesaiCa1ara: Ne1anesaiK61e[]
   return kxesuS2Ca1ara;
 }
 
-// ⟪ j͑ʃᴜꞇ ⟫ - UI
+// ⟪ j͑ʃᴜꞇ 📃 ⟫ - UI
 
 function suntaK61e( k61e: string ): void {
   K61E_KEK.textContent = k61e;
@@ -609,7 +609,7 @@ function keveS2(): void {
     return;
   }
 
-  // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ⟩
+  // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ 📃 ⟩
   let k61eCa1ara: string[];
   if ( SAXE_KF2_KEK.checked ) {
     k61eCa1ara = quqSuntaK61eCa1ara();
@@ -625,7 +625,7 @@ function keveS2(): void {
     return;
   }
 
-  // ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ʃᴜ ſɭɹ ſןɹ }ʃꞇ ⟩
+  // ⟨ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ʃᴜ ſɭɹ ſןɹ }ʃꞇ 📃 ⟩
   const beK61eCa1ara = beHatPuXema.beCa1ara.map(s => s.j6fini);
   const k61eHan2k = saxeK61e.split("\n").map(l => l.trim()).filter(l => l.length > 0o0);
   const ne1anesaiCa1ara: Ne1anesaiK61e[] = [];
@@ -639,7 +639,7 @@ function keveS2(): void {
     ne1anesaiCa1ara.push(ne1anesai);
   }
 
-  // ⟨ ſɟɔ ŋᷠɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
+  // ⟨ ſɟɔ ŋᷠɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
   SUNTA_KEK.replaceChildren();
   let k2fe = 0o0;
 
@@ -661,7 +661,7 @@ function keveS2(): void {
   }
 }
 
-// ⟪ ꞁȷ̀ᴜ j͑ʃᴜ ⟫ - j͑ʃᴜ ı],ɔ }ʃꞇ
+// ⟪ ꞁȷ̀ᴜ j͑ʃᴜ 📃 ⟫ - j͑ʃᴜ ı],ɔ }ʃꞇ
 
 function suntaS2PuXema(): void {
   const s2PuXema = b6tem2S2PuXema();

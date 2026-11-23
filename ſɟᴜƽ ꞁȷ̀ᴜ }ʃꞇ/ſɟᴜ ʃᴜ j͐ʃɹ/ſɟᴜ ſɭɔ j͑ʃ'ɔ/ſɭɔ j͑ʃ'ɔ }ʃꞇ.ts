@@ -1,4 +1,4 @@
-// ≺⧼ ſɟᴜ ſɭɔ j͑ʃ'ɔ - j͑ʃɔƣ̋ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ }ʃɹƽ ʌ ʃᴜ j͐ʃɹ ı],ᴜ Ktash ⧽≻
+// ≺⧼ ſɟᴜ ſɭɔ j͑ʃ'ɔ - j͑ʃɔƣ̋ ꞁȷ̀ᴜ ɽ͑ʃ'ᴜ }ʃɹƽ ʌ ʃᴜ j͐ʃɹ ı],ᴜ Ktash 📃 ⧽≻
 
 // ⟪ ֭ſɭᴜ ı],ɔ 🔌 ⟫
 
@@ -391,7 +391,7 @@ bal2xa = L.map("bal2xa", {
 
     const bam2HatKp6KekCa1ara = document.querySelectorAll(`input[name="bam2Hat"]`);
     bam2HatKp6KekCa1ara.forEach(radio => radio.addEventListener("change", () => {
-        // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɹ ſȷɔ ⟩
+        // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɹ ſȷɔ 📃 ⟩
     }));
 
     qumk2Kek.addEventListener( "click", qumk2KxesuTahaq );
@@ -405,10 +405,10 @@ bal2xa = L.map("bal2xa", {
     } );
     quqXema.addEventListener( "paste", keveXemaK61e );
 
-    let k6h6V3ak2Temp: ReturnType<typeof setTimeout> | null = null;
+    let k6h6V3ak2Sak: ReturnType<typeof setTimeout> | null = null;
     function v3ak2K6h6Malfrue(): void {
-        if ( k6h6V3ak2Temp ) clearTimeout( k6h6V3ak2Temp );
-        k6h6V3ak2Temp = setTimeout( v3ak2K6h6, 0o400 );
+        if ( k6h6V3ak2Sak ) clearTimeout( k6h6V3ak2Sak );
+        k6h6V3ak2Sak = setTimeout( v3ak2K6h6, 0o400 );
     }
     bal2xa.on( "moveend", v3ak2K6h6Malfrue );
     bal2xa.on( "zoomend", v3ak2K6h6Malfrue );
@@ -587,13 +587,13 @@ function qox2AlCepuTapu( v1: number, h1: number, v2: number, h2: number, v3: num
 }
 
 function quqKsaka( v: number, h: number, htaka: "ksaka" | "latin" | "chmuah" = "ksaka" ): string {
-    const sys = QOX2_HTAKA_CA1ARA[v]?.[ htaka ];
-    if ( !sys ) return "?";
+    const knata = QOX2_HTAKA_CA1ARA[v]?.[ htaka ];
+    if ( !knata ) return "?";
 
-    const vKsaka = sys.v;
+    const vKsaka = knata.v;
     const saxeK2fe = Math.floor( h / 0o10 );
     const araqK2fe = h % 0o10;
-    const hKsaka = ( sys.hSaxe[saxeK2fe] || "" ) + ( sys.hAraq[araqK2fe] || "" );
+    const hKsaka = ( knata.hSaxe[saxeK2fe] || "" ) + ( knata.hAraq[araqK2fe] || "" );
     return vKsaka + hKsaka;
 }
 
@@ -779,9 +779,9 @@ function v3ak2K6h6(): void {
         s2Ca1ara.push( vK61eK61e + hK61eK61e );
     }
 
-    const url = new URL( window.location.href );
-    url.searchParams.set( "n2k", s2Ca1ara.join( "-" ) );
-    window.history.replaceState( {}, "", url );
+    const k6h6 = new URL( window.location.href );
+    k6h6.searchParams.set( "n2k", s2Ca1ara.join( "-" ) );
+    window.history.replaceState( {}, "", k6h6 );
 }
 
 function keveXemaK61e( e: ClipboardEvent ): void {
@@ -789,8 +789,8 @@ function keveXemaK61e( e: ClipboardEvent ): void {
     if ( !xemaK61e ) return;
 
     try {
-        const url = new URL( xemaK61e );
-        const xema = new URLSearchParams( url.search );
+        const k6h6 = new URL( xemaK61e );
+        const xema = new URLSearchParams( k6h6.search );
         const aran2k = xema.get( "n2k" );
 
         if ( aran2k ) {
@@ -921,7 +921,7 @@ function quqAran2k( k61e: string ): QuqXema | null {
     }
 
     for ( let saxeK2fe = 0o0; saxeK2fe <= 0o4 - k61eS2K2fe; saxeK2fe++ ) {
-        ( [ "k", "l", "c" ] as const ).forEach( ( sys ) => quqK2feN2k( saxeK2fe, saxeK2fe, [], [], sys ) );
+        ( [ "k", "l", "c" ] as const ).forEach( ( knata ) => quqK2feN2k( saxeK2fe, saxeK2fe, [], [], knata ) );
     }
 
     k61eCa1ara.sort( ( a, b ) => {

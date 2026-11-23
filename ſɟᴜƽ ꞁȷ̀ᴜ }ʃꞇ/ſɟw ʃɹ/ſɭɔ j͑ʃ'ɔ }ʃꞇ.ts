@@ -2,10 +2,10 @@
 
 /*
 * ≺⧼ ſɟw ʃɹ - ſ̀ȷᴜ ⌨️ ⧽≻
-* ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Cubii Cutlii first change symbol )
-* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md git )
+* ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( Cubii Cutlii first change symbol )
+* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md git )
 * ſɟᴜ ı],ɹͷ̗ ( first change symbol Cubii Cutlii )
-* ſɟɔ ŋᷠɔ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( aih en )
+* ſɟɔ ŋᷠɔ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( aih en )
 */
 
 // ⟪ ֭ſɭᴜ ı],ɔ 📐 ⟫
@@ -41,7 +41,7 @@ interface Kp6Htaka {
 
 // ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 📦 ⟫
 
-// ⟨ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ ⟩
+// ⟨ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ 📃 ⟩
 const KEVE_SAXE: Readonly<Record<string, Kp6Keve>> = {
 	"[Shift]": "shift",
 	"[Back]": "back",
@@ -50,7 +50,7 @@ const KEVE_SAXE: Readonly<Record<string, Kp6Keve>> = {
 	"[Symbol]": "symbol",
 };
 
-// ⟨ j͑ʃᴜƽ ʌ ſɭɔʞ ( Also is ) ⟩
+// ⟨ j͑ʃᴜƽ ʌ ſɭɔʞ ( Also is ) 📃 ⟩
 const KEVE_K61e: Readonly<Record<string, Kp6Keve>> = {
 	"shift": "shift",
 	"back": "back",
@@ -60,7 +60,7 @@ const KEVE_K61e: Readonly<Record<string, Kp6Keve>> = {
 };
 
 /**
-* ⟨ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɭɔʞ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md ) ⟩
+* ⟨ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɭɔʞ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md ) 📃 ⟩
 */
 const KEVE_KSAKA: Readonly<Record<Kp6Keve, { en: string; aih: string }>> = {
 	shift: { en: "Shift", aih: "ſןw ſȷɹ" },
@@ -72,18 +72,18 @@ const KEVE_KSAKA: Readonly<Record<Kp6Keve, { en: string; aih: string }>> = {
 };
 
 /**
-* ⟨ j͑ʃɹ ɭʃᴜɔ˞ ⟩
+* ⟨ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
 */
 const VOP2: Readonly<Record<string, string[]>> = {};
 
-// ⟨ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( 1 ) ⟩
+// ⟨ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( 1 ) 📃 ⟩
 const PU_XEMA_K2FE = HE_L6HEINAK;
 
-// ⟨ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( 1 ) ⟩
+// ⟨ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( 1 ) 📃 ⟩
 const XEMA_XEKOX2Q_K2FE = HE_L6HEINAK;
 
 /**
-* ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md git ) ⟩
+* ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md git ) 📃 ⟩
 */
 const SAXE_KP6HTAKA = `# Small ( Cubii / ſɟw ʃɹ )
 
@@ -153,7 +153,7 @@ let puKuba: HTMLElement | null = null;
 function kf2Kp6HtakaCa1ara( ne1anesaiK61e: string ): Kp6Htaka[] {
 	const han2k = ne1anesaiK61e.replace(/\r/g, "").split( "\n" );
 
-	// ⟨ j͑ʃɹ ɭʃᴜɔ˞ ⟩
+	// ⟨ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
 	keveBal2xa = { ...KEVE_SAXE, ...kf2Keve( han2k ) };
 
 	const saxeAraqCa1ara: number[] = [];
@@ -173,7 +173,7 @@ function kf2Kp6HtakaCa1ara( ne1anesaiK61e: string ): Kp6Htaka[] {
 	}
 
 	/*
-	* ⟨ ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ( Cutlii change symbol ) ⟩
+	* ⟨ ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ( Cutlii change symbol ) 📃 ⟩
 	*/
 	const m2Kp6Htaka = kp6HtakaCa1ara[0o0];
 	const puKp6Htaka = kp6HtakaCa1ara[0o1];
@@ -185,7 +185,7 @@ function kf2Kp6HtakaCa1ara( ne1anesaiK61e: string ): Kp6Htaka[] {
 }
 
 /**
-	j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		j͑ʃᴜƽ
 		ſɭɹ ſȷɔ
 		ſɭɹ ſȷɔ
@@ -213,12 +213,12 @@ function kf2Kp6Htaka( han2k: string[], saxeK2fe: number, araqK2fe: number ): Kp6
 		return { ksakaEn: ksaka.en, ksakaAih: ksaka.aih, kubaCa1ara };
 	}
 
-	// ⟨ ſɟᴜ ı],ɹͷ̗ ( Cutlii ) ⟩
+	// ⟨ ſɟᴜ ı],ɹͷ̗ ( Cutlii ) 📃 ⟩
 	return { ksakaEn: ksaka.en, ksakaAih: ksaka.aih, kubaCa1ara: [ kf2Kuba( han2k, saxeK2fe, araqK2fe ) ] };
 }
 
 /**
-	j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		j͑ʃᴜƽ
 		ſɭɹ ſȷɔ
 		ſɭɹ ſȷɔ
@@ -245,7 +245,7 @@ function kf2Kuba( han2k: string[], saxeK2fe: number, araqK2fe: number ): Kuba {
 }
 
 /**
-	ſɭʞɹ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ſɭʞɹ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		j͑ʃᴜƽ
 	@returns string[]
 */
@@ -257,7 +257,7 @@ function s2N2k( n2k: string ): string[] {
 		if ( keveHate( ne1anesai ) || s2Kp6( ne1anesai ) ) {
 			s2Ca1ara.push( ne1anesai );
 		} else if ( ne1anesai.startsWith( "[" ) && ne1anesai.endsWith( "]" ) ) {
-			// ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
+			// ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
 			s2Ca1ara.push( "[", ...ne1anesai.slice( 0o1, -0o1 ).trim().split( /\s+/ ), "]" );
 		} else {
 			s2Ca1ara.push( ne1anesai );
@@ -268,7 +268,7 @@ function s2N2k( n2k: string ): string[] {
 }
 
 /**
-	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns boolean
 */
@@ -277,7 +277,7 @@ function keveHate( s2: string ): boolean {
 }
 
 /**
-	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( [ Shift ] [ Empty ] )
+	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( [ Shift ] [ Empty ] )
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns boolean
 */
@@ -286,7 +286,7 @@ function s2Kp6( s2: string ): boolean {
 }
 
 /**
-	j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( [ Empty ] )
+	j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( [ Empty ] )
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns S2
 */
@@ -302,7 +302,7 @@ function kf2S2( s2: string ): S2 {
 }
 
 /**
-	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Also is )
+	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( Also is )
 		j͑ʃᴜƽ
 	@returns Record<string, Kp6Keve>
 */
@@ -325,7 +325,7 @@ function kf2Keve( han2k: string[] ): Record<string, Kp6Keve> {
 }
 
 /**
-	j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Cubii ſɟw ʃɹ )
+	j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( Cubii ſɟw ʃɹ )
 		ſɭɔ˞ᴜ ſɭᴜ
 	@returns { en: string; aih: string }
 */
@@ -347,7 +347,7 @@ function quqKsaka( ne1anesai: string ): { en: string; aih: string } {
 }
 
 /**
-	ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( change symbol )
+	ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( change symbol )
 		ſɟᴜ ı],ɹͷ̗
 		ſɟᴜ ı],ɹͷ̗
 	@returns Kuba[]
@@ -367,7 +367,7 @@ function kf2PuKuba( kubaSaxe: Kuba, m2Kp6Htaka: Kp6Htaka ): Kuba[] {
 		araqS2Ca1ara: kubaSaxe.araqS2Ca1ara,
 	} );
 
-	// ⟨ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɟᴜ ı],ɹͷ̗ ⟩
+	// ⟨ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɟᴜ ı],ɹͷ̗ 📃 ⟩
 	const vop2 = kf2Bal2xa( vop2Bal2xa );
 	const kp6 = kf2Bal2xa( kp6Bal2xa );
 	vop2.ksakaEn = m2Kp6Htaka.kubaCa1ara[0o1].ksakaEn;
@@ -379,7 +379,7 @@ function kf2PuKuba( kubaSaxe: Kuba, m2Kp6Htaka: Kp6Htaka ): Kuba[] {
 }
 
 /**
-	ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		ſɟᴜ ı],ɹͷ̗
 		ſɟᴜ ı],ɹͷ̗
 	@returns Record<string, string>
@@ -410,7 +410,7 @@ function kf2Kp6Bal2xa( saxeKuba: Kuba, araqKuba: Kuba ): Record<string, string> 
 // ⟪ ſɭɔʞ 🈯 ⟫
 
 /**
-	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( html )
+	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( html )
 	@returns string
 */
 function kxesuLang(): string {
@@ -418,7 +418,7 @@ function kxesuLang(): string {
 }
 
 /**
-	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( aih en )
+	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( aih en )
 		ſɭɔ˞ᴜ ſɭᴜ ( en )
 		ſɭɔ˞ᴜ ſɭᴜ ( aih )
 	@returns string
@@ -430,7 +430,7 @@ function kxesuKsaka( en: string, aih: string ): string {
 // ⟪ ſɟᴜ ſȷᴜɔ˞ 🖥️ ⟫
 
 /**
-	ſɟɔ ŋᷠɔ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ſɟɔ ŋᷠɔ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		ſɭɹ ſȷɔ
 	@returns void
 */
@@ -455,7 +455,7 @@ function suntaKp6Htaka( k2fe: number ): void {
 }
 
 /**
-	ſɟɔ ŋᷠɔ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ſɟɔ ŋᷠɔ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		ſɭɹ ſȷɔ
 	@returns void
 */
@@ -476,12 +476,12 @@ function suntaKuba( k2fe: number ): void {
 	}
 	s2Xema.appendChild( kf2N2k( kuba.araqS2Ca1ara ) );
 
-	// ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭɔʞ ( vacepu aih ) ⟩
+	// ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭɔʞ ( vacepu aih ) 📃 ⟩
 	vacepu( "cepufal" );
 }
 
 /**
-	ſɭʞɹ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( thala cakaxa )
+	ſɭʞɹ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( thala cakaxa )
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns HTMLElement
 */
@@ -496,7 +496,7 @@ function kf2N2k( s2Ca1ara: S2[] ): HTMLElement {
 }
 
 /**
-	ſɭʞɹ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ſɭʞɹ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns HTMLButtonElement
 */
@@ -504,7 +504,7 @@ function kf2S2Kek( s2: S2 ): HTMLButtonElement {
 	const kek = document.createElement( "button" );
 	kek.type = "button";
 
-	// ⟨ ſɟɔ ŋᷠɔ ʌ ſɭɔ˞ᴜ ſɭᴜ ⟩
+	// ⟨ ſɟɔ ŋᷠɔ ʌ ſɭɔ˞ᴜ ſɭᴜ 📃 ⟩
 	if ( s2.hat === "keve" ) {
 		const ksaka = KEVE_KSAKA[s2.kp6];
 		kek.textContent = kxesuKsaka( ksaka.en, ksaka.aih );
@@ -527,7 +527,7 @@ function kf2S2Kek( s2: S2 ): HTMLButtonElement {
 }
 
 /**
-	ſɭʞɹ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ſɭʞɹ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		ſᶘɹ }ʃᴜ }ʃw
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
@@ -561,7 +561,7 @@ function kf2PuXema( kek: HTMLButtonElement, s2: Kp6S2 ): void {
 		}, PU_XEMA_K2FE * 0o1750 );
 	} );
 
-	// ⟨ ſɟɔ ŋᷠɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
+	// ⟨ ſɟɔ ŋᷠɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
 	kek.addEventListener( "pointerup", () => {
 		ne1aK2feXema();
 		araqKuba();
@@ -571,7 +571,7 @@ function kf2PuXema( kek: HTMLButtonElement, s2: Kp6S2 ): void {
 }
 
 /**
-	ſɟɔ ŋᷠɔ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ſɟɔ ŋᷠɔ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
@@ -595,7 +595,7 @@ function saxePuKuba( s2: Kp6S2 ): void {
 }
 
 /**
-	ſɭɜ ʃɔ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ſɭɜ ʃɔ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 	@returns void
 */
 function araqKuba(): void {
@@ -607,12 +607,12 @@ function araqKuba(): void {
 // ⟪ ſןɔ ʌ ſᶘɹ }ʃᴜ }ʃw 🖱️ ⟫
 
 /**
-	ſןɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ſןɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
 function keveS2( s2: S2 ): void {
-	// ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
+	// ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
 	if ( puXema ) {
 		puXema = false;
 		return;
@@ -626,7 +626,7 @@ function keveS2( s2: S2 ): void {
 }
 
 /**
-	j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
@@ -645,7 +645,7 @@ function xemaS2( s2: Kp6S2 ): void {
 }
 
 /**
-	ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭᴜc̗ ɭʃᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭᴜc̗ ɭʃᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
@@ -675,7 +675,7 @@ function keve( keve: Kp6Keve ): void {
 }
 
 /**
-	j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		ꞁȷ̀ɔ j͑ʃƽɔƽ
 	@returns void
 */
@@ -689,12 +689,12 @@ function xemaK61e( k61e: string ): void {
 	xemaKuba.setSelectionRange( kxesuK2fe, kxesuK2fe );
 	xemaKuba.focus();
 
-	// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
+	// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
 	xemaK61eCa1ara.push( k61e );
 }
 
 /**
-	ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 	@returns void
 */
 function ne1aGrafero(): void {
@@ -702,7 +702,7 @@ function ne1aGrafero(): void {
 	const saxeK2fe = xemaKuba.selectionStart ?? xemaKuba.value.length;
 	const araqK2fe = xemaKuba.selectionEnd ?? xemaKuba.value.length;
 
-	// ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
+	// ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
 	if ( saxeK2fe !== araqK2fe ) {
 		xemaKuba.value = xemaKuba.value.slice( 0o0, saxeK2fe ) + xemaKuba.value.slice( araqK2fe );
 		xemaKuba.setSelectionRange( saxeK2fe, saxeK2fe );
@@ -715,14 +715,14 @@ function ne1aGrafero(): void {
 		const saxeK61e = xemaKuba.value.slice( 0o0, saxeK2fe );
 		const kxesuS2 = xemaK61eCa1ara[xemaK61eCa1ara.length - 0o1];
 
-		// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
+		// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
 		if ( kxesuS2 && saxeK61e.endsWith( kxesuS2 ) ) {
 			const kxesuK2fe = saxeK2fe - kxesuS2.length;
 			xemaKuba.value = xemaKuba.value.slice( 0o0, kxesuK2fe ) + xemaKuba.value.slice( saxeK2fe );
 			xemaKuba.setSelectionRange( kxesuK2fe, kxesuK2fe );
 			xemaK61eCa1ara.pop();
 		} else {
-			// ⟨ ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
+			// ⟨ ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
 			const kxesuK2fe = saxeK2fe - k2feGrafero( saxeK61e );
 			xemaKuba.value = xemaKuba.value.slice( 0o0, kxesuK2fe ) + xemaKuba.value.slice( saxeK2fe );
 			xemaKuba.setSelectionRange( kxesuK2fe, kxesuK2fe );
@@ -733,7 +733,7 @@ function ne1aGrafero(): void {
 }
 
 /**
-	ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Intl Segmenter )
+	ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( Intl Segmenter )
 		ꞁȷ̀ɔ j͑ʃƽɔƽ
 	@returns number
 */
@@ -755,7 +755,7 @@ function k2feGrafero( k61e: string ): number {
 }
 
 /**
-	ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 	@returns Promise
 */
 async function suntaK61e(): Promise<void> {
@@ -777,7 +777,7 @@ async function suntaK61e(): Promise<void> {
 }
 
 /**
-	ſɭɜ ʃɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ſɭɜ ʃɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 	@returns void
 */
 function ne1aXema(): void {
@@ -807,7 +807,7 @@ document.addEventListener( "DOMContentLoaded", () => {
 	kp6HtakaCa1ara = kf2Kp6HtakaCa1ara( ne1anesaiK61e );
 	suntaKp6Htaka( 0o0 );
 
-	// ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ⟩
+	// ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
 	xemaKuba.addEventListener( "input", () => {
 		xemaK61eCa1ara = [];
 	} );

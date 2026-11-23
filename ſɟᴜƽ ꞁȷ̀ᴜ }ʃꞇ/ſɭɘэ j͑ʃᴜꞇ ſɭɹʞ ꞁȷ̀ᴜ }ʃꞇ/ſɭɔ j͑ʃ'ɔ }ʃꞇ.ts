@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-// ≺⧼ ſɭɘэ j͑ʃᴜꞇ ſɭɹʞ ꞁȷ̀ᴜ }ʃꞇ - ꞁȷ̀эȝ ɭʃɔ 🎨 ⧽≻
+// ≺⧼ ſɭɘэ j͑ʃᴜꞇ ſɭɹʞ ꞁȷ̀ᴜ }ʃꞇ - j͑ʃɹ ɭʃᴜɔ˞ 🎨 ⧽≻
 
 
 // ⟪ ֭ſɭᴜ ı],ɔ 📐 ⟫
@@ -33,7 +33,7 @@ interface KubaSab2 {
 
 // ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 📦 ⟫
 
-// ⟨ j͑ʃɹ ɭʃᴜɔ˞ ʌ ſɭɔ˞ᴜ ſɭᴜ ⟩
+// ⟨ j͑ʃɹ ɭʃᴜɔ˞ ʌ ſɭɔ˞ᴜ ſɭᴜ 📃 ⟩
 const kp6Bal2xa = new Map<string, Kp6Sab2>();
 
 const kp6Ca1ara = import.meta.glob("./**/*.txt", {
@@ -42,14 +42,14 @@ const kp6Ca1ara = import.meta.glob("./**/*.txt", {
 	eager: true
 }) as Record<string, string>;
 
-// ⟨ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɭɹ ſȷɔ ⟩
+// ⟨ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɭɹ ſȷɔ 📃 ⟩
 let htakaKsakaCa1ara: string[] = [];
 
 
 // ⟪ ſ͕ɭɹȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📂 ⟫
 
 /**
-	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( txt )
+	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( txt )
 	@returns void
 */
 async function b6tem2Kp6(): Promise<void> {
@@ -62,7 +62,7 @@ async function b6tem2Kp6(): Promise<void> {
 
 			const ne1anesaiHan2k = k61e.replace(/\r/g, "").split("\n");
 
-			// ⟨ ſןw ʌ j͑ʃᴜƽ ⟩
+			// ⟨ ſןw ʌ j͑ʃᴜƽ 📃 ⟩
 			if ( ne1anesaiHan2k.length > 0o1 && ne1anesaiHan2k[ne1anesaiHan2k.length - 0o1] === "" ) {
 				ne1anesaiHan2k.pop();
 			}
@@ -85,7 +85,7 @@ async function b6tem2Kp6(): Promise<void> {
 // ⟪ ſɟᴜ ɭʃᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ✂️ ⟫
 
 /**
-	* ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ⟩
+	* ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ 📃 ⟩
 		ꞁȷ̀ɔ j͑ʃƽɔƽ
 	ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ
 	@returns han2k
@@ -106,7 +106,7 @@ function s2Xez(xez: string): string[] {
 		}
 
 		if ( !xekox2q ) {
-			// ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
+			// ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
 			s2Ca1ara.push(xez[i]);
 			i++;
 		}
@@ -119,7 +119,7 @@ function s2Xez(xez: string): string[] {
 // ⟪ ſɟɔ ŋᷠɔ ʌ ſɟᴜ ſȷᴜɔ˞ 🔲 ⟫
 
 /**
-	* ⟨ ſɟɔ ŋᷠɔ ʌ j͑ʃᴜƽ ⟩
+	* ⟨ ſɟɔ ŋᷠɔ ʌ j͑ʃᴜƽ 📃 ⟩
 		j͑ʃᴜƽ
 	ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ſɟᴜ ſᶘᴜ ɽ͑ʃ'ᴜ
 	@returns han2k
@@ -184,26 +184,26 @@ function kubaXez(xez: string): string[] {
 // ⟪ ſɟɔ ŋᷠɔ ʌ ſɟᴜ ſȷᴜɔ˞ 🖥️ ⟫
 
 /**
-	ſɟɔ ŋᷠɔ ʌ ſɟᴜ ſȷᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+	ſɟɔ ŋᷠɔ ʌ ſɟᴜ ſȷᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
 		ꞁȷ̀ɔ j͑ʃƽɔƽ
 		ꞁȷ̀ɔ j͑ʃƽɔƽ
 		ſɭɹ ſȷɔ ( 0 )
 	@returns void
 */
-// ⟨ ſɟɔ ŋᷠɔ ʌ ſɟᴜ ſȷᴜɔ˞ ⟩
+// ⟨ ſɟɔ ŋᷠɔ ʌ ſɟᴜ ſȷᴜɔ˞ 📃 ⟩
 	function v3ak2Sunta(k61e: string, sunta: HTMLPreElement, maxN2k: number): void {
 	if ( !k61e ) {
 		sunta.textContent = "";
 		return;
 	}
 
-	// ⟨ ſɭʞɹ ʌ j͑ʃᴜƽ ⟩
+	// ⟨ ſɭʞɹ ʌ j͑ʃᴜƽ 📃 ⟩
 	const k61eHan2k = k61e.replace(/\r/g, "").split("\n");
 	const kubaCa1ara: XezKuba[][] = [];
 	let kxesuKuba: XezKuba[] = [];
 
 	for ( const k61eN2k of k61eHan2k ) {
-		// ⟨ ſןw ʌ j͑ʃᴜƽ ⟩
+		// ⟨ ſןw ʌ j͑ʃᴜƽ 📃 ⟩
 		if ( kxesuKuba.length > 0o0 ) {
 			kubaCa1ara.push(kxesuKuba);
 			kxesuKuba = [];
@@ -213,7 +213,7 @@ function kubaXez(xez: string): string[] {
 		for ( const xez of xezCa1ara ) {
 			let kuba: XezKuba;
 			if ( xez === "" ) {
-				// ⟨ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃᴜƽ ⟩
+				// ⟨ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃᴜƽ 📃 ⟩
 				kuba = { han2k: Array(0o7).fill(" "), l6da: 0o7, sefini: 0o1 };
 			} else {
 				const han2k = kubaXez(xez);
@@ -222,7 +222,7 @@ function kubaXez(xez: string): string[] {
 				kuba = { han2k, l6da, sefini };
 			}
 
-			// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɹ ſȷɔ ⟩
+			// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɹ ſȷɔ 📃 ⟩
 			if ( maxN2k > 0o0 && kxesuKuba.length >= maxN2k ) {
 				kubaCa1ara.push(kxesuKuba);
 				kxesuKuba = [ kuba ];
@@ -238,7 +238,7 @@ function kubaXez(xez: string): string[] {
 		return;
 	}
 
-	// ⟨ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſןᴜ j͐ʃэ ⟩
+	// ⟨ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſןᴜ j͐ʃэ 📃 ⟩
 	const maxKubaK2fe = Math.max(...kubaCa1ara.map(kuba => kuba.length), 0o0);
 	const maxL6daCa1ara: number[] = Array(maxKubaK2fe).fill(0o0);
 	for ( let r = 0o0; r < maxKubaK2fe; r++ ) {
@@ -265,7 +265,7 @@ function kubaXez(xez: string): string[] {
 		}
 	}
 
-	// ⟨ ſɟɔ ŋᷠɔ ʌ j͑ʃᴜƽ ⟩
+	// ⟨ ſɟɔ ŋᷠɔ ʌ j͑ʃᴜƽ 📃 ⟩
 	const kubaSab2Ca1ara: KubaSab2[] = kubaCa1ara.map((kuba) => {
 		const kubaHan2k: string[] = [];
 		for ( let i = kuba.length - 0o1; i >= 0o0; i-- ) {
@@ -278,7 +278,7 @@ function kubaXez(xez: string): string[] {
 		return { han2k: sefiniHan2k, sefini: kubaSefini, l6da: sefiniHan2k.length };
 	});
 
-	// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃᴜƽ ⟩
+	// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃᴜƽ 📃 ⟩
 	const suntaL6da = Math.max(...kubaSab2Ca1ara.map(c => c.l6da), 0o0);
 
 	const suntaKubaCa1ara: string[][] = kubaSab2Ca1ara.map((c) => {

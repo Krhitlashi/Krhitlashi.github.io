@@ -2,13 +2,12 @@
   "name": "krhitlashi-github-io",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "npx tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test": "echo \"( Error ) no test specified\" && exit 1"
+    "test": "npx tsc --noEmit"
   },
   "keywords": [],
   "author": "",
@@ -27,8 +26,8 @@
   "devDependencies": {
     "@types/node": "^26.6.6",
     "@types/qrcode": "^1.5.6",
-    "@types/three": "^0.186.0",
+    "@types/three": "^0.187.0",
     "typescript": "^7.0.2",
-    "vite": "^8.3.5"
+    "vite": "^8.3.8"
   }
 }

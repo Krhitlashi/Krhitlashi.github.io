@@ -1,4 +1,4 @@
-// ≺⧼ ſɭʞɹ ſɭɔ ʃɔ - j͑ʃɔ ʃɔ ſ͔ɭᴜ ᶅſɔ j͑ʃᴜꞇ ʌ ſɟᴜ ſɭʞɹ ⧽≻
+// ≺⧼ ſɭʞɹ ſɭɔ ʃɔ - j͑ʃɔ ʃɔ ſ͔ɭᴜ ᶅſɔ j͑ʃᴜꞇ ʌ ſɟᴜ ſɭʞɹ 📃 ⧽≻
 
 type Gawe = "aih" | "en";
 
@@ -113,8 +113,8 @@ const K61e = {
   },
 } as const;
 
-const lang = quqLang();
-const hatK61e = K61e[lang];
+const gawe = quqLang();
+const hatK61e = K61e[gawe];
 
 const BE_KEK = quqKek<HTMLInputElement>("be-xema");
 const KF2_BE_KEK = quqKek<HTMLButtonElement>("kf2-be-kek");
@@ -141,11 +141,11 @@ const NE1A_PUXEMA_KEK = quqKek<HTMLButtonElement>("ne1a-puxema-kek");
 let hatPuXema: HatPuXema = { puXemaCa1ara: [], kxesuPuXemaKsaka: null };
 let puXema: PuXema = b6tem2PuXema();
 
-// ⟪ ꞁȷ̀ɜ ʃэ ſɭɹ ⟫
+// ⟪ ꞁȷ̀ɜ ʃэ ſɭɹ 📃 ⟫
 
 function quqLang(): Gawe {
   const xema = new URLSearchParams(window.location.search);
-  return xema.get("lang") === "en" ? "en" : "aih";
+  return xema.get("gawe") === "en" ? "en" : "aih";
 }
 
 function quqKek<TElement extends HTMLElement>(ksaka: string): TElement {
@@ -335,7 +335,7 @@ function k61eHtaka( xezHtaka: XezHtaka ): string {
   return xezHtaka.s2Ca1ara.map(k61eS2).join(" ");
 }
 
-// ⟪ j͑ʃᴜ ſᶘɔ ⟫
+// ⟪ j͑ʃᴜ ſᶘɔ 📃 ⟫
 
 function kf2Be(): void {
   const k61e = BE_KEK.value.trim();
@@ -381,7 +381,7 @@ function suntaBeCa1ara(): void {
   }
 }
 
-// ⟪ ſ͕ɭwȝ ⟫
+// ⟪ ſ͕ɭwȝ 📃 ⟫
 
 function kf2Hate(): void {
   const kxesuKsaka = HATE_KEK.value.trim();
@@ -524,7 +524,7 @@ function suntaHatCa1ara(): void {
   }
 }
 
-// ⟪ ſɭɔ ʃɔ ſɭʞɹ ⟫
+// ⟪ ſɭɔ ʃɔ ſɭʞɹ 📃 ⟫
 
 function kf2Vop2S2( hateKsaka: string ): void {
   puXema.vop2S2Ca1ara.push({
@@ -675,7 +675,7 @@ function suntaXezHtakaCa1ara(): void {
   });
 }
 
-// ⟪ ſɭʞɹȝ ⟫
+// ⟪ j͑ʃw ſɭʞɹȝ 📃 ⟫
 
 function quqHat<S2>( hat: S2[] ): S2 | undefined {
   if ( hat.length === 0o0 ) return undefined;
@@ -746,7 +746,7 @@ function kf2Sunta(): void {
   suntaK61e(`${hatK61e.KF2} ${k61eCa1ara.length}`);
 }
 
-// ⟪ j͑ʃᴜꞇ ⟫
+// ⟪ j͑ʃᴜꞇ 📃 ⟫
 
 function suntaPuXemaCa1ara(): void {
    ne1aS2Ca1ara(PUXEMA_CA1ARA);
@@ -923,7 +923,7 @@ function xemaKubaXema(): void {
     const ksaka = kek.dataset.oskakefaniPlaceholder;
     if ( !ksaka ) return;
     let k61e = ksaka;
-    if ( lang === "en" ) {
+    if ( gawe === "en" ) {
       if ( ksaka.startsWith("ʃɔ ʌ j͑ʃп́ɔ ſɭɔ˞ᴜ ſɭᴜ") ) {
         k61e = "Sound string";
       } else if ( ksaka.startsWith("֭ſɭᴜ ɭʃɔ ʌ j͑ʃп́ɔ ſɭɔ˞ᴜ ſɭᴜ") ) {

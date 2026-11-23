@@ -2,9 +2,9 @@ import * as XLSX from "xlsx";
 
 // ≺⧼ Iikrhia Xema Ox2pewaKf2 🌐 ⧽≻
 /**
- * ſɭʞɹ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( Iikrhia VOS )
- * ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ſɭʞɹ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( Iikrhia VOS )
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
  *
  * ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ( He V Evi O ⺓ Evi Adj S )
  */
@@ -42,10 +42,10 @@ const S2WENI_SAXES2TAS: Record<string, [ string, string ]> = {
 };
 
 /*
-* ⟨ ſɭɹ ֭ſɭɹ ʌ ɭʃᴜ ⟩
-* ſɭɹ ֭ſɭɹ is an adjective ( true ) standing before ɭʃᴜ, the TAK form.
-* WILL is therefore a composition rather than an affix of its own — which is
-* why both allomorph columns below are identical and why it has no KO partner.
+* ⟨ ſɭɹ ֭ſɭɹ ʌ ɭʃᴜ 📃 ⟩
+* j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſןɹ j͑ʃᴜ j͑ʃᴜꞇ ʌ ſɭɔʞ ʌ ⺓ ʌ ſɭɹ ֭ſɭɹ ɭʃᴜ ⟅
+* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɜ ı],ɹȝ ꞁȷ̀ᴜ }ʃꞇ ʌ ⺓ ʌ ſɭꞇ ⟅
+* j͑ʃ'ɔ ſ̀ȷᴜȝ ꞁȷ̀ᴜͷ̗ ʌ ſןɹ j͑ʃᴜ j͑ʃᴜꞇ j͐ʃ ʌ ſɭ,ᴜʞ ʌ ſɭɔʞ ʌ ⺓ ʌ QUQXEMA_SAXES2TAS ⟅
 */
 const QUQXEMA_WILL_SAXE = "ſɭɹ ֭ſɭɹ";
 const QUQXEMA_WILL = `${ QUQXEMA_WILL_SAXE } ɭʃᴜ`;
@@ -72,7 +72,7 @@ const VASAKA_SAXES2TAS: Record<string, [ string, string ]> = {
     "L6R": [ "j͐ʃэƣ̋", "j͐ʃэ" ],
 };
 
-// ⟨ ſɭᴜ ɭl̀ɹ ɭʃɔ ʌ ſɟɹƽ ꞁȷ̀ᴜ }ʃꞇ ( GES PUF SIIR BAZ XER SUP ) ⟩
+// ⟨ ſɭᴜ ɭl̀ɹ ɭʃɔ ʌ ſɟɹƽ ꞁȷ̀ᴜ }ʃꞇ ( GES PUF SIIR BAZ XER SUP ) 📃 ⟩
 
 const TANI_SAXES2TAS: Record<string, [ string, string ]> = {
     "GES": [ "ſ͔ɭɔɔ˞", "ſ͔ɭɔ" ],
@@ -83,7 +83,7 @@ const TANI_SAXES2TAS: Record<string, [ string, string ]> = {
     "SUP": [ "ſɭc̗ᴜʞ", "ſɭc̗ᴜ" ],
 };
 
-// ⟨ j͐ʃэ ſɟɹƽ ꞁȷ̀ᴜ ſɭꞇ j͑ʃᴜꞇ ( MAR ARA MARA KAP KER HAT ) ⟩
+// ⟨ j͐ʃэ ſɟɹƽ ꞁȷ̀ᴜ ſɭꞇ j͑ʃᴜꞇ ( MAR ARA MARA KAP KER HAT ) 📃 ⟩
 
 const KAKAI_SAXES2TAS: Record<string, [ string, string ]> = {
     "MAR": [ "ŋᷠᴜƣ̋", "ŋᷠᴜ" ],
@@ -113,8 +113,8 @@ const QUQXEMA_BAL2XA: Record<string, string> = {
 };
 
 /**
- * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ko )
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɟᴜ ſɭᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( ko )
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɟᴜ ſɭᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
     * @param quqXema ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞ ( OR TAK KN2 TQ2 WILL )
     * @param ko ( boolean = false , optional ) - ſɭɜ j͑ʃᴜ
  * @returns saxeS2tas
@@ -128,9 +128,9 @@ function quqXemaSaxeS2tas(quqXema: string, ko: boolean = false): string {
 }
 
 /**
- * ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( KON OR L6R )
- * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɟᴜ ſɭᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( KON OR L6R )
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɟᴜ ſɭᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
     * @param vasaka ( ZeniVasaka , required ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns saxeS2tasCa1ara
  */
@@ -206,9 +206,10 @@ const S2TAS_SKAKEFANI: Record<string, string> = {
     "KER": "STUDY_OF",
     "HAT": "COLLECTIVE",
     /*
-    * ⟨ j͑ʃɹ ɭʃᴜɔ˞ ⟩
-    * These are particles rather than affixes, but they are pushed through the
-    * same gloss path, so they need a name here or the gloss shows a bare key.
+    * ⟨ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
+    * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɟᴜ ſ̀ȷᴜȝ ʌ ⺓ ʌ QU MU KAL ⟅
+    * ſɭɜ j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɔʞ ſɟɹƽ ꞁȷ̀ᴜꞇ ʌ ⺓ ʌ ſɭꞇ ⟅
+    * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ſɭꞇ ⟅
     */
     "QU": "TOPIC",
     "MU": "FOCUS",
@@ -251,7 +252,7 @@ const xezHtakaB6vegejex = new XezHtakaB6vegejex();
 // ⟪ ʃɔ 🔤 ⟫
 
 /**
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
  *     @param kef ( string , required ) - ſɭɔʞ
   *  @returns cez
  * */
@@ -267,7 +268,7 @@ function ekAwaSaxe(kef: string): boolean {
 }
 
 /**
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ʃɔ )
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( ʃɔ )
  *     @param kef ( string , required ) - ſɭɔʞ
   *  @returns cez
  * */
@@ -298,10 +299,10 @@ interface KefEskek {
     _s2weniSaxe?: string;
     _s2weniSaxeS2tas?: string;
     /*
-    * ⟨ Other|j͐ʃэ ſɭɔʞ ⟩
-    * A compound is written as components split by ｡. Affixes attach to the head,
-    * which is the leading component, so this records how many leading words of
-    * gawekiif belong to that head. 0 means the word is not a compound.
+    * ⟨ Other|j͐ʃэ ſɭɔʞ 📃 ⟩
+    * ſɭɜ ſɭᴜͷ̗ ɭʃɜƽ ʌ ſɭɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+    * j͑ʃ'ɔ ʃэ ſɭɔƽ ʌ ᶅſɜ ſןɜ ʌ ⺓ ʌ ſɭɔʞ ſɟɹƽ ꞁȷ̀ᴜꞇ ⟅
+    * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɹ ſȷɔ ʌ ſɭɔʞ ʌ ⺓ ʌ _jexeK2fe ⟅
     */
     _jexeK2fe?: number;
 }
@@ -310,10 +311,9 @@ interface VasakaKefEskek extends KefEskek {
     _quqSaxeS2tas?: string | null;
     _quqAraqS2tas?: string | null;
     /*
-    * ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
-    * Suffixes stack, so they are kept in the order they were attached instead of
-    * being flattened onto the single _quqAraqS2tas slot, where a later one would
-    * quietly replace an earlier one and drop it from the gloss.
+    * ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
+    * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſןɹ j͑ʃᴜ j͑ʃᴜꞇ ʌ ſɭɔʞ ſɟɹƽ ꞁȷ̀ᴜꞇ ʌ ⺓ ʌ _quqAraqS2tasCa1ara ⟅
+    * ſɭɜ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ }ʃᴜ ſɭᴜ ŋᷠᴜ j͐ʃ ʌ ı],ᴜ j͑ʃᴜꞇ ʌ ſɭɔʞ ſɟɹƽ ꞁȷ̀ᴜꞇ ʌ ⺓ ʌ _quqAraqS2tasCa1ara ⟅
     */
     _quqAraqS2tasCa1ara?: string[];
     _quqQuqXema?: string | null;
@@ -331,9 +331,9 @@ interface ZeniVasakaHat {
 }
 
 /**
- * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( OR TAK YOR KOTAK KN2 TQ2 WILL )
- * ſɭʞɹ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( OR TAK YOR KOTAK )
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( OR TAK YOR KOTAK KN2 TQ2 WILL )
+ * ſɭʞɹ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( OR TAK YOR KOTAK )
     * @param zeni ( KefEskek , required ) - ſɭɔʞ ( gawekiif )
     * @param k61eCa1ara ( ZeniVasakaHat = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns kef
@@ -349,10 +349,9 @@ function quqZeniVasaka(zeni: KefEskek, k61eCa1ara: ZeniVasakaHat = {}): VasakaKe
     } = k61eCa1ara;
 
     /*
-    * ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͐ʃэ ſɭɔʞ ⟩
-    * Every affix below is applied to zeniHat, which is only the head of the
-    * word, so a compound keeps the parts after its head behind the affix:
-    * N Adj becomes N-sai Adj rather than N Adj sai.
+    * ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͐ʃэ ſɭɔʞ 📃 ⟩
+    * j͑ʃ'ɔ ʃэ ſɭɔƽ ʌ zeniHat ʌ ⺓ ʌ ſɭɔʞ ſɟɹƽ ꞁȷ̀ᴜꞇ ⟅
+    * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔƽ ʌ ⺓ ʌ ſɭɜ ı],ɹȝ ꞁȷ̀ᴜ }ʃꞇ ⟅
     */
     const [ jexeHat, jexeAraq ] = quqJexeHat(zeni);
     let zeniHat = jexeHat;
@@ -364,7 +363,7 @@ function quqZeniVasaka(zeni: KefEskek, k61eCa1ara: ZeniVasakaHat = {}): VasakaKe
     let quqXemaKoS2 = false;
 
     /*
-    * ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( KON OR L6R ) ⟩
+    * ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( KON OR L6R ) 📃 ⟩
     * ſɭɜc̗ ꞁȷ̀ɜƣ̋ ( KON outside OR ) vs ꞁȷ̀ɜ j͐ʃэ ( OR outside L6R )
     */
     let quqS2tasK61e: string | null = null;
@@ -393,8 +392,8 @@ function quqZeniVasaka(zeni: KefEskek, k61eCa1ara: ZeniVasakaHat = {}): VasakaKe
 
     if (quqXema) {
         /*
-        * ⟨ ſɭɜ ɭʃᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( KOTAK ) ⟩
-        * KON plus a modality that owns a ko form collapses into that form.
+        * ⟨ ſɭɜ ɭʃᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( KOTAK ) 📃 ⟩
+        * j͑ʃ'ɔ ʃэ ſɭɔƽ ʌ xaqadiXez ʌ ⺓ ʌ KON ⟅
         */
         const koForma = araqS2tasK61e === "KON" && ( quqXema === "OR" || quqXema === "TAK" )
             ? QUQXEMA_BAL2XA[quqXema] || null
@@ -453,9 +452,9 @@ function quqZeniVasaka(zeni: KefEskek, k61eCa1ara: ZeniVasakaHat = {}): VasakaKe
 // ⟪ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ 🔧 ⟫
 
 /**
- * ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
     * @param kef ( string , required ) - ſɭɔʞ
     * @param s2tasHat ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞ ( OR KON SU AL )
  * @returns k61e
@@ -465,28 +464,28 @@ function quqS2tas(kef: string, s2tasHat: string): string {
 
     if ( SAXES2TAS_BAL2XA[s2tasHat] ) {
         const [ vowelForm, consonantForm ] = SAXES2TAS_BAL2XA[s2tasHat];
-        const form = ekAwaSaxe(kef) ? vowelForm : consonantForm;
-        return `${form} ${kef}`;
+        const xaqadiXez = ekAwaSaxe(kef) ? vowelForm : consonantForm;
+        return `${xaqadiXez} ${kef}`;
     }
 
     if ( ARAQS2TAS_BAL2XA[s2tasHat] ) {
         const [ vowelForm, consonantForm ] = ARAQS2TAS_BAL2XA[s2tasHat];
-        const form = ekAwaAraq(kef) ? vowelForm : consonantForm;
-        return `${kef} ${form}`;
+        const xaqadiXez = ekAwaAraq(kef) ? vowelForm : consonantForm;
+        return `${kef} ${xaqadiXez}`;
     }
 
     return kef;
 }
 
 /**
- * ſɭɹ ɽ͑ʃ'ɔ ʌ j͐ʃэ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ꞁȷ̀ᴜ ʌ ſɭᴜ ꞁȷ̀ᴜ ɭl̀ɹ )
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ j͐ʃэ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
  *
- * Splits a word into the head and everything after it, because affixes attach
- * to the head rather than to the end of the whole surface word. A plain word
- * is its own head with nothing after it.
+ * ſɭᴜͷ̗ ɭʃɜƽ ʌ ᶅſɜ ſןɜ ʌ ſɭᴜͷ̗ ʌ ſɭɔƽ ʌ ⺓ ʌ ſɭɔʞ ⟅
+ * j͑ʃ'ɔ ʃэ ſɭɔƽ ʌ ᶅſɜ ſןɜ ʌ ⺓ ʌ ſɭɔʞ ſɟɹƽ ꞁȷ̀ᴜꞇ ⟅
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ᶅſɜ ſןɜ ⟅
  *
- *   N Adj  ->  [ N , Adj ]   so an affix becomes N-sai Adj
+ *   N Adj  ->  [ N , Adj ]
  *   N      ->  [ N , ""  ]
  *
  * @param kefEskek ( KefEskek | null , required ) - ſɭɔʞ
@@ -504,11 +503,11 @@ function quqJexeHat(kefEskek: KefEskek | null): [ string, string ] {
 }
 
 /**
- * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( SU ANI KOZ )
- * ſɭɹ ɽ͑ʃ'ɔ ʌ j͐ʃэ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( SU ANI KOZ )
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ j͐ʃэ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
  *
- * Same as quqS2tas, except the affix is attached to the head of a compound so
- * that the parts after the head stay behind it.
+ * j͑ʃ'ɔ ʃэ ſɭɔƽ ʌ ᶅſɜ ſןɜ ʌ ⺓ ʌ ſɭɔʞ ſɟɹƽ ꞁȷ̀ᴜꞇ ⟅
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔƽ ʌ ⺓ ʌ ſɭɜ ı],ɹȝ ꞁȷ̀ᴜ }ʃꞇ ⟅
  *
  *   quqS2tas( "N Adj" , SU )     ->  N Adj sai
  *   quqS2tasJexe( "N Adj" , SU ) ->  N sai Adj
@@ -531,12 +530,10 @@ function quqS2tasJexe(kefEskek: KefEskek | null, s2tasHat: string): string {
 }
 
 /**
- * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( SU ANI KOZ )
- * ſɭɹ ɽ͑ʃ'ɔ ʌ j͐ʃэ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( SU ANI KOZ )
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ j͐ʃэ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
  *
- * quqS2tasJexe plus the bookkeeping the head boundary needs afterwards: a
- * prefix sits in front of the head, so the head starts that many words further
- * in, while a suffix leaves the boundary where it was.
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ᶅſɜ ſןɜ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ kefEskek ⟅
  *
  * @param kefEskek ( KefEskek | null , required ) - ſɭɔʞ
  * @param s2tasHat ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞ ( SU ANI KOZ )
@@ -559,7 +556,7 @@ function quqS2tasJexeKef(kefEskek: KefEskek | null, s2tasHat: string): { gawekii
 }
 
 /**
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
     * @param s2tasHat ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns cez
  */
@@ -568,9 +565,9 @@ function ekS2weniS2tas(s2tasHat: string): boolean {
 }
 
 /**
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( L6R )
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( L6R )
- * ſɭɹ ɽ͑ʃ'ɔ ʌ quqL6R ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( L6R )
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( L6R )
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( L6R )
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ quqL6R ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( L6R )
     * @param kef ( string , required ) - ſɭɔʞ
     * @param kefEskek ( KefEskek | null = null , optional ) - ſɭɔʞ ( L6R )
  * @returns cez
@@ -590,7 +587,7 @@ function ekS2weniSaxeS2tas(kef: string, kefEskek: KefEskek | null = null): boole
 }
 
 /**
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( L6R )
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( L6R )
     * @param kef ( string | null , required ) - ſɭɔʞ
     * @param kefEskek ( KefEskek | null , required ) - ſɭɔʞ
  * @returns k61e
@@ -605,7 +602,7 @@ function quqL6R(kef: string | null, kefEskek: KefEskek | null): string {
 }
 
 /**
- * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( 2R K2R J6R H2R SAR SWER SER )
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( 2R K2R J6R H2R SAR SWER SER )
  * ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ j͑ʃɹ ɭʃᴜɔ˞
  * @returns k61e
  */
@@ -615,8 +612,8 @@ function quqXemaS2weniSaxeS2tas(): string {
 }
 
 /**
- * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( 2R K2R J6R H2R SAR SWER SER )
- * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( 2R K2R J6R H2R SAR SWER SER )
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
     * @param kefEskek ( KefEskek , required ) - ſɭɔʞ ( gawekiif )
     * @param saxeS2tasHat ( string | null = null , optional ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns kef
@@ -645,8 +642,8 @@ function quqS2weniSaxeS2tas(kefEskek: KefEskek, saxeS2tasHat: string | null = nu
 }
 
 /**
- * ſɭʞɹ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( null )
+ * ſɭʞɹ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( null )
     * @param saxeHaxe ( "Noun" | "Verb" = "Noun" , optional ) - ֭ſɭᴜ ı],ɔ
     * @param saxeS2tasHat ( string | null = null , optional ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns kef
@@ -660,7 +657,7 @@ function kf2S2weni(saxeHaxe: "Noun" | "Verb" = "Noun", saxeS2tasHat: string | nu
 }
 
 /**
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( L6R )
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( L6R )
     * @param kefEskek ( KefEskek | null , required ) - ſɭɔʞ
  * @returns cez
  */
@@ -669,8 +666,8 @@ function ekZeni(kefEskek: KefEskek | null): boolean {
 }
 
 /**
- * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( YOR KOTAK OR TAK )
- * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( YOR KOTAK OR TAK )
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( YOR KOTAK OR TAK )
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( YOR KOTAK OR TAK )
     * @param saxeS2tasHat ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns k61e
  */
@@ -707,7 +704,7 @@ const AIH_KP6_CA1ARA = [ "⟅", "｡", "⸙", "ʌ" ];
 const _kefBal2xa = new Map<string, KefEskek[]>();
 
 /**
- * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
  * @returns han2k
  */
 function quqSaxeAraqAihK61e(): string[] {
@@ -715,7 +712,7 @@ function quqSaxeAraqAihK61e(): string[] {
 }
 
 /**
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
     * @param teksto ( string , required ) - ſɭɘэ ſɭɹ ſןɹ
  * @returns cez
  */
@@ -727,7 +724,7 @@ function ekQuqAihK61e(teksto: string): boolean {
 }
 
 /**
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
     * @param skakefaniKekCa1ara ( string[] , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns k61e
  */
@@ -741,17 +738,16 @@ function sukf2qNe1aAihSkakefani(skakefaniKekCa1ara: string[]): string {
 }
 
 /**
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͐ʃэ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ｡ )
- * ſɭɹ ɽ͑ʃ'ɔ ʌ j͐ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( ｡ - x )
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͐ʃэ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( ｡ )
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ j͐ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( ｡ - x )
  *
- * The Other|j͐ʃэ ſɭɔʞ column writes a compound as components split by ｡,
- * an affix split off its host by -, and a space inside a component by x.
- * Affixes attach to the head, and the head is the leading component, so all
- * this has to recover is how many leading words of the word column that
- * component covers. Returns 0 when the word is not a usable compound.
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ Other|j͐ʃэ ſɭɔʞ ⟅
+ * ſɭɜ ſɭᴜͷ̗ ɭʃɜƽ ʌ ſɭɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * j͑ʃ'ɔ ʃэ ſɭɔƽ ʌ ᶅſɜ ſןɜ ʌ ⺓ ʌ ſɭɔʞ ſɟɹƽ ꞁȷ̀ᴜꞇ ⟅
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɹ ſȷɔ ʌ ſɭɔʞ ʌ ⺓ ʌ _jexeK2fe ⟅
  *
- *   N ｡ Adj        -> 1   ( head is N, so N-sai Adj )
- *   ſ͕ɭэ ſɭɹ ｡ ꞁȷ̀ᴜ ŋᷠɹ -> 2   ( head is the two word ſ͕ɭэ ſɭɹ )
+ *   N ｡ Adj        -> 1   ( ᶅſɜ ſןɜ ʌ N ⟅ )
+ *   ſ͕ɭэ ſɭɹ ｡ ꞁȷ̀ᴜ ŋᷠɹ -> 2   ( ᶅſɜ ſןɜ ʌ ſ͕ɭэ ſɭɹ ⟅ )
  *
  * @param jexeNe1anesai ( string , required ) - Other|j͐ʃэ ſɭɔʞ
  * @param kef ( string , required ) - ſɭɔʞ
@@ -768,8 +764,9 @@ function quqJexeK2fe(jexeNe1anesai: string, kef: string): number {
     if ( jexeCa1ara.length < 0o2 ) return 0o0;
 
     /*
-    * ⟨ - ʌ x ⟩
-    * Drop the notation tokens so only the head's own words are counted.
+    * ⟨ - ʌ x 📃 ⟩
+    * ſȷw ſ̀ȷэ ʌ ſɭɔʞ ʌ ⺓ ʌ ſɭꞇ ⟅
+    * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɹ ſȷɔ ʌ ſɭɔʞ ʌ ⺓ ʌ ᶅſɜ ſןɜ ⟅
     */
     const jexeHatCa1ara = jexeCa1ara[0o0]!
         .split(/\s+/)
@@ -782,16 +779,16 @@ function quqJexeK2fe(jexeNe1anesai: string, kef: string): number {
     const jexeK2fe = jexeHatCa1ara.length;
 
     /*
-    * ⟨ ſɭɹ ɽ͑ʃ'ɔ ⟩
-    * A head that swallows the whole word leaves nothing to place an affix in
-    * front of, so it is not a compound the generator can use.
+    * ⟨ ſɭɹ ɽ͑ʃ'ɔ 📃 ⟩
+    * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ᶅſɜ ſןɜ ⟅
+    * ſɭɜ ſɭʞɹ ʌ ſɭɜ ı],ɹȝ ꞁȷ̀ᴜ }ʃꞇ ʌ ⺓ ʌ ŋᷠᴜ ſɭʞɹ ⟅
     */
     if ( jexeK2fe < 0o1 || jexeK2fe >= kefCa1ara.length ) return 0o0;
 
     return jexeK2fe;
 }
 
-// ⟨ ֭ſɭᴜ ı],ɔ ( HAXE_BAL2XA ) ⟩
+// ⟨ ֭ſɭᴜ ı],ɔ ( HAXE_BAL2XA ) 📃 ⟩
 
 const HAXE_BAL2XA: Readonly<Record<string, string>> = {
     "ſɟɹƽ ꞁȷ̀ᴜ }ʃꞇ": "Affix",
@@ -810,32 +807,32 @@ const HAXE_BAL2XA: Readonly<Record<string, string>> = {
     "ɭ(ᴜͷ̗": "Living Thing ( Noun )",
 };
 
-function temoVortoj(temo: string): string[] {
-    return temo.normalize("NFC").split(/\s+/).filter(Boolean);
+function quqKefHateCa1ara(kefHate: string): string[] {
+    return kefHate.normalize("NFC").split(/\s+/).filter(Boolean);
 }
 
-const HAXE_BAL2XA_VORTOJ: ReadonlyArray<{ vorto: string[]; poŝo: string }> =
-    Object.entries(HAXE_BAL2XA).map(([ vorto, poŝo ]) => ({ vorto: temoVortoj(vorto), poŝo }));
+const HATE_BAL2XA_KEFCA1ARA: ReadonlyArray<{ kefCa1ara: string[]; araqKef: string }> =
+    Object.entries(HAXE_BAL2XA).map(([ kefCa1ara, araqKef ]) => ({ kefCa1ara: quqKefHateCa1ara(kefCa1ara), araqKef }));
 
-function temoHavasVorton(temo: string, vorto: readonly string[]): boolean {
-    if ( vorto.length === 0o0 ) return false;
-    const vortoj = temoVortoj(temo);
-    if ( vortoj.length < vorto.length ) return false;
-    for ( let komenco = 0o0; komenco <= vortoj.length - vorto.length; komenco++ ) {
-        let sama = true;
-        for ( let i = 0o0; i < vorto.length; i++ ) {
-            if ( vortoj[komenco + i] !== vorto[i] ) {
-                sama = false;
+function kefHateHat(kefHate: string, kefCa1ara: readonly string[]): boolean {
+    if ( kefCa1ara.length === 0o0 ) return false;
+    const hateCa1ara = quqKefHateCa1ara(kefHate);
+    if ( hateCa1ara.length < kefCa1ara.length ) return false;
+    for ( let n2k = 0o0; n2k <= hateCa1ara.length - kefCa1ara.length; n2k++ ) {
+        let a1a = true;
+        for ( let i = 0o0; i < kefCa1ara.length; i++ ) {
+            if ( hateCa1ara[n2k + i] !== kefCa1ara[i] ) {
+                a1a = false;
                 break;
             }
         }
-        if ( sama ) return true;
+        if ( a1a ) return true;
     }
     return false;
 }
 
 /**
- * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
  *    @param v ( unknown ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns k61e
  */
@@ -845,53 +842,53 @@ function kubaK61e(v: unknown): string {
 }
 
 /**
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ֭ſɭᴜ ı],ɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( haxeSaxe m2HaxeSaxe )
- *    @param haxeSaxe ( string ) - ֭ſɭᴜ ı],ɔ ( 0 )
- *    @param m2HaxeSaxe ( string ) - ֭ſɭᴜ ı],ɔ ( 1 )
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ֭ſɭᴜ ı],ɔ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( kefHate k21eKefHate )
+ *    @param kefHate ( string ) - ֭ſɭᴜ ı],ɔ ( 0 )
+ *    @param k21eKefHate ( string ) - ֭ſɭᴜ ı],ɔ ( 1 )
  * @returns k61e
  */
-function quqHaxe(haxeSaxe: string, m2HaxeSaxe: string): string {
-    for ( const ero of HAXE_BAL2XA_VORTOJ ) {
-        if ( temoHavasVorton(haxeSaxe, ero.vorto) ) return giHaxe(ero.poŝo);
+function quqHaxe(kefHate: string, k21eKefHate: string): string {
+    for ( const eskek of HATE_BAL2XA_KEFCA1ARA ) {
+        if ( kefHateHat(kefHate, eskek.kefCa1ara) ) return quqHateKef(eskek.araqKef);
     }
-    for ( const ero of HAXE_BAL2XA_VORTOJ ) {
-        if ( temoHavasVorton(m2HaxeSaxe, ero.vorto) ) return giHaxe(ero.poŝo);
+    for ( const eskek of HATE_BAL2XA_KEFCA1ARA ) {
+        if ( kefHateHat(k21eKefHate, eskek.kefCa1ara) ) return quqHateKef(eskek.araqKef);
     }
     return "Noun";
 }
 
 /**
- * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ֭ſɭᴜ ı],ɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( HAXE_BAL2XA Number Chemical Affix Noun )
- * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ֭ſɭᴜ ı],ɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( determinePos HAXE_BAL2XA )
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ֭ſɭᴜ ı],ɔ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( HATE_BAL2XA Number Chemical Affix Noun )
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ֭ſɭᴜ ı],ɔ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( quqHateKef HATE_BAL2XA )
  *    @param haxe ( string ) - ֭ſɭᴜ ı],ɔ
  * @returns k61e
  */
-function giHaxe(haxe: string): string {
-    const match = haxe.match( /\(\s*(\w+)\s*\)$/ );
-    if ( match ) return match[0o1];
+function quqHateKef(haxe: string): string {
+    const a1a = haxe.match( /\(\s*(\w+)\s*\)$/ );
+    if ( a1a ) return a1a[0o1];
     return haxe;
 }
 
 /**
- * ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( xlsx KefEskek )
-    * @param xlsxVojo ( string | null = null , optional ) - ſɭэ ֭ſɭэ ( xlsx )
+ * ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( xlsx KefEskek )
+    * @param xlsxK6h6 ( string | null = null , optional ) - ſɭэ ֭ſɭэ ( xlsx )
  * @returns kefCa1ara
  */
-async function b6tem2KefCa1ara(xlsxVojo: string | null = null): Promise<KefEskek[]> {
-    const path = xlsxVojo || KEF_K6H6_CA1ARA[0o0];
+async function b6tem2KefCa1ara(xlsxK6h6: string | null = null): Promise<KefEskek[]> {
+    const k6h6 = xlsxK6h6 || KEF_K6H6_CA1ARA[0o0];
 
-    if ( _kefBal2xa.has(path) ) {
-        return _kefBal2xa.get(path)!;
+    if ( _kefBal2xa.has(k6h6) ) {
+        return _kefBal2xa.get(k6h6)!;
     }
 
     try {
-        const xema = await fetch(path);
+        const xema = await fetch(k6h6);
         if ( !xema.ok ) {
-            throw new Error("HTTP " + xema.status + " loading " + path);
+            throw new Error("HTTP " + xema.status + " loading " + k6h6);
         }
-        const bufro = await xema.arrayBuffer();
-        const wb = XLSX.read(bufro, { type: "array" });
-        const cax2l = wb.Sheets[wb.SheetNames[0o0]!]!;
+        const p2saKuba = await xema.arrayBuffer();
+        const xlsxKuba = XLSX.read(p2saKuba, { type: "array" });
+        const cax2l = xlsxKuba.Sheets[xlsxKuba.SheetNames[0o0]!]!;
         const n2kCa1ara = XLSX.utils.sheet_to_json<unknown[]>(cax2l, {
             header: 0o1,
             defval: "",
@@ -901,15 +898,15 @@ async function b6tem2KefCa1ara(xlsxVojo: string | null = null): Promise<KefEskek
         for ( let r = 0o1; r < n2kCa1ara.length; r++ ) {
             const n2k = n2kCa1ara[r];
             if ( !n2k ) continue;
-            const haxeSaxe = kubaK61e(n2k[0o0]);
-            const m2HaxeSaxe = kubaK61e(n2k[0o1]);
+            const kefHate = kubaK61e(n2k[0o0]);
+            const k21eKefHate = kubaK61e(n2k[0o1]);
             const kefNe1anesai = kubaK61e(n2k[0o2]);
             const skakefaniNe1anesai = kubaK61e(n2k[0o3]);
-            // ⟨ Other|j͐ʃэ ſɭɔʞ ⟩
+            // ⟨ Other|j͐ʃэ ſɭɔʞ 📃 ⟩
             const jexeNe1anesai = kubaK61e(n2k[0o7]);
             if ( !kefNe1anesai ) continue;
-            const haxe = quqHaxe(haxeSaxe, m2HaxeSaxe);
-            // ⟨ ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( ｡ ) ⟩
+            const haxe = quqHaxe(kefHate, k21eKefHate);
+            // ⟨ ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ( ｡ ) 📃 ⟩
             const kefCa1ara = kefNe1anesai.split("｡").map(p => p.trim()).filter(p => p);
             const skakefaniCa1ara = skakefaniNe1anesai ? skakefaniNe1anesai.split("｡").map(p => p.trim()).filter(p => p) : [];
 for ( let i = 0o0; i < kefCa1ara.length; i++ ) {
@@ -919,9 +916,9 @@ for ( let i = 0o0; i < kefCa1ara.length; i++ ) {
             ? sukf2qNe1aAihSkakefani( xaqadiSkakefani !== undefined ? [ xaqadiSkakefani ] : skakefaniCa1ara )
             : xaqadiKef;
             /*
-            * ⟨ ſɭɹ ɽ͑ʃ'ɔ ⟩
-            * The compound column describes the whole word, so only the first
-            * component of a ｡ split word column can claim it.
+            * ⟨ ſɭɹ ɽ͑ʃ'ɔ 📃 ⟩
+            * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ Other|j͐ʃэ ſɭɔʞ ⟅
+            * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ı],ᴜ ſ͕ɭᴜ ɭ(ꞇ ʌ ſɭɔƽ ʌ ⺓ ʌ ſɭɜ ı],ɹȝ ꞁȷ̀ᴜ }ʃꞇ ⟅
             */
             const jexeK2fe = i === 0o0 ? quqJexeK2fe( jexeNe1anesai, xaqadiKef ) : 0o0;
                 sunta.push({
@@ -933,25 +930,25 @@ for ( let i = 0o0; i < kefCa1ara.length; i++ ) {
                 });
             }
         }
-        _kefBal2xa.set(path, sunta);
-        console.log("( ſ̀ȷᴜ ſɭɹ ) Loaded " + sunta.length + " kef from " + path);
+        _kefBal2xa.set(k6h6, sunta);
+        console.log("( ſ̀ȷᴜ ſɭɹ ) Loaded " + sunta.length + " kef from " + k6h6);
         return sunta;
     } catch ( tlohk2ni ) {
-        console.warn("( ſ̀ȷᴜ ſɭɹ ) Could not load dictionary from " + path, tlohk2ni);
+        console.warn("( ſ̀ȷᴜ ſɭɹ ) Could not load dictionary from " + k6h6, tlohk2ni);
         const eq2k: KefEskek[] = [];
         return eq2k;
     }
 }
 
 /**
- * ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
  * @returns kefCa1ara
  */
 async function b6tem2KefCa1araVop2(): Promise<KefEskek[]> {
-    for ( const path of KEF_K6H6_CA1ARA ) {
-        const kefCa1ara = await b6tem2KefCa1ara(path);
+    for ( const k6h6 of KEF_K6H6_CA1ARA ) {
+        const kefCa1ara = await b6tem2KefCa1ara(k6h6);
         if ( kefCa1ara.length > 0o0 ) {
-            console.log("( ſ̀ȷᴜ ſɭɹ ) Successfully loaded dictionary from " + path);
+            console.log("( ſ̀ȷᴜ ſɭɹ ) Successfully loaded dictionary from " + k6h6);
             return kefCa1ara;
         }
     }
@@ -959,7 +956,7 @@ async function b6tem2KefCa1araVop2(): Promise<KefEskek[]> {
 }
 
 /**
- * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
  * @returns kefCa1ara
  */
 function b6tem2KefCa1araKxesu(): KefEskek[] {
@@ -971,7 +968,7 @@ function b6tem2KefCa1araKxesu(): KefEskek[] {
 }
 
 /**
- * ſ͕ɭɹȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( HAXE )
+ * ſ͕ɭɹȝ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( HAXE )
     * @param haxe ( string , required ) - ֭ſɭᴜ ı],ɔ
  * @returns kef
  */
@@ -1021,8 +1018,8 @@ interface ZeniVasaka {
 }
 
 /**
- * ſɭʞɹ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ſɭʞɹ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
  */
 class Ox2pewaKek {
     stifeh2: KefEskek | null = null;
@@ -1039,7 +1036,7 @@ class Ox2pewaKek {
 }
 
 /**
- * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
     * @param s2 ( string , required ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns k61e
  */
@@ -1156,13 +1153,13 @@ class Ox2pewaVepaq {
 
     private _aplikiLimon(parts: string[]): string[] {
         if (parts.length === 0o0) return parts;
-        const lastIdx = parts.length - 0o1;
+        const kmaN2k = parts.length - 0o1;
         /*
-        * ⟨ ſɭᴜͷ̗ ʌ ꞁȷ̀ᴜͷ̗ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( KAL AL ) ⟩
-        * KAL takes AL, ⺓ and the question markers do not.
+        * ⟨ ſɭᴜͷ̗ ʌ ꞁȷ̀ᴜͷ̗ ( KAL AL ) 📃 ⟩
+        * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ AL ʌ ⺓ ʌ KAL ⟅
         */
-        if (parts[lastIdx] === KAL || !this._ekKp6(parts[lastIdx])) {
-            parts[lastIdx] = quqS2tas(parts[lastIdx], "AL");
+        if (parts[kmaN2k] === KAL || !this._ekKp6(parts[kmaN2k])) {
+            parts[kmaN2k] = quqS2tas(parts[kmaN2k], "AL");
         }
         return parts;
     }
@@ -1198,7 +1195,7 @@ class Ox2pewaVepaq {
             const ca1ara: string[] = [];
 
             /*
-            * ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( KON OR L6R ) ⟩
+            * ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( KON OR L6R ) 📃 ⟩
             * ſɭɜc̗ ꞁȷ̀ɜƣ̋ ( KON outside OR ) vs ꞁȷ̀ɜ j͐ʃэ ( OR outside L6R )
             */
             if (vasakaKefEskek._quqSaxeS2tas === "KON") {
@@ -1214,9 +1211,9 @@ class Ox2pewaVepaq {
             saxeK61e = ca1ara.length > 0o0 ? ca1ara.join(" - ") : null;
 
             /*
-            * ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
-            * Every suffix that was attached has to appear, not only the last one,
-            * otherwise a word carrying two of them glosses as if it carried one.
+            * ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
+            * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſןɹ j͑ʃᴜ j͑ʃᴜꞇ ʌ ſɭɔʞ ſɟɹƽ ꞁȷ̀ᴜꞇ ʌ ⺓ ʌ ſɭɔʞ ⟅
+            * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɔʞ ſɟɹƽ ꞁȷ̀ᴜꞇ ʌ ⺓ ʌ ſɭꞇ ⟅
             */
             const araqCa1ara = vasakaKefEskek._quqAraqS2tasCa1ara?.length
                 ? vasakaKefEskek._quqAraqS2tasCa1ara
@@ -1251,12 +1248,11 @@ class Ox2pewaVepaq {
     }
 
     /**
-     * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
-     * ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+     * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+     * ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
      *
-     * Pushes a word that already carries its own affixes. The affixes are read
-     * off the word itself, so a word built by quqZeniVasaka still names them
-     * instead of glossing as if the affixes were never attached.
+     * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɭɔʞ ſɟɹƽ ꞁȷ̀ᴜꞇ ʌ ⺓ ʌ ſɭꞇ ⟅
+     * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ſɟɹƽ ꞁȷ̀ᴜꞇ ʌ ⺓ ʌ ſɭɔʞ ⟅
      *
      * @param kef ( KefEskek , required ) - ſɭɔʞ
      * @param xezHtakaKsaka ( string , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
@@ -1377,8 +1373,8 @@ class Ox2pewaVepaq {
         let quqKoz = this.components.koz.kxesu && this.components.koz.zeniAraq;
 
         for (const s2weniEskek of s2weniCa1ara) {
-            const result = this._suntaS2weniEskek(s2weniEskek, gawekiif, xezHtaka, skakefani, quqKoz);
-            quqKoz = result.quqKoz;
+            const sef10ni = this._suntaS2weniEskek(s2weniEskek, gawekiif, xezHtaka, skakefani, quqKoz);
+            quqKoz = sef10ni.quqKoz;
         }
     }
 
@@ -1404,8 +1400,8 @@ class Ox2pewaVepaq {
         let vasakaEskekCa1ara: Ox2pewaKefEskek[] = [];
         let kalVasakaS2 = false;
 
-        for (const entry of kefCa1ara) {
-            const ekVasaka = entry.ekS2weni;
+        for (const eskek of kefCa1ara) {
+            const ekVasaka = eskek.ekS2weni;
 
             if (kalVasakaS2 && !ekVasaka) {
                 kalVasakaS2 = false;
@@ -1413,28 +1409,28 @@ class Ox2pewaVepaq {
             }
 
             if (ekVasaka) {
-                vasakaEskekCa1ara.push(entry);
+                vasakaEskekCa1ara.push(eskek);
                 kalVasakaS2 = false;
             } else {
                 for (const vasakaEskek of vasakaEskekCa1ara) {
-                    const result = this._suntaVasakaEskek(vasakaEskek, gawekiif, xezHtaka, skakefani, quqKoz);
-                    quqKoz = result.quqKoz;
+                    const sef10ni = this._suntaVasakaEskek(vasakaEskek, gawekiif, xezHtaka, skakefani, quqKoz);
+                    quqKoz = sef10ni.quqKoz;
                 }
                 vasakaEskekCa1ara = [];
 
-                if (entry.quMu) {
-                    const quMuSkakefani = _quqS2tasK61e(entry.quMu) || entry.quMu;
-                    const quMuXezHtaka = entry.quMu === QU ? "TOPIC" : "FOCUS";
-                    this._kf2Kef(gawekiif, xezHtaka, skakefani, entry.quMu, quMuXezHtaka, quMuSkakefani);
+                if (eskek.quMu) {
+                    const quMuSkakefani = _quqS2tasK61e(eskek.quMu) || eskek.quMu;
+                    const quMuXezHtaka = eskek.quMu === QU ? "TOPIC" : "FOCUS";
+                    this._kf2Kef(gawekiif, xezHtaka, skakefani, eskek.quMu, quMuXezHtaka, quMuSkakefani);
                 }
 
-                if (entry.quqKal && gawekiif.length > 0o0) {
+                if (eskek.quqKal && gawekiif.length > 0o0) {
                     this._kf2Kef(gawekiif, xezHtaka, skakefani, KAL, "KAL", _quqS2tasK61e("KAL") || "KAL");
                     kalVasakaS2 = kalVasakaKxesu;
                 }
 
-                this._suntaKefJexe(gawekiif, xezHtaka, skakefani, entry.kef,
-                    this._quqKefLuj2Ksaka(entry.kef));
+                this._suntaKefJexe(gawekiif, xezHtaka, skakefani, eskek.kef,
+                    this._quqKefLuj2Ksaka(eskek.kef));
             }
         }
 
@@ -1465,15 +1461,15 @@ class Ox2pewaVepaq {
 
     private _quqALXezHtaka(xezHtaka: string[]): void {
         if (xezHtaka.length === 0o0) return;
-        const lastIdx = xezHtaka.length - 0o1;
-        const label = xezHtaka[lastIdx];
+        const kmaN2k = xezHtaka.length - 0o1;
+        const htaka = xezHtaka[kmaN2k];
         /*
-        * ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( CEZ TACE AL ⺓ ) ⟩
+        * ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( CEZ TACE AL ⺓ ) 📃 ⟩
         */
-        if ( label === "CEZ" || label === "TACE" || label === "TOPIC" || label === "FOCUS" || this._ekKp6(label) ) {
+        if ( htaka === "CEZ" || htaka === "TACE" || htaka === "TOPIC" || htaka === "FOCUS" || this._ekKp6(htaka) ) {
             return;
         }
-        xezHtaka[lastIdx] += "-AL";
+        xezHtaka[kmaN2k] += "-AL";
     }
 }
 
@@ -1483,20 +1479,20 @@ class Ox2pewaVepaq {
 // ⟪ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ 🔧 ⟫
 
 /**
- * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( kanoto )
-    * @param builder ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( kanoto )
+    * @param ox2pewa ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
     * @param vasakaKeve ( Function , required ) - ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ
     * @param puEkZeniS2tas ( boolean = false , optional ) - ſןw ʌ ſɭɔʞ
  * @returns vepaq
  */
 function kanotoQuqVasaka(
-    builder: Ox2pewaVepaq,
+    ox2pewa: Ox2pewaVepaq,
     vasakaKeve: (b: Ox2pewaVepaq) => Ox2pewaVepaq,
     puEkZeniS2tas: boolean = false
 ): Ox2pewaVepaq {
-    if (Math.random() > 0o1 / 0o2) return builder;
-    if (puEkZeniS2tas && builder.components.zeniVasaka.s2tas) return builder;
-    return vasakaKeve(builder);
+    if (Math.random() > 0o1 / 0o2) return ox2pewa;
+    if (puEkZeniS2tas && ox2pewa.components.zeniVasaka.s2tas) return ox2pewa;
+    return vasakaKeve(ox2pewa);
 }
 
 interface ZeniKefVasakaHat {
@@ -1510,14 +1506,14 @@ interface ZeniKefVasakaHat {
 }
 
 /**
- * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( V N )
- * ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( V N Adj )
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( V N )
+ * ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( V N Adj )
  * ſɭɔʞ ( V N Adj )
-    * @param builder ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param ox2pewa ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
     * @param k61eCa1ara ( ZeniKefVasakaHat = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns vepaq
  */
-function quqZeniKefVasakaXaqadi(builder: Ox2pewaVepaq, k61eCa1ara: ZeniKefVasakaHat = {}): Ox2pewaVepaq {
+function quqZeniKefVasakaXaqadi(ox2pewa: Ox2pewaVepaq, k61eCa1ara: ZeniKefVasakaHat = {}): Ox2pewaVepaq {
     const {
         quqKefma3akakai = true,
         quqKefmasaxesai = true,
@@ -1531,25 +1527,25 @@ function quqZeniKefVasakaXaqadi(builder: Ox2pewaVepaq, k61eCa1ara: ZeniKefVasaka
     const vasakaHat = { kf2ZeniS2tas, kf2QuqXema, kf2Koz, kf2ZeniS2weni, kf2KefS2weni };
 
     if (quqKefma3akakai) {
-        _kf2ZeniKefVasaka(builder, KefLuj2.KEFMA3AKAKAI, vasakaHat);
+        _kf2ZeniKefVasaka(ox2pewa, KefLuj2.KEFMA3AKAKAI, vasakaHat);
     }
 
     if (quqKefmasaxesai) {
-        _kf2ZeniKefVasaka(builder, KefLuj2.KEFMASAXESAI, vasakaHat);
+        _kf2ZeniKefVasaka(ox2pewa, KefLuj2.KEFMASAXESAI, vasakaHat);
     }
 
-    return builder;
+    return ox2pewa;
 }
 
 /**
- * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( V N )
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( V N )
  * ſɭɔʞ ( V N Adj )
-    * @param builder ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param ox2pewa ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
     * @param kefLuj2 ( KefLuj2Hat , required ) - ֭ſɭᴜ ı],ɔ
     * @param k61eCa1ara ( ZeniKefVasakaHat , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
   * @returns void
  */
-function _kf2ZeniKefVasaka(builder: Ox2pewaVepaq, kefLuj2: KefLuj2Hat, k61eCa1ara: ZeniKefVasakaHat): void {
+function _kf2ZeniKefVasaka(ox2pewa: Ox2pewaVepaq, kefLuj2: KefLuj2Hat, k61eCa1ara: ZeniKefVasakaHat): void {
     const {
         kf2ZeniS2tas = false,
         kf2QuqXema = false,
@@ -1568,7 +1564,7 @@ function _kf2ZeniKefVasaka(builder: Ox2pewaVepaq, kefLuj2: KefLuj2Hat, k61eCa1ar
         kf2Koz
     });
 
-    builder.components.kefCa1ara.unshift({
+    ox2pewa.components.kefCa1ara.unshift({
         kef: kefEskek, kefLuj2, ekS2weni: false, quqKal: false, quMu: null
     });
 
@@ -1577,14 +1573,14 @@ function _kf2ZeniKefVasaka(builder: Ox2pewaVepaq, kefLuj2: KefLuj2Hat, k61eCa1ar
         for (let i = 0o0; i < kefS2weniK2fe; i++) {
             const s2weni = kf2S2weni("Noun");
             if (s2weni) {
-                builder.components.kefCa1ara.unshift({
+                ox2pewa.components.kefCa1ara.unshift({
                     kef: s2weni, kefLuj2, ekS2weni: true, quqKal: false, quMu: null
                 });
             }
         }
     }
 
-    builder.components.kefCa1ara.unshift({
+    ox2pewa.components.kefCa1ara.unshift({
         kef: vasakaZeni, kefLuj2, ekS2weni: false, quqKal: false, quMu: null
     });
 
@@ -1593,7 +1589,7 @@ function _kf2ZeniKefVasaka(builder: Ox2pewaVepaq, kefLuj2: KefLuj2Hat, k61eCa1ar
         for (let i = 0o0; i < zeniS2weniK2fe; i++) {
             const s2weni = kf2S2weni("Noun");
             if (s2weni) {
-                builder.components.kefCa1ara.unshift({
+                ox2pewa.components.kefCa1ara.unshift({
                     kef: s2weni, kefLuj2, ekS2weni: true, quqKal: false, quMu: null
                 });
             }
@@ -1609,7 +1605,7 @@ interface ZaceOx2pewaKek {
 }
 
 /**
- * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( V O S )
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( V O S )
  * @returns zaceOx2pewaKek
  */
 function quqZaceOx2pewaKek(): ZaceOx2pewaKek | null {
@@ -1623,18 +1619,18 @@ function quqZaceOx2pewaKek(): ZaceOx2pewaKek | null {
 }
 
 /**
- * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
-    * @param builder ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+    * @param ox2pewa ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns vepaq
  */
-function kanotoKf2Stifeh2(builder: Ox2pewaVepaq): Ox2pewaVepaq {
-    return kanotoQuqVasaka(builder, (b) => {
+function kanotoKf2Stifeh2(ox2pewa: Ox2pewaVepaq): Ox2pewaVepaq {
+    return kanotoQuqVasaka(ox2pewa, (b) => {
         const stifeh2Kef = quqKefHaxe("Noun");
         if (stifeh2Kef) {
             const { gawekiif, jexeK2fe } = quqS2tasJexeKef(stifeh2Kef, "STIF");
             /*
-            * ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
-            * STIF is recorded so the gloss names it instead of showing the bare word.
+            * ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
+            * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ STIF ʌ ⺓ ʌ ſɭɔʞ ⟅
             */
             const stifeh2Eskek: VasakaKefEskek = {
                 gawekiif: gawekiif,
@@ -1655,18 +1651,18 @@ interface S2weniHat {
 }
 
 /**
- * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
  * ſɭɔʞ ( 0 1 2 )
-    * @param builder ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
-    * @param base ( ZaceOx2pewaKek , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( V O S )
+    * @param ox2pewa ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param kubaOx2pewa ( ZaceOx2pewaKek , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ ( V O S )
     * @param k61eCa1ara ( S2weniHat = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns vepaq
  */
-function quqS2weniCa1ara(builder: Ox2pewaVepaq, base: ZaceOx2pewaKek, k61eCa1ara: S2weniHat = {}): Ox2pewaVepaq {
+function quqS2weniCa1ara(ox2pewa: Ox2pewaVepaq, kubaOx2pewa: ZaceOx2pewaKek, k61eCa1ara: S2weniHat = {}): Ox2pewaVepaq {
     const { useAdjectivizer = false, skipRandom = false } = k61eCa1ara;
 
     if (!skipRandom && Math.random() > 0o1 / 0o2) {
-        return builder;
+        return ox2pewa;
     }
 
     const kefLuj2Ca1ara: KefLuj2Hat[] = [ KefLuj2.ZENI, KefLuj2.KEFMA3AKAKAI, KefLuj2.KEFMASAXESAI ];
@@ -1687,12 +1683,12 @@ function quqS2weniCa1ara(builder: Ox2pewaVepaq, base: ZaceOx2pewaKek, k61eCa1ara
             }
 
             if (s2weni) {
-                builder.kf2S2weniCa1ara([ s2weni ], kefLuj2);
+                ox2pewa.kf2S2weniCa1ara([ s2weni ], kefLuj2);
             }
         }
     }
 
-    return builder;
+    return ox2pewa;
 }
 
 interface KexeniHat {
@@ -1702,12 +1698,12 @@ interface KexeniHat {
 }
 
 /**
- * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ʃɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
-    * @param builder ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ʃɔ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+    * @param ox2pewa ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
     * @param k61eCa1ara ( KexeniHat = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns vepaq
  */
-function quqKexeniXaqadi(builder: Ox2pewaVepaq, k61eCa1ara: KexeniHat = {}): Ox2pewaVepaq {
+function quqKexeniXaqadi(ox2pewa: Ox2pewaVepaq, k61eCa1ara: KexeniHat = {}): Ox2pewaVepaq {
     const {
         addVpEvidential = true,
         kf2Ox2pewaKexeni = false,
@@ -1715,41 +1711,41 @@ function quqKexeniXaqadi(builder: Ox2pewaVepaq, k61eCa1ara: KexeniHat = {}): Ox2
     } = k61eCa1ara;
 
     const kexeniKef = kexeni || quqKefHaxe("Evidential");
-    if (!kexeniKef) return builder;
+    if (!kexeniKef) return ox2pewa;
 
     if (addVpEvidential) {
-        builder.xemaKexeniVp(kexeniKef);
+        ox2pewa.xemaKexeniVp(kexeniKef);
     }
 
     if (kf2Ox2pewaKexeni) {
-        builder.xemaKexeniOx2pewa(kexeniKef);
+        ox2pewa.xemaKexeniOx2pewa(kexeniKef);
     }
 
-    return builder;
+    return ox2pewa;
 }
 
 /**
- * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ʃɔ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
-    * @param builder ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ʃɔ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+    * @param ox2pewa ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns vepaq
  */
-function kanotoKf2KexeniXaqadi(builder: Ox2pewaVepaq): Ox2pewaVepaq {
-    return kanotoQuqVasaka(builder, (b) => {
-        const useVp = Math.random() < 0o1 / 0o2;
+function kanotoKf2KexeniXaqadi(ox2pewa: Ox2pewaVepaq): Ox2pewaVepaq {
+    return kanotoQuqVasaka(ox2pewa, (b) => {
+        const vop2Hat = Math.random() < 0o1 / 0o2;
         return quqKexeniXaqadi(b, {
-            addVpEvidential: useVp,
-            kf2Ox2pewaKexeni: !useVp
+            addVpEvidential: vop2Hat,
+            kf2Ox2pewaKexeni: !vop2Hat
         });
     });
 }
 
 /**
- * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( OR TAK )
-    * @param builder ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( OR TAK )
+    * @param ox2pewa ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns vepaq
  */
-function kanotoKf2QuqXema(builder: Ox2pewaVepaq): Ox2pewaVepaq {
-    return kanotoQuqVasaka(builder, (b) => {
+function kanotoKf2QuqXema(ox2pewa: Ox2pewaVepaq): Ox2pewaVepaq {
+    return kanotoQuqVasaka(ox2pewa, (b) => {
         const modalities: [ string, boolean ][] = [
             [ "OR", false ],
             [ "OR", true ],
@@ -1763,12 +1759,12 @@ function kanotoKf2QuqXema(builder: Ox2pewaVepaq): Ox2pewaVepaq {
 }
 
 /**
- * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( KON )
-    * @param builder ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( KON )
+    * @param ox2pewa ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns vepaq
  */
-function kanotoKf2Ko(builder: Ox2pewaVepaq): Ox2pewaVepaq {
-    return kanotoQuqVasaka(builder, (b) => {
+function kanotoKf2Ko(ox2pewa: Ox2pewaVepaq): Ox2pewaVepaq {
+    return kanotoQuqVasaka(ox2pewa, (b) => {
         if (b.components.zeniVasaka.quqXema) return b;
         if ( b.components.zeni ) b.xemaZeni(b.components.zeni, "KON");
         return b;
@@ -1780,27 +1776,27 @@ interface KozHat {
 }
 
 /**
- * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( KOZ )
-    * @param builder ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( KOZ )
+    * @param ox2pewa ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
     * @param k61eCa1ara ( KozHat = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns vepaq
  */
-function kanotoKf2Koz(builder: Ox2pewaVepaq, k61eCa1ara: KozHat = {}): Ox2pewaVepaq {
+function kanotoKf2Koz(ox2pewa: Ox2pewaVepaq, k61eCa1ara: KozHat = {}): Ox2pewaVepaq {
     const { ekZeni = false } = k61eCa1ara;
 
     if (ekZeni) {
-        return kanotoQuqVasaka(builder, (b) => {
+        return kanotoQuqVasaka(ox2pewa, (b) => {
             b.xemaKoz(null, true);
             return b;
         });
     }
 
-    const quqKefS2weni = builder.components.kefCa1ara.some(w =>
+    const quqKefS2weni = ox2pewa.components.kefCa1ara.some(w =>
         w.kefLuj2 === KefLuj2.KEFMA3AKAKAI && w.ekS2weni
     );
-    if (!quqKefS2weni) return builder;
+    if (!quqKefS2weni) return ox2pewa;
 
-    return kanotoQuqVasaka(builder, (b) => {
+    return kanotoQuqVasaka(ox2pewa, (b) => {
         b.xemaKoz(b.components.koz.s2weniAraq || null, false);
         return b;
     });
@@ -1812,37 +1808,37 @@ interface ZeniS2tasHat {
 }
 
 /**
- * ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
-    * @param builder ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+    * @param ox2pewa ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
     * @param k61eCa1ara ( ZeniS2tasHat = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns vepaq
  */
-function quqZeniS2tasXaqadi(builder: Ox2pewaVepaq, k61eCa1ara: ZeniS2tasHat = {}): Ox2pewaVepaq {
+function quqZeniS2tasXaqadi(ox2pewa: Ox2pewaVepaq, k61eCa1ara: ZeniS2tasHat = {}): Ox2pewaVepaq {
     const {
         s2tasHat = "L6R",
         puEkZeniVasaka = true
     } = k61eCa1ara;
 
-    if (puEkZeniVasaka && builder.components.zeniVasaka.s2tas) {
-        return builder;
+    if (puEkZeniVasaka && ox2pewa.components.zeniVasaka.s2tas) {
+        return ox2pewa;
     }
 
-    if ( builder.components.zeni ) builder.xemaZeni(builder.components.zeni, s2tasHat, builder.components.zeniVasaka.quqXema, builder.components.zeniVasaka.ko);
-    return builder;
+    if ( ox2pewa.components.zeni ) ox2pewa.xemaZeni(ox2pewa.components.zeni, s2tasHat, ox2pewa.components.zeniVasaka.quqXema, ox2pewa.components.zeniVasaka.ko);
+    return ox2pewa;
 }
 
 /**
- * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
-    * @param builder ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+    * @param ox2pewa ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
     * @param s2tasHat ( string | null = null , optional ) - j͑ʃɹ ɭʃᴜɔ˞
  * @returns vepaq
  */
-function kanotoKf2ZeniS2tasXaqadi(builder: Ox2pewaVepaq, s2tasHat: string | null = null): Ox2pewaVepaq {
+function kanotoKf2ZeniS2tasXaqadi(ox2pewa: Ox2pewaVepaq, s2tasHat: string | null = null): Ox2pewaVepaq {
     if (!s2tasHat) {
         const s2tasCa1ara = [ "L6R", "B6N" ];
         s2tasHat = s2tasCa1ara[Math.floor(Math.random() * s2tasCa1ara.length)];
     }
-    return kanotoQuqVasaka(builder, (b) => {
+    return kanotoQuqVasaka(ox2pewa, (b) => {
         return quqZeniS2tasXaqadi(b, { s2tasHat });
     }, true);
 }
@@ -1855,15 +1851,15 @@ interface KalKekHat {
 }
 
 /**
- * ſɭɹ ɽ͑ʃ'ɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( KAL )
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( KAL )
  * N KAL N ( KAL )
  * N KAL N ( KAL )
  * V O KAL O ⺓ S KAL S ( Adj V N KAL )
-    * @param builder ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param ox2pewa ( Ox2pewaVepaq , required ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
     * @param k61eCa1ara ( KalKekHat = {} , optional ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns vepaq
  */
-function quqKalKekCa1araXaqadi(builder: Ox2pewaVepaq, k61eCa1ara: KalKekHat = {}): Ox2pewaVepaq {
+function quqKalKekCa1araXaqadi(ox2pewa: Ox2pewaVepaq, k61eCa1ara: KalKekHat = {}): Ox2pewaVepaq {
     const {
         kalKefma3akakai = true,
         kalKefmasaxesai = true,
@@ -1874,7 +1870,7 @@ function quqKalKekCa1araXaqadi(builder: Ox2pewaVepaq, k61eCa1ara: KalKekHat = {}
     if (kalKefma3akakai) {
         const quqKefma3akakai = kefma3akakai2 || quqKefHaxe("Noun");
         if (quqKefma3akakai) {
-            builder.kf2KalKef(quqKefma3akakai, KefLuj2.KEFMA3AKAKAI, true);
+            ox2pewa.kf2KalKef(quqKefma3akakai, KefLuj2.KEFMA3AKAKAI, true);
         }
     }
 
@@ -1883,22 +1879,22 @@ function quqKalKekCa1araXaqadi(builder: Ox2pewaVepaq, k61eCa1ara: KalKekHat = {}
         if (quqKefmasaxesai) {
             const s2weni = quqKefHaxe("Adjective") || kf2S2weni("Noun");
             if (s2weni) {
-                builder.kf2S2weniCa1ara([ s2weni ], KefLuj2.KEFMASAXESAI);
+                ox2pewa.kf2S2weniCa1ara([ s2weni ], KefLuj2.KEFMASAXESAI);
             }
-            builder.kf2KalKef(quqKefmasaxesai, KefLuj2.KEFMASAXESAI, true);
+            ox2pewa.kf2KalKef(quqKefmasaxesai, KefLuj2.KEFMASAXESAI, true);
         }
     }
 
-    return builder;
+    return ox2pewa;
 }
 
 /**
- * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
-    * @param builder - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+    * @param ox2pewa - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns vepaq
  */
-function kanotoKf2KalKekCa1araXaqadi(builder: Ox2pewaVepaq): Ox2pewaVepaq {
-    return kanotoQuqVasaka(builder, (b) => {
+function kanotoKf2KalKekCa1araXaqadi(ox2pewa: Ox2pewaVepaq): Ox2pewaVepaq {
+    return kanotoQuqVasaka(ox2pewa, (b) => {
         return quqKalKekCa1araXaqadi(b, {
             kalKefma3akakai: true,
             kalKefmasaxesai: true
@@ -1907,13 +1903,13 @@ function kanotoKf2KalKekCa1araXaqadi(builder: Ox2pewaVepaq): Ox2pewaVepaq {
 }
 
 /**
- * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( V N )
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( V N )
  * ſɭɔʞ ( V N )
-    * @param builder - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param ox2pewa - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns vepaq
  */
-function kanotoKf2ZeniKefVasaka(builder: Ox2pewaVepaq): Ox2pewaVepaq {
-    return kanotoQuqVasaka(builder, (b) => {
+function kanotoKf2ZeniKefVasaka(ox2pewa: Ox2pewaVepaq): Ox2pewaVepaq {
+    return kanotoQuqVasaka(ox2pewa, (b) => {
         const kf2ZeniS2tas = Math.random() > 0o1 / 0o2;
         const kf2QuqXema = Math.random() > 0o1 / 0o2;
         const kf2Koz = Math.random() > 0o1 / 0o2;
@@ -1933,21 +1929,21 @@ function kanotoKf2ZeniKefVasaka(builder: Ox2pewaVepaq): Ox2pewaVepaq {
 }
 
 /**
- * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( QU MU )
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( QU MU )
  * j͑ʃɹ ɭʃᴜɔ˞ ʌ ſɭɔʞ
  * QU ( ſ͕ɭw )
  * MU ( ŋᷠw )
-    * @param builder - ꞁȷ̀ɔ j͑ʃƽɔƽ
+    * @param ox2pewa - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns vepaq
  */
-function kanotoKf2QuMu(builder: Ox2pewaVepaq): Ox2pewaVepaq {
-    return kanotoQuqVasaka(builder, (b) => {
+function kanotoKf2QuMu(ox2pewa: Ox2pewaVepaq): Ox2pewaVepaq {
+    return kanotoQuqVasaka(ox2pewa, (b) => {
         const kefCa1ara = b.components.kefCa1ara;
 
-        for (const entry of kefCa1ara) {
-            if (!entry.ekS2weni && !entry.quqKal) {
+        for (const eskek of kefCa1ara) {
+            if (!eskek.ekS2weni && !eskek.quqKal) {
                 if (Math.random() > 0o1 / 0o2) {
-                    entry.quMu = Math.random() > 0o1 / 0o2 ? QU : MU;
+                    eskek.quMu = Math.random() > 0o1 / 0o2 ? QU : MU;
                 }
             }
         }
@@ -1972,14 +1968,14 @@ interface QuqXemaVasaka {
 }
 
 /**
- * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
-    * @param builder - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+    * @param ox2pewa - ꞁȷ̀ɔ j͑ʃƽɔƽ
     * @param quqXemaVasaka - j͑ʃɹ ɭʃᴜɔ˞
  * @returns vepaq
  */
-function kanotoKf2Tani(builder: Ox2pewaVepaq, quqXemaVasaka: QuqXemaVasaka): Ox2pewaVepaq {
-    if (!quqXemaVasaka.tani) return builder;
-    return kanotoQuqVasaka(builder, (b) => {
+function kanotoKf2Tani(ox2pewa: Ox2pewaVepaq, quqXemaVasaka: QuqXemaVasaka): Ox2pewaVepaq {
+    if (!quqXemaVasaka.tani) return ox2pewa;
+    return kanotoQuqVasaka(ox2pewa, (b) => {
         const ekCez = Math.random() < 0o1 / 0o2;
         b.xemaTani(ekCez);
         return b;
@@ -1994,62 +1990,62 @@ interface Ox2pewaK61e {
 }
 
 /**
- * ſɭʞɹ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( builder kf2Kef )
+ * ſɭʞɹ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( ox2pewa kf2Kef )
     * @param xezHtaka - ꞁȷ̀ɔ j͑ʃƽɔƽ
     * @param quqXemaVasaka - j͑ʃɹ ɭʃᴜɔ˞
  * @returns ox2pewa
  */
 function kf2Ox2pewa(xezHtaka: string | null = null, quqXemaVasaka: QuqXemaVasaka = {}): Ox2pewaK61e | null {
     if (xezHtaka) {
-        const result = xezHtakaB6vegejex.kf2(xezHtaka);
-        if (result && typeof result === "object" && "gawekiif" in result) {
-            return result as Ox2pewaK61e;
+        const sef10ni = xezHtakaB6vegejex.kf2(xezHtaka);
+        if (sef10ni && typeof sef10ni === "object" && "gawekiif" in sef10ni) {
+            return sef10ni as Ox2pewaK61e;
         }
     }
 
-    const base = quqZaceOx2pewaKek();
-    if (!base) {
+    const kubaOx2pewa = quqZaceOx2pewaKek();
+    if (!kubaOx2pewa) {
         return null;
     }
 
-    let builder = new Ox2pewaVepaq()
+    let ox2pewa = new Ox2pewaVepaq()
         .xemaKsaka("modular")
-        .xemaZeni(base.zeni)
-        .kf2Kef(base.kefma3akakai, KefLuj2.KEFMA3AKAKAI)
-        .kf2Kef(base.kefmasaxesai, KefLuj2.KEFMASAXESAI);
+        .xemaZeni(kubaOx2pewa.zeni)
+        .kf2Kef(kubaOx2pewa.kefma3akakai, KefLuj2.KEFMA3AKAKAI)
+        .kf2Kef(kubaOx2pewa.kefmasaxesai, KefLuj2.KEFMASAXESAI);
 
-    if (quqXemaVasaka.stifeh2 !== false) builder = kanotoKf2Stifeh2(builder);
-    if (quqXemaVasaka.kexeni !== false) builder = kanotoKf2KexeniXaqadi(builder);
-    if (quqXemaVasaka.quqXema !== false) builder = kanotoKf2QuqXema(builder);
-    if (quqXemaVasaka.ko !== false) builder = kanotoKf2Ko(builder);
-    if (quqXemaVasaka.zeniS2tas !== false) builder = kanotoKf2ZeniS2tasXaqadi(builder);
+    if (quqXemaVasaka.stifeh2 !== false) ox2pewa = kanotoKf2Stifeh2(ox2pewa);
+    if (quqXemaVasaka.kexeni !== false) ox2pewa = kanotoKf2KexeniXaqadi(ox2pewa);
+    if (quqXemaVasaka.quqXema !== false) ox2pewa = kanotoKf2QuqXema(ox2pewa);
+    if (quqXemaVasaka.ko !== false) ox2pewa = kanotoKf2Ko(ox2pewa);
+    if (quqXemaVasaka.zeniS2tas !== false) ox2pewa = kanotoKf2ZeniS2tasXaqadi(ox2pewa);
     if (quqXemaVasaka.s2weniS2tas) {
         if (Math.random() > 0o1 / 0o2) {
-            builder = quqS2weniCa1ara(builder, base, { useAdjectivizer: true, skipRandom: true });
+            ox2pewa = quqS2weniCa1ara(ox2pewa, kubaOx2pewa, { useAdjectivizer: true, skipRandom: true });
         }
     } else if (quqXemaVasaka.s2weni !== false) {
-        builder = quqS2weniCa1ara(builder, base, { useAdjectivizer: false, skipRandom: false });
+        ox2pewa = quqS2weniCa1ara(ox2pewa, kubaOx2pewa, { useAdjectivizer: false, skipRandom: false });
     }
 
     if (quqXemaVasaka.koz !== false) {
         const ekZeni = Math.random() < 0o1 / 0o2;
-        builder = kanotoKf2Koz(builder, { ekZeni });
+        ox2pewa = kanotoKf2Koz(ox2pewa, { ekZeni });
     }
-    if (quqXemaVasaka.zeniKefVasaka !== false) builder = kanotoKf2ZeniKefVasaka(builder);
-    if (quqXemaVasaka.kal !== false) builder = kanotoKf2KalKekCa1araXaqadi(builder);
-    if (quqXemaVasaka.quMu !== false) builder = kanotoKf2QuMu(builder);
-    if (quqXemaVasaka.tani !== false) builder = kanotoKf2Tani(builder, quqXemaVasaka);
+    if (quqXemaVasaka.zeniKefVasaka !== false) ox2pewa = kanotoKf2ZeniKefVasaka(ox2pewa);
+    if (quqXemaVasaka.kal !== false) ox2pewa = kanotoKf2KalKekCa1araXaqadi(ox2pewa);
+    if (quqXemaVasaka.quMu !== false) ox2pewa = kanotoKf2QuMu(ox2pewa);
+    if (quqXemaVasaka.tani !== false) ox2pewa = kanotoKf2Tani(ox2pewa, quqXemaVasaka);
 
-    return builder.vepaq();
+    return ox2pewa.vepaq();
 }
 
 
 // ⟪ j͑ʃᴜ ı],ɔ 🖥️ ⟫
 
 /**
- * j͑ʃᴜ ı],ɔ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * ſɭɹ ɽ͑ʃ'ɔ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
+ * j͑ʃᴜ ı],ɔ ʌ ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * ſɭɹ ɽ͑ʃ'ɔ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
   * @returns void
  */
 function saxeKf2Ox2pewa(): void {
@@ -2117,7 +2113,7 @@ function saxeKf2Ox2pewa(): void {
 
         xezHtakaKuba.innerHTML = "";
 
-        const anyLabel = document.createElement("label");
+        const a1aHtaka = document.createElement("htaka");
         const anyRadio = document.createElement("input");
         anyRadio.type = "radio";
         anyRadio.name = "xezHtaka";
@@ -2127,12 +2123,12 @@ function saxeKf2Ox2pewa(): void {
             sukf2qXezHtaka = "";
             if (xezHtakaKsaka) xezHtakaKsaka.textContent = "ꞁȷ̀ꞇ j͐ʃᴜƽ";
         });
-        anyLabel.appendChild(anyRadio);
-        anyLabel.appendChild(document.createTextNode(" ꞁȷ̀ꞇ j͐ʃᴜƽ"));
-        xezHtakaKuba.appendChild(anyLabel);
+        a1aHtaka.appendChild(anyRadio);
+        a1aHtaka.appendChild(document.createTextNode(" ꞁȷ̀ꞇ j͐ʃᴜƽ"));
+        xezHtakaKuba.appendChild(a1aHtaka);
 
         xezHtakaCa1ara.forEach(k61e => {
-            const label = document.createElement("label");
+            const htaka = document.createElement("htaka");
             const radio = document.createElement("input");
             radio.type = "radio";
             radio.name = "xezHtaka";
@@ -2141,9 +2137,9 @@ function saxeKf2Ox2pewa(): void {
                 sukf2qXezHtaka = k61e;
                 if (xezHtakaKsaka) xezHtakaKsaka.textContent = k61e;
             });
-            label.appendChild(radio);
-            label.appendChild(document.createTextNode(" " + k61e));
-            xezHtakaKuba.appendChild(label);
+            htaka.appendChild(radio);
+            htaka.appendChild(document.createTextNode(" " + k61e));
+            xezHtakaKuba.appendChild(htaka);
         });
     }
 
@@ -2154,7 +2150,7 @@ function saxeKf2Ox2pewa(): void {
         vasakaKuba.innerHTML = "";
 
         VASAKA_CA1ARA.forEach(vasaka => {
-            const ksaka = document.createElement("label");
+            const ksaka = document.createElement("htaka");
             const kp6Kek = document.createElement("input");
             kp6Kek.type = "checkbox";
             kp6Kek.checked = quqXemaVasaka[vasaka.ksaka] ?? true;

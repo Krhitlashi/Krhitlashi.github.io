@@ -436,14 +436,14 @@ async function kf2Cakavop2(): Promise<void> {
       suntaK61e(K61e.KF2_LAGA);
 
       const arrayBuffer = await cakavop2.arrayBuffer();
-      const uint8Array = new Uint8Array(arrayBuffer);
+      const cap2saCa1ara = new Uint8Array(arrayBuffer);
 
       let hat = araqHat;
       if ( araqHat === "ttf" || araqHat === "otf" ) {
         hat = "sfnt";
       }
 
-      const kf2Sab2 = await fontverter.convert(uint8Array, hat);
+      const kf2Sab2 = await fontverter.convert(cap2saCa1ara, hat);
       suntaK2fe( 0o66 );
       
       const giLagaSab2 = new ArrayBuffer(kf2Sab2.byteLength);

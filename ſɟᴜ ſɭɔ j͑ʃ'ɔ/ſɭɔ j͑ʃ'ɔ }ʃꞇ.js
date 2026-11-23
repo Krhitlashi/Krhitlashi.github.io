@@ -1,4 +1,4 @@
-// ⟪ j͑ʃ'ᴜ ſɟɔ ſןw ⟫
+// ⟪ j͑ʃ'ᴜ ſɟɔ ſןw 📃 ⟫
 
 const KOTASAKASUKP6 = ["(", ")", "[", "]", "<", ">", "-", "≺⧼", "⧽≻", "⟪", "⟫", "≺", "≻", "⧼", "⧽", "⟨", "⟩"];
 const KOTASAKASUXEHATE = ["SCRIPT", "STYLE", "OPTION", "TITLE", "TEXTAREA"];
@@ -87,7 +87,7 @@ function kf2MaxemaSaxez(xez) {
   return maxemaSaxez;
 }
 
-// ⟪ j͐ʃᴜɔ˞ ꞁȷ̀ᴜ }ʃꞇ ⟫
+// ⟪ j͐ʃᴜɔ˞ ꞁȷ̀ᴜ }ʃꞇ 📃 ⟫
 
 function valas() {
   document.body.classList.add("a3e3a");
@@ -116,7 +116,7 @@ function valas() {
   }, TABINI);
 }
 
-// ⟪ j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ ⟫
+// ⟪ j͑ʃɜ ſɭ,ᴜ j͑ʃᴜꞇ ɭʃᴜ̩ᴜ j͐ʃᴜ 📃 ⟫
 
 function a3esoza(sozanu) {
   if ( sozanu.classList.contains("a3e") ) {
@@ -127,7 +127,7 @@ function a3esoza(sozanu) {
   }
 }
 
-// ⟪ j͑ʃᴜ ı],ɔ j͑ʃw ſɭɔ j͑ʃ'ɔ ⟫
+// ⟪ j͑ʃᴜ ı],ɔ j͑ʃw ſɭɔ j͑ʃ'ɔ 📃 ⟫
 
 document.addEventListener("DOMContentLoaded", () => {
   vacepu("cepufal");

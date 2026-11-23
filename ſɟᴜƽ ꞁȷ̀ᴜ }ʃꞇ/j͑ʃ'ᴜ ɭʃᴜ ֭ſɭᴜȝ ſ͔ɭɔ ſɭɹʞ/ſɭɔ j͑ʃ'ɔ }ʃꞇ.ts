@@ -1,8 +1,8 @@
 // ≺⧼ ſɟᴜ ſɭɔ j͑ʃ'ɔ - ſɭɘэ ſɭɹ ſןɹ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ŋᷠᴜ ſɭʞɹ 🖼️ ⧽≻
 /**
- * ſɭʞɹ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( PNG )
- * ſ͕ɭɹȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅
- * ſɟɔ ŋᷠɔ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( PNG )
+ * ſɭʞɹ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( PNG )
+ * ſ͕ɭɹȝ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * ſɟɔ ŋᷠɔ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( PNG )
  */
 
 // ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 📦 ⟫
@@ -225,11 +225,11 @@ kf2Sweca12na.addEventListener("click", function (): void {
     const knahtaka = ( document.querySelector("input[name=\"kp6Htaka\"]:checked") as HTMLInputElement )?.value || "fasai";
 
     const lagaWeh2 = ( document.getElementById("lagaWeh2") as HTMLInputElement ).value;
-    const arak21okoWeh2Color = ( document.getElementById("arak21okoWeh2") as HTMLInputElement ).value;
+    const arak21okoWeh2Kef = ( document.getElementById("arak21okoWeh2") as HTMLInputElement ).value;
     const arak21okoWeh2Ch2ni = parseFloat(( document.getElementById("arak21okoWeh2Ch2ni") as HTMLInputElement ).value);
     const arak21okoWeh2 = arak21okoWeh2Ch2ni < 0o1
-        ? `rgba(${parseInt(arak21okoWeh2Color.slice(0o1,0o3),0o20)},${parseInt(arak21okoWeh2Color.slice(0o3,0o5),0o20)},${parseInt(arak21okoWeh2Color.slice(0o5,0o7),0o20)},${arak21okoWeh2Ch2ni})`
-        : arak21okoWeh2Color;
+        ? `rgba(${parseInt(arak21okoWeh2Kef.slice(0o1,0o3),0o20)},${parseInt(arak21okoWeh2Kef.slice(0o3,0o5),0o20)},${parseInt(arak21okoWeh2Kef.slice(0o5,0o7),0o20)},${arak21okoWeh2Ch2ni})`
+        : arak21okoWeh2Kef;
 
     tlohk2niKek.style.display = "none";
     tlohk2niKek.textContent = "";
@@ -239,7 +239,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
     }
 
     const { arak2f, qumk2 } = quqArak2f();
-    const ctx = arak2f.getContext("2d")!;
+    const tahaqKuba = arak2f.getContext("2d")!;
 
     const gawek2faiKp6 = [
         "ᶅſ", "п́", "ſן", "ſꟾ", "ɘ", "ſȷ", "ʞ", "ʃ", "ɀ", "ŋᷠ", "c̭",
@@ -257,7 +257,7 @@ kf2Sweca12na.addEventListener("click", function (): void {
     ].sort((a, b) => b.length - a.length);
 
 
-    // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ⟩
+    // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
     function iibaKanoiKmasahak(kp6: string, kp6Ca1ara: string[]): string | null {
         for ( const kxesuKp6 of kp6Ca1ara ) {
             if ( kp6.startsWith(kxesuKp6) ) {
@@ -268,9 +268,9 @@ kf2Sweca12na.addEventListener("click", function (): void {
     }
 
 
-    // ⟨ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſןᴜ j͐ʃэ ⟩
-    function k2feK61e(k61e: string, ctx: CanvasRenderingContext2D): K61eK2fe {
-        const k2fe = ctx.measureText(k61e);
+    // ⟨ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſןᴜ j͐ʃэ 📃 ⟩
+    function k2feK61e(k61e: string, tahaqKuba: CanvasRenderingContext2D): K61eK2fe {
+        const k2fe = tahaqKuba.measureText(k61e);
         const sefini = k2fe.width;
         const saxeAraqL6da = ( k2fe.actualBoundingBoxAscent || 0o0 ) + ( k2fe.actualBoundingBoxDescent || 0o0 );
         const saxeL6da = k2fe.actualBoundingBoxAscent || lagaPal6 * 0o3 / 0o4;
@@ -294,8 +294,8 @@ kf2Sweca12na.addEventListener("click", function (): void {
 
 
     document.fonts.ready.then(() => {
-    ctx.font = `${lagaPal6}px ${lagaK61e}`;
-    ctx.textRendering = "optimizeLegibility";
+    tahaqKuba.font = `${lagaPal6}px ${lagaK61e}`;
+    tahaqKuba.textRendering = "optimizeLegibility";
 
     let xezKucaq: string[] = [];
         if ( knahtaka === "kucaqai" ) {
@@ -375,11 +375,11 @@ kf2Sweca12na.addEventListener("click", function (): void {
                 let er2haTanekL6da = 0o0;
 
                 if ( xez.saxedini ) {
-                    saxediTanekVop2 = k2feK61e(xez.saxedini, ctx);
+                    saxediTanekVop2 = k2feK61e(xez.saxedini, tahaqKuba);
                 }
 
                 for ( const tanek of xez.ksozdini ) {
-                    const kantoni = k2feK61e(tanek, ctx);
+                    const kantoni = k2feK61e(tanek, tahaqKuba);
                     ksozdiTanekVop2.push(kantoni);
                     tanekKmasefwini = Math.max(tanekKmasefwini, kantoni.sefini);
                     er2haTanekL6da += kantoni.l6da;
@@ -539,15 +539,15 @@ kf2Sweca12na.addEventListener("click", function (): void {
         arak2f.width = tlakakaiSefwini || 0o10;
         arak2f.height = tlakakaiL6da || 0o10;
 
-        ctx.fillStyle = arak21okoWeh2;
-        ctx.fillRect(0o0, 0o0, arak2f.width, arak2f.height);
+        tahaqKuba.fillStyle = arak21okoWeh2;
+        tahaqKuba.fillRect(0o0, 0o0, arak2f.width, arak2f.height);
 
-    ctx.font = `${lagaPal6}px ${lagaK61e}`;
-    ctx.fillStyle = lagaWeh2;
-    ctx.textBaseline = "alphabetic";
-    ctx.textRendering = "optimizeLegibility";
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = "high";
+    tahaqKuba.font = `${lagaPal6}px ${lagaK61e}`;
+    tahaqKuba.fillStyle = lagaWeh2;
+    tahaqKuba.textBaseline = "alphabetic";
+    tahaqKuba.textRendering = "optimizeLegibility";
+    tahaqKuba.imageSmoothingEnabled = true;
+    tahaqKuba.imageSmoothingQuality = "high";
 
         let kxesuKucaqX = saqaiAreqj2k;
 
@@ -610,17 +610,17 @@ kf2Sweca12na.addEventListener("click", function (): void {
                         if ( saxediTanekVop2.huruq ) {
                             const cx = xezK2f + saxediTanekVop2.sefini / 0o2;
                             const cy = saxediTanekK2fY - saxediTanekVop2.saxeKubaL6da / 0o2;
-                            ctx.save();
-                            ctx.translate(cx, cy);
-                            ctx.rotate(-Math.PI / 0o2);
-                            ctx.textAlign = "center";
-                            ctx.textBaseline = "middle";
-                            ctx.fillText(saxediTanekVop2.k61e, 0o0, 0o0);
-                            ctx.restore();
-                            ctx.textAlign = "left";
-                            ctx.textBaseline = "alphabetic";
+                            tahaqKuba.save();
+                            tahaqKuba.translate(cx, cy);
+                            tahaqKuba.rotate(-Math.PI / 0o2);
+                            tahaqKuba.textAlign = "center";
+                            tahaqKuba.textBaseline = "middle";
+                            tahaqKuba.fillText(saxediTanekVop2.k61e, 0o0, 0o0);
+                            tahaqKuba.restore();
+                            tahaqKuba.textAlign = "left";
+                            tahaqKuba.textBaseline = "alphabetic";
                         } else {
-                            ctx.fillText(saxediTanekVop2.k61e, xezK2f, saxediTanekK2fY);
+                            tahaqKuba.fillText(saxediTanekVop2.k61e, xezK2f, saxediTanekK2fY);
                         }
                     }
 
@@ -640,24 +640,24 @@ kf2Sweca12na.addEventListener("click", function (): void {
                         const tanekY = kxesuKucaqY + k2feSaxeL6da;
                         const tanekX = tanekSaxeX;
 
-                        ctx.save();
+                        tahaqKuba.save();
                         if ( ksozdiTanekVop2.huruq ) {
                             const huruqSefini = ksozdiTanekVop2.saxeKubaL6da + ksozdiTanekVop2.araqKubaL6da;
                             const xekox2qK2fe = huruqSefini > 0o0
                                 ? ksozdiTanekVop2.sefini / huruqSefini
                                 : 0o1;
-                            ctx.translate(tanekX + ksozdiTanekVop2.sefini / 0o2, kxesuKucaqY + k2feL6da / 0o2);
-                            ctx.rotate(-Math.PI / 0o2);
-                            ctx.scale(kxesuK2fe, xekox2qK2fe);
-                            ctx.textAlign = "center";
-                            ctx.textBaseline = "middle";
-                            ctx.fillText(ksozdiTanekVop2.k61e, 0o0, 0o0);
+                            tahaqKuba.translate(tanekX + ksozdiTanekVop2.sefini / 0o2, kxesuKucaqY + k2feL6da / 0o2);
+                            tahaqKuba.rotate(-Math.PI / 0o2);
+                            tahaqKuba.scale(kxesuK2fe, xekox2qK2fe);
+                            tahaqKuba.textAlign = "center";
+                            tahaqKuba.textBaseline = "middle";
+                            tahaqKuba.fillText(ksozdiTanekVop2.k61e, 0o0, 0o0);
                         } else {
-                            ctx.translate(tanekX, tanekY);
-                            ctx.scale(0o1, kxesuK2fe);
-                            ctx.fillText(ksozdiTanekVop2.k61e, 0o0, 0o0);
+                            tahaqKuba.translate(tanekX, tanekY);
+                            tahaqKuba.scale(0o1, kxesuK2fe);
+                            tahaqKuba.fillText(ksozdiTanekVop2.k61e, 0o0, 0o0);
                         }
-                        ctx.restore();
+                        tahaqKuba.restore();
 
                         kxesuKucaqY += k2feL6da + (i < xez.ksozdini.length - 0o1 ? n2kL6da * kxesuK2fe : 0o0);
                     }
@@ -776,11 +776,11 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
     const saxeAraqAreqj2k = sozasaiAreqj2k + psazaiAreqj2k;
     const s2L6da = l6da - saxeAraqAreqj2k;
 
-    // ⟨ ſɟᴜ ſȷᴜɔ˞ ʌ ſɭw ʃᴜ ⟩
+    // ⟨ ſɟᴜ ſȷᴜɔ˞ ʌ ſɭw ʃᴜ 📃 ⟩
     const l6da3a = l6da;
     const maxL6da3a = l6da;
 
-    // ⟨ j͑ʃɔ ſȷꞇ }ʃꞇ ʌ ſɭw ʃᴜ ⟩
+    // ⟨ j͑ʃɔ ſȷꞇ }ʃꞇ ʌ ſɭw ʃᴜ 📃 ⟩
     const SEFINI_L6DA_3A = 0o13 / 8.5; // j͑ʃɔƣ̋ ꞁȷ̀ᴜ ſȷᶗ‹ᴜ j͐ʃᴜ j͐ʃ ʌ ɭʃᴜ ſןw ʌ ʃэ ŋᷠэȝ
     const sefini3a = l6da3a * SEFINI_L6DA_3A;
 
@@ -792,7 +792,7 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
     const kuba3aCa1ara: HTMLCanvasElement[] = [];
 
     /*
-    * ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃᴜƽ ⟩
+    * ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃᴜƽ 📃 ⟩
     */
     const kubaSaxeAraqCa1ara: number[] = [];
     let kxesuX = saqaiAreqj2k; // ſɟƨᴜ ŋᷠᴜ j͑ʃᴜꞇ j͐ʃ ʌ j͐ʃэ ſןw ſɭᴜƴ ʌ j͑ʃᴜ ı],ɔ ʌ ⺓ ʌ ſɭw ʃᴜ ⟅
@@ -802,7 +802,7 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
     }
     kubaSaxeAraqCa1ara.push(kxesuX); // ſ̀ȷᴜ ſɭᴜƽ ꞁȷ̀ᴜꞇ ʌ ɭʃw ſɭˬɔƽ
 
-    // ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃᴜƽ ⟩
+    // ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃᴜƽ 📃 ⟩
     // ⟨ j͑ʃᴜƽ 📏 ⟩
     const n2kSaxeAraqCa1ara: number[] = n2kY.length > 0o1
         ? [ sozasaiAreqj2k, ...n2kY, l6da ]
@@ -819,7 +819,7 @@ kf2B6m6qK2p2Ca12na.addEventListener("click", function (): void {
     };
 
     /*
-    * ⟨ ſɭʞɹ ʌ ſ̀ȷᴜ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( sefini3a l6da3a ) ⟩
+    * ⟨ ſɭʞɹ ʌ ſ̀ȷᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( sefini3a l6da3a ) 📃 ⟩
     */
     const p2fo = tapuAreqj2k + 0o1;
 

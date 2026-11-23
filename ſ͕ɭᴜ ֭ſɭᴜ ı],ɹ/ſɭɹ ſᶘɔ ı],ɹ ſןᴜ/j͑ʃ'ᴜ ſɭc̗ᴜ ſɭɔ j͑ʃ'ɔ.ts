@@ -1,5 +1,5 @@
 /**( ɭʃɔ ŋᷠɹ j͑ʃ'ɔ ſȷᴜͷ̗ )
- * ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( txt )
+ * ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( txt )
  * @returns void
 */
 
@@ -37,7 +37,7 @@ async function tem2Vefal(): Promise<void> {
 
 
 /**( j͑ʃ'ɔ ſȷᴜͷ̗ )
- * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( txt thala )
+ * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( txt thala )
  * @param kp6 ( string ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
  * @returns ſןw ſɭɔƽ
 */
@@ -76,7 +76,7 @@ function vefal(kp6: string): HTMLElement[] {
         const l6catasuN2k = n2k.trim();
 
         /*
-        * ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ꞁȷ̀ꞇ j͑ʃ'ɹƴ ⟅ ( <ʃ}ʃ> <ſᶘ> <j͑ʃı],> ) ⟩
+        * ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( <ʃ}ʃ> <ſᶘ> <j͑ʃı],> ) 📃 ⟩
         */
         let catasuN2k = l6catasuN2k;
         let antawacatasuN2k = "";
