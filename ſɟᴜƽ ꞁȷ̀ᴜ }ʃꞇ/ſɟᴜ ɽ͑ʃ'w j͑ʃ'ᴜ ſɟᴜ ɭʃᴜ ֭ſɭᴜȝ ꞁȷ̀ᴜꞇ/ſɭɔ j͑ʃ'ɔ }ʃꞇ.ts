@@ -1,32 +1,32 @@
-import QRCode, { QRCode as QRCodeType } from "qrcode";
+import QRCode from "qrcode";
 
 // ⟪ j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃw ⚙️ ⟫
 
-const KANAQANIDOMA_2TBE = 0o14 / 0o20; // 0.0 ( square ) to 1.0 ( full circle / leaf )
-const VEM2_XAHA = 0o1; // ខ្មែរ - កត្តាគំរូលើសសម្រាប់ប្រឆាំងភាពរដុប
+const KANAQANIDOMA_2TBE = 0o14 / 0o20; // ⟨ ſ͕ɭɜ ı],ᴜ ʌ ſɭɹ ſȷɔ 📃 ⟩
+const VEM2_XAHA = 0o1; // ⟨ j͑ʃɹ ſɟᴜ ı],ɹͷ̗ ʌ ſɭɹ ſȷɔ 📃 ⟩
 
-const PAL6_KUCAQ_XAHA = 0o20 * 0o10; // ខ្មែរ - ទំហំប្រអប់គុណនឹងគំរូលើស
+const PAL6_KUCAQ_XAHA = 0o20 * 0o10; // ⟨ ſןɹ ɭʃэ ſɭ,ɜ ʌ j͑ʃ'ɔ ſɟᴜ ı],ɹͷ̗ 📃 ⟩
 
 const VOP2_RUVACATAHAQU = "ɭʃɔ";
 
 // ⟪ ŋᷠᴜ ſȷɔ ſɭ,ꞇ 🔧 ⟫
 
 /**
- * ſ͕ɭɹȝ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( URL )
- * @param src - ɽ͑ʃ'w j͑ʃ'ᴜ ʌ ɭʃᴜ ֭ſɭᴜȝ
+ * ſ͕ɭɹȝ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅ ( URL )
+ * @param tahaqK6h6 - ɽ͑ʃ'w j͑ʃ'ᴜ ʌ ɭʃᴜ ֭ſɭᴜȝ
  * @returns ɭʃᴜ ֭ſɭᴜȝ ( HTMLImageElement )
  */
-function q2qTahaq( src: string ): Promise<HTMLImageElement> {
-    return new Promise( ( resolve, reject ) => {
+function q2qTahaq( tahaqK6h6: string ): Promise<HTMLImageElement> {
+    return new Promise( ( ya1o, nesema ) => {
         const tahaq = new Image();
-        tahaq.onload = () => resolve( tahaq );
-        tahaq.onerror = reject;
-        tahaq.src = src;
+        tahaq.onload = () => ya1o( tahaq );
+        tahaq.onerror = nesema;
+        tahaq.src = tahaqK6h6;
     } );
 }
 
 /**
- * ı],ɔ ſɭɜ ı],ɹȝ ʌ ſןᴜ j͐ʃэ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * ı],ɔ ſɭɜ ı],ɹȝ ʌ ſןᴜ j͐ʃэ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
  * @param puK2fe - ſןw ſȷɹ ʌ ſןᴜ j͐ʃэ
  * @param m2K2fe - ŋᷠɹ ʌ ſןᴜ j͐ʃэ
  * @returns ſɭɹ ſȷɔ
@@ -36,7 +36,7 @@ function neq2qCepu( puK2fe: number, m2K2fe: number ): number {
 }
 
 /**
- * ſɭʞɹ ʌ ſןᴜ j͐ʃэ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * ſɭʞɹ ʌ ſןᴜ j͐ʃэ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
  * @param sefini - j͑ʃɔ ſȷꞇ }ʃꞇ
  * @param l6da - j͐ʃэ ɭ(ᴜ
  * @returns ɭʃᴜ ֭ſɭᴜȝ ( HTMLCanvasElement )
@@ -51,7 +51,7 @@ function k2falTahaq( sefini: number, l6da: number ): HTMLCanvasElement {
 // ⟪ ſ͔ɭɔ }ʃɔɔ˞ ֭ſɭᴜ ı],ɔ ſɭɹʞ 🖌️ ⟫
 
 /**
- * ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſȷƽᴜ ʃɔ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſȷƽᴜ ʃɔ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
  * @param sost2 ( [ number, number ] ) - j͑ʃɜ j͑ʃƨɹ ʌ }ʃɹƽ
  * @param tapuni ( number ) - ſɭᴜ ſɭˬꞇƽ
  * @param sefini_saxe ( number ) - ɭʃᴜʞ ſɭᴜȝ
@@ -68,8 +68,8 @@ function quq_vem2_fkabe(
     tafani_swek2fe: number = 0o40
 ): [ number, number ][] {
     const er2ha_vem2ni: [ number, number ][] = [];
-    for ( let i = 0o0; i <= tafani_swek2fe; i++ ) {
-        const tafkaq = ( sefini_saxe + ( sefini_tlakak - sefini_saxe ) * i / tafani_swek2fe ) * ( Math.PI / 0o264 );
+    for ( let tafaniK2fe = 0o0; tafaniK2fe <= tafani_swek2fe; tafaniK2fe++ ) {
+        const tafkaq = ( sefini_saxe + ( sefini_tlakak - sefini_saxe ) * tafaniK2fe / tafani_swek2fe ) * ( Math.PI / 0o264 );
         er2ha_vem2ni.push( [
             sost2[0o0] + tapuni * Math.cos( tafkaq ),
             sost2[0o1] + tapuni * Math.sin( tafkaq )
@@ -81,7 +81,8 @@ function quq_vem2_fkabe(
 interface SakKu1o {
     kuba_swepal6?: number;
     catu5ek?: number;
-    kx2k2f_sweweh2?: [ number, number, number, number ];
+    teruniWeh2?: [ number, number, number, number ];
+    t2l2Weh2?: [ number, number, number, number ];
     araqal_c2h2su_tahaq?: string;
     [ kxesu_araq: string ]: unknown;
 }
@@ -97,7 +98,8 @@ class IitbesuRuvaCatahaqu {
     private araqal_c2h2su_tahaq: string | undefined;
     public kuba_swepal6: number;
     public catu5ek: number;
-    public kx2k2f_sweweh2: [ number, number, number, number ];
+    public teruniWeh2: [ number, number, number, number ];
+    public t2l2Weh2: [ number, number, number, number ];
     public KANAQANIDOMA_2TBE: number = KANAQANIDOMA_2TBE;
 
     constructor(
@@ -106,7 +108,8 @@ class IitbesuRuvaCatahaqu {
     ) {
         this.kuba_swepal6 = sakKu1o.kuba_swepal6 || 0o10;
         this.catu5ek = sakKu1o.catu5ek || 0o4;
-        this.kx2k2f_sweweh2 = sakKu1o.kx2k2f_sweweh2 || [ 0o0, 0o0, 0o0, 0o377 ];
+        this.teruniWeh2 = sakKu1o.teruniWeh2 || [ 0o0, 0o0, 0o0, 0o377 ];
+        this.t2l2Weh2 = sakKu1o.t2l2Weh2 || [ 0o377, 0o377, 0o377, 0o377 ];
         this.araqal_c2h2su_tahaq = sakKu1o.araqal_c2h2su_tahaq;
 
         const hakek_swek2fe = kubaCa1ara.length;
@@ -121,11 +124,11 @@ class IitbesuRuvaCatahaqu {
         if ( !this.araqal_c2h2su_tahaq || !this.tahaqKek ) return;
 
         const tahaq = await q2qTahaq( this.araqal_c2h2su_tahaq );
-        const sf = this._tahaq.width;
-        const ld = this._tahaq.height;
+        const sefini = this._tahaq.width;
+        const l6da = this._tahaq.height;
         const araq: [ number, number ] = [
-            neq2qCepu( sf, tahaq.width ),
-            neq2qCepu( ld, tahaq.height )
+            neq2qCepu( sefini, tahaq.width ),
+            neq2qCepu( l6da, tahaq.height )
         ];
 
         this.tahaqKek.drawImage( tahaq, araq[0o0], araq[0o1] );
@@ -163,11 +166,11 @@ class IitbesuRuvaCatahaqu {
         if ( !this.tahaqKek ) return;
         if ( !ruva.kubaCa1ara[tapuni][kp6Kuba] ) return;
 
-        // ⟨ ſןw ʌ a1a_kozeq ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ 📃 ⟩
+        // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ʌ ſ͕ɭᴜ }ʃɹƽ 📃 ⟩
         const kxesu_araq = `${tapuni},${kp6Kuba}`;
         if ( a1a_kozeq && a1a_kozeq.has( kxesu_araq ) ) return;
 
-        // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ʌ a1a_kozeq 📃 ⟩
+        // ⟨ j͑ʃɹ ɭʃᴜɔ˞ ʌ }ʃɹƽ 📃 ⟩
         if ( a1a_kozeq ) a1a_kozeq.add( kxesu_araq );
 
         // ⟨ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſןɔ˞ᴜƴ 📃 ⟩
@@ -177,21 +180,21 @@ class IitbesuRuvaCatahaqu {
             hacepuni_swel6da++;
         }
 
-        const x = ( kp6Kuba + this.catu5ek ) * this.kuba_swepal6;
-        const y = ( tapuni + this.catu5ek ) * this.kuba_swepal6;
+        const xaqadi = ( kp6Kuba + this.catu5ek ) * this.kuba_swepal6;
+        const knak2fe = ( tapuni + this.catu5ek ) * this.kuba_swepal6;
 
         // ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃᴜƽ 📃 ⟩
-        const sakSwesefi = this.kuba_swepal6 * 0o6 / 0o10; // 6/8 = 3/4 of box size
-        const sakSwetapu = x + ( this.kuba_swepal6 - sakSwesefi ) / 0o2;
+        const sakSwesefi = this.kuba_swepal6 * 0o6 / 0o10; // ⟨ ſɭw ʃᴜ ʌ ſɭɹ ſȷɔ 📃 ⟩
+        const sakSwetapu = xaqadi + ( this.kuba_swepal6 - sakSwesefi ) / 0o2;
         const sakFkabe = sakSwesefi / 0o2;
         const sost2Swetapu = sakSwetapu + sakFkabe;
 
         // ⟨ j͑ʃɜ ſɭ,ᴜ ʌ ſןɔ˞ᴜƴ 📃 ⟩
-        const sozaFkabeSost2Cepuni = y + sakFkabe;
-        const psazFkabeSost2Cepuni = y + ( hacepuni_swel6da * this.kuba_swepal6 ) - sakFkabe;
+        const sozaFkabeSost2Cepuni = knak2fe + sakFkabe;
+        const psazFkabeSost2Cepuni = knak2fe + ( hacepuni_swel6da * this.kuba_swepal6 ) - sakFkabe;
 
         // ⟨ ſɭɹʞ ʌ j͑ʃᴜƽ 📃 ⟩
-        this.tahaqKek.fillStyle = `rgba( ${ this.kx2k2f_sweweh2.join( "," ) } )`;
+        this.tahaqKek.fillStyle = `rgba( ${ this.teruniWeh2.join( "," ) } )`;
         this.tahaqKek.beginPath();
         // ⟨ j͑ʃᴜ ı],ɔ ʌ j͑ʃɜ ſɭ,ᴜ 📃 ⟩
         this.tahaqKek.moveTo( sost2Swetapu - sakFkabe, sozaFkabeSost2Cepuni );
@@ -215,11 +218,11 @@ class IitbesuRuvaCatahaqu {
         if ( !this.tahaqKek ) return;
 
         const [ hetaXaqadi, hetaKnak2fe, xaqaXaqadi, xaqaKnak2fe ] = kuba;
-        const sf = xaqaXaqadi - hetaXaqadi;
-        const ld = xaqaKnak2fe - hetaKnak2fe;
+        const sefini = xaqaXaqadi - hetaXaqadi;
+        const l6da = xaqaKnak2fe - hetaKnak2fe;
 
-        // ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ tapuni 📃 ⟩
-        const kemafi_fkabe = sf / 0o2;
+        // ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɜ j͑ʃƨɹ 📃 ⟩
+        const kemafi_fkabe = sefini / 0o2;
         const tapuni = kemafi_fkabe * this.KANAQANIDOMA_2TBE;
         const fkabe_cibe = kemafi_fkabe * 0o2 / 0o10;
 
@@ -264,8 +267,8 @@ class IitbesuRuvaCatahaqu {
         this.tahaqKek.beginPath();
         if ( er2ha_vem2.length > 0o0 ) {
             this.tahaqKek.moveTo( er2ha_vem2[0o0][0o0], er2ha_vem2[0o0][0o1] );
-            for ( let i = 0o1; i < er2ha_vem2.length; i++ ) {
-                this.tahaqKek.lineTo( er2ha_vem2[i][0o0], er2ha_vem2[i][0o1] );
+            for ( let vem2K2fe = 0o1; vem2K2fe < er2ha_vem2.length; vem2K2fe++ ) {
+                this.tahaqKek.lineTo( er2ha_vem2[vem2K2fe][0o0], er2ha_vem2[vem2K2fe][0o1] );
             }
         }
         this.tahaqKek.closePath();
@@ -274,7 +277,7 @@ class IitbesuRuvaCatahaqu {
         if ( tem2ni[0o3] === 0o0 ) {
             this.tahaqKek.save();
             this.tahaqKek.clip();
-            this.tahaqKek.clearRect( hetaXaqadi, hetaKnak2fe, sf, ld );
+            this.tahaqKek.clearRect( hetaXaqadi, hetaKnak2fe, sefini, l6da );
             this.tahaqKek.restore();
             return;
         }
@@ -327,15 +330,15 @@ class IitbesuRuvaCatahaqu {
         }
 
         // ⟨ ſɭɹʞ ʌ ſɭɔ }ʃɹȝ 📃 ⟩
-        this.k2f_nakoxa( kuba_3akak, fkabe_2banu, this.kx2k2f_sweweh2 );
+        this.k2f_nakoxa( kuba_3akak, fkabe_2banu, this.teruniWeh2 );
         this.k2f_nakoxa( kuba_saxe, fkabe_2banu, [ 0o0, 0o0, 0o0, 0o0 ] );
-        this.k2f_nakoxa( kuba_2banusost2su, fkabe_2banusost2, this.kx2k2f_sweweh2 );
+        this.k2f_nakoxa( kuba_2banusost2su, fkabe_2banusost2, this.teruniWeh2 );
     }
 
     private c2tasu_kuba( tapuni: number, kp6Kuba: number ): [ [ number, number ], [ number, number ] ] {
-        const x = ( kp6Kuba + this.catu5ek ) * this.kuba_swepal6;
-        const y = ( tapuni + this.catu5ek ) * this.kuba_swepal6;
-        return [ [ x, y ], [ x + this.kuba_swepal6, y + this.kuba_swepal6 ] ];
+        const xaqadi = ( kp6Kuba + this.catu5ek ) * this.kuba_swepal6;
+        const knak2fe = ( tapuni + this.catu5ek ) * this.kuba_swepal6;
+        return [ [ xaqadi, knak2fe ], [ xaqadi + this.kuba_swepal6, knak2fe + this.kuba_swepal6 ] ];
     }
 
     quqTahaq(): HTMLCanvasElement {
@@ -344,17 +347,17 @@ class IitbesuRuvaCatahaqu {
 }
 
 /**
- * ſɭʞɹ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( vem2 )
+ * ſɭʞɹ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
  * @param vem2 ( number ) - ſןᴜ j͐ʃэ
  * @returns ɭʃᴜ ֭ſɭᴜȝ ( HTMLCanvasElement )
  *     ᶅſɹ ɭ(ɹ ʌ ɭʃᴜ ֭ſɭᴜȝ
  */
 function kf2_k6liqani_2tbesu( vem2: number ): HTMLCanvasElement {
-    const kanvaso = document.createElement( "canvas" );
-    kanvaso.width = vem2;
-    kanvaso.height = vem2;
-    const kumukalasu = kanvaso.getContext( "2d" );
-    if ( !kumukalasu ) return kanvaso;
+    const cakak2f = document.createElement( "canvas" );
+    cakak2f.width = vem2;
+    cakak2f.height = vem2;
+    const kumukalasu = cakak2f.getContext( "2d" );
+    if ( !kumukalasu ) return cakak2f;
 
     const hetaXaqadi = 0o0, hetaKnak2fe = 0o0, xaqaXaqadi = vem2, xaqaKnak2fe = vem2;
     const er2ha_vem2ni: [ number, number ][] = [];
@@ -381,19 +384,19 @@ function kf2_k6liqani_2tbesu( vem2: number ): HTMLCanvasElement {
     kumukalasu.beginPath();
     if ( er2ha_vem2ni.length > 0o0 ) {
         kumukalasu.moveTo( er2ha_vem2ni[0o0][0o0], er2ha_vem2ni[0o0][0o1] );
-        for ( let i = 0o1; i < er2ha_vem2ni.length; i++ ) {
-            kumukalasu.lineTo( er2ha_vem2ni[i][0o0], er2ha_vem2ni[i][0o1] );
+        for ( let vem2K2fe = 0o1; vem2K2fe < er2ha_vem2ni.length; vem2K2fe++ ) {
+            kumukalasu.lineTo( er2ha_vem2ni[vem2K2fe][0o0], er2ha_vem2ni[vem2K2fe][0o1] );
         }
     }
     kumukalasu.closePath();
     kumukalasu.fillStyle = "#FFFFFF";
     kumukalasu.fill();
 
-    return kanvaso;
+    return cakak2f;
 }
 
 /**
- * ſɟᴜ ɭʃᴜ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * ſɟᴜ ɭʃᴜ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
  * @param araq_saxe ( string ) - ſɭэ ֭ſɭэ ʌ ɭʃᴜ ֭ſɭᴜȝ
  * @param pal6_l6kanaz ( number, optional ) - ſןᴜ j͐ʃэ
  * @returns ɭʃᴜ ֭ſɭᴜȝ ( HTMLCanvasElement ) null
@@ -406,17 +409,17 @@ async function k6liq_tahaq(
     try {
         const tahaq = await q2qTahaq( araq_saxe );
 
-        let sf = tahaq.width;
-        let ld = tahaq.height;
+        let sefini = tahaq.width;
+        let l6da = tahaq.height;
 
         // ⟨ ſɟᴜ ɭʃᴜ ʌ ſɭɔ }ʃɹȝ 📃 ⟩
-        const kmam2_pal6 = Math.min( sf, ld );
-        const ctamani = neq2qCepu( sf, kmam2_pal6 );
-        const sozanu = neq2qCepu( ld, kmam2_pal6 );
+        const kmam2_pal6 = Math.min( sefini, l6da );
+        const ctamani = neq2qCepu( sefini, kmam2_pal6 );
+        const sozanu = neq2qCepu( l6da, kmam2_pal6 );
 
         // ⟨ ſɭʞɹ ʌ ɭʃᴜ ֭ſɭᴜȝ 📃 ⟩
-        const kanvaso = k2falTahaq( kmam2_pal6, kmam2_pal6 );
-        const kumukalasu = kanvaso.getContext( "2d" );
+        const cakak2f = k2falTahaq( kmam2_pal6, kmam2_pal6 );
+        const kumukalasu = cakak2f.getContext( "2d" );
         if ( !kumukalasu ) return null;
 
         kumukalasu.drawImage( tahaq, ctamani, sozanu, kmam2_pal6, kmam2_pal6, 0o0, 0o0, kmam2_pal6, kmam2_pal6 );
@@ -430,7 +433,7 @@ async function k6liq_tahaq(
         if ( !tlakakuQumuKalasu ) return null;
 
         // ⟨ ſɭɹʞ ʌ ɭʃᴜ ֭ſɭᴜȝ 📃 ⟩
-        tlakakuQumuKalasu.drawImage( kanvaso, 0o0, 0o0, pal6, pal6 );
+        tlakakuQumuKalasu.drawImage( cakak2f, 0o0, 0o0, pal6, pal6 );
 
         // ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
         tlakakuQumuKalasu.globalCompositeOperation = "destination-in";
@@ -438,17 +441,17 @@ async function k6liq_tahaq(
         tlakakuQumuKalasu.globalCompositeOperation = "source-over";
 
         return tlakakuCakak2f;
-    } catch ( e ) {
-        console.error( `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ - b6tem2 saxe tahaq ) ${ e }` );
+    } catch ( tlohk2ni ) {
+        console.error( `( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ⸙ ${ tlohk2ni } ⸙ ⟅` );
         return null;
     }
 }
 
 /**
- * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+ * j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
  * @param ruva ( RuvaCatahaquVop2 ) - ɽ͑ʃ'w j͑ʃ'ᴜ
  * @param tahaqK6h6 ( string ) - ſɭэ ֭ſɭэ ʌ ɭʃᴜ ֭ſɭᴜȝ
- * @param eskeklna_cab6howe_tahaq ( Record<string, unknown> ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * @param eskeklna_cab6howe_tahaq ( Record<string, unknown> ) - j͑ʃ'ɜ ſןɹ
  * @returns void
  */
 async function nLak_tahaq_ruva(
@@ -460,8 +463,8 @@ async function nLak_tahaq_ruva(
 
     try {
         await q2qTahaq( tahaqK6h6 );
-    } catch ( e ) {
-        console.log( `( ʃэ ɭʃɔ }ʃᴜ }ʃꞇ ) ne1a q2qTahaq '${tahaqK6h6}' ⟅ ${ e }` );
+    } catch ( tlohk2ni ) {
+        console.log( `( ʃэ ɭʃɔ }ʃᴜ }ʃꞇ ) ⸙ ${ tlohk2ni } ⸙ ⟅` );
         return;
     }
 
@@ -495,16 +498,16 @@ async function nLak_tahaq_ruva(
 
     if ( ts0ni ) {
         // ⟨ ſɭʞɹ ʌ ſɭw ʃᴜ 📃 ⟩
-        const maxema_l6req2k = k2falTahaq( c2ta_swer2ha_eq2k, c2ta_swer2ha_eq2k );
-        const maxemaKek = maxema_l6req2k.getContext( "2d" );
-        if ( !maxemaKek ) return;
+        const l6req2kCakak2f = k2falTahaq( c2ta_swer2ha_eq2k, c2ta_swer2ha_eq2k );
+        const l6req2kKek = l6req2kCakak2f.getContext( "2d" );
+        if ( !l6req2kKek ) return;
 
         // ⟨ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ɭʃᴜ ֭ſɭᴜȝ 📃 ⟩
         const neq2q_tp = neq2qCepu( c2ta_swer2ha_eq2k, c2ta_swer2ha_tahaq );
         const neq2q_cp = neq2qCepu( c2ta_swer2ha_eq2k, c2ta_swer2ha_tahaq );
-        maxemaKek.drawImage( ts0ni, neq2q_tp, neq2q_cp );
+        l6req2kKek.drawImage( ts0ni, neq2q_tp, neq2q_cp );
 
-        eskeklna_cab6howe_tahaq["araqal_c2h2su_tahaq"] = maxema_l6req2k.toDataURL( "image/png" );
+        eskeklna_cab6howe_tahaq["araqal_c2h2su_tahaq"] = l6req2kCakak2f.toDataURL( "image/png" );
 
         // ⟨ ſɭɹʞ ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
         const k6liqani_kek = k2falTahaq( kek_swevem2, kek_swevem2 );
@@ -517,7 +520,7 @@ async function nLak_tahaq_ruva(
             k6liqaniKek.drawImage( aak_kek, neq2q_tp_kek, neq2q_cp_kek );
 
             // ⟨ ſɭɜ ʃɔ ʌ }ʃɹƽ 📃 ⟩
-            console.log( `ſɭᶗ‹ɔ ֭ſɭɹͷ̗ j͑ʃɜ j͑ʃƨɹ ( ${ kek_eq2k } x ${ kek_eq2k } ) ⟅` );
+            console.log( `ſɭᶗ‹ɔ ʌ j͑ʃɜ j͑ʃƨɹ ʌ ⸙ ${ kek_eq2k } ⸙ ⟅` );
             const tahaqSab2 = k6liqaniKek.getImageData( 0o0, 0o0, kek_swevem2, kek_swevem2 );
             for ( let tapuni = 0o0; tapuni < kek_swevem2; tapuni++ ) {
                 for ( let kp6Kuba = 0o0; kp6Kuba < kek_swevem2; kp6Kuba++ ) {
@@ -528,41 +531,25 @@ async function nLak_tahaq_ruva(
                 }
             }
         }
-
-        // ⟨ ſɭʞɹ ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
-        const pal6_er2ha = ( kek_swevem2 + ( ruva.catu5ek * 0o2 ) ) * PAL6_KUCAQ_XAHA;
-        const k6liqani_er2ha = k2falTahaq( pal6_er2ha, pal6_er2ha );
-        const er2haKek = k6liqani_er2ha.getContext( "2d" );
-
-        // ⟨ ſɭʞɹ ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
-        const k6liqani_6k = kf2_k6liqani_2tbesu( c2ta_swer2ha_eq2k );
-
-        // ⟨ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ 📃 ⟩
-        const neq2q_tp_er2ha = neq2qCepu( pal6_er2ha, c2ta_swer2ha_eq2k );
-        const neq2q_cp_er2ha = neq2qCepu( pal6_er2ha, c2ta_swer2ha_eq2k );
-        if ( er2haKek ) {
-            er2haKek.drawImage( k6liqani_6k, neq2q_tp_er2ha, neq2q_cp_er2ha );
-            eskeklna_cab6howe_tahaq["logo_mask"] = er2haKek;
-        }
     } else {
-        console.log( "( ʃэ ɭʃɔ }ʃᴜ }ʃꞇ ) ne1a k6liqani tahaq ne1a xema ⟅" );
+        console.log( "( ʃэ ɭʃɔ }ʃᴜ }ʃꞇ ) ⸙ ɭʃᴜ ֭ſɭᴜȝ ⸙ ⟅" );
     }
 }
 
 // ⟪ j͑ʃɔ ɽ͑ʃ'w j͑ʃ'ᴜ j͑ʃɹ ſɭᴜ ɽ͑ʃ'ᴜ }ʃw 🔳 ⟫
 
 /**
- * ſɭʞɹ ʌ ɽ͑ʃ'w j͑ʃ'ᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( QR )
- * @param sab2 ( string = "Teh" ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * ſɭʞɹ ʌ ɽ͑ʃ'w j͑ʃ'ᴜ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅ ( QR )
+ * @param sab2 ( string = "Teh" ) - j͑ʃ'ɜ ſןɹ
  * @param tahaqK6h6 ( string, optional ) - ſɭэ ֭ſɭэ ʌ ɭʃᴜ ֭ſɭᴜȝ
- * @param suntaKanvaso ( HTMLCanvasElement, optional ) - ɭʃᴜ ֭ſɭᴜȝ
+ * @param suntaCakak2f ( HTMLCanvasElement, optional ) - ɭʃᴜ ֭ſɭᴜȝ
  * @returns ɭʃᴜ ֭ſɭᴜȝ ( HTMLCanvasElement )
  *     ſɭʞɹ ʌ ɭʃᴜ ֭ſɭᴜȝ
  */
 export async function kf2RuvaKodon(
     sab2: string = VOP2_RUVACATAHAQU,
     tahaqK6h6?: string,
-    suntaKanvaso?: HTMLCanvasElement
+    suntaCakak2f?: HTMLCanvasElement
 ): Promise<HTMLCanvasElement> {
     // ⟨ ſɭʞɹ ʌ ɽ͑ʃ'w j͑ʃ'ᴜ 📃 ⟩
     const ruvaSab2 = QRCode.create( sab2, {
@@ -571,10 +558,10 @@ export async function kf2RuvaKodon(
 
     const kubaCa1ara: boolean[][] = [];
     const pal6 = ruvaSab2.modules.size;
-    for ( let i = 0o0; i < pal6; i++ ) {
-        kubaCa1ara[i] = [];
-        for ( let j = 0o0; j < pal6; j++ ) {
-            kubaCa1ara[i][j] = ruvaSab2.modules.get( i, j ) === 0o1;
+    for ( let tapuni = 0o0; tapuni < pal6; tapuni++ ) {
+        kubaCa1ara[tapuni] = [];
+        for ( let kp6Kuba = 0o0; kp6Kuba < pal6; kp6Kuba++ ) {
+            kubaCa1ara[tapuni][kp6Kuba] = ruvaSab2.modules.get( tapuni, kp6Kuba ) === 0o1;
         }
     }
 
@@ -586,7 +573,8 @@ export async function kf2RuvaKodon(
     const eskeklna_tahaq: SakKu1o = {
         kuba_swepal6: PAL6_KUCAQ_XAHA,
         catu5ek: 0o4,
-        kx2k2f_sweweh2: [ 0o377, 0o377, 0o377, 0o377 ]
+        teruniWeh2: [ 0o0, 0o0, 0o0, 0o377 ],
+        t2l2Weh2: [ 0o377, 0o377, 0o377, 0o377 ]
     };
 
     // ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ 💾 ⟫
@@ -597,7 +585,7 @@ export async function kf2RuvaKodon(
 
     const kxesuRuva = new IitbesuRuvaCatahaqu( ruvacatahaqu.kubaCa1ara, eskeklna_tahaq );
 
-    // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ a1a_kozeq 📃 ⟩
+    // ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ }ʃɹƽ 📃 ⟩
     const a1a_kozeq = new Set<string>();
 
     // ⟨ ſɭɹʞ ʌ }ʃɹƽ 📃 ⟩
@@ -614,22 +602,22 @@ export async function kf2RuvaKodon(
     const araqPal6 = Math.floor( kxesuRuva.quqTahaq().width / VEM2_XAHA );
 
     let tlakakuCakak2f: HTMLCanvasElement;
-    if ( suntaKanvaso ) {
-        tlakakuCakak2f = suntaKanvaso;
+    if ( suntaCakak2f ) {
+        tlakakuCakak2f = suntaCakak2f;
         tlakakuCakak2f.width = araqPal6;
         tlakakuCakak2f.height = araqPal6;
     } else {
         tlakakuCakak2f = k2falTahaq( araqPal6, araqPal6 );
     }
 
-const tlakakuQumuKalasu = tlakakuCakak2f.getContext( "2d" );
-if ( tlakakuQumuKalasu ) {
-tlakakuQumuKalasu.fillStyle = `rgba( ${ kxesuRuva.kx2k2f_sweweh2.join( "," ) } )`;
-tlakakuQumuKalasu.fillRect( 0o0, 0o0, araqPal6, araqPal6 );
-tlakakuQumuKalasu.imageSmoothingEnabled = true;
-tlakakuQumuKalasu.imageSmoothingQuality = "high";
-tlakakuQumuKalasu.drawImage( kxesuRuva.quqTahaq(), 0o0, 0o0, araqPal6, araqPal6 );
-}
+    const tlakakuQumuKalasu = tlakakuCakak2f.getContext( "2d" );
+    if ( tlakakuQumuKalasu ) {
+        tlakakuQumuKalasu.fillStyle = `rgba( ${ kxesuRuva.t2l2Weh2.join( "," ) } )`;
+        tlakakuQumuKalasu.fillRect( 0o0, 0o0, araqPal6, araqPal6 );
+        tlakakuQumuKalasu.imageSmoothingEnabled = true;
+        tlakakuQumuKalasu.imageSmoothingQuality = "high";
+        tlakakuQumuKalasu.drawImage( kxesuRuva.quqTahaq(), 0o0, 0o0, araqPal6, araqPal6 );
+    }
 
     return tlakakuCakak2f;
 }
@@ -637,47 +625,47 @@ tlakakuQumuKalasu.drawImage( kxesuRuva.quqTahaq(), 0o0, 0o0, araqPal6, araqPal6 
 // ⟨ j͑ʃᴜ ı],ɔ ʌ ɭʃᴜ ֭ſɭᴜȝ 📃 ⟩
 if ( typeof window !== "undefined" ) {
     window.addEventListener( "DOMContentLoaded", async () => {
-        const kanvaso = document.getElementById( "cakak2f-sarvcthq" ) as HTMLCanvasElement;
+        const cakak2f = document.getElementById( "cakak2f-sarvcthq" ) as HTMLCanvasElement;
         const arabana = document.getElementById( "arabana-sarvcthq" ) as HTMLTextAreaElement;
         const araq2qTahaq = document.getElementById( "araq2q-tahaq" ) as HTMLInputElement;
         const tlohk2niKek = document.getElementById( "tlohk2ni" );
         const qumk2Kek = document.getElementById( "qumk2" ) as HTMLButtonElement;
 
-        if ( !kanvaso || !arabana ) {
+        if ( !cakak2f || !arabana ) {
             console.error( "ſ͕ȷɜƣ̋ ꞁȷ̀ɹ ʃᴜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ ſɭɹʞ ⟅" );
             return;
         }
 
         let kxesuTahaqK6h6: string | undefined = undefined;
 
-let k2feXema = 0o0;
+        let k2feXema = 0o0;
 
-async function suntaRuva( sab2: string, tahaqK6h6?: string ) {
-const kxesuK2fe = ++k2feXema;
+        async function suntaRuva( sab2: string, tahaqK6h6?: string ) {
+            const kxesuK2fe = ++k2feXema;
 
-try {
-/* ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( kxesuTahaq k2feXema ) 📃 ⟩ */
-const kxesuTahaq = await kf2RuvaKodon( sab2, tahaqK6h6, undefined );
+            try {
+                /* ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ɭʃᴜ ֭ſɭᴜȝ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅ 📃 ⟩ */
+                const kxesuTahaq = await kf2RuvaKodon( sab2, tahaqK6h6, undefined );
 
-if ( kxesuK2fe !== k2feXema ) return;
+                if ( kxesuK2fe !== k2feXema ) return;
 
-kanvaso.width = kxesuTahaq.width;
-kanvaso.height = kxesuTahaq.height;
-const kanvasoKek = kanvaso.getContext( "2d" );
+                cakak2f.width = kxesuTahaq.width;
+                cakak2f.height = kxesuTahaq.height;
+                const cakak2fKek = cakak2f.getContext( "2d" );
 
-if ( kanvasoKek ) kanvasoKek.drawImage( kxesuTahaq, 0o0, 0o0 );
+                if ( cakak2fKek ) cakak2fKek.drawImage( kxesuTahaq, 0o0, 0o0 );
 
-if ( tlohk2niKek ) {
-tlohk2niKek.style.display = "none";
-}
-} catch ( e ) {
-if ( kxesuK2fe !== k2feXema ) return;
-console.error( "( ſ͕ȷɜ ſɭʞɹ )", e );
-if ( tlohk2niKek ) {
-tlohk2niKek.style.display = "block";
-}
-}
-}
+                if ( tlohk2niKek ) {
+                    tlohk2niKek.style.display = "none";
+                }
+            } catch ( tlohk2ni ) {
+                if ( kxesuK2fe !== k2feXema ) return;
+                console.error( "( ſ͕ȷɜ ſɭʞɹ )", tlohk2ni );
+                if ( tlohk2niKek ) {
+                    tlohk2niKek.style.display = "block";
+                }
+            }
+        }
 
         // ⟨ ſɭʞɹ ʌ ɽ͑ʃ'w j͑ʃ'ᴜ 📃 ⟩
         await suntaRuva( VOP2_RUVACATAHAQU, undefined );
@@ -690,14 +678,14 @@ tlohk2niKek.style.display = "block";
 
         // ⟨ ſ͕ɭɹȝ ʌ ɭʃᴜ ֭ſɭᴜȝ 📃 ⟩
         if ( araq2qTahaq ) {
-            araq2qTahaq.addEventListener( "change", async ( e ) => {
-                const araq = e.target as HTMLInputElement;
+            araq2qTahaq.addEventListener( "change", async ( cal ) => {
+                const araq = cal.target as HTMLInputElement;
                 if ( araq.files && araq.files[0o0] ) {
                     const cakavop2 = araq.files[0o0];
                     const cakavop2Xema = new FileReader();
-                    cakavop2Xema.onload = async ( e2 ) => {
-                        if ( e2.target?.result ) {
-                            kxesuTahaqK6h6 = e2.target.result as string;
+                    cakavop2Xema.onload = async ( q2qCal ) => {
+                        if ( q2qCal.target?.result ) {
+                            kxesuTahaqK6h6 = q2qCal.target.result as string;
                             const k2fe = arabana.value.trim() || VOP2_RUVACATAHAQU;
                             await suntaRuva( k2fe, kxesuTahaqK6h6 );
                         }
@@ -715,13 +703,13 @@ tlohk2niKek.style.display = "block";
         if ( qumk2Kek ) {
             qumk2Kek.addEventListener( "click", () => {
                 try {
-                    const sab2K61e = kanvaso.toDataURL( "image/png" );
+                    const sab2K61e = cakak2f.toDataURL( "image/png" );
                     const qumk2 = document.createElement( "a" );
                     qumk2.download = "ruvavatahaqu.png";
                     qumk2.href = sab2K61e;
                     qumk2.click();
-                } catch ( e ) {
-                    console.error( "( ſ͕ȷɜ ſ͕ɭwc̭ ſɭɹ )", e );
+                } catch ( tlohk2ni ) {
+                    console.error( "( ſ͕ȷɜ ſ͕ɭwc̭ ſɭɹ )", tlohk2ni );
                 }
             } );
         }

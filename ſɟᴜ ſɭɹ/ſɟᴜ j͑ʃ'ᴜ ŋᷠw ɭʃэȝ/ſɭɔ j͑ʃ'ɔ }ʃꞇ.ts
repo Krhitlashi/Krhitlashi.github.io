@@ -15,13 +15,13 @@ class Mut6qKf2 {
     private sefini: number
     private l6da: number
     private saxeS2sabo: boolean
-    private saxeKuba: any
-    private catahaq: any
-    private suntaSaxe: any
-    private mut6q: any
-    private pucana: any
-    private f2m2: any
-    private kama: any
+    private saxeKuba!: THREE.Scene
+    private catahaq!: THREE.PerspectiveCamera
+    private suntaSaxe!: THREE.WebGLRenderer
+    private mut6q: THREE.Mesh<THREE.SphereGeometry, THREE.MeshPhongMaterial> | null
+    private pucana: THREE.Mesh<THREE.SphereGeometry, THREE.MeshPhongMaterial> | null
+    private f2m2: THREE.Mesh<THREE.SphereGeometry, THREE.MeshPhongMaterial> | null = null
+    private kama!: OrbitControls
     private k2feXema: number | null
     private xema: {
         tsaK2fe: number
@@ -34,15 +34,15 @@ class Mut6qKf2 {
     private k2fP2t6zo: HTMLCanvasElement
     private k2fKek: CanvasRenderingContext2D
     private k2fKxesu: boolean
-    private kxesuX: number
-    private kxesuY: number
+    private kxesuTapuN2k: number
+    private kxesuCepuN2k: number
     private b6K61e: HTMLElement
     private b6Kxesu: boolean
 
     k61eK2fe( k61e: string ): number {
         let k2fe = 0o0
-        for ( let i = 0o0; i < k61e.length; i++ ) {
-            const kp6 = k61e.charCodeAt( i )
+        for ( let n2k = 0o0; n2k < k61e.length; n2k++ ) {
+            const kp6 = k61e.charCodeAt( n2k )
             k2fe = ( k2fe << 0o5 ) - k2fe + kp6
             k2fe = k2fe & k2fe
         }
@@ -61,12 +61,8 @@ class Mut6qKf2 {
         this.sefini = 0o2000
         this.l6da = 0o400
         this.saxeS2sabo = true
-        this.saxeKuba = null
-        this.catahaq = null
-        this.suntaSaxe = null
         this.mut6q = null
         this.pucana = null
-        this.kama = null
         this.k2feXema = null
 
         this.xema = {
@@ -80,8 +76,8 @@ class Mut6qKf2 {
         this.k2fP2t6zo = document.getElementById( "k2fp2t6zo" ) as HTMLCanvasElement
         this.k2fKek = this.k2fP2t6zo.getContext( "2d" )!
         this.k2fKxesu = false
-        this.kxesuX = 0o0
-        this.kxesuY = 0o0
+        this.kxesuTapuN2k = 0o0
+        this.kxesuCepuN2k = 0o0
         this.b6K61e = document.getElementById( "b6k61e" )!
         this.b6Kxesu = false
 
@@ -189,10 +185,10 @@ class Mut6qKf2 {
         this.suntaSaxe.domElement.style.display = "block"
         this.mut6qKuba.appendChild( this.suntaSaxe.domElement )
 
-        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ 📃 ⟫ ✨
+        // ⟪ ֭ſɭᴜ j͑ʃɔ ı],ꞇ ✨ ⟫
         this.kf2Sexi()
 
-        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſᶘꞇ ɭl̀ɔ 📃 ⟫ 💡
+        // ⟪ ſᶘꞇ ɭl̀ɔ 💡 ⟫
         const saxeTsije = new THREE.AmbientLight( 0x404040, 0o4 / 0o10 )
         this.saxeKuba.add( saxeTsije )
 
@@ -219,7 +215,7 @@ class Mut6qKf2 {
         const n2kCa1ara = []
         const weh2Ca1ara = []
 
-        for ( let i = 0o0; i < 0o5710; i++ ) {
+        for ( let n2k = 0o0; n2k < 0o5710; n2k++ ) {
             n2kCa1ara.push(
                 ( Math.random() - 0o4 / 0o10 ) * 0o100,
                 ( Math.random() - 0o4 / 0o10 ) * 0o100,
@@ -258,36 +254,35 @@ class Mut6qKf2 {
     }
 
     xemaKeve() {
-        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ 📃 ⟫ 🎲
-        document.getElementById( "cuk" )!.addEventListener( "input", ( e ) => {
-            this.cukK61e = ( e.target as HTMLInputElement ).value
+        document.getElementById( "cuk" )!.addEventListener( "input", ( cal ) => {
+            this.cukK61e = ( cal.target as HTMLInputElement ).value
             this.cuk = this.quqCuk( this.cukK61e )
             document.getElementById( "cukk2fe" )!.textContent = this.cuk.toString()
         } )
 
-        document.getElementById( "tsa" )!.addEventListener( "input", ( e ) => {
-            this.xema.tsaK2fe = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
-            document.getElementById( "tsak2fe" )!.textContent = ( e.target as HTMLInputElement ).value
+        document.getElementById( "tsa" )!.addEventListener( "input", ( cal ) => {
+            this.xema.tsaK2fe = parseInt( ( cal.target as HTMLInputElement ).value ) / 0o100
+            document.getElementById( "tsak2fe" )!.textContent = ( cal.target as HTMLInputElement ).value
         } )
 
-        document.getElementById( "hia" )!.addEventListener( "input", ( e ) => {
-            this.xema.hia = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
-            document.getElementById( "hiak2fe" )!.textContent = ( e.target as HTMLInputElement ).value
+        document.getElementById( "hia" )!.addEventListener( "input", ( cal ) => {
+            this.xema.hia = parseInt( ( cal.target as HTMLInputElement ).value ) / 0o100
+            document.getElementById( "hiak2fe" )!.textContent = ( cal.target as HTMLInputElement ).value
         } )
 
-        document.getElementById( "tutal" )!.addEventListener( "input", ( e ) => {
-            this.xema.tutalK2fe = parseInt( ( e.target as HTMLInputElement ).value )
-            document.getElementById( "tutalk2fe" )!.textContent = ( e.target as HTMLInputElement ).value
+        document.getElementById( "tutal" )!.addEventListener( "input", ( cal ) => {
+            this.xema.tutalK2fe = parseInt( ( cal.target as HTMLInputElement ).value )
+            document.getElementById( "tutalk2fe" )!.textContent = ( cal.target as HTMLInputElement ).value
         } )
 
-        document.getElementById( "jaqo" )!.addEventListener( "input", ( e ) => {
-            this.xema.jaqoL6da = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
-            document.getElementById( "jaqok2fe" )!.textContent = ( e.target as HTMLInputElement ).value
+        document.getElementById( "jaqo" )!.addEventListener( "input", ( cal ) => {
+            this.xema.jaqoL6da = parseInt( ( cal.target as HTMLInputElement ).value ) / 0o100
+            document.getElementById( "jaqok2fe" )!.textContent = ( cal.target as HTMLInputElement ).value
         } )
 
-        document.getElementById( "pucana" )!.addEventListener( "input", ( e ) => {
-            this.xema.pucanaK2fe = parseInt( ( e.target as HTMLInputElement ).value ) / 0o100
-            document.getElementById( "pucanak2fe" )!.textContent = ( e.target as HTMLInputElement ).value
+        document.getElementById( "pucana" )!.addEventListener( "input", ( cal ) => {
+            this.xema.pucanaK2fe = parseInt( ( cal.target as HTMLInputElement ).value ) / 0o100
+            document.getElementById( "pucanak2fe" )!.textContent = ( cal.target as HTMLInputElement ).value
         } )
 
         // ⟪ ſᶘɹ }ʃᴜ }ʃw 🔘 ⟫
@@ -299,8 +294,8 @@ class Mut6qKf2 {
             this.osakajoXema()
         } )
 
-        document.getElementById( "s2sabokek" )!.addEventListener( "change", ( e ) => {
-            this.saxeS2sabo = ( e.target as HTMLInputElement ).checked
+        document.getElementById( "s2sabokek" )!.addEventListener( "change", ( cal ) => {
+            this.saxeS2sabo = ( cal.target as HTMLInputElement ).checked
         } )
 
         document.getElementById( "qumk2bal2xa" )!.addEventListener( "click", () => {
@@ -314,8 +309,8 @@ class Mut6qKf2 {
 
         // ⟪ ſᶘɹ }ʃᴜ }ʃw 🗺️ ⟫
         document.querySelectorAll( "input[name='bal2xa']" ).forEach( kp6Kek => {
-            kp6Kek.addEventListener( "change", ( e ) => {
-                this.kxesuBal2xa = ( e.target as HTMLInputElement ).value
+            kp6Kek.addEventListener( "change", ( cal ) => {
+                this.kxesuBal2xa = ( cal.target as HTMLInputElement ).value
                 this.suntaBal2xa()
             } )
         } )
@@ -328,52 +323,48 @@ class Mut6qKf2 {
         qumk2.click()
     }
 
-    // ⟪ ſɭɹʞ ʌ ᶅſɔ ֭ſɭɹ ʌ ʃɔ 🖌️ ⟫
-
-    // ⟪ ſɟɔ ŋᷠɔ ʌ ʃɔ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ 🔢 ⟫
+    // ⟪ ſɟɔ ŋᷠɔ ʌ ʃɔ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅ 🔢 ⟫
     quqCuk( k61e: string ): number {
         if ( /^[0-9]+$/.test( k61e ) ) return parseInt( k61e )
         return this.k61eK2fe( k61e )
     }
 
-    // ⟪ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ʃɔ 🎲 ⟫
     kf2Osakajo( cuk: number ): () => number {
         let kxesuK2fe = cuk >>> 0o0
         return () => {
             kxesuK2fe = ( kxesuK2fe + 0o15512674765 ) >>> 0o0
-            let t = kxesuK2fe
-            t = Math.imul( t ^ ( t >>> 0o17 ), t | 0o1 )
-            t ^= t + Math.imul( t ^ ( t >>> 0o7 ), t | 0o75 )
-            return ( ( t ^ ( t >>> 0o16 ) ) >>> 0o0 ) / 0o40000000000
+            let osakajoK2fe = kxesuK2fe
+            osakajoK2fe = Math.imul( osakajoK2fe ^ ( osakajoK2fe >>> 0o17 ), osakajoK2fe | 0o1 )
+            osakajoK2fe ^= osakajoK2fe + Math.imul( osakajoK2fe ^ ( osakajoK2fe >>> 0o7 ), osakajoK2fe | 0o75 )
+            return ( ( osakajoK2fe ^ ( osakajoK2fe >>> 0o16 ) ) >>> 0o0 ) / 0o40000000000
         }
     }
 
     xemaK2f() {
-        // ⟪ ſɭʞɹ ʌ ᶅſɔ ֭ſɭɹ 🖌️ ⟫
         this.k2fP2t6zo.style.touchAction = "none"
         this.ne1aK2f()
 
-        this.k2fP2t6zo.addEventListener( "pointerdown", ( e ) => {
+        this.k2fP2t6zo.addEventListener( "pointerdown", ( cal ) => {
             this.k2fKxesu = true
-            const kxesuAraq = this.quqK2fN2k( e )
-            this.kxesuX = kxesuAraq[0o0]
-            this.kxesuY = kxesuAraq[0o1]
-            this.k2fP2t6zo.setPointerCapture( e.pointerId )
+            const kxesuAraq = this.quqK2fN2k( cal )
+            this.kxesuTapuN2k = kxesuAraq[0o0]
+            this.kxesuCepuN2k = kxesuAraq[0o1]
+            this.k2fP2t6zo.setPointerCapture( cal.pointerId )
         } )
 
-        this.k2fP2t6zo.addEventListener( "pointermove", ( e ) => {
+        this.k2fP2t6zo.addEventListener( "pointermove", ( cal ) => {
             if ( !this.k2fKxesu ) return
-            const kxesuAraq = this.quqK2fN2k( e )
+            const kxesuAraq = this.quqK2fN2k( cal )
             this.k2fKek.lineWidth = 0o4
             this.k2fKek.lineCap = "round"
             this.k2fKek.lineJoin = "round"
             this.k2fKek.strokeStyle = "#FFFFFF"
             this.k2fKek.beginPath()
-            this.k2fKek.moveTo( this.kxesuX, this.kxesuY )
+            this.k2fKek.moveTo( this.kxesuTapuN2k, this.kxesuCepuN2k )
             this.k2fKek.lineTo( kxesuAraq[0o0], kxesuAraq[0o1] )
             this.k2fKek.stroke()
-            this.kxesuX = kxesuAraq[0o0]
-            this.kxesuY = kxesuAraq[0o1]
+            this.kxesuTapuN2k = kxesuAraq[0o0]
+            this.kxesuCepuN2k = kxesuAraq[0o1]
         } )
 
         const kxesuNe1a = () => {
@@ -382,6 +373,8 @@ class Mut6qKf2 {
 
         this.k2fP2t6zo.addEventListener( "pointerup", kxesuNe1a )
         this.k2fP2t6zo.addEventListener( "pointerleave", kxesuNe1a )
+        this.k2fP2t6zo.addEventListener( "pointercancel", kxesuNe1a )
+        this.k2fP2t6zo.addEventListener( "lostpointercapture", kxesuNe1a )
 
         document.getElementById( "ne1akek" )!.addEventListener( "click", () => {
             this.ne1aK2f()
@@ -391,8 +384,8 @@ class Mut6qKf2 {
             document.getElementById( "q2qxema" )!.click()
         } )
 
-        document.getElementById( "q2qxema" )!.addEventListener( "change", ( e ) => {
-            const q2qXema = e.target as HTMLInputElement
+        document.getElementById( "q2qxema" )!.addEventListener( "change", ( cal ) => {
+            const q2qXema = cal.target as HTMLInputElement
             const cakavop2 = q2qXema.files?.[ 0o0 ]
             if ( !cakavop2 ) return
             this.quqQ2q( cakavop2 )
@@ -404,11 +397,11 @@ class Mut6qKf2 {
         } )
     }
 
-    quqK2fN2k( e: PointerEvent ): [ number, number ] {
+    quqK2fN2k( cal: PointerEvent ): [ number, number ] {
         const saxeAraq = this.k2fP2t6zo.getBoundingClientRect()
-        const x = ( e.clientX - saxeAraq.left ) * ( this.k2fP2t6zo.width / saxeAraq.width )
-        const y = ( e.clientY - saxeAraq.top ) * ( this.k2fP2t6zo.height / saxeAraq.height )
-        return [ x, y ]
+        const tapuN2k = ( cal.clientX - saxeAraq.left ) * ( this.k2fP2t6zo.width / saxeAraq.width )
+        const cepuN2k = ( cal.clientY - saxeAraq.top ) * ( this.k2fP2t6zo.height / saxeAraq.height )
+        return [ tapuN2k, cepuN2k ]
     }
 
     ne1aK2f() {
@@ -424,21 +417,19 @@ class Mut6qKf2 {
             tahaq.onload = () => {
                 this.ne1aK2f()
                 const sefiniL6da = Math.min( this.k2fP2t6zo.width / tahaq.width, this.k2fP2t6zo.height / tahaq.height )
-                const w = tahaq.width * sefiniL6da
-                const h = tahaq.height * sefiniL6da
-                const x = ( this.k2fP2t6zo.width - w ) / 0o2
-                const y = ( this.k2fP2t6zo.height - h ) / 0o2
-                this.k2fKek.drawImage( tahaq, x, y, w, h )
+                const tahaqSefini = tahaq.width * sefiniL6da
+                const tahaqL6da = tahaq.height * sefiniL6da
+                const tapuN2k = ( this.k2fP2t6zo.width - tahaqSefini ) / 0o2
+                const cepuN2k = ( this.k2fP2t6zo.height - tahaqL6da ) / 0o2
+                this.k2fKek.drawImage( tahaq, tapuN2k, cepuN2k, tahaqSefini, tahaqL6da )
             }
             tahaq.src = cakavop2Xema.result as string
         }
         cakavop2Xema.readAsDataURL( cakavop2 )
     }
 
-    // ⟪ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ʃɔ 🎯 ⟫
     b6Cuk() {
         if ( this.b6Kxesu ) return
-        // ⟪ ſɟɔ ŋᷠɔ ʌ ſɭw ʃᴜ 🗺️ ⟫
         const b6KubaSefini = 0o30
         const b6KubaL6da = 0o14
         const b6KubaK2fe = b6KubaSefini * b6KubaL6da
@@ -452,8 +443,8 @@ class Mut6qKf2 {
 
         const kxesuOzCa1ara: boolean[] = []
         let tsijeK2fe = 0o0
-        for ( let i = 0o0; i < b6KubaK2fe; i++ ) {
-            const tsije = ( sab2[i * 0o4] + sab2[i * 0o4 + 0o1] + sab2[i * 0o4 + 0o2] ) / 0o3
+        for ( let n2k = 0o0; n2k < b6KubaK2fe; n2k++ ) {
+            const tsije = ( sab2[n2k * 0o4] + sab2[n2k * 0o4 + 0o1] + sab2[n2k * 0o4 + 0o2] ) / 0o3
             const oz = tsije >= 0o200
             kxesuOzCa1ara.push( oz )
             if ( oz ) tsijeK2fe++
@@ -469,42 +460,37 @@ class Mut6qKf2 {
         const tsaKubaK2fe = b6KubaK2fe - tsijeK2fe
         const saxeTsaK2fe = this.xema.tsaK2fe
 
-        // ⟪ }ʃɹƽ ʌ ʃɔ 📊 ⟫
         const qu1al = ( cuk: number ): number => {
             this.cuk = cuk
             this.beSaxe = createNoise3D( this.kf2Osakajo( cuk ) )
             let ozXekox2q = 0o0
             let tsaXekox2q = 0o0
             let kf2OzK2fe = 0o0
-            for ( let y = 0o0; y < b6KubaL6da; y++ ) {
-                for ( let x = 0o0; x < b6KubaSefini; x++ ) {
-                    const l6daK2fe = 0o132 - ( y / b6KubaL6da ) * 0o264
-                    const sefiniK2fe = ( x / b6KubaSefini ) * 0o550 - 0o264
+            for ( let cepuN2k = 0o0; cepuN2k < b6KubaL6da; cepuN2k++ ) {
+                for ( let tapuN2k = 0o0; tapuN2k < b6KubaSefini; tapuN2k++ ) {
+                    const l6daK2fe = 0o132 - ( cepuN2k / b6KubaL6da ) * 0o264
+                    const sefiniK2fe = ( tapuN2k / b6KubaSefini ) * 0o550 - 0o264
                     const oz = this.quqL6da( l6daK2fe, sefiniK2fe ) > saxeTsaK2fe
                     if ( oz ) kf2OzK2fe++
-                    const kxesuOz = kxesuOzCa1ara[y * b6KubaSefini + x]
+                    const kxesuOz = kxesuOzCa1ara[cepuN2k * b6KubaSefini + tapuN2k]
                     if ( oz && kxesuOz ) ozXekox2q++
                     else if ( !oz && !kxesuOz ) tsaXekox2q++
                 }
             }
-            // ⟪ ɭʃэ ſɭɔȝ ʌ ſᶘᴜ ⚖️ ⟫
             const kxesuXekox2q = ( ozXekox2q * 0o20 + tsaXekox2q ) / ( tsijeK2fe * 0o20 + tsaKubaK2fe )
             const sefiniL6daXekox2q = 0o1 - Math.abs( ozSefiniL6da - kf2OzK2fe / b6KubaK2fe )
             return kxesuXekox2q * 0o5 / 0o10 + sefiniL6daXekox2q * 0o3 / 0o10
         }
 
-        // ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ⏳ 📃 ⟫
         this.b6Kxesu = true
         document.getElementById( "b6ciihii" )!.classList.remove( "kobe" )
         this.b6K61e.textContent = "…"
         window.setTimeout( () => {
             try {
-            // ⟪ ſɭw ʃᴜ 🎲 ⟫
             const osakajo = this.kf2Osakajo( Math.floor( Math.random() * 0o200000000 ) )
             const osakajoCa1ara: number[] = []
-            for ( let i = 0o0; i < 0o200; i++ ) osakajoCa1ara.push( Math.floor( osakajo() * 0o4000000 ) )
+            for ( let n2k = 0o0; n2k < 0o200; n2k++ ) osakajoCa1ara.push( Math.floor( osakajo() * 0o4000000 ) )
 
-            // ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ʃɔ 🏝️ ⟫
             let kemafi: { cuk: number, qu1al: number, tutalK2fe: number } = { cuk: 0o0, qu1al: 0o0, tutalK2fe: this.xema.tutalK2fe }
             for ( let tutalK2fe = 0o1; tutalK2fe <= 0o10; tutalK2fe++ ) {
                 this.xema.tutalK2fe = tutalK2fe
@@ -512,11 +498,10 @@ class Mut6qKf2 {
                 for ( const osakajoKxesu of osakajoCa1ara ) {
                     const kxesuQu1al = qu1al( osakajoKxesu )
                     kemafiCa1ara.push( { cuk: osakajoKxesu, qu1al: kxesuQu1al } )
-                    kemafiCa1ara.sort( ( a, b ) => b.qu1al - a.qu1al )
+                    kemafiCa1ara.sort( ( saxeKemafi, ara3akakKemafi ) => ara3akakKemafi.qu1al - saxeKemafi.qu1al )
                     if ( kemafiCa1ara.length > 0o4 ) kemafiCa1ara.pop()
                 }
 
-                // ⟪ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭw ʃᴜ ⛰️ ⟫
                 let kemafiKxesu = kemafiCa1ara[0o0]
                 for ( const kxesuKemafi of kemafiCa1ara ) {
                     const tlak2Kemafi = this.tlak2Cuk( kxesuKemafi.cuk, qu1al )
@@ -528,7 +513,6 @@ class Mut6qKf2 {
                 }
             }
 
-            // ⟪ ſɭɹ ɽ͑ʃ'ɔ ʌ ֭ſɭᴜ ı],ɔ 🎲 ⟫
             this.xema.tutalK2fe = kemafi.tutalK2fe
             const tutalXema = document.getElementById( "tutal" ) as HTMLInputElement
             tutalXema.value = kemafi.tutalK2fe.toString()
@@ -542,7 +526,6 @@ class Mut6qKf2 {
             document.getElementById( "cukk2fe" )!.textContent = this.cuk.toString()
             this.kf2()
 
-            // ⟪ ſɟɔ ŋᷠɔ ʌ }ʃɹƽ 📊 ⟫
             const vab6 = ( window as any ).vab6caja.bind( window )
             const skakefK2fe = ( window as any ).skakefK2fe.bind( window )
             const qu1alK2fe = Math.floor( kemafi.qu1al * 0o100 )
@@ -553,7 +536,6 @@ class Mut6qKf2 {
         }, 0o0 )
     }
 
-    // ⟪ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ʃɔ ⛰️ ⟫
     tlak2Cuk( saxeCuk: number, saxeQu1al: ( cuk: number ) => number ): { cuk: number, qu1al: number } {
         let cuk = saxeCuk
         let kemafiQu1al = saxeQu1al( cuk )
@@ -578,19 +560,18 @@ class Mut6qKf2 {
         return { cuk: cuk, qu1al: kemafiQu1al }
     }
 
-    // ⟪ ſɭʞɹ ʌ ʃɔ 🏔️ ⟫
-    be( x: number, y: number, z: number, p6zuk = 0o1 ) {
-        return this.beSaxe( x * p6zuk, y * p6zuk, z * p6zuk ) * 0o4 / 0o10 + 0o4 / 0o10
+    be( tapuN2k: number, cepuN2k: number, teruN2k: number, p6zuk = 0o1 ) {
+        return this.beSaxe( tapuN2k * p6zuk, cepuN2k * p6zuk, teruN2k * p6zuk ) * 0o4 / 0o10 + 0o4 / 0o10
     }
 
-    fbm( x: number, y: number, z: number, n2k = 0o4, p6zuk = 0o1 ) {
+    hxakBeKf2( tapuN2k: number, cepuN2k: number, teruN2k: number, tutalK2fe = 0o4, p6zuk = 0o1 ) {
         let eskek = 0o0
         let k2fe = 0o1
         let kxesuP6zuk = p6zuk
         let kemafiK2fe = 0o0
 
-        for ( let i = 0o0; i < n2k; i++ ) {
-            eskek += this.beSaxe( x * kxesuP6zuk, y * kxesuP6zuk, z * kxesuP6zuk ) * k2fe
+        for ( let tutalN2k = 0o0; tutalN2k < tutalK2fe; tutalN2k++ ) {
+            eskek += this.beSaxe( tapuN2k * kxesuP6zuk, cepuN2k * kxesuP6zuk, teruN2k * kxesuP6zuk ) * k2fe
             kemafiK2fe += k2fe
             k2fe *= 0o4 / 0o10
             kxesuP6zuk *= 0o2
@@ -600,46 +581,38 @@ class Mut6qKf2 {
     }
 
     quqL6da( l6daK2fe: number, sefiniK2fe: number ) {
-        // ⟪ ɭʃɀɜ ʌ }ʃɹƽ 📐 ⟫
         const l6daQuqK2fe = ( 0o132 - l6daK2fe ) * Math.PI / 0o264
         const sefiniQuqK2fe = ( sefiniK2fe + 0o264 ) * Math.PI / 0o264
 
-        const x = Math.sin( l6daQuqK2fe ) * Math.cos( sefiniQuqK2fe )
-        const y = Math.cos( l6daQuqK2fe )
-        const z = Math.sin( l6daQuqK2fe ) * Math.sin( sefiniQuqK2fe )
+        const tapuN2k = Math.sin( l6daQuqK2fe ) * Math.cos( sefiniQuqK2fe )
+        const cepuN2k = Math.cos( l6daQuqK2fe )
+        const teruN2k = Math.sin( l6daQuqK2fe ) * Math.sin( sefiniQuqK2fe )
 
-        // ⟪ ſɭc̗ᴜ ſɭɹ ſȷɔ 🌎 ⟫
-        let ozL6da = this.fbm( x, y, z, 0o4, 0o6 / 0o4 )
+        let ozL6da = this.hxakBeKf2( tapuN2k, cepuN2k, teruN2k, 0o4, 0o6 / 0o4 )
 
-        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ 🌋 ⟫
-        for ( let i = 0o0; i < this.xema.tutalK2fe; i++ ) {
-            const quqK2fe = ( i / this.xema.tutalK2fe ) * Math.PI * 0o2 + this.cuk * 0o1 / 0o12
-            const cx = Math.cos( quqK2fe )
-            const cz = Math.sin( quqK2fe )
-            const pal6 = Math.sqrt( ( x - cx ) ** 0o2 + ( z - cz ) ** 0o2 + y * y )
+        for ( let n2k = 0o0; n2k < this.xema.tutalK2fe; n2k++ ) {
+            const quqK2fe = ( n2k / this.xema.tutalK2fe ) * Math.PI * 0o2 + this.cuk * 0o1 / 0o12
+            const sost2TapuN2k = Math.cos( quqK2fe )
+            const sost2TeruN2k = Math.sin( quqK2fe )
+            const pal6 = Math.sqrt( ( tapuN2k - sost2TapuN2k ) ** 0o2 + ( teruN2k - sost2TeruN2k ) ** 0o2 + cepuN2k * cepuN2k )
             ozL6da += Math.max( 0o0, 0o1 - pal6 * 0o2 ) * 0o3 / 0o12
         }
 
-        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ɭl̀ᴜ ſ͕ɭɜ ⛰️ ⟫
-        const jaqoBe = this.fbm( x, y, z, 0o6, 0o4 )
-        const saxeBe = 0o1 - Math.abs( this.beSaxe( x * 0o3, y * 0o3, z * 0o3 ) )
+        const jaqoBe = this.hxakBeKf2( tapuN2k, cepuN2k, teruN2k, 0o6, 0o4 )
+        const saxeBe = 0o1 - Math.abs( this.beSaxe( tapuN2k * 0o3, cepuN2k * 0o3, teruN2k * 0o3 ) )
         ozL6da += Math.pow( saxeBe, 0o2 ) * this.xema.jaqoL6da * jaqoBe
 
-        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ʃɔ ✨ ⟫
-        ozL6da += this.fbm( x, y, z, 0o3, 0o12 ) * 0o4 / 0o100
+        ozL6da += this.hxakBeKf2( tapuN2k, cepuN2k, teruN2k, 0o3, 0o12 ) * 0o4 / 0o100
 
         return Math.max( 0o0, Math.min( 0o1, ozL6da ) )
     }
 
     quqHia( l6daK2fe: number, ozL6da: number, sefiniK2fe = 0o0 ) {
-        // ⟪ ſɭc̗ᴜ ſɭɹ ſȷɔ 🌡️ ⟫
         const kxesuK2fe = Math.cos( l6daK2fe * Math.PI / 0o264 )
         let hia = this.xema.hia * kxesuK2fe
 
-        // ⟪ j͑ʃɜ ſɭ,ᴜ 📉 ⟫
         hia -= ozL6da * 0o4 / 0o10 * this.xema.jaqoL6da
 
-        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ʃɔ ☁️ ⟫
         const l6daQuqK2fe = ( 0o132 - l6daK2fe ) * Math.PI / 0o264
         const sefiniQuqK2fe = ( sefiniK2fe + 0o264 ) * Math.PI / 0o264
         hia += ( this.be(
@@ -705,22 +678,22 @@ class Mut6qKf2 {
     }
 
     kf2Lko() {
-        const pal6 = 0o2000
+        const sefini = 0o2000
 
         this.lkoP2t6zo = document.createElement( "canvas" )
-        this.lkoP2t6zo.width = pal6
-        this.lkoP2t6zo.height = pal6 / 0o2
+        this.lkoP2t6zo.width = sefini
+        this.lkoP2t6zo.height = sefini / 0o2
         const lkoKekKxesu = this.lkoP2t6zo.getContext( "2d" )!
-        const tahaqSab2 = lkoKekKxesu.createImageData( pal6, pal6 / 0o2 )
+        const tahaqSab2 = lkoKekKxesu.createImageData( sefini, sefini / 0o2 )
         const sab2 = tahaqSab2.data
 
-        for ( let y = 0o0; y < pal6 / 0o2; y++ ) {
-            for ( let x = 0o0; x < pal6; x++ ) {
-                const l6daK2fe = 0o132 - ( y / ( pal6 / 0o2 ) ) * 0o264
-                const sefiniK2fe = ( x / pal6 ) * 0o550 - 0o264
+        for ( let cepuN2k = 0o0; cepuN2k < sefini / 0o2; cepuN2k++ ) {
+            for ( let tapuN2k = 0o0; tapuN2k < sefini; tapuN2k++ ) {
+                const l6daK2fe = 0o132 - ( cepuN2k / ( sefini / 0o2 ) ) * 0o264
+                const sefiniK2fe = ( tapuN2k / sefini ) * 0o550 - 0o264
 
                 const ozL6da = this.quqL6da( l6daK2fe, sefiniK2fe )
-                const pucacuni = this.fbm(
+                const pucacuni = this.hxakBeKf2(
                     Math.cos( l6daK2fe * Math.PI / 0o264 ) * Math.cos( sefiniK2fe * Math.PI / 0o264 ),
                     Math.sin( l6daK2fe * Math.PI / 0o264 ),
                     Math.cos( l6daK2fe * Math.PI / 0o264 ) * Math.sin( sefiniK2fe * Math.PI / 0o264 ),
@@ -729,8 +702,8 @@ class Mut6qKf2 {
                 const hia = this.quqHia( l6daK2fe, ozL6da, sefiniK2fe )
                 const kxesuOz = this.quqOz( ozL6da, hia, pucacuni )
 
-                const weh2 = this.quqWeh2( kxesuOz, this.be( x, y, 0o0, 0o20 ) )
-                const k2fe = ( y * pal6 + x ) * 0o4
+                const weh2 = this.quqWeh2( kxesuOz, this.be( tapuN2k, cepuN2k, 0o0, 0o20 ) )
+                const k2fe = ( cepuN2k * sefini + tapuN2k ) * 0o4
 
                 sab2[k2fe] = weh2[0o0]
                 sab2[k2fe + 0o1] = weh2[0o1]
@@ -744,62 +717,62 @@ class Mut6qKf2 {
 
     suntaBal2xa() {
         const bal2xaKekKxesu = this.bal2xaKek
-        const w = this.sefini
-        const h = this.l6da
+        const sefini = this.sefini
+        const l6da = this.l6da
 
         bal2xaKekKxesu.save()
         bal2xaKekKxesu.setTransform( 0o1, 0o0, 0o0, 0o1, 0o0, 0o0 )
 
-        bal2xaKekKxesu.fillRect( 0o0, 0o0, w, h )
+        bal2xaKekKxesu.fillRect( 0o0, 0o0, sefini, l6da )
 
         switch ( this.kxesuBal2xa ) {
             case "saxebal2xa":
-                this.suntaSaxeBal2xa( w, h )
+                this.suntaSaxeBal2xa( sefini, l6da )
                 break
             case "kuc2na":
-                this.suntaKuc2na( w, h )
+                this.suntaKuc2na( sefini, l6da )
                 break
             case "c2qsahak":
-                this.suntaC2qsahak( w, h )
+                this.suntaC2qsahak( sefini, l6da )
                 break
             case "l6ksabosai":
-                this.suntaL6ksabosai( w, h )
+                this.suntaL6ksabosai( sefini, l6da )
                 break
         }
 
         bal2xaKekKxesu.restore()
     }
 
-    suntaSaxeBal2xa( w: number, h: number ) {
+    suntaSaxeBal2xa( sefini: number, l6da: number ) {
         const bal2xaKekSaxe = this.bal2xaKek
         const lkoSefini = this.lkoP2t6zo.width
         const lkoL6da = this.lkoP2t6zo.height
 
-        bal2xaKekSaxe.drawImage( this.lkoP2t6zo, 0o0, 0o0, lkoSefini, lkoL6da, 0o0, 0o0, w, h )
+        bal2xaKekSaxe.drawImage( this.lkoP2t6zo, 0o0, 0o0, lkoSefini, lkoL6da, 0o0, 0o0, sefini, l6da )
     }
 
-    suntaKuc2na( w: number, h: number ) {
+    suntaKuc2na( sefini: number, l6da: number ) {
         const bal2xaKekKuc2na = this.bal2xaKek
         const lkoSefini = this.lkoP2t6zo.width
         const lkoL6da = this.lkoP2t6zo.height
         const lkoKekKuc2na = this.lkoP2t6zo.getContext( "2d" )!
 
         const kxesuP2t6zo = document.createElement( "canvas" )
-        kxesuP2t6zo.width = w
-        kxesuP2t6zo.height = h
+        kxesuP2t6zo.width = sefini
+        kxesuP2t6zo.height = l6da
         const kxesuP2t6zoKekKuc2na = kxesuP2t6zo.getContext( "2d" )!
 
-        const tahaqSab2 = kxesuP2t6zoKekKuc2na.createImageData( w, h )
+        const tahaqSab2 = kxesuP2t6zoKekKuc2na.createImageData( sefini, l6da )
         const suntaSab2 = tahaqSab2.data
         const lkoSab2 = lkoKekKuc2na.getImageData( 0o0, 0o0, lkoSefini, lkoL6da ).data
 
-        for ( let y = 0o0; y < h; y++ ) {
-            const kxesuK2fe = ( y / h ) * 0o2 - 0o1
+        for ( let cepuN2k = 0o0; cepuN2k < l6da; cepuN2k++ ) {
+            const kxesuK2fe = ( cepuN2k / l6da ) * 0o2 - 0o1
             const l6daK2fe = ( 0o2 * Math.atan( Math.exp( kxesuK2fe * Math.PI ) ) - Math.PI / 0o2 ) * 0o264 / Math.PI
 
             if ( Math.abs( l6daK2fe ) > 0o125 ) {
-                for ( let x = 0o0; x < w; x++ ) {
-                    const suntaK2fe = ( y * w + x ) * 0o4
+                for ( let tapuN2k = 0o0; tapuN2k < sefini; tapuN2k++ ) {
+                    const suntaK2fe = ( cepuN2k * sefini + tapuN2k ) * 0o4
                     suntaSab2[suntaK2fe] = 0o14
                     suntaSab2[suntaK2fe + 0o1] = 0o16
                     suntaSab2[suntaK2fe + 0o2] = 0o33
@@ -808,15 +781,15 @@ class Mut6qKf2 {
                 continue
             }
 
-            const saxeY = Math.floor( ( 0o132 - l6daK2fe ) / 0o264 * lkoL6da )
-            const kxesuY = Math.max( 0o0, Math.min( lkoL6da - 0o1, saxeY ) )
+            const saxeCepuN2k = Math.floor( ( 0o132 - l6daK2fe ) / 0o264 * lkoL6da )
+            const kxesuCepuN2k = Math.max( 0o0, Math.min( lkoL6da - 0o1, saxeCepuN2k ) )
 
-            for ( let x = 0o0; x < w; x++ ) {
-                const saxeX = Math.floor( ( x / w ) * lkoSefini )
-                const kxesuX = Math.max( 0o0, Math.min( lkoSefini - 0o1, saxeX ) )
+            for ( let tapuN2k = 0o0; tapuN2k < sefini; tapuN2k++ ) {
+                const saxeTapuN2k = Math.floor( ( tapuN2k / sefini ) * lkoSefini )
+                const kxesuTapuN2k = Math.max( 0o0, Math.min( lkoSefini - 0o1, saxeTapuN2k ) )
 
-                const saxeK2fe = ( kxesuY * lkoSefini + kxesuX ) * 0o4
-                const suntaK2fe = ( ( h - 0o1 - y ) * w + x ) * 0o4
+                const saxeK2fe = ( kxesuCepuN2k * lkoSefini + kxesuTapuN2k ) * 0o4
+                const suntaK2fe = ( ( l6da - 0o1 - cepuN2k ) * sefini + tapuN2k ) * 0o4
 
                 suntaSab2[suntaK2fe] = lkoSab2[saxeK2fe]
                 suntaSab2[suntaK2fe + 0o1] = lkoSab2[saxeK2fe + 0o1]
@@ -829,33 +802,33 @@ class Mut6qKf2 {
         bal2xaKekKuc2na.drawImage( kxesuP2t6zo, 0o0, 0o0 )
     }
 
-    suntaC2qsahak( w: number, h: number ) {
+    suntaC2qsahak( sefini: number, l6da: number ) {
         const bal2xaKekC2qsahak = this.bal2xaKek
         const lkoSefini = this.lkoP2t6zo.width
         const lkoL6da = this.lkoP2t6zo.height
         const lkoKekC2qsahak = this.lkoP2t6zo.getContext( "2d" )!
 
         const kxesuP2t6zo = document.createElement( "canvas" )
-        kxesuP2t6zo.width = w
-        kxesuP2t6zo.height = h
+        kxesuP2t6zo.width = sefini
+        kxesuP2t6zo.height = l6da
         const kxesuP2t6zoKekC2qsahak = kxesuP2t6zo.getContext( "2d" )!
 
-        const cx = w / 0o2
-        const cy = h / 0o2
-        const rx = w * 0o4 / 0o10
-        const ry = h * 0o4 / 0o10
+        const sost2TapuN2k = sefini / 0o2
+        const sost2CepuN2k = l6da / 0o2
+        const tapuPal6 = sefini * 0o4 / 0o10
+        const cepuPal6 = l6da * 0o4 / 0o10
 
-        const tahaqSab2 = kxesuP2t6zoKekC2qsahak.createImageData( w, h )
+        const tahaqSab2 = kxesuP2t6zoKekC2qsahak.createImageData( sefini, l6da )
         const suntaSab2 = tahaqSab2.data
         const lkoSab2 = lkoKekC2qsahak.getImageData( 0o0, 0o0, lkoSefini, lkoL6da ).data
 
-        for ( let y = 0o0; y < h; y++ ) {
-            for ( let x = 0o0; x < w; x++ ) {
-                const dx = ( x - cx ) / rx
-                const dy = ( y - cy ) / ry
+        for ( let cepuN2k = 0o0; cepuN2k < l6da; cepuN2k++ ) {
+            for ( let tapuN2k = 0o0; tapuN2k < sefini; tapuN2k++ ) {
+                const suntaTapuN2k = ( tapuN2k - sost2TapuN2k ) / tapuPal6
+                const suntaCepuN2k = ( cepuN2k - sost2CepuN2k ) / cepuPal6
 
-                if ( dx * dx + dy * dy > 0o1 ) {
-                    const suntaK2fe = ( y * w + x ) * 0o4
+                if ( suntaTapuN2k * suntaTapuN2k + suntaCepuN2k * suntaCepuN2k > 0o1 ) {
+                    const suntaK2fe = ( cepuN2k * sefini + tapuN2k ) * 0o4
                     suntaSab2[suntaK2fe] = 0o14
                     suntaSab2[suntaK2fe + 0o1] = 0o16
                     suntaSab2[suntaK2fe + 0o2] = 0o33
@@ -863,18 +836,18 @@ class Mut6qKf2 {
                     continue
                 }
 
-                const quqK2fe = Math.asin( dy )
-                const sefiniK2fe = ( dx / Math.cos( quqK2fe ) ) * 0o264
+                const quqK2fe = Math.asin( suntaCepuN2k )
+                const sefiniK2fe = ( suntaTapuN2k / Math.cos( quqK2fe ) ) * 0o264
                 const l6daK2fe = Math.asin( ( 0o2 * quqK2fe + Math.sin( 0o2 * quqK2fe ) ) / Math.PI ) * 0o264 / Math.PI
 
-                const saxeX = Math.floor( ( ( sefiniK2fe + 0o264 ) / 0o550 ) * lkoSefini )
-                const saxeY = Math.floor( ( ( 0o132 - l6daK2fe ) / 0o264 ) * lkoL6da )
+                const saxeTapuN2k = Math.floor( ( ( sefiniK2fe + 0o264 ) / 0o550 ) * lkoSefini )
+                const saxeCepuN2k = Math.floor( ( ( 0o132 - l6daK2fe ) / 0o264 ) * lkoL6da )
 
-                const kxesuX = Math.max( 0o0, Math.min( lkoSefini - 0o1, saxeX ) )
-                const kxesuY = Math.max( 0o0, Math.min( lkoL6da - 0o1, saxeY ) )
+                const kxesuTapuN2k = Math.max( 0o0, Math.min( lkoSefini - 0o1, saxeTapuN2k ) )
+                const kxesuCepuN2k = Math.max( 0o0, Math.min( lkoL6da - 0o1, saxeCepuN2k ) )
 
-                const saxeK2fe = ( kxesuY * lkoSefini + kxesuX ) * 0o4
-                const suntaK2fe = ( ( h - 0o1 - y ) * w + x ) * 0o4
+                const saxeK2fe = ( kxesuCepuN2k * lkoSefini + kxesuTapuN2k ) * 0o4
+                const suntaK2fe = ( ( l6da - 0o1 - cepuN2k ) * sefini + tapuN2k ) * 0o4
 
                 suntaSab2[suntaK2fe] = lkoSab2[saxeK2fe]
                 suntaSab2[suntaK2fe + 0o1] = lkoSab2[saxeK2fe + 0o1]
@@ -887,33 +860,33 @@ class Mut6qKf2 {
         bal2xaKekC2qsahak.drawImage( kxesuP2t6zo, 0o0, 0o0 )
     }
 
-    suntaL6ksabosai( w: number, h: number ) {
+    suntaL6ksabosai( sefini: number, l6da: number ) {
         const bal2xaKekL6ksabosai = this.bal2xaKek
         const lkoSefini = this.lkoP2t6zo.width
         const lkoL6da = this.lkoP2t6zo.height
         const lkoKekL6ksabosai = this.lkoP2t6zo.getContext( "2d" )!
 
         const kxesuP2t6zo = document.createElement( "canvas" )
-        kxesuP2t6zo.width = w
-        kxesuP2t6zo.height = h
+        kxesuP2t6zo.width = sefini
+        kxesuP2t6zo.height = l6da
         const kxesuP2t6zoKekL6ksabosai = kxesuP2t6zo.getContext( "2d" )!
 
-        const cx = w / 0o2
-        const cy = h / 0o2
-        const r = Math.min( w, h ) * 0o4 / 0o10
+        const sost2TapuN2k = sefini / 0o2
+        const sost2CepuN2k = l6da / 0o2
+        const pal6 = Math.min( sefini, l6da ) * 0o4 / 0o10
 
-        const tahaqSab2 = kxesuP2t6zoKekL6ksabosai.createImageData( w, h )
+        const tahaqSab2 = kxesuP2t6zoKekL6ksabosai.createImageData( sefini, l6da )
         const suntaSab2 = tahaqSab2.data
         const lkoSab2 = lkoKekL6ksabosai.getImageData( 0o0, 0o0, lkoSefini, lkoL6da ).data
 
-        for ( let y = 0o0; y < h; y++ ) {
-            for ( let x = 0o0; x < w; x++ ) {
-                const dx = ( x - cx ) / r
-                const dy = ( y - cy ) / r
-                const dz2 = 0o1 - dx * dx - dy * dy
+        for ( let cepuN2k = 0o0; cepuN2k < l6da; cepuN2k++ ) {
+            for ( let tapuN2k = 0o0; tapuN2k < sefini; tapuN2k++ ) {
+                const suntaTapuN2k = ( tapuN2k - sost2TapuN2k ) / pal6
+                const suntaCepuN2k = ( cepuN2k - sost2CepuN2k ) / pal6
+                const suntaTeruN2kK2fe = 0o1 - suntaTapuN2k * suntaTapuN2k - suntaCepuN2k * suntaCepuN2k
 
-                if ( dz2 < 0o0 ) {
-                    const suntaK2fe = ( y * w + x ) * 0o4
+                if ( suntaTeruN2kK2fe < 0o0 ) {
+                    const suntaK2fe = ( cepuN2k * sefini + tapuN2k ) * 0o4
                     suntaSab2[suntaK2fe] = 0o14
                     suntaSab2[suntaK2fe + 0o1] = 0o16
                     suntaSab2[suntaK2fe + 0o2] = 0o33
@@ -921,21 +894,21 @@ class Mut6qKf2 {
                     continue
                 }
 
-                const dz = Math.sqrt( dz2 )
+                const suntaTeruN2k = Math.sqrt( suntaTeruN2kK2fe )
 
-                const l6daK2fe = Math.asin( dy ) * 0o264 / Math.PI
-                const sefiniK2fe = Math.atan2( dx, dz ) * 0o264 / Math.PI
+                const l6daK2fe = Math.asin( suntaCepuN2k ) * 0o264 / Math.PI
+                const sefiniK2fe = Math.atan2( suntaTapuN2k, suntaTeruN2k ) * 0o264 / Math.PI
 
-                const saxeX = Math.floor( ( ( sefiniK2fe + 0o264 ) / 0o550 ) * lkoSefini )
-                const saxeY = Math.floor( ( ( 0o132 - l6daK2fe ) / 0o264 ) * lkoL6da )
+                const saxeTapuN2k = Math.floor( ( ( sefiniK2fe + 0o264 ) / 0o550 ) * lkoSefini )
+                const saxeCepuN2k = Math.floor( ( ( 0o132 - l6daK2fe ) / 0o264 ) * lkoL6da )
 
-                const kxesuX = Math.max( 0o0, Math.min( lkoSefini - 0o1, saxeX ) )
-                const kxesuY = Math.max( 0o0, Math.min( lkoL6da - 0o1, saxeY ) )
+                const kxesuTapuN2k = Math.max( 0o0, Math.min( lkoSefini - 0o1, saxeTapuN2k ) )
+                const kxesuCepuN2k = Math.max( 0o0, Math.min( lkoL6da - 0o1, saxeCepuN2k ) )
 
-                const saxeK2fe = ( kxesuY * lkoSefini + kxesuX ) * 0o4
-                const suntaK2fe = ( ( h - 0o1 - y ) * w + x ) * 0o4
+                const saxeK2fe = ( kxesuCepuN2k * lkoSefini + kxesuTapuN2k ) * 0o4
+                const suntaK2fe = ( ( l6da - 0o1 - cepuN2k ) * sefini + tapuN2k ) * 0o4
 
-                const tsijeK2fe = 0o6 / 0o10 + 0o2 / 0o10 * dz
+                const tsijeK2fe = 0o6 / 0o10 + 0o2 / 0o10 * suntaTeruN2k
                 suntaSab2[suntaK2fe] = Math.min( 0o377, lkoSab2[saxeK2fe] * tsijeK2fe )
                 suntaSab2[suntaK2fe + 0o1] = Math.min( 0o377, lkoSab2[saxeK2fe + 0o1] * tsijeK2fe )
                 suntaSab2[suntaK2fe + 0o2] = Math.min( 0o377, lkoSab2[saxeK2fe + 0o2] * tsijeK2fe )
@@ -955,20 +928,23 @@ class Mut6qKf2 {
             kuba.geometry?.dispose()
 
             const eskek = kuba.material
+            const ne1aEskek = ( saxeEskek: THREE.MeshPhongMaterial ) => {
+                saxeEskek.map?.dispose()
+                saxeEskek.bumpMap?.dispose()
+                saxeEskek.dispose()
+            }
 
-            if ( Array.isArray( eskek ) ) eskek.forEach( saxe => saxe?.dispose() )
-            else eskek?.dispose()
+            if ( Array.isArray( eskek ) ) eskek.forEach( ne1aEskek )
+            else ne1aEskek( eskek )
         }
 
-        // ⟪ ſɭʞɹ 🌍 ⟫
         const xezHtaka = new THREE.SphereGeometry( 0o1, 0o200, 0o200 )
 
-        // ⟪ ſɭʞɹ ʌ ſɭw ʃᴜ 🎨 ⟫
         const lko = new THREE.CanvasTexture( this.lkoP2t6zo )
+        lko.colorSpace = THREE.SRGBColorSpace
         lko.wrapS = THREE.RepeatWrapping
         lko.wrapT = THREE.ClampToEdgeWrapping
 
-        // ⟪ ſɭʞɹ ʌ ɭl̀ᴜ ſ͕ɭɜ 🗻 ⟫
         const ozLko = this.kf2OzLko()
 
         const eskek = new THREE.MeshPhongMaterial( {
@@ -982,7 +958,6 @@ class Mut6qKf2 {
         this.mut6q = new THREE.Mesh( xezHtaka, eskek )
         this.saxeKuba.add( this.mut6q )
 
-        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſɟᴜ }ʃᴜ 🌌 ⟫
         const pucanaXezHtaka = new THREE.SphereGeometry( 0o103 / 0o100, 0o100, 0o100 )
         const pucanaEskek = new THREE.MeshPhongMaterial( {
             color: 0x4488ff,
@@ -995,7 +970,6 @@ class Mut6qKf2 {
         this.pucana = new THREE.Mesh( pucanaXezHtaka, pucanaEskek )
         this.saxeKuba.add( this.pucana )
 
-        // ⟪ j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ſȷɹ ŋᷠɹ ☁️ ⟫
         this.kf2F2m2()
     }
 
@@ -1007,14 +981,14 @@ class Mut6qKf2 {
         const tahaqSab2 = ozKek.createImageData( 0o1000, 0o400 )
         const sab2 = tahaqSab2.data
 
-        for ( let y = 0o0; y < 0o400; y++ ) {
-            for ( let x = 0o0; x < 0o1000; x++ ) {
-                const l6daK2fe = 0o132 - ( y / 0o400 ) * 0o264
-                const sefiniK2fe = ( x / 0o1000 ) * 0o550 - 0o264
+        for ( let cepuN2k = 0o0; cepuN2k < 0o400; cepuN2k++ ) {
+            for ( let tapuN2k = 0o0; tapuN2k < 0o1000; tapuN2k++ ) {
+                const l6daK2fe = 0o132 - ( cepuN2k / 0o400 ) * 0o264
+                const sefiniK2fe = ( tapuN2k / 0o1000 ) * 0o550 - 0o264
                 const ozL6da = this.quqL6da( l6daK2fe, sefiniK2fe )
 
                 const weh2 = Math.floor( ozL6da * 0o377 )
-                const k2fe = ( y * 0o1000 + x ) * 0o4
+                const k2fe = ( cepuN2k * 0o1000 + tapuN2k ) * 0o4
                 sab2[k2fe] = weh2
                 sab2[k2fe + 0o1] = weh2
                 sab2[k2fe + 0o2] = weh2
@@ -1029,7 +1003,7 @@ class Mut6qKf2 {
     kf2F2m2() {
         const f2m2XezHtaka = new THREE.SphereGeometry( 0o104 / 0o100, 0o100, 0o100 )
 
-        // ⟪ ſɭʞɹ ʌ ſȷɹ ŋᷠɹ ☁️ ⟫
+        // ⟪ ſȷɹ ŋᷠɹ ☁️ ⟫
         const kxesuP2t6zo = document.createElement( "canvas" )
         kxesuP2t6zo.width = 0o1000
         kxesuP2t6zo.height = 0o400
@@ -1037,21 +1011,21 @@ class Mut6qKf2 {
         const tahaqSab2 = f2m2Kek.createImageData( 0o1000, 0o400 )
         const sab2 = tahaqSab2.data
 
-        for ( let y = 0o0; y < 0o400; y++ ) {
-            for ( let x = 0o0; x < 0o1000; x++ ) {
-                const l6daK2fe = 0o132 - ( y / 0o400 ) * 0o264
-                const sefiniK2fe = ( x / 0o1000 ) * 0o550 - 0o264
+        for ( let cepuN2k = 0o0; cepuN2k < 0o400; cepuN2k++ ) {
+            for ( let tapuN2k = 0o0; tapuN2k < 0o1000; tapuN2k++ ) {
+                const l6daK2fe = 0o132 - ( cepuN2k / 0o400 ) * 0o264
+                const sefiniK2fe = ( tapuN2k / 0o1000 ) * 0o550 - 0o264
 
                 const l6daQuqK2fe = ( 0o132 - l6daK2fe ) * Math.PI / 0o264
                 const sefiniQuqK2fe = ( sefiniK2fe + 0o264 ) * Math.PI / 0o264
-                const cx = Math.sin( l6daQuqK2fe ) * Math.cos( sefiniQuqK2fe )
-                const cy = Math.cos( l6daQuqK2fe )
-                const cz = Math.sin( l6daQuqK2fe ) * Math.sin( sefiniQuqK2fe )
+                const tapuF2m2N2k = Math.sin( l6daQuqK2fe ) * Math.cos( sefiniQuqK2fe )
+                const cepuF2m2N2k = Math.cos( l6daQuqK2fe )
+                const teruF2m2N2k = Math.sin( l6daQuqK2fe ) * Math.sin( sefiniQuqK2fe )
 
-                const f2m2Be = this.fbm( cx, cy, cz, 0o4, 0o3 )
+                const f2m2Be = this.hxakBeKf2( tapuF2m2N2k, cepuF2m2N2k, teruF2m2N2k, 0o4, 0o3 )
                 const eskek = Math.max( 0o0, f2m2Be - 0o4 / 0o12 ) * 0o2
 
-                const n2k = ( y * 0o1000 + x ) * 0o4
+                const n2k = ( cepuN2k * 0o1000 + tapuN2k ) * 0o4
                 const k2fe = Math.floor( eskek * 0o310 * this.xema.pucanaK2fe )
 
                 sab2[n2k] = 0o377
@@ -1090,10 +1064,10 @@ class Mut6qKf2 {
     }
 
     v3ak2K61e() {
-        // ⟪ ſɭc̗ᴜ j͑ʃ'ɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📊 ⟫
+        // ⟪ ſɭc̗ᴜ j͑ʃ'ɔ ʌ j͑ʃ'ɜ ſןɹ 📊 ⟫
         let ozK2fe = 0o0
         let tsaK2fe = 0o0
-        let maxL6da = 0o0
+        let kmaknuL6da = 0o0
         let saxeHia = 0o0
         let k2fe = 0o0
 
@@ -1101,10 +1075,10 @@ class Mut6qKf2 {
 
         if ( !this.lkoP2t6zo || this.lkoP2t6zo.width === 0o0 ) return
 
-        for ( let x = 0o0; x < this.lkoP2t6zo.width; x += 0o10 ) {
-            for ( let y = 0o0; y < this.lkoP2t6zo.height; y += 0o10 ) {
-                const l6daK2fe = 0o132 - ( y / this.lkoP2t6zo.height ) * 0o264
-                const sefiniK2fe = ( x / this.lkoP2t6zo.width ) * 0o550 - 0o264
+        for ( let tapuN2k = 0o0; tapuN2k < this.lkoP2t6zo.width; tapuN2k += 0o10 ) {
+            for ( let cepuN2k = 0o0; cepuN2k < this.lkoP2t6zo.height; cepuN2k += 0o10 ) {
+                const l6daK2fe = 0o132 - ( cepuN2k / this.lkoP2t6zo.height ) * 0o264
+                const sefiniK2fe = ( tapuN2k / this.lkoP2t6zo.width ) * 0o550 - 0o264
                 const ozL6da = this.quqL6da( l6daK2fe, sefiniK2fe )
                 const hia = this.quqHia( l6daK2fe, ozL6da, sefiniK2fe )
 
@@ -1114,7 +1088,7 @@ class Mut6qKf2 {
                     tsaK2fe++
                 }
 
-                maxL6da = Math.max( maxL6da, ozL6da )
+                kmaknuL6da = Math.max( kmaknuL6da, ozL6da )
                 saxeHia += hia
                 k2fe++
             }
@@ -1126,10 +1100,9 @@ class Mut6qKf2 {
         const tsaQu1al = 0o100 - ozQu1al
         const kxesuHia = ( saxeHia / k2fe - 0o4 / 0o10 ) * 0o74
         const kxesuHi = ( kxesuHia + 273.15 ) / HI_L6RAK2K2H2
-        const maxL6daK2fe = Math.floor( maxL6da * 0o23210 )
-        const maxL6daPeu = ( window as any ).vap0_c2ta( maxL6daK2fe )
+        const kmaknuL6daK2fe = Math.floor( kmaknuL6da * 0o23210 )
+        const kmaknuL6daPeu = ( window as any ).vap0_c2ta( kmaknuL6daK2fe )
 
-        // ⟪ ſɭc̗ᴜ j͑ʃ'ɔ 🏠 ⟫
         const tsaXekox2q = 0o1 - Math.abs( this.xema.tsaK2fe - 0o6 / 0o10 ) * 0o2
         const hiaXekox2q = 0o1 - Math.abs( this.xema.hia - 0o4 / 0o10 ) * 0o2
         const pucanaXekox2q = this.xema.pucanaK2fe
@@ -1138,18 +1111,17 @@ class Mut6qKf2 {
 
         const ozK61e = document.getElementById( "ozk61e" )
         const tsaK61e = document.getElementById( "tsak61e" )
-        const maxL6daK61e = document.getElementById( "maxl6dak61e" )
+        const kmaknuL6daK61e = document.getElementById( "maxl6dak61e" )
         const hiaK61e = document.getElementById( "hiak61e" )
         const kxesuK61e = document.getElementById( "kxesuk61e" )
 
-        const gawe = document.documentElement.lang || "aih"
         const vab6 = ( window as any ).vab6caja.bind( window )
         const vab6Domani = ( window as any ).vab6cajaDomani.bind( window )
         const skakefK2fe = ( window as any ).skakefK2fe.bind( window )
 
         if ( ozK61e ) ozK61e.textContent = skakefK2fe( vab6( ozQu1al ) + " / " + vab6( 0o100 ) )
         if ( tsaK61e ) tsaK61e.textContent = skakefK2fe( vab6( tsaQu1al ) + " / " + vab6( 0o100 ) )
-        if ( maxL6daK61e ) maxL6daK61e.textContent = skakefK2fe( vab6Domani( maxL6daPeu, 0o6 ) ) + " ſןɔⅎ"
+        if ( kmaknuL6daK61e ) kmaknuL6daK61e.textContent = skakefK2fe( vab6Domani( kmaknuL6daPeu, 0o6 ) ) + " ſןɔⅎ"
         if ( hiaK61e ) hiaK61e.textContent = skakefK2fe( vab6Domani( kxesuHi, 0o6 ) ) + " ֭ſɭꞇ"
         if ( kxesuK61e ) kxesuK61e.textContent = skakefK2fe( vab6( kxesuQu1al ) + " / " + vab6( 0o100 ) )
     }

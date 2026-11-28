@@ -73,7 +73,7 @@ skakefani.en = {
     "ſȷᴜͷ̗ ſɭɔʞ ꞁȷ̀w ꞁȷ̀ɔ ֭ſɭɹ ſȷᴜ ſᶘɹ": "Hubadhu Dictionary",
     "ſȷᴜͷ̗ ſɭɔʞ ꞁȷ̀w ꞁȷ̀ɔ }ʃᴜ ɭl̀ɜ ɭʃᴜ ɽ͑ʃ'ᴜ": "Nayotaran Dictionary",
     //"ſɭc̗ᴜ ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɔ ŋᷠɜ ɽ͑ʃ'ꞇ": "ſɭc̗ᴜ ſ͔ɭᴜ ᶅſɔ ꞁȷ̀ɔ ꞁȷ̀ɔ ŋᷠɜ ɽ͑ʃ'ꞇ",
-    "ꞁȷ̀ꞇ }ʃᴜƽ ſ͔ɭᴜ ᶅſɔ": "Other Langauges",
+    "ꞁȷ̀ꞇ }ʃᴜƽ ſ͔ɭᴜ ᶅſɔ": "Other Languages",
 
     "ꞁȷ̀ɹ ſɭˬɔ ֭ſɭƴɹ j͑ʃͷ̗ᴜ": "Iikrhiahrhiisla 🌏",
     "ſɭɔ˞ɜƴ ſɭˬꞇ ſ̀ȷᴜ j͑ʃƨꞇʞ ꞁȷ̀ᴜ }ʃꞇ": "Ksorh Krhitlastifani ( After Ice Age )",

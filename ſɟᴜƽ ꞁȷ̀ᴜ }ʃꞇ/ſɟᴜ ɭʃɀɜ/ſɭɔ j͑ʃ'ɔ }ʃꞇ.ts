@@ -23,25 +23,25 @@ const SAXE_CDN = "https://esm.sh/fontverter";
 const FFMPEG_CDN = "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm";
 
 const HAT_KSAKA: Record<string, string> = {
-  mp3: "MP3 ( audio )",
-  wav: "WAV ( audio )",
-  m4a: "M4A ( audio )",
-  ogg: "OGG ( audio )",
-  aac: "AAC ( audio )",
-  flac: "FLAC ( audio )",
-  mp4: "MP4 ( video )",
-  webm: "WebM ( video )",
-  gif: "GIF ( video )",
-  png: "PNG ( image )",
-  jpeg: "JPEG ( image )",
-  webp: "WebP ( image )",
-  bmp: "BMP ( image )",
-  ico: "ICO ( image )",
-  tiff: "TIFF ( image )",
-  ttf: "TTF ( laga )",
-  otf: "OTF ( laga )",
-  woff: "WOFF ( laga )",
-  woff2: "WOFF2 ( laga )",
+  mp3: "MP3 ( ʃɜ j͐ʃɔ )",
+  wav: "WAV ( ʃɜ j͐ʃɔ )",
+  m4a: "M4A ( ʃɜ j͐ʃɔ )",
+  ogg: "OGG ( ʃɜ j͐ʃɔ )",
+  aac: "AAC ( ʃɜ j͐ʃɔ )",
+  flac: "FLAC ( ʃɜ j͐ʃɔ )",
+  mp4: "MP4 ( j͐ʃᴜ ſ͕ɭᴜƽ )",
+  webm: "WebM ( j͐ʃᴜ ſ͕ɭᴜƽ )",
+  gif: "GIF ( j͐ʃᴜ ſ͕ɭᴜƽ )",
+  png: "PNG ( ɭʃᴜ ֭ſɭᴜȝ )",
+  jpeg: "JPEG ( ɭʃᴜ ֭ſɭᴜȝ )",
+  webp: "WebP ( ɭʃᴜ ֭ſɭᴜȝ )",
+  bmp: "BMP ( ɭʃᴜ ֭ſɭᴜȝ )",
+  ico: "ICO ( ɭʃᴜ ֭ſɭᴜȝ )",
+  tiff: "TIFF ( ɭʃᴜ ֭ſɭᴜȝ )",
+  ttf: "TTF ( ֭ſɭᴜ ſ͔ɭᴜ )",
+  otf: "OTF ( ֭ſɭᴜ ſ͔ɭᴜ )",
+  woff: "WOFF ( ֭ſɭᴜ ſ͔ɭᴜ )",
+  woff2: "WOFF2 ( ֭ſɭᴜ ſ͔ɭᴜ )",
 };
 
 const HAT_CA1ARA: Record<"audio" | "video" | "image" | "font", string[]> = {
@@ -74,7 +74,7 @@ const MIME_HAT: Record<string, string> = {
 };
 
 // ⟨ ſɭc̗ᴜ ſɭɹ ſȷɔ - ֭ſɭɔ ⏱️ ⟩
-// j͑ʃ'ɔ ſȷᴜͷ̗ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( FFmpeg )
+// j͑ʃ'ɔ ſȷᴜͷ̗ ʌ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ⟅
 const HEANI_QEANI = 0o74;
 const HEANI_HAQEANI = 0o7020;
 
@@ -85,17 +85,18 @@ const ARAQ_XEMA = document.getElementById("araq-xema") as HTMLElement;
 const KEVE_KEK = document.getElementById("keve-kek") as HTMLButtonElement;
 const K61E_KEK = document.getElementById("k61e-kek") as HTMLParagraphElement;
 const hatSuntaKuba = document.getElementById("hat-sunta-kuba") as HTMLElement;
-const AUDIA_SUNTA_KUBA = document.getElementById("audia-sunta-kuba") as HTMLAudioElement;
-const VIDA_SUNTA_KUBA = document.getElementById("vida-sunta-kuba") as HTMLVideoElement;
-const BILDA_SUNTA_KUBA = document.getElementById("bilda-sunta-kuba") as HTMLImageElement;
+const BOLE_SUNTA_KUBA = document.getElementById("audia-sunta-kuba") as HTMLAudioElement;
+const LAQAZ_SUNTA_KUBA = document.getElementById("vida-sunta-kuba") as HTMLVideoElement;
+const TAHAQ_SUNTA_KUBA = document.getElementById("bilda-sunta-kuba") as HTMLImageElement;
 const LAGA_SUNTA_KUBA = document.getElementById("laga-sunta-kuba") as HTMLParagraphElement;
 const QUMK2 = document.getElementById("qumk2") as HTMLAnchorElement;
 const K2FE_KUBA = document.getElementById("k2fe-kuba") as HTMLElement;
 
-const ffmpeg = new FFmpeg();
-let ffmpegPu = false;
-let ffmpegB6tem2 = false;
+const catbo = new FFmpeg();
+let catboPu = false;
+let catboB6tem2 = false;
 let kxesuK2fe = 0o0;
+let kxesuQumk2K6h6: string | null = null;
 
 const PU_KEK = document.getElementById("pu-kek") as HTMLInputElement;
 const PU_KEK_KSAKA = document.getElementById("pu-kek-ksaka") as HTMLLabelElement;
@@ -192,6 +193,14 @@ function quqHat( araqHat: string ): string {
   return MIME_HAT[araqHat] ?? "application/octet-stream";
 }
 
+function k2falPuSab2( sab2: Uint8Array, araqHat: string ): Blob {
+  const cutaVop2 = new ArrayBuffer(sab2.byteLength);
+  new Uint8Array(cutaVop2).set(sab2);
+  return new Blob([ cutaVop2 ], {
+    type: quqHat(araqHat),
+  });
+}
+
 function quqPuK61e(): string {
   const kxesuKek = PU_K2FE_XEMA.querySelector("input[name='pu-k2fe']:checked") as HTMLInputElement | null;
   return kxesuKek ? kxesuKek.value : "m2Sab2";
@@ -234,7 +243,7 @@ function kf2K61eCa1ara( xemaKsaka: string, suntaKsaka: string, hat: "audio" | "v
     return [ "-y", "-i", xemaKsaka, "-vn", "-c:a", "libmp3lame", "-q:a", "2", suntaKsaka ];
   }
 
-  // Video
+  // ⟨ j͐ʃᴜ ſ͕ɭᴜƽ 📃 ⟩
   if ( araqHat === "webm" ) {
     return [ "-y", "-i", xemaKsaka, "-c:v", "libvpx-vp9", "-c:a", "libopus", suntaKsaka ];
   }
@@ -244,34 +253,34 @@ function kf2K61eCa1ara( xemaKsaka: string, suntaKsaka: string, hat: "audio" | "v
   return [ "-y", "-i", xemaKsaka, "-c:v", "libx264", "-preset", "ultrafast", "-vf", "scale=if(gt(iw\\,1280)\\,1280\\,iw):-2", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", suntaKsaka ];
 }
 
-async function kf2FFmpeg(): Promise<void> {
-  if ( ffmpegPu || ffmpegB6tem2 ) return;
-  ffmpegB6tem2 = true;
+async function kf2Catbo(): Promise<void> {
+  if ( catboPu || catboB6tem2 ) return;
+  catboB6tem2 = true;
   KEVE_KEK.disabled = true;
   suntaK61e(K61e.B6TEM2_KF2);
   try {
-    await ffmpeg.load({
+    await catbo.load({
       coreURL: await toBlobURL(`${FFMPEG_CDN}/ffmpeg-core.js`, "text/javascript"),
       wasmURL: await toBlobURL(`${FFMPEG_CDN}/ffmpeg-core.wasm`, "application/wasm"),
     });
   } catch ( tlohk2ni ) {
-    ffmpegB6tem2 = false;
+    catboB6tem2 = false;
     KEVE_KEK.disabled = false;
     throw tlohk2ni;
   }
 
-  ffmpeg.on("log", ({ message }: { message: string }) => {
-    console.log(message);
-    const xekox2q = message.match(/Duration:\s*(\d+):(\d+):(\d+\.?\d*)/);
+  catbo.on("log", ({ message: k61e }: { message: string }) => {
+    console.log(k61e);
+    const xekox2q = k61e.match(/Duration:\s*(\d+):(\d+):(\d+\.?\d*)/);
     if ( xekox2q ) {
       const haqeani = parseInt(xekox2q[0o1]);
       const qeani = parseInt(xekox2q[0o2]);
       const heani = parseFloat(xekox2q[0o3]);
       kxesuK2fe = haqeani * HEANI_HAQEANI + qeani * HEANI_QEANI + heani;
     }
-    if ( message.includes("time=") ) {
-      suntaK61e(K61e.KF2(message.trim()));
-      const kxesuXekox2q = message.match(/time=(\d+):(\d+):(\d+\.?\d*)/);
+    if ( k61e.includes("time=") ) {
+      suntaK61e(K61e.KF2(k61e.trim()));
+      const kxesuXekox2q = k61e.match(/time=(\d+):(\d+):(\d+\.?\d*)/);
       if ( kxesuXekox2q && kxesuK2fe > 0o0 ) {
         const haqeani = parseInt(kxesuXekox2q[0o1]);
         const qeani = parseInt(kxesuXekox2q[0o2]);
@@ -281,27 +290,41 @@ async function kf2FFmpeg(): Promise<void> {
     }
   });
 
-  ffmpeg.on("progress", ({ progress }: { progress: number }) => {
-    if ( progress > 0o0 && progress < 0o1 ) {
-      suntaK61e(K61e.KF2(`${Math.round(progress * 0o100)}`));
-      suntaK2fe( 0o2 + progress * ( 0o130 - 0o2 ) );
+  catbo.on("progress", ({ progress: kf2K2fe }: { progress: number }) => {
+    if ( kf2K2fe > 0o0 && kf2K2fe < 0o1 ) {
+      suntaK61e(K61e.KF2(`${Math.round(kf2K2fe * 0o100)}`));
+      suntaK2fe( 0o2 + kf2K2fe * ( 0o130 - 0o2 ) );
     }
   });
 
-  ffmpegPu = true;
-  ffmpegB6tem2 = false;
+  catboPu = true;
+  catboB6tem2 = false;
   KEVE_KEK.disabled = false;
 }
 
+function ne1aQumk2K6h6(): void {
+  if ( kxesuQumk2K6h6 !== null ) {
+    URL.revokeObjectURL(kxesuQumk2K6h6);
+    kxesuQumk2K6h6 = null;
+  }
+}
+
+function k2falQumk2K6h6( puSab2: Blob ): string {
+  ne1aQumk2K6h6();
+  kxesuQumk2K6h6 = URL.createObjectURL(puSab2);
+  return kxesuQumk2K6h6;
+}
+
 function ne1aSuntaKuba(): void {
-  AUDIA_SUNTA_KUBA.pause();
-  VIDA_SUNTA_KUBA.pause();
-  AUDIA_SUNTA_KUBA.removeAttribute("src");
-  VIDA_SUNTA_KUBA.removeAttribute("src");
-  BILDA_SUNTA_KUBA.removeAttribute("src");
-  AUDIA_SUNTA_KUBA.style.display = "none";
-  VIDA_SUNTA_KUBA.style.display = "none";
-  BILDA_SUNTA_KUBA.style.display = "none";
+  ne1aQumk2K6h6();
+  BOLE_SUNTA_KUBA.pause();
+  LAQAZ_SUNTA_KUBA.pause();
+  BOLE_SUNTA_KUBA.removeAttribute("src");
+  LAQAZ_SUNTA_KUBA.removeAttribute("src");
+  TAHAQ_SUNTA_KUBA.removeAttribute("src");
+  BOLE_SUNTA_KUBA.style.display = "none";
+  LAQAZ_SUNTA_KUBA.style.display = "none";
+  TAHAQ_SUNTA_KUBA.style.display = "none";
   LAGA_SUNTA_KUBA.style.display = "none";
   vop2Kuba( hatSuntaKuba, false );
   QUMK2.removeAttribute("href");
@@ -311,7 +334,7 @@ function ne1aSuntaKuba(): void {
 async function quqK2fe( xemaKsaka: string ): Promise<number> {
   suntaK61e(K61e.QUQ_HEANI);
   kxesuK2fe = 0o0;
-  await ffmpeg.exec([ "-i", xemaKsaka, "-f", "null", "-t", "0", "-" ]);
+  await catbo.exec([ "-i", xemaKsaka, "-f", "null", "-t", "0", "-" ]);
   return kxesuK2fe;
 }
 
@@ -364,9 +387,9 @@ async function puKf2Tahaq( xemaKsaka: string, suntaKsaka: string, araqHat: strin
   let kemafiSab2: Uint8Array | null = null;
   const kemafiK2fe = 0o10;
 
-  for ( let i = 0o0; i < kemafiK2fe; i++ ) {
+  for ( let kemafi = 0o0; kemafi < kemafiK2fe; kemafi++ ) {
     const k2fe = Math.floor(( m2 + pu ) / 0o2);
-    suntaK61e(K61e.PU(i + 0o1, kemafiK2fe));
+    suntaK61e(K61e.PU(kemafi + 0o1, kemafiK2fe));
 
     const qv = Math.max( 0o1, Math.min( 0o37, Math.floor( 0o40 - ( k2fe / 0o2 ) ) ) );
 
@@ -374,8 +397,8 @@ async function puKf2Tahaq( xemaKsaka: string, suntaKsaka: string, araqHat: strin
       ? [ "-y", "-i", xemaKsaka, "-quality", `${k2fe}`, suntaKsaka ]
       : [ "-y", "-i", xemaKsaka, "-q:v", `${qv}`, suntaKsaka ];
 
-    await ffmpeg.exec(k61eCa1ara);
-    const quqSab2 = await ffmpeg.readFile(suntaKsaka);
+    await catbo.exec(k61eCa1ara);
+    const quqSab2 = await catbo.readFile(suntaKsaka);
     const sab2 = quqSab2 instanceof Uint8Array ? quqSab2 : new Uint8Array(quqSab2 as unknown as ArrayBuffer);
 
     if ( sab2.byteLength <= araqK2fe ) {
@@ -393,7 +416,7 @@ async function puKf2Tahaq( xemaKsaka: string, suntaKsaka: string, araqHat: strin
   }
 
   if ( !kemafiSab2 ) {
-    const quqSab2 = await ffmpeg.readFile(suntaKsaka);
+    const quqSab2 = await catbo.readFile(suntaKsaka);
     kemafiSab2 = quqSab2 instanceof Uint8Array ? quqSab2 : new Uint8Array(quqSab2 as unknown as ArrayBuffer);
   }
 
@@ -431,29 +454,23 @@ async function kf2Cakavop2(): Promise<void> {
     if ( hat === "font" ) {
       suntaK61e(K61e.B6TEM2_LAGA);
       suntaK2fe( 0o20 );
-      const fontverterModulo = await import(/* @vite-ignore */ SAXE_CDN) as any;
-      const fontverter = fontverterModulo.convert ? fontverterModulo : (fontverterModulo.default || fontverterModulo);
+      const lagaKf2Hac0zani = await import(/* @vite-ignore */ SAXE_CDN) as any;
+      const lagaCatbo = lagaKf2Hac0zani.convert ? lagaKf2Hac0zani : (lagaKf2Hac0zani.default || lagaKf2Hac0zani);
       suntaK61e(K61e.KF2_LAGA);
 
-      const arrayBuffer = await cakavop2.arrayBuffer();
-      const cap2saCa1ara = new Uint8Array(arrayBuffer);
+      const lagaVop2 = await cakavop2.arrayBuffer();
+      const cap2saCa1ara = new Uint8Array(lagaVop2);
 
       let hat = araqHat;
       if ( araqHat === "ttf" || araqHat === "otf" ) {
         hat = "sfnt";
       }
 
-      const kf2Sab2 = await fontverter.convert(cap2saCa1ara, hat);
+      const kf2Sab2 = await lagaCatbo.convert(cap2saCa1ara, hat);
       suntaK2fe( 0o66 );
-      
-      const giLagaSab2 = new ArrayBuffer(kf2Sab2.byteLength);
-      new Uint8Array(giLagaSab2).set(kf2Sab2);
-      
-      const puSab2 = new Blob([ giLagaSab2 ], {
-        type: quqHat(araqHat),
-      });
 
-      k61e = URL.createObjectURL(puSab2);
+      const puSab2 = k2falPuSab2(kf2Sab2, araqHat);
+      k61e = k2falQumk2K6h6(puSab2);
 
       const lagaKsaka = `PreviewFont-${Date.now()}`;
       const lagaTez = new (window as any).FontFace(lagaKsaka, `url(${k61e})`);
@@ -464,96 +481,85 @@ async function kf2Cakavop2(): Promise<void> {
       LAGA_SUNTA_KUBA.style.display = "";
     } else {
       suntaK2fe( 0o20 );
-      await kf2FFmpeg();
+      await kf2Catbo();
       suntaK2fe( 0o24 );
 
       if ( hat === "video" && cakavop2.size > 0o12 * 0o2000 * 0o2000 ) {
         const saxeK6h6 = "/mnt";
         const xemaK6h6 = `${saxeK6h6}/${xemaKsaka}`;
         try {
-          await ffmpeg.createDir(saxeK6h6);
-          await ffmpeg.mount(FFFSType.WORKERFS, { files: [ cakavop2 ] }, saxeK6h6);
+          await catbo.createDir(saxeK6h6);
+          await catbo.mount(FFFSType.WORKERFS, { files: [ cakavop2 ] }, saxeK6h6);
 
           if ( puVop2 && ( hat === "video" ) ) {
             const heaniPu = await quqK2fe(xemaK6h6);
             const k61eCa1ara = puTahaqKf2K61eCa1ara(xemaK6h6, suntaKsaka, araqHat, araqK2fe, heaniPu);
-            await ffmpeg.exec(k61eCa1ara);
+            await catbo.exec(k61eCa1ara);
           } else {
             const k61eCa1ara = kf2K61eCa1ara(xemaK6h6, suntaKsaka, hat, araqHat);
-            await ffmpeg.exec(k61eCa1ara);
+            await catbo.exec(k61eCa1ara);
           }
 
-          await ffmpeg.unmount(saxeK6h6);
+          await catbo.unmount(saxeK6h6);
         } catch {
-          await ffmpeg.unmount(saxeK6h6).catch(() => {});
-          await ffmpeg.writeFile(xemaKsaka, await fetchFile(cakavop2));
+          await catbo.unmount(saxeK6h6).catch(() => {});
+          await catbo.writeFile(xemaKsaka, await fetchFile(cakavop2));
 
           if ( puVop2 && ( hat === "video" ) ) {
             const heaniPu = await quqK2fe(xemaKsaka);
             const k61eCa1ara = puTahaqKf2K61eCa1ara(xemaKsaka, suntaKsaka, araqHat, araqK2fe, heaniPu);
-            await ffmpeg.exec(k61eCa1ara);
+            await catbo.exec(k61eCa1ara);
           } else {
             const k61eCa1ara = kf2K61eCa1ara(xemaKsaka, suntaKsaka, hat, araqHat);
-            await ffmpeg.exec(k61eCa1ara);
+            await catbo.exec(k61eCa1ara);
           }
         }
       } else {
-        await ffmpeg.writeFile(xemaKsaka, await fetchFile(cakavop2));
+        await catbo.writeFile(xemaKsaka, await fetchFile(cakavop2));
 
         if ( puVop2 && hat === "image" ) {
           const kubaSab2 = await puKf2Tahaq(xemaKsaka, suntaKsaka, araqHat, araqK2fe);
-          const giSab2 = new ArrayBuffer(kubaSab2.byteLength);
-          new Uint8Array(giSab2).set(kubaSab2);
-
-          const puSab2 = new Blob([ giSab2 ], {
-            type: quqHat(araqHat),
-          });
-
-          k61e = URL.createObjectURL(puSab2);
-          suntaKuba(BILDA_SUNTA_KUBA, k61e);
+          const puSab2 = k2falPuSab2(kubaSab2, araqHat);
+          k61e = k2falQumk2K6h6(puSab2);
+          suntaKuba(TAHAQ_SUNTA_KUBA, k61e);
           sunta(k61e, suntaKsaka, araqHat);
           return;
         } else if ( puVop2 && hat === "audio" ) {
           const heaniPu = await quqK2fe(xemaKsaka);
           const k61eCa1ara = puBeKf2K61eCa1ara(xemaKsaka, suntaKsaka, araqHat, araqK2fe, heaniPu);
-          await ffmpeg.exec(k61eCa1ara);
+          await catbo.exec(k61eCa1ara);
         } else if ( puVop2 && hat === "video" ) {
           const heaniPu = await quqK2fe(xemaKsaka);
           const k61eCa1ara = puTahaqKf2K61eCa1ara(xemaKsaka, suntaKsaka, araqHat, araqK2fe, heaniPu);
-          await ffmpeg.exec(k61eCa1ara);
+          await catbo.exec(k61eCa1ara);
         } else {
           const k61eCa1ara = kf2K61eCa1ara(xemaKsaka, suntaKsaka, hat, araqHat);
-          await ffmpeg.exec(k61eCa1ara);
+          await catbo.exec(k61eCa1ara);
         }
       }
 
-      const quqSab2 = await ffmpeg.readFile(suntaKsaka);
+      const quqSab2 = await catbo.readFile(suntaKsaka);
       suntaK2fe( 0o75 );
       const sab2 = quqSab2 instanceof Uint8Array
         ? quqSab2
         : new Uint8Array(quqSab2 as unknown as ArrayBuffer);
 
-      const giSab2 = new ArrayBuffer(sab2.byteLength);
-      new Uint8Array(giSab2).set(sab2);
-
-      const puSab2 = new Blob([ giSab2 ], {
-        type: quqHat(araqHat),
-      });
-
-      k61e = URL.createObjectURL(puSab2);
+      const puSab2 = k2falPuSab2(sab2, araqHat);
+      k61e = k2falQumk2K6h6(puSab2);
 
       if ( hat === "image" || araqHat === "gif" ) {
-        suntaKuba(BILDA_SUNTA_KUBA, k61e);
+        suntaKuba(TAHAQ_SUNTA_KUBA, k61e);
       } else if ( hat === "audio" ) {
-        suntaKuba(AUDIA_SUNTA_KUBA, k61e);
+        suntaKuba(BOLE_SUNTA_KUBA, k61e);
       } else if ( hat === "video" ) {
-        suntaKuba(VIDA_SUNTA_KUBA, k61e);
+        suntaKuba(LAQAZ_SUNTA_KUBA, k61e);
       }
     }
 
     sunta(k61e, suntaKsaka, araqHat);
   } catch ( tlohk2ni ) {
     console.error(tlohk2ni);
+    ne1aSuntaKuba();
     ne1aK2fe();
     suntaK61e(K61e.TLOHK2NI_XEMA(String(tlohk2ni)));
   }

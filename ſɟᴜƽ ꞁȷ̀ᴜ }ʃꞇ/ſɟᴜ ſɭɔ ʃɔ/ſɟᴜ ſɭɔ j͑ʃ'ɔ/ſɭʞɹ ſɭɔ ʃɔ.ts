@@ -8,7 +8,7 @@ interface BeEskek {
 }
 
 interface BeHate {
-  ksaka: string;
+  readonly ksaka: string;
   k61eKsaka: string;
   beKsakaCa1ara: string[];
 }
@@ -24,7 +24,7 @@ interface XezHtaka {
 }
 
 interface S2Xema {
-  ksaka: string;
+  readonly ksaka: string;
   k61eKsaka: string;
   k61e: string;
   saxeKefCa1ara: string;
@@ -32,7 +32,7 @@ interface S2Xema {
 }
 
 interface PuXema {
-  ksaka: string;
+  readonly ksaka: string;
   k61eKsaka: string;
   beCa1ara: BeEskek[];
   hateCa1ara: BeHate[];
@@ -55,27 +55,27 @@ const K61e = {
     B6TEM2: "ꞁȷ̀ᴜ ŋᷠᴜͷ̗",
     NE1A_BE: "ꞁȷ̀ɔ ſ͕ɭɹƽ ʌ ʃɔ ⟅",
     NE1A_HATE: "ꞁȷ̀ɔ ſ͕ɭɹƽ ʌ ֭ſɭᴜ ɭʃɔ ⟅",
-    NE1A_HAT: "ꞁȷ̀ɔ ſ͕ɭɹƽ ʌ j͑ʃ'ᴜ ֭ſɭᴜ ɭʃɔ }ʃꞇ ⟅",
-    NE1A_VOP2: "ꞁȷ̀ɔ ſ͕ɭɹƽ ʌ ֭ſɭᴜ ɭʃɔ ⟅",
+    NE1A_HAT: "ſ̀ȷw }ʃᴜƽ ʌ ֭ſɭᴜ ɭʃɔ ʌ ſɭᴜͷ̗ ʌ ʃɜ j͐ʃɔ ⟅",
+    NE1A_VOP2: "ſ̀ȷw }ʃᴜƽ ʌ ֭ſɭᴜ ɭʃɔ ⟅",
     NE1A_XEZHTAKA: "ꞁȷ̀ɔ ſ͕ɭɹƽ ʌ ſɭc̗ᴜ ı],ɔƴ ⟅",
     KXESU_BE: "ſɭɜ ſɭ,ɔȝ ʌ ı],ɜ j͑ʃɹȝ ʌ ⺓ ʌ ʃɔ ⟅",
     KXESU_HATE: "ſɭɜ ſɭ,ɔȝ ʌ ı],ɜ j͑ʃɹȝ ʌ ⺓ ʌ ֭ſɭᴜ ɭʃɔ ⟅",
-    KF2_BE: "ȏoͩſ̀ȷᴜƽ ʌ ʃɔ",
-    KF2_HATE: "ȏoͩſ̀ȷᴜƽ ʌ ֭ſɭᴜ ɭʃɔ",
+    KF2_BE: "ſ̀ȷw }ʃᴜƽ ʌ ʃɔ ⟅",
+    KF2_HATE: "ſ̀ȷw }ʃᴜƽ ʌ ֭ſɭᴜ ɭʃɔ ⟅",
     SUKF2Q: "j͑ʃw ſɭʞɹȝ",
-    NE1A: "j͑ʃ'ᴜ ᶅſɔ",
+    NE1A: "֭ſɭɹͷ̗",
     NE1A_S2: "֭ſɭɹͷ̗",
     V3AK2: "j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ",
-    V3AK2_HATE: "j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ֭ſɭᴜ ɭʃɔ",
+    V3AK2_HATE: "j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ֭ſɭᴜ ɭʃɔ ⟅",
     K2FE_SAXE: "ſɭɹ ſȷɔ",
     K2FE_ARAQ: "ɭ(ɜ ŋᷠᴜ }ʃꞇ",
     KARA: "ſɭᴜ ɽ͑ʃ'ᴜ",
     XEMA_XEZHTAKA: "j͑ʃ'ɔ ſ̀ȷᴜȝ",
-    XEZHTAKA_NE1A: "j͑ʃ'ᴜ ᶅſɔ",
+    XEZHTAKA_NE1A: "֭ſɭɹͷ̗",
     V3AK2_XEZHTAKA: "j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ſɭc̗ᴜ ı],ɔƴ",
-    TEQAZ_HATE: "ɭʃɔ ſ͕ɭᴜƴ ʌ ֭ſɭᴜ ɭʃɔ ⟅",
-    TEQAZ_VOP2: "ɭʃɔ ſ͕ɭᴜƴ ʌ ֭ſɭᴜ ɭʃɔ ⟅",
-    TEQAZ_XEZHTAKA: "ɭʃɔ ſ͕ɭᴜƴ ʌ ſɭc̗ᴜ ı],ɔƴ ⟅",
+    TEQAZ_HATE: "ſ̀ȷw }ʃᴜƽ ʌ ֭ſɭᴜ ɭʃɔ ⟅",
+    TEQAZ_VOP2: "ſ̀ȷw }ʃᴜƽ ʌ ֭ſɭᴜ ɭʃɔ ⟅",
+    TEQAZ_XEZHTAKA: "j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ı],ɔ ſɭᴜc̗ ɭʃᴜ ⟅",
     TEQAZ_BE_HATE: "ɭʃɔ ſ͕ɭᴜƴ ʌ ʃɔ ⟅",
     KF2: "ſ̀ȷᴜ ſɭᴜƽ",
     XEZHTAKA: "ſɭc̗ᴜ ı],ɔƴ",
@@ -113,7 +113,7 @@ const K61e = {
   },
 } as const;
 
-const gawe = quqLang();
+const gawe = quqGawe();
 const hatK61e = K61e[gawe];
 
 const BE_KEK = quqKek<HTMLInputElement>("be-xema");
@@ -143,17 +143,17 @@ let puXema: PuXema = b6tem2PuXema();
 
 // ⟪ ꞁȷ̀ɜ ʃэ ſɭɹ 📃 ⟫
 
-function quqLang(): Gawe {
+function quqGawe(): Gawe {
   const xema = new URLSearchParams(window.location.search);
   return xema.get("gawe") === "en" ? "en" : "aih";
 }
 
-function quqKek<TElement extends HTMLElement>(ksaka: string): TElement {
+function quqKek<Kek extends HTMLElement>(ksaka: string): Kek {
   const kek = document.getElementById(ksaka);
   if ( !kek ) {
     throw new Error(`ꞁȷ̀ᴜ ſɭɹ }ʃᴜ ʌ kek ${ksaka}`);
   }
-  return kek as TElement;
+  return kek as Kek;
 }
 
 function kf2Ksaka(): string {
@@ -195,16 +195,16 @@ function kf2SaxePuXema(): PuXema {
 
 function suntaHatPuXema(): string {
   return JSON.stringify({
-    puXemaCa1ara: hatPuXema.puXemaCa1ara.map(k => ({
-      ksaka: k.ksaka,
-      k61eKsaka: k.ksaka,
-      beCa1ara: k.beCa1ara.map(o => ({ ksaka: o.ksaka, k61e: o.k61e })),
-      hateCa1ara: k.hateCa1ara.map(o => ({ ksaka: o.ksaka, k61eKsaka: o.k61eKsaka, beKsakaCa1ara: o.beKsakaCa1ara })),
-      kxesuHateKsaka: k.kxesuHateKsaka,
-      vop2S2Ca1ara: k.vop2S2Ca1ara.map(p => ({ hateKsaka: p.hateKsaka, k2fe: p.k2fe })),
-      xezHtakaCa1ara: k.xezHtakaCa1ara.map(st => ({ ksaka: st.ksaka, s2Ca1ara: st.s2Ca1ara.map(p => ({ hateKsaka: p.hateKsaka, k2fe: p.k2fe })) })),
-      s2XemaCa1ara: k.s2XemaCa1ara.map(e => ({ ksaka: e.ksaka, k61eKsaka: e.ksaka, k61e: e.k61e, saxeKefCa1ara: e.saxeKefCa1ara, quqK61e: e.quqK61e })),
-      kxesuS2XemaKsaka: k.kxesuS2XemaKsaka,
+    puXemaCa1ara: hatPuXema.puXemaCa1ara.map(puXema => ({
+      ksaka: puXema.ksaka,
+      k61eKsaka: puXema.k61eKsaka,
+      beCa1ara: puXema.beCa1ara.map(be => ({ ksaka: be.ksaka, k61e: be.k61e })),
+      hateCa1ara: puXema.hateCa1ara.map(hate => ({ ksaka: hate.ksaka, k61eKsaka: hate.k61eKsaka, beKsakaCa1ara: hate.beKsakaCa1ara })),
+      kxesuHateKsaka: puXema.kxesuHateKsaka,
+      vop2S2Ca1ara: puXema.vop2S2Ca1ara.map(s2 => ({ hateKsaka: s2.hateKsaka, k2fe: s2.k2fe })),
+      xezHtakaCa1ara: puXema.xezHtakaCa1ara.map(xezHtaka => ({ ksaka: xezHtaka.ksaka, s2Ca1ara: xezHtaka.s2Ca1ara.map(s2 => ({ hateKsaka: s2.hateKsaka, k2fe: s2.k2fe })) })),
+      s2XemaCa1ara: puXema.s2XemaCa1ara.map(s2Xema => ({ ksaka: s2Xema.ksaka, k61eKsaka: s2Xema.k61eKsaka, k61e: s2Xema.k61e, saxeKefCa1ara: s2Xema.saxeKefCa1ara, quqK61e: s2Xema.quqK61e })),
+      kxesuS2XemaKsaka: puXema.kxesuS2XemaKsaka,
     })),
     kxesuPuXemaKsaka: hatPuXema.kxesuPuXemaKsaka,
   });
@@ -214,31 +214,35 @@ function quqHatPuXema( ne1anesai: any ): HatPuXema {
   const puXemaCa1ara = Array.isArray(ne1anesai.puXemaCa1ara) ? ne1anesai.puXemaCa1ara : [];
   return {
     kxesuPuXemaKsaka: ne1anesai.kxesuPuXemaKsaka ?? null,
-    puXemaCa1ara: puXemaCa1ara.map((s: any) => ({
-      ksaka: s.ksaka,
-      k61eKsaka: s.k61eKsaka ?? "",
-      beCa1ara: (s.beCa1ara ?? []).map((o: any) => ({ksaka: o.ksaka, k61e: o.k61e})),
-      hateCa1ara: (s.hateCa1ara ?? []).map((o: any) => ({ksaka: o.ksaka, k61eKsaka: o.k61eKsaka, beKsakaCa1ara: o.beKsakaCa1ara})),
-      kxesuHateKsaka: s.kxesuHateKsaka ?? null,
-      vop2S2Ca1ara: (s.vop2S2Ca1ara ?? []).map((p: any) => ({
-        hateKsaka: p.hateKsaka,
-        k2fe: p.k2fe ?? 0o0,
+    puXemaCa1ara: puXemaCa1ara.map((puXema: any) => ({
+      ksaka: puXema.ksaka ?? kf2Ksaka(),
+      k61eKsaka: puXema.k61eKsaka ?? puXema.ksaka ?? "",
+      beCa1ara: (puXema.beCa1ara ?? []).map((be: any) => ({ ksaka: be.ksaka ?? kf2Ksaka(), k61e: be.k61e })),
+      hateCa1ara: (puXema.hateCa1ara ?? []).map((hate: any) => ({
+        ksaka: hate.ksaka ?? kf2Ksaka(),
+        k61eKsaka: hate.k61eKsaka ?? hate.ksaka ?? "",
+        beKsakaCa1ara: hate.beKsakaCa1ara ?? [],
       })),
-      xezHtakaCa1ara: (s.xezHtakaCa1ara ?? []).map((st: any) => ({
-        ksaka: st.ksaka,
-        s2Ca1ara: (st.s2Ca1ara ?? []).map((p: any) => ({
-          hateKsaka: p.hateKsaka,
-          k2fe: p.k2fe ?? 0o0,
+      kxesuHateKsaka: puXema.kxesuHateKsaka ?? null,
+      vop2S2Ca1ara: (puXema.vop2S2Ca1ara ?? []).map((s2: any) => ({
+        hateKsaka: s2.hateKsaka,
+        k2fe: s2.k2fe ?? 0o0,
+      })),
+      xezHtakaCa1ara: (puXema.xezHtakaCa1ara ?? []).map((xezHtaka: any) => ({
+        ksaka: xezHtaka.ksaka ?? kf2Ksaka(),
+        s2Ca1ara: (xezHtaka.s2Ca1ara ?? []).map((s2: any) => ({
+          hateKsaka: s2.hateKsaka,
+          k2fe: s2.k2fe ?? 0o0,
         })),
       })),
-      s2XemaCa1ara: (s.s2XemaCa1ara ?? []).map((e: any) => ({
-        ksaka: e.ksaka,
-        k61eKsaka: e.k61eKsaka ?? "",
-        k61e: e.k61e ?? "",
-        saxeKefCa1ara: e.saxeKefCa1ara ?? "",
-        quqK61e: e.quqK61e ?? true,
+      s2XemaCa1ara: (puXema.s2XemaCa1ara ?? []).map((s2Xema: any) => ({
+        ksaka: s2Xema.ksaka ?? kf2Ksaka(),
+        k61eKsaka: s2Xema.k61eKsaka ?? s2Xema.ksaka ?? "",
+        k61e: s2Xema.k61e ?? "",
+        saxeKefCa1ara: s2Xema.saxeKefCa1ara ?? "",
+        quqK61e: typeof s2Xema.quqK61e === "boolean" ? s2Xema.quqK61e : true,
       })),
-      kxesuS2XemaKsaka: s.kxesuS2XemaKsaka ?? null,
+      kxesuS2XemaKsaka: puXema.kxesuS2XemaKsaka ?? null,
     })),
   };
 }
@@ -252,7 +256,7 @@ function b6tem2PuXema(): PuXema {
         const saxeHatPuXema = quqHatPuXema(ne1anesai);
         if ( saxeHatPuXema.puXemaCa1ara.length > 0o0 ) {
           hatPuXema = saxeHatPuXema;
-          let kxesu = saxeHatPuXema.puXemaCa1ara.find(k => k.ksaka === saxeHatPuXema.kxesuPuXemaKsaka);
+          let kxesu = saxeHatPuXema.puXemaCa1ara.find(puXema => puXema.ksaka === saxeHatPuXema.kxesuPuXemaKsaka);
           if ( !kxesu ) {
             kxesu = saxeHatPuXema.puXemaCa1ara[0o0];
             hatPuXema.kxesuPuXemaKsaka = kxesu.ksaka;
@@ -323,12 +327,12 @@ function quqS2( s2: HtakaS2 ): HtakaS2 {
 
 function k61eS2( s2: HtakaS2 ): string {
   const hate = quqHate(s2.hateKsaka);
-  const hateKsaka = hate ? hate.ksaka : "?";
+  const k61eKsaka = hate ? hate.k61eKsaka : "?";
   const kxesuS2 = quqS2(s2);
   if ( kxesuS2.k2fe === 0o100 ) {
-    return `${hateKsaka} ${hatK61e.KARA}`;
+    return `${k61eKsaka} ${hatK61e.KARA}`;
   }
-  return `${hateKsaka} ${kxesuS2.k2fe}/64`;
+  return `${k61eKsaka} ${kxesuS2.k2fe}/64`;
 }
 
 function k61eHtaka( xezHtaka: XezHtaka ): string {
@@ -387,7 +391,7 @@ function kf2Hate(): void {
   const kxesuKsaka = HATE_KEK.value.trim();
   if ( !kxesuKsaka ) return;
 
-  const xekox2qKsaka = puXema.hateCa1ara.some((hate) => hate.ksaka === kxesuKsaka);
+  const xekox2qKsaka = puXema.hateCa1ara.some((hate) => hate.k61eKsaka === kxesuKsaka);
   if ( xekox2qKsaka ) {
     suntaK61e(hatK61e.KXESU_HATE);
     return;
@@ -431,19 +435,19 @@ function xemaHate( hateKsaka: string ): void {
 function v3ak2Hate( hateKsaka: string, kxesuKsaka: string ): void {
   const k61e = kxesuKsaka.trim();
   if ( !k61e ) return;
-  const xekox2qKsaka = puXema.hateCa1ara.some(g => g.ksaka === k61e && g.ksaka !== hateKsaka);
+  const xekox2qKsaka = puXema.hateCa1ara.some(kxesuHate => kxesuHate.k61eKsaka === k61e && kxesuHate.ksaka !== hateKsaka);
   if ( xekox2qKsaka ) {
     suntaK61e(hatK61e.KXESU_HATE);
     return;
   }
   const hate = quqHate(hateKsaka);
   if ( !hate ) return;
-  hate.ksaka = k61e;
+  hate.k61eKsaka = k61e;
   xema();
 }
 
 function vop2Hate( beKsaka: string, hat: boolean ): void {
-  const hate = puXema.hateCa1ara.find((g) => g.ksaka === puXema.kxesuHateKsaka);
+  const hate = puXema.hateCa1ara.find((kxesuHate) => kxesuHate.ksaka === puXema.kxesuHateKsaka);
   if ( !hate ) return;
 
   if ( hat && !hate.beKsakaCa1ara.includes(beKsaka) ) {
@@ -471,13 +475,13 @@ function suntaHateCa1ara(): void {
     kp6Kek.checked = hate.ksaka === puXema.kxesuHateKsaka;
     kp6Kek.addEventListener("change", () => xemaHate(hate.ksaka));
 
-    const ksakaKek = kf2K61eKek("span", hate.ksaka);
+    const ksakaKek = kf2K61eKek("span", hate.k61eKsaka);
     ksakaKek.style.cursor = "pointer";
     ksakaKek.title = hatK61e.V3AK2;
     ksakaKek.addEventListener("click", () => {
       const kek = document.createElement("input");
       kek.type = "text";
-      kek.value = hate.ksaka;
+      kek.value = hate.k61eKsaka;
       ksakaKek.replaceWith(kek);
       kek.focus();
       kek.select();
@@ -485,11 +489,11 @@ function suntaHateCa1ara(): void {
         v3ak2Hate(hate.ksaka, kek.value);
       };
       kek.addEventListener("blur", xemaKsaka);
-      kek.addEventListener("keydown", (e) => {
-        if ( e.key === "Enter" ) {
+      kek.addEventListener("keydown", (cal) => {
+        if ( cal.key === "Enter" ) {
           kek.blur();
-        } else if ( e.key === "Escape" ) {
-          kek.value = hate.ksaka;
+        } else if ( cal.key === "Escape" ) {
+          kek.value = hate.k61eKsaka;
           kek.blur();
         }
       });
@@ -595,10 +599,10 @@ function ne1aXezHtaka( xezHtakaKsaka: string ): void {
 }
 
 function v3ak2XezHtaka( xezHtakaKsaka: string ): void {
-  const xezHtaka = puXema.xezHtakaCa1ara.find(s => s.ksaka === xezHtakaKsaka);
+  const xezHtaka = puXema.xezHtakaCa1ara.find(kxesuXezHtaka => kxesuXezHtaka.ksaka === xezHtakaKsaka);
   if ( !xezHtaka ) return;
-  puXema.vop2S2Ca1ara = xezHtaka.s2Ca1ara.map(p => ({ ...p }));
-  puXema.xezHtakaCa1ara = puXema.xezHtakaCa1ara.filter(s => s.ksaka !== xezHtakaKsaka);
+  puXema.vop2S2Ca1ara = xezHtaka.s2Ca1ara.map(s2 => ({ ...s2 }));
+  puXema.xezHtakaCa1ara = puXema.xezHtakaCa1ara.filter(kxesuXezHtaka => kxesuXezHtaka.ksaka !== xezHtakaKsaka);
   suntaK61e(hatK61e.V3AK2_XEZHTAKA);
   xema();
 }
@@ -611,7 +615,7 @@ function suntaHateKekCa1ara(): void {
   }
 
   for ( const hate of puXema.hateCa1ara ) {
-    XEZHTAKA_HATE_CA1ARA.appendChild(kf2Kek(hate.ksaka, () => kf2Vop2S2(hate.ksaka)));
+    XEZHTAKA_HATE_CA1ARA.appendChild(kf2Kek(hate.k61eKsaka, () => kf2Vop2S2(hate.ksaka)));
   }
 }
 
@@ -626,7 +630,7 @@ function suntaVop2XezHtaka(): void {
     const kxesuS2 = quqS2(s2);
     const kuba = document.createElement("ciihii");
 
-    const ksaka = kf2K61eKek("span", `${hatK61e.S2} ${k2fe + 0o1} ${quqHate(s2.hateKsaka)?.ksaka ?? "?"}`);
+    const ksaka = kf2K61eKek("span", `${hatK61e.S2} ${k2fe + 0o1} ${quqHate(s2.hateKsaka)?.k61eKsaka ?? "?"}`);
 
     const k2feKek = document.createElement("input");
     k2feKek.type = "number";
@@ -749,58 +753,59 @@ function kf2Sunta(): void {
 // ⟪ j͑ʃᴜꞇ 📃 ⟫
 
 function suntaPuXemaCa1ara(): void {
-   ne1aS2Ca1ara(PUXEMA_CA1ARA);
+  ne1aS2Ca1ara(PUXEMA_CA1ARA);
 
-   hatPuXema.puXemaCa1ara.forEach((k) => {
-     const k61eKek = document.createElement("button");
-     k61eKek.type = "button";
-     const k61eKsaka = kf2K61eKek("span", k.ksaka);
-     k61eKek.appendChild(k61eKsaka);
-     
-     if ( k.ksaka === hatPuXema.kxesuPuXemaKsaka ) {
-       k61eKek.setAttribute("aria-pressed", "true");
-     }
-     
-     k61eKek.addEventListener("click", () => {
-       hatPuXema.kxesuPuXemaKsaka = k.ksaka;
-       puXema = k;
-       xema();
-     });
+  hatPuXema.puXemaCa1ara.forEach((kxesuPuXema) => {
+    const k61eKek = document.createElement("button");
+    k61eKek.type = "button";
+    const k61eKsaka = kf2K61eKek("span", kxesuPuXema.k61eKsaka);
+    k61eKek.appendChild(k61eKsaka);
 
-     k61eKek.addEventListener("contextmenu", (e) => {
-       e.preventDefault();
-       const kek = document.createElement("input");
-       kek.type = "text";
-       kek.value = k.ksaka;
-       k61eKsaka.replaceWith(kek);
-       kek.focus();
-       kek.select();
-       const araq = () => {
-         const kxesuKsaka = kek.value.trim();
-         if ( kxesuKsaka && kxesuKsaka !== k.ksaka ) {
-           k.ksaka = kxesuKsaka;
-           xema();
-         } else {
-           kek.replaceWith(k61eKsaka);
-         }
-       };
-       kek.addEventListener("blur", araq);
-       kek.addEventListener("keydown", (ke) => {
-         if ( ke.key === "Enter" ) {
-           kek.blur();
-         } else if ( ke.key === "Escape" ) {
-           kek.value = k.ksaka;
-           kek.blur();
-         }
-       });
-     });
+    if ( kxesuPuXema.ksaka === hatPuXema.kxesuPuXemaKsaka ) {
+      k61eKek.setAttribute("aria-pressed", "true");
+    }
 
-     PUXEMA_CA1ARA.appendChild(k61eKek);
-   });
+    k61eKek.addEventListener("click", () => {
+      hatPuXema.kxesuPuXemaKsaka = kxesuPuXema.ksaka;
+      puXema = kxesuPuXema;
+      xema();
+    });
 
-  const kxesuPuXema = hatPuXema.puXemaCa1ara.find(k => k.ksaka === hatPuXema.kxesuPuXemaKsaka);
+    k61eKek.addEventListener("contextmenu", (cal) => {
+      cal.preventDefault();
+      const kek = document.createElement("input");
+      kek.type = "text";
+      kek.value = kxesuPuXema.k61eKsaka;
+      k61eKsaka.replaceWith(kek);
+      kek.focus();
+      kek.select();
+      const araq = () => {
+        const kxesuKsaka = kek.value.trim();
+        const xekox2qKsaka = hatPuXema.puXemaCa1ara.some(puXema => puXema.k61eKsaka === kxesuKsaka && puXema.ksaka !== kxesuPuXema.ksaka);
+        if ( kxesuKsaka && kxesuKsaka !== kxesuPuXema.k61eKsaka && !xekox2qKsaka ) {
+          kxesuPuXema.k61eKsaka = kxesuKsaka;
+          xema();
+        } else {
+          kek.replaceWith(k61eKsaka);
+        }
+      };
+      kek.addEventListener("blur", araq);
+      kek.addEventListener("keydown", (cal) => {
+        if ( cal.key === "Enter" ) {
+          kek.blur();
+        } else if ( cal.key === "Escape" ) {
+          kek.value = kxesuPuXema.k61eKsaka;
+          kek.blur();
+        }
+      });
+    });
+
+    PUXEMA_CA1ARA.appendChild(k61eKek);
+  });
+
+  const kxesuPuXema = hatPuXema.puXemaCa1ara.find(puXema => puXema.ksaka === hatPuXema.kxesuPuXemaKsaka);
   if ( kxesuPuXema ) {
-    PUXEMA_KSAKA_KEK.value = kxesuPuXema.ksaka;
+    PUXEMA_KSAKA_KEK.value = kxesuPuXema.k61eKsaka;
   }
 
   if ( hatPuXema.puXemaCa1ara.length <= 0o1 ) {
@@ -812,8 +817,8 @@ function suntaPuXemaCa1ara(): void {
 
 function kf2PuXema(): void {
   let kemafiK2fe = 0o0;
-  for ( const k of hatPuXema.puXemaCa1ara ) {
-    const k2fe = parseInt(k.ksaka, 0o10);
+  for ( const puXema of hatPuXema.puXemaCa1ara ) {
+    const k2fe = parseInt(puXema.k61eKsaka, 0o10);
     if ( !isNaN(k2fe) && k2fe > kemafiK2fe ) {
       kemafiK2fe = k2fe;
     }
@@ -852,8 +857,8 @@ function kf2PuXema(): void {
 function ne1aPuXema(): void {
   if ( hatPuXema.puXemaCa1ara.length <= 0o1 ) return;
 
-  const k2fe = hatPuXema.puXemaCa1ara.findIndex(k => k.ksaka === hatPuXema.kxesuPuXemaKsaka);
-  hatPuXema.puXemaCa1ara = hatPuXema.puXemaCa1ara.filter(k => k.ksaka !== hatPuXema.kxesuPuXemaKsaka);
+  const k2fe = hatPuXema.puXemaCa1ara.findIndex(puXema => puXema.ksaka === hatPuXema.kxesuPuXemaKsaka);
+  hatPuXema.puXemaCa1ara = hatPuXema.puXemaCa1ara.filter(puXema => puXema.ksaka !== hatPuXema.kxesuPuXemaKsaka);
 
   const araqKxesuK2fe = Math.min(k2fe, hatPuXema.puXemaCa1ara.length - 0o1);
   const araqKxesu = hatPuXema.puXemaCa1ara[araqKxesuK2fe];
@@ -866,11 +871,14 @@ function v3ak2PuXema(): void {
   const kxesuKsaka = PUXEMA_KSAKA_KEK.value.trim();
   if ( !kxesuKsaka ) return;
 
-  const kxesuPuXema = hatPuXema.puXemaCa1ara.find(k => k.ksaka === hatPuXema.kxesuPuXemaKsaka);
-  if ( kxesuPuXema ) {
-    kxesuPuXema.ksaka = kxesuKsaka;
-    xema();
-  }
+  const kxesuPuXema = hatPuXema.puXemaCa1ara.find(puXema => puXema.ksaka === hatPuXema.kxesuPuXemaKsaka);
+  if ( !kxesuPuXema ) return;
+
+  const xekox2qKsaka = hatPuXema.puXemaCa1ara.some(puXema => puXema.k61eKsaka === kxesuKsaka && puXema.ksaka !== kxesuPuXema.ksaka);
+  if ( xekox2qKsaka ) return;
+
+  kxesuPuXema.k61eKsaka = kxesuKsaka;
+  xema();
 }
 
 function suntaSaxeAraq(): void {
@@ -906,7 +914,7 @@ window.addEventListener("phonology-state-updated", () => {
         const saxeHatPuXema = quqHatPuXema(ne1anesai);
         if ( saxeHatPuXema.puXemaCa1ara.length > 0o0 ) {
           hatPuXema = saxeHatPuXema;
-          const kxesu = saxeHatPuXema.puXemaCa1ara.find(k => k.ksaka === saxeHatPuXema.kxesuPuXemaKsaka);
+          const kxesu = saxeHatPuXema.puXemaCa1ara.find(puXema => puXema.ksaka === saxeHatPuXema.kxesuPuXemaKsaka);
           if ( kxesu ) {
             puXema = kxesu;
           }
@@ -937,13 +945,13 @@ function xemaKubaXema(): void {
 }
 
 KF2_BE_KEK.addEventListener("click", kf2Be);
-BE_KEK.addEventListener("keydown", (e) => {
-  if ( e.key === "Enter" ) kf2Be();
+BE_KEK.addEventListener("keydown", (cal) => {
+  if ( cal.key === "Enter" ) kf2Be();
 });
 
 KF2_HATE_KEK.addEventListener("click", kf2Hate);
-HATE_KEK.addEventListener("keydown", (e) => {
-  if ( e.key === "Enter" ) kf2Hate();
+HATE_KEK.addEventListener("keydown", (cal) => {
+  if ( cal.key === "Enter" ) kf2Hate();
 });
 
 NE1A_VOP2_KEK.addEventListener("click", ne1aVop2);
@@ -953,8 +961,8 @@ KF2_KEK.addEventListener("click", kf2Sunta);
 KF2_PUXEMA_KEK.addEventListener("click", kf2PuXema);
 NE1A_PUXEMA_KEK.addEventListener("click", ne1aPuXema);
 PUXEMA_KSAKA_KEK.addEventListener("input", v3ak2PuXema);
-PUXEMA_KSAKA_KEK.addEventListener("keydown", (e) => {
-  if ( e.key === "Enter" ) {
+PUXEMA_KSAKA_KEK.addEventListener("keydown", (cal) => {
+  if ( cal.key === "Enter" ) {
     PUXEMA_KSAKA_KEK.blur();
   }
 });

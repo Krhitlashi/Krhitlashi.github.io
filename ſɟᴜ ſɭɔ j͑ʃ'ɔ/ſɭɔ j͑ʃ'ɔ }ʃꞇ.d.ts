@@ -1,19 +1,19 @@
 // ≺⧼ ſɭɔ j͑ʃ'ɔ }ʃꞇ 📃 ⧽≻
-// ſɭɔ j͑ʃ'ɔ }ʃꞇ ʌ ֭ſɭᴜ ı],ɔ ⟅
+// ſɭɔ j͑ʃ'ɔ }ʃꞇ ʌ ֭ſɭᴜ ı],ɔ
 
 declare global {
   // ⟨ ſɭɔ j͑ʃ'ɔ }ʃꞇ.js 📃 ⟩
-  // ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ ⟅
+  // ꞁȷ̀ɜ ı],ɹ ſןɔ ᶅſᴜ
   function vacepu(s2haxe: string): void;
   function a3esoza(sozanu: HTMLElement): void;
   function valas(): void;
 
   // ⟨ j͑ʃᴜ ſɭɔ j͑ʃ'ɔ }ʃꞇ.js 📃 ⟩
-  // ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ ⟅
+  // ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ
   function b6vegejexSakeveni(): Promise<void>;
 
   // ⟨ ſɟᴜ ı],ɹͷ̗.js 📃 ⟩
-  // ſɭɹ ſȷɔ ⟅
+  // ſɭɹ ſȷɔ
   const K2FE: string[];
   const KNAK2FE: number;
   function vab6caja(xap2suK2fe: number): string;
@@ -22,17 +22,17 @@ declare global {
   function neq2qKp6EKfo(k61e: string, a1akfo: boolean): string;
   function quqEskekK2fe(k61e: string): number;
   function vab6k2fekp6(k61e: string): number;
-  function quqDomani(hatok2fe: string[], knak2fesuK2fe?: number): number;
+  function quqDomani(hatok2fe: string, knak2fesuK2fe?: number): number;
   function quqalDomanisuOk2fe(domani: number, aahukani?: number, knak2fesuK2fe?: number): string;
-  function nlakStafl2(stibix: number): number;
+  function nlakStafl2(stibix: number): boolean;
   function quqalJ6stibixStafl2(stibix: number): number;
   function quqalJ6pal2stifStafl2(stibix: number, pal2stif: number): number;
-  function cax2lStafl2(cax2luStafl2?: Date): { stibix: number; pal2stif: number; stafl2: number; haqe: number; qe: number; he: number };
-  function kf2Hak2fe(k2fe: number, kp6Sak2fe?: string): string;
+  function cax2lStafl2(cax2luStafl2?: Date): { stibix: number; pal2stif: number; stafl2: number };
+  function kf2Hak2fe(k2fe: number[], kp6Sak2fe?: string): string;
   function kf2Cax2lStafl2(stifeh2Inak?: Date): string;
   function castifeh2(stifeh2Inak?: Date): { shaqe: number; sqe: number; she: number; haqe: number; qe: number; he: number };
   function kf2Castifeh2(stifeh2Inak?: Date): string;
-  function tlak2KefSekek(ruvaSekek: number, kef: string): number;
+  function tlak2KefSekek(ruvaSekek: string, kef: string): void;
   function tlak2Stifeh2(): void;
   function vap0_c2ta(c2ta: number): number;
   function vac2ta_p0(p0: number): number;
@@ -44,7 +44,7 @@ declare global {
   const T2XP0: number;
   const C2TA_L6XA3ENI: number;
   const SACA: number;
-  const K_BOLTZMANN: number;
+  const SACA_AK2K2H2_VEM2: number;
   const HI_L6RAK2K2H2: number;
   const HE_L6HEINAK: number;
   const HE_L6VEM2: number;
@@ -55,19 +55,19 @@ declare global {
   const SHAQE_L6VEM2: number;
 
   // ⟨ j͑ʃƽᴜ ſɭɔʞ.js 📃 ⟩
-  // ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ ⟅
+  // ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ
   function k2regawe(gawe: string): void;
   function kocepufal(gawe: string): void;
   function skakefK2fe(k61e: string): string;
   const skakefani: Record<string, Record<string, string>>;
 
   // ⟨ ɭʃɹ ʃᴜ ſɭᴜ }ʃɜ.js 📃 ⟩
-  // ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ ⟅
+  // ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ
   function iibaCax2l(bana2bakano: string, cax2l: HTMLElement): void;
   function iibaThala(bana2bakano: string, ariiba: HTMLElement): void;
 
   // ⟨ j͑ʃᴜ ſɭɔ j͑ʃ'ɔ.js 📃 ⟩
-  // ɭʃᴜ̭ᴜȝ ⟅
+  // ɭʃᴜ̭ᴜȝ
 }
 
 export {};

@@ -25,14 +25,16 @@ self.addEventListener("fetch", (k61e) => {
               return fetch(k61e.request)
                 .then((saxe10ni) => {
                   if (saxe10ni && saxe10ni.status === 200) {
-                    plosteqVop2(vop2pabokai).then(() => {
-                      vop2pabokai.put(k61e.request, saxe10ni.clone());
-                    });
+                    k61e.waitUntil(
+                      plosteqVop2(vop2pabokai).then(() =>
+                        vop2pabokai.put(k61e.request, saxe10ni.clone())
+                      )
+                    );
                   }
                   return saxe10ni;
                 })
                 .catch((tlohk2ni) => {
-                  console.log("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) kekozai ʌ ſɭᴜƽ", tlohk2ni);
+                  console.log("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ſɭɜc̗ ꞁȷ̀ɜ ſɟɹƽ ⟅", tlohk2ni);
                   return kekozaiTahaq();
                 });
             });
@@ -41,13 +43,13 @@ self.addEventListener("fetch", (k61e) => {
   }
 });
 
-// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɔƣ̋ ꞁȷ̀ɜ ſןᴜ ʃɜƽ ꞁȷ̀ᴜꞇ j͑ʃ'ɜ ſןɹ ʌ ſןᴜ j͐ʃэ - ֭ſɭɹͷ̗ ʌ ſɭc̗ᴜ ֭ſɭɹ ſ͕ȷɹƽ ʌ ſɭɔƽ ꞁȷ̀ɜƴ ꞁȷ̀ᴜꞇ ( PLOSTEQ_KEKOZAI ) 📃 ⟩
+// ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɔƣ̋ ꞁȷ̀ɜ ſןᴜ ʃɜƽ ꞁȷ̀ᴜꞇ j͑ʃ'ɜ ſןɹ ʌ ſןᴜ j͐ʃэ - ֭ſɭɹͷ̗ ʌ ſɭc̗ᴜ ֭ſɭɹ ſ͕ȷɹƽ ʌ ſɭɔƽ ꞁȷ̀ɜƴ ꞁȷ̀ᴜꞇ 📃 ⟩
 async function plosteqVop2(vop2pabokai) {
   const ca3aqCa1ara = await vop2pabokai.keys();
   if (ca3aqCa1ara.length > PLOSTEQ_KEKOZAI) {
     const ne1aK2fe = Math.floor(PLOSTEQ_KEKOZAI * 0.125);
-    for (let i = 0; i < ne1aK2fe; i++) {
-      await vop2pabokai.delete(ca3aqCa1ara[i]);
+    for (let n2k = 0; n2k < ne1aK2fe; n2k++) {
+      await vop2pabokai.delete(ca3aqCa1ara[n2k]);
     }
   }
 }
@@ -58,7 +60,7 @@ function kekozaiTahaq() {
     <svg width="256" height="256" xmlns="http://www.w3.org/2000/svg">
       <rect width="256" height="256" fill="#2a2a2a"/>
       <text x="50%" y="50%" text-anchor="middle" fill="#666" font-family="Arial" font-size="14">
-        Offline
+        }ʃɔ ſɟɹ ſɭɔ˞ᴜ ı],ᴜ j͑ʃᴜꞇ
       </text>
     </svg>
   `;
@@ -102,7 +104,7 @@ async function vop2Kekozai(kekozaiK6h6Ca1ara) {
         vek2fe++;
       }
     } catch (tlohk2ni) {
-      console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) kekozai ʌ ſɭᴜƽ", k6h6, tlohk2ni);
+      console.error("( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ſɭɜc̗ ꞁȷ̀ɜ ſɟɹƽ ⟅", k6h6, tlohk2ni);
     }
   }
 

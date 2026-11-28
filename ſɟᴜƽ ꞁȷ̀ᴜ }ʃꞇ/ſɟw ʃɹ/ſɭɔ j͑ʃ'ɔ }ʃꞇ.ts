@@ -2,10 +2,9 @@
 
 /*
 * ≺⧼ ſɟw ʃɹ - ſ̀ȷᴜ ⌨️ ⧽≻
-* ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( Cubii Cutlii first change symbol )
-* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md git )
-* ſɟᴜ ı],ɹͷ̗ ( first change symbol Cubii Cutlii )
-* ſɟɔ ŋᷠɔ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( aih en )
+* ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
+* j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
+* ſɟɔ ŋᷠɔ ʌ ſɭɔʞ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 */
 
 // ⟪ ֭ſɭᴜ ı],ɔ 📐 ⟫
@@ -50,7 +49,12 @@ const KEVE_SAXE: Readonly<Record<string, Kp6Keve>> = {
 	"[Symbol]": "symbol",
 };
 
-// ⟨ j͑ʃᴜƽ ʌ ſɭɔʞ ( Also is ) 📃 ⟩
+function keveS2K2fe( s2: string ): string {
+	if ( !s2.startsWith( "[" ) || !s2.endsWith( "]" ) ) return s2;
+	return `[${s2.slice( 0o1, -0o1 ).trim().replace( /\s+/g, " " )}]`;
+}
+
+// ⟨ j͑ʃᴜƽ ʌ ſɭɔʞ 📃 ⟩
 const KEVE_K61e: Readonly<Record<string, Kp6Keve>> = {
 	"shift": "shift",
 	"back": "back",
@@ -60,7 +64,7 @@ const KEVE_K61e: Readonly<Record<string, Kp6Keve>> = {
 };
 
 /**
-* ⟨ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɭɔʞ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md ) 📃 ⟩
+* ⟨ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɭɔʞ 📃 ⟩
 */
 const KEVE_KSAKA: Readonly<Record<Kp6Keve, { en: string; aih: string }>> = {
 	shift: { en: "Shift", aih: "ſןw ſȷɹ" },
@@ -76,14 +80,14 @@ const KEVE_KSAKA: Readonly<Record<Kp6Keve, { en: string; aih: string }>> = {
 */
 const VOP2: Readonly<Record<string, string[]>> = {};
 
-// ⟨ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( 1 ) 📃 ⟩
+// ⟨ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ 📃 ⟩
 const PU_XEMA_K2FE = HE_L6HEINAK;
 
-// ⟨ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ ( 1 ) 📃 ⟩
+// ⟨ j͑ʃƨꞇ ſȷɔ ֭ſɭɹ 📃 ⟩
 const XEMA_XEKOX2Q_K2FE = HE_L6HEINAK;
 
 /**
-* ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ( DOCUMENTATION/CULTURE/KEYBOARDLAYOUT.md git ) 📃 ⟩
+* ⟨ j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ 📃 ⟩
 */
 const SAXE_KP6HTAKA = `# Small ( Cubii / ſɟw ʃɹ )
 
@@ -135,7 +139,7 @@ let puKeve = false;
 let puXema = false;
 let vop2K2feBal2xa = new Map<string, number>();
 
-// ⟪ ꞁȷ̀ɔ j͑ʃƽɔƽ 🔧 ⟫
+// ⟪ j͑ʃ'ɜ ſןɹ 🔧 ⟫
 
 let xemaKuba: HTMLTextAreaElement | null = null;
 let s2Xema: HTMLElement | null = null;
@@ -146,8 +150,8 @@ let puKuba: HTMLElement | null = null;
 // ⟪ j͑ʃ'ɔ ſȷᴜͷ̗ 📂 ⟫
 
 /**
-	j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ
-		ꞁȷ̀ɔ j͑ʃƽɔƽ
+	j͑ʃ'ɔ ſȷᴜͷ̗ ʌ j͑ʃ'ɜ ſןɹ
+		j͑ʃ'ɜ ſןɹ
 	@returns Kp6Htaka[]
 */
 function kf2Kp6HtakaCa1ara( ne1anesaiK61e: string ): Kp6Htaka[] {
@@ -157,23 +161,23 @@ function kf2Kp6HtakaCa1ara( ne1anesaiK61e: string ): Kp6Htaka[] {
 	keveBal2xa = { ...KEVE_SAXE, ...kf2Keve( han2k ) };
 
 	const saxeAraqCa1ara: number[] = [];
-	for ( let i = 0o0; i < han2k.length; i++ ) {
-		const n2k = han2k[i].trim();
+	for ( let n2kHan2k = 0o0; n2kHan2k < han2k.length; n2kHan2k++ ) {
+		const n2k = han2k[n2kHan2k].trim();
 		const saxeK61e = n2k.replace( /^#+\s*/, "" );
 		if ( saxeK61e.startsWith( "Small" ) || saxeK61e.startsWith( "Large" ) ) {
-			saxeAraqCa1ara.push( i );
+			saxeAraqCa1ara.push( n2kHan2k );
 		}
 	}
 
 	const kp6HtakaCa1ara: Kp6Htaka[] = [];
-	for ( let a = 0o0; a < saxeAraqCa1ara.length; a++ ) {
-		const saxeK2fe = saxeAraqCa1ara[a];
-		const araqK2fe = a + 0o1 < saxeAraqCa1ara.length ? saxeAraqCa1ara[a + 0o1] : han2k.length;
+	for ( let n2kKp6Htaka = 0o0; n2kKp6Htaka < saxeAraqCa1ara.length; n2kKp6Htaka++ ) {
+		const saxeK2fe = saxeAraqCa1ara[n2kKp6Htaka];
+		const araqK2fe = n2kKp6Htaka + 0o1 < saxeAraqCa1ara.length ? saxeAraqCa1ara[n2kKp6Htaka + 0o1] : han2k.length;
 		kp6HtakaCa1ara.push( kf2Kp6Htaka( han2k, saxeK2fe, araqK2fe ) );
 	}
 
 	/*
-	* ⟨ ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ( Cutlii change symbol ) 📃 ⟩
+	* ⟨ ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ 📃 ⟩
 	*/
 	const m2Kp6Htaka = kp6HtakaCa1ara[0o0];
 	const puKp6Htaka = kp6HtakaCa1ara[0o1];
@@ -185,7 +189,7 @@ function kf2Kp6HtakaCa1ara( ne1anesaiK61e: string ): Kp6Htaka[] {
 }
 
 /**
-	j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		j͑ʃᴜƽ
 		ſɭɹ ſȷɔ
 		ſɭɹ ſȷɔ
@@ -195,30 +199,30 @@ function kf2Kp6Htaka( han2k: string[], saxeK2fe: number, araqK2fe: number ): Kp6
 	const ksaka = quqKsaka( han2k[saxeK2fe].replace( /^#+\s*/, "" ) );
 
 	const kubaSaxeAraqCa1ara: number[] = [];
-	for ( let i = saxeK2fe + 0o1; i < araqK2fe; i++ ) {
-		const n2k = han2k[i].trim();
+	for ( let n2kHan2k = saxeK2fe + 0o1; n2kHan2k < araqK2fe; n2kHan2k++ ) {
+		const n2k = han2k[n2kHan2k].trim();
 		const saxeK61e = n2k.replace( /^#+\s*/, "" );
 		if ( saxeK61e.startsWith( "First" ) || saxeK61e.startsWith( "Second" ) || saxeK61e.startsWith( "Third" ) ) {
-			kubaSaxeAraqCa1ara.push( i );
+			kubaSaxeAraqCa1ara.push( n2kHan2k );
 		}
 	}
 
 	if ( kubaSaxeAraqCa1ara.length > 0o0 ) {
 		const kubaCa1ara: Kuba[] = [];
-		for ( let t = 0o0; t < kubaSaxeAraqCa1ara.length; t++ ) {
-			const kubaSaxeK2fe = kubaSaxeAraqCa1ara[t];
-			const kubaAraqK2fe = t + 0o1 < kubaSaxeAraqCa1ara.length ? kubaSaxeAraqCa1ara[t + 0o1] : araqK2fe;
+		for ( let n2kKuba = 0o0; n2kKuba < kubaSaxeAraqCa1ara.length; n2kKuba++ ) {
+			const kubaSaxeK2fe = kubaSaxeAraqCa1ara[n2kKuba];
+			const kubaAraqK2fe = n2kKuba + 0o1 < kubaSaxeAraqCa1ara.length ? kubaSaxeAraqCa1ara[n2kKuba + 0o1] : araqK2fe;
 			kubaCa1ara.push( kf2Kuba( han2k, kubaSaxeK2fe, kubaAraqK2fe ) );
 		}
 		return { ksakaEn: ksaka.en, ksakaAih: ksaka.aih, kubaCa1ara };
 	}
 
-	// ⟨ ſɟᴜ ı],ɹͷ̗ ( Cutlii ) 📃 ⟩
+	// ⟨ ſɟᴜ ı],ɹͷ̗ 📃 ⟩
 	return { ksakaEn: ksaka.en, ksakaAih: ksaka.aih, kubaCa1ara: [ kf2Kuba( han2k, saxeK2fe, araqK2fe ) ] };
 }
 
 /**
-	j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		j͑ʃᴜƽ
 		ſɭɹ ſȷɔ
 		ſɭɹ ſȷɔ
@@ -229,8 +233,8 @@ function kf2Kuba( han2k: string[], saxeK2fe: number, araqK2fe: number ): Kuba {
 	const n2kCa1ara: S2[][] = [];
 	let araqS2Ca1ara: S2[] = [];
 
-	for ( let i = saxeK2fe + 0o1; i < araqK2fe; i++ ) {
-		const n2k = han2k[i].trim();
+	for ( let n2kHan2k = saxeK2fe + 0o1; n2kHan2k < araqK2fe; n2kHan2k++ ) {
+		const n2k = han2k[n2kHan2k].trim();
 		if ( !n2k || n2k.startsWith( "Also" ) ) continue;
 
 		const s2Ca1ara = s2N2k( n2k );
@@ -245,7 +249,7 @@ function kf2Kuba( han2k: string[], saxeK2fe: number, araqK2fe: number ): Kuba {
 }
 
 /**
-	ſɭʞɹ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	ſɭʞɹ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		j͑ʃᴜƽ
 	@returns string[]
 */
@@ -268,16 +272,16 @@ function s2N2k( n2k: string ): string[] {
 }
 
 /**
-	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns boolean
 */
 function keveHate( s2: string ): boolean {
-	return !!keveBal2xa[s2];
+	return !!keveBal2xa[keveS2K2fe( s2 )];
 }
 
 /**
-	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( [ Shift ] [ Empty ] )
+	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns boolean
 */
@@ -286,23 +290,24 @@ function s2Kp6( s2: string ): boolean {
 }
 
 /**
-	j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( [ Empty ] )
+	j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns S2
 */
 function kf2S2( s2: string ): S2 {
-	const keve = keveBal2xa[s2];
+	const keveS2 = keveS2K2fe( s2 );
+	const keve = keveBal2xa[keveS2];
 	if ( keve ) {
 		return { ksaka: s2.slice( 0o1, -0o1 ).trim(), hat: "keve", kp6: keve };
 	}
-	if ( s2 === "[ Extra ]" || s2 === "[ Empty ]" ) {
+	if ( keveS2 === "[Extra]" || keveS2 === "[Empty]" ) {
 		return { ksaka: "", hat: "keve", kp6: "extra" };
 	}
 	return { ksaka: s2, hat: "kp6", kp6: s2 };
 }
 
 /**
-	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( Also is )
+	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		j͑ʃᴜƽ
 	@returns Record<string, Kp6Keve>
 */
@@ -310,14 +315,14 @@ function kf2Keve( han2k: string[] ): Record<string, Kp6Keve> {
 	const bal2xa: Record<string, Kp6Keve> = {};
 
 	for ( const n2k of han2k ) {
-		const t = n2k.trim();
-		if ( !t.startsWith( "Also" ) ) continue;
+		const kemaN2k = n2k.trim();
+		if ( !kemaN2k.startsWith( "Also" ) ) continue;
 
-		for ( const xekox2q of t.matchAll( /(\[[^\]]*\])\s+is\s+([^\s,.]+)/g ) ) {
+		for ( const xekox2q of kemaN2k.matchAll( /(\[[^\]]*\])\s+is\s+([^\s,.]+)/g ) ) {
 			const hate = xekox2q[0o1];
 			const k61e = xekox2q[0o2].toLowerCase();
 			const keve = KEVE_K61e[k61e];
-			if ( hate && keve ) bal2xa[hate] = keve;
+			if ( hate && keve ) bal2xa[keveS2K2fe( hate )] = keve;
 		}
 	}
 
@@ -325,7 +330,7 @@ function kf2Keve( han2k: string[] ): Record<string, Kp6Keve> {
 }
 
 /**
-	j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( Cubii ſɟw ʃɹ )
+	j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		ſɭɔ˞ᴜ ſɭᴜ
 	@returns { en: string; aih: string }
 */
@@ -347,7 +352,7 @@ function quqKsaka( ne1anesai: string ): { en: string; aih: string } {
 }
 
 /**
-	ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( change symbol )
+	ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		ſɟᴜ ı],ɹͷ̗
 		ſɟᴜ ı],ɹͷ̗
 	@returns Kuba[]
@@ -379,7 +384,7 @@ function kf2PuKuba( kubaSaxe: Kuba, m2Kp6Htaka: Kp6Htaka ): Kuba[] {
 }
 
 /**
-	ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	ſɭʞɹ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		ſɟᴜ ı],ɹͷ̗
 		ſɟᴜ ı],ɹͷ̗
 	@returns Record<string, string>
@@ -392,16 +397,16 @@ function kf2Kp6Bal2xa( saxeKuba: Kuba, araqKuba: Kuba ): Record<string, string> 
 		if ( !( saxeS2.kp6 in bal2xa ) ) bal2xa[saxeS2.kp6] = araqS2.kp6;
 	};
 
-	for ( let v = 0o0; v < saxeKuba.n2kCa1ara.length; v++ ) {
-		const saxeN2k = saxeKuba.n2kCa1ara[v];
-		const araqN2k = araqKuba.n2kCa1ara[v];
-		for ( let k = 0o0; k < saxeN2k.length; k++ ) {
-			xemaBal2xa( saxeN2k[k], araqN2k?.[ k ] );
+	for ( let n2kN2k = 0o0; n2kN2k < saxeKuba.n2kCa1ara.length; n2kN2k++ ) {
+		const saxeN2k = saxeKuba.n2kCa1ara[n2kN2k];
+		const araqN2k = araqKuba.n2kCa1ara[n2kN2k];
+		for ( let n2kS2 = 0o0; n2kS2 < saxeN2k.length; n2kS2++ ) {
+			xemaBal2xa( saxeN2k[n2kS2], araqN2k?.[ n2kS2 ] );
 		}
 	}
 
-	for ( let k = 0o0; k < saxeKuba.araqS2Ca1ara.length; k++ ) {
-		xemaBal2xa( saxeKuba.araqS2Ca1ara[k], araqKuba.araqS2Ca1ara[k] );
+	for ( let n2kS2 = 0o0; n2kS2 < saxeKuba.araqS2Ca1ara.length; n2kS2++ ) {
+		xemaBal2xa( saxeKuba.araqS2Ca1ara[n2kS2], araqKuba.araqS2Ca1ara[n2kS2] );
 	}
 
 	return bal2xa;
@@ -410,27 +415,27 @@ function kf2Kp6Bal2xa( saxeKuba: Kuba, araqKuba: Kuba ): Record<string, string> 
 // ⟪ ſɭɔʞ 🈯 ⟫
 
 /**
-	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( html )
+	j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔʞ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 	@returns string
 */
-function kxesuLang(): string {
+function kxesuGawe(): string {
 	return document.documentElement.lang || "aih";
 }
 
 /**
-	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( aih en )
-		ſɭɔ˞ᴜ ſɭᴜ ( en )
-		ſɭɔ˞ᴜ ſɭᴜ ( aih )
+	ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
+		ſɭɔ˞ᴜ ſɭᴜ
+		ſɭɔ˞ᴜ ſɭᴜ
 	@returns string
 */
 function kxesuKsaka( en: string, aih: string ): string {
-	return kxesuLang() === "aih" ? aih : en;
+	return kxesuGawe() === "aih" ? aih : en;
 }
 
 // ⟪ ſɟᴜ ſȷᴜɔ˞ 🖥️ ⟫
 
 /**
-	ſɟɔ ŋᷠɔ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	ſɟɔ ŋᷠɔ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		ſɭɹ ſȷɔ
 	@returns void
 */
@@ -440,14 +445,14 @@ function suntaKp6Htaka( k2fe: number ): void {
 	kxesuKp6HtakaK2fe = k2fe;
 
 	htakaKekXema.replaceChildren();
-	for ( let i = 0o0; i < kp6HtakaCa1ara.length; i++ ) {
+	for ( let n2kHtaka = 0o0; n2kHtaka < kp6HtakaCa1ara.length; n2kHtaka++ ) {
 		const kek = document.createElement( "button" );
 		kek.type = "button";
-		kek.textContent = kxesuKsaka( kp6HtakaCa1ara[i].ksakaEn, kp6HtakaCa1ara[i].ksakaAih );
-		if ( i === kxesuKp6HtakaK2fe ) {
+		kek.textContent = kxesuKsaka( kp6HtakaCa1ara[n2kHtaka].ksakaEn, kp6HtakaCa1ara[n2kHtaka].ksakaAih );
+		if ( n2kHtaka === kxesuKp6HtakaK2fe ) {
 			kek.setAttribute( "aria-pressed", "true" );
 		}
-		kek.addEventListener( "click", () => suntaKp6Htaka( i ) );
+		kek.addEventListener( "click", () => suntaKp6Htaka( n2kHtaka ) );
 		htakaKekXema.appendChild( kek );
 	}
 
@@ -455,7 +460,7 @@ function suntaKp6Htaka( k2fe: number ): void {
 }
 
 /**
-	ſɟɔ ŋᷠɔ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	ſɟɔ ŋᷠɔ ʌ ſɟᴜ ı],ɹͷ̗ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		ſɭɹ ſȷɔ
 	@returns void
 */
@@ -476,12 +481,12 @@ function suntaKuba( k2fe: number ): void {
 	}
 	s2Xema.appendChild( kf2N2k( kuba.araqS2Ca1ara ) );
 
-	// ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭɔʞ ( vacepu aih ) 📃 ⟩
+	// ⟨ ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭɔʞ 📃 ⟩
 	vacepu( "cepufal" );
 }
 
 /**
-	ſɭʞɹ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( thala cakaxa )
+	ſɭʞɹ ʌ j͑ʃᴜƽ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns HTMLElement
 */
@@ -496,7 +501,7 @@ function kf2N2k( s2Ca1ara: S2[] ): HTMLElement {
 }
 
 /**
-	ſɭʞɹ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	ſɭʞɹ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns HTMLButtonElement
 */
@@ -527,7 +532,7 @@ function kf2S2Kek( s2: S2 ): HTMLButtonElement {
 }
 
 /**
-	ſɭʞɹ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	ſɭʞɹ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		ſᶘɹ }ʃᴜ }ʃw
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
@@ -548,8 +553,8 @@ function kf2PuXema( kek: HTMLButtonElement, s2: Kp6S2 ): void {
 		puXema = false;
 	};
 
-	kek.addEventListener( "pointerdown", ( e ) => {
-		e.preventDefault();
+	kek.addEventListener( "pointerdown", ( cal ) => {
+		cal.preventDefault();
 		ne1aPuXema();
 
 		if ( ( VOP2[s2.kp6]?.length ?? 0o0 ) === 0o0 ) return;
@@ -561,7 +566,7 @@ function kf2PuXema( kek: HTMLButtonElement, s2: Kp6S2 ): void {
 		}, PU_XEMA_K2FE * 0o1750 );
 	} );
 
-	// ⟨ ſɟɔ ŋᷠɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
+	// ⟨ ſɟɔ ŋᷠɔ ʌ j͑ʃ'ɜ ſןɹ 📃 ⟩
 	kek.addEventListener( "pointerup", () => {
 		ne1aK2feXema();
 		araqKuba();
@@ -571,7 +576,7 @@ function kf2PuXema( kek: HTMLButtonElement, s2: Kp6S2 ): void {
 }
 
 /**
-	ſɟɔ ŋᷠɔ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	ſɟɔ ŋᷠɔ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
@@ -595,7 +600,7 @@ function saxePuKuba( s2: Kp6S2 ): void {
 }
 
 /**
-	ſɭɜ ʃɔ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	ſɭɜ ʃɔ ʌ ſᶘɹ }ʃᴜ }ʃw ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 	@returns void
 */
 function araqKuba(): void {
@@ -607,7 +612,7 @@ function araqKuba(): void {
 // ⟪ ſןɔ ʌ ſᶘɹ }ʃᴜ }ʃw 🖱️ ⟫
 
 /**
-	ſןɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	ſןɔ ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
@@ -626,7 +631,7 @@ function keveS2( s2: S2 ): void {
 }
 
 /**
-	j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
@@ -645,7 +650,7 @@ function xemaS2( s2: Kp6S2 ): void {
 }
 
 /**
-	ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭᴜc̗ ɭʃᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭᴜc̗ ɭʃᴜ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 		j͑ʃɹ ɭʃᴜɔ˞
 	@returns void
 */
@@ -663,7 +668,7 @@ function keve( keve: Kp6Keve ): void {
 			suntaKuba( kxesuKubaK2fe );
 			break;
 		case "back":
-			ne1aGrafero();
+			ne1aCaxef2();
 			break;
 		case "space":
 			xemaK61e( " " );
@@ -675,8 +680,8 @@ function keve( keve: Kp6Keve ): void {
 }
 
 /**
-	j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
-		ꞁȷ̀ɔ j͑ʃƽɔƽ
+	j͑ʃ'ᴜ ſɭw ſ̀ȷᴜ ʌ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
+		j͑ʃ'ɜ ſןɹ
 	@returns void
 */
 function xemaK61e( k61e: string ): void {
@@ -694,15 +699,15 @@ function xemaK61e( k61e: string ): void {
 }
 
 /**
-	ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	ſɟᴜ ɭʃᴜ ʌ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 	@returns void
 */
-function ne1aGrafero(): void {
+function ne1aCaxef2(): void {
 	if ( !xemaKuba ) return;
 	const saxeK2fe = xemaKuba.selectionStart ?? xemaKuba.value.length;
 	const araqK2fe = xemaKuba.selectionEnd ?? xemaKuba.value.length;
 
-	// ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
+	// ⟨ ſןw ʌ j͑ʃ'ɜ ſןɹ 📃 ⟩
 	if ( saxeK2fe !== araqK2fe ) {
 		xemaKuba.value = xemaKuba.value.slice( 0o0, saxeK2fe ) + xemaKuba.value.slice( araqK2fe );
 		xemaKuba.setSelectionRange( saxeK2fe, saxeK2fe );
@@ -722,8 +727,8 @@ function ne1aGrafero(): void {
 			xemaKuba.setSelectionRange( kxesuK2fe, kxesuK2fe );
 			xemaK61eCa1ara.pop();
 		} else {
-			// ⟨ ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
-			const kxesuK2fe = saxeK2fe - k2feGrafero( saxeK61e );
+			// ⟨ ſɟᴜ ɭʃᴜ ʌ j͑ʃ'ɜ ſןɹ 📃 ⟩
+			const kxesuK2fe = saxeK2fe - k2feCaxef2( saxeK61e );
 			xemaKuba.value = xemaKuba.value.slice( 0o0, kxesuK2fe ) + xemaKuba.value.slice( saxeK2fe );
 			xemaKuba.setSelectionRange( kxesuK2fe, kxesuK2fe );
 			xemaK61eCa1ara = [];
@@ -733,18 +738,18 @@ function ne1aGrafero(): void {
 }
 
 /**
-	ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( Intl Segmenter )
-		ꞁȷ̀ɔ j͑ʃƽɔƽ
+	ſɭc̗ᴜ j͑ʃ'ɔ ʌ ſɭɹ ſȷɔ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
+		j͑ʃ'ɜ ſןɹ
 	@returns number
 */
-function k2feGrafero( k61e: string ): number {
+function k2feCaxef2( k61e: string ): number {
 	if ( !k61e ) return 0o0;
 
-	const S2Xema = ( Intl as { Segmenter?: new ( lang?: string, xema?: { granularity?: string } ) => { segment( t: string ): Iterable<{ segment: string }> } } ).Segmenter;
+	const Caxef2Kaltok = ( Intl as { Segmenter?: new ( gaweK2fe?: string, sukf2q?: { granularity?: string } ) => { segment( k61e: string ): Iterable<{ segment: string }> } } ).Segmenter;
 
-	if ( S2Xema ) {
-		const s2Quq = new S2Xema( undefined, { granularity: "grapheme" } );
-		const s2Ca1ara = [ ...s2Quq.segment( k61e ) ];
+	if ( Caxef2Kaltok ) {
+		const caxef2Kaltok = new Caxef2Kaltok( undefined, { granularity: "grapheme" } );
+		const s2Ca1ara = [ ...caxef2Kaltok.segment( k61e ) ];
 		const kxesuS2 = s2Ca1ara[s2Ca1ara.length - 0o1];
 		if ( kxesuS2 ) return kxesuS2.segment.length;
 	}
@@ -755,7 +760,7 @@ function k2feGrafero( k61e: string ): number {
 }
 
 /**
-	ſɟᴜ ɭʃᴜ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	ſɟᴜ ɭʃᴜ ʌ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 	@returns Promise
 */
 async function suntaK61e(): Promise<void> {
@@ -769,7 +774,7 @@ async function suntaK61e(): Promise<void> {
 			kek.textContent = "✓";
 			setTimeout( () => {
 				kek.textContent = saxeKsaka;
-			}, XEMA_XEKOX2Q_K2FE * 0o1750 ); // ខ្មែរ - ហេទៅមិល្លីវិនាទី
+			}, XEMA_XEKOX2Q_K2FE * 0o1750 );
 		}
 	} catch ( tlohk2ni ) {
 		console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ )", tlohk2ni );
@@ -777,7 +782,7 @@ async function suntaK61e(): Promise<void> {
 }
 
 /**
-	ſɭɜ ʃɔ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
+	ſɭɜ ʃɔ ʌ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅
 	@returns void
 */
 function ne1aXema(): void {
@@ -799,7 +804,7 @@ document.addEventListener( "DOMContentLoaded", () => {
 	const ne1aKek = document.getElementById( "ne1a-kek" ) as HTMLButtonElement | null;
 
 	if ( !xemaKuba || !s2Xema || !kubaKsakaKek || !htakaKekXema ) {
-		console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ne1a xemaKuba s2Xema." );
+		console.error( "( ſ̀ȷɜᴜ̩ ſɭɹ }ʃꞇ ) ſ͕ȷɜ ſɭʞɹ j͑ʃ'ɜ ſןɹ ⟅" );
 		return;
 	}
 
@@ -807,7 +812,7 @@ document.addEventListener( "DOMContentLoaded", () => {
 	kp6HtakaCa1ara = kf2Kp6HtakaCa1ara( ne1anesaiK61e );
 	suntaKp6Htaka( 0o0 );
 
-	// ⟨ ſןw ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
+	// ⟨ ſןw ʌ j͑ʃ'ɜ ſןɹ 📃 ⟩
 	xemaKuba.addEventListener( "input", () => {
 		xemaK61eCa1ara = [];
 	} );

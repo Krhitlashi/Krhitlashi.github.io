@@ -10,7 +10,7 @@ function k2regawe(gawe) {
     oskakefani.forEach(kek => {
         const kef = kek.dataset.oskakefani;
         const skakef = skakefani[gawe]?.[kef];
-        const sef4kef = skakef === "" ? skakefani["aih"]?.[kef] || kef : skakef || skakefani["aih"]?.[kef] || kef;
+        const sef4kef = skakef || skakefani["aih"]?.[kef] || kef;
         const k2h2Mal6xema = [ ...kek.childNodes ].filter(xaqasuKek => xaqasuKek.nodeType === Node.ELEMENT_NODE && !xaqasuKek.classList.contains("cepufalxez") && xaqasuKek.tagName !== "BR");
         const vacepusu = [ ...kek.childNodes ].some(xaqasuKek => xaqasuKek.nodeType === Node.ELEMENT_NODE && xaqasuKek.classList.contains("cepufalxez"));
         for ( const xaqasuKek of [ ...kek.childNodes ] ) {
@@ -29,18 +29,23 @@ function k2regawe(gawe) {
             sakaHaxez(kefKek);
         }
     });
-    if ( gawe != "aih" ) {
-        document.querySelectorAll("a").forEach(cel2f => {
-            if ( !cel2f.href || cel2f.href.startsWith("#") ) return;
-            let ruvaOkef = decodeURIComponent(cel2f.href);
-            const ruva = new URL(ruvaOkef, window.location.href);
+    document.querySelectorAll("a").forEach(cel2f => {
+        const saxeCel2f = cel2f.getAttribute("href");
+        if ( !saxeCel2f || saxeCel2f.startsWith("#") ) return;
+        const ruva = new URL(cel2f.href, window.location.href);
+        if ( gawe === "aih" ) {
+            ruva.searchParams.delete("lang");
+        } else {
             ruva.searchParams.set("lang", gawe);
-            cel2f.href = ruva.toString();
-        });
-    }
+        }
+        cel2f.href = ruva.toString();
+    });
 }
 function kocepufal(gawe) {
-    if ( gawe != "aih" ) {
+    if ( gawe === "aih" ) {
+        document.body.classList.remove("tapufal")
+        document.body.classList.add("cepufal")
+    } else {
         document.body.classList.remove("cepufal")
         document.body.classList.add("tapufal")
     }

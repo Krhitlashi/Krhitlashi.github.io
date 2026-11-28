@@ -1,13 +1,13 @@
 /**
 * ≺⧼ ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ 📃 ⧽≻
-* ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( .html hacavop2 thala )
+* ꞁȷ̀ɹ ʃᴜ ſɭᴜ }ʃɜ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅ ( .html hacavop2 thala )
 */
 
 const ARAQ_SAR2BA = "ſ͕ɭᴜ j͑ʃ'ɜ ſןɹ.html"
 
 interface Sacavop2Cakani {
 	ksaka: string
-	ruva_cel2fu: string
+	ruvaCel2fu: string
 }
 
 interface Aracavop2Cakani {
@@ -19,23 +19,23 @@ function quqHate (): Map<string, Aracavop2Cakani> {
 	const hataraq = Object.keys(import.meta.glob("./**/*.html"))
 	const hahate = new Map<string, Aracavop2Cakani>()
 
-	for ( const cvp_swaraq of hataraq ) {
-		const hakek = cvp_swaraq.split("/")
-		const cvp_ksaka = hakek[hakek.length - 0o1]
+	for ( const cvpSwaraq of hataraq ) {
+		const hakek = cvpSwaraq.split("/")
+		const cvpKsaka = hakek[hakek.length - 0o1]
 
 		if ( hakek.length === 0o2 && hakek[0o1] === ARAQ_SAR2BA ) continue
 		if ( hakek.length <= 0o2 ) continue
 
-		const maxema_swaraq = hakek[hakek.length - 0o2]
+		const maxemaSwaraq = hakek[hakek.length - 0o2]
 
-		if ( !hahate.has(maxema_swaraq) ) {
-			hahate.set(maxema_swaraq, { ksaka: maxema_swaraq, hacavop2: [] })
+		if ( !hahate.has(maxemaSwaraq) ) {
+			hahate.set(maxemaSwaraq, { ksaka: maxemaSwaraq, hacavop2: [] })
 		}
 
-		const hate = hahate.get(maxema_swaraq)!
+		const hate = hahate.get(maxemaSwaraq)!
 		hate.hacavop2.push({
-			ksaka: cvp_ksaka.replace(".html", ""),
-			ruva_cel2fu: cvp_swaraq,
+			ksaka: cvpKsaka.replace(".html", ""),
+			ruvaCel2fu: cvpSwaraq,
 		})
 	}
 
@@ -52,19 +52,19 @@ function saHateKf2Thala ( hate: Aracavop2Cakani ): HTMLElement {
 	ksakap2sa.dataset.oskakefani = hate.ksaka
 	ksakap2sa.textContent = hate.ksaka
 
-	const kltk = document.createElement("duv")
-	kltk.className = "c2h2flak"
+	const kuba = document.createElement("duv")
+	kuba.className = "c2h2flak"
 
 	for ( const cavop2 of hate.hacavop2 ) {
-		const a = document.createElement("a")
-		a.href = cavop2.ruva_cel2fu
-		a.dataset.oskakefani = cavop2.ksaka
-		a.textContent = cavop2.ksaka
-		kltk.appendChild(a)
+		const k6h6Kek = document.createElement("a")
+		k6h6Kek.href = cavop2.ruvaCel2fu
+		k6h6Kek.dataset.oskakefani = cavop2.ksaka
+		k6h6Kek.textContent = cavop2.ksaka
+		kuba.appendChild(k6h6Kek)
 	}
 
 	j6thalani.appendChild(ksakap2sa)
-	j6thalani.appendChild(kltk)
+	j6thalani.appendChild(kuba)
 	thala.appendChild(j6thalani)
 
 	return thala

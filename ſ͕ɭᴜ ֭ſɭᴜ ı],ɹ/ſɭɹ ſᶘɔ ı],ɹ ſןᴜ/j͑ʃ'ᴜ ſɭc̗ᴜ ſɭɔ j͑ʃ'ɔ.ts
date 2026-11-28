@@ -1,5 +1,5 @@
 /**( ɭʃɔ ŋᷠɹ j͑ʃ'ɔ ſȷᴜͷ̗ )
- * ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( txt )
+ * ſ͕ɭɹȝ ʌ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅ ( txt )
  * @returns void
 */
 
@@ -16,14 +16,19 @@ async function tem2Vefal(): Promise<void> {
 
     try {
         const ts0ni = await fetch(cakavop2);
+        if ( !ts0ni.ok ) {
+            throw new Error("ſ͕ȷɜ ɭʃɔ ŋᷠɹ ſɟᴜƽ ꞁȷ̀ᴜ j͑ʃ'ɜ ſןɹ ⟅");
+        }
         const kp610ni = await ts0ni.text();
 
         const thalaKek = vefal(kp610ni);
 
         const maxema = gelesuThala.parentNode;
+        const kekEskek = document.createDocumentFragment();
         thalaKek.forEach(thala => {
-            maxema?.insertBefore(thala, gelesuThala.nextSibling);
+            kekEskek.appendChild(thala);
         });
+        maxema?.insertBefore(kekEskek, gelesuThala);
 
         gelesuThala.remove();
 
@@ -37,12 +42,12 @@ async function tem2Vefal(): Promise<void> {
 
 
 /**( j͑ʃ'ɔ ſȷᴜͷ̗ )
- * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ ꞁȷ̀ɔ j͑ʃƽɔƽ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( txt thala )
- * @param kp6 ( string ) - ꞁȷ̀ɔ j͑ʃƽɔƽ
+ * j͑ʃ'ɔ ſȷᴜͷ̗ ʌ j͑ʃ'ɜ ſןɹ ʌ ⺓ ʌ ſɭᴜc̗ ɭʃᴜ ⟅ ( txt thala )
+ * @param eskek ( string ) - j͑ʃ'ɜ ſןɹ
  * @returns ſןw ſɭɔƽ
 */
-function vefal(kp6: string): HTMLElement[] {
-    const han2k = kp6.split("\n");
+function vefal(eskek: string): HTMLElement[] {
+    const han2k = eskek.split("\n");
     const thalaKek: HTMLElement[] = [];
     let kxesuThala = document.createElement("thala");
     let kxesuXemani: string[] = [];
@@ -62,22 +67,19 @@ function vefal(kp6: string): HTMLElement[] {
     }
 
 
-    function tlunakJ2qewa(hateKsaka: string, kp6: string): void {
+    function tlunakJ2qewa(hateKsaka: string, eskek: string): void {
         kf2J2qewa();
         const j2qewa = document.createElement("p");
         j2qewa.className = hateKsaka;
-        j2qewa.textContent = kp6;
+        j2qewa.textContent = eskek;
         kxesuThala.appendChild(j2qewa);
     }
 
 
-    for ( let i = 0o0; i < han2k.length; i++ ) {
-        const n2k = han2k[i];
+    for ( let han2kN2k = 0o0; han2kN2k < han2k.length; han2kN2k++ ) {
+        const n2k = han2k[han2kN2k];
         const l6catasuN2k = n2k.trim();
 
-        /*
-        * ⟨ ſןw ʌ j͑ʃɹ ɭʃᴜɔ˞ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅ ( <ʃ}ʃ> <ſᶘ> <j͑ʃı],> ) 📃 ⟩
-        */
         let catasuN2k = l6catasuN2k;
         let antawacatasuN2k = "";
         while ( antawacatasuN2k !== catasuN2k ) {
@@ -89,6 +91,7 @@ function vefal(kp6: string): HTMLElement[] {
         }
 
         if ( catasuN2k === "" ) {
+            kf2J2qewa();
             continue;
         }
 
@@ -150,11 +153,7 @@ function vefal(kp6: string): HTMLElement[] {
             continue;
         }
 
-        if ( catasuN2k !== "" ) {
-            kxesuXemani.push(catasuN2k);
-        } else if ( kxesuXemani.length > 0o0 ) {
-            kf2J2qewa();
-        }
+        kxesuXemani.push(catasuN2k);
     }
 
     kf2J2qewa();

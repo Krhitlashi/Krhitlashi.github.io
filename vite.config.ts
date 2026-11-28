@@ -104,10 +104,10 @@ const cutaHac0zani = {
 function tboK6h6(eskek: string | null | undefined): string | null {
   if ( !eskek ) return null;
   let k6h6 = eskek;
-  const qK2fe = k6h6.indexOf("?");
-  if ( qK2fe !== -0o1 ) k6h6 = k6h6.substring(0o0, qK2fe);
-  const hK2fe = k6h6.indexOf("#");
-  if ( hK2fe !== -0o1 ) k6h6 = k6h6.substring(0o0, hK2fe);
+  const kp6tasaiN2k = k6h6.indexOf("?");
+  if ( kp6tasaiN2k !== -0o1 ) k6h6 = k6h6.substring(0o0, kp6tasaiN2k);
+  const kp6tafN2k = k6h6.indexOf("#");
+  if ( kp6tafN2k !== -0o1 ) k6h6 = k6h6.substring(0o0, kp6tafN2k);
   // ⟨ ſɟᴜ ſ͕ɭᴜ j͑ʃ'ɜ ſןɹ 📃 ⟩
   if ( k6h6.startsWith("file://") ) {
     try {
@@ -118,10 +118,10 @@ function tboK6h6(eskek: string | null | undefined): string | null {
   }
   if ( isAbsolute(k6h6) ) {
     const k21eK6h6 = relative(__dirname, k6h6);
-    if ( k21eK6h6.startsWith("..") || k21eK6h6.startsWith("/") || k21eK6h6 === "" || k21eK6h6 === "." ) return null;
+    if ( isAbsolute(k21eK6h6) || k21eK6h6.startsWith("..") || k21eK6h6.startsWith("/") || k21eK6h6.startsWith("\\") || k21eK6h6 === "" || k21eK6h6 === "." ) return null;
     return k21eK6h6;
   }
-  if ( k6h6.startsWith("..") || k6h6.startsWith("/") ) return null;
+  if ( k6h6.startsWith("..") || k6h6.startsWith("/") || k6h6.startsWith("\\") ) return null;
   return k6h6;
 }
 
@@ -130,21 +130,6 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: b6n2baCaqavop2Ca1ara(__dirname),
-      /* j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſ͔ɭɔ j͐ʃɔɔ˞ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ſɭᴜͷ̗ ʌ j͑ʃɔ ſᶘꞇȝ ʌ ſȷᴜͷ̗ ſ̀ȷᴜȝ ꞁȷ̀ᴜꞇ ʌ ⺓ ʌ ſɭꞇ ⟅
-      ꞁȷ̀эⅎ ſᶘɔ ʌ ı],ꞇ j͑ʃᴜ j͐ʃ ʌ ſ͔ɭɔ j͐ʃɔɔ˞ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ Vite `[kefXema]` ⟅
-      ꞁȷ̀эⅎ ſᶘɔ ʌ ſᶘꞇȝ ʌ ſɭэ ֭ſɭэ ʌ ⺓ ʌ `assetInfo.originalFileNames[0]` ⟅
-      j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ʌ j͑ʃɔ ſᶘꞇȝ ʌ ſȷᴜͷ̗ ſ̀ȷᴜȝ ꞁȷ̀ᴜꞇ ʌ ⺓ ʌ ſɭꞇ ⟅
-      ſ͕ɭᴜ }ʃᴜ ʌ j͑ʃɔ ſᶘꞇȝ ʌ ſȷᴜͷ̗ ſ̀ȷᴜȝ ꞁȷ̀ᴜꞇ ʌ ⺓ ʌ CSS `ſɟᴜ ſɭɹ/.../֭ſɭᴜ ı],ɔ.css` ⟅
-      ɭʃᴜ ʃꞇ ʌ ɭl̀э dist ʌ ⺓ ʌ `֭ſɭᴜ ı__ɔ.css` ⟅
-
-      j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭc̗ᴜ ʃэ ſɭᴜ ŋᷠᴜ ʌ JS ʌ Vite `[kefXema]-[hash].js` ʌ ⺓ ʌ ſɭꞇ ⟅
-      ꞁȷ̀ᴜ ſ̀ȷɔ ʌ ⺓ ʌ URL ⟅
-
-      ɭʃᴜ ʃꞇ ʌ ɭl̀э `rollupOptions` ʌ ⺓ ʌ ſᶘᴜ j͐ʃɹ ⟅
-      ſɭɜ ɭʃᴜ ʃꞇ ʌ ɭl̀э `rolldownOptions` ʌ ⺓ ʌ ſᶘᴜ j͐ʃɹ ⟅
-      ſɭɹ ɽ͑ʃ'ɔ ʌ Rolldown ʌ ⺓ ʌ Vite 8 ⟅
-      ſɭɹ ɽ͑ʃ'ɔ ʌ `rollupOptions.output` ʌ ⺓ ʌ ŋᷠᴜ ʌ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ⟅
-      ꞁȷ̀эⅎ ſᶘɔ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ŋᷠᴜ ʌ j͑ʃ'ᴜ j͑ʃᴜ ſɭᴜ ⟅ */
       output: {
         assetFileNames: ( tcaq ) => {
           const ksaka = tcaq.names?.[ 0o0 ] ?? "";
@@ -154,13 +139,6 @@ export default defineConfig({
             if ( k21eK6h6 ) {
               const kuba = dirname(k21eK6h6);
               const saxeDaxe = extname(saxeKsaka);
-              /*
-              * j͑ʃ'ɔ ſ͕ɭэ ſɭɹ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ ֭ſɭᴜ ı],ɔ ⟅
-              * ſɭɹ ɽ͑ʃ'ɔ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
-              *
-              * ɭʃɹ ı],ɔ ɭ(ꞇ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
-              * j͑ʃ'ɔ ſ̀ȷᴜȝ ʌ ſɭɔ˞ᴜ ſɭᴜ ʌ ⺓ ʌ j͑ʃƽɔƽ ⟅
-              */
               const ksakaDaxe = extname(ksaka);
               const knak2feKsaka = ksakaDaxe
                 ? ksaka.slice(0o0, -ksakaDaxe.length)

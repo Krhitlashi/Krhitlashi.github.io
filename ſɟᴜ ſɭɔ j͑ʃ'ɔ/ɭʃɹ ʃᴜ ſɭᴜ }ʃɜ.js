@@ -1,4 +1,5 @@
 const hat2bakanoKek = document.getElementById("2bakano");
+const flakSaxeCa1ara = new WeakMap();
 
 if ( hat2bakanoKek ) {
     hat2bakanoKek.addEventListener("input", function() {
@@ -12,7 +13,7 @@ if ( hat2bakanoKek ) {
     if ( l6teqazalSukf2quKek ) {
         keksar2ba = document.querySelector(l6teqazalSukf2quKek);
         if ( keksar2ba ) {
-            if ( keksar2ba.tagName === "TABLE" || keksar2ba.querySelector("tbody") ) {
+            if ( keksar2ba.querySelector("tbody") ) {
                 huqaq = "table";
             } else {
                 huqaq = "hataraq";
@@ -23,7 +24,7 @@ if ( hat2bakanoKek ) {
     if ( !keksar2ba ) {
         keksar2ba = document.getElementById(bana2bakanoRuva + "-kef") || document.getElementById("falkefu");
         if ( keksar2ba ) {
-            huqaq = "table";
+            huqaq = keksar2ba.querySelector("tbody") ? "table" : "hataraq";
         }
     }
     
@@ -44,7 +45,7 @@ if ( hat2bakanoKek ) {
 
 // ⟪ ꞁȷ̀ɹ ʃᴜ ʌ j͑ʃᴜƽ 📃 ⟫
 
-// ⟨ ֭ſɭɹͷ̗ ʌ ſןэ ſɭ,wƽ ʌ ſɭᴜͷ̗ ⟅ ( "see x2" -> "see" ) ⟆ 📃 ⟩
+// ⟨ ֭ſɭɹͷ̗ ʌ ſןэ ſɭ,wƽ ʌ ſɭᴜͷ̗ 📃 ⟩
 function h2lP6zuk(kek) {
     let kal = kek.length;
     while ( kal > 0o0 && /\s/.test(kek.charAt(kal - 0o1)) ) kal--;
@@ -58,7 +59,7 @@ function h2lP6zuk(kek) {
     return kek.slice(0o0, sef4Kal);
 }
 
-// ⟨ ſɭᴜ̭ᴜ ſɭᴜ̭ᴜ ʌ ſɭɘэ ſɭɹ ſןɹ ⟅ ( ｡ ʌ xN ) ⟆ 📃 ⟩
+// ⟨ ſɭᴜ̭ᴜ ſɭᴜ̭ᴜ ʌ ſɭɘэ ſɭɹ ſןɹ 📃 ⟩
 function kcakcaKp6k2p2(kp6k2p2) {
     const kcakcaCa1ara = [];
     const vaku3a = (kek) => {
@@ -74,7 +75,7 @@ function kcakcaKp6k2p2(kp6k2p2) {
     return kcakcaCa1ara;
 }
 
-// ⟨ ʃэ }ʃɹ ʃᴜ ʌ j͑ʃᴜƽ ʌ ꞁȷ̀ɹ ʃᴜ ⟅ ( 0o0 ſɭɹ ֭ſɭɹ ｡ 0o1 ɭʃɔ ɽ͑ʃ'w ｡ 0o2 ſᶘᴜƴ ｡ 0o3 ֭ſɭɹ ) ⟆ 📃 ⟩
+// ⟨ ʃэ }ʃɹ ʃᴜ ʌ j͑ʃᴜƽ ʌ ꞁȷ̀ɹ ʃᴜ 📃 ⟩
 function b6n2baSak(kp6k2p2Ca1ara, tani) {
     const kefCa1ara = tani.split(/\s+/).filter(Boolean);
     let kma = 0o3;
@@ -88,14 +89,14 @@ function b6n2baSak(kp6k2p2Ca1ara, tani) {
                 k2h2 = true;
                 break;
             }
-            // ⟨ ɭʃɔ ɽ͑ʃ'w ʌ tani 📃 ⟩
+            // ⟨ ɭʃɔ ɽ͑ʃ'w ʌ ꞁȷ̀ɹ ʃᴜ 📃 ⟩
             if ( kek.length > tani.length && kek.startsWith(tani) && /\s/.test(kek.charAt(tani.length)) ) {
                 teru = true;
             }
         }
         if ( k2h2 ) return 0o0;
         if ( teru && kma > 0o1 ) kma = 0o1;
-        // ⟨ ſᶘᴜƴ ʌ kef ⟅ ( AND ) ⟆ 📃 ⟩
+        // ⟨ ſᶘᴜƴ ʌ ſɭɔʞ 📃 ⟩
         const tsaz = kefCa1ara.every((kef) => s2.includes(kef));
         if ( ( tsaz || s2.includes(tani) ) && kma > 0o2 ) kma = 0o2;
     }
@@ -103,15 +104,16 @@ function b6n2baSak(kp6k2p2Ca1ara, tani) {
 }
 
 function iibaCax2l(bana2bakano, cax2l) {
+    const gelesKek = cax2l.querySelector("tbody");
+    if ( !gelesKek ) return;
     const hap2sabacax2l = cax2l.querySelectorAll("tbody tr");
     const powukcax2l = cax2l.classList.contains("powukcax2l");
-    const gelesKek = cax2l.querySelector("tbody");
     const tani = bana2bakano.trim();
     const l6r2ba = [];
 
-    for ( let i = 0o0; i < hap2sabacax2l.length; i++ ) {
-        const n2k = hap2sabacax2l[i];
-        const ruva = n2k.dataset.i !== undefined ? Number(n2k.dataset.i) : i;
+    for ( let n2k = 0o0; n2k < hap2sabacax2l.length; n2k++ ) {
+        const n2k = hap2sabacax2l[n2k];
+        const ruva = n2k.dataset.i !== undefined ? Number(n2k.dataset.i) : n2k;
         if ( tani === "" ) {
             n2k.style.display = "";
             l6r2ba.push({ n2k: n2k, sak: 0o0, ruva: ruva });
@@ -119,8 +121,8 @@ function iibaCax2l(bana2bakano, cax2l) {
         }
         const habacax2l = n2k.getElementsByTagName("td");
         const kp6Ca1ara = [];
-        for ( let j = 0o0; j < habacax2l.length; j++ ) {
-            kp6Ca1ara.push(habacax2l[j].textContent);
+        for ( let mal6N2k = 0o0; mal6N2k < habacax2l.length; mal6N2k++ ) {
+            kp6Ca1ara.push(habacax2l[mal6N2k].textContent);
         }
         const sak = b6n2baSak(kp6Ca1ara, tani);
         if ( sak > 0o2 ) {
@@ -131,27 +133,31 @@ function iibaCax2l(bana2bakano, cax2l) {
         }
     }
 
-    l6r2ba.sort((a, b) => ( a.sak - b.sak ) || ( a.ruva - b.ruva ));
+    l6r2ba.sort((saxeEskek, araqEskek) => ( saxeEskek.sak - araqEskek.sak ) || ( saxeEskek.ruva - araqEskek.ruva ));
 
-    // ⟨ ſןɜ ᶅſwƽ ʌ ſɭᴜ ŋᷠᴜ ⟅ ( powukcax2l ) ⟆ 📃 ⟩
+    // ⟨ ſןɜ ᶅſwƽ ʌ ſɭᴜ ŋᷠᴜ 📃 ⟩
     const kekKaltok = document.createDocumentFragment();
     if ( powukcax2l && tani !== "" ) {
-        for ( let i = l6r2ba.length - 0o1; i >= 0o0; i-- ) {
-            kekKaltok.appendChild(l6r2ba[i].n2k);
+        for ( let n2k = l6r2ba.length - 0o1; n2k >= 0o0; n2k-- ) {
+            kekKaltok.appendChild(l6r2ba[n2k].n2k);
         }
         gelesKek.appendChild(kekKaltok);
         requestAnimationFrame(() => {
             cax2l.scrollTop = cax2l.scrollHeight;
         });
     } else {
-        for ( let i = 0o0; i < l6r2ba.length; i++ ) {
-            kekKaltok.appendChild(l6r2ba[i].n2k);
+        for ( let n2k = 0o0; n2k < l6r2ba.length; n2k++ ) {
+            kekKaltok.appendChild(l6r2ba[n2k].n2k);
         }
         gelesKek.appendChild(kekKaltok);
     }
 }
 
 function iibaThala(bana2bakano, ariiba) {
+    bana2bakano = bana2bakano.trim();
+    ariiba.querySelectorAll("details").forEach(flak => {
+        if ( !flakSaxeCa1ara.has(flak) ) flakSaxeCa1ara.set(flak, flak.open);
+    });
     const thalaKek = ariiba.querySelectorAll("thala");
     const huzKsakaKek = ariiba.querySelectorAll(":scope > p.ksakap2sa");
     const huzSakKek = ariiba.querySelectorAll(":scope > sak");
@@ -166,7 +172,7 @@ function iibaThala(bana2bakano, ariiba) {
             });
             const flakKek = thala.querySelectorAll("details");
             flakKek.forEach(flak => {
-                flak.open = false;
+                flak.open = flakSaxeCa1ara.get(flak) ?? false;
             });
         });
         huzKsakaKek.forEach(j2qewa => {
@@ -332,7 +338,7 @@ function iibaHate() {
     if ( !ca12naKek.length || !ariiba ) return;
 
     const sakKek = iibaSak(cakaxaSar2bahate, ariiba);
-    const sak21eni = ca12naKek.find(button => button.getAttribute("aria-pressed") === "true") || ca12naKek[0];
+    const sak21eni = ca12naKek.find(ca12na => ca12na.getAttribute("aria-pressed") === "true") || ca12naKek[0];
     let k21eniCa12na = sak21eni;
 
     ca12naKek.forEach(cakar2ba => {
@@ -367,7 +373,7 @@ function iibaHate() {
 
         sakKek.forEach(araq => {
             const sukf2quCakar2ba = k2reK21eni || araq.ruva === ksakaK21eni;
-            const hasVisibleContent = sukf2quCakar2ba && araq.hakek.some(kek => {
+            const ot2basaiC2h2 = sukf2quCakar2ba && araq.hakek.some(kek => {
                 return !kek.matches?.("p.saxesukef") && kek.style.display !== "none";
             });
 
@@ -376,11 +382,11 @@ function iibaHate() {
                     kek.style.display = "none";
                 } else if ( kek.matches?.("p.saxesukef") ) {
                     const sukf2quSaxesukef = kek.textContent.toLowerCase().includes(bana2bakano);
-                    kek.style.display = bana2bakano === "" || sukf2quSaxesukef || hasVisibleContent ? "" : "none";
+                    kek.style.display = bana2bakano === "" || sukf2quSaxesukef || ot2basaiC2h2 ? "" : "none";
                 }
             });
             araq.hasak.forEach(sak => {
-                sak.style.display = sukf2quCakar2ba && ( hasVisibleContent || bana2bakano === "" ) ? "" : "none";
+                sak.style.display = sukf2quCakar2ba && ( ot2basaiC2h2 || bana2bakano === "" ) ? "" : "none";
             });
         });
     }

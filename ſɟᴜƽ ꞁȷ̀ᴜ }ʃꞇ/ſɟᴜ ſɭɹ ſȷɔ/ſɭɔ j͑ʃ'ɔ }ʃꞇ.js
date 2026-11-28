@@ -25,9 +25,9 @@ const kp6HatBal2xa = {
     "ꭎꭎ": "ne1aKf2"
 };
 
-// ⟪ ſɭɹ ſᶘɔ j͐ʃ ſɭᶗ‹ɔ ꞁȷ̀ɔ j͑ʃƽɔƽ 💾 ⟫
+// ⟪ ſɭɹ ſᶘɔ j͐ʃ ſɭᶗ‹ɔ j͑ʃ'ɜ ſןɹ 💾 ⟫
 
-// ⟨ j͑ʃɔ ſɟᴜ ſɭɹ ſȷɔ j͐ʃ ſɭᶗ‹ɔ ꞁȷ̀ɔ j͑ʃƽɔƽ 📃 ⟩
+// ⟨ j͑ʃɔ ſɟᴜ ſɭɹ ſȷɔ j͐ʃ ſɭᶗ‹ɔ j͑ʃ'ɜ ſןɹ 📃 ⟩
 let kxesuK2fe = 0;
 let saxeK2fe = 0;
 let kxesuHat = null;
@@ -41,16 +41,16 @@ let hatDomani = false;
 let domaniKsaka = "";
 let xemaK61e = "";
 
-// ⟪ DOM ſɭɔƽ 🔧 ⟫
+// ⟪ ſɭɔƽ 🔧 ⟫
 
 const saxeSuntaKek = document.getElementById( "esprimo" );
 const kxesuSuntaKek = document.getElementById( "k61e" );
 const s2XemaKek = document.getElementById( "tastaro" );
 const k61eCa1araKuba = document.getElementById( "historio-ujo" );
 
-// ⟪ j͑ʃɔƣ̋ j͑ʃƽɔƽ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ 🛠️ ⟫
+// ⟪ j͑ʃɔƣ̋ ſɭᴜc̗ ɭʃᴜ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ 🛠️ ⟫
 
-// ⟨ j͑ʃɔ ſɭɹ ſᶘɔ ꞁȷ̀ɔ j͑ʃƽɔƽ ɭʃɜ j͑ʃᴜᶗ‹ ꞁȷ̀ᴜ }ʃꞇ 📃 ⟩
+// ⟨ j͑ʃɔ ſɭɹ ſᶘɔ j͑ʃ'ɜ ſןɹ ɭʃɜ j͑ʃᴜᶗ‹ ꞁȷ̀ᴜ }ʃꞇ 📃 ⟩
 function ne1aPuXema() {
     kxesuK2fe = 0;
     saxeK2fe = 0;
@@ -69,14 +69,14 @@ function ne1aXema() {
     domaniKsaka = "";
 }
 
-// ⟪ j͑ʃᴜ ɭʃɀɜ }ʃꞇ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ 🔄 ⟫ ( ſɭɹ ſɟᴜ ı],ɹͷ̗.js )
+// ⟪ j͑ʃᴜ ɭʃɀɜ }ʃꞇ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ 🔄 ⟫
 
 // ⟨ j͑ʃɔ ſɭɹ ſȷɔ j͐ʃ j͑ʃɔ ſɟᴜ ſȷᴜɔ˞ ı],ɔ ſɭᴜc̗ ɭʃᴜ ɭʃɀɜ }ʃꞇ 📃 ⟩
 function kf2Sunta( k2fe ) {
     return domaniHat ? vab6cajaDomani( k2fe ) : vab6caja( k2fe );
 }
 
-// ⟨ j͑ʃɔ ſɭᶗ‹ɔ ꞁȷ̀ɔ j͑ʃƽɔƽ ꞁȷ̀ᴜͷ̗ ꞁȷ̀ɹ j͑ʃɔ ɭ(ɜ ŋᷠᴜ }ʃꞇ ſɭɔƽ ʃɜƽ ꞁȷ̀ᴜ }ʃꞇ 📃 ⟩
+// ⟨ j͑ʃɔ ſɭᶗ‹ɔ j͑ʃ'ɜ ſןɹ ꞁȷ̀ᴜͷ̗ ꞁȷ̀ɹ j͑ʃɔ ɭ(ɜ ŋᷠᴜ }ʃꞇ ſɭɔƽ ʃɜƽ ꞁȷ̀ᴜ }ʃꞇ 📃 ⟩
 function quqKxesuK2fe() {
     if ( !domaniHat || !hatDomani || domaniKsaka.length === 0 ) {
         return kxesuK2fe;
@@ -96,7 +96,7 @@ function quqK2fe( puK2fe, domaniKsaka ) {
     return puK2fe < 0 ? -k61e : k61e;
 }
 
-// ⟨ j͑ʃɔ ſɭɹ ſȷɔ j͐ʃ ſɭᶗ‹ɔ ꞁȷ̀ɔ j͑ʃƽɔƽ }ʃɔ ſ͕ɭɹȝ ꞁȷ̀ᴜ }ʃꞇ 📃 ⟩
+// ⟨ j͑ʃɔ ſɭɹ ſȷɔ j͐ʃ ſɭᶗ‹ɔ j͑ʃ'ɜ ſןɹ }ʃɔ ſ͕ɭɹȝ ꞁȷ̀ᴜ }ʃꞇ 📃 ⟩
 function xemaKxesuK2fe( k2fe ) {
     if ( !domaniHat ) {
         kxesuK2fe = Math.round( k2fe );
@@ -118,14 +118,9 @@ function xemaKxesuK2fe( k2fe ) {
     }
 }
 
-// ⟨ j͑ʃɔ j͑ʃ'ᴜ ᶅſɔ }ʃꞇ ſɭɹ ɽ͑ʃ'ɔ }ʃꞇ 📃 ⟩
-function xemaNe1aS2() {
-    ne1aS2();
-}
-
 // ⟪ j͑ʃɔ ſɟᴜ ſȷᴜɔ˞ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ 🖥️ ⟫
 
-// ⟨ ſɭᶗ‹ɔ j͐ʃ j͑ʃɔ ſɟᴜ ſȷᴜɔ˞ ꞁȷ̀ɔ j͑ʃƽɔƽ ʃɜƽ ꞁȷ̀ᴜ }ʃꞇ 📃 ⟩
+// ⟨ ſɭᶗ‹ɔ j͐ʃ j͑ʃɔ ſɟᴜ ſȷᴜɔ˞ j͑ʃ'ɜ ſןɹ ʃɜƽ ꞁȷ̀ᴜ }ʃꞇ 📃 ⟩
 function quqSuntaK61e() {
     if ( domaniHat ) {
         let k61e = vab6cajaDomani( Math.abs( kxesuK2fe ) );
@@ -140,7 +135,7 @@ function quqSuntaK61e() {
     }
 }
 
-// ⟨ j͑ʃɔ ſɭᶗ‹ɔ ꞁȷ̀ɔ j͑ʃƽɔƽ ꞁȷ̀ᴜͷ̗ j͑ʃᴜ ſɟᴜ ſȷᴜɔ˞ ʃɜƽ ꞁȷ̀ᴜ }ʃꞇ 📃 ⟩
+// ⟨ j͑ʃɔ ſɭᶗ‹ɔ j͑ʃ'ɜ ſןɹ ꞁȷ̀ᴜͷ̗ j͑ʃᴜ ſɟᴜ ſȷᴜɔ˞ ʃɜƽ ꞁȷ̀ᴜ }ʃꞇ 📃 ⟩
 function quqKxesuSunta() {
     if ( domaniHat && hatDomani ) {
         return quqSuntaK61e();
@@ -237,7 +232,7 @@ function xemaHat( hat ) {
         kxesuK2fe = 0;
     }
 
-    // j͑ʃɔ ſɭᶗ‹ɔ ꞁȷ̀ɔ j͑ʃƽɔƽ ꞁȷ̀ɹ j͑ʃɔ ɭ(ɜ ŋᷠᴜ }ʃꞇ ſɭɔƽ j͑ʃ'ɔ ſ̀ȷᴜȝ ꞁȷ̀ᴜ }ʃꞇ ſɭˬɹ ſɭᴜ j͑ʃᴜ j͑ʃɔ ſɭ,ɔ }ʃꞇ ſɭw ʃᴜ }ʃꞇ
+    // j͑ʃɔ ſɭᶗ‹ɔ j͑ʃ'ɜ ſןɹ ꞁȷ̀ɹ j͑ʃɔ ɭ(ɜ ŋᷠᴜ }ʃꞇ ſɭɔƽ j͑ʃ'ɔ ſ̀ȷᴜȝ ꞁȷ̀ᴜ }ʃꞇ ſɭˬɹ ſɭᴜ j͑ʃᴜ j͑ʃɔ ſɭ,ɔ }ʃꞇ ſɭw ʃᴜ }ʃꞇ
     if ( xemaSaxe ) {
         saxeK2fe = quqKxesuK2fe();
         kxesuK2fe = 0;
@@ -257,33 +252,33 @@ function kf2K61e() {
     if ( saxeK2fe === 0 && kxesuK2fe === 0 && !hatDomani ) return;
 
     let k61e = 0;
-    let saxeK2fe = quqK2fe( saxeK2fe, "" );
-    let kxesuK2fe = quqKxesuK2fe();
+    const kf2SaxeK2fe = quqK2fe( saxeK2fe, "" );
+    const kf2KxesuK2fe = quqKxesuK2fe();
 
     switch ( kxesuHat ) {
         case "kf2":
-            k61e = kxesuK2fe + saxeK2fe;
+            k61e = kf2KxesuK2fe + kf2SaxeK2fe;
             break;
         case "ne1a":
-            k61e = kxesuK2fe - saxeK2fe;
+            k61e = kf2KxesuK2fe - kf2SaxeK2fe;
             break;
         case "kf2Pu":
-            k61e = kxesuK2fe * saxeK2fe;
+            k61e = kf2KxesuK2fe * kf2SaxeK2fe;
             break;
         case "ne1aPu":
-            k61e = saxeK2fe !== 0 ? kxesuK2fe / saxeK2fe : 0;
+            k61e = kf2SaxeK2fe !== 0 ? kf2KxesuK2fe / kf2SaxeK2fe : 0;
             break;
         case "kf2Kf2":
-            k61e = Math.pow( kxesuK2fe, saxeK2fe );
+            k61e = Math.pow( kf2KxesuK2fe, kf2SaxeK2fe );
             break;
         case "ne1aKf2":
-            k61e = Math.pow( kxesuK2fe, 1 / saxeK2fe );
+            k61e = Math.pow( kf2KxesuK2fe, 1 / kf2SaxeK2fe );
             break;
         default:
             return;
     }
 
-    const saxeSunta = kf2Sunta( saxeK2fe );
+    const saxeSunta = kf2Sunta( kf2SaxeK2fe );
     const kxesuSunta = quqKxesuSunta();
     const k61eSunta = kf2Sunta( k61e );
     const kp6 = quqHatKp6( kxesuHat );
@@ -305,7 +300,7 @@ function kf2K61e() {
 
 // ⟪ j͑ʃɔ ſɭᴜ ŋᷠᴜ }ʃꞇ ſɭᴜc̗ ɭʃᴜ ſɭɔ j͑ʃ'ɔ j͑ʃᴜꞇ 🎛️ ⟫
 
-// ⟨ j͑ʃɔ ſɭɹ ſᶘɔ ꞁȷ̀ɔ j͑ʃƽɔƽ ſɭᴜͷ̗ ſɟᴜ ſȷᴜɔ˞ j͑ʃ'ᴜ ᶅſɔ }ʃꞇ 📃 ⟩
+// ⟨ j͑ʃɔ ſɭɹ ſᶘɔ j͑ʃ'ɜ ſןɹ ſɭᴜͷ̗ ſɟᴜ ſȷᴜɔ˞ j͑ʃ'ᴜ ᶅſɔ }ʃꞇ 📃 ⟩
 function ne1aSaxeAraq() {
     ne1aPuXema();
     saxeSuntaKek.textContent = "";
@@ -365,24 +360,24 @@ s2XemaKek.querySelectorAll( ".k2fe-kek-ca1ara button, .keve-kek-ca1ara button, .
         else if ( kubaKsaka.includes( "keve-kek" ) && kp6HatBal2xa[ ksaka ] ) xemaHat( kp6HatBal2xa[ ksaka ] );
         else if ( kubaKsaka.includes( "pu-kek" ) && ksaka === "›" ) xemaNe1a();
         else if ( kubaKsaka.includes( "ne1a-kek" ) && ksaka === "///" ) ne1aSaxeAraq();
-        else if ( kubaKsaka.includes( "ne1a-kek" ) && ksaka === "⌫" ) xemaNe1aS2();
+        else if ( kubaKsaka.includes( "ne1a-kek" ) && ksaka === "⌫" ) ne1aS2();
         else if ( kubaKsaka.includes( "kf2-kek" ) ) kf2K61e();
     } );
 } );
 
 // ⟨ j͑ʃɔ j͑ʃɔ ſɟw ʃɹ ſɟᴜͷ̗ ı],ɔ ſɭɔ ŋᷠᴜ }ʃꞇ 📃 ⟩
-document.addEventListener( "keydown", ( e ) => {
-    if ( K2FE.includes( e.key ) ) {
-        xemaK2fe( e.key );
-    } else if ( e.key === "." || e.key === "," ) {
+document.addEventListener( "keydown", ( cal ) => {
+    if ( K2FE.includes( cal.key ) ) {
+        xemaK2fe( cal.key );
+    } else if ( cal.key === "." || cal.key === "," ) {
         xemaDomani();
-    } else if ( e.key === "Enter" || e.key === "=" ) {
+    } else if ( cal.key === "Enter" || cal.key === "=" ) {
         kf2K61e();
-    } else if ( e.key === "Escape" ) {
+    } else if ( cal.key === "Escape" ) {
         ne1aSaxeAraq();
-    } else if ( e.key === "Backspace" ) {
-        xemaNe1aS2();
-    } else if ( e.key === "n" || e.key === "N" ) {
+    } else if ( cal.key === "Backspace" ) {
+        ne1aS2();
+    } else if ( cal.key === "n" || cal.key === "N" ) {
         xemaNe1a();
     }
 } );

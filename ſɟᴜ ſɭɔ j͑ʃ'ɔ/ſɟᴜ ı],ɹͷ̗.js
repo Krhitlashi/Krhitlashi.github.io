@@ -5,6 +5,7 @@ const K2FETBONI = new Map(K2FE.map((kp6, ruva) => [kp6, ruva]));
 const KNAK2FE = 0o10;
 
 function vab6caja(xap2suK2fe) {
+    if ( !Number.isFinite(xap2suK2fe) ) return "";
     if ( xap2suK2fe < 0 ) {
         return "›" + vab6caja(-xap2suK2fe);
     }
@@ -24,6 +25,7 @@ function vab6caja(xap2suK2fe) {
 }
 
 function vab6cajaDomani(xap2suK2fe, aahukani = 6) {
+    if ( !Number.isFinite(xap2suK2fe) ) return "";
     if ( xap2suK2fe < 0 ) {
         return "›" + vab6cajaDomani(-xap2suK2fe, aahukani);
     }
@@ -36,7 +38,8 @@ function vab6cajaDomani(xap2suK2fe, aahukani = 6) {
         return tlakakulCajasuK2fe;
     }
 
-    return tlakakulCajasuK2fe + " " + quqalDomanisuOk2fe(bakaweDomani, aahukani);
+    const domaniKp6 = quqalDomanisuOk2fe(bakaweDomani, aahukani);
+    return domaniKp6 ? tlakakulCajasuK2fe + " " + domaniKp6 : tlakakulCajasuK2fe;
 }
 
 function nenllakKp6EKfo(k61e) {
@@ -73,10 +76,10 @@ function vab6k2fekp6(k61e) {
 function quqDomani(hatok2fe, knak2fesuK2fe = KNAK2FE) {
     if ( !hatok2fe || hatok2fe.length === 0 ) return 0;
     let domaniSweskek = 0;
-    for ( let i = 0; i < hatok2fe.length; i++ ) {
-        const ruva = K2FETBONI.get(hatok2fe[i]);
+    for ( let n2k = 0; n2k < hatok2fe.length; n2k++ ) {
+        const ruva = K2FETBONI.get(hatok2fe[n2k]);
         if ( ruva !== undefined ) {
-            domaniSweskek += ruva / Math.pow(knak2fesuK2fe, i + 1);
+            domaniSweskek += ruva / Math.pow(knak2fesuK2fe, n2k + 1);
         }
     }
     return domaniSweskek;
@@ -85,7 +88,7 @@ function quqDomani(hatok2fe, knak2fesuK2fe = KNAK2FE) {
 function quqalDomanisuOk2fe(domani, aahukani = 6, knak2fesuK2fe = KNAK2FE) {
     let ts0ni = "";
     let bakaweDomani = domani;
-    for ( let i = 0; i < aahukani && bakaweDomani > 0.0001; i++ ) {
+    for ( let n2k = 0; n2k < aahukani && bakaweDomani > 0; n2k++ ) {
         bakaweDomani *= knak2fesuK2fe;
         let ok2fe = Math.floor(bakaweDomani);
         ts0ni += K2FE[ok2fe];
@@ -112,18 +115,18 @@ const J6STAFL2_BAR6Q = 24 * 60 * 60 * 1000;
 const TLAK2_STIFEH2 = 0o100;
 
 const HE_L6HEINAK = 4294967296 / 9192631770;
-const STIFEH2_L6P6ZUK = Array.from({ length: 6 }, (_, i) => 
-    HE_L6HEINAK * Math.pow(SAHE_P6ZUKANI, i)
+const STIFEH2_L6P6ZUK = Array.from({ length: 6 }, (_, n2k) =>
+    HE_L6HEINAK * Math.pow(SAHE_P6ZUKANI, n2k)
 );
 const [ HE_L6VEM2, QE_L6VEM2, HAQE_L6VEM2, SHE_L6VEM2, SQE_L6VEM2, SHAQE_L6VEM2 ] = STIFEH2_L6P6ZUK;
 
 const STIFEH2_S2CAX2L = [
-    { name: "shaqe", value: SHAQE_L6VEM2 },
-    { name: "sqe", value: SQE_L6VEM2 },
-    { name: "she", value: SHE_L6VEM2 },
-    { name: "haqe", value: HAQE_L6VEM2 },
-    { name: "qe", value: QE_L6VEM2 },
-    { name: "he", value: HE_L6VEM2 }
+    { ksaka: "shaqe", xema: SHAQE_L6VEM2 },
+    { ksaka: "sqe", xema: SQE_L6VEM2 },
+    { ksaka: "she", xema: SHE_L6VEM2 },
+    { ksaka: "haqe", xema: HAQE_L6VEM2 },
+    { ksaka: "qe", xema: QE_L6VEM2 },
+    { ksaka: "he", xema: HE_L6VEM2 }
 ];
 
 const HASTAFL2_SWEHAXE = [ "stibix", "pal2stif", "stafl2" ];
@@ -192,7 +195,7 @@ function cax2lStafl2(cax2luStafl2 = new Date()) {
 }
 
 function kf2Hak2fe(k2fe, kp6Sak2fe = "") {
-    const tlakakuK2fe = k2fe.map(kf => kp6Sak2fe + vab6caja(kf)).join(" ");
+    const tlakakuK2fe = k2fe.map(k2fe => kp6Sak2fe + vab6caja(k2fe)).join(" ");
     return skakefK2fe(tlakakuK2fe);
 }
 
@@ -200,7 +203,7 @@ function kf2Cax2lStafl2(stifeh2Inak = new Date()) {
     const cax2l = cax2lStafl2(stifeh2Inak);
     const gawe = document.documentElement.lang || "aih";
     const kp6Sak2fe = gawe === "en" ? "" : "ꞙɭ";
-    return kf2Hak2fe(HASTAFL2_SWEHAXE.map(k => cax2l[k]), kp6Sak2fe);
+    return kf2Hak2fe(HASTAFL2_SWEHAXE.map(hastafl2Kef => cax2l[hastafl2Kef]), kp6Sak2fe);
 }
 
 function castifeh2(stifeh2Inak = new Date()) {
@@ -209,8 +212,8 @@ function castifeh2(stifeh2Inak = new Date()) {
     const stifeh2 = {};
 
     for ( const s2cax2l of STIFEH2_S2CAX2L ) {
-        stifeh2[s2cax2l.name] = Math.floor(fusuStifeh2 / s2cax2l.value);
-        fusuStifeh2 %= s2cax2l.value;
+        stifeh2[s2cax2l.ksaka] = Math.floor(fusuStifeh2 / s2cax2l.xema);
+        fusuStifeh2 %= s2cax2l.xema;
     }
 
     return stifeh2;
@@ -218,7 +221,7 @@ function castifeh2(stifeh2Inak = new Date()) {
 
 function kf2Castifeh2(stifeh2Inak = new Date()) {
     const stifeh2 = castifeh2(stifeh2Inak);
-    return kf2Hak2fe(STIFEH2_S2CAX2L.map(s => stifeh2[s.name]));
+    return kf2Hak2fe(STIFEH2_S2CAX2L.map(s2cax2l => stifeh2[s2cax2l.ksaka]));
 }
 
 function tlak2KefSekek(ruvaSekek, kef) {
@@ -227,12 +230,12 @@ function tlak2KefSekek(ruvaSekek, kef) {
 
     const kaltokani = document.createDocumentFragment();
     const hakp6 = kef.split(" ");
-    hakp6.forEach((kp6, i) => {
+    hakp6.forEach((kp6, n2k) => {
         const maxemaSaxez = document.createElement("span");
         maxemaSaxez.className = "cepufalxez";
         maxemaSaxez.textContent = kp6;
         kaltokani.appendChild(maxemaSaxez);
-        if (i < hakp6.length - 1) {
+        if (n2k < hakp6.length - 1) {
             kaltokani.appendChild(document.createTextNode(" "));
         }
     });
@@ -264,8 +267,8 @@ function vac2ta_p0(p0) { return p0 * P0 / C2TA_L6XA3ENI; }
 // ≺⧼ ֭ſɭꞇ 🌡️ ⧽≻
 
 const SACA = 1.602176634e-19;
-const K_BOLTZMANN = 1.380649e-23;
-const HI_L6RAK2K2H2 = ( SACA / Math.pow(2, 0o14) ) / K_BOLTZMANN;
+const SACA_AK2K2H2_VEM2 = 1.380649e-23;
+const HI_L6RAK2K2H2 = ( SACA / Math.pow(2, 0o14) ) / SACA_AK2K2H2_VEM2;
 
 function vahi_ak2k2h2(ak2k2h2) {
     return ak2k2h2 / HI_L6RAK2K2H2;
